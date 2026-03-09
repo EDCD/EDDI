@@ -23,8 +23,8 @@ namespace EddiCommanderMonitor
     [UsedImplicitly]
     public class CommanderMonitor : IEddiMonitor, INotifyPropertyChanged
     {
-        private static readonly object commanderLock = new object();
-        private readonly CancellationTokenSource cts = new CancellationTokenSource();
+        private static readonly object commanderLock = new();
+        private readonly CancellationTokenSource cts = new();
         
         #region Monitored Variables
 
@@ -84,12 +84,12 @@ namespace EddiCommanderMonitor
         }
 
         [UsedImplicitly]
-        public static ObservableCollection<GenderOption> GenderOptions { get; set; } = new ObservableCollection<GenderOption>
-        {
-            new GenderOption { Gender = Gender.Male, DisplayName = Properties.Resources.tab_commander_gender_m },
-            new GenderOption { Gender = Gender.Female, DisplayName = Properties.Resources.tab_commander_gender_f },
-            new GenderOption { Gender = Gender.Neither, DisplayName = Properties.Resources.tab_commander_gender_n }
-        };
+        public static ObservableCollection<GenderOption> GenderOptions { get; set; } =
+        [
+            new() { Gender = Gender.Male, DisplayName = Properties.Resources.tab_commander_gender_m },
+            new() { Gender = Gender.Female, DisplayName = Properties.Resources.tab_commander_gender_f },
+            new() { Gender = Gender.Neither, DisplayName = Properties.Resources.tab_commander_gender_n }
+        ];
 
         [CanBeNull]
         public StarSystem HomeStarSystem // May be null when the commander hasn't set a home star system
@@ -155,7 +155,7 @@ namespace EddiCommanderMonitor
 
         private static bool _isFetchingHomeSystem;
 
-        public ObservableCollection<Station> HomeStationOptions { get; } = new ObservableCollection<Station>();
+        public ObservableCollection<Station> HomeStationOptions { get; } = [ ];
 
         private void UpdateHomeStationOptions ()
         {
@@ -273,7 +273,7 @@ namespace EddiCommanderMonitor
 
         private static bool _isFetchingSquadronSystem;
 
-        public ObservableCollection<Faction> SquadronFactions { get; } = new ObservableCollection<Faction>();
+        public ObservableCollection<Faction> SquadronFactions { get; } = [ ];
 
         private void UpdateSquadronFactions ()
         {
@@ -311,8 +311,8 @@ namespace EddiCommanderMonitor
         }
         private Faction _selectedSquadronFaction;
 
-        public ObservableCollection<Power> SquadronPowers => new ObservableCollection<Power>( Power.AllOfThem
-            .Except( new [] { Power.None } )
+        public ObservableCollection<Power> SquadronPowers => new( Power.AllOfThem
+            .Except( [ Power.None ] )
             .OrderBy( p => p.localizedName )
             .Prepend( Power.None )
             .ToHashSet() );

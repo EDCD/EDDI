@@ -18,7 +18,7 @@ namespace Utilities
 {
     public class Logging : Telemetry
     {
-        private static readonly Regex JsonRegex = new Regex(@"^{.*}$", RegexOptions.Singleline);
+        private static readonly Regex JsonRegex = new(@"^{.*}$", RegexOptions.Singleline);
 
         private static readonly string LogFile = Constants.DATA_DIR + @"\eddi.log";
 
@@ -54,7 +54,7 @@ namespace Utilities
         {
             try
             {
-                var sourceThreadID = Thread.CurrentThread.ManagedThreadId;
+                var sourceThreadID = Environment.CurrentManagedThreadId;
                 Task.Run( () =>
                 {
                     Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
@@ -146,7 +146,7 @@ namespace Utilities
             return wrappedData;
         }
 
-        private static readonly object logLock = new object();
+        private static readonly object logLock = new();
 
         private static void WriteToLog ( string timestamp, int? threadID, ErrorLevel errorlevel, string message, object preppedData = null )
         {
@@ -224,20 +224,21 @@ namespace Utilities
 
                 try
                 {
-                    int.TryParse( filePath.Replace( Constants.DATA_DIR + @"\eddi", "" ).Replace( ".log", "" ),
-                        out int i );
-                    ++i; // Increment our index number
+                    if ( int.TryParse( filePath.Replace( Constants.DATA_DIR + @"\eddi", "" ).Replace( ".log", "" ), out var i ) )
+                    {
+                        ++i; // Increment our index number
 
-                    if ( i >= 10 )
-                    {
-                        File.Delete( filePath );
-                    }
-                    else
-                    {
-                        // This might be our primary log file, so we lock it prior to doing anything with it
-                        lock ( logLock )
+                        if ( i >= 10 )
                         {
-                            File.Move( filePath, Constants.DATA_DIR + @"\eddi" + i + ".log" );
+                            File.Delete( filePath );
+                        }
+                        else
+                        {
+                            // This might be our primary log file, so we lock it prior to doing anything with it
+                            lock ( logLock )
+                            {
+                                File.Move( filePath, Constants.DATA_DIR + @"\eddi" + i + ".log" );
+                            }
                         }
                     }
                 }

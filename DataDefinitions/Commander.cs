@@ -497,7 +497,7 @@ namespace EddiDataDefinitions
 
         /// <summary>The Commander's friends</summary>
         [PublicAPI]
-        public List<Friend> friends = new List<Friend>();
+        public List<Friend> friends = new();
 
         /// <summary>The Commander's status and progress with the various engineers</summary>
         [PublicAPI]

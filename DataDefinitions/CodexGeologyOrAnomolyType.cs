@@ -11,20 +11,20 @@ namespace EddiDataDefinitions
             missingEDNameHandler = ( edname ) => new CodexGeologyOrAnomolyType( edname );
         }
 
-        public static readonly CodexGeologyOrAnomolyType Fumarole = new CodexGeologyOrAnomolyType ( "Fumarole" );
-        public static readonly CodexGeologyOrAnomolyType WaterGeyser = new CodexGeologyOrAnomolyType ( "WaterGeyser" );
-        public static readonly CodexGeologyOrAnomolyType IceFumarole = new CodexGeologyOrAnomolyType ( "IceFumarole" );
-        public static readonly CodexGeologyOrAnomolyType IceGeyser = new CodexGeologyOrAnomolyType ( "IceGeyser" );
-        public static readonly CodexGeologyOrAnomolyType LavaSpout = new CodexGeologyOrAnomolyType ( "LavaSpout" );
-        public static readonly CodexGeologyOrAnomolyType GasVent = new CodexGeologyOrAnomolyType ( "GasVent" );
-        public static readonly CodexGeologyOrAnomolyType LagrangeCloud = new CodexGeologyOrAnomolyType ( "LagrangeCloud" );
-        public static readonly CodexGeologyOrAnomolyType StormCloud = new CodexGeologyOrAnomolyType ( "StormCloud" );
-        public static readonly CodexGeologyOrAnomolyType P_TypeAnomaly = new CodexGeologyOrAnomolyType ( "P_TypeAnomaly" );
-        public static readonly CodexGeologyOrAnomolyType Q_TypeAnomaly = new CodexGeologyOrAnomolyType ( "Q_TypeAnomaly" );
-        public static readonly CodexGeologyOrAnomolyType T_TypeAnomaly = new CodexGeologyOrAnomolyType ( "T_TypeAnomaly" );
-        public static readonly CodexGeologyOrAnomolyType K_TypeAnomaly = new CodexGeologyOrAnomolyType ( "K_TypeAnomaly" );
-        public static readonly CodexGeologyOrAnomolyType L_TypeAnomaly = new CodexGeologyOrAnomolyType ( "L_TypeAnomaly" );
-        public static readonly CodexGeologyOrAnomolyType E_TypeAnomaly = new CodexGeologyOrAnomolyType ( "E_TypeAnomaly" );
+        public static readonly CodexGeologyOrAnomolyType Fumarole = new( "Fumarole" );
+        public static readonly CodexGeologyOrAnomolyType WaterGeyser = new( "WaterGeyser" );
+        public static readonly CodexGeologyOrAnomolyType IceFumarole = new( "IceFumarole" );
+        public static readonly CodexGeologyOrAnomolyType IceGeyser = new( "IceGeyser" );
+        public static readonly CodexGeologyOrAnomolyType LavaSpout = new( "LavaSpout" );
+        public static readonly CodexGeologyOrAnomolyType GasVent = new( "GasVent" );
+        public static readonly CodexGeologyOrAnomolyType LagrangeCloud = new( "LagrangeCloud" );
+        public static readonly CodexGeologyOrAnomolyType StormCloud = new( "StormCloud" );
+        public static readonly CodexGeologyOrAnomolyType P_TypeAnomaly = new( "P_TypeAnomaly" );
+        public static readonly CodexGeologyOrAnomolyType Q_TypeAnomaly = new( "Q_TypeAnomaly" );
+        public static readonly CodexGeologyOrAnomolyType T_TypeAnomaly = new( "T_TypeAnomaly" );
+        public static readonly CodexGeologyOrAnomolyType K_TypeAnomaly = new( "K_TypeAnomaly" );
+        public static readonly CodexGeologyOrAnomolyType L_TypeAnomaly = new( "L_TypeAnomaly" );
+        public static readonly CodexGeologyOrAnomolyType E_TypeAnomaly = new( "E_TypeAnomaly" );
 
         [PublicAPI]
         public string description => Properties.CodexGeologyOrAnomolyTypeDesc.ResourceManager.GetString( edname );

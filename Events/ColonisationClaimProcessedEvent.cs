@@ -10,10 +10,10 @@ namespace EddiEvents
         public const string NAME = "Colonisation claim processed";
         public const string DESCRIPTION = "Triggered when staking or releasing a claim to colonise a star system";
         public static readonly string[] SAMPLES =
-        {
+        [
             @"{ ""timestamp"":""2025-04-09T03:45:54Z"", ""event"":""ColonisationSystemClaim"", ""StarSystem"":""Col 285 Sector PT-Q c5-24"", ""SystemAddress"":6680653861562 }",
             @"{ ""timestamp"":""2025-04-09T12:33:19Z"", ""event"":""ColonisationSystemClaimRelease"", ""StarSystem"":""Col 285 Sector HM-I b11-2"", ""SystemAddress"":5070075078009 }"
-        };
+        ];
 
         [PublicAPI("The name of the claimed star system")]
         public string systemname { get; private set; }

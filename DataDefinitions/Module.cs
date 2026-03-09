@@ -105,7 +105,7 @@ namespace EddiDataDefinitions
         public string engineerExperimentalEffectEDName { get; set; }
 
         [JsonProperty]
-        public List<EngineeringModifier> modifiers { get; set; } = new List<EngineeringModifier>();
+        public List<EngineeringModifier> modifiers { get; set; } = new();
 
         [JsonIgnore]
         public string localizedModification => engineermodification?.localizedName;

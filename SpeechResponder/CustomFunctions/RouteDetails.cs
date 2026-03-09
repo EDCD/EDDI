@@ -23,7 +23,7 @@ namespace EddiSpeechResponder.CustomFunctions
             {
                 Logging.Debug("RouteDetails() invoked, arguments: ", values);
 
-                var query = values?.FirstOrDefault().AsString;
+                var query = values?[0].AsString;
 
                 if (string.IsNullOrEmpty(query))
                 {

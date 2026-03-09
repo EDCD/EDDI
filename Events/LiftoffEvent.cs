@@ -86,7 +86,7 @@ namespace EddiEvents
             var nearestdestination = JsonParsing.getString(data, "NearestDestination");
             var nearestDestination = SignalSource.FromEDName(nearestdestination) ?? new SignalSource();
             var localizedName = JsonParsing.getString(data, "SignalName_Localised");
-            if ( !string.IsNullOrEmpty( localizedName ) && !localizedName.Contains( "$" ) )
+            if ( !string.IsNullOrEmpty( localizedName ) && !localizedName.Contains( '$' ) )
             {
                 nearestDestination.fallbackLocalizedName = localizedName;
             }

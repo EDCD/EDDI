@@ -16,7 +16,7 @@ namespace Tests
     [TestClass, TestCategory("UnitTests")]
     public class CrimeMonitorTests : TestBase
     {
-        readonly CrimeMonitor crimeMonitor = new CrimeMonitor();
+        readonly CrimeMonitor crimeMonitor = new();
         FactionRecord record;
         FactionReport report;
         string line;

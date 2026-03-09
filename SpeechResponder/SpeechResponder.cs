@@ -109,7 +109,7 @@ namespace EddiSpeechResponder
             if (!(Personalities is null)) { return Personalities; }
 
             // Initialize our collection and add our default personality
-            Personalities = new ObservableCollection<Personality> { Personality.Default() };
+            Personalities = [ Personality.Default() ];
 
             // Add our custom personalities
             foreach (var customPersonality in Personality.AllFromDirectory())
@@ -195,7 +195,7 @@ namespace EddiSpeechResponder
             var sample = Events.SampleByName(scriptName);
             if (sample == null)
             {
-                sampleEvents = new List<Event>();
+                sampleEvents = [ ];
             }
             else if (sample is string s)
             {
@@ -205,12 +205,12 @@ namespace EddiSpeechResponder
             else if (sample is Event e)
             {
                 // It's a direct event
-                sampleEvents = new List<Event>{e};
+                sampleEvents = [ e ];
             }
             else
             {
                 Logging.Warn("Unknown sample type " + sample.GetType());
-                sampleEvents = new List<Event>();
+                sampleEvents = [ ];
             }
 
             var testScriptResolver = new ScriptResolver(scripts);
@@ -387,7 +387,7 @@ namespace EddiSpeechResponder
             return Task.CompletedTask;
         }
 
-        private static readonly object logLock = new object();
+        private static readonly object logLock = new();
 
         private static void log(string speech)
         {

@@ -7,7 +7,7 @@ namespace EddiSpeechService
     public class SpeechQueue
     {
         public List<ConcurrentQueue<EddiSpeech>> priorityQueues { get; private set; }
-        public bool hasSpeech => priorityQueues.Any(q => q.Count > 0);
+        public bool hasSpeech => priorityQueues.Any(q => !q.IsEmpty);
         public bool isQueuePaused;
 
         public SpeechQueue ()
@@ -119,7 +119,7 @@ namespace EddiSpeechService
             isQueuePaused = false;
         }
 
-        private void filterSpeechQueue(string type, ref ConcurrentQueue<EddiSpeech> speechQueue, EddiSpeech eddiSpeech)
+        private static void filterSpeechQueue (string type, ref ConcurrentQueue<EddiSpeech> speechQueue, EddiSpeech eddiSpeech)
         {
             if (eddiSpeech.eventType != type)
             {

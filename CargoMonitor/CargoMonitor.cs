@@ -26,11 +26,11 @@ namespace EddiCargoMonitor
     public class CargoMonitor : IEddiMonitor
     {
         // Observable collection for us to handle changes
-        public ObservableCollection<Cargo> inventory { get; private set; } = new ObservableCollection<Cargo>();
+        public ObservableCollection<Cargo> inventory { get; private set; } = new();
         public int cargoCarried => inventory.Sum(c => c.total);
         private DateTime updateDat;
 
-        private static readonly object inventoryLock = new object();
+        private static readonly object inventoryLock = new();
         [UsedImplicitly] public event EventHandler InventoryUpdatedEvent;
 
         public string MonitorName()
@@ -536,8 +536,8 @@ namespace EddiCargoMonitor
             {
                 return new Dictionary<string, Tuple<Type, object>>
                 {
-                    ["inventory"] = new Tuple<Type, object>(typeof(List<Cargo>), inventory.ToList() ),
-                    ["cargoCarried"] = new Tuple<Type, object>(typeof(int), cargoCarried)
+                    ["inventory"] = new(typeof(List<Cargo>), inventory.ToList() ),
+                    ["cargoCarried"] = new(typeof(int), cargoCarried)
                 };                
             }
         }

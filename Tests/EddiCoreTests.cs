@@ -33,8 +33,8 @@ namespace Tests
         private sealed class TestMonitor : IEddiMonitor
         {
             private readonly string name;
-            private readonly AutoResetEvent stopSignal = new AutoResetEvent(false);
-            private readonly AutoResetEvent startedSignal = new AutoResetEvent(false);
+            private readonly AutoResetEvent stopSignal = new(false);
+            private readonly AutoResetEvent startedSignal = new(false);
             private int startCount;
 
             public TestMonitor ( string name ) { this.name = name; }
@@ -301,7 +301,7 @@ namespace Tests
             var line3 = @"{ ""timestamp"":""2019-02-04T02:38:53Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":5856221467362, ""SignalName"":""$Fixed_Event_Life_Ring;"", ""SignalName_Localised"":""Notable stellar phenomena"" }";
             var line4 = @"{ ""timestamp"":""2019-02-04T02:38:53Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":5856221467362, ""SignalName"":""$NumberStation;"", ""SignalName_Localised"":""Unregistered Comms Beacon"" }";
 
-            var events = JournalMonitor.ParseJournalEntries( new[] { line0, line1, line2, line3, line4 } );
+            var events = JournalMonitor.ParseJournalEntries( [ line0, line1, line2, line3, line4 ] );
             foreach ( var @event in events.OfType<SignalDetectedEvent>() )
             {
                 EDDI.Instance.eventSignalDetected( @event );
@@ -358,7 +358,7 @@ namespace Tests
             // The speech responder should not pause speech after a partial shutdown.
             const string line = @"{ ""timestamp"":""2024-04-20T10:49:23Z"", ""event"":""SystemsShutdown"" }";
             const string line2 = @"{ ""timestamp"":""2024-04-20T10:49:23Z"", ""event"":""MaterialCollected"", ""Category"":""Encoded"", ""Name"":""tg_shutdowndata"", ""Name_Localised"":""Massive Energy Surge Analytics"", ""Count"":1 }";
-            var events = JournalMonitor.ParseJournalEntries(new [] { line, line2 } );
+            var events = JournalMonitor.ParseJournalEntries( [ line, line2 ] );
             var @event = (ShipShutdownEvent)events[0];
             Assert.IsNotNull( @event );
             Assert.IsTrue(@event.partialshutdown);
@@ -366,7 +366,7 @@ namespace Tests
             Assert.IsFalse( speechService.speechQueue.isQueuePaused );
 
             // The speech responder should pause speech after a full shutdown.
-            events = JournalMonitor.ParseJournalEntries( new[] { line } );
+            events = JournalMonitor.ParseJournalEntries( [ line ] );
             @event = (ShipShutdownEvent)events[ 0 ];
             Assert.IsNotNull( @event );
             Assert.IsFalse( @event.partialshutdown );

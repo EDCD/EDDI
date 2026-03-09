@@ -107,9 +107,9 @@ namespace EddiDataDefinitions
             }
         }
 
-        public List<string> factionSystems { get; set; } = new List<string>();
-        public List<string> interstellarBountyFactions { get; set; } = new List<string>();
-        public List<FactionReport> factionReports { get; set; } = new List<FactionReport>();
+        public List<string> factionSystems { get; set; } = new();
+        public List<string> interstellarBountyFactions { get; set; } = new();
+        public List<FactionReport> factionReports { get; set; } = new();
 
         [JsonIgnore]
         private string _faction;

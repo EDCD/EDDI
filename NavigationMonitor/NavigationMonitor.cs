@@ -28,22 +28,22 @@ namespace EddiNavigationMonitor
         #region Collections
 
         // Observable collection for us to handle changes to Bookmarks
-        public ObservableCollection<NavBookmark> Bookmarks = new ObservableCollection<NavBookmark>();
+        public ObservableCollection<NavBookmark> Bookmarks = new();
 
-        public readonly ObservableCollection<NavBookmark> GalacticPOIs = new ObservableCollection<NavBookmark>();
+        public readonly ObservableCollection<NavBookmark> GalacticPOIs = new();
 
         // Navigation route data
-        public NavWaypointCollection NavRoute = new NavWaypointCollection() { FillVisitedGaps = true };
+        public NavWaypointCollection NavRoute = new() { FillVisitedGaps = true };
 
         // Plotted carrier route data
-        public NavWaypointCollection CarrierPlottedRoute = new NavWaypointCollection() { FillVisitedGaps = true };
+        public NavWaypointCollection CarrierPlottedRoute = new() { FillVisitedGaps = true };
 
         // Plotted ship route data
-        public NavWaypointCollection PlottedRoute = new NavWaypointCollection();
+        public NavWaypointCollection PlottedRoute = new();
 
         #endregion
 
-        public static readonly object navConfigLock = new object();
+        public static readonly object navConfigLock = new();
 
         private DateTime updateDat;
 
@@ -461,17 +461,17 @@ namespace EddiNavigationMonitor
                 return new Dictionary<string, Tuple<Type, object>>
                 {
                     // Bookmark info
-                    ["bookmarks"] = new Tuple<Type, object>(typeof(List<NavBookmark>), Bookmarks.ToList() ),
-                    ["galacticPOIs"] = new Tuple<Type, object>(typeof(NavBookmark), GalacticPOIs ),
+                    ["bookmarks"] = new(typeof(List<NavBookmark>), Bookmarks.ToList() ),
+                    ["galacticPOIs"] = new(typeof(NavBookmark), GalacticPOIs ),
 
                     // Route plotting info
-                    ["navRoute"] = new Tuple<Type, object>(typeof(NavWaypointCollection), NavRoute ),
-                    ["carrierPlottedRoute"] = new Tuple<Type, object>(typeof(NavWaypointCollection), CarrierPlottedRoute ),
-                    ["shipPlottedRoute"] = new Tuple<Type, object>(typeof(NavWaypointCollection), PlottedRoute ),
+                    ["navRoute"] = new(typeof(NavWaypointCollection), NavRoute ),
+                    ["carrierPlottedRoute"] = new(typeof(NavWaypointCollection), CarrierPlottedRoute ),
+                    ["shipPlottedRoute"] = new(typeof(NavWaypointCollection), PlottedRoute ),
 
                     // NavConfig info
-                    ["orbitalpriority"] = new Tuple<Type, object>(typeof(bool), navConfig.prioritizeOrbitalStations ),
-                    ["maxStationDistance"] = new Tuple<Type, object>(typeof(int?), navConfig.maxSearchDistanceFromStarLs )
+                    ["orbitalpriority"] = new(typeof(bool), navConfig.prioritizeOrbitalStations ),
+                    ["maxStationDistance"] = new(typeof(int?), navConfig.maxSearchDistanceFromStarLs )
                 };                
             }
         }

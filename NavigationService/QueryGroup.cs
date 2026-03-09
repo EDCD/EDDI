@@ -17,28 +17,28 @@ namespace EddiNavigationService
             {
                 case QueryGroup.galaxy:
                 {
-                    return new[]
-                    {
+                    return
+                    [
                         QueryType.neutron, 
                         QueryType.scoop
-                    };
+                    ];
                 }
                 case QueryGroup.missions:
                 {
-                    return new[]
-                    {
+                    return
+                    [
                         QueryType.expiring,
                         QueryType.farthest,
                         QueryType.most,
                         QueryType.nearest,
                         QueryType.route,
                         QueryType.source
-                    };
+                    ];
                 }
                 case QueryGroup.services:
                 {
-                    return new[]
-                    {
+                    return
+                    [
                         QueryType.encoded,
                         QueryType.facilitator,
                         QueryType.guardian,
@@ -46,11 +46,11 @@ namespace EddiNavigationService
                         QueryType.manufactured,
                         QueryType.raw,
                         QueryType.scorpion
-                    };
+                    ];
                 }
                 default:
                 {
-                    return new QueryType[] { };
+                    return [ ];
                 }
             }
         }

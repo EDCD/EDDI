@@ -9,7 +9,7 @@ namespace EddiEvents
     {
         public const string NAME = "Scan organic distance";
         public const string DESCRIPTION = "Triggered when entering and exiting organic sampling ranges";
-        public static ScanOrganicDistanceEvent SAMPLE = new ScanOrganicDistanceEvent( DateTime.UtcNow, new Organic( OrganicVariant.Clypeus_02_A ), true );
+        public static ScanOrganicDistanceEvent SAMPLE = new( DateTime.UtcNow, new Organic( OrganicVariant.Clypeus_02_A ), true );
 
         [PublicAPI( "An object holding data about the organism currently being sampled" )]
         public Organic organic { get; set; }

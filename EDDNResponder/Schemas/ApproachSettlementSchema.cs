@@ -10,7 +10,7 @@ namespace EddiEddnResponder.Schemas
     [UsedImplicitly]
     public class ApproachSettlementSchema : ISchema
     {
-        public List<string> edTypes => new List<string> { "ApproachSettlement" };
+        public List<string> edTypes => [ "ApproachSettlement" ];
 
         public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
         {

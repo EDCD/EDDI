@@ -91,7 +91,7 @@ namespace EddiGalnetMonitor
             CreateDatabase();
         }
 
-        private static readonly object instanceLock = new object();
+        private static readonly object instanceLock = new();
         public static GalnetSqLiteRepository Instance
         {
             get
@@ -111,7 +111,7 @@ namespace EddiGalnetMonitor
             }
         }
 
-        private static readonly object insertLock = new object();
+        private static readonly object insertLock = new();
 
         public News GetArticle(string uuid)
         {

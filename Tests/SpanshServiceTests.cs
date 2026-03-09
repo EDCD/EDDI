@@ -30,7 +30,7 @@ namespace Tests
             FakeSpanshHttpClient.Expect( "results/F2B5B476-4458-11ED-9B9F-5DE194EB4526", DeserializeJsonResource<string>( Resources.SpanshCarrierResult ) );
 
             // Act
-            var result = await fakeSpanshService.GetCarrierRouteAsync( "NLTT 13249", new[] { "Sagittarius A*" }, 25000 ).ConfigureAwait(false);
+            var result = await fakeSpanshService.GetCarrierRouteAsync( "NLTT 13249", [ "Sagittarius A*" ], 25000 ).ConfigureAwait(false);
             // Assert
             Assert.IsNotNull(result);
             Assert.IsTrue(result.FillVisitedGaps);

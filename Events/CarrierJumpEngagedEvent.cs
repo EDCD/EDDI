@@ -9,11 +9,11 @@ namespace EddiEvents
     {
         public const string NAME = "Carrier jump engaged";
         public const string DESCRIPTION = "Triggered when your fleet carrier performs a jump";
-        public static readonly CarrierJumpEngagedEvent[] SAMPLES = 
-        {
-            new CarrierJumpEngagedEvent(DateTime.UtcNow, "Aparctias", 358797513434, "Ageno", 18262335038849, "Aparctias", 0, 3700571136, StationModel.FleetCarrier ),
-            new CarrierJumpEngagedEvent(DateTime.UtcNow, "Senones", 2724896688499, "Aparctias", 358797513434, "Senones 2", 3, 3707594240, StationModel.FleetCarrier )
-        };
+        public static readonly CarrierJumpEngagedEvent[] SAMPLES =
+        [
+            new(DateTime.UtcNow, "Aparctias", 358797513434, "Ageno", 18262335038849, "Aparctias", 0, 3700571136, StationModel.FleetCarrier ),
+            new(DateTime.UtcNow, "Senones", 2724896688499, "Aparctias", 358797513434, "Senones 2", 3, 3707594240, StationModel.FleetCarrier )
+        ];
 
         // Destination System variables
 
@@ -24,7 +24,7 @@ namespace EddiEvents
         public ulong systemAddress { get; private set; }
 
         [PublicAPI( "Metadata encoded into the unique 64 bit ID for the star system." )]
-        public StarSystemId64 id64 => new StarSystemId64( systemAddress );
+        public StarSystemId64 id64 => new( systemAddress );
 
         // Origin System variables
 
@@ -35,7 +35,7 @@ namespace EddiEvents
         public ulong originSystemAddress { get; private set; }
 
         [PublicAPI( "Metadata encoded into the unique 64 bit ID for the origin star system." )]
-        public StarSystemId64 originId64 => new StarSystemId64( systemAddress );
+        public StarSystemId64 originId64 => new( systemAddress );
 
         // Body variables
 

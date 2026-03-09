@@ -13,15 +13,15 @@ namespace EddiSpeechService.SpeechPreparation
 {
     public static class SpeechFormatter
     {
-        internal static readonly XmlSchemaSet lexiconSchemas = new XmlSchemaSet();
+        internal static readonly XmlSchemaSet lexiconSchemas = new();
 
         // Identify any statements that need to be separated into their own speech streams (e.g. audio or special voice effects)
         private static readonly string[] separatorsList =
-        {
+        [
             @"(<audio.*?\/>)",
             @"(<transmit.*?>[\s\S]*?<\/transmit>)",
-            @"(<voice.*?>[\s\S]*?<\/voice>)",
-        };
+            @"(<voice.*?>[\s\S]*?<\/voice>)"
+        ];
 
         /// <summary>
         /// Removes excess whitespace and SSML &lt;break/&gt; tags.
@@ -44,7 +44,7 @@ namespace EddiSpeechService.SpeechPreparation
         internal static void PrepareSpeech(VoiceDetails voice, ref string speech, out bool useSSML)
         {
             var lexicons = GetLexicons(voice);
-            if (speech.Contains("<") || lexicons.Any())
+            if (speech.Contains('<') || lexicons.Count > 0 )
             {
                 // Keep XML version at 1.0. Version 1.1 is not recommended for general use. https://en.wikipedia.org/wiki/XML#Versions
                 var xmlHeader = @"<?xml version=""1.0"" encoding=""UTF-8""?>";
@@ -54,7 +54,7 @@ namespace EddiSpeechService.SpeechPreparation
                 var speakFooter = @"</speak>";
 
                 // Lexicons are applied as a child element to the `speak` element. For Amazon Polly voices, the lexicon must be managed via the AWS Management Console.
-                var lexiconString = lexicons.Any() && !voice.name.StartsWith("Amazon Polly ") 
+                var lexiconString = lexicons.Count > 0 && !voice.name.StartsWith("Amazon Polly ") 
                     ? lexicons.Aggregate(string.Empty, (current, lexiconFile) => current + $"<lexicon uri=\"{lexiconFile}\" type=\"application/pls+xml\"/>") 
                     : string.Empty;
 

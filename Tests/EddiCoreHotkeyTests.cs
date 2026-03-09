@@ -9,11 +9,9 @@ namespace Tests
     [STATestClass, TestCategory( "UnitTests" )]
     public class EddiCoreHotkeyTests : TestBase
     {
-        private List<HotkeyAction> hotkeyActions => new List<HotkeyAction>
-        {
-            new HotkeyAction( "Test", "Test", () => Console.WriteLine(@"TestAction") )
-        };
-        private HotkeyActionCollection hotkeyCollection => new HotkeyActionCollection( hotkeyActions );
+        private List<HotkeyAction> hotkeyActions =>
+            [ new( "Test", "Test", () => Console.WriteLine( @"TestAction" ) ) ];
+        private HotkeyActionCollection hotkeyCollection => new( hotkeyActions );
 
         private static HotkeyRegistration CreateRegistration ( HotkeyActionCollection collection )
         {
@@ -84,7 +82,7 @@ namespace Tests
             // Arrange
             var invoked = false;
             var action = new HotkeyAction("Test", "Test", () => invoked = true);
-            var collection = new HotkeyActionCollection(new List<HotkeyAction> { action });
+            var collection = new HotkeyActionCollection( [ action ] );
 
             var manager = new HotkeyManager { Hotkeys = CreateRegistration(collection) };
             manager.RegisterHotkey( "Test", new KeyGesture( Key.A, ModifierKeys.Control ) );
@@ -102,7 +100,7 @@ namespace Tests
             // Arrange
             var invoked = false;
             var action = new HotkeyAction("Test", "Test", () => invoked = true);
-            var collection = new HotkeyActionCollection(new List<HotkeyAction> { action });
+            var collection = new HotkeyActionCollection( [ action ] );
 
             var manager = new HotkeyManager { Hotkeys = CreateRegistration(collection) };
             manager.RegisterHotkey( "Test", new KeyGesture( Key.A, ModifierKeys.Control ) );

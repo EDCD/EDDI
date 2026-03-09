@@ -346,7 +346,7 @@ namespace EddiSpeechResponder
                             ? string.Empty
                             : string.Join( "; ",
                                 kv.Value.includes.Split( ';' ).Select( s => s.Trim() )
-                                    .Except( new[] { script.Name } ) ) );
+                                    .Except( [ script.Name ] ) ) );
 
                     SpeechResponder.SavePersonality();
                     scriptsView.Refresh();

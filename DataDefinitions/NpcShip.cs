@@ -14,16 +14,16 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = true;
         }
 
-        public static readonly NpcShip ThargoidScout = new NpcShip("scout"); // Thargoid scout (or perhaps Thargon?)
-        public static readonly NpcShip ThargoidScoutHQ = new NpcShip("scout_hq"); // Thargoid scout, variant HQ
-        public static readonly NpcShip ThargoidScoutQ = new NpcShip("scout_q"); // Thargoid scout, variant Q
-        public static readonly NpcShip ThargoidScoutNQ = new NpcShip("scout_nq"); // Thargoid scout, variant NQ
+        public static readonly NpcShip ThargoidScout = new("scout"); // Thargoid scout (or perhaps Thargon?)
+        public static readonly NpcShip ThargoidScoutHQ = new("scout_hq"); // Thargoid scout, variant HQ
+        public static readonly NpcShip ThargoidScoutQ = new("scout_q"); // Thargoid scout, variant Q
+        public static readonly NpcShip ThargoidScoutNQ = new("scout_nq"); // Thargoid scout, variant NQ
 
-        public static readonly NpcShip ThargoidCyclops = new NpcShip("unknownsaucer"); // Thargoid Cyclops
-        public static readonly NpcShip ThargoidBasilisk = new NpcShip("unknownsaucer_e"); // Thargoid Basilisk
-        public static readonly NpcShip ThargoidMedusa = new NpcShip("unknownsaucer_f"); // Thargoid Medusa
-        public static readonly NpcShip ThargoidOrthrus = new NpcShip("unknownsaucer_g"); // Thargoid Orthrus
-        public static readonly NpcShip ThargoidHydra = new NpcShip("unknownsaucer_h"); // Thargoid Hydra
+        public static readonly NpcShip ThargoidCyclops = new("unknownsaucer"); // Thargoid Cyclops
+        public static readonly NpcShip ThargoidBasilisk = new("unknownsaucer_e"); // Thargoid Basilisk
+        public static readonly NpcShip ThargoidMedusa = new("unknownsaucer_f"); // Thargoid Medusa
+        public static readonly NpcShip ThargoidOrthrus = new("unknownsaucer_g"); // Thargoid Orthrus
+        public static readonly NpcShip ThargoidHydra = new("unknownsaucer_h"); // Thargoid Hydra
 
         // dummy used to ensure that the static constructor has run
         public NpcShip() : this("")

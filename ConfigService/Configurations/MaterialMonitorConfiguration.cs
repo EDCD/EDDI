@@ -8,7 +8,7 @@ namespace EddiConfigService.Configurations
     [JsonObject(MemberSerialization.OptOut), RelativePath(@"\materialmonitor.json")]
     public class MaterialMonitorConfiguration : Config
     {
-        private ObservableCollection<MaterialAmount> _materials = new ObservableCollection<MaterialAmount>();
+        private ObservableCollection<MaterialAmount> _materials = new();
 
         public ObservableCollection<MaterialAmount> materials
         {

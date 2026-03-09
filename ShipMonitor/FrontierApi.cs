@@ -14,7 +14,7 @@ namespace EddiShipMonitor
     // Handle the Frontier API definition for ships
     public static class FrontierApi
     {
-        private static readonly List<string> HARDPOINT_SIZES = new List<string>() { "Huge", "Large", "Medium", "Small", "Tiny" };
+        private static readonly List<string> HARDPOINT_SIZES = [ "Huge", "Large", "Medium", "Small", "Tiny" ];
 
         public static async Task<List<Ship>> ShipyardFromJsonAsync(Ship activeShip, dynamic json)
         {

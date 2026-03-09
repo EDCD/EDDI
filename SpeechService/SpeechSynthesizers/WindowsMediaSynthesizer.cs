@@ -18,7 +18,7 @@ namespace EddiSpeechService.SpeechSynthesizers
     [SupportedOSPlatform( "windows10.0.17763.0" )]
     public sealed class WindowsMediaSynthesizer : IDisposable
     {
-        private readonly SpeechSynthesizer synth = new SpeechSynthesizer();
+        private readonly SpeechSynthesizer synth = new();
 
         internal string currentVoice => synth.Voice.DisplayName;
         

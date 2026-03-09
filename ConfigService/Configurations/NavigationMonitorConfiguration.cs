@@ -19,10 +19,10 @@ namespace EddiConfigService.Configurations
         private decimal? _tdLat;
         private decimal? _tdLong;
         private string _tdPoi;
-        private ObservableCollection<NavBookmark> _bookmarks = new ObservableCollection<NavBookmark>();
-        private NavWaypointCollection _navRouteList = new NavWaypointCollection(null, true);
-        private NavWaypointCollection _carrierPlottedRoute = new NavWaypointCollection(null, true);
-        private NavWaypointCollection _plottedRouteList = new NavWaypointCollection();
+        private ObservableCollection<NavBookmark> _bookmarks = new();
+        private NavWaypointCollection _navRouteList = new(null, true);
+        private NavWaypointCollection _carrierPlottedRoute = new(null, true);
+        private NavWaypointCollection _plottedRouteList = new();
 
         public DateTime updatedat
         {

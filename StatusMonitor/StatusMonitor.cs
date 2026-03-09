@@ -32,7 +32,7 @@ namespace EddiStatusMonitor
         private Status _currentStatus;
         private Status lastStatus;
 
-        private static readonly object statusLock = new object();
+        private static readonly object statusLock = new();
 
         [ExcludeFromCodeCoverage]
         public StatusMonitor ()
@@ -257,7 +257,7 @@ namespace EddiStatusMonitor
                         ? SignalSource.GenericSignalSource
                         : EDDI.Instance.CurrentStarSystem.signalSources.FirstOrDefault( s =>
                             s.edname == status.destination_name ) ?? SignalSource.FromEDName(
-                            ( status.destination_localized_name?.StartsWith( "$" ) ?? false )
+                            ( status.destination_localized_name?.StartsWith( '$' ) ?? false )
                                 ? status.destination_localized_name
                                 : status.destination_name );
 
@@ -287,7 +287,7 @@ namespace EddiStatusMonitor
                     // Might be a non-station signal source
                     else if ( signalSource != null )
                     {
-                        if ( !status.destination_localized_name?.StartsWith( "$" ) ?? false )
+                        if ( !status.destination_localized_name?.StartsWith( '$' ) ?? false )
                         {
                             signalSource.fallbackLocalizedName = status.destination_localized_name;
                         }

@@ -10,15 +10,15 @@ namespace EddiEddnResponder.Schemas
     [UsedImplicitly]
     public class FSSSignalDiscoveredSchema : ISchema
     {
-        public List<string> edTypes => new List<string> { "FSSSignalDiscovered" };
+        public List<string> edTypes => [ "FSSSignalDiscovered" ];
 
         private readonly List<IDictionary<string, object>> signals =
-            new List<IDictionary<string, object>>();
+            [ ];
 
-        private readonly List<EDDNState> eddnStates = new List<EDDNState>();
+        private readonly List<EDDNState> eddnStates = [ ];
 
-        private static readonly object signalsLock = new object();
-        private static readonly object stateLock = new object();
+        private static readonly object signalsLock = new();
+        private static readonly object stateLock = new();
 
         public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
         {

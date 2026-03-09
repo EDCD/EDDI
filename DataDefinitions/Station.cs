@@ -32,7 +32,7 @@ namespace EddiDataDefinitions
             get => _faction;
             set { _faction = value; OnPropertyChanged();}
         }
-        private Faction _faction = new Faction();
+        private Faction _faction = new();
 
         /// <summary>The controlling faction's name</summary>
         [PublicAPI, JsonIgnore, Obsolete("Please use Faction instead")]
@@ -192,7 +192,7 @@ namespace EddiDataDefinitions
         [PublicAPI, JsonIgnore, Obsolete("Please use LargestPad instead")]
         public string largestpad => landingPads.LargestPad().localizedName;
 
-        public StationLandingPads landingPads { get; set; } = new StationLandingPads();
+        public StationLandingPads landingPads { get; set; } = new();
 
         /// <summary>What are the economies at the station, with proportions for each</summary>
         [JsonIgnore, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]

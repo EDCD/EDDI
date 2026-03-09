@@ -9,7 +9,7 @@ namespace EddiEvents
     {
         public const string NAME = "Next destination";
         public const string DESCRIPTION = "Triggered when selecting an in-system destination";
-        public static NextDestinationEvent SAMPLE = new NextDestinationEvent(DateTime.UtcNow, 8879744226018, 59, "$MULTIPLAYER_SCENARIO14_TITLE;", "Resource Extraction Site");
+        public static NextDestinationEvent SAMPLE = new(DateTime.UtcNow, 8879744226018, 59, "$MULTIPLAYER_SCENARIO14_TITLE;", "Resource Extraction Site");
 
         [PublicAPI("The name of the next in-system destination")]
         public string name { get; private set; }

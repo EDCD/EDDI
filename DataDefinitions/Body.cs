@@ -375,7 +375,7 @@ namespace EddiDataDefinitions
                 // this is applying the same scaling to the 3.2 value as a normal black hole, not confirmed in game
                 k = 33.5678;
             }
-            else if ( stellarclass.StartsWith( "D" ) && ( stellarclass.Length <= 3 ) )
+            else if ( stellarclass.StartsWith( 'D' ) && ( stellarclass.Length <= 3 ) )
             {
                 // White dwarves
                 k = 14057;
@@ -397,7 +397,7 @@ namespace EddiDataDefinitions
 
         /// <summary>The atmosphere's composition</summary>
         [PublicAPI]
-        public List<AtmosphereComposition> atmospherecompositions { get; set; } = new List<AtmosphereComposition>();
+        public List<AtmosphereComposition> atmospherecompositions { get; set; } = new();
 
         /// <summary>If this body can be landed upon</summary>
         [PublicAPI]
@@ -439,11 +439,11 @@ namespace EddiDataDefinitions
 
         /// <summary>The solid body composition of the body</summary>
         [PublicAPI]
-        public List<SolidComposition> solidcompositions { get; set; } = new List<SolidComposition>();
+        public List<SolidComposition> solidcompositions { get; set; } = new();
 
         /// <summary>The materials present at the surface of the body</summary>
         [PublicAPI]
-        public List<MaterialPresence> materials { get; set; } = new List<MaterialPresence>();
+        public List<MaterialPresence> materials { get; set; } = new();
 
         /// <summary>The reserve level (localized name)</summary>
         [PublicAPI, JsonIgnore, Obsolete("Please use reserveLevel instead")]
@@ -459,7 +459,7 @@ namespace EddiDataDefinitions
             this.bodyType = (bool)parents?.Exists(p => p.ContainsKey("Planet"))
                         ? BodyType.Moon : BodyType.Planet;
             this.rings = rings ?? new List<Ring>();
-            this.temperature = temperature;
+            this.temperature = temperatureKelvin;
             this.bodyId = bodyId;
 
             // Planet or Moon specific items
@@ -467,7 +467,6 @@ namespace EddiDataDefinitions
             this.earthmass = earthmass;
             this.radius = radiusKm;
             this.gravity = gravity;
-            this.temperature = temperatureKelvin;
             this.pressure = pressureAtm;
             this.tidallylocked = tidallylocked;
             this.landable = landable;

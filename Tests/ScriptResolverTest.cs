@@ -99,7 +99,7 @@ namespace Tests
                 {"test", new Script("test", null, false, "Hello {name}")}
             };
             var resolver = new ScriptResolver(scripts);
-            var dict = new Dictionary<string, Tuple<Type, Value>> { ["name"] = new Tuple<Type, Value>(typeof(string), "world") };
+            var dict = new Dictionary<string, Tuple<Type, Value>> { ["name"] = new(typeof(string), "world") };
             var result = resolver.resolveFromName("test", dict, true);
             Assert.AreEqual("Hello world", result);
         }
@@ -113,7 +113,7 @@ namespace Tests
                 {"test", new Script("test", null, false, "Well {F(\"func\")}")}
             };
             var resolver = new ScriptResolver(scripts);
-            var dict = new Dictionary<string, Tuple<Type, Value>> { ["name"] = new Tuple<Type, Value>(typeof(string), "world") };
+            var dict = new Dictionary<string, Tuple<Type, Value>> { ["name"] = new(typeof(string), "world") };
             var result = resolver.resolveFromName("test", dict, true);
             Assert.AreEqual("Well Hello world", result);
         }
@@ -140,7 +140,7 @@ namespace Tests
                 {"func", new Script("func", null, false, "b")}
             };
             var resolver = new ScriptResolver(scripts);
-            var dict = new Dictionary<string, Tuple<Type, Value>> { ["c"] = new Tuple<Type, Value>(typeof(string), "c") };
+            var dict = new Dictionary<string, Tuple<Type, Value>> { ["c"] = new(typeof(string), "c") };
 
             var results = new List<string>();
             for (var i = 0; i < 1000; i++)

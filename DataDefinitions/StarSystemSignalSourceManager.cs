@@ -9,11 +9,11 @@ namespace EddiDataDefinitions
         /// <summary>
         /// Holds newly detected signal sources that are not yet associated with a star system.
         /// </summary>
-        public static readonly Dictionary<ulong, List<SignalSource>> newSignalSources = new Dictionary<ulong, List<SignalSource>>();
+        public static readonly Dictionary<ulong, List<SignalSource>> newSignalSources = new();
 
         private readonly Timer _cleanupTimer;
-        private readonly List<StarSystem> _starSystems = new List<StarSystem>();
-        private readonly object _lock = new object();
+        private readonly List<StarSystem> _starSystems = new();
+        private readonly object _lock = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StarSystemSignalSourceManager"/> class, which periodically cleans up expired signal sources within registered star systems.

@@ -29,7 +29,7 @@ namespace EddiSpeechResponder.CustomFunctions
                 }
                 else
                 {
-                    output = $"{output}{( values.Fields.Count() > 2 ? "," : "" )} {Properties.SpeechResponder.localizedOr} {valueString}";
+                    output = $"{output}{( values.Fields.Count > 2 ? "," : "" )} {Properties.SpeechResponder.localizedOr} {valueString}";
                 }
             }
             return output;

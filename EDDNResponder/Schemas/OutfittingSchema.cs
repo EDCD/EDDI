@@ -12,7 +12,7 @@ namespace EddiEddnResponder.Schemas
     [UsedImplicitly]
     public class OutfittingSchema : ISchema, ICapiSchema
     {
-        public List<string> edTypes => new List<string> { "Outfitting" };
+        public List<string> edTypes => [ "Outfitting" ];
 
         // Track this so that we do not send duplicate data from the journal and from CAPI.
         private long? lastSentMarketID;

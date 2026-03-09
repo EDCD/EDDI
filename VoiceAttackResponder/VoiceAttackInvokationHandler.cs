@@ -21,7 +21,7 @@ namespace EddiVoiceAttackResponder
 {
     internal static class VoiceAttackInvokationHandler
     {
-        private static readonly Random random = new Random();
+        private static readonly Random random = new();
 
         public static void HandleInvokedCommand(string context)
         {
@@ -688,7 +688,7 @@ namespace EddiVoiceAttackResponder
             Match matchResult = Regex.Match(script, @"\[[^\]]*\]|[^\[\]]+");
             while ( matchResult.Success )
             {
-                if ( matchResult.Value.StartsWith( "[" ) )
+                if ( matchResult.Value.StartsWith( '[' ) )
                 {
                     // Remove the brackets and pick one of the options
                     string result = matchResult.Value.Substring(1, matchResult.Value.Length - 2);
@@ -705,7 +705,7 @@ namespace EddiVoiceAttackResponder
             string res = sb.ToString();
 
             // Step 2 - resolve phrases separated by semicolons
-            if ( res.Contains( ";" ) )
+            if ( res.Contains( ';' ) )
             {
                 // Pick one of the options
                 string[] options = res.Split(';');

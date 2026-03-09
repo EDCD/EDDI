@@ -12,7 +12,7 @@ namespace EddiSpeechResponder
     /// </summary>
     public partial class CopyPersonalityWindow : Window, INotifyPropertyChanged, IDataErrorInfo
     {
-        private readonly HashSet<string> existingNames = new HashSet<string>();
+        private readonly HashSet<string> existingNames = new();
 
         private string personalityName;
         public string PersonalityName

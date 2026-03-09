@@ -29,12 +29,12 @@ namespace EddiMissionMonitor
 
         // Observable collection for us to handle changes
         public ObservableCollection<Mission> missions { get; private set; }
-        private readonly List<Mission> communityGoalHolder = new List<Mission>();
+        private readonly List<Mission> communityGoalHolder = new();
 
         private DateTime updateDat;
         public int? missionWarning;
 
-        private static readonly object missionsLock = new object();
+        private static readonly object missionsLock = new();
         [UsedImplicitly] public event EventHandler MissionUpdatedEvent;
 
         public string MonitorName()
@@ -968,10 +968,10 @@ namespace EddiMissionMonitor
             {
                 return new Dictionary<string, Tuple<Type, object>>
                 {
-                    ["goalsCount"] = new Tuple<Type, object>(typeof(int), missions.Count(m => m.communal)),
-                    ["missions"] = new Tuple<Type, object>(typeof(List<Mission>), missions.ToList()),
-                    ["missionsCount"] = new Tuple<Type, object>(typeof(int), missions.Count(m => !m.shared && !m.communal)),
-                    ["missionWarning"] = new Tuple<Type, object>(typeof(int), missionWarning)
+                    ["goalsCount"] = new(typeof(int), missions.Count(m => m.communal)),
+                    ["missions"] = new(typeof(List<Mission>), missions.ToList()),
+                    ["missionsCount"] = new(typeof(int), missions.Count(m => !m.shared && !m.communal)),
+                    ["missionWarning"] = new(typeof(int), missionWarning)
                 };
             }
         }

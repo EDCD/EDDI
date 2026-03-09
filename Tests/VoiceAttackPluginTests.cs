@@ -18,17 +18,17 @@ namespace Tests
 {
     public class MockVAProxy
     {
-        [ UsedImplicitly ] public List<KeyValuePair<string, string>> vaLog = new List<KeyValuePair<string, string>>();
+        [ UsedImplicitly ] public List<KeyValuePair<string, string>> vaLog = new();
 
-        private readonly Dictionary<string, string> vaStrings = new Dictionary<string, string>();
-        private readonly Dictionary<string, decimal?> vaDecimals = new Dictionary<string, decimal?>();
-        private readonly Dictionary<string, int?> vaIntegers = new Dictionary<string, int?>();
-        private readonly Dictionary<string, short?> vaShorts = new Dictionary<string, short?>();
-        private readonly Dictionary<string, bool?> vaBooleans = new Dictionary<string, bool?>();
-        private readonly Dictionary<string, DateTime?> vaDates = new Dictionary<string, DateTime?>();
+        private readonly Dictionary<string, string> vaStrings = new();
+        private readonly Dictionary<string, decimal?> vaDecimals = new();
+        private readonly Dictionary<string, int?> vaIntegers = new();
+        private readonly Dictionary<string, short?> vaShorts = new();
+        private readonly Dictionary<string, bool?> vaBooleans = new();
+        private readonly Dictionary<string, DateTime?> vaDates = new();
 
         [ UsedImplicitly ] 
-        public System.Version VAVersion => new System.Version( 1, 16, 0 );
+        public System.Version VAVersion => new( 1, 16, 0 );
 
         [ UsedImplicitly ]
         public void WriteToLog ( string msg, string color = null )

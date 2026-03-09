@@ -511,12 +511,12 @@ namespace Tests
             var info = DeserializeJsonResource<MarketInfo>(Resources.market);
             var expectedMarketInfoItems = new List<MarketInfoItem>()
             { 
-                new MarketInfoItem(128668550, "$painite_name;", "$MARKET_category_minerals;", 0, 500096, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 200),
-                new MarketInfoItem(128673846, "$bromellite_name;", "$MARKET_category_minerals;", 0, 10009, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 100 ),
-                new MarketInfoItem(128673848, "$lowtemperaturediamond_name;", "$MARKET_category_minerals;", 0, 500553, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 150 ),
-                new MarketInfoItem(128924330, "$grandidierite_name;", "$MARKET_category_minerals;", 0, 424204, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 100),
-                new MarketInfoItem(128924331, "$alexandrite_name;", "$MARKET_category_minerals;", 0, 348192, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 97),
-                new MarketInfoItem(128924332, "$opal_name;", "$MARKET_category_minerals;", 0, 1014218, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 300)
+                new(128668550, "$painite_name;", "$MARKET_category_minerals;", 0, 500096, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 200),
+                new(128673846, "$bromellite_name;", "$MARKET_category_minerals;", 0, 10009, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 100 ),
+                new(128673848, "$lowtemperaturediamond_name;", "$MARKET_category_minerals;", 0, 500553, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 150 ),
+                new(128924330, "$grandidierite_name;", "$MARKET_category_minerals;", 0, 424204, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 100),
+                new(128924331, "$alexandrite_name;", "$MARKET_category_minerals;", 0, 348192, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 97),
+                new(128924332, "$opal_name;", "$MARKET_category_minerals;", 0, 1014218, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 300)
             };
 
             Assert.AreEqual(3702012928, info.MarketID);
@@ -570,18 +570,18 @@ namespace Tests
                 Allegiance = Superpower.Alliance,
                 Government = Government.Democracy,
                 myreputation = 100,
-                presences = new List<FactionPresence> 
-                { 
-                    new FactionPresence 
-                    { 
-                        systemName = "HIP 19072", 
+                presences =
+                [
+                    new FactionPresence
+                    {
+                        systemName = "HIP 19072",
                         systemAddress = 525873416523U,
-                        FactionState = FactionState.Boom, 
-                        ActiveStates = new List<FactionState>( new [] { FactionState.Boom } ),
+                        FactionState = FactionState.Boom,
+                        ActiveStates = [ ..new[] { FactionState.Boom } ],
                         Happiness = Happiness.HappinessBand2,
                         influence = 70.600M
-                    } 
-                },
+                    }
+                ],
             };
 
             var events = JournalMonitor.ParseJournalEntry(line);

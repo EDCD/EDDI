@@ -10,8 +10,8 @@ namespace EddiVoiceAttackResponder
 {
     internal class VoiceAttackEventHandler
     {
-        private readonly ConcurrentDictionary<string, TaskQueue<Event>> taskQueues = new ConcurrentDictionary<string, TaskQueue<Event>>();
-        private readonly CancellationTokenSource consumerCancellationTS = new CancellationTokenSource(); // This must be static so that it is visible to child threads and tasks
+        private readonly ConcurrentDictionary<string, TaskQueue<Event>> taskQueues = new();
+        private readonly CancellationTokenSource consumerCancellationTS = new(); // This must be static so that it is visible to child threads and tasks
 
         public VoiceAttackEventHandler()
         {
@@ -19,7 +19,7 @@ namespace EddiVoiceAttackResponder
         }
 
         // We'll maintain a referenceable list of variables that we've set from events
-        private readonly ConcurrentDictionary<string, VoiceAttackVariable> currentVariables = new ConcurrentDictionary<string, VoiceAttackVariable>();
+        private readonly ConcurrentDictionary<string, VoiceAttackVariable> currentVariables = new();
 
         public void Handle ( Event @event )
         {

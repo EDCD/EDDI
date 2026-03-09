@@ -7,7 +7,7 @@ namespace EddiConfigService.Configurations
     [JsonObject(MemberSerialization.OptOut), RelativePath(@"\speechresponder.json")]
     public class SpeechResponderConfiguration : Config
     {
-        private Rect _editScriptWindowPosition = new Rect( 300, 200, 800, 600 );
+        private Rect _editScriptWindowPosition = new( 300, 200, 800, 600 );
         private bool _subtitlesOnly;
         private bool _subtitles;
         private string _personality = "EDDI";

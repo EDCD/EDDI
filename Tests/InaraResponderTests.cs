@@ -21,7 +21,7 @@ namespace Tests
         /// </summary>
         private class FakeInaraService : IInaraService
         {
-            public List<InaraAPIEvent> EnqueuedEvents { get; } = new List<InaraAPIEvent>();
+            public List<InaraAPIEvent> EnqueuedEvents { get; } = [ ];
 
             public void Start ( bool eddiIsBeta = false )
             {
@@ -121,7 +121,7 @@ namespace Tests
         {
             // Arrange
             EDDI.Instance.inTelepresence = true;
-            var @event = new DiedEvent(DateTime.UtcNow, new List<Killer>());
+            var @event = new DiedEvent(DateTime.UtcNow, [ ] );
 
             // Act
             var task = responder.HandleAsync(@event);
@@ -138,7 +138,7 @@ namespace Tests
         {
             // Arrange
             EDDI.Instance.gameIsBeta = true;
-            var @event = new DiedEvent(DateTime.UtcNow, new List<Killer>());
+            var @event = new DiedEvent(DateTime.UtcNow, [ ] );
 
             // Act
             var task = responder.HandleAsync(@event);
@@ -156,7 +156,7 @@ namespace Tests
             // Arrange
             var currentVersion = EDDI.Instance.GameVersion;
             EDDI.Instance.GameVersion = null;
-            var @event = new DiedEvent(DateTime.UtcNow, new List<Killer>());
+            var @event = new DiedEvent(DateTime.UtcNow, [ ] );
 
             // Act
             var task = responder.HandleAsync(@event);
@@ -176,7 +176,7 @@ namespace Tests
             EDDI.Instance.GameVersion = new Version(3, 9);
             EDDI.Instance.inTelepresence = false;
             EDDI.Instance.gameIsBeta = false;
-            var @event = new DiedEvent(DateTime.UtcNow, new List<Killer>());
+            var @event = new DiedEvent(DateTime.UtcNow, [ ] );
 
             // Act
             var task = responder.HandleAsync(@event);
@@ -196,7 +196,7 @@ namespace Tests
             EDDI.Instance.inTelepresence = false;
             EDDI.Instance.gameIsBeta = false;
             EDDI.Instance.GameVersion = new Version(4, 0);
-            var @event = new DiedEvent(oldTimestamp, new List<Killer>());
+            var @event = new DiedEvent(oldTimestamp, [ ] );
 
             // Act
             var task = responder.HandleAsync(@event);
@@ -275,7 +275,7 @@ namespace Tests
                 engineerlevel = 3,
                 engineerquality = 80,
                 engineerExperimentalEffectEDName = "ExperimentalEffect",
-                modifiers = new List<EngineeringModifier> { modifier }
+                modifiers = [ modifier ]
             };
 
             // Act
@@ -302,7 +302,7 @@ namespace Tests
             // Arrange
             var factions = new List<Faction>
             {
-                new Faction { name = "NeutralFaction", myreputation = 0 }
+                new() { name = "NeutralFaction", myreputation = 0 }
             };
 
             // Act
@@ -310,7 +310,7 @@ namespace Tests
                 "minorFactionReputations",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
 
-            var result = (List<Dictionary<string, object>>)method?.Invoke(null, new object[] { factions });
+            var result = (List<Dictionary<string, object>>)method?.Invoke(null, [ factions ] );
 
             // Assert
             Assert.AreEqual(0, result?.Count);
@@ -322,7 +322,7 @@ namespace Tests
             // Arrange
             var factions = new List<Faction>
             {
-                new Faction { name = "AlliedFaction", myreputation = 50 }
+                new() { name = "AlliedFaction", myreputation = 50 }
             };
 
             // Act
@@ -330,7 +330,7 @@ namespace Tests
                 "minorFactionReputations",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
 
-            var result = (List<Dictionary<string, object>>)method?.Invoke(null, new object[] { factions });
+            var result = (List<Dictionary<string, object>>)method?.Invoke(null, [ factions ] );
 
             // Assert
             Assert.AreEqual(1, result?.Count);
@@ -344,7 +344,7 @@ namespace Tests
             // Arrange
             var factions = new List<Faction>
             {
-                new Faction { name = "HostileFaction", myreputation = -100 }
+                new() { name = "HostileFaction", myreputation = -100 }
             };
 
             // Act
@@ -352,7 +352,7 @@ namespace Tests
                 "minorFactionReputations",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
 
-            var result = (List<Dictionary<string, object>>)method?.Invoke(null, new object[] { factions });
+            var result = (List<Dictionary<string, object>>)method?.Invoke(null, [ factions ] );
 
             // Assert
             Assert.AreEqual(1, result?.Count);
@@ -370,7 +370,7 @@ namespace Tests
             // Arrange
             var killers = new List<Killer>
             {
-                new Killer ("Killer1", "Adder", CombatRating.Competent)
+                new("Killer1", "Adder", CombatRating.Competent)
             };
             var @event = new DiedEvent(DateTime.UtcNow, killers);
             EDDI.Instance.inTelepresence = false;
@@ -391,8 +391,8 @@ namespace Tests
             // Arrange
             var inventory = new List<CargoInfoItem>
             {
-                new CargoInfoItem { name = "Commodity1", count = 10 },
-                new CargoInfoItem { name = "Commodity2", count = 20 }
+                new() { name = "Commodity1", count = 10 },
+                new() { name = "Commodity2", count = 20 }
             };
             var @event = new CargoEvent(DateTime.UtcNow, true, "Ship", inventory, 30 );
             EDDI.Instance.inTelepresence = false;

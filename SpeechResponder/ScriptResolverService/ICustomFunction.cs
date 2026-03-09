@@ -18,8 +18,8 @@ namespace EddiSpeechResponder.ScriptResolverService
     {
         private IContext ParentContext { get; }
 
-        private static Dictionary<Value, Value> RuntimeGlobals { get; set; } = new Dictionary<Value, Value>();
-        private static readonly object globalsLock = new object();
+        private static Dictionary<Value, Value> RuntimeGlobals { get; set; } = new();
+        private static readonly object globalsLock = new();
 
         protected Dictionary<string, Script> Scripts { get; }
 

@@ -27,14 +27,14 @@ namespace EddiMaterialMonitor
     public class MaterialMonitor : IEddiMonitor
     {
         // Observable collection for us to handle
-        public ObservableCollection<MaterialAmount> inventory { get; private set; } = new ObservableCollection<MaterialAmount>();
+        public ObservableCollection<MaterialAmount> inventory { get; private set; } = new();
 
-        private static readonly object inventoryLock = new object();
+        private static readonly object inventoryLock = new();
         public event EventHandler InventoryUpdatedEvent;
 
         // The material monitor both consumes and emits events, but only one for a given event.  We hold any pending events here so
         // they are fired at the correct time
-        private readonly ConcurrentQueue<Event> generatedEvents = new ConcurrentQueue<Event>();
+        private readonly ConcurrentQueue<Event> generatedEvents = new();
 
         public string MonitorName()
         {
@@ -448,7 +448,7 @@ namespace EddiMaterialMonitor
             {
                 return new Dictionary<string, Tuple<Type, object>>
                 {
-                    [ "materials" ] = new Tuple<Type, object>(typeof(List<MaterialAmount>), inventory.ToList() )
+                    [ "materials" ] = new(typeof(List<MaterialAmount>), inventory.ToList() )
                 };
             }
         }

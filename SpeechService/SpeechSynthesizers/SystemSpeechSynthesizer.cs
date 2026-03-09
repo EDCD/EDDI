@@ -13,9 +13,9 @@ namespace EddiSpeechService.SpeechSynthesizers
 {
     public sealed class SystemSpeechSynthesizer : IDisposable
     {
-        private readonly SpeechSynthesizer synth = new SpeechSynthesizer();
+        private readonly SpeechSynthesizer synth = new();
 
-        private static readonly object synthLock = new object();
+        private static readonly object synthLock = new();
 
         internal string currentVoice 
         {

@@ -34,8 +34,8 @@ namespace Utilities
 
                 do
                 {
-                    if (!string.IsNullOrEmpty(entry.szExeFile) &&
-                        entry.szExeFile.IndexOf(processName, StringComparison.OrdinalIgnoreCase) >= 0)
+                    if ( !string.IsNullOrEmpty( entry.szExeFile ) &&
+                         entry.szExeFile.Contains( processName, StringComparison.OrdinalIgnoreCase ) )
                     {
                         return true;
                     }
@@ -55,7 +55,7 @@ namespace Utilities
             return IsProcessRunning(eliteDangerousProcessName);
         }
 
-        private static readonly IntPtr InvalidHandleValue = new IntPtr(-1);
+        private static readonly IntPtr InvalidHandleValue = new(-1);
 
         [Flags]
         private enum SnapshotFlags : uint

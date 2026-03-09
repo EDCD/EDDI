@@ -18,7 +18,7 @@ namespace EddiInaraResponder
     {
         // Set up a timer... wait 3 seconds before reconfiguring the InaraService for any change in the API key
         private const int delayMilliseconds = 3000;
-        private readonly Timer inputTimer = new Timer(delayMilliseconds);
+        private readonly Timer inputTimer = new(delayMilliseconds);
 
         public string apiKey
         {
@@ -96,7 +96,7 @@ namespace EddiInaraResponder
 
         #region Implement INotifyDataErrorInfo for validation
 
-        private readonly Dictionary<string, List<string>> Errors = new Dictionary<string, List<string>>();
+        private readonly Dictionary<string, List<string>> Errors = new();
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
         public bool HasErrors => Errors.Count > 0;
         

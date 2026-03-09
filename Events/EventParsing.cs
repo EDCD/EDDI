@@ -492,7 +492,7 @@ namespace EddiEvents
                 var signalSource = JsonParsing.getString(data, "USSType");
                 source = EddiDataDefinitions.SignalSource.FromEDName( signalSource ) ?? new SignalSource();
                 var localizedName = JsonParsing.getString(data, "USSType_Localised");
-                if ( !string.IsNullOrEmpty( localizedName ) && !localizedName.Contains( "$" ) )
+                if ( !string.IsNullOrEmpty( localizedName ) && !localizedName.Contains( '$' ) )
                 {
                     source.fallbackLocalizedName = localizedName;
                 }
@@ -509,7 +509,7 @@ namespace EddiEvents
                 {
                     source = EddiDataDefinitions.SignalSource.FromEDName( signalSource ) ?? new SignalSource();
                     var localizedName = JsonParsing.getString(data, "SignalName_Localised");
-                    if ( !string.IsNullOrEmpty( localizedName ) && !localizedName.Contains( "$" ) )
+                    if ( !string.IsNullOrEmpty( localizedName ) && !localizedName.Contains( '$' ) )
                     {
                         source.fallbackLocalizedName = localizedName;
                     }

@@ -10,7 +10,8 @@ namespace EddiEvents
     {
         public const string NAME = "Community goal";
         public const string DESCRIPTION = "Triggered when the status of a community goal changes";
-        public static Event SAMPLE = new CommunityGoalEvent(DateTime.UtcNow, new List<CGUpdate> { new CGUpdate("Tier", "Increase", 4, 5), new CGUpdate("Percentile", "Increase", 25, 10) }, new CommunityGoal()
+        public static Event SAMPLE = new CommunityGoalEvent(DateTime.UtcNow,
+            [ new CGUpdate( "Tier", "Increase", 4, 5 ), new CGUpdate( "Percentile", "Increase", 25, 10 ) ], new CommunityGoal()
         {
             cgid = 641,
             name = "Defence of the Galactic Summit",

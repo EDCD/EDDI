@@ -13,12 +13,12 @@ namespace EddiDataDefinitions
             missingEDNameHandler = ( edname ) => new StationState( edname );
         }
 
-        public static readonly StationState Abandoned = new StationState ( "Abandoned" );
-        public static readonly StationState Construction = new StationState ( "Construction" );
-        public static readonly StationState Damaged = new StationState ( "Damaged" );
-        public static readonly StationState NormalOperation = new StationState ( "NormalOperation" );
-        public static readonly StationState UnderAttack = new StationState ( "UnderAttack" );
-        public static readonly StationState UnderRepairs = new StationState ( "UnderRepairs" );
+        public static readonly StationState Abandoned = new( "Abandoned" );
+        public static readonly StationState Construction = new( "Construction" );
+        public static readonly StationState Damaged = new( "Damaged" );
+        public static readonly StationState NormalOperation = new( "NormalOperation" );
+        public static readonly StationState UnderAttack = new( "UnderAttack" );
+        public static readonly StationState UnderRepairs = new( "UnderRepairs" );
 
         // dummy used to ensure that the static constructor has run
         public StationState () : this("")

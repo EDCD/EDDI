@@ -25,21 +25,21 @@ namespace EddiShipMonitor
 {
     public class ShipMonitor : IEddiMonitor
     {
-        private static readonly List<string> HARDPOINT_SIZES = new List<string>() { "Huge", "Large", "Medium", "Small", "Tiny" };
+        private static readonly List<string> HARDPOINT_SIZES = [ "Huge", "Large", "Medium", "Small", "Tiny" ];
 
         // Observable collection for us to handle changes
-        public ObservableCollection<Ship> shipyard { get; set; } = new ObservableCollection<Ship>();
+        public ObservableCollection<Ship> shipyard { get; set; } = [ ];
 
         // List of stored modules from 'Stored modules' event
-        internal List<StoredModule> storedmodules { get; set; } = new List<StoredModule>();
+        internal List<StoredModule> storedmodules { get; set; } = [ ];
 
         // The ID of the current ship; can be null
         internal int? currentShipId;
 
         private const int profileRefreshDelaySeconds = 20;
-        private readonly CancellationTokenSource profileRefreshCancellationTokenSource = new CancellationTokenSource();
+        private readonly CancellationTokenSource profileRefreshCancellationTokenSource = new();
 
-        private static readonly object shipyardLock = new object();
+        private static readonly object shipyardLock = new();
         public event EventHandler ShipyardUpdatedEvent;
         internal DateTime updatedAt;
 
@@ -636,7 +636,7 @@ namespace EddiShipMonitor
                         await EDDI.Instance.DataProvider
                             .GetOrFetchQuickStarSystemsAsync(
                                 @event.shipyard.Select( sh => sh.starsystem ).Distinct().ToArray(), false )
-                            .ConfigureAwait( false ) ?? new List<StarSystem>();
+                            .ConfigureAwait( false ) ?? [ ];
 
                     foreach ( var ship in @event.shipyard )
                     {
@@ -723,7 +723,7 @@ namespace EddiShipMonitor
                         await EDDI.Instance.DataProvider
                             .GetOrFetchQuickStarSystemsAsync(
                                 @event.storedmodules.Select( m => m.system ).Distinct().ToArray(), true )
-                            .ConfigureAwait( false ) ?? new List<StarSystem>();
+                            .ConfigureAwait( false ) ?? [ ];
                     foreach ( var module in @event.storedmodules )
                     {
                         var moduleSystem = quickSystems.FirstOrDefault( system => system.systemname == module.system );
@@ -1416,9 +1416,9 @@ namespace EddiShipMonitor
             {
                 return new Dictionary<string, Tuple<Type, object>>
                 {
-                    ["ship"] = new Tuple<Type, object>(typeof(Ship), GetCurrentShip() ),
-                    ["storedmodules"] = new Tuple<Type, object>(typeof(List<StoredModule>), storedmodules.ToList() ),
-                    ["shipyard"] = new Tuple<Type, object>( typeof( List<Ship> ), shipyard.ToList() )
+                    ["ship"] = new(typeof(Ship), GetCurrentShip() ),
+                    ["storedmodules"] = new(typeof(List<StoredModule>), storedmodules.ToList() ),
+                    ["shipyard"] = new( typeof( List<Ship> ), shipyard.ToList() )
                 };
             }
         }

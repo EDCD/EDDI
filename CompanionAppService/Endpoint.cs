@@ -10,7 +10,7 @@ namespace EddiCompanionAppService
     {
         public delegate void EndpointEventHandler(object sender, CompanionApiEndpointEventArgs e);
 
-        protected async Task<JObject> GetEndpointAsync(string endpointURL)
+        protected static async Task<JObject> GetEndpointAsync(string endpointURL)
         {
             if ( CompanionAppService.unitTesting ) { return null; }
 
@@ -22,7 +22,7 @@ namespace EddiCompanionAppService
             var data = result.Item1;
             var timestamp = result.Item2;
 
-            if ( data == null || !data.StartsWith( "{" ) )
+            if ( data == null || !data.StartsWith( '{' ) )
             {
                 Logging.Debug( $"{endpointURL} endpoint returned no data" );
                 return null;

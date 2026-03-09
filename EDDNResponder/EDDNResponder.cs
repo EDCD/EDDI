@@ -23,9 +23,9 @@ namespace EddiEddnResponder
     {
         // Schema reference: https://github.com/EDCD/EDDN/tree/master/schemas
 
-        public readonly EDDNState eddnState = new EDDNState();
-        public readonly List<ISchema> schemas = new List<ISchema>();
-        public readonly List<ICapiSchema> capiSchemas = new List<ICapiSchema>();
+        public readonly EDDNState eddnState = new();
+        public readonly List<ISchema> schemas = new();
+        public readonly List<ICapiSchema> capiSchemas = new();
 
         public string ResponderName()
         {

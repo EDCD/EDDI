@@ -9,7 +9,7 @@ namespace EddiEvents
     {
         public const string NAME = "Ship arrived";
         public const string DESCRIPTION = "Triggered when you complete a ship transfer";
-        public static ShipArrivedEvent SAMPLE = new ShipArrivedEvent(DateTime.Parse("2016-06-10T14:32:03Z").ToUniversalTime(), ShipDefinitions.FromEDModel("CobraMkIII"), "Eranin", 85.639145M, 580, 30, "Azeban City", 128168184, 128001536);
+        public static ShipArrivedEvent SAMPLE = new(DateTime.Parse("2016-06-10T14:32:03Z").ToUniversalTime(), ShipDefinitions.FromEDModel("CobraMkIII"), "Eranin", 85.639145M, 580, 30, "Azeban City", 128168184, 128001536);
 
         [PublicAPI("The ID of the ship that was transferred")]
         public int? shipid => Ship.LocalId;

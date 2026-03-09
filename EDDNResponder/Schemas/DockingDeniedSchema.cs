@@ -10,7 +10,7 @@ namespace EddiEddnResponder.Schemas
     [UsedImplicitly]
     public class DockingDeniedSchema : ISchema
     {
-        public List<string> edTypes => new List<string> { "DockingDenied" };
+        public List<string> edTypes => [ "DockingDenied" ];
 
         public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
         {

@@ -10,23 +10,23 @@ namespace EddiEddnResponder.Toolkit
         // We will strip these personal keys (plus any localized properties) before sending data to EDDN
 
         // Personal keys disallowed in events are as follows:
-        private static readonly Dictionary<string, string[]> disallowedKeysDictionary = new Dictionary<string, string[]>
+        private static readonly Dictionary<string, string[]> disallowedKeysDictionary = new()
         {
-            { "ActiveFine", new []{ "Docked" }},
-            { "BoostUsed", new []{ "FSDJump" }},
-            { "CockpitBreach", new []{ "Docked" }},
-            { "HappiestSystem", new []{ "CarrierJump", "FSDJump", "Location" }},
-            { "HomeSystem", new []{ "CarrierJump", "FSDJump", "Location" }},
-            { "FuelLevel", new []{ "CarrierJump", "FSDJump" }},
-            { "FuelUsed", new []{ "CarrierJump", "FSDJump" }},
-            { "IsNewEntry", new []{ "CodexEntry" }},
-            { "JumpDist", new []{ "CarrierJump", "FSDJump" }},
-            { "Latitude", new []{ "Location" } },
-            { "Longitude", new []{ "Location" } },
-            { "MyReputation", new []{ "CarrierJump", "FSDJump", "Location" }},
-            { "NewTraitsDiscovered", new []{ "CodexEntry" }},
-            { "SquadronFaction", new []{ "CarrierJump", "FSDJump", "Location" }}, 
-            { "Wanted", new []{ "CarrierJump", "Docked", "FSDJump", "Location" }}
+            { "ActiveFine", [ "Docked" ] },
+            { "BoostUsed", [ "FSDJump" ] },
+            { "CockpitBreach", [ "Docked" ] },
+            { "HappiestSystem", [ "CarrierJump", "FSDJump", "Location" ] },
+            { "HomeSystem", [ "CarrierJump", "FSDJump", "Location" ] },
+            { "FuelLevel", [ "CarrierJump", "FSDJump" ] },
+            { "FuelUsed", [ "CarrierJump", "FSDJump" ] },
+            { "IsNewEntry", [ "CodexEntry" ] },
+            { "JumpDist", [ "CarrierJump", "FSDJump" ] },
+            { "Latitude", [ "Location" ] },
+            { "Longitude", [ "Location" ] },
+            { "MyReputation", [ "CarrierJump", "FSDJump", "Location" ] },
+            { "NewTraitsDiscovered", [ "CodexEntry" ] },
+            { "SquadronFaction", [ "CarrierJump", "FSDJump", "Location" ] }, 
+            { "Wanted", [ "CarrierJump", "Docked", "FSDJump", "Location" ] }
         };
 
         internal static IDictionary<string, object> Strip(IDictionary<string, object> data, string edType = null)

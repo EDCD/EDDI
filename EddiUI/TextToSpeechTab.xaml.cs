@@ -46,7 +46,7 @@ namespace EddiUI
             }
             catch (Exception e)
             {
-                Logging.Warn("" + Thread.CurrentThread.ManagedThreadId + ": Caught exception " + e);
+                Logging.Warn("" + Environment.CurrentManagedThreadId + ": Caught exception " + e);
             }
             ttsVolumeSlider.Value = speechServiceConfiguration.Volume;
             ttsRateSlider.Value = speechServiceConfiguration.Rate;

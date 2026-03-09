@@ -9,7 +9,7 @@ namespace EddiEddnResponder.Schemas
     [UsedImplicitly]
     public class ScanBaryCentreSchema : ISchema
     {
-        public List<string> edTypes => new List<string> { "ScanBaryCentre" };
+        public List<string> edTypes => [ "ScanBaryCentre" ];
 
         public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
         {

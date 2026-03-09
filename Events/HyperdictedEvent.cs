@@ -10,7 +10,7 @@ namespace EddiEvents
         public const string NAME = "Hyperdicted";
         public const string DESCRIPTION = "Triggered when your ship is hyperdicted by a Thargoid";
 
-        public static HyperdictedEvent SAMPLE = new HyperdictedEvent( 
+        public static HyperdictedEvent SAMPLE = new( 
             DateTime.UtcNow, 
             0.086031M, 
             31.554825M, 

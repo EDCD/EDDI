@@ -62,7 +62,7 @@ namespace Utilities
 
         private static IList<object> DeserializeData(JArray data)
         {
-            var list = data.ToObject<List<object>>() ?? new List<object>();
+            var list = data.ToObject<List<object>>() ?? [ ];
 
             for (int i = 0; i < list.Count; i++)
             {

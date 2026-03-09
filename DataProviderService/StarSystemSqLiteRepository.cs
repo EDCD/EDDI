@@ -150,7 +150,7 @@ namespace EddiDataProviderService
         {
             if ( systemAddress <= 0 ) { return null; }
 
-            return ( await GetSqlStarSystemsAsync( new[] { systemAddress }, cancellationToken ).ConfigureAwait(false) )?.FirstOrDefault();
+            return ( await GetSqlStarSystemsAsync( [ systemAddress ], cancellationToken ).ConfigureAwait(false) )?.FirstOrDefault();
         }
 
         public async Task<List<DatabaseStarSystem>> GetSqlStarSystemsAsync ( ulong[] systemAddresses, CancellationToken cancellationToken )

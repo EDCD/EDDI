@@ -9,8 +9,8 @@ namespace EddiSpeechService
 {
     public class AudioManager
     {
-        private static readonly object activeAudioLock = new object();
-        private readonly ConcurrentDictionary<IWavePlayer, CancellationTokenSource> activeAudioTS = new ConcurrentDictionary<IWavePlayer, CancellationTokenSource>();
+        private static readonly object activeAudioLock = new();
+        private readonly ConcurrentDictionary<IWavePlayer, CancellationTokenSource> activeAudioTS = new();
         private readonly SoundManager SoundManager;
         
         public bool eddiAudioPlaying

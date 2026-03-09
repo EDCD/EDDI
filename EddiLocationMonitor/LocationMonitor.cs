@@ -15,7 +15,7 @@ namespace EddiLocationMonitor
     [UsedImplicitly]
     public class LocationMonitor : IEddiMonitor
     {
-        private readonly OrganicSampling exobiology = new OrganicSampling();
+        private readonly OrganicSampling exobiology = new();
         private ulong? systemAddress;
         private int? bodyId;
         private decimal? latitude;

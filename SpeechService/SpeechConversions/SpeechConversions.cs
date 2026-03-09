@@ -80,16 +80,16 @@ namespace EddiSpeechService.SpeechConversions
         }
 
         // Various handy regexes so we don't keep recreating them
-        private static readonly Regex ALPHA_DOT = new Regex(@"[A-Z]\.");
-        private static readonly Regex ALPHA_THEN_NUMERIC = new Regex(@"[A-Za-z]+[0-9]+");
-        private static readonly Regex UPPERCASE = new Regex(@"([A-Z]{2,})|(?:([A-Z])(?:\s|$))");
-        private static readonly Regex TEXT = new Regex(@"([A-Za-z]{1,3}(?:\s|$))");
-        private static readonly Regex DIGIT = new Regex(@"\d+(?:\s|$)");
-        private static readonly Regex THREE_OR_MORE_DIGITS = new Regex(@"\d{3,}");
-        private static readonly Regex MOON = new Regex(@"^[a-z]$");
-        private static readonly Regex SUBSTARS = new Regex(@"^\bA[BCDE]?[CDE]?[DE]?[E]?\b|\bB[CDE]?[DE]?[E]?\b|\bC[DE]?[E]?\b|\bD[E]?\b$");
-        private static readonly Regex SHORTBODY = new Regex(@"(?=\S)(?<STARS>(?<=^|\s)[A-E]+)? ?(?<PLANET>(?<=^|\s)\d{1,2})? ?(?<MOON>(?<=^|\s)[a-z])? ?(?<SUBMOON>(?<=^|\s)[a-z])? ?(?>(?<=^|\s)(?<RINGORBELTGROUP>[A-Z]) (?<RINGORBELTTYPE>Belt|Ring))? ?(?>(?<=^|\s)(?<CLUSTER>Cluster) (?<CLUSTERNUMBER>\d*))?$");
-        private static readonly Regex PROC_GEN_SYSTEM_BODY = new Regex(@"^(?<SYSTEM>(?<SECTOR>[\w\s'.()-]+) (?<COORDINATES>(?<l1>[A-Za-z])(?<l2>[A-Za-z])-(?<l3>[A-Za-z]) (?<mcode>[A-Za-z])(?:(?<n1>\d+)-)?(?<n2>\d+))) ?(?<BODY>.*)$");
+        private static readonly Regex ALPHA_DOT = new(@"[A-Z]\.");
+        private static readonly Regex ALPHA_THEN_NUMERIC = new(@"[A-Za-z]+[0-9]+");
+        private static readonly Regex UPPERCASE = new(@"([A-Z]{2,})|(?:([A-Z])(?:\s|$))");
+        private static readonly Regex TEXT = new(@"([A-Za-z]{1,3}(?:\s|$))");
+        private static readonly Regex DIGIT = new(@"\d+(?:\s|$)");
+        private static readonly Regex THREE_OR_MORE_DIGITS = new(@"\d{3,}");
+        private static readonly Regex MOON = new(@"^[a-z]$");
+        private static readonly Regex SUBSTARS = new(@"^\bA[BCDE]?[CDE]?[DE]?[E]?\b|\bB[CDE]?[DE]?[E]?\b|\bC[DE]?[E]?\b|\bD[E]?\b$");
+        private static readonly Regex SHORTBODY = new(@"(?=\S)(?<STARS>(?<=^|\s)[A-E]+)? ?(?<PLANET>(?<=^|\s)\d{1,2})? ?(?<MOON>(?<=^|\s)[a-z])? ?(?<SUBMOON>(?<=^|\s)[a-z])? ?(?>(?<=^|\s)(?<RINGORBELTGROUP>[A-Z]) (?<RINGORBELTTYPE>Belt|Ring))? ?(?>(?<=^|\s)(?<CLUSTER>Cluster) (?<CLUSTERNUMBER>\d*))?$");
+        private static readonly Regex PROC_GEN_SYSTEM_BODY = new(@"^(?<SYSTEM>(?<SECTOR>[\w\s'.()-]+) (?<COORDINATES>(?<l1>[A-Za-z])(?<l2>[A-Za-z])-(?<l3>[A-Za-z]) (?<mcode>[A-Za-z])(?:(?<n1>\d+)-)?(?<n2>\d+))) ?(?<BODY>.*)$");
 
         // Regexes we do not currently use but might at some point
         /*
@@ -107,7 +107,7 @@ namespace EddiSpeechService.SpeechConversions
             {
                 if (i > 0)
                 {
-                    sb.Append(" ");
+                    sb.Append(' ');
                 }
                 sb.Append("<phoneme alphabet=\"ipa\" ph=\"");
                 sb.Append(pronunciation[i++]);

@@ -34,9 +34,9 @@ namespace EddiCrimeMonitor
         private Dictionary<string, string> homeSystems;
         private DateTime updateDat;
         private string crimeAuthorityFaction;
-        public readonly List<Target> shipTargets = new List<Target>();
+        public readonly List<Target> shipTargets = new();
 
-        internal static readonly object recordLock = new object();
+        internal static readonly object recordLock = new();
         public event EventHandler RecordUpdatedEvent;
 
         public string MonitorName()
@@ -811,11 +811,11 @@ namespace EddiCrimeMonitor
             {
                 return new Dictionary<string, Tuple<Type, object>>
                 {
-                    [ "criminalrecord" ] = new Tuple<Type, object>( typeof(List<FactionRecord>), criminalrecord.ToList() ),
-                    [ "claims" ] = new Tuple<Type, object>( typeof(long), claims ),
-                    [ "fines" ] = new Tuple<Type, object>( typeof(long), fines ),
-                    [ "bounties" ] = new Tuple<Type, object>( typeof(long), bounties ),
-                    [ "shiptargets" ] = new Tuple<Type, object>( typeof(List<Target>), shipTargets.ToList() )
+                    [ "criminalrecord" ] = new( typeof(List<FactionRecord>), criminalrecord.ToList() ),
+                    [ "claims" ] = new( typeof(long), claims ),
+                    [ "fines" ] = new( typeof(long), fines ),
+                    [ "bounties" ] = new( typeof(long), bounties ),
+                    [ "shiptargets" ] = new( typeof(List<Target>), shipTargets.ToList() )
                 };
             }
         }

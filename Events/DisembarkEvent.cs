@@ -10,9 +10,9 @@ namespace EddiEvents
         public const string NAME = "Disembark";
         public const string DESCRIPTION = "Triggered when you transition from a ship or SRV to on foot";
         public static readonly string[] SAMPLES =
-        {
+        [
             "{ \"timestamp\":\"2021-05-03T21:47:38Z\", \"event\":\"Disembark\", \"SRV\":false, \"Taxi\":false, \"Multicrew\":false, \"ID\":6, \"StarSystem\":\"Firenses\", \"SystemAddress\":2868635379121, \"Body\":\"Roberts Gateway\", \"BodyID\":44, \"OnStation\":true, \"OnPlanet\":false, \"StationName\":\"Roberts Gateway\", \"StationType\":\"Coriolis\", \"MarketID\":3221636096 }"
-        };
+        ];
             
         [PublicAPI("The name of the star system where the commander is disembarking")]
         public string systemname { get; }

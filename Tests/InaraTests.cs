@@ -24,9 +24,9 @@ namespace Tests
         {
             var inaraAPIEvents = new List<InaraAPIEvent>
             {
-                new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object> { { "searchName", "No such name" } }),
-                new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object> { { "searchName", "Artie" } }),
-                new InaraAPIEvent(DateTime.UtcNow, "addCommanderCombatDeath", new Dictionary<string, object> { { "starsystemName", "LP 932-12" }, { "opponentName", "Vincent Van Stoi" } })
+                new(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object> { { "searchName", "No such name" } }),
+                new(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object> { { "searchName", "Artie" } }),
+                new(DateTime.UtcNow, "addCommanderCombatDeath", new Dictionary<string, object> { { "starsystemName", "LP 932-12" }, { "opponentName", "Vincent Van Stoi" } })
             };
             
             var results = ((InaraService)inaraService).IndexAndFilterAPIEvents( inaraAPIEvents, new InaraConfiguration() );
@@ -65,20 +65,20 @@ namespace Tests
             {
                 var expectedCmdrs = new List<InaraCmdr>
                 {
-                    new InaraCmdr
+                    new()
                     {
                         id = 1,
                         username = "Artie",
                         commandername = "Artie",
-                        commanderranks = new List<InaraCmdrRanks>
-                        {
+                        commanderranks =
+                        [
                             new InaraCmdrRanks { rank = "combat", rankvalue = 7, progress = 0.31 },
                             new InaraCmdrRanks { rank = "trade", rankvalue = 8, progress = 1.0 },
                             new InaraCmdrRanks { rank = "exploration", rankvalue = 6, progress = 0.65 },
                             new InaraCmdrRanks { rank = "cqc", rankvalue = 3, progress = 0.11 },
                             new InaraCmdrRanks { rank = "empire", rankvalue = 12, progress = 0.34 },
                             new InaraCmdrRanks { rank = "federation", rankvalue = 12, progress = 0.94 }
-                        },
+                        ],
                         preferredallegiance = "Independent",
                         preferredpower = null,
                         squadron = new InaraCmdrSquadron

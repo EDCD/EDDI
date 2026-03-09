@@ -120,7 +120,7 @@ namespace EddiConfigService
         private ImmutableDictionary<string, Config> _currentConfigs;
         private readonly Timer _saveTimer;
         private readonly HashSet<string> _dirtyConfigs;
-        private readonly object _dirtyLock = new object();
+        private readonly object _dirtyLock = new();
         private volatile bool _isDisposed;
         private const int SAVE_DELAY_MS = 1000; // Debounce saves to 1 second
 
@@ -763,7 +763,7 @@ namespace EddiConfigService
         #region Singleton
 
         private static readonly Lazy<ConfigService> _instance =
-            new Lazy<ConfigService>(() =>
+            new(() =>
             {
                 Logging.Debug("Creating ConfigService instance");
                 return new ConfigService();

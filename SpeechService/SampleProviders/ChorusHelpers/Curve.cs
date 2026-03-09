@@ -6,43 +6,34 @@ namespace EddiSpeechService.SampleProviders.ChorusHelpers
     {
         // Ensemble effect parameter curves
         private static readonly SmoothMonotonicSpline CenterDelaySpline =
-            new SmoothMonotonicSpline(Constants.CenterDelaySplineX, Constants.CenterDelaySplineY);
+            new(Constants.CenterDelaySplineX, Constants.CenterDelaySplineY);
         private static readonly SmoothMonotonicSpline ChorusDepthSpline =
-            new SmoothMonotonicSpline(Constants.ChorusDepthSplineX, Constants.ChorusDepthSplineY);
-        private static readonly SmoothMonotonicSpline DryGainSpline =
-            new SmoothMonotonicSpline(Constants.DryGainFx, Constants.DryGainY);
+            new(Constants.ChorusDepthSplineX, Constants.ChorusDepthSplineY);
+        private static readonly SmoothMonotonicSpline DryGainSpline = new(Constants.DryGainFx, Constants.DryGainY);
         private static readonly SmoothMonotonicSpline DynamicDetuneSpline =
-            new SmoothMonotonicSpline( Constants.DynamicDetuneMixFx, Constants.DynamicDetuneMixY );
+            new( Constants.DynamicDetuneMixFx, Constants.DynamicDetuneMixY );
         private static readonly SmoothMonotonicSpline GhostDepthSpline = 
-            new SmoothMonotonicSpline(Constants.GhostDepthSplineX, Constants.GhostDepthSplineY);
+            new(Constants.GhostDepthSplineX, Constants.GhostDepthSplineY);
         private static readonly SmoothMonotonicSpline GhostWeightSpline = 
-            new SmoothMonotonicSpline(Constants.GhostWeightSplineX, Constants.GhostWeightSplineY);
+            new(Constants.GhostWeightSplineX, Constants.GhostWeightSplineY);
         private static readonly SmoothMonotonicSpline LfoRateSpline =
-            new SmoothMonotonicSpline(Constants.LfoRateScaleX, Constants.LfoRateScaleY);
+            new(Constants.LfoRateScaleX, Constants.LfoRateScaleY);
         private static readonly SmoothMonotonicSpline ModDetuneJitterSpline =
-            new SmoothMonotonicSpline(Constants.DetuneJitterFx, Constants.DetuneJitterY);
+            new(Constants.DetuneJitterFx, Constants.DetuneJitterY);
         private static readonly SmoothMonotonicSpline ModPhaseJitterSpline =
-            new SmoothMonotonicSpline(Constants.PhaseJitterFx, Constants.PhaseJitterY);
+            new(Constants.PhaseJitterFx, Constants.PhaseJitterY);
         private static readonly SmoothMonotonicSpline ResonanceAllPassGainSpline =
-            new SmoothMonotonicSpline(Constants.ResonanceAllPassFx, Constants.ResonanceAllPassGainY);
-        public static readonly SmoothMonotonicSpline StepSpline = 
-            new SmoothMonotonicSpline( Constants.StepX, Constants.StepY );
-        private static readonly SmoothMonotonicSpline WetGainSpline =
-            new SmoothMonotonicSpline(Constants.WetGainFx, Constants.WetGainY);
+            new(Constants.ResonanceAllPassFx, Constants.ResonanceAllPassGainY);
+        public static readonly SmoothMonotonicSpline StepSpline = new(Constants.StepX, Constants.StepY);
+        private static readonly SmoothMonotonicSpline WetGainSpline = new(Constants.WetGainFx, Constants.WetGainY);
         
         // Voice activation curves
-        public static readonly SmoothMonotonicSpline Voice0ActSpline = 
-            new SmoothMonotonicSpline(Constants.VoiceActX, Constants.Voice0ActY);
-        public static readonly SmoothMonotonicSpline Voice1ActSpline = 
-            new SmoothMonotonicSpline(Constants.VoiceActX, Constants.Voice1ActY);
-        public static readonly SmoothMonotonicSpline Voice2ActSpline = 
-            new SmoothMonotonicSpline(Constants.VoiceActX, Constants.Voice2ActY);
-        public static readonly SmoothMonotonicSpline Voice3ActSpline = 
-            new SmoothMonotonicSpline(Constants.VoiceActX, Constants.Voice3ActY);
-        public static readonly SmoothMonotonicSpline Voice4ActSpline = 
-            new SmoothMonotonicSpline(Constants.VoiceActX, Constants.Voice4ActY);
-        public static readonly SmoothMonotonicSpline Voice5ActSpline = 
-            new SmoothMonotonicSpline(Constants.VoiceActX, Constants.Voice5ActY);
+        public static readonly SmoothMonotonicSpline Voice0ActSpline = new(Constants.VoiceActX, Constants.Voice0ActY);
+        public static readonly SmoothMonotonicSpline Voice1ActSpline = new(Constants.VoiceActX, Constants.Voice1ActY);
+        public static readonly SmoothMonotonicSpline Voice2ActSpline = new(Constants.VoiceActX, Constants.Voice2ActY);
+        public static readonly SmoothMonotonicSpline Voice3ActSpline = new(Constants.VoiceActX, Constants.Voice3ActY);
+        public static readonly SmoothMonotonicSpline Voice4ActSpline = new(Constants.VoiceActX, Constants.Voice4ActY);
+        public static readonly SmoothMonotonicSpline Voice5ActSpline = new(Constants.VoiceActX, Constants.Voice5ActY);
 
         internal struct ModStruct
         {

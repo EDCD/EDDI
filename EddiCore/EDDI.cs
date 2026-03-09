@@ -78,12 +78,12 @@ namespace EddiCore
         }
         private string _gameVersion;
 
-        private readonly StarSystemSignalSourceManager signalSourceManager = new StarSystemSignalSourceManager();
+        private readonly StarSystemSignalSourceManager signalSourceManager = new();
 
         public System.Version GameVersion { get; internal set; }
 
         // EDDI uses APIs which only return data for the "live" galaxy, game version 4.0 or later.
-        private readonly System.Version minGameVersion = new System.Version(4, 0);
+        private readonly System.Version minGameVersion = new(4, 0);
 
         private void SetGameVersion(string v)
         {
@@ -158,19 +158,19 @@ namespace EddiCore
             }
         }
         private static EDDI instance;
-        private static readonly object instanceLock = new object();
+        private static readonly object instanceLock = new();
 
-        public List<IEddiMonitor> monitors = new List<IEddiMonitor>();
-        internal ConcurrentBag<IEddiMonitor> activeMonitors = new ConcurrentBag<IEddiMonitor>();
-        private static readonly object monitorLock = new object();
+        public List<IEddiMonitor> monitors = [ ];
+        internal ConcurrentBag<IEddiMonitor> activeMonitors = [ ];
+        private static readonly object monitorLock = new();
         private bool IsMonitorActive ( string name ) => activeMonitors.Any( m => m.MonitorName().Equals(name, StringComparison.OrdinalIgnoreCase) );
 
-        public List<IEddiResponder> responders = new List<IEddiResponder>();
-        private ConcurrentBag<IEddiResponder> activeResponders = new ConcurrentBag<IEddiResponder>();
-        private static readonly object responderLock = new object();
+        public List<IEddiResponder> responders = [ ];
+        private ConcurrentBag<IEddiResponder> activeResponders = [ ];
+        private static readonly object responderLock = new();
 
         public DataProviderService DataProvider { get; internal set; }
-        public HotkeyManager HotkeyManager { get; } = new HotkeyManager();
+        public HotkeyManager HotkeyManager { get; } = new();
 
         // Information obtained from the configuration
 
@@ -379,7 +379,7 @@ namespace EddiCore
         }
 
         // Information from the last events of each type that we've received (for reference)
-        public ConcurrentDictionary<string, Event> lastEventOfType { get; } = new ConcurrentDictionary<string, Event>();
+        public ConcurrentDictionary<string, Event> lastEventOfType { get; } = new();
 
         // Current vehicle of player
         public string Vehicle
@@ -393,11 +393,11 @@ namespace EddiCore
         }
         private string vehicle = Constants.VEHICLE_SHIP;
 
-        public readonly ObservableConcurrentDictionary<string, object> State = new ObservableConcurrentDictionary<string, object>();
+        public readonly ObservableConcurrentDictionary<string, object> State = new();
 
         // The event queue
-        private BlockingCollection<Event> eventQueue { get; } = new BlockingCollection<Event>();
-        private readonly CancellationTokenSource eventHandlerTS = new CancellationTokenSource();
+        private BlockingCollection<Event> eventQueue { get; } = new();
+        private readonly CancellationTokenSource eventHandlerTS = new();
         private Task eventConsumerThread;
 
         private string multicrewVehicleHolder;
@@ -812,7 +812,7 @@ namespace EddiCore
             const int maxConsecutiveFailures = 5;
             var stableRunResetsFailures = TimeSpan.FromMinutes(5);
             var consecutiveFailures = 0;
-            var rng = new Random( unchecked(( System.Environment.TickCount * 31 ) + Thread.CurrentThread.ManagedThreadId) );
+            var rng = new Random( unchecked(( System.Environment.TickCount * 31 ) + System.Environment.CurrentManagedThreadId) );
 
             try
             {
@@ -1159,7 +1159,7 @@ namespace EddiCore
                 else
                 {
                     @event.unique = true;
-                    newSignalSources = new List<SignalSource> { @event.signalSource };
+                    newSignalSources = [ @event.signalSource ];
                     StarSystemSignalSourceManager.newSignalSources.Add( @event.systemAddress, newSignalSources );
                 }
 
@@ -1399,7 +1399,7 @@ namespace EddiCore
                 if ( @event.population != null )
                 {
                     CurrentStarSystem.population = @event.population;
-                    CurrentStarSystem.Economies = new List<Economy> { @event.systemEconomy, @event.systemEconomy2 };
+                    CurrentStarSystem.Economies = [ @event.systemEconomy, @event.systemEconomy2 ];
                     CurrentStarSystem.securityLevel = @event.securityLevel;
                     CurrentStarSystem.Faction = @event.controllingsystemfaction;
                 }
@@ -1688,7 +1688,7 @@ namespace EddiCore
             if ( theEvent.population != null )
             {
                 CurrentStarSystem.population = theEvent.population;
-                CurrentStarSystem.Economies = new List<Economy> { theEvent.Economy, theEvent.Economy2 };
+                CurrentStarSystem.Economies = [ theEvent.Economy, theEvent.Economy2 ];
                 CurrentStarSystem.securityLevel = theEvent.securityLevel;
                 CurrentStarSystem.Faction = theEvent.controllingsystemfaction;
             }
@@ -1987,7 +1987,7 @@ namespace EddiCore
                     {
                         currentStation.marketUpdatedThisVisit = true;
                         enqueueEvent( new MarketInformationUpdatedEvent( theEvent.timestamp, theEvent.marketId,
-                            theEvent.station, theEvent.system, new HashSet<string> { "market" } ) { raw = theEvent.raw } );
+                            theEvent.station, theEvent.system, [ "market" ] ) { raw = theEvent.raw } );
                     }
 
                     return true;
@@ -2037,7 +2037,7 @@ namespace EddiCore
                     {
                         currentStation.outfittingUpdatedThisVisit = true;
                         enqueueEvent( new MarketInformationUpdatedEvent( theEvent.timestamp, theEvent.marketId,
-                            theEvent.station, theEvent.system, new HashSet<string> { "outfitting" } )
+                            theEvent.station, theEvent.system, [ "outfitting" ] )
                         {
                             raw = theEvent.raw
                         } );
@@ -2089,7 +2089,7 @@ namespace EddiCore
                     {
                         currentStation.shipyardUpdatedThisVisit = true;
                         enqueueEvent( new MarketInformationUpdatedEvent( theEvent.timestamp, theEvent.marketId,
-                            theEvent.station, theEvent.system, new HashSet<string> { "shipyard" } )
+                            theEvent.station, theEvent.system, [ "shipyard" ] )
                         {
                             raw = theEvent.raw
                         } );
@@ -2320,7 +2320,7 @@ namespace EddiCore
                 }
             }
 
-            CurrentStarSystem.Economies = new List<Economy> { theEvent.Economy, theEvent.Economy2 };
+            CurrentStarSystem.Economies = [ theEvent.Economy, theEvent.Economy2 ];
             CurrentStarSystem.securityLevel = theEvent.securityLevel;
             if ( theEvent.population != null )
             {
@@ -2703,7 +2703,7 @@ namespace EddiCore
             }
 
             DirectoryInfo dir = new DirectoryInfo(path);
-            List<IEddiMonitor> foundMonitors = new List<IEddiMonitor>();
+            List<IEddiMonitor> foundMonitors = [ ];
             Type pluginType = typeof(IEddiMonitor);
             foreach (FileInfo file in dir.GetFiles("*Monitor.dll", SearchOption.AllDirectories))
             {
@@ -2783,7 +2783,7 @@ namespace EddiCore
                 return null;
             }
             DirectoryInfo dir = new DirectoryInfo(path);
-            List<IEddiResponder> foundResponders = new List<IEddiResponder>();
+            List<IEddiResponder> foundResponders = [ ];
             Type pluginType = typeof(IEddiResponder);
             foreach (FileInfo file in dir.GetFiles("*Responder.dll", SearchOption.AllDirectories))
             {

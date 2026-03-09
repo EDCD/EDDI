@@ -14,10 +14,10 @@ namespace EddiCore
     /// <summary>A subclass of ComboBox for selecting star systems</summary>
     public class StarSystemComboBox : ComboBox
     {
-        private ObservableCollection<string> SourceItems { get; } = new ObservableCollection<string>();
-        private readonly ConcurrentDictionary<string, List<string>> ItemCache = new ConcurrentDictionary<string, List<string>>();
+        private ObservableCollection<string> SourceItems { get; } = new();
+        private readonly ConcurrentDictionary<string, List<string>> ItemCache = new();
         private CancellationTokenSource cancellationTokenSource;
-        private readonly object ItemLock = new object();
+        private readonly object ItemLock = new();
 
         public StarSystemComboBox ()
         {

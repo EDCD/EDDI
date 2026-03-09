@@ -98,7 +98,7 @@ namespace Tests
         [TestMethod]
         public void TestArray()
         {
-            string[] data = { "a", "b", "c" };
+            string[] data = [ "a", "b", "c" ];
             var result = PrepTelemetryData(data);
             Assert.IsTrue(result.TryGetValue("data", out var package));
             for (var i = 0; i < data.Length; i++)

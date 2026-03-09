@@ -12,7 +12,7 @@ namespace Utilities
         // and from https://www.internationalphoneticassociation.org/sites/default/files/phonsymbol.pdf
 
         // By Unicode hex code and symbol
-        private static readonly Dictionary<string, string> validIPA = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> validIPA = new()
         {
             { "0061", "a" },
             { "0062", "b" },
@@ -200,7 +200,7 @@ namespace Utilities
 
         public static string[] InvalidChars(string value)
         {
-            List<string> invalidChars = new List<string>();
+            List<string> invalidChars = [ ];
             foreach (var ch in value)
             {
                 if (!IsValid(ch))
@@ -219,7 +219,7 @@ namespace Utilities
             if (value != null)
             {
                 string[] invalidChars = IPA.InvalidChars(value.ToString());
-                if (invalidChars.Any())
+                if (invalidChars.Length > 0)
                 {
                     string invalid = "";
                     foreach (string str in invalidChars)

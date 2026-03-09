@@ -10,7 +10,7 @@ namespace Utilities
 {
     public static class Net
     {
-        private static readonly HttpClient httpClient = new HttpClient(
+        private static readonly HttpClient httpClient = new(
             new HttpClientHandler
             {
                 AutomaticDecompression =

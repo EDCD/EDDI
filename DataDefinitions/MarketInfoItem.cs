@@ -116,7 +116,7 @@ namespace EddiDataDefinitions
         public bool ShouldSerializerare() { return false; }
 
         [JsonProperty]
-        public HashSet<string> statusFlags { get; set; } = new HashSet<string>();
+        public HashSet<string> statusFlags { get; set; } = new();
         public bool ShouldSerializestatusFlags()
         {
             // Don't serialize status flags if they are empty as the schema requires that if present they contain at least 1 element

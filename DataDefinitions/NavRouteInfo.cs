@@ -41,7 +41,7 @@ namespace EddiDataDefinitions
             ).GetResultOrTimeout( TimeSpan.FromSeconds( 5 ) );
 
             if ( parsed?.Route != null &&
-                 ( ( isRouteExpected && parsed.Route.Any() ) || ( !isRouteExpected && !parsed.Route.Any() ) ) )
+                 ( ( isRouteExpected && parsed.Route.Count > 0 ) || ( !isRouteExpected && parsed.Route.Count == 0 ) ) )
             {
                 info = parsed;
                 rawRoute = raw;

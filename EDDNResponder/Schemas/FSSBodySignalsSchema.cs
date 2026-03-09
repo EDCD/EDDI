@@ -10,7 +10,7 @@ namespace EddiEddnResponder.Schemas
     [UsedImplicitly]
     public class FSSBodySignalsSchema : ISchema
     {
-        public List<string> edTypes => new List<string> { "FSSBodySignals" };
+        public List<string> edTypes => [ "FSSBodySignals" ];
 
         public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
         {

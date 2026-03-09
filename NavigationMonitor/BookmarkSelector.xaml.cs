@@ -12,7 +12,7 @@ namespace EddiNavigationMonitor
     /// </summary>
     public partial class BookmarkSelector : Window
     {
-        public List<NavBookmark> SelectedBookmarks = new List<NavBookmark>();
+        public List<NavBookmark> SelectedBookmarks = new();
 
         public BookmarkSelector(IEnumerable<NavBookmark> bookmarks)
         {
@@ -40,10 +40,7 @@ namespace EddiNavigationMonitor
             {
                 if (checkBox.DataContext is NavBookmark bookmark)
                 {
-                    if (SelectedBookmarks.Contains(bookmark))
-                    {
-                        SelectedBookmarks.Remove(bookmark);
-                    }
+                    SelectedBookmarks.Remove( bookmark );
                 }
             }
         }

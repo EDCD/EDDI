@@ -11,7 +11,7 @@ namespace EddiEddnResponder.Schemas
     [UsedImplicitly]
     public class ShipyardSchema : ISchema, ICapiSchema
     {
-        public List<string> edTypes => new List<string> { "Shipyard" };
+        public List<string> edTypes => [ "Shipyard" ];
 
         // Track this so that we do not send duplicate data from the journal and from CAPI.
         private long? lastSentMarketID;
@@ -91,11 +91,11 @@ namespace EddiEddnResponder.Schemas
 
                 // Build our ships list
                 var ships = shipyardJson["ships"]?["shipyard_list"]?.Children().Values()
-                    .Select(s => s["name"]?.ToString()).Distinct().ToList() ?? new List<string>();
+                    .Select(s => s["name"]?.ToString()).Distinct().ToList() ?? [ ];
                 if (shipyardJson["ships"]["unavailable_list"] != null)
                 {
                     ships.AddRange(shipyardJson["ships"]?["unavailable_list"]?
-                        .Select(s => s?["name"]?.ToString()).Distinct().ToList() ?? new List<string>());
+                        .Select(s => s?["name"]?.ToString()).Distinct().ToList() ?? [ ] );
                 }
 
                 // Continue if our ships list is not empty

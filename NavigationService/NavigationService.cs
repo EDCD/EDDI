@@ -17,9 +17,9 @@ namespace EddiNavigationService
     public sealed class NavigationService : INotifyPropertyChanged
     {
         private static NavigationService _instance;
-        private static readonly object InstanceLock = new object();
+        private static readonly object InstanceLock = new();
 
-        private readonly Dictionary<QueryType, IQueryResolver> queryResolvers = new Dictionary<QueryType, IQueryResolver>();
+        private readonly Dictionary<QueryType, IQueryResolver> queryResolvers = new();
 
         // Search variables
         public StarSystem SearchStarSystem { get; private set; }

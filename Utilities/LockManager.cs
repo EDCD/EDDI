@@ -9,7 +9,7 @@ namespace Utilities
     // accessing each filename. If the count goes down to 0, the key is removed from the dictionary as a cleanup mechanism.
     public static class LockManager
     {
-        private static readonly ConcurrentDictionary<string, LockCount> _locks = new ConcurrentDictionary<string, LockCount>();
+        private static readonly ConcurrentDictionary<string, LockCount> _locks = new();
 
         public static void GetLock(string lockName, Action action)
         {

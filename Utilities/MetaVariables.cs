@@ -14,7 +14,7 @@ namespace Utilities
         {
             if (reflectionObjectType is null) 
             { 
-                Results = new List<MetaVariable>(); 
+                Results = [ ]; 
             }
             else
             {
@@ -25,29 +25,29 @@ namespace Utilities
         public List<MetaVariable> Results { get; private set; }
 
         // Some types don't need to be decomposed further - we'll stop reflecting when we hit these types
-        private static readonly HashSet<Type> undecomposedTypes = new HashSet<Type>
-        {
-            typeof(string), 
-            typeof(bool), 
-            typeof(int), 
-            typeof(decimal), 
+        private static readonly HashSet<Type> undecomposedTypes =
+        [
+            typeof(string),
+            typeof(bool),
+            typeof(int),
+            typeof(decimal),
             typeof(long),
             typeof(ulong),
             typeof(double),
             typeof(float),
-            typeof(DateTime), 
+            typeof(DateTime),
             typeof(TimeSpan)
-        };
+        ];
 
         // Apply a placeholder symbol for collection indices - to be formatted
         // differently according to the end variable type (Cottle or VoiceAttack) 
         public const string indexMarker = @"<index\>";
 
         /// <summary> Cache for type members to avoid reflection overhead </summary>
-        private static readonly ConcurrentDictionary<Type, (PropertyInfo[], FieldInfo[])> typeCache = new ConcurrentDictionary<Type, (PropertyInfo[], FieldInfo[])>();
+        private static readonly ConcurrentDictionary<Type, (PropertyInfo[], FieldInfo[])> typeCache = new();
 
         /// <summary> Get the properties and fields of a type, caching the results </summary>
-        private (PropertyInfo[], FieldInfo[]) GetTypeMembers(Type type)
+        private static (PropertyInfo[], FieldInfo[]) GetTypeMembers(Type type)
         {
             return typeCache.GetOrAdd(type, t => (
                 t.GetProperties(BindingFlags.Public | BindingFlags.Instance),
@@ -62,8 +62,8 @@ namespace Utilities
         /// <param name="keysPath">(Used internally, do not set) The path to the specific key</param>
         private List<MetaVariable> GetVariables(Type reflectionObjectType, int? maxRecursionLevel, object reflectionObject = null, List<string> keysPath = null)
         {
-            if (keysPath is null) { keysPath = new List<string>(); }
-            if (Results is null) { Results = new List<MetaVariable>(); }
+            if (keysPath is null) { keysPath = [ ]; }
+            if (Results is null) { Results = [ ]; }
 
             // Some types don't need to be decomposed further.
             if (undecomposedTypes.Contains(reflectionObjectType))

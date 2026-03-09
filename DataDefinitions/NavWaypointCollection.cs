@@ -43,7 +43,7 @@ namespace EddiDataDefinitions
             set { _routeFuelTotal = value; OnPropertyChanged(); }
         }
 
-        public ObservableCollection<NavWaypoint> Waypoints { get; } = new ObservableCollection<NavWaypoint>();
+        public ObservableCollection<NavWaypoint> Waypoints { get; } = new();
 
         public List<NavWaypoint> UnvisitedWaypoints => Waypoints.Where(wp => !wp.visited).ToList();
 

@@ -19,23 +19,23 @@ namespace EddiStatusService
         // Declare our constants
         private const int pollingIntervalActiveMs = 250;
         private const int pollingIntervalRelaxedMs = 5000;
-        private static readonly Regex JsonRegex = new Regex(@"^{.*}$");
+        private static readonly Regex JsonRegex = new(@"^{.*}$");
         private static readonly string Directory = GetSavedGamesDir();
 
         // Public Read Variables
-        private Status CurrentStatus { get; set; } = new Status();
-        private Status LastStatus { get; set; } = new Status();
+        private Status CurrentStatus { get; set; } = new();
+        private Status LastStatus { get; set; } = new();
         public event EventHandler StatusChanged;
 
         // Public Write variables (set elsewhere to assist with various calculations)
         public Ship CurrentShip;
-        public readonly List<KeyValuePair<DateTime, decimal?>> fuelLog = new List<KeyValuePair<DateTime, decimal?>>();
+        public readonly List<KeyValuePair<DateTime, decimal?>> fuelLog = new();
         public EnteredNormalSpaceEvent lastEnteredNormalSpaceEvent;
 
         // Other variables used by this service
         private static StatusService instance;
-        private static readonly object instanceLock = new object();
-        public readonly object statusLock = new object();
+        private static readonly object instanceLock = new();
+        public readonly object statusLock = new();
         internal bool running;
 
         public static StatusService Instance

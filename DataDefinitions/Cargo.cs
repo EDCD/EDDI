@@ -96,7 +96,7 @@ namespace EddiDataDefinitions
                 NotifyPropertyChanged( nameof( haulage ) );
             }
         }
-        private Dictionary<ulong, int> _missionCargo = new Dictionary<ulong, int>();
+        private Dictionary<ulong, int> _missionCargo = new();
 
         [JsonProperty, PublicAPI] 
         public int need
@@ -258,9 +258,8 @@ namespace EddiDataDefinitions
         /// <param name="removedAmount">The amount of cargo to remove</param>
         public void RemoveDetailedQty ( ulong missionID, int removedAmount )
         {
-            if ( missionCargo.ContainsKey( missionID ) )
+            if ( missionCargo.TryGetValue( missionID, out var cargoAmount ) )
             {
-                var cargoAmount = missionCargo[ missionID ];
                 missionCargo[ missionID ] -= Math.Min( removedAmount, cargoAmount );
 
                 if ( missionCargo[ missionID ] == 0 )

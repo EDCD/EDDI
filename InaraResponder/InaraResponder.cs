@@ -26,7 +26,7 @@ namespace EddiInaraResponder
         public IInaraService inaraService { get; internal set; } = new InaraService();
 
         // This responder currently requires game version 4.0 or later.
-        private static readonly System.Version minGameVersion = new System.Version(4, 0);
+        private static readonly System.Version minGameVersion = new(4, 0);
 
         public string ResponderName()
         {
@@ -744,7 +744,7 @@ namespace EddiInaraResponder
                 };
                 if (module.modified)
                 {
-                    List<Dictionary<string, object>> modifiers = new List<Dictionary<string, object>>();
+                    List<Dictionary<string, object>> modifiers = [ ];
                     foreach (EngineeringModifier modifier in module.modifiers)
                     {
                         if (modifier.currentValue != null)
@@ -893,7 +893,7 @@ namespace EddiInaraResponder
 
         private void handleStoredModulesEvent(StoredModulesEvent @event)
         {
-            List<Dictionary<string, object>> eventData = new List<Dictionary<string, object>>();
+            List<Dictionary<string, object>> eventData = [ ];
             foreach (StoredModule storedModule in @event.storedmodules)
             {
                 Dictionary<string, object> moduleData = new Dictionary<string, object>()
@@ -926,7 +926,7 @@ namespace EddiInaraResponder
 
         private void handleMaterialInventoryEvent(MaterialInventoryEvent @event)
         {
-            List<Dictionary<string, object>> eventData = new List<Dictionary<string, object>>();
+            List<Dictionary<string, object>> eventData = [ ];
             foreach (MaterialAmount materialAmount in @event.inventory)
             {
                 eventData.Add(new Dictionary<string, object>()
@@ -1048,7 +1048,7 @@ namespace EddiInaraResponder
 
         private void handleCargoEvent(CargoEvent @event)
         {
-            List<Dictionary<string, object>> eventData = new List<Dictionary<string, object>>();
+            List<Dictionary<string, object>> eventData = [ ];
             foreach (CargoInfoItem cargoInfo in @event.inventory)
             {
                 eventData.Add(new Dictionary<string, object>()
@@ -1062,7 +1062,7 @@ namespace EddiInaraResponder
 
         private void handleDiedEvent(DiedEvent @event)
         {
-            inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderInventoryCargo", new List<Dictionary<string, object>>()));
+            inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderInventoryCargo", (List<Dictionary<string, object>>)[ ] ));
             Dictionary<string, object> diedEventData = new Dictionary<string, object>()
             {
                 { "starsystemName", EDDI.Instance.CurrentStarSystem?.systemname }
@@ -1230,7 +1230,7 @@ namespace EddiInaraResponder
         private static List<Dictionary<string, object>> minorFactionReputations(List<Faction> factions)
         {
             // Reputation progress in a range: [-1..1], which corresponds to a reputation range from -100% (hostile) to 100% (allied).
-            List<Dictionary<string, object>> eventData = new List<Dictionary<string, object>>();
+            List<Dictionary<string, object>> eventData = [ ];
             foreach (Faction faction in factions)
             {
                 if (faction != null && faction.myreputation > -10M && faction.myreputation < 5M) // faction.myreputation is out of 100.
@@ -1250,29 +1250,28 @@ namespace EddiInaraResponder
         private void handleCommanderReputationEvent(CommanderReputationEvent @event)
         {
             // Reputation progress in a range: [-1..1], which corresponds to a reputation range from -100% (hostile) to 100% (allied).
-            List<Dictionary<string, object>> eventData = new List<Dictionary<string, object>>
-            {
-                new Dictionary<string, object>
+            List<Dictionary<string, object>> eventData =
+            [
+                new()
                 {
-                    { "majorfactionName", "empire" },
-                    { "majorfactionReputation", @event.empire / 100 }
+                    { "majorfactionName", "empire" }, { "majorfactionReputation", @event.empire / 100 }
                 },
-                new Dictionary<string, object>
+
+                new()
                 {
-                    { "majorfactionName", "federation" },
-                    { "majorfactionReputation", @event.federation / 100 }
+                    { "majorfactionName", "federation" }, { "majorfactionReputation", @event.federation / 100 }
                 },
-                new Dictionary<string, object>
+
+                new()
                 {
-                    { "majorfactionName", "independent" },
-                    { "majorfactionReputation", @event.independent / 100 }
+                    { "majorfactionName", "independent" }, { "majorfactionReputation", @event.independent / 100 }
                 },
-                new Dictionary<string, object>
+
+                new()
                 {
-                    { "majorfactionName", "alliance" },
-                    { "majorfactionReputation", @event.alliance / 100 }
+                    { "majorfactionName", "alliance" }, { "majorfactionReputation", @event.alliance / 100 }
                 }
-            };
+            ];
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderReputationMajorFaction", eventData));
         }
 
@@ -1308,49 +1307,36 @@ namespace EddiInaraResponder
         {
             // Pilots federation/Navy rank name as are in the journals (["combat", "trade", "explore", "cqc", "federation", "empire"]) 
             // Rank progress (range: [0..1], which corresponds to 0% - 100%) (In the journal, these are given out of 100)
-            List<Dictionary<string, object>> eventData = new List<Dictionary<string, object>>()
-            {
-                new Dictionary<string, object>()
+            List<Dictionary<string, object>> eventData =
+            [
+                new() { { "rankName", "combat" }, { "rankProgress", @event.combat / 100 } },
+
+                new() { { "rankName", "trade" }, { "rankProgress", @event.trade / 100 } },
+
+                new()
                 {
-                    { "rankName", "combat" },
-                    { "rankProgress", @event.combat / 100 }
+                    { "rankName", "explore" }, { "rankProgress", @event.exploration / 100 }
                 },
-                new Dictionary<string, object>()
+
+                new() { { "rankName", "empire" }, { "rankProgress", @event.empire / 100 } },
+
+                new()
                 {
-                    { "rankName", "trade" },
-                    { "rankProgress", @event.trade / 100 }
+                    { "rankName", "federation" }, { "rankProgress", @event.federation / 100 }
                 },
-                new Dictionary<string, object>()
+
+                new() { { "rankName", "cqc" }, { "rankProgress", @event.cqc / 100 } },
+
+                new()
                 {
-                    { "rankName", "explore" },
-                    { "rankProgress", @event.exploration / 100 }
+                    { "rankName", "soldier" }, { "rankProgress", @event.mercenary / 100 }
                 },
-                new Dictionary<string, object>()
+
+                new()
                 {
-                    { "rankName", "empire" },
-                    { "rankProgress", @event.empire / 100 }
-                },
-                new Dictionary<string, object>()
-                {
-                    { "rankName", "federation" },
-                    { "rankProgress", @event.federation / 100 }
-                },
-                new Dictionary<string, object>()
-                {
-                    { "rankName", "cqc" },
-                    { "rankProgress", @event.cqc / 100 }
-                },
-                new Dictionary<string, object>()
-                {
-                    { "rankName", "soldier" },
-                    { "rankProgress", @event.mercenary / 100 }
-                },
-                new Dictionary<string, object>()
-                {
-                    { "rankName", "exobiologist" },
-                    { "rankProgress", @event.exobiologist / 100 }
+                    { "rankName", "exobiologist" }, { "rankProgress", @event.exobiologist / 100 }
                 }
-            };
+            ];
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderRankPilot", eventData));
         }
 
@@ -1358,49 +1344,33 @@ namespace EddiInaraResponder
         {
             // Pilots federation/Navy rank name as are in the journals (["combat", "trade", "explore", "cqc", "federation", "empire"]) 
             // Rank value (range [0..8] for Pilots federation ranks, range [0..14] for Navy ranks)
-            List<Dictionary<string, object>> eventData = new List<Dictionary<string, object>>()
-            {
-                new Dictionary<string, object>()
+            List<Dictionary<string, object>> eventData =
+            [
+                new() { { "rankName", "combat" }, { "rankValue", @event.combat?.rank } },
+
+                new() { { "rankName", "trade" }, { "rankValue", @event.trade?.rank } },
+
+                new()
                 {
-                    { "rankName", "combat" },
-                    { "rankValue", @event.combat?.rank }
+                    { "rankName", "explore" }, { "rankValue", @event.exploration?.rank }
                 },
-                new Dictionary<string, object>()
+
+                new() { { "rankName", "empire" }, { "rankValue", @event.empire?.rank } },
+
+                new()
                 {
-                    { "rankName", "trade" },
-                    { "rankValue", @event.trade?.rank }
+                    { "rankName", "federation" }, { "rankValue", @event.federation?.rank }
                 },
-                new Dictionary<string, object>()
+
+                new() { { "rankName", "cqc" }, { "rankValue", @event.cqc?.rank } },
+
+                new() { { "rankName", "soldier" }, { "rankValue", @event.mercenary?.rank } },
+
+                new()
                 {
-                    { "rankName", "explore" },
-                    { "rankValue", @event.exploration?.rank }
-                },
-                new Dictionary<string, object>()
-                {
-                    { "rankName", "empire" },
-                    { "rankValue", @event.empire?.rank }
-                },
-                new Dictionary<string, object>()
-                {
-                    { "rankName", "federation" },
-                    { "rankValue", @event.federation?.rank }
-                },
-                new Dictionary<string, object>()
-                {
-                    { "rankName", "cqc" },
-                    { "rankValue", @event.cqc?.rank }
-                },
-                new Dictionary<string, object>()
-                {
-                    { "rankName", "soldier" },
-                    { "rankValue", @event.mercenary?.rank }
-                },
-                new Dictionary<string, object>()
-                {
-                    { "rankName", "exobiologist" },
-                    { "rankValue", @event.exobiologist?.rank }
+                    { "rankName", "exobiologist" }, { "rankValue", @event.exobiologist?.rank }
                 }
-            };
+            ];
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderRankPilot", eventData));
         }
 
@@ -1617,7 +1587,7 @@ namespace EddiInaraResponder
             missionCompletedObj.TryGetValue("FactionEffects", out object factionEffectsVal);
             if (factionEffectsVal is List<object> factionEffects)
             {
-                List<Dictionary<string, object>> minorfactionEffects = new List<Dictionary<string, object>>();
+                List<Dictionary<string, object>> minorfactionEffects = [ ];
                 foreach (var obj in factionEffects)
                 {
                     if ( !( obj is Dictionary<string, object> factionEffect ) ) { continue; }

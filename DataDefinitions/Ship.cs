@@ -375,7 +375,7 @@ namespace EddiDataDefinitions
             get => _cargohatch;
             set { _cargohatch = value; OnPropertyChanged(); }
         }
-        private Module _cargohatch = new Module();
+        private Module _cargohatch = new();
 
         [Utilities.PublicAPI]
         public Module bulkheads
@@ -383,7 +383,7 @@ namespace EddiDataDefinitions
             get => _bulkheads;
             set { _bulkheads = value; OnPropertyChanged(); }
         }
-        private Module _bulkheads = new Module();
+        private Module _bulkheads = new();
 
         [Utilities.PublicAPI]
         public Module canopy
@@ -391,7 +391,7 @@ namespace EddiDataDefinitions
             get => _canopy;
             set { _canopy = value; OnPropertyChanged(); }
         }
-        private Module _canopy = new Module();
+        private Module _canopy = new();
 
         [Utilities.PublicAPI]
         public Module powerplant
@@ -399,7 +399,7 @@ namespace EddiDataDefinitions
             get => _powerplant;
             set { _powerplant = value; OnPropertyChanged(); }
         }
-        private Module _powerplant = new Module();
+        private Module _powerplant = new();
 
         [Utilities.PublicAPI]
         public Module thrusters
@@ -407,7 +407,7 @@ namespace EddiDataDefinitions
             get => _thrusters;
             set { _thrusters = value; OnPropertyChanged(); }
         }
-        private Module _thrusters = new Module();
+        private Module _thrusters = new();
 
         [Utilities.PublicAPI]
         public Module frameshiftdrive
@@ -415,7 +415,7 @@ namespace EddiDataDefinitions
             get => _frameshiftdrive;
             set { _frameshiftdrive = value; OnPropertyChanged(); }
         }
-        private Module _frameshiftdrive = new Module();
+        private Module _frameshiftdrive = new();
 
         [Utilities.PublicAPI]
         public Module lifesupport
@@ -423,7 +423,7 @@ namespace EddiDataDefinitions
             get => _lifesupport;
             set { _lifesupport = value; OnPropertyChanged(); }
         }
-        private Module _lifesupport = new Module();
+        private Module _lifesupport = new();
 
         [Utilities.PublicAPI]
         public Module powerdistributor
@@ -431,7 +431,7 @@ namespace EddiDataDefinitions
             get => _powerdistributor;
             set { _powerdistributor = value; OnPropertyChanged(); }
         }
-        private Module _powerdistributor = new Module();
+        private Module _powerdistributor = new();
 
         [Utilities.PublicAPI]
         public Module sensors
@@ -439,7 +439,7 @@ namespace EddiDataDefinitions
             get => _sensors;
             set { _sensors = value; OnPropertyChanged(); }
         }
-        private Module _sensors = new Module();
+        private Module _sensors = new();
 
         [Utilities.PublicAPI]
         public Module fueltank
@@ -447,7 +447,7 @@ namespace EddiDataDefinitions
             get => _fueltank;
             set { _fueltank = value; OnPropertyChanged(); }
             }
-        private Module _fueltank = new Module();
+        private Module _fueltank = new();
 
         [Utilities.PublicAPI, NotNull, ItemNotNull]
         public List<Hardpoint> hardpoints
@@ -455,7 +455,7 @@ namespace EddiDataDefinitions
             get => _hardpoints;
             set { _hardpoints = value; OnPropertyChanged(); }
         }
-        private List<Hardpoint> _hardpoints = new List<Hardpoint>();
+        private List<Hardpoint> _hardpoints = new();
 
         [Utilities.PublicAPI, NotNull, ItemNotNull]
         public List<Compartment> compartments
@@ -463,7 +463,7 @@ namespace EddiDataDefinitions
             get => _compartments;
             set { _compartments = value; OnPropertyChanged(); }
         }
-        private List<Compartment> _compartments = new List<Compartment>();
+        private List<Compartment> _compartments = new();
 
         [Utilities.PublicAPI, NotNull, ItemNotNull]
         public List<LaunchBay> launchbays
@@ -471,7 +471,7 @@ namespace EddiDataDefinitions
             get => _launchbays;
             set { _launchbays = value; OnPropertyChanged(); }
         }
-        private List<LaunchBay> _launchbays = new List<LaunchBay>();
+        private List<LaunchBay> _launchbays = new();
 
         public string paintjob { get; set; }
 

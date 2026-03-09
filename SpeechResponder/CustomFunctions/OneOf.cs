@@ -14,8 +14,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string description => Properties.CustomFunctions_Untranslated.OneOf;
         public Type ReturnType => typeof( string );
 
-        private static readonly Random random =
-            new Random( new { n = nameof(OneOf), dt = DateTime.UtcNow }.GetHashCode() );
+        private static readonly Random random = new(new { n = nameof(OneOf), dt = DateTime.UtcNow }.GetHashCode());
 
         public IFunction function => Function.CreateNativeVariadic( ( runtime, values, writer ) =>
         {

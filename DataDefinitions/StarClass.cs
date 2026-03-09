@@ -174,7 +174,7 @@ namespace EddiDataDefinitions
             { }
         }
 
-        private static readonly List<StarClass> CLASSES = new List<StarClass>();
+        private static readonly List<StarClass> CLASSES = new();
 
         [JsonRequired]
         public string edname { get; private set; }

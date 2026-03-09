@@ -9,7 +9,7 @@ namespace EddiEvents
     {
         public const string NAME = "Carrier pads locked";
         public const string DESCRIPTION = "Triggered when your fleet carrier locks landing pads prior to jumping";
-        public static CarrierPadsLockedEvent SAMPLE = new CarrierPadsLockedEvent(DateTime.UtcNow, 3700357376, StationModel.FleetCarrier );
+        public static CarrierPadsLockedEvent SAMPLE = new(DateTime.UtcNow, 3700357376, StationModel.FleetCarrier );
 
         [PublicAPI( "The carrier's numeric ID" )]
         public long carrierID { get; private set; }

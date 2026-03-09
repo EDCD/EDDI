@@ -10,7 +10,7 @@ namespace EddiEddnResponder.Schemas
     [UsedImplicitly]
     public class CodexEntrySchema : ISchema
     {
-        public List<string> edTypes => new List<string> { "CodexEntry" };
+        public List<string> edTypes => [ "CodexEntry" ];
 
         public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
         {

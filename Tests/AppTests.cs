@@ -138,7 +138,7 @@ namespace Tests
             Assert.IsNotNull( crashLogger, "CrashLogger method not found via reflection" );
 
             // Should not throw
-            crashLogger.Invoke( null, new object[] { agg } );
+            crashLogger.Invoke( null, [ agg ] );
         }
 
         [TestMethod, DoNotParallelize]
@@ -157,7 +157,7 @@ namespace Tests
             var ex = new Exception("TestCrashLogger");
 
             // Invoke CrashLogger - it will call Logging.Error which writes asynchronously
-            crashLogger.Invoke( null, new object[] { ex } );
+            crashLogger.Invoke( null, [ ex ] );
 
             // Wait for the background logging task to complete and write to file (polling with timeout)
             var sw = System.Diagnostics.Stopwatch.StartNew();

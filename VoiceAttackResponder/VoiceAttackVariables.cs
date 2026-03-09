@@ -18,7 +18,7 @@ namespace EddiVoiceAttackResponder
     public class VoiceAttackVariables
     {
         // The following variables notify changes via `PropertyChanged`
-        private static readonly Dictionary<string, Action> StandardValues = new Dictionary<string, Action>
+        private static readonly Dictionary<string, Action> StandardValues = new()
         {
             { nameof(EDDI.Instance.CurrentStarSystem), () => setStarSystemValues(EDDI.Instance.CurrentStarSystem, "System") },
             { nameof(EDDI.Instance.LastStarSystem), () => setStarSystemValues(EDDI.Instance.LastStarSystem, "Last system") },

@@ -12,12 +12,12 @@ namespace EddiEvents
         public const string DESCRIPTION = "Triggered when an organic scan is made";
 
         public static readonly string[] SAMPLES =
-        {
+        [
             @"{ ""timestamp"":""2023-07-22T04:01:18Z"", ""event"":""ScanOrganic"", ""ScanType"":""Sample"", ""Genus"":""$Codex_Ent_Shrubs_Genus_Name;"", ""Genus_Localised"":""Frutexa"", ""Species"":""$Codex_Ent_Shrubs_05_Name;"", ""Species_Localised"":""Frutexa Fera"", ""Variant"":""$Codex_Ent_Shrubs_05_F_Name;"", ""Variant_Localised"":""Frutexa Fera - Green"", ""SystemAddress"":34542299533283, ""Body"":42 }",
             @"{ ""timestamp"":""2026-01-17T09:10:43Z"", ""event"":""ScanOrganic"", ""ScanType"":""Log"", ""Genus"":""$Codex_Ent_Ingensradices_Genus_Name;"", ""Genus_Localised"":""Radicoida"", ""Species"":""$Codex_Ent_Ingensradices_Unicus_Name;"", ""Species_Localised"":""Radicoida Unica"", ""Variant"":""$Codex_Ent_Ingensradices_Unicus_Name;"", ""Variant_Localised"":""Radicoida Unica"", ""WasLogged"":false, ""SystemAddress"":147882789259, ""Body"":1 }",
             @"{ ""timestamp"":""2025-04-04T21:05:27Z"", ""event"":""ScanOrganic"", ""ScanType"":""Sample"", ""Genus"":""$Codex_Ent_Cone_Name;"", ""Genus_Localised"":""Bark Mounds"", ""Species"":""$Codex_Ent_Cone_Name;"", ""Species_Localised"":""Bark Mounds"", ""Variant"":""$Codex_Ent_Cone_Name;"", ""Variant_Localised"":""Bark Mounds"", ""SystemAddress"":7142932230673, ""Body"":88 }",
             @"{ ""timestamp"":""2025-03-08T21:38:23Z"", ""event"":""ScanOrganic"", ""ScanType"":""Analyse"", ""Genus"":""$Codex_Ent_Brancae_Name;"", ""Genus_Localised"":""Brain Trees"", ""Species"":""$Codex_Ent_SeedABCD_02_Name;"", ""Species_Localised"":""Ostrinum Brain Tree"", ""Variant"":""$Codex_Ent_SeedABCD_02_Name;"", ""Variant_Localised"":""Ostrinum Brain Tree"", ""SystemAddress"":4483241153218, ""Body"":6 }"
-        };
+        ];
 
         [PublicAPI( "The numeric ID of the star system where the organism was scanned" )]
         public ulong systemAddress { get; private set; }

@@ -8,7 +8,7 @@ namespace EddiEvents
     {
         public const string NAME = "System faction changed";
         public const string DESCRIPTION = "Triggered when there is a change in the controlling faction of a watched system";
-        public static SystemFactionChangedEvent SAMPLE = new SystemFactionChangedEvent(DateTime.UtcNow, "home", "Shinrarta Dezhra", "The Pilots Federation", "The Dark Wheel");
+        public static SystemFactionChangedEvent SAMPLE = new(DateTime.UtcNow, "home", "Shinrarta Dezhra", "The Pilots Federation", "The Dark Wheel");
 
         [PublicAPI("The name of the pattern that this event matched")]
         public string match { get; private set; }

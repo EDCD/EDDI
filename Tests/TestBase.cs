@@ -22,13 +22,13 @@ namespace Tests
 {
     public class TestBase
     {
-        internal static readonly FakeSpanshHttpClient FakeSpanshHttpClient = new FakeSpanshHttpClient();
-        internal static readonly SpanshService fakeSpanshService = new SpanshService( FakeSpanshHttpClient );
+        internal static readonly FakeSpanshHttpClient FakeSpanshHttpClient = new();
+        internal static readonly SpanshService fakeSpanshService = new( FakeSpanshHttpClient );
 
-        internal static readonly FakeEdsmHttpClient FakeEdsmHttpClient = new FakeEdsmHttpClient();
-        internal static readonly StarMapService fakeEdsmService = new StarMapService( FakeEdsmHttpClient );
+        internal static readonly FakeEdsmHttpClient FakeEdsmHttpClient = new();
+        internal static readonly StarMapService fakeEdsmService = new( FakeEdsmHttpClient );
 
-        private static readonly StarSystemSqLiteRepository starSystemRepository = StarSystemSqLiteRepository.Create( true );
+        private static readonly StarSystemSqLiteRepository fakeStarSystemRepository = StarSystemSqLiteRepository.Create( true );
 
         internal void MakeSafe()
         {
@@ -50,7 +50,7 @@ namespace Tests
             return DataProviderService.Create( 
                 fakeEdsmService, 
                 fakeSpanshService,
-                starSystemRepository
+                fakeStarSystemRepository
                 );
         }
 

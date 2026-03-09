@@ -9,7 +9,7 @@ namespace EddiEvents
     {
         public const string NAME = "NPC cargo scan commenced";
         public const string DESCRIPTION = "Triggered when a cargo scan on your ship by an NPC is detected";
-        public static readonly NPCCargoScanCommencedEvent SAMPLE = new NPCCargoScanCommencedEvent(DateTime.UtcNow, "Nobatu", MessageSource.Pirate);
+        public static readonly NPCCargoScanCommencedEvent SAMPLE = new(DateTime.UtcNow, "Nobatu", MessageSource.Pirate);
 
         [PublicAPI( "The name of the source attempting the cargo scan" )]
         public string from { get; private set; }

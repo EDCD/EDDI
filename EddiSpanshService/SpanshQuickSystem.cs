@@ -23,7 +23,7 @@ namespace EddiSpanshService
                 var requestUri = $"system/{systemAddress}";
                 var clientResponse = await spanshHttpClient.GetAsync( requestUri, cancellationToken ).ConfigureAwait(false);
                 clientResponse.EnsureSuccessStatusCode();
-                var responseJson = await clientResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var responseJson = await clientResponse.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
                 if ( string.IsNullOrEmpty( responseJson ) )
                 {

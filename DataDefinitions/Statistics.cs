@@ -7,58 +7,58 @@ namespace EddiDataDefinitions
     public class Statistics
     {
         [JsonProperty( "Bank_Account" )]
-        public BankAccountStats bankaccount { get; set; } = new BankAccountStats();
+        public BankAccountStats bankaccount { get; set; } = new();
 
         [JsonProperty( "Combat" )]
-        public CombatStats combat { get; set; } = new CombatStats();
+        public CombatStats combat { get; set; } = new();
 
         [JsonProperty( "Crime" )]
-        public CrimeStats crime { get; set; } = new CrimeStats();
+        public CrimeStats crime { get; set; } = new();
 
         [JsonProperty( "Smuggling" )]
-        public SmugglingStats smuggling { get; set; } = new SmugglingStats();
+        public SmugglingStats smuggling { get; set; } = new();
 
         [JsonProperty( "Trading" )]
-        public TradingStats trading { get; set; } = new TradingStats();
+        public TradingStats trading { get; set; } = new();
 
         [JsonProperty( "Mining" )]
-        public MiningStats mining { get; set; } = new MiningStats();
+        public MiningStats mining { get; set; } = new();
 
         [JsonProperty( "Exploration" )]
-        public ExplorationStats exploration { get; set; } = new ExplorationStats();
+        public ExplorationStats exploration { get; set; } = new();
 
         [JsonProperty( "Passengers" )]
-        public PassengerStats passengers { get; set; } = new PassengerStats();
+        public PassengerStats passengers { get; set; } = new();
 
         [JsonProperty( "Search_And_Rescue" )]
-        public SearchAndRescueStats searchandrescue { get; set; } = new SearchAndRescueStats();
+        public SearchAndRescueStats searchandrescue { get; set; } = new();
 
         [JsonProperty( "Squadron" )]
-        public SquadronStats squadron { get; set; } = new SquadronStats();
+        public SquadronStats squadron { get; set; } = new();
 
         [JsonProperty( "TG_ENCOUNTERS" )]
-        public ThargoidEncounterStats thargoidencounters { get; set; } = new ThargoidEncounterStats();
+        public ThargoidEncounterStats thargoidencounters { get; set; } = new();
 
         [JsonProperty( "Crafting" )]
-        public CraftingStats crafting { get; set; } = new CraftingStats();
+        public CraftingStats crafting { get; set; } = new();
 
         [JsonProperty( "Crew" )]
-        public NpcCrewStats npccrew { get; set; } = new NpcCrewStats();
+        public NpcCrewStats npccrew { get; set; } = new();
 
         [JsonProperty( "Multicrew" )]
-        public MulticrewStats multicrew { get; set; } = new MulticrewStats();
+        public MulticrewStats multicrew { get; set; } = new();
 
         [JsonProperty( "Material_Trader_Stats" )]
-        public MaterialTraderStats materialtrader { get; set; } = new MaterialTraderStats();
+        public MaterialTraderStats materialtrader { get; set; } = new();
 
         [JsonProperty( "CQC" )]
-        public CQCstats cqc { get; set; } = new CQCstats();
+        public CQCstats cqc { get; set; } = new();
 
         [ JsonProperty( "FLEETCARRIER" ) ]
-        public FleetCarrierStats fleetcarrier { get; set; } = new FleetCarrierStats();
+        public FleetCarrierStats fleetcarrier { get; set; } = new();
 
         [ JsonProperty( "Exobiology" ) ] 
-        public ExobiologyStats exobiology { get; set; } = new ExobiologyStats();
+        public ExobiologyStats exobiology { get; set; } = new();
     }
 
     public class BankAccountStats

@@ -30,7 +30,7 @@ namespace Utilities
             e.Handled = !IsDataValid(e.Text);
         }
 
-        bool IsDataValid(object data)
+        static bool IsDataValid(object data)
         {
             try
             {

@@ -17,7 +17,7 @@ namespace Tests
     [TestClass, TestCategory("UnitTests")]
     public class MissionMonitorTests : TestBase
     {
-        private readonly MissionMonitor missionMonitor = new MissionMonitor();
+        private readonly MissionMonitor missionMonitor = new();
 
         [TestInitialize]
         public void StartTestMissionMonitor()

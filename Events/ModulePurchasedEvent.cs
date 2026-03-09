@@ -11,11 +11,11 @@ namespace EddiEvents
         public const string NAME = "Module purchased";
         public const string DESCRIPTION = "Triggered when you purchase a module in outfitting to install on your ship";
         public static readonly string[] SAMPLES =
-        {
+        [
             "{ \"timestamp\":\"2016-06-10T14:32:03Z\", \"event\":\"ModuleBuy\", \"MarketID\": 128666762, \"Slot\":\"MediumHardpoint2\", \"SellItem\":\"hpt_pulselaser_fixed_medium\", \"SellPrice\":0, \"BuyItem\":\"hpt_multicannon_gimbal_medium\", \"BuyPrice\":50018, \"Ship\":\"cobramkiii\", \"ShipID\":1  }",
             "{ \"timestamp\":\"2025-05-15T05:09:11Z\", \"event\":\"ModuleBuy\", \"Slot\":\"Slot10_Size1\", \"StoredItem\":\"$int_detailedsurfacescanner_tiny_name;\", \"StoredItem_Localised\":\"Surface Scanner\", \"BuyItem\":\"$int_dockingcomputer_advanced_name;\", \"BuyItem_Localised\":\"Docking Computer\", \"MarketID\":4243222787, \"BuyPrice\":13170, \"Ship\":\"cutter\", \"ShipID\":54 }",
             "{ \"timestamp\":\"2024-05-06T01:46:03Z\", \"event\":\"ModuleBuy\", \"Slot\":\"Slot01_Size6\", \"StoredItem\":\"$int_shieldgenerator_size6_class3_fast_name;\", \"StoredItem_Localised\":\"Bi-Weave Shield\", \"BuyItem\":\"$int_hullreinforcement_size5_class2_name;\", \"BuyItem_Localised\":\"Hull Reinforcement\", \"MarketID\":129019519, \"BuyPrice\":438750, \"Ship\":\"typex\", \"ShipID\":76 }"
-        };
+        ];
         
         [PublicAPI("The ship for which the module was purchased")]
         public string ship => shipDefinition?.model;

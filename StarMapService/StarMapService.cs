@@ -36,11 +36,11 @@ namespace EddiStarMapService
         // If you need to do some testing on EDSM's API, please use the https://beta.edsm.net/ endpoint for sending data.
         private const string baseUrl = "https://www.edsm.net/";
 
-        private static readonly BlockingCollection<IDictionary<string, object>> queuedEvents = new BlockingCollection<IDictionary<string, object>>();
-        private static readonly ConcurrentDictionary<string, ResourceRateLimit> resourceRateLimits = new ConcurrentDictionary<string, ResourceRateLimit>();
+        private static readonly BlockingCollection<IDictionary<string, object>> queuedEvents = new();
+        private static readonly ConcurrentDictionary<string, ResourceRateLimit> resourceRateLimits = new();
 
         // This API only accepts and only returns data for the "live" galaxy, game version 4.0 or later.
-        private static readonly System.Version minGameVersion = new System.Version(4, 0);
+        private static readonly System.Version minGameVersion = new(4, 0);
         private static System.Version currentGameVersion { get; set; }
         private static string gameVersion;
         private static string gameBuild;
@@ -68,7 +68,7 @@ namespace EddiStarMapService
                     UpdateRateLimits( url, response );
                     await AwaitResourceAsync( url ).ConfigureAwait(false);
                     response.EnsureSuccessStatusCode();
-                    return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    return await response.Content.ReadAsStringAsync(ct).ConfigureAwait(false);
                 }
                 catch ( HttpRequestException he )
                 {
@@ -92,7 +92,7 @@ namespace EddiStarMapService
                     UpdateRateLimits( url, response );
                     await AwaitResourceAsync( url ).ConfigureAwait(false);
                     response.EnsureSuccessStatusCode();
-                    return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    return await response.Content.ReadAsStringAsync(ct).ConfigureAwait(false);
                 }
                 catch ( HttpRequestException he )
                 {

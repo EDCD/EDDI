@@ -8,7 +8,7 @@ namespace EddiEvents
     {
         public const string NAME = "Ship fsd";
         public const string DESCRIPTION = "Triggered when there is a change to the status of your ship's fsd";
-        public static ShipFsdEvent SAMPLE = new ShipFsdEvent( DateTime.UtcNow, false, false, true, false, false, false, false, false, false, false,
+        public static ShipFsdEvent SAMPLE = new( DateTime.UtcNow, false, false, true, false, false, false, false, false, false, false,
             false, false, false, false, false, false );
 
         // FSD cooldown state

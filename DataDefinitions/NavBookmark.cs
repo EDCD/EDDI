@@ -162,9 +162,9 @@ namespace EddiDataDefinitions
                 }
             }
         }
-        [JsonIgnore] private SortedSet<DateTime> _visitLog = new SortedSet<DateTime>();
+        [JsonIgnore] private SortedSet<DateTime> _visitLog = new();
 
-        [JsonIgnore] public bool visited => visitLog.Any();
+        [JsonIgnore] public bool visited => visitLog.Count > 0;
 
         #region POI Bookmark Properties
 

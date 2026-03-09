@@ -52,15 +52,15 @@ namespace EddiDataProviderService
                         {
                             presence.Happiness = oldPresence.Happiness;
                         }
-                        if ( !presence.ActiveStates.Any() && oldPresence.ActiveStates.Any() )
+                        if ( presence.ActiveStates.Count == 0 && oldPresence.ActiveStates.Count > 0 )
                         {
                             presence.ActiveStates = oldPresence.ActiveStates;
                         }
-                        if ( !presence.PendingStates.Any() && oldPresence.PendingStates.Any() )
+                        if ( presence.PendingStates.Count == 0 && oldPresence.PendingStates.Count > 0 )
                         {
                             presence.PendingStates = oldPresence.PendingStates;
                         }
-                        if ( !presence.RecoveringStates.Any() && oldPresence.RecoveringStates.Any() )
+                        if ( presence.RecoveringStates.Count == 0 && oldPresence.RecoveringStates.Count > 0 )
                         {
                             presence.RecoveringStates = oldPresence.RecoveringStates;
                         }

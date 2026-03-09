@@ -29,8 +29,8 @@ namespace EddiSpeechService
         public readonly AudioManager AudioManager;
 
         private const float ActiveSpeechFadeOutMilliseconds = 250;
-        private static readonly object activeSpeechLock = new object();
-        private readonly ConcurrentDictionary<IWavePlayer, CancellationTokenSource> activeSpeechTS = new ConcurrentDictionary<IWavePlayer, CancellationTokenSource>();
+        private static readonly object activeSpeechLock = new();
+        private readonly ConcurrentDictionary<IWavePlayer, CancellationTokenSource> activeSpeechTS = new();
         private static bool discardPendingSegments;
         public List<VoiceDetails> allVoices { get; }
 
@@ -50,7 +50,7 @@ namespace EddiSpeechService
             }
         }
 
-        public readonly SpeechQueue speechQueue = new SpeechQueue();
+        public readonly SpeechQueue speechQueue = new();
 
         public SpeechManager ()
         {
@@ -119,7 +119,7 @@ namespace EddiSpeechService
                    osVersion >= new System.Version( 10, 0, 17763, 0 );
         }
 
-        private void FetchLexiconSchemas ()
+        private static void FetchLexiconSchemas ()
         {
             // Try to obtain and load lexicon related schemas for lexicon schema validation
             try
@@ -264,7 +264,7 @@ namespace EddiSpeechService
                     keysToRemove = activeSpeechTS.Keys;
                 }
 
-                if ( keysToRemove.Any() )
+                if ( keysToRemove.Count > 0 )
                 {
                     keysToRemove.AsParallel().ForAll( key =>
                     {
@@ -327,7 +327,7 @@ namespace EddiSpeechService
         }
 
         private int speechQueueRunning;
-        private CancellationTokenSource speechQueueCts = new CancellationTokenSource();
+        private CancellationTokenSource speechQueueCts = new();
         private void EnsureSpeechQueueRunning ()
         {
             if ( speechQueueCts.IsCancellationRequested )

@@ -49,7 +49,7 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        internal static readonly object vaProxyLock = new object();
+        internal static readonly object vaProxyLock = new();
 
         [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
         public static void VA_Init1(dynamic vaProxy)
@@ -213,7 +213,7 @@ namespace EddiVoiceAttackResponder
         #region Command Interactions
 
         // If running VoiceAttack version 1.7.4 or later then we should use the more modern command API endpoints
-        private static readonly System.Version commandApiVaVersion = new System.Version( 1, 7, 4 );
+        private static readonly System.Version commandApiVaVersion = new( 1, 7, 4 );
         
         public static async Task WaitForCommandExecutionAsync ( string commandName )
         {
@@ -273,7 +273,7 @@ namespace EddiVoiceAttackResponder
         #region Variable Interactions
 
         // If running VoiceAttack version 1.10.4 or later then we should use the more modern variable API endpoints
-        private static readonly System.Version variableApiVaVersion = new System.Version( 1, 10, 4 );
+        private static readonly System.Version variableApiVaVersion = new( 1, 10, 4 );
 
         public static bool? GetBoolean ( string key, bool retrieveFromProfile = false )
         {

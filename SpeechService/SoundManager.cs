@@ -7,7 +7,7 @@ namespace EddiSpeechService
 {
     public class SoundManager
     {
-        internal IWavePlayer GetSoundOut ( IWaveProvider provider )
+        internal static IWavePlayer GetSoundOut ( IWaveProvider provider )
         {
             // Try WASAPI first
             try

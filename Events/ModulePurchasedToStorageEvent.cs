@@ -11,11 +11,11 @@ namespace EddiEvents
         public const string NAME = "Module purchased to storage";
         public const string DESCRIPTION = "Triggered when you purchase and store a module without installing it on your ship";
         public static readonly string[] SAMPLES =
-        {
+        [
             "{ \"timestamp\":\"2024-09-21T09:17:12Z\", \"event\":\"ModuleBuyAndStore\", \"BuyItem\":\"$int_multidronecontrol_operations_size3_class4_name;\", \"BuyItem_Localised\":\"Operations Multi-Limpet Controller\", \"MarketID\":3228926720, \"BuyPrice\":78000, \"Ship\":\"typex\", \"ShipID\":76 }",
             "{ \"timestamp\":\"2025-01-13T06:48:41Z\", \"event\":\"ModuleBuyAndStore\", \"BuyItem\":\"$int_guardianfsdbooster_size4_name;\", \"BuyItem_Localised\":\"Guardian FSD Booster\", \"MarketID\":3230492672, \"BuyPrice\":3163887, \"Ship\":\"cobramkv\", \"ShipID\":128 }",
             "{ \"timestamp\":\"2021-08-02T06:18:05Z\", \"event\":\"ModuleBuyAndStore\", \"BuyItem\":\"$int_supercruiseassist_name;\", \"BuyItem_Localised\":\"Supercruise Assist\", \"MarketID\":3228552448, \"BuyPrice\":8893, \"Ship\":\"diamondbackxl\", \"ShipID\":38 }"
-        };
+        ];
 
         [PublicAPI("The module (object) purchased")]
         public Module buymodule { get; private set; }

@@ -13,7 +13,7 @@ namespace EddiEddnResponder.Schemas
     [UsedImplicitly]
     public class CommoditySchema : ISchema, ICapiSchema
     {
-        public List<string> edTypes => new List<string> { "Market", "MarketBuy", "MarketSell" };
+        public List<string> edTypes => [ "Market", "MarketBuy", "MarketSell" ];
 
         // Track this so that we do not send duplicate data from the journal and from CAPI.
         private long? lastSentMarketID;

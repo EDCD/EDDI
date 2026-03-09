@@ -101,7 +101,8 @@ namespace Tests
         {
             var ship = ShipDefinitions.FromEDModel( "Anaconda" );
             var speaker = SpeechService.Instance;
-            string[] powerNames = {
+            string[] powerNames =
+            [
                 "Aisling Duval",
                 "Archon Delaine",
                 "Arissa Lavigny-Duval",
@@ -112,7 +113,7 @@ namespace Tests
                 "Zachary Hudson",
                 "Zemina Torval",
                 "Li Yong-Rui"
-            };
+            ];
             foreach ( var powerName in powerNames )
             {
                 await speaker.SayAsync( ship, SpeechConversions.getPhoneticPower( powerName ) + "." ).ConfigureAwait( false );

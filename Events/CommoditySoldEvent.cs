@@ -9,11 +9,11 @@ namespace EddiEvents
     {
         public const string NAME = "Commodity sold";
         public const string DESCRIPTION = "Triggered when you sell a commodity to the markets";
-        public static readonly string[] SAMPLES = 
-        {
+        public static readonly string[] SAMPLES =
+        [
             "{ \"timestamp\":\"2018-04-07T16:29:44Z\", \"event\":\"MarketSell\", \"MarketID\":3224801280, \"Type\":\"coffee\", \"Count\":1, \"SellPrice\":1138, \"TotalSale\":1138, \"AvgPricePaid\":1198 }",
             "{ \"timestamp\":\"2024-08-14T22:46:27Z\", \"event\":\"MarketSell\", \"MarketID\":3221497856, \"Type\":\"autofabricators\", \"Type_Localised\":\"Auto-Fabricators\", \"Count\":139, \"SellPrice\":26782, \"TotalSale\":3722698, \"AvgPricePaid\":3838 }"
-        };
+        ];
 
         [PublicAPI("The market ID of the commodity sold")]
         public long marketid { get; }

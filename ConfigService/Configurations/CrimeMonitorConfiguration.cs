@@ -10,8 +10,8 @@ namespace EddiConfigService.Configurations
     [JsonObject(MemberSerialization.OptOut), RelativePath(@"\crimemonitor.json")]
     public class CrimeMonitorConfiguration : Config
     {
-        private ObservableCollection<FactionRecord> _criminalrecord = new ObservableCollection<FactionRecord>();
-        private Dictionary<string, string> _homeSystems = new Dictionary<string, string>();
+        private ObservableCollection<FactionRecord> _criminalrecord = new();
+        private Dictionary<string, string> _homeSystems = new();
         private DateTime _updatedat;
 
         public ObservableCollection<FactionRecord> criminalrecord

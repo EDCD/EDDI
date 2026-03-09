@@ -20,10 +20,10 @@ namespace EddiEdsmResponder
     {
         private Task updateTask;
         private CancellationTokenSource updateThreadCancellationTokenSource;
-        private List<string> ignoredEvents = new List<string>();
+        private List<string> ignoredEvents = new();
 
         // This responder currently requires game version 4.0 or later.
-        private static readonly System.Version minGameVersion = new System.Version(4, 0);
+        private static readonly System.Version minGameVersion = new(4, 0);
 
         public string ResponderName()
         {

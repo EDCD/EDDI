@@ -22,8 +22,8 @@ namespace EddiCompanionAppService
 
         private readonly DdeDelegate ddeDelegate;
         private uint DdeInstance = 0;
-        private IntPtr ServerNameHandle = new IntPtr(0);
-        private IntPtr TopicHandle = new IntPtr(0);
+        private IntPtr ServerNameHandle = new(0);
+        private IntPtr TopicHandle = new(0);
         private readonly UrlHandler urlHandler;
         private readonly Logger logger;
 
@@ -201,15 +201,15 @@ namespace EddiCompanionAppService
             return IntPtr.Zero;
         }
 
-        private string FromDdeStringHandle(IntPtr handle)
+        private static string FromDdeStringHandle(IntPtr handle)
         {
             var raw = DataFromDdeHandle(handle);
-            char[] trimNulls = { '\0' };
+            char[] trimNulls = [ '\0' ];
             var s = System.Text.Encoding.Unicode.GetString(raw).TrimEnd(trimNulls);
             return s;
         }
 
-        private byte[] DataFromDdeHandle(IntPtr handle)
+        private static byte[] DataFromDdeHandle(IntPtr handle)
         {
             // DdeGetData fills the buffer.
             var size = NativeMethods.DdeGetData(handle, null, 0, 0);

@@ -9,7 +9,10 @@ namespace EddiEvents
     {
         public const string NAME = "Holoscreen hacked";
         public const string DESCRIPTION = "Triggered when you hack a power's holoscreen.";
-        public static readonly string[] SAMPLES = { @"{""timestamp"":""2024-10-22T20:40:06Z"",""event"":""HoloscreenHacked"",""PowerBefore"":""Aisling Duval"",""PowerAfter"":""Yuri Grom""}" };
+        public static readonly string[] SAMPLES =
+        [
+            @"{""timestamp"":""2024-10-22T20:40:06Z"",""event"":""HoloscreenHacked"",""PowerBefore"":""Aisling Duval"",""PowerAfter"":""Yuri Grom""}"
+        ];
 
         [ PublicAPI( "The powerplay power displayed before the hack, as a localized string" ) ]
         public string before => powerBefore?.localizedName;

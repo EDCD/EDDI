@@ -11,11 +11,11 @@ namespace EddiEvents
         public const string NAME = "Colonisation contribution";
         public const string DESCRIPTION = "Triggered when contributing commodities towards construction in colonised star system";
         public static readonly string[] SAMPLES =
-        {
+        [
             @"{ ""timestamp"":""2025-04-11T08:30:20Z"", ""event"":""ColonisationContribution"", ""MarketID"":3950995714, ""Contributions"":[ { ""Name"":""$CeramicComposites_name;"", ""Name_Localised"":""Ceramic Composites"", ""Amount"":513 }, { ""Name"":""$InsulatingMembrane_name;"", ""Name_Localised"":""Insulating Membrane"", ""Amount"":263 }, { ""Name"":""$LiquidOxygen_name;"", ""Name_Localised"":""Liquid oxygen"", ""Amount"":8 } ] }",
             @"{ ""timestamp"":""2025-04-11T08:16:05Z"", ""event"":""ColonisationContribution"", ""MarketID"":3950995714, ""Contributions"":[ { ""Name"":""$Titanium_name;"", ""Name_Localised"":""Titanium"", ""Amount"":56 }, { ""Name"":""$Water_name;"", ""Name_Localised"":""Water"", ""Amount"":717 } ] }",
             @"{ ""timestamp"":""2025-04-11T08:01:06Z"", ""event"":""ColonisationContribution"", ""MarketID"":3955317762, ""Contributions"":[ { ""Name"":""$LiquidOxygen_name;"", ""Name_Localised"":""Liquid oxygen"", ""Amount"":677 } ] }"
-        };
+        ];
 
         [PublicAPI( "The numeric market ID of the location receiving your contribution" )]
         public long marketID { get; private set; }

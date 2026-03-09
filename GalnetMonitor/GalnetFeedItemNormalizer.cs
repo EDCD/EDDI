@@ -18,9 +18,9 @@ namespace EddiGalnetMonitor
     /// </remarks>
     public class GalnetFeedItemNormalizer
     {
-        private static readonly Regex _htmlRegex = new Regex(@"<[^>]*>", RegexOptions.Compiled);    //@"<(.|\n)*?>"
-        private static readonly Regex _controlCodesRegex = new Regex(@"[\x00-\x1F\x7f]", RegexOptions.Compiled);
-        private static readonly Regex _whiteSpaceRegex = new Regex(@"\s{2,}", RegexOptions.Compiled);
+        private static readonly Regex _htmlRegex = new(@"<[^>]*>", RegexOptions.Compiled);    //@"<(.|\n)*?>"
+        private static readonly Regex _controlCodesRegex = new(@"[\x00-\x1F\x7f]", RegexOptions.Compiled);
+        private static readonly Regex _whiteSpaceRegex = new(@"\s{2,}", RegexOptions.Compiled);
         private bool fromAltUrl { get; set; }
 
         public GalnetFeedItemNormalizer ( bool fromAltUrl )

@@ -93,7 +93,7 @@ namespace EddiSpanshService
                         return null;
                     }
 
-                    var getJson = await getResponse.Content.ReadAsStringAsync().ConfigureAwait( false );
+                    var getJson = await getResponse.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait( false );
                     routeResult = JObject.Parse( getJson );
 
                     if ( routeResult[ "error" ] != null )

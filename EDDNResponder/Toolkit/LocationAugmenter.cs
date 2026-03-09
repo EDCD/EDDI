@@ -30,27 +30,27 @@ namespace EddiEddnResponder.Toolkit
         private bool invalidState { get; set; } // Are we in an invalid state?
 
         // These events contain full star system location data. 
-        private static readonly List<string> fullStarSystemLocationEvents = new List<string>
-        {
+        private static readonly List<string> fullStarSystemLocationEvents =
+        [
             "FSDJump",
             "Location",
             "CarrierJump"
-        };
+        ];
 
         // These events must be ignored to prevent enriching events with incorrect location data
-        private static readonly List<string> starSystemIgnoredEvents = new List<string>
-        {
+        private static readonly List<string> starSystemIgnoredEvents =
+        [
             "CarrierJumpRequest", // CarrierJumpRequest events describing the system the carrier is jumping too rather than the system we are in
             "FSDTarget", // FSDTarget events describing the system we are targeting rather than the system we are in
-            "FSSSignalDiscovered",  // Scan events from the destination system can register after StartJump and before we actually leave the originating system
+            "FSSSignalDiscovered", // Scan events from the destination system can register after StartJump and before we actually leave the originating system
             "Outfitting", // Relies on an exterior file and contains `StarSystem` field without `SystemAddress` field. Safer to ignore.
             "Market", // Relies on an exterior file and contains `StarSystem` field without `SystemAddress` field. Safer to ignore.
             "ScanOrganic", // May report incorrect location info if the player does not allow the animation to complete before boarding a ship.
             "Shipyard", // Relies on an exterior file and contains `StarSystem` field without `SystemAddress` field. Safer to ignore.
             "StartJump", // `StartJump` events list the destination star system name.
             "StoredModules", // Contains `StarSystem` field without `SystemAddress` field. Safer to ignore.
-            "StoredShips" // Contains `StarSystem` field without `SystemAddress` field. Safer to ignore.
-        };
+            "StoredShips"
+        ];
 
         internal void GetLocationInfo(Status status)
         {

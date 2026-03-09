@@ -43,7 +43,7 @@ namespace EddiDataDefinitions
         // As this is quite dynamic data and the data we receive at any given time is likely to be incomplete, 
         // we won't save it to the local database at this time.
         [PublicAPI( "A list of FactionPresence objects. Unless called from the *FactionDetails()* function, only details from the current system will be included here" )]
-        public List<FactionPresence> presences { get; set; } = new List<FactionPresence>();
+        public List<FactionPresence> presences { get; set; } = new();
 
         // Not intended to be user facing
 
@@ -90,13 +90,13 @@ namespace EddiDataDefinitions
         public decimal? influence { get; set; }
 
         [PublicAPI( "(For recently visited systems only) A list of FactionState objects" )]
-        public List<FactionState> ActiveStates { get; set; } = new List<FactionState>();
+        public List<FactionState> ActiveStates { get; set; } = new();
 
         [PublicAPI( "(For recently visited systems only) A list of pending FactionState objects and trend values" )]
-        public List<FactionTrendingState> PendingStates { get; set; } = new List<FactionTrendingState>();
+        public List<FactionTrendingState> PendingStates { get; set; } = new();
 
         [PublicAPI( "(For recently visited systems only) A list of recent prior FactionState objects and trend values" )]
-        public List<FactionTrendingState> RecoveringStates { get; set; } = new List<FactionTrendingState>();
+        public List<FactionTrendingState> RecoveringStates { get; set; } = new();
 
         [PublicAPI( "(For recently visited systems only) The current happiness level of the faction within the system, as an object" )]
         public Happiness Happiness

@@ -143,7 +143,7 @@ namespace System
         {
             if ( task == null )
             {
-                throw new ArgumentNullException( nameof(task) );
+                ArgumentNullException.ThrowIfNull( (Task)null, nameof(task) );
             }
 
             // If already completed successfully, nothing to do

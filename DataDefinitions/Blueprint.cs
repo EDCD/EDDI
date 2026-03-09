@@ -860,7 +860,7 @@ namespace EddiDataDefinitions
         public long? blueprintId { get; private set; }
 
         [PublicAPI, JsonIgnore]
-        public List<MaterialAmount> materials => grade > 0 && grade <= blueprintTemplate?.byGrade?.Count ? blueprintTemplate?.byGrade[grade] : new List<MaterialAmount>();
+        public List<MaterialAmount> materials => grade > 0 && grade <= blueprintTemplate?.byGrade?.Count ? blueprintTemplate?.byGrade[grade] : [ ];
 
         // Not intended to be user facing
         public BlueprintTemplate blueprintTemplate { get; private set; }

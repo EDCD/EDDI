@@ -45,74 +45,74 @@ namespace EddiDataDefinitions
 
         // PRIMARY mission types (typically listed first in mission name)
 
-        public static MissionType Altruism = new MissionType( "Altruism", true, false, true );
-        public static MissionType Assassinate = new MissionType( "Assassinate", true, false, true );
-        public static MissionType Collect = new MissionType( "Collect", true, true, true );
-        public static MissionType Colonisation = new MissionType( "Colonisation", false, false, false );
-        public static MissionType CommunityGoal = new MissionType( "CommunityGoal", false, false, true );
-        public static MissionType Courier = new MissionType( "Courier", false, false, true );
-        public static MissionType Delivery = new MissionType( "Delivery", false, true, true );
-        public static MissionType Disable = new MissionType( "Disable", true, false, true );
-        public static MissionType Hack = new MissionType( "Hack", true, false, true );
-        public static MissionType LongDistanceExpedition = new MissionType( "LongDistanceExpedition", true, false, true );
-        public static MissionType Massacre = new MissionType( "Massacre", true, false, true );
-        public static MissionType Mining = new MissionType( "Mining", true, true, true );
-        public static MissionType OnFoot = new MissionType( "OnFoot", true, false, true );
-        public static MissionType Passenger = new MissionType( "Passenger", false, false, true );
-        public static MissionType Piracy = new MissionType( "Piracy", true, false, true );
-        public static MissionType Rescue = new MissionType( "Rescue", true, true, true ); // Horizons / surface salvage missions
-        public static MissionType Salvage = new MissionType( "Salvage", true, true, true );
-        public static MissionType Scan = new MissionType( "Scan", true, false, true ); // Surface scan
-        public static MissionType SightSeeing = new MissionType( "Sightseeing", true, false, true );
-        public static MissionType Smuggle = new MissionType( "Smuggle", false, true, true );
+        public static MissionType Altruism = new( "Altruism", true, false, true );
+        public static MissionType Assassinate = new( "Assassinate", true, false, true );
+        public static MissionType Collect = new( "Collect", true, true, true );
+        public static MissionType Colonisation = new( "Colonisation", false, false, false );
+        public static MissionType CommunityGoal = new( "CommunityGoal", false, false, true );
+        public static MissionType Courier = new( "Courier", false, false, true );
+        public static MissionType Delivery = new( "Delivery", false, true, true );
+        public static MissionType Disable = new( "Disable", true, false, true );
+        public static MissionType Hack = new( "Hack", true, false, true );
+        public static MissionType LongDistanceExpedition = new( "LongDistanceExpedition", true, false, true );
+        public static MissionType Massacre = new( "Massacre", true, false, true );
+        public static MissionType Mining = new( "Mining", true, true, true );
+        public static MissionType OnFoot = new( "OnFoot", true, false, true );
+        public static MissionType Passenger = new( "Passenger", false, false, true );
+        public static MissionType Piracy = new( "Piracy", true, false, true );
+        public static MissionType Rescue = new( "Rescue", true, true, true ); // Horizons / surface salvage missions
+        public static MissionType Salvage = new( "Salvage", true, true, true );
+        public static MissionType Scan = new( "Scan", true, false, true ); // Surface scan
+        public static MissionType SightSeeing = new( "Sightseeing", true, false, true );
+        public static MissionType Smuggle = new( "Smuggle", false, true, true );
 
         // SECONDARY mission types
 
-        public static MissionType Alert = new MissionType( "Alert" );
-        public static MissionType Assassination = new MissionType( "Assassination" ); // On-Foot missions to assassinate individual persons 
-        public static MissionType BlOps = new MissionType( "BlOps" ); // Black ops
-        public static MissionType Bulk = new MissionType( "Bulk" ); // Bulk passenger missions
-        public static MissionType Burning = new MissionType( "Burning" ); // Burning station
-        public static MissionType Chained = new MissionType( "Chain" ); // Chained missions
-        public static MissionType Conflict = new MissionType( "Conflict" ); // Conflict zone massacre missions
-        public static MissionType Contact = new MissionType( "Contact" ); // On-foot missions assigned by an on-foot contact
-        public static MissionType Covert = new MissionType( "Covert" ); // On-foot covert missions
-        public static MissionType Credits = new MissionType( "Credits" ); // Altruism missions delivering credits
-        public static MissionType Download = new MissionType( "Download" ); // On-foot hack missions
-        public static MissionType Evacuation = new MissionType( "Evacuation" ); // Evacuation passenger missions
-        public static MissionType Founder = new MissionType( "Founder" ); // Founder missions (seen on delivery missions)
-        public static MissionType GenericPermit1 = new MissionType( "GenericPermit1" ); // This is a special type which seems to be awarded / completed immediately.
-        public static MissionType Hard = new MissionType( "Hard" ); // Hard missions
-        public static MissionType Heist = new MissionType( "Heist" ); // On-foot heist missions
-        public static MissionType Illegal = new MissionType( "Illegal" ); // Illegal missions
-        public static MissionType Legal = new MissionType( "Legal" ); // Legal missions
-        public static MissionType Megaship = new MissionType( "Megaship" ); // Missions interacting with a megaship
-        public static MissionType NCD = new MissionType( "NCD" ); // On-foot nonviolent missions
-        public static MissionType Offline = new MissionType( "Offline" ); // On-foot settlement state
-        public static MissionType Onslaught = new MissionType( "Onslaught" ); // On-foot massacre of settlement personnel
-        public static MissionType Planet = new MissionType( "Planet" ); // Horizons rescue and salvage missions
-        public static MissionType Planetary = new MissionType( "Planetary" ); // Horizons assassinate missions
-        public static MissionType POI = new MissionType( "POI" ); // On-foot POI heist missions, e.g. 'Seize the Hush from a hidden cache'
-        public static MissionType PoliticalPrisoners = new MissionType( "PolPrisoner" ); // Political prisoners passenger mission
-        public static MissionType Power = new MissionType( "Power" ); // On-foot mission sabotage target
-        public static MissionType Production = new MissionType( "Production" ); // On-foot mission sabotage target
-        public static MissionType ProductionHeist = new MissionType( "ProductionHeist" ); // On-foot heist missions, e.g. 'Acquire a (chemical) sample from Gough's Works'
-        public static MissionType RankEmp = new MissionType( "RankEmp" ); // Imperial rank missions
-        public static MissionType RankFed = new MissionType( "RankFed" ); // Federation rank missions
-        public static MissionType Reboot = new MissionType( "Reboot" ); // On-foot settlement mission objective
-        public static MissionType RebootRestore = new MissionType( "RebootRestore" ); // On-foot settlement mission objective
-        public static MissionType Sabotage = new MissionType( "Sabotage" ); // On-foot settlement sabotage missions
-        public static MissionType Scout = new MissionType( "Scout" ); // Thargoid war massacre scout missions
-        public static MissionType Skimmer = new MissionType( "Skimmer" ); // Horizons massacre planetary skimmer missions
-        public static MissionType Special = new MissionType( "Special" ); // Special missions
-        public static MissionType StartZone = new MissionType( "StartZone" ); // Start zone missions
-        public static MissionType Thargoid = new MissionType( "Thargoid" ); // Thargoid war massacre missions
-        public static MissionType TheDead = new MissionType( "TheDead" ); // Ram-Tah special mission investigating Guardian ruins
-        public static MissionType ThargoidWar = new MissionType( "TW" ); // Thargoid War
-        public static MissionType Upload = new MissionType( "Upload" ); // On-foot hack missions
-        public static MissionType VIP = new MissionType( "VIP" ); // VIP passenger missions
-        public static MissionType Welcome = new MissionType( "Welcome" ); // Welcome missions
-        public static MissionType Wing = new MissionType( "Wing" ); // Wing missions
+        public static MissionType Alert = new( "Alert" );
+        public static MissionType Assassination = new( "Assassination" ); // On-Foot missions to assassinate individual persons 
+        public static MissionType BlOps = new( "BlOps" ); // Black ops
+        public static MissionType Bulk = new( "Bulk" ); // Bulk passenger missions
+        public static MissionType Burning = new( "Burning" ); // Burning station
+        public static MissionType Chained = new( "Chain" ); // Chained missions
+        public static MissionType Conflict = new( "Conflict" ); // Conflict zone massacre missions
+        public static MissionType Contact = new( "Contact" ); // On-foot missions assigned by an on-foot contact
+        public static MissionType Covert = new( "Covert" ); // On-foot covert missions
+        public static MissionType Credits = new( "Credits" ); // Altruism missions delivering credits
+        public static MissionType Download = new( "Download" ); // On-foot hack missions
+        public static MissionType Evacuation = new( "Evacuation" ); // Evacuation passenger missions
+        public static MissionType Founder = new( "Founder" ); // Founder missions (seen on delivery missions)
+        public static MissionType GenericPermit1 = new( "GenericPermit1" ); // This is a special type which seems to be awarded / completed immediately.
+        public static MissionType Hard = new( "Hard" ); // Hard missions
+        public static MissionType Heist = new( "Heist" ); // On-foot heist missions
+        public static MissionType Illegal = new( "Illegal" ); // Illegal missions
+        public static MissionType Legal = new( "Legal" ); // Legal missions
+        public static MissionType Megaship = new( "Megaship" ); // Missions interacting with a megaship
+        public static MissionType NCD = new( "NCD" ); // On-foot nonviolent missions
+        public static MissionType Offline = new( "Offline" ); // On-foot settlement state
+        public static MissionType Onslaught = new( "Onslaught" ); // On-foot massacre of settlement personnel
+        public static MissionType Planet = new( "Planet" ); // Horizons rescue and salvage missions
+        public static MissionType Planetary = new( "Planetary" ); // Horizons assassinate missions
+        public static MissionType POI = new( "POI" ); // On-foot POI heist missions, e.g. 'Seize the Hush from a hidden cache'
+        public static MissionType PoliticalPrisoners = new( "PolPrisoner" ); // Political prisoners passenger mission
+        public static MissionType Power = new( "Power" ); // On-foot mission sabotage target
+        public static MissionType Production = new( "Production" ); // On-foot mission sabotage target
+        public static MissionType ProductionHeist = new( "ProductionHeist" ); // On-foot heist missions, e.g. 'Acquire a (chemical) sample from Gough's Works'
+        public static MissionType RankEmp = new( "RankEmp" ); // Imperial rank missions
+        public static MissionType RankFed = new( "RankFed" ); // Federation rank missions
+        public static MissionType Reboot = new( "Reboot" ); // On-foot settlement mission objective
+        public static MissionType RebootRestore = new( "RebootRestore" ); // On-foot settlement mission objective
+        public static MissionType Sabotage = new( "Sabotage" ); // On-foot settlement sabotage missions
+        public static MissionType Scout = new( "Scout" ); // Thargoid war massacre scout missions
+        public static MissionType Skimmer = new( "Skimmer" ); // Horizons massacre planetary skimmer missions
+        public static MissionType Special = new( "Special" ); // Special missions
+        public static MissionType StartZone = new( "StartZone" ); // Start zone missions
+        public static MissionType Thargoid = new( "Thargoid" ); // Thargoid war massacre missions
+        public static MissionType TheDead = new( "TheDead" ); // Ram-Tah special mission investigating Guardian ruins
+        public static MissionType ThargoidWar = new( "TW" ); // Thargoid War
+        public static MissionType Upload = new( "Upload" ); // On-foot hack missions
+        public static MissionType VIP = new( "VIP" ); // VIP passenger missions
+        public static MissionType Welcome = new( "Welcome" ); // Welcome missions
+        public static MissionType Wing = new( "Wing" ); // Wing missions
 
         public bool IncludeInMissionRouting { get; set; }
 
@@ -230,7 +230,7 @@ namespace EddiDataDefinitions
             return tagsList;
         }
 
-        private static readonly Dictionary<string, string> CHAINED = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> CHAINED = new()
         {
             {"clearingthepath", "delivery"},
             {"drawthegeneralout", "assassinate"},

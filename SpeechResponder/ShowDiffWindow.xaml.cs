@@ -21,7 +21,7 @@ namespace EddiSpeechResponder
         {
             private readonly Brush deletedBrush = Brushes.LightCoral;
             private readonly Brush addedBrush = Brushes.LightGreen;
-            private readonly TextSegmentCollection<DiffSegment> diffSegments = new TextSegmentCollection<DiffSegment>();
+            private readonly TextSegmentCollection<DiffSegment> diffSegments = new();
 
             public void AddSegment(DiffSegment segment)
             {
@@ -82,7 +82,7 @@ namespace EddiSpeechResponder
             }
         }
 
-        private readonly DiffHighlighter diffHighlighter = new DiffHighlighter();
+        private readonly DiffHighlighter diffHighlighter = new();
 
         public ShowDiffWindow(string oldScript, string newScript)
         {

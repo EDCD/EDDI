@@ -36,7 +36,7 @@ namespace EddiDataDefinitions
 
         /// <summary>The hotpots we found when we scanned this object, if any</summary>
         [PublicAPI]
-        public List<CommodityAmount> hotspots { get; set; } = new List<CommodityAmount>();
+        public List<CommodityAmount> hotspots { get; set; } = new();
 
         // Not intended to be user facing
 

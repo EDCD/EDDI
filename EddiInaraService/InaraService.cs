@@ -32,8 +32,8 @@ namespace EddiInaraService
         // Variables
         private readonly HttpClient httpClient;
         private static bool tooManyRequests; // This must be static so that it is visible to child threads and tasks
-        private static readonly BlockingCollection<InaraAPIEvent> queuedAPIEvents = new BlockingCollection<InaraAPIEvent>();
-        private readonly List<string> invalidAPIEvents = new List<string>();
+        private static readonly BlockingCollection<InaraAPIEvent> queuedAPIEvents = new();
+        private readonly List<string> invalidAPIEvents = new();
         private static CancellationTokenSource syncCancellationTS; // This must be static so that it is visible to child threads and tasks
         private bool eddiIsBeta;
         public static EventHandler invalidAPIkey;

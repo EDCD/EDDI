@@ -14,7 +14,7 @@ namespace EddiSpeechService
     public class SpeechService
     {
         private AudioManager AudioManager => SpeechManager.AudioManager;
-        public readonly SpeechManager SpeechManager = new SpeechManager();
+        public readonly SpeechManager SpeechManager = new();
 
         public List<string> allvoices => SpeechManager.allVoices
             .Where(v => !v.hideVoice)
@@ -35,7 +35,7 @@ namespace EddiSpeechService
         }
 
         private static SpeechService instance;
-        private static readonly object instanceLock = new object();
+        private static readonly object instanceLock = new();
         public static SpeechService Instance
         {
             get

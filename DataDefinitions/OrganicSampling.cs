@@ -22,7 +22,7 @@ namespace EddiDataDefinitions
         }
 
         public Organic organic { get; set; }
-        private List<OrganicSample> _samples { get; } = new List<OrganicSample>();
+        private List<OrganicSample> _samples { get; } = new();
         public bool wasNearPriorSample { get; set; }
 
         public void LogSample ( Organic loggedOrganic, ulong systemAddress, int bodyId, decimal latitude, decimal longitude )

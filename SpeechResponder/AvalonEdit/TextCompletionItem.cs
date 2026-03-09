@@ -42,7 +42,7 @@ namespace EddiSpeechResponder.AvalonEdit
 
         private string Type { get; }
 
-        private TextCompletionControl Control => new TextCompletionControl( Text, Type, Description?.ToString() )
+        private TextCompletionControl Control => new( Text, Type, Description?.ToString() )
         {
             Width = this.Width
         };

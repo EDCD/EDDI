@@ -114,7 +114,7 @@ namespace EddiDataDefinitions
         // This is as intended, with separate values for each derived type
         // rather than a single shared value across all types.
         protected static ResourceManager resourceManager;
-        public static readonly object resourceLock = new object();
+        public static readonly object resourceLock = new();
         // ReSharper restore StaticMemberInGenericType
 
         [JsonProperty]

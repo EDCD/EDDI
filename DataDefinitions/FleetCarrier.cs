@@ -11,7 +11,7 @@ namespace EddiDataDefinitions
     {
         private long _carrierId;
         private StationModel _carrierType;
-        private FrontierApiStation _market = new FrontierApiStation();
+        private FrontierApiStation _market = new();
         private string _name;
         private string _callsign;
         private string _currentStarSystem;
@@ -31,14 +31,14 @@ namespace EddiDataDefinitions
         private long _bankBalance;
         private long _bankReservedBalance;
         private long _bankPurchaseAllocationsBalance;
-        private JArray _cargo = new JArray();
-        private JArray _carrierLockerAssets = new JArray();
-        private JArray _carrierLockerGoods = new JArray();
-        private JArray _carrierLockerData = new JArray();
-        private JArray _commoditySalesOrders = new JArray();
-        private JArray _commodityPurchaseOrders = new JArray();
-        private JArray _microresourceSalesOrders = new JArray();
-        private JArray _microresourcePurchaseOrders = new JArray();
+        private JArray _cargo = new();
+        private JArray _carrierLockerAssets = new();
+        private JArray _carrierLockerGoods = new();
+        private JArray _carrierLockerData = new();
+        private JArray _commoditySalesOrders = new();
+        private JArray _commodityPurchaseOrders = new();
+        private JArray _microresourceSalesOrders = new();
+        private JArray _microresourcePurchaseOrders = new();
 
         public long carrierID
         {

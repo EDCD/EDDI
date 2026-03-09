@@ -41,7 +41,7 @@ namespace EddiDataDefinitions
             { }
         }
 
-        public static List<EmpireRating> AllOfThem = new List<EmpireRating>();
+        public static List<EmpireRating> AllOfThem = new();
         public string edname { get; }
         public int rank { get; }
 
@@ -72,21 +72,21 @@ namespace EddiDataDefinitions
             AllOfThem.Add(this);
         }
 
-        public static readonly EmpireRating None = new EmpireRating("None", 0);
-        public static readonly EmpireRating Outsider = new EmpireRating("Outsider", 1);
-        public static readonly EmpireRating Serf = new EmpireRating("Serf", 2);
-        public static readonly EmpireRating Master = new EmpireRating("Master", 3);
-        public static readonly EmpireRating Squire = new EmpireRating("Squire", 4);
-        public static readonly EmpireRating Knight = new EmpireRating("Knight", 5);
-        public static readonly EmpireRating Lord = new EmpireRating("Lord", 6);
-        public static readonly EmpireRating Baron = new EmpireRating("Baron", 7);
-        public static readonly EmpireRating Viscount = new EmpireRating("Viscount", 8);
-        public static readonly EmpireRating Count = new EmpireRating("Count", 9);
-        public static readonly EmpireRating Earl = new EmpireRating("Earl", 10); // normally Countess, but we need to distinguish from rank 9
-        public static readonly EmpireRating Marquis = new EmpireRating("Marquis", 11); // or Marchioness <https://en.wikipedia.org/wiki/Marquess>
-        public static readonly EmpireRating Duke = new EmpireRating("Duke", 12);
-        public static readonly EmpireRating Prince = new EmpireRating("Prince", 13);
-        public static readonly EmpireRating King = new EmpireRating("King", 14);
+        public static readonly EmpireRating None = new("None", 0);
+        public static readonly EmpireRating Outsider = new("Outsider", 1);
+        public static readonly EmpireRating Serf = new("Serf", 2);
+        public static readonly EmpireRating Master = new("Master", 3);
+        public static readonly EmpireRating Squire = new("Squire", 4);
+        public static readonly EmpireRating Knight = new("Knight", 5);
+        public static readonly EmpireRating Lord = new("Lord", 6);
+        public static readonly EmpireRating Baron = new("Baron", 7);
+        public static readonly EmpireRating Viscount = new("Viscount", 8);
+        public static readonly EmpireRating Count = new("Count", 9);
+        public static readonly EmpireRating Earl = new("Earl", 10); // normally Countess, but we need to distinguish from rank 9
+        public static readonly EmpireRating Marquis = new("Marquis", 11); // or Marchioness <https://en.wikipedia.org/wiki/Marquess>
+        public static readonly EmpireRating Duke = new("Duke", 12);
+        public static readonly EmpireRating Prince = new("Prince", 13);
+        public static readonly EmpireRating King = new("King", 14);
 
         public static EmpireRating FromName(string from)
         {

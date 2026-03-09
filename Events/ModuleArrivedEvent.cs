@@ -9,7 +9,7 @@ namespace EddiEvents
     {
         public const string NAME = "Module arrived";
         public const string DESCRIPTION = "Triggered when your transferred module is arriving at its destination";
-        public static ModuleArrivedEvent SAMPLE = new ModuleArrivedEvent(DateTime.UtcNow, "Adder", 106, 25, 128662525, Module.FromEDName("$hpt_cloudscanner_size0_class1_name;"), 322, 30, "Lalande 32151", "Lee Gateway");
+        public static ModuleArrivedEvent SAMPLE = new(DateTime.UtcNow, "Adder", 106, 25, 128662525, Module.FromEDName("$hpt_cloudscanner_size0_class1_name;"), 322, 30, "Lalande 32151", "Lee Gateway");
 
         [PublicAPI("The ship you were in when you requested the transfer")]
         public string ship { get; private set; }

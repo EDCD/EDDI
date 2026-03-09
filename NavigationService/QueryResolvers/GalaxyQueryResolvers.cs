@@ -16,7 +16,7 @@ namespace EddiNavigationService.QueryResolvers
     {
         public QueryType Type => QueryType.scoop;
         public Dictionary<string, object> SpanshQueryFilter =>
-            new Dictionary<string, object>
+            new()
             {
                 { "type", new { value = new[] { "Star" } } },
                 { "subtype", new { value = new[] {
@@ -129,7 +129,8 @@ namespace EddiNavigationService.QueryResolvers
             usedCarrierCapacity = usedCarrierCapacity ?? EDDI.Instance.FleetCarrier?.usedCapacity;
             if ( usedCarrierCapacity is null ) { return null; }
 
-            var plottedRouteList = await EDDI.Instance.DataProvider.FetchCarrierRouteAsync( startSystem.systemname, new[] { targetSystemName }, Convert.ToInt64( usedCarrierCapacity ), false, refuelDestinations, fromUIquery ).ConfigureAwait(false);
+            var plottedRouteList = await EDDI.Instance.DataProvider.FetchCarrierRouteAsync( startSystem.systemname,
+                [ targetSystemName ], Convert.ToInt64( usedCarrierCapacity ), false, refuelDestinations, fromUIquery ).ConfigureAwait(false);
             if ( plottedRouteList == null || plottedRouteList.Waypoints.Count <= 1 ) { return null; }
             plottedRouteList.UpdateLocationData( startSystem.systemAddress, startSystem.x, startSystem.y, startSystem.z );
 

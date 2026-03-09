@@ -28,12 +28,12 @@ namespace EddiJournalMonitor
                 ForwardJournalEntries( result.ToList(), EDDI.Instance.enqueueEvent, isLogLoadEvent ) )
         { }
 
-        private static readonly Regex JsonRegex = new Regex( @"^{.*}$", RegexOptions.Singleline );
+        private static readonly Regex JsonRegex = new( @"^{.*}$", RegexOptions.Singleline );
 
         /// <summary>
         /// Holds a delayed event until we see an event of the type specified
         /// </summary>
-        private static readonly ConcurrentDictionary<string, ConcurrentBag<Event>> DelayedEventHolder = new ConcurrentDictionary<string, ConcurrentBag<Event>>();
+        private static readonly ConcurrentDictionary<string, ConcurrentBag<Event>> DelayedEventHolder = new();
 
         internal static CancellationTokenSource ShipShutdownCancellationTokenSource;
 
@@ -2428,7 +2428,7 @@ namespace EddiJournalMonitor
                                     data.TryGetValue( "StationServices", out var stationserviceVal );
                                     var stationservices =
                                         ( stationserviceVal as List<object> )?.Cast<string>()?.ToList() ??
-                                        new List<string>();
+                                        [ ];
                                     foreach ( var service in stationservices )
                                     {
                                         stationServices.Add( StationService.FromEDName( service ) );
@@ -2436,7 +2436,7 @@ namespace EddiJournalMonitor
 
                                     // Get carrier economies and their shares (may not be present when on-foot at a fleet carrier but not docked)
                                     data.TryGetValue( "StationEconomies", out var economiesVal );
-                                    var economies = economiesVal as List<object> ?? new List<object>();
+                                    var economies = economiesVal as List<object> ?? [ ];
                                     var stationEconomies = new List<EconomyShare>();
                                     foreach ( var economyShareVal in economies )
                                     {
@@ -2692,7 +2692,7 @@ namespace EddiJournalMonitor
                                         var microResource = EventParsing.MicroResource( data );
                                         var amount = JsonParsing.getInt( data, "Count" );
                                         var price = JsonParsing.getInt(data, "Price"); // Total price
-                                        var resourceAmounts = new List<MicroResourceAmount> { new MicroResourceAmount( microResource, amount ) };
+                                        var resourceAmounts = new List<MicroResourceAmount> { new( microResource, amount ) };
                                         events.Add( new MicroResourcesPurchasedEvent( timestamp, resourceAmounts, price, marketId ) { raw = line, fromLoad = fromLogLoad } );
                                     }
                                     handled = true;
@@ -2945,7 +2945,9 @@ namespace EddiJournalMonitor
                                     }
                                     else
                                     {
-                                        if ( !DelayedEventHolder.TryAdd( CargoEvent.NAME, new ConcurrentBag<Event>( new[] { cargoTransferEvent } ) ) )
+                                        if ( !DelayedEventHolder.TryAdd( CargoEvent.NAME, new ConcurrentBag<Event>( [
+                                                cargoTransferEvent
+                                            ] ) ) )
                                         {
                                             DelayedEventHolder[ CargoEvent.NAME ].Add( cargoTransferEvent );
                                         }
@@ -3126,7 +3128,8 @@ namespace EddiJournalMonitor
                                     // Friends events can be written before the commander is loaded and need to be delayed until we have seen a "Commander" event
                                     if ( EDDI.Instance.lastEventOfType.TryGetValue( CommanderLoadingEvent.NAME, out _ ) )
                                     {
-                                        if ( !DelayedEventHolder.TryAdd( CommanderLoadingEvent.NAME, new ConcurrentBag<Event>( new[] { @event } ) ) )
+                                        if ( !DelayedEventHolder.TryAdd( CommanderLoadingEvent.NAME, new ConcurrentBag<Event>(
+                                                [ @event ] ) ) )
                                         {
                                             DelayedEventHolder[ CommanderLoadingEvent.NAME ].Add( @event );
                                         }

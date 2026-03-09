@@ -75,7 +75,7 @@ namespace EddiCompanionAppService
         private static CompanionAppService instance;
         private readonly string clientID; // we are not allowed to check the client ID into version control or publish it to 3rd parties
 
-        private static readonly object instanceLock = new object();
+        private static readonly object instanceLock = new();
         public static CompanionAppService Instance
         {
             get
@@ -99,10 +99,10 @@ namespace EddiCompanionAppService
 
         #region Endpoints
 
-        public readonly Endpoints.FleetCarrierEndpoint FleetCarrierEndpoint = new Endpoints.FleetCarrierEndpoint();
-        public readonly Endpoints.ProfileEndpoint ProfileEndpoint = new Endpoints.ProfileEndpoint();
-        public readonly Endpoints.CombinedStationEndpoints CombinedStationEndpoints = new Endpoints.CombinedStationEndpoints();
-        public readonly Endpoints.SquadronEndpoint SquadronEndpoint = new Endpoints.SquadronEndpoint();
+        public readonly Endpoints.FleetCarrierEndpoint FleetCarrierEndpoint = new();
+        public readonly Endpoints.ProfileEndpoint ProfileEndpoint = new();
+        public readonly Endpoints.CombinedStationEndpoints CombinedStationEndpoints = new();
+        public readonly Endpoints.SquadronEndpoint SquadronEndpoint = new();
 
         #endregion
 
@@ -214,7 +214,7 @@ namespace EddiCompanionAppService
             return codeChallenge;
         }
 
-        private string base64UrlEncode(byte[] blob)
+        private static string base64UrlEncode(byte[] blob)
         {
             var base64 = Convert.ToBase64String(blob, Base64FormattingOptions.None);
             return base64.Replace('+', '-').Replace('/', '_').Replace("=", "");
@@ -273,13 +273,13 @@ namespace EddiCompanionAppService
 
         private string codeFromCallback(string url)
         {
-            if (!(url.StartsWith(CALLBACK_URL) && url.Contains("?")))
+            if (!(url.StartsWith(CALLBACK_URL) && url.Contains('?')))
             {
                 throw new EliteDangerousCompanionAppAuthenticationException("Malformed callback URL from Frontier");
             }
 
             var paramsDict = ParseQueryString(url);
-            if (authSessionID == null || !paramsDict.ContainsKey("state") || paramsDict["state"] != authSessionID)
+            if (authSessionID == null || !paramsDict.TryGetValue("state", out var state ) || state != authSessionID)
             {
                 throw new EliteDangerousCompanionAppAuthenticationException("Unexpected callback URL from Frontier");
             }
@@ -296,14 +296,14 @@ namespace EddiCompanionAppService
             return callback;
         }
 
-        private Dictionary<string, string> ParseQueryString(string url)
+        private static Dictionary<string, string> ParseQueryString(string url)
         {
             // Sadly System.Web.HttpUtility.ParseQueryString() is not available to us
             // https://stackoverflow.com/questions/659887/get-url-parameters-from-a-string-in-net
             var myUri = new Uri(url);
             var query = myUri.Query.TrimStart('?');
-            var queryParams = query.Split(new[] { '&' }, StringSplitOptions.RemoveEmptyEntries);
-            var paramValuePairs = queryParams.Select(parameter => parameter.Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries));
+            var queryParams = query.Split( [ '&' ], StringSplitOptions.RemoveEmptyEntries);
+            var paramValuePairs = queryParams.Select(parameter => parameter.Split( [ '=' ], StringSplitOptions.RemoveEmptyEntries));
             var sanitizedValuePairs = paramValuePairs.GroupBy(
                 parts => parts[0],
                 parts => parts.Length > 2 ? string.Join("=", parts, 1, parts.Length - 1) : parts.Length > 1 ? parts[1] : "");

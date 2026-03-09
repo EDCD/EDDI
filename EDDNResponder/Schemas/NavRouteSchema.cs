@@ -9,7 +9,7 @@ namespace EddiEddnResponder.Schemas
     [UsedImplicitly]
     public class NavRouteSchema : ISchema
     {
-        public List<string> edTypes => new List<string> { "NavRoute" };
+        public List<string> edTypes => [ "NavRoute" ];
 
         public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
         {

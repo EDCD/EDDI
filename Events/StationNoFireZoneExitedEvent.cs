@@ -8,7 +8,7 @@ namespace EddiEvents
     {
         public const string NAME = "Station no fire zone exited";
         public const string DESCRIPTION = "Triggered when your ship exits a station's no fire zone";
-        public static readonly StationNoFireZoneExitedEvent SAMPLE = new StationNoFireZoneExitedEvent(DateTime.UtcNow);
+        public static readonly StationNoFireZoneExitedEvent SAMPLE = new(DateTime.UtcNow);
 
         public StationNoFireZoneExitedEvent(DateTime timestamp) : base(timestamp, NAME)
         { }

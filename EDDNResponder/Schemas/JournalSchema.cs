@@ -10,16 +10,16 @@ namespace EddiEddnResponder.Schemas
     [UsedImplicitly]
     public class JournalSchema : ISchema
     {
-        public List<string> edTypes => new List<string>
-        {
+        public List<string> edTypes =>
+        [
             "CarrierJump",
-            "Docked", 
-            "FSDJump", 
-            "Scan", 
-            "Location", 
+            "Docked",
+            "FSDJump",
+            "Scan",
+            "Location",
             "SAASignalsFound",
             "Scan"
-        };
+        ];
 
         public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
         {

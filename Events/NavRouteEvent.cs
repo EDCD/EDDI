@@ -9,12 +9,14 @@ namespace EddiEvents
     {
         public const string NAME = "Nav route";
         public const string DESCRIPTION = "Triggered when the navigation route is updated";
-        public static NavRouteEvent SAMPLE = new NavRouteEvent(DateTime.UtcNow, new List<NavRouteInfoItem>()
-        {
-            new NavRouteInfoItem("Cemiess", 1522322606443, new List<decimal>() { 66.06250M, -105.34375M, 27.09375M }, "G"),
-            new NavRouteInfoItem("CT Tucanae", 358864556762, new List<decimal>() { 66.40625M, -123.37500M, 51.90625M }, "M"),
-            new NavRouteInfoItem("LHS 4031", 1733254091490, new List<decimal>() {67.56250M, -134.12500M, 66.84375M }, "K")
-        });
+        public static NavRouteEvent SAMPLE = new(DateTime.UtcNow, [
+            new NavRouteInfoItem( "Cemiess", 1522322606443, [ 66.06250M, -105.34375M, 27.09375M ],
+                "G" ),
+            new NavRouteInfoItem( "CT Tucanae", 358864556762, [ 66.40625M, -123.37500M, 51.90625M ],
+                "M" ),
+            new NavRouteInfoItem( "LHS 4031", 1733254091490, [ 67.56250M, -134.12500M, 66.84375M ],
+                "K" )
+        ] );
 
         [PublicAPI("The plotted route (this is a collection of NavWaypoint objects)")]
         public List<NavRouteInfoItem> route { get; }

@@ -5,16 +5,16 @@ namespace EddiSpeechService.SpeechConversions
     public static partial class SpeechConversions
     {
         // Fixes to avoid issues with pronunciation of station model names
-        private static readonly Dictionary<string, string> STATION_MODEL_FIXES = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> STATION_MODEL_FIXES = new()
         {
             { "Orbis Starport", "Or-bis Starport" }, // Stop "Or-bis" from sometimes being pronounced as "Or-bise"
             { "Megaship", "Mega-ship" } // Stop "Mega-Ship" from sometimes being pronounced as "Meg-AH-ship"
         };
 
-        private static readonly Dictionary<string, string[]> STATION_PRONUNCIATIONS = new Dictionary<string, string[]>()
+        private static readonly Dictionary<string, string[]> STATION_PRONUNCIATIONS = new()
         {
-            { "Aachen Town", new string[] { Properties.Phonetics.Aachen, Properties.Phonetics.Town } },
-            { "Slough Orbital", new string[] { Properties.Phonetics.Slough, Properties.Phonetics.Orbital } },
+            { "Aachen Town", [ Properties.Phonetics.Aachen, Properties.Phonetics.Town ] },
+            { "Slough Orbital", [ Properties.Phonetics.Slough, Properties.Phonetics.Orbital ] },
         };
 
         /// <summary>Fix up station related pronunciations </summary>
@@ -32,9 +32,9 @@ namespace EddiSpeechService.SpeechConversions
                 station = value;
             }
             // Strip plus signs and spaces from station name suffixes
-            if (station.EndsWith("+"))
+            if (station.EndsWith('+'))
             {
-                char[] charsToTrim = { '+', ' ' };
+                char[] charsToTrim = [ '+', ' ' ];
                 station = station.TrimEnd(charsToTrim);
             }
             return station;

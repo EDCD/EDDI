@@ -16,22 +16,22 @@ namespace EddiDataDefinitions
         public string name { get; set; }
 
         /// <summary>A list of the services offered by this station</summary>
-        public List<KeyValuePair<string, string>> stationServices { get; set; } = new List<KeyValuePair<string, string>>();
+        public List<KeyValuePair<string, string>> stationServices { get; set; } = new();
 
         /// <summary>What are the economies at the station, with proportions for each</summary>
-        public List<FrontierApiEconomyShare> economyShares { get; set; } = new List<FrontierApiEconomyShare>();
+        public List<FrontierApiEconomyShare> economyShares { get; set; } = new();
 
         /// <summary>Commodity market quotes as-received from the profile</summary>
-        public List<MarketInfoItem> eddnCommodityMarketQuotes { get; set; } = new List<MarketInfoItem>();
+        public List<MarketInfoItem> eddnCommodityMarketQuotes { get; set; } = new();
 
         /// <summary>Prohibited commodities as-received from the profile</summary>
-        public List<KeyValuePair<long, string>> prohibitedCommodities { get; set; } = new List<KeyValuePair<long, string>>();
+        public List<KeyValuePair<long, string>> prohibitedCommodities { get; set; } = new();
 
         /// <summary>Outfitting modules as-received from the profile</summary>
-        public List<OutfittingInfoItem> outfitting { get; set; } = new List<OutfittingInfoItem>();
+        public List<OutfittingInfoItem> outfitting { get; set; } = new();
 
         /// <summary>Ship models as-received from the profile</summary>
-        public List<ShipyardInfoItem> ships { get; set; } = new List<ShipyardInfoItem>();
+        public List<ShipyardInfoItem> ships { get; set; } = new();
 
         /// <summary>The market JSON object</summary>
         public JObject marketJson { get; set; }

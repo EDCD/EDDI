@@ -12,13 +12,13 @@ namespace EddiEvents
         public const string NAME = "Ship targeted";
         public const string DESCRIPTION = "Triggered when the player selects a non-Thargoid target";
         public static readonly string[] SAMPLES =
-        {
+        [
             "{ \"timestamp\":\"2020-05-16T08:14:36Z\", \"event\":\"ShipTargeted\", \"TargetLocked\":true, \"Ship\":\"sidewinder\", \"ScanStage\":0 }",
             "{ \"timestamp\":\"2020-05-16T08:14:37Z\", \"event\":\"ShipTargeted\", \"TargetLocked\":true, \"Ship\":\"sidewinder\", \"ScanStage\":1, \"PilotName\":\"$npc_name_decorate:#name=Noni Ryder;\", \"PilotName_Localised\":\"Noni Ryder\", \"PilotRank\":\"Mostly Harmless\" }",
             "{ \"timestamp\":\"2020-05-16T08:14:39Z\", \"event\":\"ShipTargeted\", \"TargetLocked\":true, \"Ship\":\"sidewinder\", \"ScanStage\":2, \"PilotName\":\"$npc_name_decorate:#name=Noni Ryder;\", \"PilotName_Localised\":\"Noni Ryder\", \"PilotRank\":\"Mostly Harmless\", \"ShieldHealth\":100.000000, \"HullHealth\":100.000000 }",
             "{ \"timestamp\":\"2020-05-16T08:14:45Z\", \"event\":\"ShipTargeted\", \"TargetLocked\":true, \"Ship\":\"sidewinder\", \"ScanStage\":3, \"PilotName\":\"$npc_name_decorate:#name=Noni Ryder;\", \"PilotName_Localised\":\"Noni Ryder\", \"PilotRank\":\"Mostly Harmless\", \"ShieldHealth\":100.000000, \"HullHealth\":100.000000, \"Faction\":\"Balante Jet Posse\", \"LegalStatus\":\"Wanted\", \"Bounty\":1642 }",
             "{ \"timestamp\":\"2018-05-09T23:19:49Z\", \"event\":\"ShipTargeted\", \"TargetLocked\":true, \"Ship\":\"adder\", \"ScanStage\":3, \"PilotName\":\"$npc_name_decorate:#name=Phoenix;\", \"PilotName_Localised\":\"Phoenix\", \"PilotRank\":\"Competent\", \"ShieldHealth\":100.000000, \"HullHealth\":100.000000, \"Faction\":\"Union Cosmos\", \"LegalStatus\":\"Lawless\", \"Subsystem\":\"$int_powerplant_size3_class3_name;\", \"Subsystem_Localised\":\"Power Plant\", \"SubsystemHealth\":100.000000}"
-        };
+        ];
 
         [PublicAPI("True when a ship has been targeted. False when a target has been lost/deselected")]
         public bool targetlocked { get; private set; }

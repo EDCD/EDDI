@@ -47,8 +47,8 @@ namespace Utilities
                 {
                     collectionHandler?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
                     propertyHandler?.Invoke(this, new PropertyChangedEventArgs("Count"));
-                    propertyHandler?.Invoke(this, new PropertyChangedEventArgs("Keys"));
-                    propertyHandler?.Invoke(this, new PropertyChangedEventArgs("Values"));
+                    propertyHandler?.Invoke(this, new PropertyChangedEventArgs(nameof(Keys)));
+                    propertyHandler?.Invoke(this, new PropertyChangedEventArgs(nameof(Values)));
                 }, null);
             }
         }

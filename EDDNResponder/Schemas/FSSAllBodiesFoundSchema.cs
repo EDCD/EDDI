@@ -9,7 +9,7 @@ namespace EddiEddnResponder.Schemas
     [UsedImplicitly]
     public class FSSAllBodiesFoundSchema : ISchema
     {
-        public List<string> edTypes => new List<string> { "FSSAllBodiesFound" };
+        public List<string> edTypes => [ "FSSAllBodiesFound" ];
 
         public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
         {

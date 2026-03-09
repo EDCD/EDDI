@@ -15,11 +15,11 @@ namespace EddiConfigService.Configurations
     public class ShipMonitorConfiguration : Config
     {
         private ImmutableList<Ship> _shipyard = ImmutableList.Create<Ship>();
-        private readonly object _shipyardLock = new object();
+        private readonly object _shipyardLock = new();
         private DateTime _updatedat = DateTime.MinValue;
         private decimal _insurance = 0.05M;
         private string _exporttarget = "Coriolis";
-        private List<StoredModule> _storedmodules = new List<StoredModule>();
+        private List<StoredModule> _storedmodules = new();
         private int? _currentshipid;
         
         public int? currentshipid

@@ -20,7 +20,7 @@ namespace EddiEvents
         public ulong systemAddress { get; private set; }
 
         [PublicAPI( "Metadata encoded into the unique 64 bit ID for the star system." )]
-        public StarSystemId64 id64 => new StarSystemId64( systemAddress );
+        public StarSystemId64 id64 => new( systemAddress );
 
         [PublicAPI("The X co-ordinate of the system in which the commander is located")]
         public decimal x { get; private set; }

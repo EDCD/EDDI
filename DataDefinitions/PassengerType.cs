@@ -12,26 +12,26 @@
             missingEDNameHandler = (edname) => new PassengerType(edname);
         }
 
-        public static readonly PassengerType AidWorker = new PassengerType("AidWorker");
-        public static readonly PassengerType Business = new PassengerType("Business");
-        public static readonly PassengerType Celebrity = new PassengerType("MinorCelebrity");
-        public static readonly PassengerType CEO = new PassengerType("CEO");
-        public static readonly PassengerType Criminal = new PassengerType("Criminal");
-        public static readonly PassengerType Doctor = new PassengerType("Doctor");
-        public static readonly PassengerType Explorer = new PassengerType("Explorer");
-        public static readonly PassengerType General = new PassengerType("General");
-        public static readonly PassengerType HeadOfState = new PassengerType("HeadOfState");
-        public static readonly PassengerType Medical = new PassengerType("Medical");
-        public static readonly PassengerType Politician = new PassengerType("Politician");
-        public static readonly PassengerType PrisonerOfWar = new PassengerType("POW");
-        public static readonly PassengerType Protestor = new PassengerType("Protestor");
-        public static readonly PassengerType Rebel = new PassengerType("Rebel");
-        public static readonly PassengerType Refugee = new PassengerType("Refugee");
-        public static readonly PassengerType Scientist = new PassengerType("Scientist");
-        public static readonly PassengerType Security = new PassengerType("Security");
-        public static readonly PassengerType Terrorist = new PassengerType("Terrorist");
-        public static readonly PassengerType Tourist = new PassengerType("Tourist");
-        public static readonly PassengerType Whistleblower = new PassengerType("Whistleblower");
+        public static readonly PassengerType AidWorker = new("AidWorker");
+        public static readonly PassengerType Business = new("Business");
+        public static readonly PassengerType Celebrity = new("MinorCelebrity");
+        public static readonly PassengerType CEO = new("CEO");
+        public static readonly PassengerType Criminal = new("Criminal");
+        public static readonly PassengerType Doctor = new("Doctor");
+        public static readonly PassengerType Explorer = new("Explorer");
+        public static readonly PassengerType General = new("General");
+        public static readonly PassengerType HeadOfState = new("HeadOfState");
+        public static readonly PassengerType Medical = new("Medical");
+        public static readonly PassengerType Politician = new("Politician");
+        public static readonly PassengerType PrisonerOfWar = new("POW");
+        public static readonly PassengerType Protestor = new("Protestor");
+        public static readonly PassengerType Rebel = new("Rebel");
+        public static readonly PassengerType Refugee = new("Refugee");
+        public static readonly PassengerType Scientist = new("Scientist");
+        public static readonly PassengerType Security = new("Security");
+        public static readonly PassengerType Terrorist = new("Terrorist");
+        public static readonly PassengerType Tourist = new("Tourist");
+        public static readonly PassengerType Whistleblower = new("Whistleblower");
 
         // dummy used to ensure that the static constructor has run
         public PassengerType() : this("")

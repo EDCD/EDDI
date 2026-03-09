@@ -13,8 +13,8 @@ namespace Tests
     [TestClass, TestCategory("UnitTests")]
     public class StatusMonitorTests : TestBase
     {
-        readonly StatusService statusService = new StatusService();
-        readonly StatusMonitor statusMonitor = new StatusMonitor();
+        readonly StatusService statusService = new();
+        readonly StatusMonitor statusMonitor = new();
 
         [TestInitialize]
         public void start()

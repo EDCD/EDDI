@@ -9,7 +9,7 @@ namespace EddiEddnResponder.Schemas
     [UsedImplicitly]
     public class NavBeaconScanSchema : ISchema
     {
-        public List<string> edTypes => new List<string> { "NavBeaconScan" };
+        public List<string> edTypes => [ "NavBeaconScan" ];
 
         public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
         {

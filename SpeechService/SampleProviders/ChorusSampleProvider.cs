@@ -10,7 +10,7 @@ namespace EddiSpeechService.SampleProviders
 {
     internal class ChorusSampleProvider : EffectSampleProvider
     {
-        private readonly List<(ChorusVoice voice, float weight)> _voices = new List<(ChorusVoice, float)>();
+        private readonly List<(ChorusVoice voice, float weight)> _voices = [ ];
 
         private readonly int _fxLevel; 
         private readonly float _dryGain;
@@ -138,7 +138,7 @@ namespace EddiSpeechService.SampleProviders
                     detune *= Constants.VoiceOuterDetuneBoost;
                 }
 
-                var detuneJitterRnd = SpeechFxFunctions.Hash0To1( new[] { vPair, 1 } );
+                var detuneJitterRnd = SpeechFxFunctions.Hash0To1( [ vPair, 1 ] );
                 detune *= 1.0f + ( ( detuneJitterRnd - 0.5f ) * _mod.DetuneJitter );
 
                 // --- LFO frequency ---
@@ -154,7 +154,7 @@ namespace EddiSpeechService.SampleProviders
                 var depthMs = _depthTargetMs * posScale; // base target
 
                 // --- Randomize depth per voice for richer beating ---
-                var depthRnd = SpeechFxFunctions.Hash0To1( new[] { vPair, 2 } );
+                var depthRnd = SpeechFxFunctions.Hash0To1( [ vPair, 2 ] );
                 depthMs *= 1.0f + ( ( depthRnd - 0.5f ) * Constants.DepthJitterPct );
                 if ( Math.Abs( pos ) > Constants.VoiceOuterThreshold )
                 {
@@ -167,7 +167,7 @@ namespace EddiSpeechService.SampleProviders
                 var microOffsetMs = Constants.MicroCombOffset * _microCombScale * bias;
 
                 // --- Base delay jitter ---
-                var delayRnd = SpeechFxFunctions.Hash0To1( new[] { vPair, 3 } );
+                var delayRnd = SpeechFxFunctions.Hash0To1( [ vPair, 3 ] );
                 var delayJitter = 1.0f + ( ( delayRnd - 0.5f ) * 2.0f * Constants.DelayJitterPct );
 
                 var baseMs = SpeechFxFunctions.Clamp(
@@ -192,7 +192,7 @@ namespace EddiSpeechService.SampleProviders
 
                 // --- Phase jitter / symmetry ---
                 // Evenly distributed phases + small jitter to decorrelate; force outer voices symmetrical.
-                var phaseJitterRnd = SpeechFxFunctions.Hash0To1( new[] { vPair, 4 } );
+                var phaseJitterRnd = SpeechFxFunctions.Hash0To1( [ vPair, 4 ] );
                 var jitter = ( phaseJitterRnd - 0.5f ) * _mod.PhaseJitterRad;
                 if ( v == 0 ) // outer voice
                 {
@@ -210,7 +210,7 @@ namespace EddiSpeechService.SampleProviders
                 // --- Add slight phase drift bias for adjacent voices ---
                 if ( v > 0 )
                 {
-                    var lfoPhaseRnd = SpeechFxFunctions.Hash0To1( new[] { vPair, 5 } );
+                    var lfoPhaseRnd = SpeechFxFunctions.Hash0To1( [ vPair, 5 ] );
                     voice.LfoPhase += ( lfoPhaseRnd - 0.5f ) * Constants.LfoPhaseDrift;
                 }
 

@@ -12,7 +12,7 @@ namespace Tests
     [TestClass, TestCategory( "UnitTests" )]
     public class CargoMonitorTests : TestBase
     {
-        readonly CargoMonitor cargoMonitor = new CargoMonitor(new CargoMonitorConfiguration());
+        readonly CargoMonitor cargoMonitor = new(new CargoMonitorConfiguration());
 
         private const string cargoConfigJson = @"{
                     ""cargo"": [{

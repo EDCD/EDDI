@@ -276,7 +276,7 @@ namespace EddiUI
             {
 
                 // Add the "Automatic" culture, we are using the InvariantCulture name "" to mean user's culture
-                new LanguageDef(CultureInfo.InvariantCulture, Properties.Resources.system_language)
+                new(CultureInfo.InvariantCulture, Properties.Resources.system_language)
             };
 
             var neutralInfo = new CultureInfo("en"); // Add our "neutral" language "en".

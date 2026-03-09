@@ -166,7 +166,7 @@ namespace EddiDataDefinitions
         {
             if (from == null) return null;
 
-            if (!from.Contains("$"))
+            if (!from.Contains('$'))
             {
                 // Appears to be a simple proper name
                 return new SignalSource(from) { fallbackInvariantName = from, fallbackLocalizedName = from };
@@ -216,14 +216,14 @@ namespace EddiDataDefinitions
                 // Extract any sub-type from the name (e.g. $SAA_Unknown_Signal:#type=$SAA_SignalType_Geological;:#index=3; )
                 if (tidiedFrom.Contains(":#type="))
                 {
-                    string[] fromArray = tidiedFrom.Split(new[] { ":#type=" }, System.StringSplitOptions.None);
+                    string[] fromArray = tidiedFrom.Split( [ ":#type=" ], System.StringSplitOptions.None);
                     tidiedFrom = fromArray[1];
                 }
 
                 // Extract any threat value which might be present and then strip the index value
                 if (tidiedFrom.Contains("USS_ThreatLevel:#threatLevel="))
                 {
-                    string[] fromArray = tidiedFrom.Split(new[] { "USS_ThreatLevel:#threatLevel=" }, System.StringSplitOptions.None);
+                    string[] fromArray = tidiedFrom.Split( [ "USS_ThreatLevel:#threatLevel=" ], System.StringSplitOptions.None);
                     if (int.TryParse(fromArray[1], out var threat)) { threatLvl = threat; }
                     tidiedFrom = fromArray[0]
                         .Replace("_Easy", "")
@@ -255,14 +255,14 @@ namespace EddiDataDefinitions
                 // Extract any index value which might be present and then strip the index value
                 if (tidiedFrom.Contains(":#index="))
                 {
-                    string[] fromArray = tidiedFrom.Split(new[] { ":#index=" }, System.StringSplitOptions.None);
+                    string[] fromArray = tidiedFrom.Split( [ ":#index=" ], System.StringSplitOptions.None);
                     if (int.TryParse(fromArray[1], out indexResult)) { }
                     tidiedFrom = fromArray[0];
                 }
 
                 // Extract any pure number parts (e.g. '_01_')
                 var parts = new List<string>();
-                foreach (var part in tidiedFrom.Split(new[] { "_" }, StringSplitOptions.None))
+                foreach (var part in tidiedFrom.Split( [ "_" ], StringSplitOptions.None))
                 {
                     if (int.TryParse(part, out _)) { }
                     else { parts.Add(part); }

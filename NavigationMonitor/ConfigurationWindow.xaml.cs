@@ -20,7 +20,7 @@ namespace EddiNavigationMonitor
         }
 
         private static ConfigurationWindow _instance;
-        private static readonly object InstanceLock = new object();
+        private static readonly object InstanceLock = new();
 
         public static ConfigurationWindow Instance
         {

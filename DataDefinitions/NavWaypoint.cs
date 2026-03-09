@@ -12,7 +12,7 @@ namespace EddiDataDefinitions
     public class NavWaypoint : INotifyPropertyChanged
     {
         private bool _visited;
-        private List<ulong> _missionids = new List<ulong>();
+        private List<ulong> _missionids = new();
         private bool? _isScoopable;
         private bool _hasNeutronStar;
 
@@ -72,7 +72,7 @@ namespace EddiDataDefinitions
         public int? fuelNeeded { get; set; } // The amount of tritium needed for remaining hops in the route
 
         // Info seeded from other monitors
-        public bool isMissionSystem => missionids?.Any() ?? false;
+        public bool isMissionSystem => missionids != null && missionids.Count > 0;
 
         public List<ulong> missionids
         {

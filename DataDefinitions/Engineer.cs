@@ -10,7 +10,7 @@ namespace EddiDataDefinitions
     /// </summary>
     public class Engineer
     {
-        internal static List<Engineer> ENGINEERS = new List<Engineer>();
+        internal static List<Engineer> ENGINEERS = [ ];
 
         public long id { get; private set; }
 
@@ -86,45 +86,118 @@ namespace EddiDataDefinitions
             ENGINEERS.Add(this);
         }
 
-        public static readonly Engineer DidiVatermann = new Engineer(300000, "Didi Vatermann", "Leesti", 3932277478114, "Vatermann LLC", 128673927, "Leesti 1 a", 9, new HashSet<EngineerSpecialty> { EngineerSpecialty.ShieldBoosters }, new HashSet<EngineerSpecialty> { EngineerSpecialty.ShieldGenerators } );
-        public static readonly Engineer BillTurner = new Engineer(300010, "Bill Turner", "Alioth", 1109989017963, "Turner Metallics Inc", 128674183, "Alioth 4 a", 57, new HashSet<EngineerSpecialty> { EngineerSpecialty.PlasmaAccelerators, EngineerSpecialty.Sensors, EngineerSpecialty.SurfaceScanners }, new HashSet<EngineerSpecialty> { EngineerSpecialty.LifeSupportSystems, EngineerSpecialty.Refineries, EngineerSpecialty.AFMUs, EngineerSpecialty.FuelScoops, EngineerSpecialty.Scanners });
-        public static readonly Engineer BrooTarquin = new Engineer(300030, "Broo Tarquin", "Muang", 4481966019282, "Broo's Legacy", 128674695, "Muang 5 a", 13, new HashSet<EngineerSpecialty> { EngineerSpecialty.Lasers }, new HashSet<EngineerSpecialty>() );
-        public static readonly Engineer TheSarge = new Engineer(300040, "The Sarge", "Beta-3 Tucani", 2827992680811, "The Beach", 128674951, "Beta-3 Tucani 2 b a", 16, new HashSet<EngineerSpecialty> { EngineerSpecialty.LimpetControllers, EngineerSpecialty.Cannons }, new HashSet<EngineerSpecialty> { EngineerSpecialty.RailGuns } );
-        public static readonly Engineer ZacariahNemo = new Engineer(300050, "Zacariah Nemo", "Yoru", 6131367744226, "Nemo Cyber Party Base", 128675207, "Yoru 4", 9, new HashSet<EngineerSpecialty> { EngineerSpecialty.FragCannons }, new HashSet<EngineerSpecialty> { EngineerSpecialty.MultiCannons, EngineerSpecialty.PlasmaAccelerators });
-        public static readonly Engineer LizRyder = new Engineer(300080, "Liz Ryder", "Eurybia", 1458309141194, "Demolition Unlimited", 128675975, "Makalu", 6, new HashSet<EngineerSpecialty> { EngineerSpecialty.Missiles, EngineerSpecialty.Torpedos }, new HashSet<EngineerSpecialty> { EngineerSpecialty.Mines, EngineerSpecialty.HullReinforcement });
-        public static readonly Engineer HeraTani = new Engineer(300090, "Hera Tani", "Kuwemaki", 1733321102034, "The Jet's Hole", 128676231, "Kuwemaki A 3 a", 15, new HashSet<EngineerSpecialty> { EngineerSpecialty.PowerPlants, EngineerSpecialty.SurfaceScanners }, new HashSet<EngineerSpecialty> { EngineerSpecialty.Sensors, EngineerSpecialty.PowerDistributors } );
-        public static readonly Engineer FelicityFarseer = new Engineer(300100, "Felicity Farseer", "Deciat", 6681123623626, "Farseer Inc", 128676487, "Deciat 6 a", 25, new HashSet<EngineerSpecialty> { EngineerSpecialty.FrameShiftDrives }, new HashSet<EngineerSpecialty> { EngineerSpecialty.Thrusters, EngineerSpecialty.Sensors, EngineerSpecialty.SurfaceScanners, EngineerSpecialty.ShieldBoosters, EngineerSpecialty.FrameShiftDriveInterdictors, EngineerSpecialty.PowerPlants});
-        public static readonly Engineer RamTah = new Engineer(300110, "Ram Tah", "Meene", 3790082132323, "Phoenix Base", 128676743, "Meene AB 5 d", 16, new HashSet<EngineerSpecialty> { EngineerSpecialty.ECMs, EngineerSpecialty.PointDefence, EngineerSpecialty.ChaffAndHeatSinkLaunchers }, new HashSet<EngineerSpecialty> { EngineerSpecialty.LimpetControllers });
-        public static readonly Engineer LeiCheung = new Engineer(300120, "Lei Cheung", "Laksak", 4305444669811, "Trader's Rest", 128676999, "Laksak A 1", 5, new HashSet<EngineerSpecialty> { EngineerSpecialty.ShieldGenerators, EngineerSpecialty.Sensors, EngineerSpecialty.SurfaceScanners }, new HashSet<EngineerSpecialty> { EngineerSpecialty.ShieldBoosters } );
-        public static readonly Engineer PetraOlmanova = new Engineer(300130, "Petra Olmanova", "Asura", 12274907287851, "Sanctuary", 128677255, "Asura 1 d", 24, new HashSet<EngineerSpecialty> { EngineerSpecialty.HullReinforcement, EngineerSpecialty.Missiles, EngineerSpecialty.ChaffAndHeatSinkLaunchers, EngineerSpecialty.PointDefence }, new HashSet<EngineerSpecialty> {EngineerSpecialty.Mines, EngineerSpecialty.Torpedos, EngineerSpecialty.ECMs, EngineerSpecialty.AFMUs});
-        public static readonly Engineer ColBrisDekker = new Engineer(300140, "Colonel Bris Dekker", "Sol", 10477373803, "Dekker's Yard", 128677511, "Iapetus", 20, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty> { EngineerSpecialty.FrameShiftDriveInterdictors, EngineerSpecialty.FrameShiftDrives } );
-        public static readonly Engineer MarshaHicks = new Engineer(300150, "Marsha Hicks", "Tir", 48996147307082, "The Watchtower", 128677767, "Tir A 2", 4, new HashSet<EngineerSpecialty> { EngineerSpecialty.LimpetControllers, EngineerSpecialty.Refineries, EngineerSpecialty.FuelScoops, EngineerSpecialty.MultiCannons, EngineerSpecialty.FragCannons }, new HashSet<EngineerSpecialty>{EngineerSpecialty.Cannons});
-        public static readonly Engineer ElviraMartuuk = new Engineer(300160, "Elvira Martuuk", "Khun", 3107241104074, "Long Sight Base", 128678023, "Khun 5", 13, new HashSet<EngineerSpecialty> { EngineerSpecialty.FrameShiftDrives }, new HashSet<EngineerSpecialty> { EngineerSpecialty.ShieldGenerators, EngineerSpecialty.Thrusters, EngineerSpecialty.ShieldCellBanks});
-        public static readonly Engineer TheDweller = new Engineer(300180, "The Dweller", "Wyrd", 5031654888146, "Black Hide", 128678535, "Wyrd A 2", 10, new HashSet<EngineerSpecialty> { EngineerSpecialty.PowerDistributors }, new HashSet<EngineerSpecialty> { EngineerSpecialty.Lasers } );
-        public static readonly Engineer MarcoQwent = new Engineer(300200, "Marco Qwent", "Sirius", 121569805492, "Qwent Research Base", 128679047, "Lucifer", 4, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty> { EngineerSpecialty.PowerPlants, EngineerSpecialty.PowerDistributors } );
-        public static readonly Engineer SeleneJean = new Engineer(300210, "Selene Jean", "Kuk", 24859942069665, "Prospector's Rest", 128679303, "Kuk B 3", 12, new HashSet<EngineerSpecialty> { EngineerSpecialty.Armour, EngineerSpecialty.HullReinforcement }, new HashSet<EngineerSpecialty>());
-        public static readonly Engineer ProfessorPalin = new Engineer(300220, "Professor Palin", "Arque", 113573366131, "Abel Laboratory", 128679559, "Arque 4 e", 28, new HashSet<EngineerSpecialty> { EngineerSpecialty.Thrusters }, new HashSet<EngineerSpecialty> { EngineerSpecialty.FrameShiftDrives });
-        public static readonly Engineer LoriJameson = new Engineer(300230, "Lori Jameson", "Shinrarta Dezhra", 3932277478106, "Jameson Base", 128679815, "Shinrarta Dezhra A 1", 11, new HashSet<EngineerSpecialty> { EngineerSpecialty.Sensors, EngineerSpecialty.SurfaceScanners }, new HashSet<EngineerSpecialty> { EngineerSpecialty.Refineries, EngineerSpecialty.FuelScoops, EngineerSpecialty.AFMUs, EngineerSpecialty.LifeSupportSystems, EngineerSpecialty.Scanners, EngineerSpecialty.ShieldCellBanks } );
-        public static readonly Engineer JuriIshmaak = new Engineer(300250, "Juri Ishmaak", "Giryak", 4481899074282, "Pater's Memorial", 128680327, "Giryak 2 a", 3, new HashSet<EngineerSpecialty> { EngineerSpecialty.Mines, EngineerSpecialty.Sensors, EngineerSpecialty.SurfaceScanners }, new HashSet<EngineerSpecialty> {EngineerSpecialty.Torpedos, EngineerSpecialty.Missiles, EngineerSpecialty.Scanners});
-        public static readonly Engineer TodMcQuinn = new Engineer(300260, "Tod 'The Blaster' McQuinn", "Wolf 397", 3107576681170, "Trophy camp", 128680583, "Trus Madi", 7, new HashSet<EngineerSpecialty> { EngineerSpecialty.MultiCannons, EngineerSpecialty.RailGuns }, new HashSet<EngineerSpecialty> { EngineerSpecialty.FragCannons, EngineerSpecialty.Cannons });
-        public static readonly Engineer TianaFortune = new Engineer(300270, "Tiana Fortune", "Achenar", 164098653, "Fortune's Loss", 128680839, "Achenar 4a", 5, new HashSet<EngineerSpecialty> { EngineerSpecialty.Scanners, EngineerSpecialty.LimpetControllers, EngineerSpecialty.Sensors }, new HashSet<EngineerSpecialty> { EngineerSpecialty.FrameShiftDriveInterdictors, EngineerSpecialty.SurfaceScanners });
-        public static readonly Engineer MelBrandon = new Engineer(300280, "Mel Brandon", "Luchtaine", 66038577537618, "The Brig", 128681095, "Luchtaine A 1 c", 14, new HashSet<EngineerSpecialty> { EngineerSpecialty.FrameShiftDrives, EngineerSpecialty.Thrusters, EngineerSpecialty.ShieldGenerators, EngineerSpecialty.Lasers, EngineerSpecialty.FrameShiftDriveInterdictors, EngineerSpecialty.ShieldBoosters}, new HashSet<EngineerSpecialty> { EngineerSpecialty.ShieldCellBanks});
-        public static readonly Engineer EtienneDorn = new Engineer(300290, "Etienne Dorn", "Los", 11887629902418, "Kraken's Retreat", 128681351, "Los A 2 b", 19, new HashSet<EngineerSpecialty> { EngineerSpecialty.PlasmaAccelerators, EngineerSpecialty.Sensors, EngineerSpecialty.SurfaceScanners, EngineerSpecialty.LifeSupportSystems, EngineerSpecialty.PowerPlants, EngineerSpecialty.PowerDistributors, EngineerSpecialty.RailGuns}, new HashSet<EngineerSpecialty> { EngineerSpecialty.Scanners});
-        public static readonly Engineer ChloeSedesi = new Engineer(300300, "Chloe Sedesi", "Shenve", 594676730147, "Cinder Dock", 128954244, "Shenve A 6", 15, new HashSet<EngineerSpecialty> { EngineerSpecialty.Thrusters }, new HashSet<EngineerSpecialty> { EngineerSpecialty.FrameShiftDrives } );
+        public static readonly Engineer DidiVatermann = new(300000, "Didi Vatermann", "Leesti", 3932277478114, "Vatermann LLC", 128673927, "Leesti 1 a", 9,
+            [ EngineerSpecialty.ShieldBoosters ], [ EngineerSpecialty.ShieldGenerators ] );
+        public static readonly Engineer BillTurner = new(300010, "Bill Turner", "Alioth", 1109989017963, "Turner Metallics Inc", 128674183, "Alioth 4 a", 57,
+            [ EngineerSpecialty.PlasmaAccelerators, EngineerSpecialty.Sensors, EngineerSpecialty.SurfaceScanners ],
+            [
+                EngineerSpecialty.LifeSupportSystems, EngineerSpecialty.Refineries, EngineerSpecialty.AFMUs,
+                EngineerSpecialty.FuelScoops, EngineerSpecialty.Scanners
+            ] );
+        public static readonly Engineer BrooTarquin = new(300030, "Broo Tarquin", "Muang", 4481966019282, "Broo's Legacy", 128674695, "Muang 5 a", 13,
+            [ EngineerSpecialty.Lasers ], [ ] );
+        public static readonly Engineer TheSarge = new(300040, "The Sarge", "Beta-3 Tucani", 2827992680811, "The Beach", 128674951, "Beta-3 Tucani 2 b a", 16,
+            [ EngineerSpecialty.LimpetControllers, EngineerSpecialty.Cannons ], [ EngineerSpecialty.RailGuns ] );
+        public static readonly Engineer ZacariahNemo = new(300050, "Zacariah Nemo", "Yoru", 6131367744226, "Nemo Cyber Party Base", 128675207, "Yoru 4", 9,
+            [ EngineerSpecialty.FragCannons ],
+            [ EngineerSpecialty.MultiCannons, EngineerSpecialty.PlasmaAccelerators ] );
+        public static readonly Engineer LizRyder = new(300080, "Liz Ryder", "Eurybia", 1458309141194, "Demolition Unlimited", 128675975, "Makalu", 6,
+            [ EngineerSpecialty.Missiles, EngineerSpecialty.Torpedos ],
+            [ EngineerSpecialty.Mines, EngineerSpecialty.HullReinforcement ] );
+        public static readonly Engineer HeraTani = new(300090, "Hera Tani", "Kuwemaki", 1733321102034, "The Jet's Hole", 128676231, "Kuwemaki A 3 a", 15,
+            [ EngineerSpecialty.PowerPlants, EngineerSpecialty.SurfaceScanners ],
+            [ EngineerSpecialty.Sensors, EngineerSpecialty.PowerDistributors ] );
+        public static readonly Engineer FelicityFarseer = new(300100, "Felicity Farseer", "Deciat", 6681123623626, "Farseer Inc", 128676487, "Deciat 6 a", 25,
+            [ EngineerSpecialty.FrameShiftDrives ],
+            [
+                EngineerSpecialty.Thrusters, EngineerSpecialty.Sensors, EngineerSpecialty.SurfaceScanners,
+                EngineerSpecialty.ShieldBoosters, EngineerSpecialty.FrameShiftDriveInterdictors,
+                EngineerSpecialty.PowerPlants
+            ] );
+        public static readonly Engineer RamTah = new(300110, "Ram Tah", "Meene", 3790082132323, "Phoenix Base", 128676743, "Meene AB 5 d", 16,
+            [ EngineerSpecialty.ECMs, EngineerSpecialty.PointDefence, EngineerSpecialty.ChaffAndHeatSinkLaunchers ],
+            [ EngineerSpecialty.LimpetControllers ] );
+        public static readonly Engineer LeiCheung = new(300120, "Lei Cheung", "Laksak", 4305444669811, "Trader's Rest", 128676999, "Laksak A 1", 5,
+            [ EngineerSpecialty.ShieldGenerators, EngineerSpecialty.Sensors, EngineerSpecialty.SurfaceScanners ],
+            [ EngineerSpecialty.ShieldBoosters ] );
+        public static readonly Engineer PetraOlmanova = new(300130, "Petra Olmanova", "Asura", 12274907287851, "Sanctuary", 128677255, "Asura 1 d", 24,
+        [
+            EngineerSpecialty.HullReinforcement, EngineerSpecialty.Missiles,
+            EngineerSpecialty.ChaffAndHeatSinkLaunchers, EngineerSpecialty.PointDefence
+        ], [ EngineerSpecialty.Mines, EngineerSpecialty.Torpedos, EngineerSpecialty.ECMs, EngineerSpecialty.AFMUs ] );
+        public static readonly Engineer ColBrisDekker = new(300140, "Colonel Bris Dekker", "Sol", 10477373803, "Dekker's Yard", 128677511, "Iapetus", 20,
+            [ ], [ EngineerSpecialty.FrameShiftDriveInterdictors, EngineerSpecialty.FrameShiftDrives ] );
+        public static readonly Engineer MarshaHicks = new(300150, "Marsha Hicks", "Tir", 48996147307082, "The Watchtower", 128677767, "Tir A 2", 4,
+        [
+            EngineerSpecialty.LimpetControllers, EngineerSpecialty.Refineries, EngineerSpecialty.FuelScoops,
+            EngineerSpecialty.MultiCannons, EngineerSpecialty.FragCannons
+        ], [ EngineerSpecialty.Cannons ] );
+        public static readonly Engineer ElviraMartuuk = new(300160, "Elvira Martuuk", "Khun", 3107241104074, "Long Sight Base", 128678023, "Khun 5", 13,
+            [ EngineerSpecialty.FrameShiftDrives ],
+            [ EngineerSpecialty.ShieldGenerators, EngineerSpecialty.Thrusters, EngineerSpecialty.ShieldCellBanks ] );
+        public static readonly Engineer TheDweller = new(300180, "The Dweller", "Wyrd", 5031654888146, "Black Hide", 128678535, "Wyrd A 2", 10,
+            [ EngineerSpecialty.PowerDistributors ], [ EngineerSpecialty.Lasers ] );
+        public static readonly Engineer MarcoQwent = new(300200, "Marco Qwent", "Sirius", 121569805492, "Qwent Research Base", 128679047, "Lucifer", 4,
+            [ ], [ EngineerSpecialty.PowerPlants, EngineerSpecialty.PowerDistributors ] );
+        public static readonly Engineer SeleneJean = new(300210, "Selene Jean", "Kuk", 24859942069665, "Prospector's Rest", 128679303, "Kuk B 3", 12,
+            [ EngineerSpecialty.Armour, EngineerSpecialty.HullReinforcement ], [ ] );
+        public static readonly Engineer ProfessorPalin = new(300220, "Professor Palin", "Arque", 113573366131, "Abel Laboratory", 128679559, "Arque 4 e", 28,
+            [ EngineerSpecialty.Thrusters ], [ EngineerSpecialty.FrameShiftDrives ] );
+        public static readonly Engineer LoriJameson = new(300230, "Lori Jameson", "Shinrarta Dezhra", 3932277478106, "Jameson Base", 128679815, "Shinrarta Dezhra A 1", 11,
+            [ EngineerSpecialty.Sensors, EngineerSpecialty.SurfaceScanners ],
+            [
+                EngineerSpecialty.Refineries, EngineerSpecialty.FuelScoops, EngineerSpecialty.AFMUs,
+                EngineerSpecialty.LifeSupportSystems, EngineerSpecialty.Scanners, EngineerSpecialty.ShieldCellBanks
+            ] );
+        public static readonly Engineer JuriIshmaak = new(300250, "Juri Ishmaak", "Giryak", 4481899074282, "Pater's Memorial", 128680327, "Giryak 2 a", 3,
+            [ EngineerSpecialty.Mines, EngineerSpecialty.Sensors, EngineerSpecialty.SurfaceScanners ],
+            [ EngineerSpecialty.Torpedos, EngineerSpecialty.Missiles, EngineerSpecialty.Scanners ] );
+        public static readonly Engineer TodMcQuinn = new(300260, "Tod 'The Blaster' McQuinn", "Wolf 397", 3107576681170, "Trophy camp", 128680583, "Trus Madi", 7,
+            [ EngineerSpecialty.MultiCannons, EngineerSpecialty.RailGuns ],
+            [ EngineerSpecialty.FragCannons, EngineerSpecialty.Cannons ] );
+        public static readonly Engineer TianaFortune = new(300270, "Tiana Fortune", "Achenar", 164098653, "Fortune's Loss", 128680839, "Achenar 4a", 5,
+            [ EngineerSpecialty.Scanners, EngineerSpecialty.LimpetControllers, EngineerSpecialty.Sensors ],
+            [ EngineerSpecialty.FrameShiftDriveInterdictors, EngineerSpecialty.SurfaceScanners ] );
+        public static readonly Engineer MelBrandon = new(300280, "Mel Brandon", "Luchtaine", 66038577537618, "The Brig", 128681095, "Luchtaine A 1 c", 14,
+        [
+            EngineerSpecialty.FrameShiftDrives, EngineerSpecialty.Thrusters, EngineerSpecialty.ShieldGenerators,
+            EngineerSpecialty.Lasers, EngineerSpecialty.FrameShiftDriveInterdictors, EngineerSpecialty.ShieldBoosters
+        ], [ EngineerSpecialty.ShieldCellBanks ] );
+        public static readonly Engineer EtienneDorn = new(300290, "Etienne Dorn", "Los", 11887629902418, "Kraken's Retreat", 128681351, "Los A 2 b", 19,
+        [
+            EngineerSpecialty.PlasmaAccelerators, EngineerSpecialty.Sensors, EngineerSpecialty.SurfaceScanners,
+            EngineerSpecialty.LifeSupportSystems, EngineerSpecialty.PowerPlants, EngineerSpecialty.PowerDistributors,
+            EngineerSpecialty.RailGuns
+        ], [ EngineerSpecialty.Scanners ] );
+        public static readonly Engineer ChloeSedesi = new(300300, "Chloe Sedesi", "Shenve", 594676730147, "Cinder Dock", 128954244, "Shenve A 6", 15,
+            [ EngineerSpecialty.Thrusters ], [ EngineerSpecialty.FrameShiftDrives ] );
 
-        public static readonly Engineer JudeNavarro = new Engineer(400001, "Jude Navarro", "Aurai", 7268024067513, "Marshall's Drift", 128972903, "Aurai 1 a", 12, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
-        public static readonly Engineer DominoGreen = new Engineer(400002, "Domino Green", "Orishis", 5068464399785, "The Jackrabbit", 128973159, "Orishis 4", 8, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
-        public static readonly Engineer HeroFerrari = new Engineer(400003, "Hero Ferrari", "Siris", 7269634614689, "Nevermore Terrace", 128973415, "Siris 5 c", 40, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
-        public static readonly Engineer KitFowler = new Engineer(400004, "Kit Fowler", "Capoya", 2827975936355, "The Last Call", 128973671, "Capoya 2", 6, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
-        public static readonly Engineer WellingtonBeck = new Engineer(400005, "Wellington Beck", "Jolapa", 2832832893634, "Beck Facility", 128973927, "Jolapa 6 a", 20, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
-        public static readonly Engineer TerraVelasquez = new Engineer(400006, "Terra Velasquez", "Shou Xing", 3721329101171, "Rascal's Choice", 128974183, "Shou Xing 1", 2, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
-        public static readonly Engineer UmaLaszlo = new Engineer(400007, "Uma Laszlo", "Xuane", 16065190962585, "Laszlo's Resolve", 128974439, "Xuane A 3", 5, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
-        public static readonly Engineer OdenGeiger = new Engineer(400008, "Oden Geiger", "Candiaei", 8879744226018, "Ankh's Promise", 128974695, "Candiaei 9 c", 23, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
-        public static readonly Engineer YardenBond = new Engineer(400009, "Yarden Bond", "Bayan", 670686455169, "Salamander Bank", 128974951, "Bayan 7 b", 23, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
-        public static readonly Engineer Baltanos = new Engineer(400010, "Baltanos", "Deriso", 71536135676490, "The Divine Apparatus", 128986843, "Deriso 3 a", 36, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
-        public static readonly Engineer EleanorBresa = new Engineer(400011, "Eleanor Bresa", "Desy", 38001031029322, "Bresa Modifications", 128987099, "Desy 7 a", 9, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
-        public static readonly Engineer RosaDayette = new Engineer(400012, "Rosa Dayette", "Kojeara", 59166629864010, "Rosa's Shop", 128986587, "Kojeara 4 b", 31, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
-        public static readonly Engineer YiShen = new Engineer(400013, "Yi Shen", "Einheriar", 13736779007129, "Eidolon Hold", 128987355, "Einheriar 1", 12, new HashSet<EngineerSpecialty>(), new HashSet<EngineerSpecialty>());
+        public static readonly Engineer JudeNavarro = new(400001, "Jude Navarro", "Aurai", 7268024067513, "Marshall's Drift", 128972903, "Aurai 1 a", 12,
+            [ ], [ ] );
+        public static readonly Engineer DominoGreen = new(400002, "Domino Green", "Orishis", 5068464399785, "The Jackrabbit", 128973159, "Orishis 4", 8,
+            [ ], [ ] );
+        public static readonly Engineer HeroFerrari = new(400003, "Hero Ferrari", "Siris", 7269634614689, "Nevermore Terrace", 128973415, "Siris 5 c", 40,
+            [ ], [ ] );
+        public static readonly Engineer KitFowler = new(400004, "Kit Fowler", "Capoya", 2827975936355, "The Last Call", 128973671, "Capoya 2", 6,
+            [ ], [ ] );
+        public static readonly Engineer WellingtonBeck = new(400005, "Wellington Beck", "Jolapa", 2832832893634, "Beck Facility", 128973927, "Jolapa 6 a", 20,
+            [ ], [ ] );
+        public static readonly Engineer TerraVelasquez = new(400006, "Terra Velasquez", "Shou Xing", 3721329101171, "Rascal's Choice", 128974183, "Shou Xing 1", 2,
+            [ ], [ ] );
+        public static readonly Engineer UmaLaszlo = new(400007, "Uma Laszlo", "Xuane", 16065190962585, "Laszlo's Resolve", 128974439, "Xuane A 3", 5,
+            [ ], [ ] );
+        public static readonly Engineer OdenGeiger = new(400008, "Oden Geiger", "Candiaei", 8879744226018, "Ankh's Promise", 128974695, "Candiaei 9 c", 23,
+            [ ], [ ] );
+        public static readonly Engineer YardenBond = new(400009, "Yarden Bond", "Bayan", 670686455169, "Salamander Bank", 128974951, "Bayan 7 b", 23,
+            [ ], [ ] );
+        public static readonly Engineer Baltanos = new(400010, "Baltanos", "Deriso", 71536135676490, "The Divine Apparatus", 128986843, "Deriso 3 a", 36,
+            [ ], [ ] );
+        public static readonly Engineer EleanorBresa = new(400011, "Eleanor Bresa", "Desy", 38001031029322, "Bresa Modifications", 128987099, "Desy 7 a", 9,
+            [ ], [ ] );
+        public static readonly Engineer RosaDayette = new(400012, "Rosa Dayette", "Kojeara", 59166629864010, "Rosa's Shop", 128986587, "Kojeara 4 b", 31,
+            [ ], [ ] );
+        public static readonly Engineer YiShen = new(400013, "Yi Shen", "Einheriar", 13736779007129, "Eidolon Hold", 128987355, "Einheriar 1", 12,
+            [ ], [ ] );
 
         public static Engineer FromName(string from)
         {

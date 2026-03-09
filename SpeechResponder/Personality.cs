@@ -88,8 +88,8 @@ namespace EddiSpeechResponder
         [ JsonIgnore ] 
         private static Personality _defaultPersonality;
 
-        private static readonly string[] obsoleteScriptKeys = 
-        {
+        private static readonly string[] obsoleteScriptKeys =
+        [
             "Entered signal source", // Replaced by "Destination arrived" script
             "Jumping", // Replaced by "FSD engaged" script
             "Crew member role change", // This name is mismatched to the key (should be "changed"), so EDDI couldn't match the script name to the .json key correctly. The default script has been corrected.
@@ -106,11 +106,11 @@ namespace EddiSpeechResponder
             "Power defected", // Made obsolete in Powerplay 2.0 which no longer includes a defection mechanic.
             "Power expansion vote cast", // Made obsolete in Powerplay 2.0 which no longer includes a voting system
             "Power preparation vote cast", // Made obsolete in Powerplay 2.0 which no longer includes a voting system
-            "Power salary claimed", // Made obsolete in Powerplay 2.0 which no longer includes a weekly salary
-        };
+            "Power salary claimed" // Made obsolete in Powerplay 2.0 which no longer includes a weekly salary
+        ];
 
         private static readonly string[] ignoredEventKeys =
-        {
+        [
             // Shares updates with monitors / responders but are not intended to be user facing
             CargoEvent.NAME,
             FleetCarrierMaterialsEvent.NAME,
@@ -121,13 +121,13 @@ namespace EddiSpeechResponder
             StoredShipsEvent.NAME,
             StoredModulesEvent.NAME,
             UnhandledEvent.NAME
-        };
+        ];
 
         private static readonly string DIRECTORYPATH = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         private static readonly string DEFAULT_PATH = new DirectoryInfo(DIRECTORYPATH).FullName + @"\" + Properties.SpeechResponder.default_personality_script_filename;
         private static readonly string DEFAULT_USER_PATH = Constants.DATA_DIR + @"\personalities\" + Properties.SpeechResponder.default_personality_script_filename;
 
-        private static readonly List<string> upgradedPersonalities = new List<string>();
+        private static readonly List<string> upgradedPersonalities = [ ];
 
         public Personality(string name, string description, Dictionary<string, Script> scripts)
         {
@@ -147,7 +147,7 @@ namespace EddiSpeechResponder
         /// </summary>
         public static List<Personality> AllFromDirectory(string directory = null)
         {
-            List<Personality> personalities = new List<Personality>();
+            List<Personality> personalities = [ ];
             if (directory == null)
             {
                 directory = Constants.DATA_DIR + @"\personalities";

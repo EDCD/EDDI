@@ -9,7 +9,7 @@ namespace EddiEvents
     {
         public const string NAME = "NPC attack commenced";
         public const string DESCRIPTION = "Triggered when an attack on your ship by an NPC is detected";
-        public static readonly NPCAttackCommencedEvent SAMPLE = new NPCAttackCommencedEvent(DateTime.UtcNow, "Herne", MessageSource.BountyHunter);
+        public static readonly NPCAttackCommencedEvent SAMPLE = new(DateTime.UtcNow, "Herne", MessageSource.BountyHunter);
 
         [PublicAPI( "The name of the source attacking you" )]
         public string from { get; private set; }

@@ -22,8 +22,8 @@ namespace EddiJournalMonitor
         private const int pollingIntervalActiveMs = 100;
         private const int pollingIntervalRelaxedMs = 5000;
 
-        private BlockingCollection<JournalChunk> journalQueue = new BlockingCollection<JournalChunk>();
-        private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        private BlockingCollection<JournalChunk> journalQueue = new();
+        private CancellationTokenSource cancellationTokenSource = new();
 
         // Keep track of status
         private bool running;
@@ -218,7 +218,7 @@ namespace EddiJournalMonitor
                 if ( !string.IsNullOrEmpty( firstLine ) && firstLine.Contains( "Fileheader" ) )
                 {
                     // Enqueue the header line
-                    journalQueue.Add( new JournalChunk( new [] { firstLine }, isLoadEvent) );
+                    journalQueue.Add( new JournalChunk( [ firstLine ], isLoadEvent) );
                 }
 
                 // Find the latest "Commander" event, written at the start of the Load Game process

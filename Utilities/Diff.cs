@@ -129,7 +129,7 @@ namespace Utilities
 
         public static List<DiffItem> DiffTexts(string a, string b)
         {
-            List<DiffItem> diffItems = new List<DiffItem>();
+            List<DiffItem> diffItems = [ ];
             string[] aLines = a?.Replace("\r", "")?.Split('\n');
             string[] bLines = b?.Replace("\r", "")?.Split('\n');
 
@@ -241,9 +241,9 @@ namespace Utilities
         /// <param name="TextA">A-version of the text (usualy the old one)</param>
         /// <param name="TextB">B-version of the text (usualy the new one)</param>
         /// <returns>Returns a array of Items that describe the differences.</returns>
-        public Item[] DiffText(string TextA, string TextB)
+        public static Item[] DiffText(string TextA, string TextB)
         {
-            return (DiffText(TextA, TextB, false, false, false));
+            return DiffText(TextA, TextB, false, false, false);
         }
 
         /// <summary>

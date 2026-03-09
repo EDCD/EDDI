@@ -45,9 +45,9 @@ namespace EddiSpeechResponder
         private readonly FoldingStrategy foldingStrategy;
         private FoldingMargin foldingMargin;
 
-        private readonly List<MetaVariable> metaVars = new List<MetaVariable>();
+        private readonly List<MetaVariable> metaVars = [ ];
         private readonly List<ICustomFunction> customFunctions;
-        private static readonly object metaVarLock = new object();
+        private static readonly object metaVarLock = new();
         private readonly SpeechResponder speechResponder;
         private static Rect windowPosition;
 
@@ -315,7 +315,7 @@ namespace EddiSpeechResponder
             // Resolve any direct function invocations (e.g. `{function(x).`)
             if ( !filteredMetaVars.Any() )
             {
-                if ( lookupKeys[ 0 ].Contains( "(" ) )
+                if ( lookupKeys[ 0 ].Contains( '(' ) )
                 {
                     var functionKey = Regex.Replace( lookupKeys[ 0 ], @"(?=\().*", "" );
                     // If a match is found then we won't need to search our metavariables for a match.
@@ -454,7 +454,7 @@ namespace EddiSpeechResponder
                 MessageBox.Show( Properties.SpeechResponder.messagebox_script_name_may_not_contain + @"';'.", Properties.SpeechResponder.messagebox_unable_to_save_script, MessageBoxButtons.OK, MessageBoxIcon.Error );
                 return;
             }
-            if ( _scripts.Keys.Except( new[] { originalScript?.Name } ).Contains( revisedScript.Name ) )
+            if ( _scripts.Keys.Except( [ originalScript?.Name ] ).Contains( revisedScript.Name ) )
             {
                 MessageBox.Show( Properties.SpeechResponder.messagebox_script_name_already_in_use, Properties.SpeechResponder.messagebox_unable_to_save_script, MessageBoxButtons.OK, MessageBoxIcon.Error );
                 return;
@@ -592,7 +592,7 @@ namespace EddiSpeechResponder
             if ( sender is TextBox textBox && textBox.IsLoaded )
             {
                 var separatedIncludes = textBox.Text
-                    .Split( new[] { ';' }, StringSplitOptions.RemoveEmptyEntries )
+                    .Split( [ ';' ], StringSplitOptions.RemoveEmptyEntries )
                     .Select( t => t.Trim() ).ToList();
                 var scriptsExceptCurrent = _scripts
                     .Where(s => s.Key != revisedScript.Name )

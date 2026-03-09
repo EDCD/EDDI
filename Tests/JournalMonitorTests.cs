@@ -1312,7 +1312,7 @@ namespace Tests
             Assert.AreEqual("XBH-64Y", @event.signalSource.invariantName);
 
             var testSystem = new StarSystem() { systemname = "Test System" };
-            testSystem.AddOrUpdateSignalSources( new [] { @event.signalSource } );
+            testSystem.AddOrUpdateSignalSources( [ @event.signalSource ] );
             Assert.AreEqual(1, testSystem.carriersignalsources.Count);
         }
 
@@ -2487,19 +2487,25 @@ namespace Tests
             JournalMonitor.ShipShutdownCancellationTokenSource = null;
 
             // Trigger a `ShipShutdown` event.
-            var events = JournalMonitor.ParseJournalEntries( new [] {@"{ ""timestamp"":""2023-11-24T20:22:45Z"", ""event"":""SystemsShutdown"" }" } );
+            var events = JournalMonitor.ParseJournalEntries( [
+                @"{ ""timestamp"":""2023-11-24T20:22:45Z"", ""event"":""SystemsShutdown"" }"
+            ] );
             Assert.AreEqual( 1, events.Count );
             Assert.AreEqual(typeof(ShipShutdownEvent), events[0].GetType() );
             Assert.IsFalse( ((ShipShutdownEvent)events[ 0 ]).partialshutdown );
 
             // New `ShipShutdown` events should be suppressed for the next 30 seconds. Test at 8 seconds.
             Thread.Sleep( TimeSpan.FromSeconds( 8 ) );
-            events = JournalMonitor.ParseJournalEntries(new[] { @"{ ""timestamp"":""2023-11-24T20:22:53Z"", ""event"":""SystemsShutdown"" }" });
+            events = JournalMonitor.ParseJournalEntries( [
+                @"{ ""timestamp"":""2023-11-24T20:22:53Z"", ""event"":""SystemsShutdown"" }"
+            ] );
             Assert.AreEqual( 0, events.Count );
 
             // New `ShipShutdown` events should be suppressed for the next 30 seconds. Test at 8 + 24 = 32 seconds.
             Thread.Sleep( TimeSpan.FromSeconds( 24 ) );
-            events = JournalMonitor.ParseJournalEntries(new[] { @"{ ""timestamp"":""2023-11-24T20:23:17Z"", ""event"":""SystemsShutdown"" }" });
+            events = JournalMonitor.ParseJournalEntries( [
+                @"{ ""timestamp"":""2023-11-24T20:23:17Z"", ""event"":""SystemsShutdown"" }"
+            ] );
             Assert.AreEqual( 1, events.Count );
             Assert.AreEqual( typeof( ShipShutdownEvent ), events[ 0 ].GetType() );
             Assert.IsFalse( ( (ShipShutdownEvent)events[ 0 ] ).partialshutdown );
@@ -2564,7 +2570,7 @@ namespace Tests
             var secondstar = @"{ ""timestamp"":""2022-02-18T07:14:03Z"", ""event"":""Scan"", ""ScanType"":""Detailed"", ""BodyName"":""Wolf 1414 B"", ""BodyID"":2, ""Parents"":[ {""Null"":0} ], ""StarSystem"":""Wolf 1414"", ""SystemAddress"":83718345434, ""DistanceFromArrivalLS"":1472.392323, ""StarType"":""M"", ""Subclass"":3, ""StellarMass"":0.367188, ""Radius"":408410944.000000, ""AbsoluteMagnitude"":8.709381, ""Age_MY"":3118, ""SurfaceTemperature"":3087.000000, ""Luminosity"":""Va"", ""SemiMajorAxis"":293087559938.430786, ""Eccentricity"":0.295083, ""OrbitalInclination"":34.113437, ""Periapsis"":123.694292, ""OrbitalPeriod"":196849131.584167, ""AscendingNode"":31.266731, ""MeanAnomaly"":53.999018, ""RotationPeriod"":255361.700784, ""AxialTilt"":0.000000, ""WasDiscovered"":true, ""WasMapped"":false }";
 
             var events = new List<Event>();
-            events.AddRange( JournalMonitor.ParseJournalEntries( new[] { autoscan, honk, secondstar } ) );
+            events.AddRange( JournalMonitor.ParseJournalEntries( [ autoscan, honk, secondstar ] ) );
             Assert.IsTrue( events.LastOrDefault() is DiscoveryScanEvent );
         }
 
