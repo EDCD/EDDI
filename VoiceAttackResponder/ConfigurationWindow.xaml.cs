@@ -17,12 +17,14 @@ namespace EddiVoiceAttackResponder
         private void VAExampleClicked(object sender, RoutedEventArgs e)
         {
             // TODO: Add links to a youtube playlist?
-            Process.Start("https://youtube.com/");
+            var processInfo = new ProcessStartInfo { FileName = "https://youtube.com/", UseShellExecute = true };
+            Process.Start( processInfo );
         }
 
         private void VAVariablesClicked(object sender, RoutedEventArgs e)
         {
-            Process.Start("https://github.com/EDCD/EDDI/wiki/VoiceAttack-Integration");
+            var processInfo = new ProcessStartInfo { FileName = "https://github.com/EDCD/EDDI/wiki/VoiceAttack-Integration", UseShellExecute = true };
+            Process.Start( processInfo );
         }
     }
 }

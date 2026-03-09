@@ -452,7 +452,7 @@ namespace EddiVoiceAttackResponder
             {
                 ProcessStartInfo proc = new ProcessStartInfo(Net.GetDefaultBrowserPath(), "\"" + uri + "\"")
                 {
-                    UseShellExecute = false
+                    UseShellExecute = true
                 };
                 Process.Start( proc );
             }

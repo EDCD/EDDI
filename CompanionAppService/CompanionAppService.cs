@@ -184,7 +184,12 @@ namespace EddiCompanionAppService
             var webURL = $"{AUTH_SERVER}{AUTH_URL}" + $"?response_type=code&{AUDIENCE}&{SCOPE}&client_id={clientID}&code_challenge={codeChallenge}&code_challenge_method=S256&state={authSessionID}&redirect_uri={Uri.EscapeDataString(CALLBACK_URL)}";
             try
             {
-                Process.Start( webURL );
+                var psi = new ProcessStartInfo
+                {
+                    FileName = webURL,
+                    UseShellExecute = true
+                };
+                Process.Start( psi );
                 Logging.Debug( "Awaiting callback" );
             }
             catch ( Win32Exception win32Exception )

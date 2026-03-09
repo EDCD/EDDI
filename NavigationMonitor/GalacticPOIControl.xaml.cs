@@ -178,7 +178,7 @@ namespace EddiNavigationMonitor
                     e.Cancel = true;
                     var startInfo = new ProcessStartInfo
                     {
-                        FileName = e.Uri.ToString()
+                        FileName = e.Uri.ToString(), UseShellExecute = true
                     };
                     // Launch the link in the default web browser
                     Process.Start(startInfo);
