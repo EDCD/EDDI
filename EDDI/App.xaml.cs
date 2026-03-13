@@ -2,6 +2,8 @@
 using EddiConfigService.Configurations;
 using EddiCore;
 using EddiCore.Upgrader;
+using EddiSpeechService;
+using EddiStatusService;
 using EddiUI;
 using System;
 using System.Diagnostics;
@@ -58,6 +60,10 @@ namespace Eddi
             // This completes before showing any UI so that VoiceAttack can report the availability of the upgrade during its startup.
             EddiUpgrader.CheckUpgradeAsync().GetResultOrTimeout( TimeSpan.FromSeconds( 10 ) );
 
+            // Wait for preload to complete before MainWindow creation
+            var preloadTasks = PreloadCriticalServicesAsync();
+            Task.WaitAll( preloadTasks.ToArray() );
+
             try
             {
                 if ( FromVA )
@@ -79,6 +85,47 @@ namespace Eddi
                 // Catch exceptions from the main UI thread
                 CrashLogger( e );
             }
+        }
+
+        // Parallel pre-load of service singletons
+        private static Task[] PreloadCriticalServicesAsync ()
+        {
+            return
+            [
+                // Pre-warm ConfigService (file I/O)
+                Task.Run(() => {
+                    try {
+                        _ = ConfigService.Instance;
+                        Logging.Debug("ConfigService preloaded");
+                    } catch (Exception ex) {
+                        Logging.Error("Failed to preload ConfigService", ex);
+                    }
+                }),
+        
+                // Pre-warm CompanionAppService (HTTP client + DDE setup)
+                // ⚠️ MUST be on UI thread due to DDE requirements!
+                // So we skip async preload for this one - handle differently
+        
+                // Pre-load speech service asynchronously
+                Task.Run(() => {
+                    try {
+                        _ = SpeechService.Instance;
+                        Logging.Debug("SpeechService preloaded");
+                    } catch (Exception ex) {
+                        Logging.Error("Failed to preload SpeechService", ex);
+                    }
+                }),
+        
+                // Pre-load status service asynchronously  
+                Task.Run(() => {
+                    try {
+                        _ = StatusService.Instance;
+                        Logging.Debug("StatusService preloaded");
+                    } catch (Exception ex) {
+                        Logging.Error("Failed to preload StatusService", ex);
+                    }
+                })
+            ];
         }
 
         private static void OnExit(object sender, ExitEventArgs e)
@@ -135,8 +182,9 @@ namespace Eddi
         private static void CrashLogger(Exception ex)
         {
             // Suppress uncaught Rollbar internal exceptions
-            if ( ex.InnerException?.Source == "Rollbar" || 
-                 ( ex is AggregateException aex && aex.InnerExceptions.Any(ie => ie.StackTrace.Contains("Rollbar")) ) )
+            if ( ex.InnerException?.Source == "Rollbar" ||
+                 ( ex is AggregateException aex &&
+                   aex.InnerExceptions.Any( ie => ie.StackTrace != null && ie.StackTrace.Contains( "Rollbar" ) ) ) )
             {
                 return;
             }

@@ -23,6 +23,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using Utilities;
 
 [assembly: InternalsVisibleTo( "Tests" )]
@@ -409,11 +410,14 @@ namespace EddiCore
             {
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " starting");
                 DataProvider = DataProviderService.Create();
-                
+
                 // CAUTION: CompanionAppService.Instance must be invoked by the main application thread, before any other threads are generated, 
                 // to correctly configure the CompanionAppService to receive DDE messages from its custom URL Protocol.
-                CompanionAppService.Instance.gameIsBeta = false;
-
+                if ( Thread.CurrentThread == Application.Current?.Dispatcher?.Thread )
+                {
+                    CompanionAppService.Instance.gameIsBeta = false;
+                }
+                
                 var configuration = ConfigService.Instance.eddiConfiguration;
                 Logging.Verbose = configuration.VerboseLogging;
 
@@ -424,27 +428,55 @@ namespace EddiCore
                 if (running)
                 {
                     // Tasks we can start asynchronously but need to complete before other dependent code is called
-                    essentialAsyncTasks.AddRange(new List<Task>()
+                    var discoveryTasks = new List<Task>
                     {
-                        Task.Run(() => responders = findResponders(), eventHandlerTS.Token), // Set up responders
-                        Task.Run(() => monitors = findMonitors(), eventHandlerTS.Token), // Set up monitors 
-                    });
+                        Task.Run( () => {
+                            try
+                            {
+                                responders = findResponders();
+                                Logging.Debug( $"Discovered {responders.Count} responders" );
+                            }
+                            catch ( Exception ex )
+                            {
+                                Logging.Error( "Failed to discover responders", ex );
+                                responders = [ ];
+                            }
+                        }, eventHandlerTS.Token ),
+                        Task.Run( () => {
+                            try
+                            {
+                                monitors = findMonitors();
+                                Logging.Debug( $"Discovered {monitors.Count} monitors" );
+                            }
+                            catch ( Exception ex )
+                            {
+                                Logging.Error( "Failed to discover monitors", ex );
+                                monitors = [ ];
+                            }
+                        }, eventHandlerTS.Token )
+                    };
+
+                    essentialAsyncTasks.AddRange( discoveryTasks );
                 }
                 else
                 {
-                    Logging.Info("Mandatory upgrade required! EDDI initializing in safe mode until upgrade is completed.");
+                    Logging.Warn("Mandatory upgrade required! EDDI initializing in safe mode until upgrade is completed.");
                 }
 
                 // Make sure that our essential tasks have completed before we start
-                Task.WaitAll(essentialAsyncTasks.ToArray(), eventHandlerTS.Token );
-
+                const int discoveryTimeoutMs = 5000;
+                if ( !Task.WaitAll( essentialAsyncTasks.ToArray(), discoveryTimeoutMs, eventHandlerTS.Token ) )
+                {
+                    Logging.Warn( $"Responder/Monitor discovery timed out after {discoveryTimeoutMs}ms" );
+                }
+                
                 // Tasks we can start asynchronously and don't need to wait for
                 updateDestinationSystemAsync( configuration.DestinationSystemAddress, configuration.DestinationSystem )
                     .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                 InitializeFrontierApiServiceAsync()
                     .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
 
-                StatusService.Instance.StatusChanged += ( s, e ) =>
+                StatusService.Instance.StatusChanged += ( s, _ ) =>
                     OnStatusChangedAsync( s ).SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
 
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " initialised");
@@ -2702,15 +2734,15 @@ namespace EddiCore
                 return null;
             }
 
-            DirectoryInfo dir = new DirectoryInfo(path);
+            var dir = new DirectoryInfo(path);
             List<IEddiMonitor> foundMonitors = [ ];
-            Type pluginType = typeof(IEddiMonitor);
-            foreach (FileInfo file in dir.GetFiles("*Monitor.dll", SearchOption.AllDirectories))
+            var pluginType = typeof(IEddiMonitor);
+            foreach (var file in dir.GetFiles("*Monitor.dll", SearchOption.AllDirectories))
             {
                 try
                 {
-                    Assembly assembly = Assembly.LoadFrom(file.FullName);
-                    foreach (Type type in assembly.GetTypes())
+                    var assembly = Assembly.LoadFrom(file.FullName);
+                    foreach (var type in assembly.GetTypes())
                     {
                         if ( !type.IsInterface && !type.IsAbstract )
                         {
@@ -2719,7 +2751,7 @@ namespace EddiCore
                                 try
                                 {
                                     Logging.Debug( "Instantiating monitor plugin at " + file.FullName );
-                                    IEddiMonitor monitor = type.InvokeMember( null,
+                                    var monitor = type.InvokeMember( null,
                                         BindingFlags.CreateInstance,
                                         null, null, null ) as IEddiMonitor;
                                     foundMonitors.Add( monitor );
@@ -2739,8 +2771,8 @@ namespace EddiCore
                 }
                 catch (ReflectionTypeLoadException ex)
                 {
-                    StringBuilder sb = new StringBuilder();
-                    foreach (Exception exSub in ex.LoaderExceptions)
+                    var sb = new StringBuilder();
+                    foreach (var exSub in ex.LoaderExceptions)
                     {
                         sb.AppendLine(exSub.Message);
                         if (exSub is FileNotFoundException exFileNotFound)
@@ -2782,22 +2814,22 @@ namespace EddiCore
                 Logging.Warn("Unable to start EDDI Responders, application directory path not found.");
                 return null;
             }
-            DirectoryInfo dir = new DirectoryInfo(path);
+            var dir = new DirectoryInfo(path);
             List<IEddiResponder> foundResponders = [ ];
-            Type pluginType = typeof(IEddiResponder);
-            foreach (FileInfo file in dir.GetFiles("*Responder.dll", SearchOption.AllDirectories))
+            var pluginType = typeof(IEddiResponder);
+            foreach (var file in dir.GetFiles("*Responder.dll", SearchOption.AllDirectories))
             {
                 try
                 {
-                    Assembly assembly = Assembly.LoadFrom(file.FullName);
-                    foreach (Type type in assembly.GetTypes())
+                    var assembly = Assembly.LoadFrom(file.FullName);
+                    foreach (var type in assembly.GetTypes())
                     {
                         if ( !type.IsInterface && !type.IsAbstract && !( pluginType.FullName is null ) )
                         {
                             if ( type.GetInterface( pluginType.FullName ) != null )
                             {
                                 Logging.Debug( "Instantiating responder plugin at " + file.FullName );
-                                IEddiResponder responder = type.InvokeMember( type.Name,
+                                var responder = type.InvokeMember( type.Name,
                                     BindingFlags.CreateInstance,
                                     null, null, null ) as IEddiResponder;
                                 foundResponders.Add( responder );
@@ -2811,8 +2843,8 @@ namespace EddiCore
                 }
                 catch (ReflectionTypeLoadException ex)
                 {
-                    StringBuilder sb = new StringBuilder();
-                    foreach (Exception exSub in ex.LoaderExceptions)
+                    var sb = new StringBuilder();
+                    foreach (var exSub in ex.LoaderExceptions)
                     {
                         if ( exSub is null ) { continue; }
                         sb.AppendLine(exSub.Message);

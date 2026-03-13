@@ -110,8 +110,7 @@ namespace EddiCompanionAppService
         {
             Credentials = CompanionAppCredentials.Load();
             var appPath = System.Reflection.Assembly.GetEntryAssembly()?.Location;
-            void logger(string message) => Logging.Error(message);
-            
+
             httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.UserAgent.ParseAdd( $"{Constants.EDDI_NAME}/{Constants.EDDI_VERSION}" );
             httpClient.DefaultRequestHeaders.Accept.Add( new MediaTypeWithQualityHeaderValue( "application/json" ) );
@@ -139,6 +138,9 @@ namespace EddiCompanionAppService
 
                 CurrentState = State.LoggedOut;
             } );
+            return;
+
+            void logger(string message) => Logging.Error(message);
         }
 
         public void Dispose()
