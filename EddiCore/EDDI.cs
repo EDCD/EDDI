@@ -1,5 +1,6 @@
-using EddiCompanionAppService;
+﻿using EddiCompanionAppService;
 using EddiConfigService;
+using EddiCore.ApplicationContext;
 using EddiCore.Hotkeys;
 using EddiDataDefinitions;
 using EddiDataProviderService;
@@ -23,7 +24,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using Utilities;
 
 [assembly: InternalsVisibleTo( "Tests" )]
@@ -144,6 +144,18 @@ namespace EddiCore
                     {
                         Logging.Debug("No EDDI instance: creating one");
                         instance = new EDDI();
+
+                        // Initialize application context from App if available
+                        var appType = Type.GetType("Eddi.App, Eddi");
+                        if (appType != null)
+                        {
+                            var contextProperty = appType.GetProperty("ApplicationContext");
+                            if (contextProperty?.GetValue(null) is IApplicationContext appContext)
+                            {
+                                instance._applicationContext = appContext;
+                                Logging.Debug($"EDDI initialized with ApplicationContext: {(appContext.HasUIDispatcher ? "UI" : "Headless")}");
+                            }
+                        }
                     }
                 }
             }
@@ -165,6 +177,7 @@ namespace EddiCore
         internal ConcurrentBag<IEddiMonitor> activeMonitors = [ ];
         private static readonly object monitorLock = new();
         private readonly Dictionary<string, CancellationTokenSource> _monitorCancellationTokens = new();
+        private IApplicationContext _applicationContext;
         private bool IsMonitorActive ( string name ) => activeMonitors.Any( m => m.MonitorName().Equals(name, StringComparison.OrdinalIgnoreCase) );
 
         public List<IEddiResponder> responders = [ ];
@@ -412,13 +425,7 @@ namespace EddiCore
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " starting");
                 DataProvider = DataProviderService.Create();
 
-                // CAUTION: CompanionAppService.Instance must be invoked by the main application thread, before any other threads are generated, 
-                // to correctly configure the CompanionAppService to receive DDE messages from its custom URL Protocol.
-                if ( Thread.CurrentThread == Application.Current?.Dispatcher?.Thread )
-                {
-                    CompanionAppService.Instance.gameIsBeta = false;
-                }
-                
+
                 var configuration = ConfigService.Instance.eddiConfiguration;
                 Logging.Verbose = configuration.VerboseLogging;
 
@@ -915,7 +922,7 @@ namespace EddiCore
                         break;
                     }
 
-                    // Exponential backoff (max 30s) + small jitter (0�500ms), except when unit testing
+                    // Exponential backoff (max 30s) + small jitter (0ï¿½500ms), except when unit testing
                     var exponent = Math.Min(Math.Max(0, consecutiveFailures - 1), 5);
                     var backoffSeconds = Math.Min(30, 1 << exponent);
                     var jitterMs = rng.Next(0, 500);
@@ -2988,3 +2995,4 @@ namespace EddiCore
         }
     }
 }
+

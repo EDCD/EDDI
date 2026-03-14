@@ -17,7 +17,7 @@ using Utilities;
 
 namespace EddiCompanionAppService
 {
-    public class CompanionAppService : IDisposable, INotifyPropertyChanged
+    public class CompanionAppService : IDisposable, INotifyPropertyChanged, ICompanionAppServiceInitializer
     {
         // Implementation instructions from Frontier: https://hosting.zaonce.net/docs/oauth2/instructions.html
         private static readonly string LIVE_SERVER = "https://companion.orerve.net";
@@ -31,7 +31,7 @@ namespace EddiCompanionAppService
         private static readonly string SCOPE = "scope=capi auth";
 
         private readonly HttpClient httpClient;
-        private readonly CustomURLResponder URLResponder;
+        private CustomURLResponder URLResponder;
         private string verifier;
         private string authSessionID;
         private CompanionAppCredentials Credentials;
@@ -109,13 +109,11 @@ namespace EddiCompanionAppService
         private CompanionAppService ()
         {
             Credentials = CompanionAppCredentials.Load();
-            var appPath = System.Reflection.Assembly.GetEntryAssembly()?.Location;
 
             httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.UserAgent.ParseAdd( $"{Constants.EDDI_NAME}/{Constants.EDDI_VERSION}" );
             httpClient.DefaultRequestHeaders.Accept.Add( new MediaTypeWithQualityHeaderValue( "application/json" ) );
 
-            URLResponder = new CustomURLResponder(Constants.EDDI_URL_PROTOCOL, handleCallbackUrlAsync, logger, appPath);
             clientID = ClientId.ID;
             if (clientID == null)
             {
@@ -139,8 +137,14 @@ namespace EddiCompanionAppService
                 CurrentState = State.LoggedOut;
             } );
             return;
+        }
 
-            void logger(string message) => Logging.Error(message);
+        /// <summary>Initialize a custom URL responder for OAuth callbacks. This responder uses DDE and should only be called if the UI dispatcher is available.</summary>
+        public void InitializeOAuthCallback()
+        {
+            void logger ( string message ) => Logging.Error( message );
+            var appPath = System.Reflection.Assembly.GetEntryAssembly()?.Location;
+            URLResponder = new CustomURLResponder(Constants.EDDI_URL_PROTOCOL, handleCallbackUrlAsync, logger, appPath);
         }
 
         public void Dispose()
@@ -154,7 +158,7 @@ namespace EddiCompanionAppService
             if (disposing)
             {
                 // dispose managed resources
-                URLResponder.Dispose();
+                URLResponder?.Dispose();
             }
             // dispose unmanaged resources
         }

@@ -1,6 +1,8 @@
 ﻿using EddiConfigService;
 using EddiConfigService.Configurations;
+using EddiCompanionAppService;
 using EddiCore;
+using EddiCore.ApplicationContext;
 using EddiCore.Upgrader;
 using EddiSpeechService;
 using EddiStatusService;
@@ -25,6 +27,8 @@ namespace Eddi
     {
         public static Mutex eddiMutex { get; internal set; }
 
+        public static IApplicationContext ApplicationContext { get; private set; }
+
         // True if we have been started by VoiceAttack and the VaProxy object has been set
         public static System.Version VoiceAttackVersion { get; set; }
         public static bool FromVA => VoiceAttackVersion != null;
@@ -47,6 +51,7 @@ namespace Eddi
             app.Exit += OnExit;
 
             // Prepare to start the application
+            ApplicationContext = new WpfApplicationContext();
             Logging.IncrementLogs(); // Increment to a new log file.
             var configuration = ConfigService.Instance.eddiConfiguration;
             if ( configuration != null && !configuration.DisableTelemetry )
@@ -60,6 +65,22 @@ namespace Eddi
             // This completes before showing any UI so that VoiceAttack can report the availability of the upgrade during its startup.
             EddiUpgrader.CheckUpgradeAsync().GetResultOrTimeout( TimeSpan.FromSeconds( 10 ) );
 
+            // Initialize CompanionAppService DDE on UI thread BEFORE async preload
+            // (must be done before MainWindow creation and Task.WaitAll to avoid deadlock)
+            if ( ApplicationContext.HasUIDispatcher )
+            {
+                try
+                {
+                    var companionService = CompanionAppService.Instance;
+                    companionService.InitializeOAuthCallback();
+                    Logging.Debug( "CompanionAppService DDE initialized" );
+                }
+                catch ( Exception ex )
+                {
+                    Logging.Error( "Failed to initialize CompanionAppService DDE", ex );
+                }
+            }
+
             // Wait for preload to complete before MainWindow creation
             var preloadTasks = PreloadCriticalServicesAsync();
             Task.WaitAll( preloadTasks.ToArray() );
@@ -68,7 +89,8 @@ namespace Eddi
             {
                 if ( FromVA )
                 {
-                    // Start with the MainWindow hidden
+                    // Create the MainWindow with visibility controlled by code-behind logic
+                    // (hidden by default in VA mode, shown on demand via VA commands)
                     EDDI.FromVA = FromVA;
                     app.MainWindow = new MainWindow();
                     vaStartup?.Invoke();
@@ -101,28 +123,30 @@ namespace Eddi
                         Logging.Error("Failed to preload ConfigService", ex);
                     }
                 }),
-        
-                // Pre-warm CompanionAppService (HTTP client + DDE setup)
-                // ⚠️ MUST be on UI thread due to DDE requirements!
-                // So we skip async preload for this one - handle differently
-        
+
                 // Pre-load speech service asynchronously
                 Task.Run(() => {
-                    try {
+                    try
+                    {
                         _ = SpeechService.Instance;
-                        Logging.Debug("SpeechService preloaded");
-                    } catch (Exception ex) {
-                        Logging.Error("Failed to preload SpeechService", ex);
+                        Logging.Debug( "SpeechService preloaded" );
+                    }
+                    catch ( Exception ex )
+                    {
+                        Logging.Error( "Failed to preload SpeechService", ex );
                     }
                 }),
-        
+
                 // Pre-load status service asynchronously  
                 Task.Run(() => {
-                    try {
+                    try
+                    {
                         _ = StatusService.Instance;
-                        Logging.Debug("StatusService preloaded");
-                    } catch (Exception ex) {
-                        Logging.Error("Failed to preload StatusService", ex);
+                        Logging.Debug( "StatusService preloaded" );
+                    }
+                    catch ( Exception ex )
+                    {
+                        Logging.Error( "Failed to preload StatusService", ex );
                     }
                 })
             ];
@@ -135,7 +159,7 @@ namespace Eddi
                 EDDI.Instance.Stop();
             }
 
-            Current.Dispatcher.InvokeAsync( () =>
+            ApplicationContext?.InvokeOnUIThread( () =>
             {
                 eddiMutex.ReleaseMutex();
             } );
@@ -158,22 +182,22 @@ namespace Eddi
             Utilities.TelemetryService.Telemetry.Start( telemetryID, VoiceAttackVersion );
 
             // Catch and send unhandled exceptions
-            System.Windows.Forms.Application.ThreadException += (sender, args) =>
+            System.Windows.Forms.Application.ThreadException += (_, args) =>
             {
                 CrashLogger(args.Exception);
             };
             // Catch and send unhandled exceptions from non-UI threads
-            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+            AppDomain.CurrentDomain.UnhandledException += (_, args) =>
             {
                 CrashLogger(args.ExceptionObject as Exception);
             };
             // Catch and send unhandled exceptions from the task scheduler
-            TaskScheduler.UnobservedTaskException += (sender, args) =>
+            TaskScheduler.UnobservedTaskException += (_, args) =>
             {
                 CrashLogger(args.Exception);
             };
             // Catch and write managed exceptions to the local debug console (but do not send)
-            AppDomain.CurrentDomain.FirstChanceException += (sender, args) =>
+            AppDomain.CurrentDomain.FirstChanceException += (_, args) =>
             {
                 Debug.WriteLine(args.Exception.ToString());
             };

@@ -71,7 +71,8 @@ namespace EddiVoiceAttackResponder
                         InvokeStarMapSystemCommentAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                         break;
                     case "initialize eddi":
-                        if (App.FromVA && Application.Current != null)
+                        var appContextInit = App.ApplicationContext;
+                        if ( App.FromVA && (appContextInit?.HasUIDispatcher ?? false) )
                         {
                             VoiceAttackPlugin.WriteToLog("The EDDI plugin is fully operational.", "green");
                         }
@@ -87,7 +88,8 @@ namespace EddiVoiceAttackResponder
                     case "configurationclose":
                         // Ignore any attempt to access the EDDI UI if VA
                         // doesn't own the EDDI instance.
-                        if (App.FromVA && Application.Current != null)
+                        var appContextConfig = App.ApplicationContext;
+                        if ( App.FromVA && ( appContextConfig?.HasUIDispatcher ?? false ) )
                         {
                             InvokeConfiguration(context);
                         }
@@ -156,19 +158,24 @@ namespace EddiVoiceAttackResponder
             ConfigService.Instance.speechServiceConfiguration = config;
 
             // Refresh the UI with the new volume
-            Application.Current.Dispatcher.InvokeAsync( () =>
+            var appContext = App.ApplicationContext;
+            if ( appContext?.HasUIDispatcher ?? false )
             {
-                var mainWindow = (MainWindow)Application.Current.MainWindow;
-                if ( mainWindow == null )
-                { return; }
-                foreach ( var tab in mainWindow.MainTabControl.Items )
+                appContext.InvokeOnUIThreadAsync( () =>
                 {
-                    if ( tab is System.Windows.Controls.TabItem tabItem && tabItem.Content is TextToSpeechTab tts )
+                    var mainWindow = (MainWindow)Application.Current?.MainWindow;
+                    if ( mainWindow == null )
+                    { return null; }
+                    foreach ( var tab in mainWindow.MainTabControl.Items )
                     {
-                        tts.ConfigureTTS();
+                        if ( tab is System.Windows.Controls.TabItem tabItem && tabItem.Content is TextToSpeechTab tts )
+                        {
+                            tts.ConfigureTTS();
+                        }
                     }
-                }
-            } );
+                    return null;
+                } ).SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
+            }
         }
 
         private static async Task InvokeInaraProfileDetailsAsync ()
@@ -199,20 +206,24 @@ namespace EddiVoiceAttackResponder
 
         private static void InvokeConfiguration ( string context )
         {
-            if ( Application.Current?.Dispatcher != null
-                && ( Application.Current?.Dispatcher?.Invoke( () => Application.Current.MainWindow == null ) ?? false )
-                && context != "configuration" )
+            var appContext = App.ApplicationContext;
+            if ( appContext?.HasUIDispatcher ?? false )
             {
-                VoiceAttackPlugin.WriteToLog( "The EDDI configuration window is not open.", "orange" );
-                return;
+                var windowIsNull = appContext.InvokeOnUIThread( () => Application.Current?.MainWindow == null );
+                if ( windowIsNull && context != "configuration" )
+                {
+                    VoiceAttackPlugin.WriteToLog( "The EDDI configuration window is not open.", "orange" );
+                    return;
+                }
             }
 
             switch ( context )
             {
                 case "configuration":
-                    if ( Application.Current?.Dispatcher != null )
+                    var appContextCfg = App.ApplicationContext;
+                    if ( appContextCfg?.HasUIDispatcher ?? false )
                     {
-                        Application.Current.Dispatcher.InvokeAsync( () =>
+                        appContextCfg.InvokeOnUIThreadAsync( () =>
                         {
                             try
                             {
@@ -232,7 +243,8 @@ namespace EddiVoiceAttackResponder
                             {
                                 Logging.Warn( "Show configuration window failed", ex );
                             }
-                        } );
+                            return null;
+                        } ).SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                     }
                     break;
                 case "configurationminimize":
@@ -245,7 +257,12 @@ namespace EddiVoiceAttackResponder
                     setWindowState( WindowState.Normal );
                     break;
                 case "configurationclose":
-                    Application.Current?.Dispatcher?.InvokeAsync( () => Application.Current?.MainWindow?.Hide() );
+                    var appContextCloseOp = App.ApplicationContext;
+                    if ( appContextCloseOp?.HasUIDispatcher ?? false )
+                    {
+                        appContextCloseOp.InvokeOnUIThreadAsync( async () => Application.Current?.MainWindow?.Hide() )
+                            .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
+                    }
                     break;
                 default:
                     VoiceAttackPlugin.WriteToLog( $"Plugin context '{context}' not recognized.", "orange" );
@@ -264,11 +281,16 @@ namespace EddiVoiceAttackResponder
             }
             else
             {
-                Application.Current?.Dispatcher?.InvokeAsync( () =>
+                var appContext = App.ApplicationContext;
+                if ( appContext?.HasUIDispatcher ?? false )
                 {
-                    MainWindow mainwindow = (MainWindow)Application.Current?.MainWindow;
-                    mainwindow?.Dispatcher?.Invoke( mainwindow.VaWindowStateChange, newState, minimizeCheck );
-                } );
+                    appContext.InvokeOnUIThreadAsync( () =>
+                    {
+                        var mainwindow = (MainWindow)Application.Current?.MainWindow;
+                        mainwindow?.Dispatcher?.Invoke( mainwindow.VaWindowStateChange, newState, minimizeCheck );
+                        return null;
+                    } ).SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
+                }
             }
         }
 

@@ -1,4 +1,4 @@
-﻿using EddiCompanionAppService;
+using EddiCompanionAppService;
 using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiCore;
@@ -96,7 +96,9 @@ namespace EddiUI
 
             var eddiConfiguration = ConfigService.Instance.eddiConfiguration;
             Rect windowPosition = eddiConfiguration.MainWindowPosition;
-            Visibility = Visibility.Collapsed;
+
+            // In VA mode, hide window; in standalone mode, ensure window is visible
+            Visibility = EDDI.FromVA ? Visibility.Collapsed : Visibility.Visible;
 
             // WPF uses DPI scaled units rather than true pixels.
             // Retrieve the DPI scaling for the controlling monitor (where the top left pixel is located).
@@ -221,6 +223,12 @@ namespace EddiUI
 
         private void MainWindow_Loaded ( object sender, RoutedEventArgs e )
         {
+            // Show window in standalone mode (keep hidden in VA mode, shown on demand by VA plugin)
+            if ( !EDDI.FromVA )
+            {
+                Visibility = Visibility.Visible;
+            }
+
             // Set up our hotkey manager
             EDDI.Instance.HotkeyManager.InitializeHotkeys();
         }
