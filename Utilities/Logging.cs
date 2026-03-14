@@ -210,7 +210,7 @@ namespace Utilities
         public static void IncrementLogs()
         {
             // Ensure dir exists
-            DirectoryInfo directoryInfo = new DirectoryInfo(Constants.DATA_DIR);
+            var directoryInfo = new DirectoryInfo(Constants.DATA_DIR);
             if (!directoryInfo.Exists)
             {
                 Directory.CreateDirectory(Constants.DATA_DIR);
@@ -224,7 +224,9 @@ namespace Utilities
 
                 try
                 {
-                    if ( int.TryParse( filePath.Replace( Constants.DATA_DIR + @"\eddi", "" ).Replace( ".log", "" ), out var i ) )
+                    var logName = filePath.Replace( Constants.DATA_DIR + @"\eddi", "" ).Replace( ".log", "" );
+                    var i = 0;
+                    if ( string.IsNullOrEmpty(logName) || int.TryParse( logName, out i ) )
                     {
                         ++i; // Increment our index number
 

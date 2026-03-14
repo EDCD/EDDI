@@ -277,26 +277,30 @@ namespace EddiSpeechResponder
             // Obtain files, sorting by last write time to ensure that older files are incremented prior to newer files
             var personalityDirInfo = new FileInfo(personality.dataPath).Directory;
             if (personalityDirInfo is null) { return; }
-            foreach (FileInfo file in personalityDirInfo.GetFiles()
+            foreach (var file in personalityDirInfo.GetFiles()
                 .Where(f =>
                     f.Name.StartsWith(personality.Name, StringComparison.InvariantCultureIgnoreCase) &&
                     f.Name.EndsWith(".bak", StringComparison.InvariantCultureIgnoreCase))
                 .OrderBy(f => f.LastWriteTimeUtc)
                 .ToList())
             {
-                bool parsed = int.TryParse(file.FullName
-                    .Replace($@"{personality.dataPath}", "")
-                    .Replace(".bak", "")
-                    .Replace(".", ""), out int i);
-                ++i; // Increment our index number
+                var personalityName = file.FullName
+                    .Replace( $@"{personality.dataPath}", "" )
+                    .Replace( ".bak", "" )
+                    .Replace( ".", "" );
+                var i = 0;
+                if ( string.IsNullOrEmpty( personalityName ) || int.TryParse( personalityName, out i ) )
+                {
+                    ++i; // Increment our index number
 
-                if (i >= 10)
-                {
-                    filesToDelete.Add(file.FullName);
-                }
-                else
-                {
-                    filesToMove.Add(file.FullName, $@"{personality.dataPath}.{i}.bak");
+                    if ( i >= 10 )
+                    {
+                        filesToDelete.Add( file.FullName );
+                    }
+                    else
+                    {
+                        filesToMove.Add( file.FullName, $@"{personality.dataPath}.{i}.bak" );
+                    }
                 }
             }
             try
