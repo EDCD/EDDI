@@ -164,6 +164,7 @@ namespace EddiCore
         public List<IEddiMonitor> monitors = [ ];
         internal ConcurrentBag<IEddiMonitor> activeMonitors = [ ];
         private static readonly object monitorLock = new();
+        private readonly Dictionary<string, CancellationTokenSource> _monitorCancellationTokens = new();
         private bool IsMonitorActive ( string name ) => activeMonitors.Any( m => m.MonitorName().Equals(name, StringComparison.OrdinalIgnoreCase) );
 
         public List<IEddiResponder> responders = [ ];
@@ -763,22 +764,38 @@ namespace EddiCore
             DisableMonitor(monitor);
         }
 
-        public void DisableMonitor(IEddiMonitor monitor)
+        public void DisableMonitor ( IEddiMonitor monitor )
         {
-            if (monitor != null)
+            if ( monitor != null )
             {
-                lock (monitorLock)
+                lock ( monitorLock )
                 {
+                    var monitorName = monitor.MonitorName();
+
+                    // Signal cancellation for this monitor's keepalive loop
+                    if ( _monitorCancellationTokens.TryGetValue( monitorName, out var cts ) )
+                    {
+                        cts.Cancel();
+                        cts.Dispose();
+                        _monitorCancellationTokens.Remove( monitorName );
+                    }
+
                     // Remove the monitor from the active list.
                     var newMonitors = new ConcurrentBag<IEddiMonitor>();
-                    while (activeMonitors.TryTake(out IEddiMonitor item))
+                    while ( activeMonitors.TryTake( out var item ) )
                     {
-                        if (item != monitor) { newMonitors.Add(item); }
+                        if ( item != monitor )
+                        {
+                            newMonitors.Add( item );
+                        }
                     }
+
                     activeMonitors = newMonitors;
 
                     // Stop the monitor only after it's been removed from the active list.
                     monitor.Stop();
+
+                    Logging.Info( $"{monitorName} disabled." );
                 }
             }
         }
@@ -799,13 +816,14 @@ namespace EddiCore
                     activeMonitors.Add( monitor );
                     if ( monitor.NeedsStart() )
                     {
-                        var monitorThread = new Thread(() => keepAlive(monitor.MonitorName(), monitor.Start))
-                        {
-                            IsBackground = true
-                        };
-                        Logging.Info( "Starting keepalive for " + monitor.MonitorName() );
-                        monitorThread.Name = monitor.MonitorName();
-                        monitorThread.Start();
+                        var monitorName = monitor.MonitorName();
+                        var cts = new CancellationTokenSource();
+                        _monitorCancellationTokens[ monitorName ] = cts;
+
+                        // Queue to thread pool instead of creating new thread
+                        ThreadPool.QueueUserWorkItem( _ => keepAlive( monitorName, monitor.Start, cts.Token ), null );
+
+                        Logging.Debug( "Queued keepalive for " + monitorName + " to thread pool" );
                     }
                 }
                 else
@@ -838,9 +856,11 @@ namespace EddiCore
         }
 
         /// <summary> Keep a monitor thread alive, restarting it as required </summary>
-        private void keepAlive(string name, Action start)
+        private void keepAlive ( string name, Action start, CancellationToken monitorCancellationToken = default )
         {
-            var token = eventHandlerTS.Token;
+            var token = monitorCancellationToken != CancellationToken.None 
+                ? monitorCancellationToken 
+                : eventHandlerTS.Token;
             const int maxConsecutiveFailures = 5;
             var stableRunResetsFailures = TimeSpan.FromMinutes(5);
             var consecutiveFailures = 0;
