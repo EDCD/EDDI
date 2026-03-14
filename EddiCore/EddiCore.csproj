@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Library</OutputType>
         <UseWPF>true</UseWPF>
@@ -16,6 +16,7 @@
         <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj" />
         <ProjectReference Include="..\EddiSpanshService\EddiSpanshService.csproj" />
         <ProjectReference Include="..\EddiStatusService\EddiStatusService.csproj" />
+        <ProjectReference Include="..\EddiVoiceAttackService\EddiVoiceAttackService.csproj" />
         <ProjectReference Include="..\Events\EddiEvents.csproj" />
         <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj" />
         <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj" />
