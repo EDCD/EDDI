@@ -66,7 +66,8 @@ namespace EddiVoiceAttackService.Server
         /// Start the server on first available port in range 12345-12450.
         /// Runs asynchronously to accept connections.
         /// </summary>
-        public async Task StartAsync()
+        /// <param name="cancellationToken">Optional cancellation token for shutdown</param>
+        public async Task StartAsync(CancellationToken cancellationToken = default)
         {
             if (IsRunning)
             {
@@ -76,6 +77,8 @@ namespace EddiVoiceAttackService.Server
 
             try
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 Port = FindAvailablePort(12345, 12450);
                 Logging.Info($"Starting IPC server on port {Port}");
 
@@ -86,12 +89,21 @@ namespace EddiVoiceAttackService.Server
                 // Write port to config file
                 WritePortToConfig(Port);
 
-                // Start background task to accept connections
-                _cancellationTokenSource = new CancellationTokenSource();
+                // Start background task to accept connections with linked cancellation token
+                _cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
                 _acceptConnectionsTask = AcceptConnectionsAsync(_cancellationTokenSource.Token);
+
+                // Ensure task is scheduled before returning
+                await Task.Yield();
 
                 IsRunning = true;
                 Logging.Info($"IPC Server started successfully on port {Port}");
+            }
+            catch (OperationCanceledException)
+            {
+                Logging.Info("IPC Server startup cancelled");
+                IsRunning = false;
+                throw;
             }
             catch (Exception ex)
             {
@@ -104,7 +116,8 @@ namespace EddiVoiceAttackService.Server
         /// <summary>
         /// Stop the server gracefully, closing all client connections.
         /// </summary>
-        public async Task StopAsync()
+        /// <param name="cancellationToken">Optional cancellation token for timeout</param>
+        public async Task StopAsync(CancellationToken cancellationToken = default)
         {
             if (!IsRunning)
             {
@@ -116,13 +129,26 @@ namespace EddiVoiceAttackService.Server
             {
                 Logging.Info("Stopping IPC server");
 
+                cancellationToken.ThrowIfCancellationRequested();
+
                 // Signal cancellation
                 _cancellationTokenSource?.Cancel();
 
                 // Wait for accept task to complete (with timeout)
                 if (_acceptConnectionsTask != null)
                 {
-                    await _acceptConnectionsTask.ConfigureAwait(false);
+                    try
+                    {
+                        using (var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken))
+                        {
+                            linkedCts.CancelAfter(TimeSpan.FromSeconds(5));
+                            await _acceptConnectionsTask.ConfigureAwait(false);
+                        }
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        Logging.Warn("Server shutdown timeout during accept task");
+                    }
                 }
 
                 // Close all client connections
@@ -135,6 +161,10 @@ namespace EddiVoiceAttackService.Server
                 IsRunning = false;
                 Logging.Info("IPC Server stopped successfully");
             }
+            catch (OperationCanceledException)
+            {
+                Logging.Info("IPC Server stop cancelled");
+            }
             catch (Exception ex)
             {
                 Logging.Error($"Error stopping IPC Server: {ex.Message}", ex);
@@ -144,7 +174,10 @@ namespace EddiVoiceAttackService.Server
         /// <summary>
         /// Send a message to a specific client connection.
         /// </summary>
-        public async Task SendToConnectionAsync(string sessionId, MessageEnvelope message)
+        /// <param name="sessionId">Target session ID</param>
+        /// <param name="message">Message to send</param>
+        /// <param name="cancellationToken">Optional cancellation token</param>
+        public async Task SendToConnectionAsync(string sessionId, MessageEnvelope message, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(sessionId);
             ArgumentNullException.ThrowIfNull(message);
@@ -169,13 +202,20 @@ namespace EddiVoiceAttackService.Server
 
             try
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 var serialized = MessageSerializer.Serialize(message);
                 var bytes = Encoding.UTF8.GetBytes(serialized);
-            
-                await context.Stream.WriteAsync(bytes, 0, bytes.Length).ConfigureAwait(false);
-                await context.Stream.FlushAsync().ConfigureAwait(false);
-            
+
+                await context.Stream.WriteAsync(bytes, 0, bytes.Length, cancellationToken).ConfigureAwait(false);
+                await context.Stream.FlushAsync(cancellationToken).ConfigureAwait(false);
+
                 Logging.Debug($"Sent {message.Type} message to session {sessionId}");
+            }
+            catch (OperationCanceledException)
+            {
+                Logging.Debug($"Send operation cancelled for session {sessionId}");
+                throw;
             }
             catch (Exception ex)
             {
@@ -187,7 +227,9 @@ namespace EddiVoiceAttackService.Server
         /// <summary>
         /// Broadcast a message to all connected clients.
         /// </summary>
-        public async Task BroadcastAsync(MessageEnvelope message)
+        /// <param name="message">Message to broadcast</param>
+        /// <param name="cancellationToken">Optional cancellation token</param>
+        public async Task BroadcastAsync(MessageEnvelope message, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(message);
 
@@ -197,7 +239,9 @@ namespace EddiVoiceAttackService.Server
                 sessionIds = _connections.Keys.ToList();
             }
 
-            var tasks = sessionIds.Select(id => SendToConnectionAsync(id, message));
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var tasks = sessionIds.Select(id => SendToConnectionAsync(id, message, cancellationToken));
             await Task.WhenAll(tasks).ConfigureAwait(false);
         }
 

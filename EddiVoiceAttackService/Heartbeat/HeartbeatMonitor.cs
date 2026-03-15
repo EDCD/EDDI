@@ -37,7 +37,8 @@ namespace EddiVoiceAttackService.Heartbeat
         /// <summary>
         /// Start the heartbeat monitoring loop.
         /// </summary>
-        public async Task StartAsync()
+        /// <param name="cancellationToken">Optional cancellation token for shutdown</param>
+        public async Task StartAsync(CancellationToken cancellationToken = default)
         {
             if (_isRunning)
             {
@@ -47,12 +48,20 @@ namespace EddiVoiceAttackService.Heartbeat
 
             try
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 _isRunning = true;
-                _cancellationTokenSource = new CancellationTokenSource();
+                _cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
                 _monitorTask = MonitorConnectionsAsync(_cancellationTokenSource.Token);
 
                 Logging.Info("HeartbeatMonitor started");
                 await Task.Yield(); // Allow monitor task to start
+            }
+            catch (OperationCanceledException)
+            {
+                Logging.Info("HeartbeatMonitor startup cancelled");
+                _isRunning = false;
+                throw;
             }
             catch (Exception ex)
             {
@@ -65,7 +74,8 @@ namespace EddiVoiceAttackService.Heartbeat
         /// <summary>
         /// Stop the heartbeat monitoring loop gracefully.
         /// </summary>
-        public async Task StopAsync()
+        /// <param name="cancellationToken">Optional cancellation token for timeout</param>
+        public async Task StopAsync(CancellationToken cancellationToken = default)
         {
             if (!_isRunning)
             {
@@ -75,10 +85,21 @@ namespace EddiVoiceAttackService.Heartbeat
             try
             {
                 _cancellationTokenSource?.Cancel();
-            
+
                 if (_monitorTask != null)
                 {
-                    await _monitorTask.ConfigureAwait(false);
+                    try
+                    {
+                        using (var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken))
+                        {
+                            linkedCts.CancelAfter(TimeSpan.FromSeconds(5));
+                            await _monitorTask.ConfigureAwait(false);
+                        }
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        Logging.Warn("HeartbeatMonitor shutdown timeout");
+                    }
                 }
 
                 _isRunning = false;
