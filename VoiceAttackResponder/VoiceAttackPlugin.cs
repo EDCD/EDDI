@@ -464,22 +464,6 @@ namespace EddiVoiceAttackResponder
                 }
 
                 // Use the legacy endpoint
-                VaProxy.SetInt( key, value );
-            }
-        }
-
-        public static void SetSmallInt ( string key, short? value )
-        {
-            lock ( vaProxyLock )
-            {
-                // SmallInt values are deprecated in VoiceAttack version 2 and later. 
-                // We should only use them if the VA version is less than 2.0.0
-                if ( IsVaVersionSameOrNewer( new System.Version( 2, 0, 0 ) ) )
-                {
-                    return;
-                }
-
-                // Use the legacy endpoint
                 VaProxy.SetSmallInt( key, value );
             }
         }
@@ -509,3 +493,6 @@ namespace EddiVoiceAttackResponder
         #endregion
     }
 }
+
+
+

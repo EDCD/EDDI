@@ -79,7 +79,7 @@ namespace EddiVoiceAttackResponder
 
         protected internal static void updateConfigurationValues ( object sender, PropertyChangedEventArgs e )
         {
-            if ( sender is ConfigService configService )
+            if ( sender is ConfigService configService && e.PropertyName != null )
             {
                 if ( e.PropertyName.Equals( nameof( CargoMonitorConfiguration ), StringComparison.InvariantCultureIgnoreCase ) )
                 {
@@ -155,7 +155,6 @@ namespace EddiVoiceAttackResponder
 
                 VoiceAttackPlugin.SetText( varname, null );
                 VoiceAttackPlugin.SetInt( varname, null );
-                VoiceAttackPlugin.SetSmallInt( varname, null );
                 VoiceAttackPlugin.SetDecimal( varname, null );
                 VoiceAttackPlugin.SetBoolean( varname, null );
 
@@ -172,11 +171,6 @@ namespace EddiVoiceAttackResponder
                     {
                         VoiceAttackPlugin.SetInt( varname, System.Convert.ToInt32( Math.Round( d, MidpointRounding.AwayFromZero ) ) );
                     }
-
-                    if ( d <= short.MaxValue )
-                    {
-                        VoiceAttackPlugin.SetSmallInt( varname, System.Convert.ToInt16( Math.Round( d, MidpointRounding.AwayFromZero ) ) );
-                    }
                 }
                 else
                 {
@@ -188,17 +182,11 @@ namespace EddiVoiceAttackResponder
                     VoiceAttackPlugin.SetInt( varname, i );
                 }
 
-                if ( value is short sh || short.TryParse( s, out sh ) )
-                {
-                    VoiceAttackPlugin.SetSmallInt( varname, sh );
-                }
-
                 if ( value is bool b || bool.TryParse( s, out b ) )
                 {
                     VoiceAttackPlugin.SetBoolean( varname, b );
                     VoiceAttackPlugin.SetDecimal( varname, b ? 1 : 0 );
                     VoiceAttackPlugin.SetInt( varname, b ? 1 : 0 );
-                    VoiceAttackPlugin.SetSmallInt( varname, (short?)( b ? 1 : 0 ) );
                 }
                 else if ( !decimal.TryParse( s, out _ ) )
                 {
@@ -206,7 +194,6 @@ namespace EddiVoiceAttackResponder
                     VoiceAttackPlugin.SetBoolean( varname, b );
                     VoiceAttackPlugin.SetDecimal( varname, b ? 1 : 0 );
                     VoiceAttackPlugin.SetInt( varname, b ? 1 : 0 );
-                    VoiceAttackPlugin.SetSmallInt( varname, (short?)(b ? 1 : 0) );
                 }
             }
         }

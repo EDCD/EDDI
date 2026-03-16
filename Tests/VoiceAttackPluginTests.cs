@@ -180,10 +180,7 @@ namespace Tests
             Assert.AreEqual( integerResult is null 
                 ? null 
                 : (int?)int.Parse(integerResult), mockVAProxy.GetInt( "EDDI state " + varName ) );
-            Assert.AreEqual( shortresult is null 
-                ? null 
-                : (short?)short.Parse(shortresult), mockVAProxy.GetSmallInt( "EDDI state " + varName ) );
-            Assert.AreEqual( booleanResult is null 
+            Assert.AreEqual( booleanResult is null
                 ? null 
                 : (bool?)bool.Parse(booleanResult), mockVAProxy.GetBoolean( "EDDI state " + varName ) );
         }
