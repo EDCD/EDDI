@@ -2,7 +2,6 @@
 using EddiConfigService.Configurations;
 using EddiCompanionAppService;
 using EddiCore;
-using EddiCore.ApplicationContext;
 using EddiCore.Upgrader;
 using EddiSpeechService;
 using EddiStatusService;
@@ -26,8 +25,6 @@ namespace Eddi
     public partial class App : Application
     {
         public static Mutex eddiMutex { get; internal set; }
-
-        public static IApplicationContext ApplicationContext { get; private set; }
 
         // True if we have been started by VoiceAttack and the VaProxy object has been set
         public static System.Version VoiceAttackVersion { get; set; }
@@ -159,8 +156,7 @@ namespace Eddi
                 EDDI.Instance.Stop();
             }
 
-            ApplicationContext?.InvokeOnUIThread( () =>
-            {
+            Application.Current?.Dispatcher?.InvokeAsync( () => {
                 eddiMutex.ReleaseMutex();
             } );
         }

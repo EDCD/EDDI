@@ -1,6 +1,5 @@
 ﻿using EddiCompanionAppService;
 using EddiConfigService;
-using EddiCore.ApplicationContext;
 using EddiCore.Hotkeys;
 using EddiDataDefinitions;
 using EddiDataProviderService;
@@ -144,22 +143,10 @@ namespace EddiCore
                     {
                         Logging.Debug("No EDDI instance: creating one");
                         instance = new EDDI();
-
-                        // Initialize application context from App if available
-                        var appType = Type.GetType("Eddi.App, Eddi");
-                        if (appType != null)
-                        {
-                            var contextProperty = appType.GetProperty("ApplicationContext");
-                            if (contextProperty?.GetValue(null) is IApplicationContext appContext)
-                            {
-                                instance._applicationContext = appContext;
-                                Logging.Debug($"EDDI initialized with ApplicationContext: {(appContext.HasUIDispatcher ? "UI" : "Headless")}");
-                            }
                         }
                     }
                 }
             }
-        }
 
         // EDDI Instance
         public static EDDI Instance
@@ -177,7 +164,6 @@ namespace EddiCore
         internal ConcurrentBag<IEddiMonitor> activeMonitors = [ ];
         private static readonly object monitorLock = new();
         private readonly Dictionary<string, CancellationTokenSource> _monitorCancellationTokens = new();
-        private IApplicationContext _applicationContext;
         private bool IsMonitorActive ( string name ) => activeMonitors.Any( m => m.MonitorName().Equals(name, StringComparison.OrdinalIgnoreCase) );
 
         public List<IEddiResponder> responders = [ ];
