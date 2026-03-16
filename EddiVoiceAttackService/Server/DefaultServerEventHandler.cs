@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using EddiVoiceAttackService.Messages;
 using Utilities;
@@ -102,31 +103,6 @@ namespace EddiVoiceAttackService.Server
         }
 
         /// <summary>
-        /// Handle heartbeat keep-alive message.
-        /// Responds with a heartbeat acknowledgment.
-        /// </summary>
-        public async Task HandleHeartbeatAsync ( MessageEnvelope message, ConnectionContext context )
-        {
-            ArgumentNullException.ThrowIfNull( message );
-            ArgumentNullException.ThrowIfNull( context );
-
-            try
-            {
-                // Update last heartbeat timestamp in context
-                context.UpdateHeartbeat();
-
-                // Send heartbeat response
-                var heartbeat = MessageEnvelope.Create( MessageTypes.Heartbeat,
-                    new HeartbeatData { Status = "alive", UptimeMs = 0 } );
-                await SendToContextAsync( context, heartbeat );
-            }
-            catch ( Exception ex )
-            {
-                Logging.Error( $"Error handling Heartbeat: {ex.Message}", ex );
-            }
-        }
-
-        /// <summary>
         /// Handle command execution request from client.
         /// Routes command to EDDI message bus and sends response.
         /// </summary>
@@ -137,22 +113,48 @@ namespace EddiVoiceAttackService.Server
 
             try
             {
-                if ( message.Data is not Dictionary<string, object> )
+                if ( message.Data is not CommandData cmdData )
                 {
                     await SendCommandErrorResponseAsync( context.SessionId, message.Id, "Invalid command data format" );
                     return;
                 }
 
-                Logging.Debug( $"Command received from {context.SessionId}: {message.Id}" );
+                var commandName = cmdData.Command?.ToLowerInvariant() ?? "";
+                Logging.Debug( $"Command received from {context.SessionId}: {commandName}" );
 
-                // TODO: Route to EDDI message bus for command execution
-                // For now, send a success response
-                var response = MessageEnvelope.Create( MessageTypes.CommandResponse,
-                    new CommandResponseData
+                // Handle special SetResponderMode command
+                if ( commandName == "setrespondermode" )
+                {
+                    await HandleSetResponderModeAsync( cmdData, message.Id, context );
+                    return;
+                }
+
+                try
+                {
+                    var commandDispatcher = CommandDispatcherRegistry.CommandDispatcher;
+                    if ( commandDispatcher == null )
                     {
-                        CommandId = message.Id, Status = "success", Message = "Command accepted for processing"
-                    } );
-                await SendToContextAsync( context, response );
+                        await SendCommandErrorResponseAsync( context.SessionId, message.Id,
+                            "No command dispatcher is registered for IPC command routing." );
+                        return;
+                    }
+
+                    await commandDispatcher.DispatchAsync( commandName, cmdData.Parameters ).ConfigureAwait( false );
+
+                    var response = MessageEnvelope.Create( MessageTypes.CommandResponse,
+                        new CommandResponseData
+                        {
+                            CommandId = message.Id,
+                            Status = "success",
+                            Message = $"Command '{commandName}' executed successfully"
+                        } );
+                    await SendToContextAsync( context, response );
+                }
+                catch ( Exception ex )
+                {
+                    Logging.Error( $"Command execution failed for '{commandName}': {ex.Message}", ex );
+                    await SendCommandErrorResponseAsync( context.SessionId, message.Id, $"Command execution failed: {ex.Message}" );
+                }
             }
             catch ( Exception ex )
             {
@@ -162,40 +164,43 @@ namespace EddiVoiceAttackService.Server
         }
 
         /// <summary>
-        /// Handle state query request from client.
-        /// Responds with requested state data from EDDI.
+        /// Handle SetResponderMode command to enable/disable VoiceAttackResponder.
+        /// Delegates responder mode changes to a registered handler.
         /// </summary>
-        public async Task HandleQueryAsync ( MessageEnvelope message, ConnectionContext context )
+        private async Task HandleSetResponderModeAsync( CommandData cmdData, string messageId, ConnectionContext context )
         {
-            ArgumentNullException.ThrowIfNull( message );
-            ArgumentNullException.ThrowIfNull( context );
-
             try
             {
-                if ( message.Data is not Dictionary<string, object> )
+                var enable = false;
+                if ( cmdData.Parameters?.TryGetValue( "enable", out var enableObj ) ?? false )
                 {
-                    await SendQueryErrorResponseAsync( context.SessionId, message.Id, "Invalid query data format" );
+                    enable = enableObj is bool b && b;
+                }
+
+                var handler = ResponderModeRegistry.Handler;
+                if ( handler == null )
+                {
+                    await SendCommandErrorResponseAsync( context.SessionId, messageId,
+                        "Responder mode handler is not registered." );
                     return;
                 }
 
-                Logging.Debug( $"Query received from {context.SessionId}: {message.Id}" );
+                await handler( enable, CancellationToken.None ).ConfigureAwait( false );
+                Logging.Info( $"Responder mode {(enable ? "enabled" : "disabled")}" );
 
-                // TODO: Query EDDI state and populate result
-                // For now, send a success response with empty result
-                var response = MessageEnvelope.Create( MessageTypes.QueryResponse,
-                    new QueryResponseData
+                var response = MessageEnvelope.Create( MessageTypes.CommandResponse,
+                    new CommandResponseData
                     {
-                        QueryId = message.Id,
+                        CommandId = messageId,
                         Status = "success",
-                        Result = new Dictionary<string, object>(),
-                        Message = "Query processed"
+                        Message = $"Responder mode {(enable ? "enabled" : "disabled")}"
                     } );
                 await SendToContextAsync( context, response );
             }
             catch ( Exception ex )
             {
-                Logging.Error( $"Error handling Query: {ex.Message}", ex );
-                await SendQueryErrorResponseAsync( context.SessionId, message.Id, $"Server error: {ex.Message}" );
+                Logging.Error( $"Error handling SetResponderMode: {ex.Message}", ex );
+                await SendCommandErrorResponseAsync( context.SessionId, messageId, $"SetResponderMode failed: {ex.Message}" );
             }
         }
 
@@ -257,24 +262,6 @@ namespace EddiVoiceAttackService.Server
         }
 
         /// <summary>
-        /// Send a query response to a specific client.
-        /// </summary>
-        public async Task SendQueryResponseAsync ( string sessionId, MessageEnvelope response )
-        {
-            ArgumentNullException.ThrowIfNull( sessionId );
-            ArgumentNullException.ThrowIfNull( response );
-
-            try
-            {
-                await _server.SendToConnectionAsync( sessionId, response );
-            }
-            catch ( Exception ex )
-            {
-                Logging.Error( $"Error sending query response to {sessionId}: {ex.Message}", ex );
-            }
-        }
-
-        /// <summary>
         /// Helper: Send message to specific connection context.
         /// </summary>
         private async Task SendToContextAsync ( ConnectionContext context, MessageEnvelope message )
@@ -300,16 +287,6 @@ namespace EddiVoiceAttackService.Server
             var response = MessageEnvelope.Create( MessageTypes.CommandResponse,
                 new CommandResponseData { CommandId = commandId, Status = "error", Message = errorMessage } );
             await SendCommandResponseAsync( sessionId, response );
-        }
-
-        /// <summary>
-        /// Helper: Send query error response.
-        /// </summary>
-        private async Task SendQueryErrorResponseAsync ( string sessionId, string queryId, string errorMessage )
-        {
-            var response = MessageEnvelope.Create( MessageTypes.QueryResponse,
-                new QueryResponseData { QueryId = queryId, Status = "error", Message = errorMessage } );
-            await SendQueryResponseAsync( sessionId, response );
         }
     }
 }

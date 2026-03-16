@@ -11,7 +11,7 @@ namespace Tests.EddiVoiceAttackService
     /// Unit tests for message serialization/deserialization.
     /// Uses TDD approach: tests define the contract before implementation.
     /// </summary>
-    [ TestClass, TestCategory( nameof( IntegrationTests ) ) ]
+    [ TestClass, TestCategory( "UnitTests" )]
     public class MessageSerializerTests
     {
         private const string TestMessageId = "12345678-1234-1234-1234-123456789012";
@@ -325,63 +325,6 @@ namespace Tests.EddiVoiceAttackService
                 var actualLength = System.Text.Encoding.UTF8.GetByteCount( parts[ 1 ] );
                 Assert.AreEqual( declaredLength, actualLength, $"Length mismatch for {msg.Type}" );
             }
-        }
-
-        [ TestMethod ]
-        public void Serialize_QueryMessage_IncludesQueryData ()
-        {
-            // Arrange
-            var envelope = new MessageEnvelope
-            {
-                Type = "Query",
-                Timestamp = "2025-01-20T15:30:45.123Z",
-                Id = TestMessageId,
-                Data = new QueryData
-                {
-                    QueryType = "GetCurrentState",
-                    Parameters = new Dictionary<string, object> { { "includeHistory", true } }
-                }
-            };
-
-            // Act
-            var serialized = MessageSerializer.Serialize( envelope );
-            var deserialized = MessageSerializer.Deserialize( serialized );
-
-            // Assert
-            Assert.AreEqual( "Query", deserialized.Type );
-            Assert.IsNotNull( deserialized.Data );
-            Assert.AreEqual( TestMessageId, deserialized.Id );
-        }
-
-        [ TestMethod ]
-        public void Serialize_QueryResponseMessage_IncludesQueryResponseData ()
-        {
-            // Arrange
-            var envelope = new MessageEnvelope
-            {
-                Type = "QueryResponse",
-                Timestamp = "2025-01-20T15:30:45.123Z",
-                Id = TestMessageId,
-                Data = new QueryResponseData
-                {
-                    QueryId = "query-123",
-                    Status = "success",
-                    Result = new Dictionary<string, object>
-                    {
-                        { "state", "active" }, { "timestamp", DateTime.UtcNow.ToString( "O" ) }
-                    },
-                    Message = "Query executed successfully"
-                }
-            };
-
-            // Act
-            var serialized = MessageSerializer.Serialize( envelope );
-            var deserialized = MessageSerializer.Deserialize( serialized );
-
-            // Assert
-            Assert.AreEqual( "QueryResponse", deserialized.Type );
-            Assert.IsNotNull( deserialized.Data );
-            Assert.AreEqual( TestMessageId, deserialized.Id );
         }
     }
 }

@@ -6,211 +6,206 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EddiVoiceAttackService.Server;
 using EddiVoiceAttackService.Messages;
-using Newtonsoft.Json.Linq;
-using Utilities;
 
-namespace Tests.EddiVoiceAttackService;
-
-/// <summary>
-/// Integration tests for IPC server with EDDI.
-/// Validates server initialization, configuration, handler registration, and lifecycle.
-/// </summary>
-[TestClass]
-public class EddiIPCIntegrationTests
+namespace Tests.EddiVoiceAttackService
 {
-    private string? _testConfigDir;
-
-    [TestInitialize]
-    public void Setup()
+    /// <summary>
+    /// Integration tests for IPC server with EDDI.
+    /// Validates server initialization, configuration, handler registration, and lifecycle.
+    /// </summary>
+    [TestClass, TestCategory( "UnitTests" )]
+    public class EddiIPCIntegrationTests
     {
-        // Create a temporary config directory for testing
-        _testConfigDir = Path.Combine(Path.GetTempPath(), $"eddi-ipc-test-{Guid.NewGuid()}");
-        Directory.CreateDirectory(_testConfigDir);
-    }
+        private string? _testConfigDir;
 
-    [TestCleanup]
-    public void Cleanup()
-    {
-        // Clean up temporary directory
-        if (_testConfigDir != null && Directory.Exists(_testConfigDir))
+        [TestInitialize]
+        public void Setup()
         {
-            try
+            // Create a temporary config directory for testing
+            _testConfigDir = Path.Combine(Path.GetTempPath(), $"eddi-ipc-test-{Guid.NewGuid()}");
+            Directory.CreateDirectory(_testConfigDir);
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            // Clean up temporary directory
+            if (_testConfigDir != null && Directory.Exists(_testConfigDir))
             {
-                Directory.Delete(_testConfigDir, true);
-            }
-            catch
-            {
-                // Ignore cleanup errors
+                try
+                {
+                    Directory.Delete(_testConfigDir, true);
+                }
+                catch
+                {
+                    // Ignore cleanup errors
+                }
             }
         }
-    }
 
-    [TestMethod]
-    [Timeout(5000)]
-    public async Task IPCServer_CanBeInitialized()
-    {
-        // Arrange
-        var server = new IPCServer();
+        [TestMethod]
+        [Timeout(5000)]
+        public async Task IPCServer_CanBeInitialized()
+        {
+            // Arrange
+            var server = new IPCServer();
 
-        // Act
-        await server.StartAsync();
+            // Act
+            await server.StartAsync();
 
-        // Assert
-        Assert.IsTrue(server.IsRunning, "Server should be running");
-        Assert.IsTrue(server.Port > 0, "Server port should be assigned");
-        Assert.IsTrue(server.Port >= 12345 && server.Port <= 12450, "Port should be in valid range");
+            // Assert
+            Assert.IsTrue(server.IsRunning, "Server should be running");
+            Assert.IsTrue(server.Port > 0, "Server port should be assigned");
+            Assert.IsTrue(server.Port >= 12345 && server.Port <= 12450, "Port should be in valid range");
 
-        // Cleanup
-        await server.StopAsync();
-    }
+            // Cleanup
+            await server.StopAsync();
+        }
 
-    [TestMethod]
-    [Timeout(5000)]
-    public async Task DefaultEventHandler_CanBeCreated()
-    {
-        // Arrange
-        var server = new IPCServer();
-        await server.StartAsync();
+        [TestMethod]
+        [Timeout(5000)]
+        public async Task DefaultEventHandler_CanBeCreated()
+        {
+            // Arrange
+            var server = new IPCServer();
+            await server.StartAsync();
 
-        // Act
-        var handler = new DefaultServerEventHandler(server);
+            // Act
+            var handler = new DefaultServerEventHandler(server);
 
-        // Assert
-        Assert.IsNotNull(handler, "Handler should be created successfully");
+            // Assert
+            Assert.IsNotNull(handler, "Handler should be created successfully");
 
-        // Cleanup
-        await server.StopAsync();
-    }
+            // Cleanup
+            await server.StopAsync();
+        }
 
-    [TestMethod]
-    [Timeout(5000)]
-    public async Task Handlers_CanBeRegistered()
-    {
-        // Arrange
-        var server = new IPCServer();
-        await server.StartAsync();
-        var handler = new DefaultServerEventHandler(server);
-        var router = server.Router;
+        [TestMethod]
+        [Timeout(5000)]
+        public async Task Handlers_CanBeRegistered()
+        {
+            // Arrange
+            var server = new IPCServer();
+            await server.StartAsync();
+            var handler = new DefaultServerEventHandler(server);
+            var router = server.Router;
 
-        // Act
-        router.RegisterHandler(MessageTypes.Connect, handler.HandleConnectAsync);
-        router.RegisterHandler(MessageTypes.Disconnect, handler.HandleDisconnectAsync);
-        router.RegisterHandler(MessageTypes.Heartbeat, handler.HandleHeartbeatAsync);
-        router.RegisterHandler(MessageTypes.Command, handler.HandleCommandAsync);
-        router.RegisterHandler(MessageTypes.Query, handler.HandleQueryAsync);
+            // Act
+            router.RegisterHandler(MessageTypes.Connect, handler.HandleConnectAsync);
+            router.RegisterHandler(MessageTypes.Disconnect, handler.HandleDisconnectAsync);
+            router.RegisterHandler(MessageTypes.Command, handler.HandleCommandAsync);
 
-        // Assert
-        Assert.IsTrue(router.HasHandlers(MessageTypes.Connect), "Connect handler should be registered");
-        Assert.IsTrue(router.HasHandlers(MessageTypes.Disconnect), "Disconnect handler should be registered");
-        Assert.IsTrue(router.HasHandlers(MessageTypes.Heartbeat), "Heartbeat handler should be registered");
-        Assert.IsTrue(router.HasHandlers(MessageTypes.Command), "Command handler should be registered");
-        Assert.IsTrue(router.HasHandlers(MessageTypes.Query), "Query handler should be registered");
+            // Assert
+            Assert.IsTrue(router.HasHandlers(MessageTypes.Connect), "Connect handler should be registered");
+            Assert.IsTrue(router.HasHandlers(MessageTypes.Disconnect), "Disconnect handler should be registered");
+            Assert.IsTrue(router.HasHandlers(MessageTypes.Command), "Command handler should be registered");
 
-        // Cleanup
-        await server.StopAsync();
-    }
+            // Cleanup
+            await server.StopAsync();
+        }
 
-    [TestMethod]
-    [Timeout(5000)]
-    public async Task BroadcastEventAsync_CanBeCalled()
-    {
-        // Arrange
-        var server = new IPCServer();
-        await server.StartAsync();
-        var handler = new DefaultServerEventHandler(server);
-        var eventMessage = MessageEnvelope.Create(MessageTypes.Event,
-            new EventData { EventType = "LocationChanged", EventName = "Location" });
+        [TestMethod]
+        [Timeout(5000)]
+        public async Task BroadcastEventAsync_CanBeCalled()
+        {
+            // Arrange
+            var server = new IPCServer();
+            await server.StartAsync();
+            var handler = new DefaultServerEventHandler(server);
+            var eventMessage = MessageEnvelope.Create(MessageTypes.Event,
+                new EventData { EventType = "LocationChanged", EventName = "Location" });
 
-        // Act
-        await handler.BroadcastEventAsync(eventMessage);
+            // Act
+            await handler.BroadcastEventAsync(eventMessage);
 
-        // Assert
-        // If no exception is thrown, broadcasting works
+            // Assert
+            // If no exception is thrown, broadcasting works
 
-        // Cleanup
-        await server.StopAsync();
-    }
+            // Cleanup
+            await server.StopAsync();
+        }
 
-    [TestMethod]
-    [Timeout(5000)]
-    public async Task ServerLifecycle_StartStop_Works()
-    {
-        // Arrange
-        var server = new IPCServer();
+        [TestMethod]
+        [Timeout(5000)]
+        public async Task ServerLifecycle_StartStop_Works()
+        {
+            // Arrange
+            var server = new IPCServer();
 
-        // Act - Start
-        await server.StartAsync();
-        Assert.IsTrue(server.IsRunning, "Server should be running after start");
+            // Act - Start
+            await server.StartAsync();
+            Assert.IsTrue(server.IsRunning, "Server should be running after start");
 
-        // Act - Stop
-        await server.StopAsync();
-        Assert.IsFalse(server.IsRunning, "Server should not be running after stop");
+            // Act - Stop
+            await server.StopAsync();
+            Assert.IsFalse(server.IsRunning, "Server should not be running after stop");
 
-        // Assert - Try to start again
-        await server.StartAsync();
-        Assert.IsTrue(server.IsRunning, "Server should restart successfully");
+            // Assert - Try to start again
+            await server.StartAsync();
+            Assert.IsTrue(server.IsRunning, "Server should restart successfully");
 
-        // Cleanup
-        await server.StopAsync();
-    }
+            // Cleanup
+            await server.StopAsync();
+        }
 
-    [TestMethod]
-    [Timeout(5000)]
-    public async Task MultipleServers_CanRunConcurrently()
-    {
-        // Arrange
-        var server1 = new IPCServer();
-        var server2 = new IPCServer();
+        [TestMethod]
+        [Timeout(5000)]
+        public async Task MultipleServers_CanRunConcurrently()
+        {
+            // Arrange
+            var server1 = new IPCServer();
+            var server2 = new IPCServer();
 
-        // Act
-        await server1.StartAsync();
-        await server2.StartAsync();
+            // Act
+            await server1.StartAsync();
+            await server2.StartAsync();
 
-        // Assert
-        Assert.IsTrue(server1.IsRunning, "Server 1 should be running");
-        Assert.IsTrue(server2.IsRunning, "Server 2 should be running");
-        Assert.AreNotEqual(server1.Port, server2.Port, "Servers should use different ports");
+            // Assert
+            Assert.IsTrue(server1.IsRunning, "Server 1 should be running");
+            Assert.IsTrue(server2.IsRunning, "Server 2 should be running");
+            Assert.AreNotEqual(server1.Port, server2.Port, "Servers should use different ports");
 
-        // Cleanup
-        await server1.StopAsync();
-        await server2.StopAsync();
-    }
+            // Cleanup
+            await server1.StopAsync();
+            await server2.StopAsync();
+        }
 
-    [TestMethod]
-    [Timeout(5000)]
-    public async Task HandleConnectAsync_SendsAcknowledgment()
-    {
-        // Arrange
-        var server = new IPCServer();
-        await server.StartAsync();
+        [TestMethod]
+        [Timeout(5000)]
+        public async Task HandleConnectAsync_SendsAcknowledgment()
+        {
+            // Arrange
+            var server = new IPCServer();
+            await server.StartAsync();
 
-        var handler = new DefaultServerEventHandler(server);
-        var connectMessage = MessageEnvelope.Create(MessageTypes.Connect,
-            new ConnectData 
-            { 
-                PluginVersion = "5.0.0",
-                PluginName = "Test Plugin",
-                Capabilities = new System.Collections.Generic.List<string> { "test" },
-                SupportedMessageTypes = new System.Collections.Generic.List<string> { MessageTypes.Heartbeat }
-            });
+            var handler = new DefaultServerEventHandler(server);
+            var connectMessage = MessageEnvelope.Create(MessageTypes.Connect,
+                new ConnectData 
+                { 
+                    PluginVersion = "5.0.0",
+                    PluginName = "Test Plugin",
+                    Capabilities = new System.Collections.Generic.List<string> { "test" },
+                    SupportedMessageTypes = new System.Collections.Generic.List<string> { MessageTypes.Command }
+                });
 
-        // Create a dummy connection context
-        var dummyClient = new System.Net.Sockets.TcpListener(System.Net.IPAddress.Loopback, 0);
-        dummyClient.Start();
-        var port = ((System.Net.IPEndPoint)dummyClient.LocalEndpoint).Port;
+            // Create a dummy connection context
+            var dummyClient = new System.Net.Sockets.TcpListener(System.Net.IPAddress.Loopback, 0);
+            dummyClient.Start();
+            var port = ((System.Net.IPEndPoint)dummyClient.LocalEndpoint).Port;
 
-        var clientTask = dummyClient.AcceptTcpClientAsync();
-        var testClient = new System.Net.Sockets.TcpClient();
-        testClient.Connect(System.Net.IPAddress.Loopback, port);
-        dummyClient.Stop();
+            await dummyClient.AcceptTcpClientAsync().ConfigureAwait(false);
+            var testClient = new System.Net.Sockets.TcpClient();
+            testClient.Connect(System.Net.IPAddress.Loopback, port);
+            dummyClient.Stop();
 
-        var context = new ConnectionContext(testClient);
+            var context = new ConnectionContext(testClient);
 
-        // Act & Assert - Should not throw
-        await handler.HandleConnectAsync(connectMessage, context);
+            // Act & Assert - Should not throw
+            await handler.HandleConnectAsync(connectMessage, context);
 
-        // Cleanup
-        context.Dispose();
-        await server.StopAsync();
+            // Cleanup
+            context.Dispose();
+            await server.StopAsync();
+        }
     }
 }

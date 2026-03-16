@@ -8,9 +8,6 @@ namespace EddiVoiceAttackService.Messages;
 /// </summary>
 public static class MessageTypes
 {
-    /// <summary>Heartbeat keep-alive message (bidirectional)</summary>
-    public const string Heartbeat = nameof(Heartbeat);
-
     /// <summary>Connection initialization message (VA Plugin → EDDI)</summary>
     public const string Connect = nameof(Connect);
 
@@ -29,12 +26,6 @@ public static class MessageTypes
     /// <summary>Command response message (EDDI → VA Plugin)</summary>
     public const string CommandResponse = nameof(CommandResponse);
 
-    /// <summary>State query request message (VA Plugin → EDDI)</summary>
-    public const string Query = nameof(Query);
-
-    /// <summary>Query response message (EDDI → VA Plugin)</summary>
-    public const string QueryResponse = nameof(QueryResponse);
-
     /// <summary>Error message (either direction)</summary>
     public const string Error = nameof(Error);
 }
@@ -50,21 +41,16 @@ public static class ServerCapabilities
     /// <summary>Server supports command execution</summary>
     public const string Commands = nameof(Commands);
 
-    /// <summary>Server supports state queries</summary>
-    public const string Queries = nameof(Queries);
-
     /// <summary>All supported capabilities</summary>
-    public static string[] AllCapabilities => new[] { Events, Commands, Queries };
+    public static string[] AllCapabilities => [ Events, Commands ];
 
     /// <summary>All supported message types</summary>
-    public static string[] AllMessageTypes => new[]
-    {
+    public static string[] AllMessageTypes =>
+    [
         MessageTypes.Connect,
         MessageTypes.Disconnect,
-        MessageTypes.Heartbeat,
         MessageTypes.Command,
-        MessageTypes.Query,
         MessageTypes.Event,
         MessageTypes.Error
-    };
+    ];
 }

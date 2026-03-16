@@ -1,5 +1,7 @@
 #nullable enable
 
+using EddiVoiceAttackService.Messages;
+using EddiVoiceAttackService.Messaging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,8 +11,6 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using EddiVoiceAttackService.Messages;
-using EddiVoiceAttackService.Messaging;
 using Utilities;
 
 namespace EddiVoiceAttackService.Server
@@ -28,6 +28,7 @@ namespace EddiVoiceAttackService.Server
         private readonly Dictionary<string, ConnectionContext> _connections = new();
         private readonly object _connectionsLock = new();
         private readonly MessageRouter _router;
+        private DefaultServerEventHandler? _ipcHandler;
 
         /// <summary>Server port (auto-selected from range 12345-12450)</summary>
         public int Port { get; private set; }
@@ -40,7 +41,7 @@ namespace EddiVoiceAttackService.Server
         {
             get
             {
-                lock (_connectionsLock)
+                lock ( _connectionsLock )
                 {
                     return _connections.Count;
                 }
@@ -50,7 +51,7 @@ namespace EddiVoiceAttackService.Server
         /// <summary>
         /// Create a new IPC server instance.
         /// </summary>
-        public IPCServer()
+        public IPCServer ()
         {
             _router = new MessageRouter();
             Port = 0;
@@ -63,15 +64,32 @@ namespace EddiVoiceAttackService.Server
         public MessageRouter Router => _router;
 
         /// <summary>
+        /// Initialize IPC server and heartbeat monitor for plugin mode communication.
+        /// </summary>
+        public void InitializeIpcServer ()
+        {
+            _ipcHandler = new DefaultServerEventHandler( this );
+
+            // Register all message handlers
+            Router.RegisterHandler( MessageTypes.Connect, _ipcHandler.HandleConnectAsync );
+            Router.RegisterHandler( MessageTypes.Disconnect, _ipcHandler.HandleDisconnectAsync );
+            Router.RegisterHandler( MessageTypes.Command, _ipcHandler.HandleCommandAsync );
+            Router.RegisterHandler( MessageTypes.Event, _ipcHandler.HandleEventAsync );
+
+            // Start server (blocking call acceptable during initialization)
+            StartAsync().GetAwaiter().GetResult();
+        }
+
+        /// <summary>
         /// Start the server on first available port in range 12345-12450.
         /// Runs asynchronously to accept connections.
         /// </summary>
         /// <param name="cancellationToken">Optional cancellation token for shutdown</param>
-        public async Task StartAsync(CancellationToken cancellationToken = default)
+        public async Task StartAsync ( CancellationToken cancellationToken = default )
         {
-            if (IsRunning)
+            if ( IsRunning )
             {
-                Logging.Warn("IPCServer is already running");
+                Logging.Warn( "IPCServer is already running" );
                 return;
             }
 
@@ -79,35 +97,33 @@ namespace EddiVoiceAttackService.Server
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                Port = FindAvailablePort(12345, 12450);
-                Logging.Info($"Starting IPC server on port {Port}");
+                Port = FindAvailablePort( 12345, 12450 );
+                Logging.Info( $"Starting IPC server on port {Port}" );
 
-                // Create and start listener
-                _listener = new TcpListener(IPAddress.Loopback, Port);
+                _listener = new TcpListener( IPAddress.Loopback, Port );
                 _listener.Start();
 
-                // Write port to config file
-                WritePortToConfig(Port);
+                WritePortToConfig( Port );
 
                 // Start background task to accept connections with linked cancellation token
-                _cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-                _acceptConnectionsTask = AcceptConnectionsAsync(_cancellationTokenSource.Token);
+                _cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource( cancellationToken );
+                _acceptConnectionsTask = AcceptConnectionsAsync( _cancellationTokenSource.Token );
 
                 // Ensure task is scheduled before returning
                 await Task.Yield();
 
                 IsRunning = true;
-                Logging.Info($"IPC Server started successfully on port {Port}");
+                Logging.Info( $"IPC Server started successfully on port {Port}" );
             }
-            catch (OperationCanceledException)
+            catch ( OperationCanceledException )
             {
-                Logging.Info("IPC Server startup cancelled");
+                Logging.Info( "IPC Server startup cancelled" );
                 IsRunning = false;
                 throw;
             }
-            catch (Exception ex)
+            catch ( Exception ex )
             {
-                Logging.Error($"Failed to start IPC Server: {ex.Message}", ex);
+                Logging.Error( $"Failed to start IPC Server: {ex.Message}", ex );
                 IsRunning = false;
                 throw;
             }
@@ -117,17 +133,17 @@ namespace EddiVoiceAttackService.Server
         /// Stop the server gracefully, closing all client connections.
         /// </summary>
         /// <param name="cancellationToken">Optional cancellation token for timeout</param>
-        public async Task StopAsync(CancellationToken cancellationToken = default)
+        public async Task StopAsync ( CancellationToken cancellationToken = default )
         {
-            if (!IsRunning)
+            if ( !IsRunning )
             {
-                Logging.Warn("IPCServer is not running");
+                Logging.Warn( "IPCServer is not running" );
                 return;
             }
 
             try
             {
-                Logging.Info("Stopping IPC server");
+                Logging.Info( "Stopping IPC server" );
 
                 cancellationToken.ThrowIfCancellationRequested();
 
@@ -135,19 +151,19 @@ namespace EddiVoiceAttackService.Server
                 _cancellationTokenSource?.Cancel();
 
                 // Wait for accept task to complete (with timeout)
-                if (_acceptConnectionsTask != null)
+                if ( _acceptConnectionsTask != null )
                 {
                     try
                     {
-                        using (var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken))
+                        using ( var linkedCts = CancellationTokenSource.CreateLinkedTokenSource( cancellationToken ) )
                         {
-                            linkedCts.CancelAfter(TimeSpan.FromSeconds(5));
-                            await _acceptConnectionsTask.ConfigureAwait(false);
+                            linkedCts.CancelAfter( TimeSpan.FromSeconds( 5 ) );
+                            await _acceptConnectionsTask.ConfigureAwait( false );
                         }
                     }
-                    catch (OperationCanceledException)
+                    catch ( OperationCanceledException )
                     {
-                        Logging.Warn("Server shutdown timeout during accept task");
+                        Logging.Warn( "Server shutdown timeout during accept task" );
                     }
                 }
 
@@ -159,15 +175,15 @@ namespace EddiVoiceAttackService.Server
                 _listener?.Dispose();
 
                 IsRunning = false;
-                Logging.Info("IPC Server stopped successfully");
+                Logging.Info( "IPC Server stopped successfully" );
             }
-            catch (OperationCanceledException)
+            catch ( OperationCanceledException )
             {
-                Logging.Info("IPC Server stop cancelled");
+                Logging.Info( "IPC Server stop cancelled" );
             }
-            catch (Exception ex)
+            catch ( Exception ex )
             {
-                Logging.Error($"Error stopping IPC Server: {ex.Message}", ex);
+                Logging.Error( $"Error stopping IPC Server: {ex.Message}", ex );
             }
         }
 
@@ -177,26 +193,27 @@ namespace EddiVoiceAttackService.Server
         /// <param name="sessionId">Target session ID</param>
         /// <param name="message">Message to send</param>
         /// <param name="cancellationToken">Optional cancellation token</param>
-        public async Task SendToConnectionAsync(string sessionId, MessageEnvelope message, CancellationToken cancellationToken = default)
+        public async Task SendToConnectionAsync ( string sessionId, MessageEnvelope message,
+            CancellationToken cancellationToken = default )
         {
-            ArgumentNullException.ThrowIfNull(sessionId);
-            ArgumentNullException.ThrowIfNull(message);
+            ArgumentNullException.ThrowIfNull( sessionId );
+            ArgumentNullException.ThrowIfNull( message );
 
             ConnectionContext? context;
-            lock (_connectionsLock)
+            lock ( _connectionsLock )
             {
-                _connections.TryGetValue(sessionId, out context);
+                _connections.TryGetValue( sessionId, out context );
             }
 
-            if (context is null)
+            if ( context is null )
             {
-                Logging.Warn($"Connection not found for session {sessionId}");
+                Logging.Warn( $"Connection not found for session {sessionId}" );
                 return;
             }
 
-            if (context.Stream is null)
+            if ( context.Stream is null )
             {
-                Logging.Warn($"No stream available for session {sessionId}");
+                Logging.Warn( $"No stream available for session {sessionId}" );
                 return;
             }
 
@@ -204,23 +221,23 @@ namespace EddiVoiceAttackService.Server
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var serialized = MessageSerializer.Serialize(message);
-                var bytes = Encoding.UTF8.GetBytes(serialized);
+                var serialized = MessageSerializer.Serialize( message );
+                var bytes = Encoding.UTF8.GetBytes( serialized );
 
-                await context.Stream.WriteAsync(bytes, 0, bytes.Length, cancellationToken).ConfigureAwait(false);
-                await context.Stream.FlushAsync(cancellationToken).ConfigureAwait(false);
+                await context.Stream.WriteAsync( bytes, 0, bytes.Length, cancellationToken ).ConfigureAwait( false );
+                await context.Stream.FlushAsync( cancellationToken ).ConfigureAwait( false );
 
-                Logging.Debug($"Sent {message.Type} message to session {sessionId}");
+                Logging.Debug( $"Sent {message.Type} message to session {sessionId}" );
             }
-            catch (OperationCanceledException)
+            catch ( OperationCanceledException )
             {
-                Logging.Debug($"Send operation cancelled for session {sessionId}");
+                Logging.Debug( $"Send operation cancelled for session {sessionId}" );
                 throw;
             }
-            catch (Exception ex)
+            catch ( Exception ex )
             {
-                Logging.Error($"Error sending message to session {sessionId}: {ex.Message}", ex);
-                await DisconnectAsync(sessionId, "send_error");
+                Logging.Error( $"Error sending message to session {sessionId}: {ex.Message}", ex );
+                await DisconnectAsync( sessionId, "send_error" );
             }
         }
 
@@ -229,33 +246,33 @@ namespace EddiVoiceAttackService.Server
         /// </summary>
         /// <param name="message">Message to broadcast</param>
         /// <param name="cancellationToken">Optional cancellation token</param>
-        public async Task BroadcastAsync(MessageEnvelope message, CancellationToken cancellationToken = default)
+        public async Task BroadcastAsync ( MessageEnvelope message, CancellationToken cancellationToken = default )
         {
-            ArgumentNullException.ThrowIfNull(message);
+            ArgumentNullException.ThrowIfNull( message );
 
             List<string> sessionIds;
-            lock (_connectionsLock)
+            lock ( _connectionsLock )
             {
                 sessionIds = _connections.Keys.ToList();
             }
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            var tasks = sessionIds.Select(id => SendToConnectionAsync(id, message, cancellationToken));
-            await Task.WhenAll(tasks).ConfigureAwait(false);
+            var tasks = sessionIds.Select( id => SendToConnectionAsync( id, message, cancellationToken ) );
+            await Task.WhenAll( tasks ).ConfigureAwait( false );
         }
 
         /// <summary>
         /// Disconnect a client connection gracefully.
         /// </summary>
-        public async Task DisconnectAsync(string sessionId, string reason = "client_disconnect")
+        public async Task DisconnectAsync ( string sessionId, string reason = "client_disconnect" )
         {
-            ArgumentNullException.ThrowIfNull(sessionId);
+            ArgumentNullException.ThrowIfNull( sessionId );
 
             ConnectionContext? context;
-            lock (_connectionsLock)
+            lock ( _connectionsLock )
             {
-                _connections.Remove(sessionId, out context);
+                _connections.Remove( sessionId, out context );
             }
 
             if ( context?.Stream is null )
@@ -266,15 +283,15 @@ namespace EddiVoiceAttackService.Server
             try
             {
                 // Send disconnect message
-                var disconnect = MessageEnvelope.Create("Disconnect",
-                    new DisconnectData { Reason = reason, Message = "Server closing connection" });
-            
+                var disconnect = MessageEnvelope.Create( "Disconnect",
+                    new DisconnectData { Reason = reason, Message = "Server closing connection" } );
+
                 try
                 {
-                    var serialized = MessageSerializer.Serialize(disconnect);
-                    var bytes = Encoding.UTF8.GetBytes(serialized);
-                    await context.Stream.WriteAsync(bytes, 0, bytes.Length).ConfigureAwait(false);
-                    await context.Stream.FlushAsync().ConfigureAwait(false);
+                    var serialized = MessageSerializer.Serialize( disconnect );
+                    var bytes = Encoding.UTF8.GetBytes( serialized );
+                    await context.Stream.WriteAsync( bytes, 0, bytes.Length ).ConfigureAwait( false );
+                    await context.Stream.FlushAsync().ConfigureAwait( false );
                 }
                 catch
                 {
@@ -282,24 +299,24 @@ namespace EddiVoiceAttackService.Server
                 }
 
                 context.Dispose();
-                Logging.Info($"Disconnected session {sessionId} ({reason})");
+                Logging.Info( $"Disconnected session {sessionId} ({reason})" );
             }
-            catch (Exception ex)
+            catch ( Exception ex )
             {
-                Logging.Error($"Error disconnecting session {sessionId}: {ex.Message}", ex);
+                Logging.Error( $"Error disconnecting session {sessionId}: {ex.Message}", ex );
             }
         }
 
         /// <summary>
         /// Find the first available TCP port in the given range.
         /// </summary>
-        private static int FindAvailablePort(int startPort, int endPort)
+        private static int FindAvailablePort ( int startPort, int endPort )
         {
-            for (var port = startPort; port <= endPort; port++)
+            for ( var port = startPort; port <= endPort; port++ )
             {
                 try
                 {
-                    var listener = new TcpListener(IPAddress.Loopback, port);
+                    var listener = new TcpListener( IPAddress.Loopback, port );
                     listener.Start();
                     listener.Stop();
                     return port;
@@ -310,58 +327,58 @@ namespace EddiVoiceAttackService.Server
                 }
             }
 
-            throw new InvalidOperationException($"No available ports in range {startPort}-{endPort}");
+            throw new InvalidOperationException( $"No available ports in range {startPort}-{endPort}" );
         }
 
         /// <summary>
         /// Write the server port to ipc_config.json for plugin discovery.
         /// </summary>
-        private static void WritePortToConfig(int port)
+        private static void WritePortToConfig ( int port )
         {
             try
             {
                 var configPath = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData ),
                     Constants.EDDI_NAME,
-                    "ipc_config.json");
+                    "ipc_config.json" );
 
-                var directory = Path.GetDirectoryName(configPath);
-                if (directory != null && !Directory.Exists(directory))
+                var directory = Path.GetDirectoryName( configPath );
+                if ( directory != null && !Directory.Exists( directory ) )
                 {
-                    Directory.CreateDirectory(directory);
+                    Directory.CreateDirectory( directory );
                 }
 
                 var json = $"{{\"port\":{port}}}";
-                File.WriteAllText(configPath, json, Encoding.UTF8);
-            
-                Logging.Debug($"IPC port configuration written to {configPath}");
+                File.WriteAllText( configPath, json, Encoding.UTF8 );
+
+                Logging.Debug( $"IPC port configuration written to {configPath}" );
             }
-            catch (Exception ex)
+            catch ( Exception ex )
             {
-                Logging.Warn($"Failed to write IPC config: {ex.Message}");
+                Logging.Warn( $"Failed to write IPC config: {ex.Message}" );
             }
         }
 
         /// <summary>
         /// Background task to accept incoming client connections.
         /// </summary>
-        private async Task AcceptConnectionsAsync(CancellationToken cancellationToken)
+        private async Task AcceptConnectionsAsync ( CancellationToken cancellationToken )
         {
-            while (!cancellationToken.IsCancellationRequested && IsRunning)
+            while ( !cancellationToken.IsCancellationRequested && IsRunning )
             {
                 try
                 {
-                    var client = await _listener!.AcceptTcpClientAsync(cancellationToken).ConfigureAwait(false);
-                    _ = HandleClientAsync(client, cancellationToken);
+                    var client = await _listener!.AcceptTcpClientAsync( cancellationToken ).ConfigureAwait( false );
+                    _ = HandleClientAsync( client, cancellationToken );
                 }
-                catch (OperationCanceledException)
+                catch ( OperationCanceledException )
                 {
                     // Expected during shutdown
                     break;
                 }
-                catch (Exception ex)
+                catch ( Exception ex )
                 {
-                    Logging.Error($"Error accepting connection: {ex.Message}", ex);
+                    Logging.Error( $"Error accepting connection: {ex.Message}", ex );
                 }
             }
         }
@@ -369,127 +386,130 @@ namespace EddiVoiceAttackService.Server
         /// <summary>
         /// Handle a connected client - receive messages and route to handlers.
         /// </summary>
-        private async Task HandleClientAsync(TcpClient client, CancellationToken cancellationToken)
+        private async Task HandleClientAsync ( TcpClient client, CancellationToken cancellationToken )
         {
-            var context = new ConnectionContext(client);
-        
-            lock (_connectionsLock)
+            var context = new ConnectionContext( client );
+
+            lock ( _connectionsLock )
             {
-                _connections[context.SessionId] = context;
+                _connections[ context.SessionId ] = context;
             }
 
-            Logging.Info($"Client connected: session {context.SessionId}");
+            Logging.Info( $"Client connected: session {context.SessionId}" );
 
             try
             {
-                var buffer = new byte[65536]; // 64KB buffer for message reading
+                var buffer = new byte[ 65536 ]; // 64KB buffer for message reading
                 var remainingData = string.Empty;
 
-                while (!cancellationToken.IsCancellationRequested && context.IsConnected)
+                while ( !cancellationToken.IsCancellationRequested && context.IsConnected )
                 {
                     try
                     {
                         ArgumentNullException.ThrowIfNull( context.Stream, "Client stream is null" );
 
-                        var bytesRead = await context.Stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false);
-                    
-                        if (bytesRead == 0)
+                        var bytesRead = await context.Stream.ReadAsync( buffer, 0, buffer.Length, cancellationToken )
+                            .ConfigureAwait( false );
+
+                        if ( bytesRead == 0 )
                         {
                             // Client disconnected
                             break;
                         }
 
                         // Append received bytes to remaining data
-                        var receivedText = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                        var receivedText = Encoding.UTF8.GetString( buffer, 0, bytesRead );
                         remainingData += receivedText;
 
                         // Process complete messages
-                        while (true)
+                        while ( true )
                         {
-                            var messageCount = MessageSerializer.DeserializeMessages(remainingData, out var messages, out remainingData);
-                            if (messageCount == 0)
+                            var messageCount = MessageSerializer.DeserializeMessages( remainingData, out var messages,
+                                out remainingData );
+                            if ( messageCount == 0 )
                                 break;
 
-                            foreach (var message in messages)
+                            foreach ( var message in messages )
                             {
                                 try
                                 {
                                     message.Validate();
-                                
+
                                     // Update heartbeat timestamp
-                                    if (message.Type == "Heartbeat")
+                                    if ( message.Type == "Heartbeat" )
                                     {
                                         context.LastHeartbeatUtc = DateTime.UtcNow;
                                     }
 
                                     // Route to handlers
-                                    await _router.RouteAsync(message, context).ConfigureAwait(false);
+                                    await _router.RouteAsync( message, context ).ConfigureAwait( false );
                                 }
-                                catch (Exception ex)
+                                catch ( Exception ex )
                                 {
-                                    Logging.Error($"Error processing message: {ex.Message}", ex);
-                                
+                                    Logging.Error( $"Error processing message: {ex.Message}", ex );
+
                                     // Send error response
-                                    var errorMsg = MessageEnvelope.Create("Error",
+                                    var errorMsg = MessageEnvelope.Create( "Error",
                                         new ErrorData
                                         {
                                             ErrorCode = "PROCESSING_ERROR",
                                             Message = ex.Message,
                                             OriginalMessageId = message.Id
-                                        });
-                                
-                                    await SendToConnectionAsync(context.SessionId, errorMsg).ConfigureAwait(false);
+                                        } );
+
+                                    await SendToConnectionAsync( context.SessionId, errorMsg, cancellationToken )
+                                        .ConfigureAwait( false );
                                 }
                             }
                         }
                     }
-                    catch (OperationCanceledException)
+                    catch ( OperationCanceledException )
                     {
                         break;
                     }
-                    catch (IOException)
+                    catch ( IOException )
                     {
                         // Connection lost
                         break;
                     }
                 }
             }
-            catch (Exception ex)
+            catch ( Exception ex )
             {
-                Logging.Error($"Error in client handler for session {context.SessionId}: {ex.Message}", ex);
+                Logging.Error( $"Error in client handler for session {context.SessionId}: {ex.Message}", ex );
             }
             finally
             {
                 // Clean up
-                lock (_connectionsLock)
+                lock ( _connectionsLock )
                 {
-                    _connections.Remove(context.SessionId);
+                    _connections.Remove( context.SessionId );
                 }
 
                 context.Dispose();
-                Logging.Info($"Client disconnected: session {context.SessionId}");
+                Logging.Info( $"Client disconnected: session {context.SessionId}" );
             }
         }
 
         /// <summary>
         /// Close all client connections gracefully.
         /// </summary>
-        private async Task CloseAllConnectionsAsync()
+        private async Task CloseAllConnectionsAsync ()
         {
             List<string> sessionIds;
-            lock (_connectionsLock)
+            lock ( _connectionsLock )
             {
                 sessionIds = _connections.Keys.ToList();
             }
 
-            var tasks = sessionIds.Select(id => DisconnectAsync(id, "server_shutdown"));
-            await Task.WhenAll(tasks).ConfigureAwait(false);
+            var tasks = sessionIds.Select( id => DisconnectAsync( id, "server_shutdown" ) );
+            await Task.WhenAll( tasks ).ConfigureAwait( false );
         }
 
         /// <summary>
         /// Dispose of server resources.
         /// </summary>
-        public void Dispose()
+        public void Dispose ()
         {
             try
             {

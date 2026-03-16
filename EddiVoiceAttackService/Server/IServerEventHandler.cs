@@ -7,7 +7,7 @@ namespace EddiVoiceAttackService.Server
 {
     /// <summary>
     /// Handler interface for processing specific message types in the IPC server.
-    /// Implementations handle events, commands, queries, and other protocol messages.
+    /// Implementations handle events, commands, and other protocol messages.
     /// </summary>
     public interface IServerEventHandler
     {
@@ -26,25 +26,11 @@ namespace EddiVoiceAttackService.Server
         Task HandleDisconnectAsync(MessageEnvelope message, ConnectionContext context);
 
         /// <summary>
-        /// Handle a Heartbeat message (keep-alive).
-        /// </summary>
-        /// <param name="message">The Heartbeat message</param>
-        /// <param name="context">The client connection context</param>
-        Task HandleHeartbeatAsync(MessageEnvelope message, ConnectionContext context);
-
-        /// <summary>
         /// Handle a Command message (request to execute action in EDDI).
         /// </summary>
         /// <param name="message">The Command message</param>
         /// <param name="context">The client connection context</param>
         Task HandleCommandAsync(MessageEnvelope message, ConnectionContext context);
-
-        /// <summary>
-        /// Handle a Query message (request for state or data from EDDI).
-        /// </summary>
-        /// <param name="message">The Query message</param>
-        /// <param name="context">The client connection context</param>
-        Task HandleQueryAsync(MessageEnvelope message, ConnectionContext context);
 
         /// <summary>
         /// Handle an Event message (should not be sent to server, but handle gracefully if received).
@@ -65,12 +51,5 @@ namespace EddiVoiceAttackService.Server
         /// <param name="sessionId">The target client session ID</param>
         /// <param name="response">The CommandResponse message</param>
         Task SendCommandResponseAsync(string sessionId, MessageEnvelope response);
-
-        /// <summary>
-        /// Send a query response to a specific client.
-        /// </summary>
-        /// <param name="sessionId">The target client session ID</param>
-        /// <param name="response">The QueryResponse message</param>
-        Task SendQueryResponseAsync(string sessionId, MessageEnvelope response);
     }
 }

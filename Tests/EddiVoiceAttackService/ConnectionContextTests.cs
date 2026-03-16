@@ -12,7 +12,7 @@ namespace Tests.EddiVoiceAttackService
     /// <summary>
     /// Unit tests for ConnectionContext.
     /// </summary>
-    [ TestClass ]
+    [TestClass, TestCategory( "UnitTests" )]
     public class ConnectionContextTests
     {
         private TcpClient? _testClient;

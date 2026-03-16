@@ -14,8 +14,8 @@ public class ConnectData
 {
     public required string PluginVersion { get; set; }
     public required string PluginName { get; set; }
-    public required List<string> Capabilities { get; set; }
-    public required List<string> SupportedMessageTypes { get; set; }
+    public required IList<string> Capabilities { get; set; }
+    public required IList<string> SupportedMessageTypes { get; set; }
 }
 
 /// <summary>Connection acknowledgment message data (EDDI → VA Plugin).</summary>
@@ -68,20 +68,4 @@ public class ErrorData
     public required string Message { get; set; }
     public string OriginalMessageId { get; set; } = string.Empty;
     public Dictionary<string, object> Details { get; set; } = new();
-}
-
-/// <summary>Query message data (VA Plugin → EDDI) - on-demand state requests.</summary>
-public class QueryData
-{
-    public required string QueryType { get; set; } // e.g., "GetCurrentState", "GetSystemInfo"
-    public Dictionary<string, object> Parameters { get; set; } = new();
-}
-
-/// <summary>Query response message data (EDDI → VA Plugin).</summary>
-public class QueryResponseData
-{
-    public required string QueryId { get; set; }
-    public required string Status { get; set; } // "success" or "error"
-    public Dictionary<string, object> Result { get; set; } = new();
-    public string Message { get; set; } = string.Empty;
 }
