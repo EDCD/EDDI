@@ -1,3 +1,4 @@
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
 VisualStudioVersion = 18.2.11415.280
@@ -138,7 +139,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiFleetCarrierMonitor", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiLocationMonitor", "EddiLocationMonitor\EddiLocationMonitor.csproj", "{170A4485-CAF0-49AF-83EF-C4BB7A35E964}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiVoiceAttackService", "EddiVoiceAttackService\EddiVoiceAttackService.csproj", "{A879BCAE-49A8-4A8F-B385-E3C6CEFDCC53}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiVoiceAttackAdapter", "VoiceAttackAdapter\EddiVoiceAttackAdapter.csproj", "{3B2327CE-091A-4EEE-94D3-7923309F63A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiIPC_Service", "IPC_Service\EddiIPC_Service.csproj", "{6D178024-2B17-A598-760C-ED5440830C10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -286,10 +289,14 @@ Global
 		{170A4485-CAF0-49AF-83EF-C4BB7A35E964}.Debug|x64.Build.0 = Debug|x64
 		{170A4485-CAF0-49AF-83EF-C4BB7A35E964}.Release|x64.ActiveCfg = Release|x64
 		{170A4485-CAF0-49AF-83EF-C4BB7A35E964}.Release|x64.Build.0 = Release|x64
-		{A879BCAE-49A8-4A8F-B385-E3C6CEFDCC53}.Debug|x64.ActiveCfg = Debug|x64
-		{A879BCAE-49A8-4A8F-B385-E3C6CEFDCC53}.Debug|x64.Build.0 = Debug|x64
-		{A879BCAE-49A8-4A8F-B385-E3C6CEFDCC53}.Release|x64.ActiveCfg = Release|x64
-		{A879BCAE-49A8-4A8F-B385-E3C6CEFDCC53}.Release|x64.Build.0 = Release|x64
+		{3B2327CE-091A-4EEE-94D3-7923309F63A1}.Debug|x64.ActiveCfg = Debug|x64
+		{3B2327CE-091A-4EEE-94D3-7923309F63A1}.Debug|x64.Build.0 = Debug|x64
+		{3B2327CE-091A-4EEE-94D3-7923309F63A1}.Release|x64.ActiveCfg = Release|x64
+		{3B2327CE-091A-4EEE-94D3-7923309F63A1}.Release|x64.Build.0 = Release|x64
+		{6D178024-2B17-A598-760C-ED5440830C10}.Debug|x64.ActiveCfg = Debug|x64
+		{6D178024-2B17-A598-760C-ED5440830C10}.Debug|x64.Build.0 = Debug|x64
+		{6D178024-2B17-A598-760C-ED5440830C10}.Release|x64.ActiveCfg = Release|x64
+		{6D178024-2B17-A598-760C-ED5440830C10}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -322,7 +329,7 @@ Global
 		{E3D9C296-531F-89D6-F137-E577B5266996} = {7511F244-BC52-4F4A-ABBE-3956957B4F1B}
 		{D7225D92-7E51-431E-B91B-DD3D7CCB59F1} = {7511F244-BC52-4F4A-ABBE-3956957B4F1B}
 		{170A4485-CAF0-49AF-83EF-C4BB7A35E964} = {7511F244-BC52-4F4A-ABBE-3956957B4F1B}
-		{A879BCAE-49A8-4A8F-B385-E3C6CEFDCC53} = {DBAE065B-DD96-4349-9189-D0935280BB0B}
+		{6D178024-2B17-A598-760C-ED5440830C10} = {DBAE065B-DD96-4349-9189-D0935280BB0B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {28C2EDB6-0FA0-409F-987C-7A24F542D0CF}

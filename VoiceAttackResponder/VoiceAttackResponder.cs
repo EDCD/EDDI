@@ -1,7 +1,7 @@
-﻿using Eddi;
-using EddiCore;
+﻿using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
+using EddiIPC_Service.Server;
 using System;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -16,7 +16,12 @@ namespace EddiVoiceAttackResponder
     /// </summary>
     class VoiceAttackResponder : IEddiResponder
     {
-        private static VoiceAttackEventHandler voiceAttackEventHandler;
+        private static VoiceAttackEventHandling voiceAttackEventHandler;
+
+        public VoiceAttackResponder()
+        {
+            ResponderModeRegistry.RegisterHandler( VoiceAttackResponderModeHandler.SetResponderModeAsync );
+        }
 
         public string ResponderName()
         {
@@ -35,7 +40,7 @@ namespace EddiVoiceAttackResponder
 
         public Task HandleAsync ( Event @event )
         {
-            if ( App.FromVA && !@event.fromLoad && !( @event is UnhandledEvent ) )
+            if ( EDDI.FromVA && !@event.fromLoad && !( @event is UnhandledEvent ) )
             {
                 voiceAttackEventHandler.Handle( @event );
             }
@@ -45,11 +50,17 @@ namespace EddiVoiceAttackResponder
 
         public bool Start()
         {
-            if (App.FromVA)
+            if (EDDI.FromVA)
             {
                 // Set up our event responder.
-                voiceAttackEventHandler = new VoiceAttackEventHandler();
+                voiceAttackEventHandler = new VoiceAttackEventHandling();
+                CommandDispatcherRegistry.RegisterCommandDispatcher(new VoiceAttackCommandDispatcher());
                 Logging.Info( "Started VoiceAttack responder" );
+
+                // Initialize responder mode: subscribe to EDDI events and set up VoiceAttack variable synchronization
+                VoiceAttackResponderMode.InitializeAsync().SafeFireAndForget( 
+                    ex => Logging.Error( "Failed to initialize VoiceAttack responder mode", ex ) );
+
                 return true;
             }
             else
@@ -60,6 +71,8 @@ namespace EddiVoiceAttackResponder
 
         public void Stop ()
         {
+            CommandDispatcherRegistry.ClearCommandDispatcher();
+
             // Cancel event queue threads and wait for them to complete
             voiceAttackEventHandler?.StopEventHandlingAsync().SafeFireAndForget( ex => Logging.Warn( ex.Message, ex ) );
         }
@@ -74,7 +87,7 @@ namespace EddiVoiceAttackResponder
 
         public Task HandleStatusAsync ( Status status )
         {
-            if ( App.FromVA )
+            if ( EDDI.FromVA )
             {
                 VoiceAttackVariables.setStatusValues( status, "Status" );
             }

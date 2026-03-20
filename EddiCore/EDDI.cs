@@ -4,6 +4,7 @@ using EddiCore.Hotkeys;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
+using EddiIPC_Service.Server;
 using EddiSpeechService;
 using EddiStatusService;
 using JetBrains.Annotations;
@@ -143,10 +144,10 @@ namespace EddiCore
                     {
                         Logging.Debug("No EDDI instance: creating one");
                         instance = new EDDI();
-                        }
                     }
                 }
             }
+        }
 
         // EDDI Instance
         public static EDDI Instance
@@ -169,6 +170,9 @@ namespace EddiCore
         public List<IEddiResponder> responders = [ ];
         private ConcurrentBag<IEddiResponder> activeResponders = [ ];
         private static readonly object responderLock = new();
+
+        // IPC Server infrastructure (VoiceAttack plugin mode only)
+        private IPCServer _ipcServer;
 
         public DataProviderService DataProvider { get; internal set; }
         public HotkeyManager HotkeyManager { get; } = new();
@@ -633,6 +637,19 @@ namespace EddiCore
                     }
                 }
 
+                // Initialize IPC server (the VoiceAttack plugin can connect to this server as an IPC client)
+                try
+                {
+                    _ipcServer = new IPCServer();
+                    _ipcServer.InitializeIpcServer();
+                    Logging.Info( "IPC server initialized for standalone mode; listening for plugin connections" );
+                }
+                catch ( Exception ex )
+                {
+                    Logging.Error( "Failed to initialize IPC server", ex );
+                    // Don't throw - allow EDDI to continue even if IPC fails
+                }
+
                 started = true;
             }
         }
@@ -642,6 +659,20 @@ namespace EddiCore
             if ( running )
             {
                 running = false; // Otherwise keepalive restarts them
+
+                // Shutdown IPC server
+                if (_ipcServer?.IsRunning ?? false)
+                {
+                    try
+                    {
+                        _ipcServer.StopAsync().GetResultOrTimeout( TimeSpan.FromSeconds( 2 ) );
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Error("Error stopping IPC server", ex);
+                    }
+                }
+
                 signalSourceManager.Dispose();
                 DataProvider.cts.Cancel();
                 Utilities.TelemetryService.Telemetry.Stop();

@@ -23,12 +23,12 @@
         <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj" />
         <ProjectReference Include="..\EddiSpanshService\EddiSpanshService.csproj" />
         <ProjectReference Include="..\EddiStatusService\EddiStatusService.csproj" />
-        <ProjectReference Include="..\EddiVoiceAttackService\EddiVoiceAttackService.csproj" />
         <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj" />
         <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj" />
         <ProjectReference Include="..\EDDNResponder\EddiEddnResponder.csproj" />
         <ProjectReference Include="..\Events\EddiEvents.csproj" />
         <ProjectReference Include="..\InaraResponder\EddiInaraResponder.csproj" />
+        <ProjectReference Include="..\IPC_Service\EddiIPC_Service.csproj" />
         <ProjectReference Include="..\JournalMonitor\EddiJournalMonitor.csproj" />
         <ProjectReference Include="..\MaterialMonitor\EddiMaterialMonitor.csproj" />
         <ProjectReference Include="..\MissionMonitor\EddiMissionMonitor.csproj" />
@@ -39,6 +39,7 @@
         <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj" />
         <ProjectReference Include="..\StatusMonitor\EddiStatusMonitor.csproj" />
         <ProjectReference Include="..\Utilities\Utilities.csproj" />
+        <ProjectReference Include="..\VoiceAttackAdapter\EddiVoiceAttackAdapter.csproj" />
         <ProjectReference Include="..\VoiceAttackResponder\EddiVoiceAttackResponder.csproj" />
     </ItemGroup>
     <ItemGroup>

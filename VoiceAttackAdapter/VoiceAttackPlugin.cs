@@ -1,0 +1,656 @@
+#nullable enable
+
+using EddiVoiceAttackAdapter.Client;
+using JetBrains.Annotations;
+using Microsoft.CSharp.RuntimeBinder;
+using System;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+using Utilities;
+
+[assembly: InternalsVisibleTo( "Tests" )]
+namespace EddiVoiceAttackAdapter
+{
+    [UsedImplicitly]
+    public class VoiceAttackPlugin
+    {
+        [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
+        public static string VA_DisplayName() => $"{Constants.EDDI_NAME} {Constants.EDDI_VERSION}";
+
+        [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
+        public static string VA_DisplayInfo() => $"{Constants.EDDI_NAME}\r\nVersion {Constants.EDDI_VERSION}";
+
+        [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
+        public static Guid VA_Id() => new("{4AD8E3A4-CEFA-4558-B503-1CC9B99A07C1}");
+
+        internal static dynamic? VaProxy;
+        internal static System.Version? VaVersion
+        {
+            get
+            {
+                lock ( vaProxyLock )
+                {
+                    return VaProxy?.VAVersion as System.Version;
+                }
+            }
+        }
+
+        internal static readonly object vaProxyLock = new();
+        private static bool _isShuttingDown = false;
+        private static Task? _crashMonitorTask;
+        private static bool _runtimeReceiverSubscribed;
+
+        [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
+        public static void VA_Init1(dynamic vaProxy)
+        {
+            // Store VA proxy for variable read/write access
+            if (vaProxy != null)
+            {
+                lock (vaProxyLock)
+                {
+                    VaProxy = vaProxy;
+                }
+            }
+
+            // Launch EDDI process and establish IPC connection immediately
+            // (no need for callback; plugin is already running in VoiceAttack)
+            Task.Run(async () => await LaunchEddiAndInitializeIpcAsync().ConfigureAwait(false))
+                .SafeFireAndForget(ex => Logging.Error("Failed to initialize VoiceAttack plugin", ex));
+        }
+
+        /// <summary>
+        /// Launch EDDI process and establish IPC connection for responder mode.
+        /// Called on background thread to avoid blocking VoiceAttack.
+        /// </summary>
+        private static async Task LaunchEddiAndInitializeIpcAsync()
+        {
+            try
+            {
+                Logging.Info("VoiceAttack plugin: Launching EDDI process");
+
+                // Launch EDDI as separate process or connect to existing instance
+                var launchSuccess = await EddiProcessLauncher.LaunchEddiIfNeededAsync(true, VaVersion).ConfigureAwait(false);
+                if (!launchSuccess)
+                {
+                    Logging.Warn("Failed to launch or connect to EDDI standalone process");
+                    WriteToLog("Warning: EDDI standalone process could not be launched. Plugin may operate with reduced functionality.", "orange");
+                    return;
+                }
+
+                // Initialize IPC client for command/query/event dispatch
+                try
+                {
+                    await VoiceAttackPluginHost.Instance.InitializeAsync().ConfigureAwait(false);
+                    Logging.Debug("IPC client initialized");
+
+                    RegisterRuntimeEventReceiver();
+
+                    // Send responder mode handshake to EDDI.exe
+                    // This sets EDDI.FromVA = true and triggers VoiceAttackResponderMode initialization in EDDI.exe
+                    var responderModeEnabled = await VoiceAttackPluginHost.Instance.SendSetResponderModeAsync(true, VaVersion).ConfigureAwait(false);
+                    if (!responderModeEnabled)
+                    {
+                        Logging.Warn("VoiceAttack responder mode handshake was not acknowledged");
+                        WriteToLog("Warning: EDDI IPC connection is available, but responder mode could not be enabled.", "orange");
+                        return;
+                    }
+
+                    Logging.Info("VoiceAttack responder mode handshake sent");
+                    WriteToLog( "The EDDI plugin is fully operational.", "green" );
+
+                    // Start background task to monitor for EDDI crashes
+                    _crashMonitorTask = MonitorEddiProcessAsync();
+                }
+                catch (Exception ex)
+                {
+                    Logging.Warn($"Failed to initialize IPC client: {ex.Message}");
+                }
+            }
+            catch (Exception e)
+            {
+                Logging.Error("Failed to launch EDDI or initialize IPC", e);
+                WriteToLog("Unable to launch EDDI process. Plugin functions may be limited.", "red");
+            }
+        }
+
+        /// <summary>
+        /// Monitor EDDI process for unexpected crashes and automatically restart if needed.
+        /// Runs in background until intentional shutdown is signaled.
+        /// </summary>
+        private static async Task MonitorEddiProcessAsync()
+        {
+            const int checkIntervalMs = 2000;
+            const int maxRestartAttempts = 3;
+            int restartAttempts = 0;
+
+            while (!_isShuttingDown)
+            {
+                try
+                {
+                    await Task.Delay(checkIntervalMs).ConfigureAwait(false);
+
+                    // Check if EDDI process has exited unexpectedly
+                    if (EddiProcessLauncher.HasEddiProcessExited())
+                    {
+                        if (_isShuttingDown)
+                        {
+                            // User initiated shutdown, don't restart
+                            Logging.Debug("EDDI process exited during intentional shutdown");
+                            break;
+                        }
+
+                        // EDDI crashed unexpectedly
+                        Logging.Warn("EDDI process has crashed unexpectedly");
+                        WriteToLog("EDDI has crashed unexpectedly. Attempting to restart...", "red");
+
+                        // Attempt restart if within limit
+                        if (restartAttempts < maxRestartAttempts)
+                        {
+                            restartAttempts++;
+                            Logging.Info($"Attempting EDDI restart (attempt {restartAttempts}/{maxRestartAttempts})");
+
+                            try
+                            {
+                                // Relaunch EDDI and reinitialize IPC
+                                var restartSuccess = await EddiProcessLauncher.LaunchEddiIfNeededAsync(true, VaVersion).ConfigureAwait(false);
+                                if (restartSuccess)
+                                {
+                                    await VoiceAttackPluginHost.Instance.InitializeAsync().ConfigureAwait(false);
+                                    RegisterRuntimeEventReceiver();
+                                    var responderModeEnabled = await VoiceAttackPluginHost.Instance.SendSetResponderModeAsync(true, VaVersion).ConfigureAwait(false);
+                                    if (!responderModeEnabled)
+                                    {
+                                        Logging.Warn("EDDI restart completed but responder mode handshake was not acknowledged");
+                                        WriteToLog("EDDI restarted, but responder mode could not be re-enabled.", "orange");
+                                        continue;
+                                    }
+
+                                    Logging.Info("EDDI process restarted successfully");
+                                    WriteToLog("EDDI has been restarted successfully.", "green");
+                                    restartAttempts = 0; // Reset counter on successful restart
+                                }
+                                else
+                                {
+                                    Logging.Warn($"Failed to restart EDDI (attempt {restartAttempts})");
+                                    WriteToLog($"Failed to restart EDDI (attempt {restartAttempts}/{maxRestartAttempts}). Will retry...", "orange");
+                                }
+                            }
+                            catch (Exception restartEx)
+                            {
+                                Logging.Warn($"Exception during EDDI restart: {restartEx.Message}");
+                                WriteToLog($"Error restarting EDDI: {restartEx.Message}", "orange");
+                            }
+                        }
+                        else
+                        {
+                            Logging.Error("EDDI restart attempts exceeded maximum");
+                            WriteToLog("EDDI restart attempts exceeded. Plugin may operate with reduced functionality.", "red");
+                            break;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logging.Error($"Error in crash monitoring: {ex.Message}", ex);
+                }
+            }
+
+            Logging.Debug("EDDI crash monitoring stopped");
+        }
+
+        [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
+        public static void VA_Exit1( dynamic _ )
+        {
+            // Signal intentional shutdown to stop crash monitoring and prevent restart
+            _isShuttingDown = true;
+
+            Logging.Info("EDDI VoiceAttack plugin exiting");
+
+            // Disable responder mode in EDDI.exe through IPC
+            try
+            {
+                var sent = VoiceAttackPluginHost.Instance.SendSetResponderModeAsync(false).GetAwaiter().GetResult();
+                if (!sent)
+                {
+                    Logging.Warn("SetResponderMode(false) command was not acknowledged during plugin shutdown");
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Warn($"Error sending responder mode shutdown command: {ex.Message}");
+            }
+
+            UnregisterRuntimeEventReceiver();
+
+            // Disconnect IPC client gracefully
+            try
+            {
+                VoiceAttackPluginHost.Instance.DisconnectAsync().GetAwaiter().GetResult();
+            }
+            catch (Exception ex)
+            {
+                Logging.Warn($"Error disconnecting IPC client during shutdown: {ex.Message}");
+            }
+
+            // Give background tasks a moment to gracefully shut down
+            Thread.Sleep( 500 );
+
+            // Dispose of plugin host
+            try
+            {
+                VoiceAttackPluginHost.Instance.Dispose();
+            }
+            catch (Exception ex)
+            {
+                Logging.Warn($"Error disposing plugin host during shutdown: {ex.Message}");
+            }
+
+            // Shutdown the EDDI process if it was launched by the plugin
+            EddiProcessLauncher.ShutdownEddiProcess();
+
+            // Force application shutdown to ensure all threads terminate
+            Application.Current?.Dispatcher.InvokeAsync( () =>
+            {
+                Application.Current.Shutdown();
+            } );
+        }
+
+        [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
+        public static void VA_StopCommand()
+        { }
+
+        [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
+        public static void VA_Invoke1(dynamic vaProxy)
+        {
+            lock ( vaProxyLock )
+            {
+                VaProxy = vaProxy;
+            }
+
+            var commandContext = vaProxy.Context as string;
+            if ( string.Equals( commandContext, "initialize eddi", StringComparison.OrdinalIgnoreCase ) )
+            {
+                Task.Run( async () => await LaunchEddiAndInitializeIpcAsync().ConfigureAwait(false) )
+                    .SafeFireAndForget( ex => Logging.Error( "Failed to run initialize eddi bootstrap", ex ) );
+                return;
+            }
+
+            if ( string.IsNullOrWhiteSpace( commandContext ) )
+            {
+                Logging.Warn( "VoiceAttack plugin invocation skipped because command context was null or empty" );
+                return;
+            }
+
+            var commandPayload = BuildInvocationPayload();
+
+            // Route command through bridge to EDDI.exe responder via IPC
+            var bridge = new VoiceAttackCommandBridge();
+            Task<object?> task = bridge.RouteCommandAsync( commandContext, commandPayload );
+            task.SafeFireAndForget( LogException );
+        }
+
+        private static System.Collections.Generic.Dictionary<string, object> BuildInvocationPayload()
+        {
+            var payload = new System.Collections.Generic.Dictionary<string, object>( StringComparer.OrdinalIgnoreCase )
+            {
+                ["Script"] = GetText( "Script" ) ?? string.Empty,
+                ["Priority"] = GetInt( "Priority" )?.ToString() ?? string.Empty,
+                ["Voice"] = GetText( "Voice" ) ?? string.Empty,
+                ["Volume"] = GetInt( "Volume" )?.ToString() ?? string.Empty,
+                ["Name"] = GetText( "Name" ) ?? string.Empty,
+                ["Personality"] = GetText( "Personality" ) ?? string.Empty,
+                ["State variable"] = GetText( "State variable" ) ?? string.Empty,
+                ["EDDI open uri in browser"] = GetBoolean( "EDDI open uri in browser" )?.ToString() ?? string.Empty,
+                ["EDDI use clipboard"] = GetBoolean( "EDDI use clipboard" )?.ToString() ?? string.Empty,
+                ["EDDI system comment"] = GetText( "EDDI system comment" ) ?? string.Empty,
+                ["Type variable"] = GetText( "Type variable" ) ?? string.Empty,
+                ["System variable"] = GetText( "System variable" ) ?? string.Empty,
+                ["System variable 2"] = GetText( "System variable 2" ) ?? string.Empty,
+                ["Station variable"] = GetText( "Station variable" ) ?? string.Empty,
+                ["Numeric variable"] = GetDecimal( "Numeric variable" )?.ToString() ?? string.Empty,
+                ["Boolean variable"] = GetBoolean( "Boolean variable" )?.ToString() ?? string.Empty
+            };
+
+            var stateVariableName = GetText( "State variable" );
+            if ( !string.IsNullOrWhiteSpace( stateVariableName ) )
+            {
+                payload["State variable text value"] = GetText( stateVariableName ) ?? string.Empty;
+                payload["State variable int value"] = GetInt( stateVariableName )?.ToString() ?? string.Empty;
+                payload["State variable bool value"] = GetBoolean( stateVariableName )?.ToString() ?? string.Empty;
+                payload["State variable decimal value"] = GetDecimal( stateVariableName )?.ToString() ?? string.Empty;
+            }
+
+            return payload;
+        }
+
+        private static void LogException(Exception ex)
+        {
+            Logging.Error(ex.Message, ex);
+        }
+
+        private static void RegisterRuntimeEventReceiver()
+        {
+            if (_runtimeReceiverSubscribed)
+            {
+                return;
+            }
+
+            var client = VoiceAttackPluginHost.Instance.Client;
+            if (client == null)
+            {
+                return;
+            }
+
+            client.MessageReceived += VoiceAttackRuntimeEventReceiver.HandleMessageReceived;
+            _runtimeReceiverSubscribed = true;
+        }
+
+        private static void UnregisterRuntimeEventReceiver()
+        {
+            if (!_runtimeReceiverSubscribed)
+            {
+                return;
+            }
+
+            var client = VoiceAttackPluginHost.Instance.Client;
+            if (client != null)
+            {
+                client.MessageReceived -= VoiceAttackRuntimeEventReceiver.HandleMessageReceived;
+            }
+
+            _runtimeReceiverSubscribed = false;
+        }
+
+        private static bool IsVaVersionSameOrNewer ( System.Version minVersion )
+        {
+            lock ( vaProxyLock )
+            {
+                return VaVersion?.CompareTo( minVersion ) >= 0;
+            }
+        }
+
+        #region Command Interactions
+
+        // If running VoiceAttack version 1.7.4 or later then we should use the more modern command API endpoints
+        private static readonly System.Version commandApiVaVersion = new( 1, 7, 4 );
+
+        public static async Task WaitForCommandExecutionAsync ( string commandName )
+        {
+            var isCommandExecuting = true;
+            while ( isCommandExecuting )
+            {
+                await Task.Delay( 25 ).ConfigureAwait(false);
+                lock ( vaProxyLock )
+                {
+                    isCommandExecuting = IsVaVersionSameOrNewer( commandApiVaVersion )
+                        ? VaProxy?.Command.Active( commandName )
+                        : VaProxy?.CommandActive( commandName );
+                }
+            }
+        }
+
+        public static bool CommandExists ( string commandName )
+        {
+            lock ( vaProxyLock )
+            {
+                return IsVaVersionSameOrNewer( commandApiVaVersion )
+                    ? VaProxy?.Command.Exists( commandName )
+                    : VaProxy?.CommandExists( commandName );
+            }
+        }
+
+        public static void ExecuteCommand ( string commandName )
+        {
+            lock ( vaProxyLock )
+            {
+                if ( IsVaVersionSameOrNewer( commandApiVaVersion ) )
+                {
+                    VaProxy?.Command.Execute( commandName );
+                }
+                else
+                {
+                    // Use the legacy endpoint
+                    VaProxy?.ExecuteCommand( commandName );
+                }
+            }
+        }
+
+        #endregion
+
+        #region Log Interactions
+
+        public static void WriteToLog ( string message, string color )
+        {
+            lock ( vaProxyLock )
+            {
+                VaProxy?.WriteToLog( message, color );
+            }
+        }
+
+        #endregion
+
+        #region Variable Interactions
+
+        // If running VoiceAttack version 1.10.4 or later then we should use the more modern variable API endpoints
+        private static readonly System.Version variableApiVaVersion = new( 1, 10, 4 );
+
+        public static bool? GetBoolean ( string key, bool retrieveFromProfile = false )
+        {
+            lock ( vaProxyLock )
+            {
+                if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
+                {
+                    try
+                    {
+                        return VaProxy?.GetBoolean( key, retrieveFromProfile );
+                    }
+                    catch ( RuntimeBinderException )
+                    {
+                        // We'll need to use the legacy endpoint
+                    }
+                }
+
+                // Use the legacy endpoint
+                return VaProxy?.GetBoolean( key );
+            }
+        }
+
+        public static DateTime? GetDate ( string key, bool retrieveFromProfile = false )
+        {
+            lock ( vaProxyLock )
+            {
+                if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
+                {
+                    try
+                    {
+                        return VaProxy?.GetDate( key, retrieveFromProfile );
+                    }
+                    catch ( RuntimeBinderException )
+                    {
+                        // We'll need to use the legacy endpoint
+                    }
+                }
+
+                // Use the legacy endpoint
+                return VaProxy?.GetDate( key );
+            }
+        }
+
+        public static decimal? GetDecimal ( string key, bool retrieveFromProfile = false )
+        {
+            lock ( vaProxyLock )
+            {
+                if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
+                {
+                    try
+                    {
+                        return VaProxy?.GetDecimal( key, retrieveFromProfile );
+                    }
+                    catch ( RuntimeBinderException )
+                    {
+                        // We'll need to use the legacy endpoint
+                    }
+                }
+
+                // Use the legacy endpoint
+                return VaProxy?.GetDecimal( key );
+            }
+        }
+
+        public static int? GetInt ( string key, bool retrieveFromProfile = false )
+        {
+            lock ( vaProxyLock )
+            {
+                if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
+                {
+                    try
+                    {
+                        return VaProxy?.GetInt( key, retrieveFromProfile );
+                    }
+                    catch ( RuntimeBinderException )
+                    {
+                        // We'll need to use the legacy endpoint
+                    }
+                }
+
+                // Use the legacy endpoint
+                return VaProxy?.GetInt( key );
+            }
+        }
+
+        public static string? GetText ( string key, bool retrieveFromProfile = false )
+        {
+            lock ( vaProxyLock )
+            {
+                if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
+                {
+                    try
+                    {
+                        return VaProxy?.GetText( key, retrieveFromProfile );
+                    }
+                    catch ( RuntimeBinderException )
+                    {
+                        // We'll need to use the legacy endpoint
+                    }
+                }
+
+                // Use the legacy endpoint
+                return VaProxy?.GetText( key );
+            }
+        }
+
+        public static void SetBoolean ( string key, bool? value, bool saveToProfile = false )
+        {
+            lock ( vaProxyLock )
+            {
+                if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
+                {
+                    try
+                    {
+                        VaProxy?.SetBoolean( key, value, saveToProfile );
+                        return;
+                    }
+                    catch ( RuntimeBinderException )
+                    {
+                        // We'll need to use the legacy endpoint
+                    }
+                }
+
+                // Use the legacy endpoint
+                VaProxy?.SetBoolean( key, value );
+            }
+        }
+
+        public static void SetDate ( string key, DateTime? value, bool saveToProfile = false )
+        {
+            lock ( vaProxyLock )
+            {
+                if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
+                {
+                    try
+                    {
+                        VaProxy?.SetDate( key, value, saveToProfile );
+                        return;
+                    }
+                    catch ( RuntimeBinderException )
+                    {
+                        // We'll need to use the legacy endpoint
+                    }
+                }
+
+                // Use the legacy endpoint
+                VaProxy?.SetDate( key, value );
+            }
+        }
+
+        public static void SetDecimal ( string key, decimal? value, bool saveToProfile = false )
+        {
+            lock ( vaProxyLock )
+            {
+                if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
+                {
+                    try
+                    {
+                        VaProxy?.SetDecimal( key, value, saveToProfile );
+                        return;
+                    }
+                    catch ( RuntimeBinderException )
+                    {
+                        // We'll need to use the legacy endpoint
+                    }
+                }
+
+                // Use the legacy endpoint
+                VaProxy?.SetDecimal( key, value );
+            }
+        }
+
+        public static void SetInt ( string key, int? value, bool saveToProfile = false )
+        {
+            lock ( vaProxyLock )
+            {
+                if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
+                {
+                    try
+                    {
+                        VaProxy?.SetInt( key, value, saveToProfile );
+                        return;
+                    }
+                    catch ( RuntimeBinderException )
+                    {
+                        // We'll need to use the legacy endpoint
+                    }
+                }
+
+                // Use the legacy endpoint
+                VaProxy?.SetInt( key, value );
+            }
+        }
+
+        public static void SetText ( string key, string? value, bool saveToProfile = false )
+        {
+            lock ( vaProxyLock )
+            {
+                if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
+                {
+                    try
+                    {
+                        VaProxy?.SetText( key, value, saveToProfile );
+                        return;
+                    }
+                    catch ( RuntimeBinderException )
+                    {
+                        // We'll need to use the legacy endpoint
+                    }
+                }
+
+                // Use the legacy endpoint
+                VaProxy?.SetText( key, value );
+            }
+        }
+
+        #endregion
+    }
+}

@@ -1,8 +1,9 @@
 #nullable enable
 
-using EddiVoiceAttackService.Client;
-using EddiVoiceAttackService.Messages;
-using EddiVoiceAttackService.Server;
+using EddiIPC_Service.Client;
+using EddiIPC_Service.Messages;
+using EddiIPC_Service.Server;
+using EddiVoiceAttackAdapter.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,16 @@ namespace Tests.EddiVoiceAttackService
     [TestClass, TestCategory( "UnitTests" )]
     public class EndToEndIntegrationTests
     {
+        private sealed class TestCommandDispatcher : ICommandDispatcher
+        {
+            public Task DispatchAsync(string commandName, IReadOnlyDictionary<string, object>? parameters = null,
+                CancellationToken cancellationToken = default)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                return Task.CompletedTask;
+            }
+        }
+
         private IPCServer? _server;
         private DefaultServerEventHandler? _eventHandler;
         private string? _configFilePath;
@@ -39,6 +50,7 @@ namespace Tests.EddiVoiceAttackService
             _server.Router.RegisterHandler(MessageTypes.Disconnect, _eventHandler.HandleDisconnectAsync);
             _server.Router.RegisterHandler(MessageTypes.Command, _eventHandler.HandleCommandAsync);
             _server.Router.RegisterHandler(MessageTypes.Event, _eventHandler.HandleEventAsync);
+            CommandDispatcherRegistry.RegisterCommandDispatcher(new TestCommandDispatcher());
 
             // Create config file
             _configFilePath = CreateConfigFile(_server.Port);
@@ -47,6 +59,8 @@ namespace Tests.EddiVoiceAttackService
         [TestCleanup]
         public async Task Cleanup()
         {
+            CommandDispatcherRegistry.ClearCommandDispatcher();
+
             if (_server != null)
             {
                 try
@@ -75,6 +89,7 @@ namespace Tests.EddiVoiceAttackService
         #region Full Integration Flow Tests
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task E2E_PluginClient_ConnectToServer()
         {
             // Arrange
@@ -98,6 +113,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task E2E_PluginClient_SendCommand_ReceiveResponse()
         {
             // Arrange
@@ -108,20 +124,26 @@ namespace Tests.EddiVoiceAttackService
             try
             {
                 // Act
-                await pluginClient.SendCommandAsync("test.command", 
-                    new { param1 = "value1" },
-                    new CancellationTokenSource(TimeSpan.FromSeconds(5)).Token).ConfigureAwait( false );
+                try
+                {
+                    var response = await pluginClient.SendCommandAsync(
+                        "test.command",
+                        new Dictionary<string, object> { ["param1"] = "value1" },
+                        new CancellationTokenSource(TimeSpan.FromSeconds(5)).Token).ConfigureAwait( false );
+
+                    Assert.IsNotNull(response);
+                }
+                catch (OperationCanceledException)
+                {
+                    // Acceptable while command-response routing remains integration-dependent.
+                }
+                catch (InvalidOperationException ex) when (ex.Message.Contains("Failed to send command"))
+                {
+                    // Acceptable while command-response routing remains integration-dependent.
+                }
 
                 // Assert
-                // Command will reach handler (actual response handling depends on handler implementation)
-            }
-            catch (OperationCanceledException)
-            {
-                // Expected if handler doesn't send response
-            }
-            catch (InvalidOperationException ex) when (ex.Message.Contains("Failed to send command"))
-            {
-                // Also acceptable
+                Assert.IsTrue(pluginClient.IsConnected);
             }
             finally
             {
@@ -130,6 +152,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task E2E_PluginClient_SendEvent_NoResponse()
         {
             // Arrange
@@ -156,6 +179,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task E2E_MultiplePluginClients_ConnectSimultaneously()
         {
             // Arrange
@@ -191,6 +215,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task E2E_PluginClient_SendMultipleMessages()
         {
             // Arrange
@@ -223,6 +248,7 @@ namespace Tests.EddiVoiceAttackService
         #region Protocol Compliance Tests
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task E2E_MessageProtocol_ConnectAck_Contains_ServerCapabilities()
         {
             // Arrange
@@ -246,6 +272,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task E2E_MessageProtocol_SessionId_Unique_PerConnection()
         {
             // Arrange
@@ -279,6 +306,7 @@ namespace Tests.EddiVoiceAttackService
         #region Lifecycle Tests
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task E2E_CompleteLifecycle_Initialize_Use_Disconnect()
         {
             // Arrange
@@ -309,6 +337,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task E2E_Reconnection_AfterDisconnect()
         {
             // Arrange
@@ -346,6 +375,7 @@ namespace Tests.EddiVoiceAttackService
         #region Error Handling Tests
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task E2E_InvalidConfigFile_ProperError()
         {
             // Arrange
@@ -369,6 +399,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task E2E_ServerNotAvailable_ProperError()
         {
             // Arrange
@@ -404,6 +435,7 @@ namespace Tests.EddiVoiceAttackService
         #region Performance Tests
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task E2E_ResponseTime_Acceptable()
         {
             // Arrange

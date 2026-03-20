@@ -1,11 +1,11 @@
 #nullable enable
 
+using EddiIPC_Service.Messages;
+using EddiIPC_Service.Server;
 using System;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EddiVoiceAttackService.Server;
-using EddiVoiceAttackService.Messages;
 
 namespace Tests.EddiVoiceAttackService
 {
@@ -193,9 +193,10 @@ namespace Tests.EddiVoiceAttackService
             dummyClient.Start();
             var port = ((System.Net.IPEndPoint)dummyClient.LocalEndpoint).Port;
 
-            await dummyClient.AcceptTcpClientAsync().ConfigureAwait(false);
+            var acceptTask = dummyClient.AcceptTcpClientAsync();
             var testClient = new System.Net.Sockets.TcpClient();
-            testClient.Connect(System.Net.IPAddress.Loopback, port);
+            await testClient.ConnectAsync(System.Net.IPAddress.Loopback, port);
+            var acceptedClient = await acceptTask.ConfigureAwait(false);
             dummyClient.Stop();
 
             var context = new ConnectionContext(testClient);
@@ -204,8 +205,40 @@ namespace Tests.EddiVoiceAttackService
             await handler.HandleConnectAsync(connectMessage, context);
 
             // Cleanup
+            acceptedClient.Dispose();
             context.Dispose();
             await server.StopAsync();
+        }
+
+        [TestMethod]
+        [Timeout(5000)]
+        public async Task StartAsync_BeginsAcceptingConnectionsImmediately()
+        {
+            // Arrange
+            var server = new IPCServer();
+            await server.StartAsync();
+
+            var client = new System.Net.Sockets.TcpClient();
+
+            try
+            {
+                // Act
+                await client.ConnectAsync(System.Net.IPAddress.Loopback, server.Port);
+
+                // Assert
+                var deadline = DateTime.UtcNow.AddSeconds(1);
+                while (DateTime.UtcNow < deadline && server.ConnectionCount == 0)
+                {
+                    await Task.Delay(25);
+                }
+
+                Assert.IsTrue(server.ConnectionCount > 0, "Server should accept client connections immediately after startup.");
+            }
+            finally
+            {
+                client.Dispose();
+                await server.StopAsync();
+            }
         }
     }
 }

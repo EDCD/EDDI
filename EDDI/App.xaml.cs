@@ -1,4 +1,4 @@
-﻿using EddiConfigService;
+using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiCompanionAppService;
 using EddiCore;
@@ -26,15 +26,23 @@ namespace Eddi
     {
         public static Mutex eddiMutex { get; internal set; }
 
-        // True if we have been started by VoiceAttack and the VaProxy object has been set
+        // VoiceAttack host application version (bootstrap from process args; authoritative value can be overwritten via IPC handshake)
         public static System.Version VoiceAttackVersion { get; set; }
-        public static bool FromVA => VoiceAttackVersion != null;
-        public static Action vaStartup;
 
         [ STAThread ]
-        public static void Main ()
+        public static void Main ( string[] args = null )
         {
-            if ( !FromVA && AlreadyRunning() )
+            // Parse command-line arguments
+            args ??= Environment.GetCommandLineArgs().Skip( 1 ).ToArray();
+            EDDI.FromVA = args.Any( arg => arg.Equals( "--voice-attack-plugin", StringComparison.OrdinalIgnoreCase ) );
+            VoiceAttackVersion = ParseVoiceAttackVersion( args );
+
+            if ( VoiceAttackVersion != null )
+            {
+                Logging.Info( $"Parsed VoiceAttack version from process args: {VoiceAttackVersion}" );
+            }
+
+            if ( AlreadyRunning() )
             {
                 var localisedMultipleInstanceAlertTitle = EddiCore.Properties.Resources.already_running_alert_title;
                 var localisedMultipleInstanceAlertText = EddiCore.Properties.Resources.already_running_alert_body_text;
@@ -47,13 +55,59 @@ namespace Eddi
             var app = new App();
             app.Exit += OnExit;
 
+            try
+            {
+                Initialize( app, VoiceAttackVersion );
+            }
+            catch ( Exception e )
+            {
+                CrashLogger( e );
+            }
+        }
+
+        /// <summary>
+        /// Parse VoiceAttack host version from process args, if provided.
+        /// Supports both '--voice-attack-version X.X.X' and '--voice-attack-version=X.X.X'.
+        /// </summary>
+        private static System.Version ParseVoiceAttackVersion( string[] args )
+        {
+            ArgumentNullException.ThrowIfNull( args );
+
+            for ( var i = 0; i < args.Length; i++ )
+            {
+                var arg = args[ i ];
+
+                if ( !arg.StartsWith( "--voice-attack-version", StringComparison.OrdinalIgnoreCase ) )
+                {
+                    continue;
+                }
+
+                if ( ( i + 1 ) < args.Length && System.Version.TryParse( args[ i + 1 ], out var versionFromNextArg ) )
+                {
+                    return versionFromNextArg;
+                }
+
+                var parts = arg.Split( '=', StringSplitOptions.RemoveEmptyEntries );
+                if ( parts.Length == 2 && System.Version.TryParse( parts[ 1 ], out var versionFromEquals ) )
+                {
+                    return versionFromEquals;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Initializes EDDI in standalone mode (not running under VoiceAttack).
+        /// </summary>
+        private static void Initialize( App app, System.Version vaVersion )
+        {
             // Prepare to start the application
-            ApplicationContext = new WpfApplicationContext();
             Logging.IncrementLogs(); // Increment to a new log file.
             var configuration = ConfigService.Instance.eddiConfiguration;
             if ( configuration != null && !configuration.DisableTelemetry )
             {
-                StartTelemetryService(); // do immediately to initialize error reporting
+                StartTelemetryService( vaVersion ); // do immediately to initialize error reporting
             }
 
             ApplyAnyOverrideCulture( configuration ); // this must be done before any UI is generated
@@ -64,7 +118,7 @@ namespace Eddi
 
             // Initialize CompanionAppService DDE on UI thread BEFORE async preload
             // (must be done before MainWindow creation and Task.WaitAll to avoid deadlock)
-            if ( ApplicationContext.HasUIDispatcher )
+            if ( Current != null )
             {
                 try
                 {
@@ -82,27 +136,17 @@ namespace Eddi
             var preloadTasks = PreloadCriticalServicesAsync();
             Task.WaitAll( preloadTasks.ToArray() );
 
-            try
+            if ( EDDI.FromVA )
             {
-                if ( FromVA )
-                {
-                    // Create the MainWindow with visibility controlled by code-behind logic
-                    // (hidden by default in VA mode, shown on demand via VA commands)
-                    EDDI.FromVA = FromVA;
-                    app.MainWindow = new MainWindow();
-                    vaStartup?.Invoke();
-                    app.Run();
-                }
-                else
-                {
-                    // Start by displaying the MainWindow
-                    app.Run( new MainWindow() );
-                }
+                // Create the MainWindow with visibility controlled by code-behind logic
+                // (hidden by default in VA mode, shown on demand via VA commands)
+                app.MainWindow = new MainWindow();
+                app.Run();
             }
-            catch ( Exception e )
+            else
             {
-                // Catch exceptions from the main UI thread
-                CrashLogger( e );
+                // Start by displaying the MainWindow
+                app.Run( new MainWindow() );
             }
         }
 
@@ -151,12 +195,11 @@ namespace Eddi
 
         private static void OnExit(object sender, ExitEventArgs e)
         {
-            if ( !FromVA )
-            {
-                EDDI.Instance.Stop();
-            }
+            // Always stop the EDDI instance so monitors and services are shut down
+            // cleanly before the process exits.  
+            EDDI.Instance.Stop();
 
-            Application.Current?.Dispatcher?.InvokeAsync( () => {
+            Current?.Dispatcher?.InvokeAsync( () => {
                 eddiMutex.ReleaseMutex();
             } );
         }
@@ -170,12 +213,12 @@ namespace Eddi
             return !firstOwner;
         }
 
-        private static void StartTelemetryService()
+        private static void StartTelemetryService(System.Version voiceAttackVersion)
         {
             // Generate an id unique to this app run for bug tracking
             // and start the telemetry service
             var telemetryID = Convert.ToBase64String( Guid.NewGuid().ToByteArray() ).Replace("=", "");
-            Utilities.TelemetryService.Telemetry.Start( telemetryID, VoiceAttackVersion );
+            Utilities.TelemetryService.Telemetry.Start( telemetryID, voiceAttackVersion );
 
             // Catch and send unhandled exceptions
             System.Windows.Forms.Application.ThreadException += (_, args) =>
@@ -247,3 +290,4 @@ namespace Eddi
         }
     }
 }
+

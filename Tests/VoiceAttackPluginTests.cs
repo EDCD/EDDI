@@ -3,6 +3,7 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
+using EddiVoiceAttackAdapter;
 using EddiVoiceAttackResponder;
 using JetBrains.Annotations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

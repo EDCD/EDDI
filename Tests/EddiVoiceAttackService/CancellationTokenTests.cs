@@ -1,11 +1,11 @@
 #nullable enable
 
+using EddiIPC_Service.Messages;
+using EddiIPC_Service.Server;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EddiVoiceAttackService.Server;
-using EddiVoiceAttackService.Messages;
 
 namespace Tests.EddiVoiceAttackService
 {

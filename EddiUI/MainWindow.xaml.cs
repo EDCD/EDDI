@@ -411,7 +411,10 @@ namespace EddiUI
                     senderWindow.WindowState = WindowState.Maximized;
                 }
 
-                Visibility = Visibility.Visible;
+                if (!EDDI.FromVA)
+                {
+                    Visibility = Visibility.Visible;
+                }
             }
         }
 

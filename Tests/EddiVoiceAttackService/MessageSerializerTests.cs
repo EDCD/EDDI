@@ -1,8 +1,8 @@
+using EddiIPC_Service.Messages;
+using EddiIPC_Service.Messaging;
 using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EddiVoiceAttackService.Messages;
-using EddiVoiceAttackService.Messaging;
 using Newtonsoft.Json;
 
 namespace Tests.EddiVoiceAttackService

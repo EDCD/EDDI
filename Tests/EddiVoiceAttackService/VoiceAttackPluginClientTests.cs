@@ -1,6 +1,6 @@
 #nullable enable
-using EddiVoiceAttackService.Client;
-using EddiVoiceAttackService.Server;
+using EddiIPC_Service.Server;
+using EddiVoiceAttackAdapter.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
@@ -82,6 +82,7 @@ namespace Tests.EddiVoiceAttackService
         #region Initialization Tests
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task IsConnected_InitiallyFalse()
         {
             // Arrange
@@ -92,6 +93,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task Initialize_WithValidConfigFile_Succeeds()
         {
             // Arrange
@@ -106,6 +108,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task Initialize_WithMissingConfigFile_ThrowsFileNotFoundException()
         {
             // Arrange
@@ -129,6 +132,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task Initialize_WithInvalidJson_ThrowsJsonException()
         {
             // Arrange
@@ -157,6 +161,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task Initialize_WithInvalidPort_ThrowsException()
         {
             // Arrange
@@ -186,6 +191,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task Initialize_CanBeCancelled()
         {
             // Arrange
@@ -209,6 +215,7 @@ namespace Tests.EddiVoiceAttackService
         #region Plugin Command Tests
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task SendCommandAsync_WhenNotInitialized_ThrowsInvalidOperationException()
         {
             // Arrange
@@ -228,6 +235,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task SendCommandAsync_WhenInitialized_SendsCommandThroughIpc()
         {
             // Arrange
@@ -249,6 +257,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task SendCommandAsync_WithTimeout_ThrowsOperationCanceledException()
         {
             // Arrange
@@ -269,6 +278,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task SendCommandAsync_WithNullCommandName_ThrowsArgumentNullException()
         {
             // Arrange
@@ -288,6 +298,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task SendCommandAsync_WithNullParameters_UsesEmptyObject()
         {
             // Arrange
@@ -310,6 +321,7 @@ namespace Tests.EddiVoiceAttackService
         #region Plugin Event Tests
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task SendEventAsync_WhenNotInitialized_ThrowsInvalidOperationException()
         {
             // Arrange
@@ -328,6 +340,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task SendEventAsync_WhenInitialized_SendsEventThroughIpc()
         {
             // Arrange
@@ -345,6 +358,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task SendEventAsync_WithNullEventName_ThrowsArgumentNullException()
         {
             // Arrange
@@ -364,6 +378,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task SendEventAsync_WithNullPayload_UsesEmptyObject()
         {
             // Arrange
@@ -385,6 +400,7 @@ namespace Tests.EddiVoiceAttackService
         #region Connection Management Tests
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task DisconnectAsync_WhenInitialized_ClearsIsConnected()
         {
             // Arrange
@@ -400,6 +416,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task DisconnectAsync_WhenNotInitialized_DoesNotThrow()
         {
             // Arrange
@@ -411,6 +428,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task Reconnect_AfterDisconnect_Succeeds()
         {
             // Arrange
@@ -433,6 +451,7 @@ namespace Tests.EddiVoiceAttackService
         #region Status and Metadata Tests
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task GetServerStatusAsync_WhenConnected_ReturnsStatus()
         {
             // Arrange
@@ -448,6 +467,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task GetServerStatusAsync_WhenNotConnected_ReturnsDisconnectedStatus()
         {
             // Arrange
@@ -462,6 +482,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task PluginName_IsSet()
         {
             // Arrange
@@ -473,6 +494,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task PluginVersion_IsSet()
         {
             // Arrange
@@ -488,6 +510,7 @@ namespace Tests.EddiVoiceAttackService
         #region Disposal Tests
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task Dispose_ClearsResources()
         {
             // Arrange
@@ -503,6 +526,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [Timeout(15000)]
         public async Task Dispose_CanBeCalledMultipleTimes()
         {
             // Arrange
