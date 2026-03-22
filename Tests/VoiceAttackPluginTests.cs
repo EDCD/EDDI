@@ -271,6 +271,9 @@ namespace Tests
         private IDisposable _runtimeEventDispatcherRegistration;
         private readonly List<EventData> _runtimeEvents = [];
 
+        // ReSharper disable once MemberCanBePrivate.Global
+        public TestContext TestContext { get; set; } = null!;
+        
         [ TestInitialize]
         public void Start()
         {
@@ -295,7 +298,7 @@ namespace Tests
             VoiceAttackPlugin.VaProxy = mockVAProxy;
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public void TestSetState_BatchesRuntimeActions()
         {
             var dict = new Dictionary<string, object>
@@ -306,12 +309,12 @@ namespace Tests
 
             VoiceAttackVariables.setDictionaryValues( dict, "state" );
 
-            Assert.AreEqual( 1, _runtimeEvents.Count );
+            Assert.HasCount( 1, _runtimeEvents );
             Assert.AreEqual( "va_runtime", _runtimeEvents[0].EventType );
             Assert.AreEqual( "command_action", _runtimeEvents[0].EventName );
             Assert.IsTrue( _runtimeEvents[0].EventPayload.TryGetValue( "actions", out var actionsPayload ) );
             Assert.IsInstanceOfType( actionsPayload, typeof( List<Dictionary<string, object>> ) );
-            Assert.IsTrue( ((List<Dictionary<string, object>>)actionsPayload).Count > 1 );
+            Assert.IsGreaterThan( 1, ((List<Dictionary<string, object>>)actionsPayload).Count );
         }
 
         [TestMethod]
@@ -361,7 +364,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2016-09-23T18:57:55Z"", ""event"":""SellExplorationData"", ""Systems"":[ ""Gamma Tucanae"", ""Rho Capricorni"", ""Dain"", ""Col 285 Sector BR-S b18-0"", ""LP 571-80"", ""Kawilocidi"", ""Irulachan"", ""Alrai Sector MC-M a7-0"", ""Col 285 Sector FX-Q b19-5"", ""Col 285 Sector EX-Q b19-7"", ""Alrai Sector FB-O a6-3"" ], ""Discovered"":[ ""Irulachan"" ], ""BaseValue"":63573, ""Bonus"":1445, ""TotalEarnings"":65018 }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount(1, events);
             Assert.IsInstanceOfType(events[0], typeof(ExplorationDataSoldEvent));
             var ev = events[0] as ExplorationDataSoldEvent;
             Assert.IsNotNull(ev);
@@ -370,7 +373,7 @@ namespace Tests
 
             var vaVars = VoiceAttackVariables.Convert(vars, "EDDI", ev.type);
             foreach (var @var in vaVars) { @var.Set(); }
-            Assert.AreEqual(15, vaVars.Count);
+            Assert.HasCount( 15, vaVars);
             Assert.AreEqual("Gamma Tucanae", mockVAProxy.GetText("EDDI exploration data sold systems 1"));
             Assert.AreEqual("Rho Capricorni", mockVAProxy.GetText("EDDI exploration data sold systems 2"));
             Assert.AreEqual("Dain", mockVAProxy.GetText("EDDI exploration data sold systems 3"));
@@ -397,7 +400,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2019-10-26T02:15:49Z"", ""event"":""FSSDiscoveryScan"", ""Progress"":0.439435, ""BodyCount"":7, ""NonBodyCount"":3, ""SystemName"":""Outotz WO-A d1"", ""SystemAddress"":44870715523 }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             Assert.IsInstanceOfType(events[0], typeof(DiscoveryScanEvent));
             var ev = events[0] as DiscoveryScanEvent;
             Assert.IsNotNull(ev);
@@ -410,7 +413,7 @@ namespace Tests
 
             var vaVars = VoiceAttackVariables.Convert(vars, "EDDI", ev.type);
             foreach (var @var in vaVars) { @var.Set(); }
-            Assert.AreEqual(2, vaVars.Count);
+            Assert.HasCount( 2, vaVars );
             Assert.AreEqual(7, mockVAProxy.GetInt( "EDDI discovery scan totalbodies"));
             Assert.AreEqual(3, mockVAProxy.GetInt("EDDI discovery scan nonbodies"));
             Assert.IsNull(mockVAProxy.GetInt("EDDI discovery scan progress"));
@@ -425,7 +428,7 @@ namespace Tests
         {
             var line = "{ \"timestamp\":\"2020-04-10T02:32:21Z\", \"event\":\"ProspectedAsteroid\", \"Materials\":[ { \"Name\":\"LowTemperatureDiamond\", \"Name_Localised\":\"Low Temperature Diamonds\", \"Proportion\":26.078022 }, { \"Name\":\"HydrogenPeroxide\", \"Name_Localised\":\"Hydrogen Peroxide\", \"Proportion\":10.189009 } ], \"MotherlodeMaterial\":\"Alexandrite\", \"Content\":\"$AsteroidMaterialContent_Low;\", \"Content_Localised\":\"Material Content: Low\", \"Remaining\":90.000000 }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             Assert.IsInstanceOfType(events[0], typeof(AsteroidProspectedEvent));
             var ev = events[0] as AsteroidProspectedEvent;
             Assert.IsNotNull(ev);
@@ -434,7 +437,7 @@ namespace Tests
 
             var vaVars = VoiceAttackVariables.Convert(vars, "EDDI", ev.type);
             foreach (var @var in vaVars) { @var.Set(); }
-            Assert.AreEqual(8, vaVars.Count);
+            Assert.HasCount( 8, vaVars );
             Assert.AreEqual(90M, mockVAProxy.GetDecimal("EDDI asteroid prospected remaining"));
             Assert.AreEqual("Alexandrite", mockVAProxy.GetText("EDDI asteroid prospected motherlode"));
             Assert.AreEqual("Low Temperature Diamonds", mockVAProxy.GetText("EDDI asteroid prospected commodities 1 commodity"));
@@ -459,7 +462,7 @@ namespace Tests
 
             var cottleVars = vars.AsCottleVariables();
             Assert.IsNotNull(cottleVars);
-            Assert.AreEqual(4, cottleVars.Count);
+            Assert.HasCount( 4, cottleVars );
             Assert.AreEqual("Water", cottleVars.FirstOrDefault(k => k.key == "commodity")?.value ?? string.Empty);
             Assert.AreEqual(5, cottleVars.FirstOrDefault(k => k.key == "amount")?.value ?? string.Empty);
             Assert.IsNull(cottleVars.FirstOrDefault(k => k.key == "missionid")?.value);
@@ -467,7 +470,7 @@ namespace Tests
 
             var vaVars = VoiceAttackVariables.Convert(vars, "EDDI", ev.type);
             foreach (var @var in vaVars) { @var.Set(); }
-            Assert.AreEqual(4, vaVars.Count);
+            Assert.HasCount( 4, vaVars );
             Assert.AreEqual("Water", mockVAProxy.GetText("EDDI commodity ejected commodity"));
             Assert.AreEqual(5, mockVAProxy.GetInt("EDDI commodity ejected amount"));
             Assert.IsNull(mockVAProxy.GetDecimal("EDDI commodity ejected missionid"));
@@ -482,19 +485,10 @@ namespace Tests
         public void TestVAShip ()
         {
             // Read from our test item "shipMonitor.json"
-            var configuration = new ShipMonitorConfiguration();
-            try
-            {
-                configuration = DeserializeJsonResource<ShipMonitorConfiguration>( Resources.shipMonitor );
-            }
-            catch ( Exception ex )
-            {
-                Logging.Warn( "Failed to read ship configuration", ex );
-                Assert.Fail();
-            }
-
+            var configuration = DeserializeJsonResource<ShipMonitorConfiguration>( Resources.shipMonitor );
             var krait = configuration.shipyard.FirstOrDefault( s => s.LocalId == 81 );
             var cobraMk3 = configuration.shipyard.FirstOrDefault( s => s.LocalId == 0 );
+            
             Assert.IsNotNull( krait );
             Assert.IsNotNull( cobraMk3 );
 
@@ -613,11 +607,11 @@ namespace Tests
 
             for ( var i = 0; i < 20 && mockVAProxy.GetText( "Status vehicle" ) != "Ship"; i++ )
             {
-                await Task.Delay( 25 ).ConfigureAwait( false );
+                await Task.Delay( 25, TestContext.CancellationToken ).ConfigureAwait( false );
             }
 
             Assert.AreEqual( "Ship", mockVAProxy.GetText( "Status vehicle" ) );
-            Assert.AreEqual( false, mockVAProxy.GetBoolean( "Status being interdicted" ) );
+            Assert.IsFalse( mockVAProxy.GetBoolean( "Status being interdicted" ) );
         }
     }
 }

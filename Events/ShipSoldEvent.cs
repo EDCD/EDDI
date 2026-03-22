@@ -5,7 +5,8 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class ShipSoldEvent : Event
+    public class ShipSoldEvent ( DateTime timestamp, string ship, int shipId, long price, string system, long marketId )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Ship sold";
         public const string DESCRIPTION = "Triggered when you sell a ship";
@@ -15,29 +16,20 @@ namespace EddiEvents
         public string ship => shipDefinition?.model;
 
         [PublicAPI("The ID of the ship that was sold")]
-        public int? shipid { get; private set; }
+        public int? shipid { get; private set; } = shipId;
 
         [PublicAPI("The price for which the ship was sold")]
-        public long price { get; private set; }
+        public long price { get; private set; } = price;
 
         [PublicAPI("The system where the ship was sold")]
-        public string system { get; private set; }
+        public string system { get; private set; } = system;
 
         // Not intended to be user facing
 
         public Ship shipDefinition => ShipDefinitions.FromEDModel(edModel);
 
-        public long marketId { get; private set; }
+        public long marketId { get; private set; } = marketId;
 
-        public string edModel { get; private set; }
-
-        public ShipSoldEvent(DateTime timestamp, string ship, int shipId, long price, string system, long marketId) : base(timestamp, NAME)
-        {
-            this.edModel = ship;
-            this.shipid = shipId;
-            this.price = price;
-            this.system = system;
-            this.marketId = marketId;
-        }
+        public string edModel { get; private set; } = ship;
     }
 }

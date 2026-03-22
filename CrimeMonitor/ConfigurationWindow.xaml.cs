@@ -2,13 +2,13 @@
 using EddiDataDefinitions;
 using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using Utilities;
 
 namespace EddiCrimeMonitor
 {
@@ -17,7 +17,7 @@ namespace EddiCrimeMonitor
     /// </summary>
     public partial class ConfigurationWindow
     {
-        private CrimeMonitor crimeMonitor()
+        private static CrimeMonitor crimeMonitor()
         {
             return (CrimeMonitor)EDDI.Instance.ObtainMonitor("Crime monitor");
         }
@@ -31,7 +31,7 @@ namespace EddiCrimeMonitor
 
         private void addRecord(object sender, RoutedEventArgs e)
         {
-            FactionRecord record = new FactionRecord(Properties.CrimeMonitor.blank_faction);
+            var record = new FactionRecord(Properties.CrimeMonitor.blank_faction);
             lock (CrimeMonitor.recordLock)
             {
                 crimeMonitor()?.criminalrecord.Add(record);
@@ -41,7 +41,7 @@ namespace EddiCrimeMonitor
 
         private void removeRecord(object sender, RoutedEventArgs e)
         {
-            FactionRecord record = (FactionRecord)((Button)e.Source).DataContext;
+            var record = (FactionRecord)((Button)e.Source).DataContext;
             crimeMonitor()?._RemoveRecord(record);
             crimeMonitor()?.writeRecord();
         }
@@ -88,22 +88,22 @@ namespace EddiCrimeMonitor
         {
             if (e.Source is DataGrid dataGrid && dataGrid.IsLoaded)
             {
-                FactionRecord record = (FactionRecord)dataGrid.CurrentItem;
+                var record = (FactionRecord)dataGrid.CurrentItem;
                 if (record != null)
                 {
-                    int column = dataGrid.CurrentColumn.DisplayIndex;
+                    var column = dataGrid.CurrentColumn.DisplayIndex;
                     switch (column)
                     {
                         case 3: // Claims column
                             {
                                 // All claims, including discrepancy report
-                                long claims = record.factionReports
+                                var claims = record.factionReports
                                     .Where(r => r.crimeDef == Crime.None || r.crimeDef == Crime.Claim)
                                     .Sum(r => r.amount);
                                 if (record.claims != claims)
                                 {
                                     // Create/modify 'discrepancy' report if total claims does not equal sum of claim reports
-                                    long amount = record.claims - claims;
+                                    var amount = record.claims - claims;
                                     var report = record.factionReports
                                         .FirstOrDefault(r => r.crimeDef == Crime.Claim);
                                     if (report == null)
@@ -119,13 +119,13 @@ namespace EddiCrimeMonitor
                         case 4: // Fines column
                             {
                                 // All fines, including discrepancy report
-                                long fines = record.factionReports
+                                var fines = record.factionReports
                                     .Where(r => !r.bounty && r.crimeDef != Crime.None)
                                     .Sum(r => r.amount);
                                 if (record.fines != fines)
                                 {
                                     // Create/modify 'discrepancy' report if total fines does not equal sum of fine reports
-                                    long amount = record.fines - fines;
+                                    var amount = record.fines - fines;
                                     var report = record.factionReports.FirstOrDefault(r => r.crimeDef == Crime.Fine);
                                     if (report == null)
                                     {
@@ -140,13 +140,13 @@ namespace EddiCrimeMonitor
                         case 5: // Bounties column
                             {
                                 // All bounties, including discrepancy report
-                                long bounties = record.factionReports
+                                var bounties = record.factionReports
                                     .Where(r => r.bounty && r.crimeDef != Crime.None)
                                     .Sum(r => r.amount);
                                 if (record.bounties != bounties)
                                 {
                                     // Create/modify 'discrepancy' report if total bounties does not equal sum of bounty reports
-                                    long amount = record.bounties - bounties;
+                                    var amount = record.bounties - bounties;
                                     var report = record.factionReports
                                         .FirstOrDefault(r => r.crimeDef == Crime.Bounty);
                                     if (report == null)
@@ -168,10 +168,8 @@ namespace EddiCrimeMonitor
 
         private void EnsureValidInteger(object sender, TextCompositionEventArgs e)
         {
-            // Match valid characters
-            Regex regex = new Regex(@"[0-9]");
-            // Swallow the character doesn't match the regex
-            e.Handled = !regex.IsMatch(e.Text);
+            // Swallow the character if it doesn't match the regex
+            e.Handled = !GeneratedRegex.IsIntegerRegex().IsMatch( e.Text );
         }
     }
 }

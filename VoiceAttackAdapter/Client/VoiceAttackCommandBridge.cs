@@ -25,7 +25,7 @@ namespace EddiVoiceAttackAdapter.Client
         /// <exception cref="ArgumentNullException">Thrown if commandContext is null</exception>
         /// <exception cref="ArgumentException">Thrown if commandContext is empty</exception>
         /// <exception cref="OperationCanceledException">Thrown if operation is cancelled</exception>
-        public async Task<object?> RouteCommandAsync(
+        public static async Task<object?> RouteCommandAsync(
             string commandContext,
             object? parameters = null,
             CancellationToken cancellationToken = default)
@@ -76,7 +76,7 @@ namespace EddiVoiceAttackAdapter.Client
         /// <param name="parameters">Optional command parameters</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Command execution result</returns>
-        private async Task<object?> DispatchThroughIpcAsync(
+        private static async Task<object?> DispatchThroughIpcAsync(
             string normalizedContext,
             object? parameters,
             CancellationToken cancellationToken)

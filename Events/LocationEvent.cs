@@ -133,7 +133,7 @@ namespace EddiEvents
         public List<Power> ContestingPowers => powerAcquisitionProgress?
             .Where( kvp => kvp.progress >= 30 )
             .Select( kvp => kvp.Power )
-            .ToList() ?? new List<Power>();
+            .ToList() ?? [ ];
 
         [PublicAPI( "The state of powerplay efforts within the star system, as an object" )]
         public PowerplayState PowerState { get; private set; }
@@ -224,19 +224,19 @@ namespace EddiEvents
             this.docked = docked;
             this.station = station;
             this.stationModel = stationtype ?? StationModel.None;
-            this.stationServices = stationServices ?? new List<StationService>();
+            this.stationServices = stationServices ?? [ ];
             this.marketId = marketId;
             this.controllingsystemfaction = systemFaction;
             this.controllingstationfaction = stationFaction;
-            this.stationEconomies = stationEconomies ?? new List<EconomyShare>();
+            this.stationEconomies = stationEconomies ?? [ ];
             this.Economy = economy ?? Economy.None;
             this.Economy2 = economy2 ?? Economy.None;
             this.securityLevel = security ?? SecurityLevel.None;
             this.population = population;
             this.longitude = longitude;
             this.latitude = latitude;
-            this.factions = factions ?? new List<Faction>();
-            this.conflicts = conflicts ?? new List<Conflict>();
+            this.factions = factions ?? [ ];
+            this.conflicts = conflicts ?? [ ];
             this.taxi = taxi;
             this.multicrew = multicrew;
             this.inSRV = inSRV;
@@ -295,7 +295,7 @@ namespace EddiEvents
 
             // Get station services data
             data.TryGetValue( "StationServices", out val );
-            var stationservices = (val as List<object>)?.Cast<string>()?.ToList() ?? new List<string>();
+            var stationservices = (val as List<object>)?.Cast<string>()?.ToList() ?? [ ];
             var stationServices = new List<StationService>();
             foreach ( var service in stationservices )
             {
@@ -304,7 +304,7 @@ namespace EddiEvents
 
             // Get station economies and their shares
             data.TryGetValue( "StationEconomies", out var val2 );
-            var economies = val2 as List<object> ?? new List<object>();
+            var economies = val2 as List<object> ?? [ ];
             var Economies = new List<EconomyShare>();
             foreach ( var economyshare in economies.Cast<IDictionary<string, object>>() )
             {

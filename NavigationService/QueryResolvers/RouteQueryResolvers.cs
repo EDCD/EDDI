@@ -122,7 +122,7 @@ namespace EddiNavigationService.QueryResolvers
             var currentPlottedRoute = ConfigService.Instance.navigationMonitorConfiguration?.plottedRouteList;
             if ( currentPlottedRoute is null ) { return null; }
 
-            if ( !currentPlottedRoute.UnvisitedWaypoints.Any() )
+            if ( currentPlottedRoute.UnvisitedWaypoints.Count == 0 )
             {
                 // The current route has already been completed
                 return null;
@@ -151,11 +151,16 @@ namespace EddiNavigationService.QueryResolvers
 
             // We've strayed, recalculate the route
             currentPlottedRoute.NextWaypoint = null;
-            Enum.TryParse( config?.searchQuery, out QueryType lastQuery );
-            var @event = await NavigationService.Instance.NavQueryAsync(lastQuery, config?.searchQuerySystemArg, config?.searchQuerySystemArg, config?.maxSearchDistanceFromStarLs, config?.prioritizeOrbitalStations).ConfigureAwait(false);
-            if ( @event is null ) { return null; }
-            EDDI.Instance.enqueueEvent( new RouteDetailsEvent( DateTime.UtcNow, nameof(QueryType.recalculating), @event.system, @event.systemAddress, @event.station, @event.marketId, @event.Route, @event.count, @event.missionids ) );
-            return new RouteDetailsEvent( DateTime.UtcNow, config?.searchQuery, @event.system, @event.systemAddress, @event.station, @event.marketId, @event.Route, @event.count, @event.missionids );
+            if ( Enum.TryParse( config?.searchQuery, out QueryType lastQuery ) )
+            {
+                var @event = await NavigationService.Instance.NavQueryAsync(lastQuery, config?.searchQuerySystemArg, config?.searchQuerySystemArg, config?.maxSearchDistanceFromStarLs, config?.prioritizeOrbitalStations).ConfigureAwait(false);
+                if ( @event is null )
+                { return null; }
+                EDDI.Instance.enqueueEvent( new RouteDetailsEvent( DateTime.UtcNow, nameof( QueryType.recalculating ), @event.system, @event.systemAddress, @event.station, @event.marketId, @event.Route, @event.count, @event.missionids ) );
+                return new RouteDetailsEvent( DateTime.UtcNow, config?.searchQuery, @event.system, @event.systemAddress, @event.station, @event.marketId, @event.Route, @event.count, @event.missionids );
+            }
+            
+            return null;
         }
     }
 }

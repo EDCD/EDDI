@@ -21,15 +21,15 @@ using HttpStatusCode = System.Net.HttpStatusCode;
 namespace EddiEddnResponder.Sender
 {
     // Invalid response status codes are defined at https://github.com/EDCD/EDDN/blob/master/docs/Developers.md#server-responses
-    public static class EDDNSender
+    public class EDDNSender
     {
-        public static bool unitTesting = false;
+        internal bool unitTesting;
         private const string baseUrl = "https://eddn.edcd.io:4430/";
         private const int shortRetryDelaySeconds = 30;
         private const int longRetryDelaySeconds = 120;
-        private static readonly HttpClient httpClient;
+        private readonly HttpClient httpClient;
 
-        static EDDNSender ()
+        public EDDNSender ()
         {
             httpClient = new HttpClient
             {
@@ -42,14 +42,14 @@ namespace EddiEddnResponder.Sender
         // Schemas identified as invalid by the server
         private static readonly List<string> invalidSchemas = new();
 
-        public static void SendToEDDN ( string schema, IDictionary<string, object> data, EDDNState eddnState,
+        public void SendToEDDN ( string schema, IDictionary<string, object> data, EDDNState eddnState,
             string gameVersionOverride = null )
         {
             SendAsync( schema, data, eddnState, gameVersionOverride )
                 .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
         }
 
-        private static async Task SendAsync(string schema, IDictionary<string, object> data, EDDNState eddnState,
+        private async Task SendAsync(string schema, IDictionary<string, object> data, EDDNState eddnState,
             string gameVersionOverride = null)
         {
             try
@@ -57,7 +57,7 @@ namespace EddiEddnResponder.Sender
                 var body = new EDDNBody
                 {
                     header = generateHeader(eddnState.GameVersion, gameVersionOverride),
-                    schemaRef = schema + (EDDI.Instance.ShouldUseTestEndpoints() ? "/test" : ""),
+                    schemaRef = schema + (EDDI.ShouldUseTestEndpoints() ? "/test" : ""),
                     message = data
                 };
                 Logging.Debug( $"EDDN schema {schema} message is: ", body );
@@ -107,7 +107,7 @@ namespace EddiEddnResponder.Sender
             return header;
         }
 
-        private static async Task sendMessageAsync(EDDNBody body)
+        private async Task sendMessageAsync(EDDNBody body)
         {
             if (!TryValidate(body)) { return; }
 
@@ -129,8 +129,7 @@ namespace EddiEddnResponder.Sender
                     response = await SendRequestAsync( json ).ConfigureAwait(false);
                 }
 
-                if ( response.StatusCode == HttpStatusCode.RequestTimeout ||
-                     response.StatusCode == HttpStatusCode.GatewayTimeout ) // Code 408 or 504
+                if ( response.StatusCode is HttpStatusCode.RequestTimeout or HttpStatusCode.GatewayTimeout ) // Code 408 or 504
                 {
                     Logging.Debug( $"Request timed out, retrying in {shortRetryDelaySeconds}s" );
                     await Task.Delay( TimeSpan.FromSeconds( shortRetryDelaySeconds ) ).ConfigureAwait(false);
@@ -165,7 +164,7 @@ namespace EddiEddnResponder.Sender
             }
         }
 
-        private static bool TryValidate(EDDNBody body)
+        private bool TryValidate(EDDNBody body)
         {
             if ( unitTesting )
             {
@@ -190,7 +189,7 @@ namespace EddiEddnResponder.Sender
             return JsonConvert.SerializeObject( body, new JsonSerializerSettings { ContractResolver = new EDDNContractResolver() } );
         }
 
-        private static async Task<HttpResponseMessage> SendRequestAsync ( string jsonPayload )
+        private async Task<HttpResponseMessage> SendRequestAsync ( string jsonPayload )
         {
             using ( var content = new StringContent( jsonPayload, Encoding.UTF8, "application/json" ) )
             {
@@ -224,7 +223,7 @@ namespace EddiEddnResponder.Sender
             }
         }
 
-        private static async Task<bool> TryRetryWithCompressionAsync ( string json )
+        private async Task<bool> TryRetryWithCompressionAsync ( string json )
         {
             Logging.Warn( "Payload too large. Retrying with gzip compression." );
             var gzipBytes = Compress(Encoding.UTF8.GetBytes(json));
@@ -255,7 +254,7 @@ namespace EddiEddnResponder.Sender
     {
         protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
         {
-            JsonProperty property = base.CreateProperty(member, memberSerialization);
+            var property = base.CreateProperty(member, memberSerialization);
 
             if (property.PropertyType == typeof(CommodityBracket?))
             {
@@ -266,14 +265,9 @@ namespace EddiEddnResponder.Sender
             return property;
         }
 
-        sealed class NullToEmptyStringValueProvider : IValueProvider
+        sealed class NullToEmptyStringValueProvider ( IValueProvider provider ) : IValueProvider
         {
-            private readonly IValueProvider Provider;
-
-            public NullToEmptyStringValueProvider(IValueProvider provider)
-            {
-                Provider = provider ?? throw new ArgumentNullException(nameof(provider));
-            }
+            private readonly IValueProvider Provider = provider ?? throw new ArgumentNullException(nameof(provider));
 
             public object GetValue(object target)
             {

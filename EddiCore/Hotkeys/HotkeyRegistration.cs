@@ -78,11 +78,7 @@ namespace EddiCore.Hotkeys
                 {
                     throw new ArgumentNullException( nameof( name ) );
                 }
-
-                if ( keyGesture == null )
-                {
-                    throw new ArgumentNullException( nameof( keyGesture ) );
-                }
+                ArgumentNullException.ThrowIfNull( keyGesture );
 
                 // Enforce uniqueness across actions
                 if ( Collection.IsKeyGestureAssigned( name, keyGesture.Key, keyGesture.Modifiers ) )
@@ -125,6 +121,7 @@ namespace EddiCore.Hotkeys
         public void Dispose ()
         {
             StopHook();
+            GC.SuppressFinalize( this );
         }
 
         private void Fire ( HotkeyAction action )
@@ -181,10 +178,7 @@ namespace EddiCore.Hotkeys
 
         private static bool IsModifierVk ( int vk )
         {
-            return vk == VK_SHIFT || vk == VK_LSHIFT || vk == VK_RSHIFT
-                || vk == VK_CONTROL || vk == VK_LCONTROL || vk == VK_RCONTROL
-                || vk == VK_MENU || vk == VK_LMENU || vk == VK_RMENU
-                || vk == VK_LWIN || vk == VK_RWIN;
+            return vk is VK_SHIFT or VK_LSHIFT or VK_RSHIFT or VK_CONTROL or VK_LCONTROL or VK_RCONTROL or VK_MENU or VK_LMENU or VK_RMENU or VK_LWIN or VK_RWIN;
         }
 
         private void UpdateModifierState ( int vk, bool isDownEvent )
@@ -270,8 +264,8 @@ namespace EddiCore.Hotkeys
             }
 
             var msg = wParam.ToInt32();
-            var isDownEvent = msg == WM_KEYDOWN || msg == WM_SYSKEYDOWN;
-            var isUpEvent = msg == WM_KEYUP || msg == WM_SYSKEYUP;
+            var isDownEvent = msg is WM_KEYDOWN or WM_SYSKEYDOWN;
+            var isUpEvent = msg is WM_KEYUP or WM_SYSKEYUP;
 
             if ( isDownEvent || isUpEvent )
             {
@@ -361,7 +355,7 @@ namespace EddiCore.Hotkeys
         [DllImport( "user32.dll" )]
         private static extern IntPtr CallNextHookEx ( IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam );
 
-        [DllImport( "kernel32.dll", CharSet = CharSet.Auto, SetLastError = true )]
+        [DllImport( "kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true )]
         private static extern IntPtr GetModuleHandle ( string lpModuleName );
     }
 }

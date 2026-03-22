@@ -5,24 +5,18 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class CommanderLoadingEvent : Event
+    public class CommanderLoadingEvent ( DateTime timestamp, string name, string frontierId ) : Event( timestamp, NAME )
     {
         public const string NAME = "Commander loading";
         public const string DESCRIPTION = "Triggered at the very beginning of loading a game";
         public const string SAMPLE = "{ \"timestamp\":\"2019-08-01T05:13:56Z\", \"event\":\"Commander\", \"FID\":\"F0000000\", \"Name\":\"HRC1\" }";
 
         [PublicAPI("The name of the player account being loaded")]
-        public string name { get; private set; }
+        public string name { get; private set; } = name;
 
         // Not intended to be user facing
 
-        public string frontierID { get; private set; }
-
-        public CommanderLoadingEvent(DateTime timestamp, string name, string frontierID) : base(timestamp, NAME)
-        {
-            this.name = name;
-            this.frontierID = frontierID;
-        }
+        public string frontierID { get; private set; } = frontierId;
 
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {

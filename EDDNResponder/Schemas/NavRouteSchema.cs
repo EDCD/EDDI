@@ -11,7 +11,7 @@ namespace EddiEddnResponder.Schemas
     {
         public List<string> edTypes => [ "NavRoute" ];
 
-        public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
+        public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState, EDDNSender eddnSender )
         {
             try
             {
@@ -19,7 +19,7 @@ namespace EddiEddnResponder.Schemas
                 if (!data.ContainsKey("Route")) { return false; }
                 if (eddnState?.GameVersion == null) { return false; }
                 data = eddnState.GameVersion.AugmentVersion(data);
-                EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/navroute/1", data, eddnState);
+                eddnSender.SendToEDDN("https://eddn.edcd.io/schemas/navroute/1", data, eddnState);
                 return true;
             }
             catch (Exception e)

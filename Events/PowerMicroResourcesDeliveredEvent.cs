@@ -7,7 +7,11 @@ using Utilities;
 namespace EddiEvents
 {
     [ PublicAPI ]
-    public class PowerMicroResourcesDeliveredEvent : Event
+    public class PowerMicroResourcesDeliveredEvent (
+        DateTime timestamp,
+        long marketId,
+        List<MicroResourceAmount> resourceAmounts )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Power micro resources delivered";
         public const string DESCRIPTION = "Triggered when delivering micro resources to a Powerplay contact";
@@ -17,19 +21,13 @@ namespace EddiEvents
         ];
 
         [PublicAPI( "A list of delivered micro resources with name, category, and amount for each" )]
-        public List<MicroResourceAmount> resourceamounts { get; }
+        public List<MicroResourceAmount> resourceamounts { get; } = resourceAmounts ?? [ ];
 
         [PublicAPI( "The total count of micro resources delivered" )]
         public int totalamount => resourceamounts.Sum( r => r.amount );
 
         // Not intended to be user facing
 
-        public long marketId { get; private set; }
-
-        public PowerMicroResourcesDeliveredEvent ( DateTime timestamp, long marketId, List<MicroResourceAmount> resourceAmounts ) : base(timestamp, NAME)
-        {
-            this.marketId = marketId;
-            this.resourceamounts = resourceAmounts ?? [ ];
-        }
+        public long marketId { get; private set; } = marketId;
     }
 }

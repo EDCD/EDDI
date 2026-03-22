@@ -3,28 +3,19 @@ using System.Collections.Generic;
 
 namespace EddiDataProviderService
 {
-    public class StarSystemCache
+    public class StarSystemCache ( int expirationSeconds )
     {
-        private readonly SlidingExpirationCache<ulong, StarSystem> starSystemCache;
-        private readonly SlidingExpirationCache<string, ulong> starSystemNameCache;
+        private readonly SlidingExpirationCache<ulong, StarSystem> starSystemCache = new StarSystemSlidingCache( expirationSeconds );
+        private readonly SlidingExpirationCache<string, ulong> starSystemNameCache = new NameToAddressSlidingCache( expirationSeconds );
 
         // Store deserialized star systems in short term memory for this amount of time.
         // Storage time is reset whenever the cached value is accessed.
-        public StarSystemCache ( int expirationSeconds )
-        {
-            starSystemCache = new StarSystemSlidingCache( expirationSeconds );
-            starSystemNameCache = new NameToAddressSlidingCache( expirationSeconds );
-        }
 
-        private class StarSystemSlidingCache : SlidingExpirationCache<ulong, StarSystem>
-        {
-            public StarSystemSlidingCache ( int expirationSeconds ) : base( expirationSeconds ) { }
-        }
+        private class StarSystemSlidingCache ( int expirationSeconds )
+            : SlidingExpirationCache<ulong, StarSystem>( expirationSeconds );
 
-        private class NameToAddressSlidingCache : SlidingExpirationCache<string, ulong>
-        {
-            public NameToAddressSlidingCache ( int expirationSeconds ) : base( expirationSeconds ) { }
-        }
+        private class NameToAddressSlidingCache ( int expirationSeconds )
+            : SlidingExpirationCache<string, ulong>( expirationSeconds );
 
         public void AddOrUpdate ( StarSystem starSystem )
         {

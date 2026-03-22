@@ -487,7 +487,7 @@ namespace EddiCommanderMonitor
             {
                 SetCommanderTitle( @event.controllingsystemfaction.Allegiance );
             }
-            if ( ( @event.docked || @event.onFoot ) && @event.factions.Any() && EDDI.Instance.CurrentStarSystem != null )
+            if ( ( @event.docked || @event.onFoot ) && @event.factions.Count > 0 && EDDI.Instance.CurrentStarSystem != null )
             {
                 if ( @event.timestamp >= updatedAt && 
                      TryUpdateSquadronHomeSystem( @event.systemAddress, @event.factions ) )
@@ -603,7 +603,7 @@ namespace EddiCommanderMonitor
             {
                 SetCommanderTitle( @event.controllingfaction?.Allegiance );
             }
-            if ( @event.factions.Any() && EDDI.Instance.CurrentStarSystem != null )
+            if ( @event.factions.Count > 0 && EDDI.Instance.CurrentStarSystem != null )
             {
                 if ( @event.timestamp >= updatedAt &&
                      TryUpdateSquadronHomeSystem( @event.systemAddress, @event.factions ) )
@@ -619,7 +619,7 @@ namespace EddiCommanderMonitor
             {
                 SetCommanderTitle( @event.controllingsystemfaction.Allegiance );
             }
-            if ( @event.factions.Any() && EDDI.Instance.CurrentStarSystem != null )
+            if ( @event.factions.Count > 0 && EDDI.Instance.CurrentStarSystem != null )
             {
                 if ( @event.timestamp >= updatedAt &&
                      TryUpdateSquadronHomeSystem( @event.systemAddress, @event.factions ) )
@@ -786,7 +786,7 @@ namespace EddiCommanderMonitor
         
         private bool TryUpdateSquadronHomeSystem ( ulong currentSystemAddress, List<Faction> systemFactions )
         {
-            bool update = false;
+            var update = false;
 
             // Check if current system is inhabited by or HQ for squadron faction
             var squadronFaction = systemFactions.FirstOrDefault( f =>
@@ -875,12 +875,14 @@ namespace EddiCommanderMonitor
                 if ( controllingFactionAllegiance != null )
                 {
                     if ( controllingFactionAllegiance.invariantName == Superpower.Federation.invariantName &&
-                         Cmdr.federationrating != null && Cmdr.federationrating.rank > minFederationRankForTitle )
+                         Cmdr.federationrating is { } rating &&
+                         rating.rank > minFederationRankForTitle )
                     {
                         Cmdr.title = Cmdr.federationrating.localizedName;
                     }
                     else if ( controllingFactionAllegiance.invariantName == Superpower.Empire.invariantName &&
-                              Cmdr.empirerating != null && Cmdr.empirerating.rank > minEmpireRankForTitle )
+                              Cmdr.empirerating is { } empireRating &&
+                              empireRating.rank > minEmpireRankForTitle )
                     {
                         Cmdr.title = Cmdr.empirerating.maleRank.localizedName;
                     }

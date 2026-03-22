@@ -13,7 +13,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
@@ -55,7 +54,7 @@ namespace EddiSpeechResponder
             }
         }
 
-        public static EventHandler PersonalityChanged;
+        public EventHandler PersonalityChanged;
 
         public SpeechResponderConfiguration Configuration
         {
@@ -106,7 +105,7 @@ namespace EddiSpeechResponder
 
         private ObservableCollection<Personality> GetPersonalities()
         {
-            if (!(Personalities is null)) { return Personalities; }
+            if (Personalities is not null) { return Personalities; }
 
             // Initialize our collection and add our default personality
             Personalities = [ Personality.Default() ];
@@ -291,7 +290,7 @@ namespace EddiSpeechResponder
             await SayAsync(@event).ConfigureAwait( false );
 
             // Simulate a forced shutdown effect affecting the speech responder until the ship's system is rebooted
-            if ( @event is ShipShutdownEvent shipShutdownEvent && !shipShutdownEvent.partialshutdown  )
+            if ( @event is ShipShutdownEvent shutdownEvent && !shutdownEvent.partialshutdown )
             {
                 Logging.Debug( "Pausing speech during ship shutdown." );
                 SpeechService.Instance.StopCurrentSpeech();
@@ -311,7 +310,7 @@ namespace EddiSpeechResponder
             
             return;
 
-            bool SayOutLoud ()
+            static bool SayOutLoud ()
             {
                 // By default we say things unless we've been told not to
                 var sayOutLoud = true;
@@ -346,7 +345,7 @@ namespace EddiSpeechResponder
                     if ( Configuration.Subtitles )
                     {
                         // Log a tidied version of the speech
-                        var tidiedSpeech = Regex.Replace(speech, "<.*?>", string.Empty).Trim();
+                        var tidiedSpeech = GeneratedRegex.SsmlTagRegex().Replace(speech, string.Empty).Trim();
                         if ( !string.IsNullOrEmpty( tidiedSpeech ) )
                         {
                             log( tidiedSpeech );
@@ -395,7 +394,7 @@ namespace EddiSpeechResponder
             {
                 try
                 {
-                    using (StreamWriter file = new StreamWriter(LogFile, true))
+                    using (var file = new StreamWriter(LogFile, true))
                     {
                         file.WriteLine(speech);
                     }
@@ -411,7 +410,7 @@ namespace EddiSpeechResponder
         {
             if (handler != null)
             {
-                SynchronizationContext uiSyncContext = SynchronizationContext.Current ?? new SynchronizationContext();
+                var uiSyncContext = SynchronizationContext.Current ?? new SynchronizationContext();
                 if (uiSyncContext == null)
                 {
                     handler(sender, EventArgs.Empty);

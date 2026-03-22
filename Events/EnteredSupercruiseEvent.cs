@@ -5,33 +5,31 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class EnteredSupercruiseEvent : Event
+    public class EnteredSupercruiseEvent (
+        DateTime timestamp,
+        string system,
+        ulong systemAddress,
+        bool? taxi,
+        bool? multicrew )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Entered supercruise";
         public const string DESCRIPTION = "Triggered when your ship enters supercruise";
         public const string SAMPLE = "{ \"timestamp\":\"2021-07-19T05:28:08Z\", \"event\":\"SupercruiseEntry\", \"Taxi\":false, \"Multicrew\":false, \"StarSystem\":\"Azaladshu\", \"SystemAddress\":9467852826025 }";
 
         [PublicAPI("The system at which the commander has entered supercruise")]
-        public string system { get; private set; }
+        public string system { get; private set; } = system;
 
         [PublicAPI( "The numeric system address of the star system at which the commander has entered supercruise" )]
-        public ulong systemAddress { get; private set; }
+        public ulong systemAddress { get; private set; } = systemAddress;
 
         [PublicAPI("True if the ship is a transport (e.g. taxi or dropship)")]
-        public bool? taxi { get; private set; }
+        public bool? taxi { get; private set; } = taxi;
 
         [PublicAPI("True if the ship is belongs to another player")]
-        public bool? multicrew { get; private set; }
+        public bool? multicrew { get; private set; } = multicrew;
 
         // Not intended to be user facing
-
-        public EnteredSupercruiseEvent(DateTime timestamp, string system, ulong systemAddress, bool? taxi, bool? multicrew) : base(timestamp, NAME)
-        {
-            this.system = system;
-            this.systemAddress = systemAddress;
-            this.taxi = taxi;
-            this.multicrew = multicrew;
-        }
 
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {

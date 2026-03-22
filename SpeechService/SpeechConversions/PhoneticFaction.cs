@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Utilities;
 
 namespace EddiSpeechService.SpeechConversions
 {
@@ -53,17 +54,17 @@ namespace EddiSpeechService.SpeechConversions
                 {
                     pieces[i] = replaceWithPronunciation(pieces[i], pronunciations );
                 }
-                else if (ALPHA_THEN_NUMERIC.IsMatch(pieces[i]))
+                else if ( GeneratedRegex.ALPHA_THEN_NUMERIC().IsMatch(pieces[i]))
                 {
                     pieces[i] = sayAsLettersOrNumbers(pieces[i], false, useICAO);
                 }
-                else if (ALPHA_DOT.IsMatch(pieces[i]))
+                else if ( GeneratedRegex.ALPHA_DOT().IsMatch(pieces[i]))
                 {
                     pieces[i] = sayAsLettersOrNumbers(pieces[i].Replace(".", ""), false, useICAO);
                 }
-                else if (DIGIT.IsMatch(pieces[i]))
+                else if ( GeneratedRegex.DIGIT().IsMatch(pieces[i]))
                 {
-                    pieces[i] = sayAsLettersOrNumbers(pieces[i], !THREE_OR_MORE_DIGITS.IsMatch(pieces[i]), useICAO);
+                    pieces[i] = sayAsLettersOrNumbers(pieces[i], !GeneratedRegex.THREE_OR_MORE_DIGITS().IsMatch(pieces[i]), useICAO);
                 }
             }
             return string.Join(" ", pieces);

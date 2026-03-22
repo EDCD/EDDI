@@ -58,7 +58,7 @@ namespace EddiDataDefinitions
 
         public static ExplorationRating FromRank(int from)
         {
-            ExplorationRating result = AllOfThem.FirstOrDefault(v => v.rank == from);
+            var result = AllOfThem.FirstOrDefault(v => v.rank == from);
             if (result == null)
             {
                 Logging.Info("Unknown Exploration Rating rank " + from);

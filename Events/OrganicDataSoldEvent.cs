@@ -7,7 +7,13 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class OrganicDataSoldEvent : Event
+    public class OrganicDataSoldEvent (
+        DateTime timestamp,
+        long marketId,
+        List<Organic> organics,
+        decimal value,
+        decimal bonus )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Organic data sold";
         public const string DESCRIPTION = "Triggered when you sell exobiology data";
@@ -21,28 +27,20 @@ namespace EddiEvents
         public HashSet<string> species => organics.Select( s => s.species.localizedName ).ToHashSet();
 
         [PublicAPI( "The base value for selling the exobiology data" )]
-        public decimal value { get; private set; }
+        public decimal value { get; private set; } = value;
 
         [PublicAPI( "The bonus for first discoveries" )]
-        public decimal bonus { get; private set; }
+        public decimal bonus { get; private set; } = bonus;
 
         [PublicAPI( "The total credits received" )]
         public decimal total => value + bonus;
 
         [PublicAPI( "Full object data for the sold biological variants" )]
-        public List<Organic> organics { get; private set; }
+        public List<Organic> organics { get; private set; } = organics;
 
         // Not intended to be user facing
 
-        public long marketID { get; private set; }
-
-        public OrganicDataSoldEvent ( DateTime timestamp, long marketID, List<Organic> organics, decimal value, decimal bonus ) : base( timestamp, NAME )
-        {
-            this.marketID = marketID;
-            this.organics = organics;
-            this.value = value;
-            this.bonus = bonus;
-        }
+        public long marketID { get; private set; } = marketId;
 
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {
@@ -51,7 +49,7 @@ namespace EddiEvents
             decimal totalBonus = 0;
 
             var bios = new List<Organic>();
-            if ( !data.TryGetValue( "BioData", out var val ) || !( val is List<object> discovered ) ) { return false; }
+            if ( !data.TryGetValue( "BioData", out var val ) || val is not List<object> discovered ) { return false; }
 
             foreach ( var discoveredBio in discovered.Cast<IDictionary<string, object>>() )
             {

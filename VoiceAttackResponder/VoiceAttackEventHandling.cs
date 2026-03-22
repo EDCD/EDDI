@@ -219,9 +219,9 @@ namespace EddiVoiceAttackResponder
         }
     }
 
-    internal class TaskQueue<T> : BlockingCollection<T>
+    internal class TaskQueue<T> ( string commandName ) : BlockingCollection<T>
     {
-        public string commandName { get; }
+        public string commandName { get; } = commandName;
 
         public bool isRunning => consumerTask != null &&
                                  consumerTask.Status != TaskStatus.Canceled &&
@@ -229,11 +229,6 @@ namespace EddiVoiceAttackResponder
                                  consumerTask.Status != TaskStatus.RanToCompletion;
 
         private Task? consumerTask { get; set; }
-
-        public TaskQueue ( string commandName )
-        {
-            this.commandName = commandName;
-        }
 
         public void StartOrRestart ( Func<Task> action, CancellationToken cancellationToken )
         {

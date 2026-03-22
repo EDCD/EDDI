@@ -5,7 +5,8 @@ namespace EddiDataDefinitions
     /// <summary>
     /// Materials for a blueprint
     /// </summary>
-    public class BlueprintTemplate : ResourceBasedLocalizedEDName<BlueprintTemplate>
+    public class BlueprintTemplate ( string edname, Dictionary<int, List<MaterialAmount>> materialsByGrade )
+        : ResourceBasedLocalizedEDName<BlueprintTemplate>( edname, normalizeEDName( edname ) )
     {
         static BlueprintTemplate()
         {
@@ -1565,16 +1566,11 @@ namespace EddiDataDefinitions
         { }
 
         // Not intended to be user facing
-        public Dictionary<int, List<MaterialAmount>> byGrade { get; private set; }
-
-        public BlueprintTemplate(string edname, Dictionary<int, List<MaterialAmount>> materialsByGrade) : base(edname, normalizeEDName(edname))
-        {
-            this.byGrade = materialsByGrade;
-        }
+        public Dictionary<int, List<MaterialAmount>> byGrade { get; private set; } = materialsByGrade;
 
         private static string normalizeEDName(string edname)
         {
-            string normalizedName = edname
+            var normalizedName = edname
                 .Replace("_", "")
                 .Replace("CargoScanner", "Misc") // CargoScanner uses the `Misc` template family.
                 .Replace("ChaffLauncher", "Misc") // ChaffLauncher uses the `Misc` template family.
@@ -1594,8 +1590,8 @@ namespace EddiDataDefinitions
         new public static BlueprintTemplate FromEDName(string edname)
         {
             if (string.IsNullOrEmpty(edname)) { return null; }
-            string normalizedEDName = normalizeEDName(edname);
-            BlueprintTemplate result = ResourceBasedLocalizedEDName<BlueprintTemplate>.FromEDName(normalizedEDName);
+            var normalizedEDName = normalizeEDName(edname);
+            var result = ResourceBasedLocalizedEDName<BlueprintTemplate>.FromEDName(normalizedEDName);
             return result;
         }
     }

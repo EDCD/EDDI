@@ -127,7 +127,7 @@ namespace EddiCore
                     }
                 }
             }
-            catch ( Exception ex ) when ( !( ex is TaskCanceledException ) )
+            catch ( Exception ex ) when ( ex is not TaskCanceledException )
             {
                 Logging.Warn( ex.Message, ex );
             }

@@ -60,7 +60,7 @@ namespace EddiDataDefinitions
 
         public static FederationRating FromRank(int from)
         {
-            FederationRating result = AllOfThem.FirstOrDefault(v => v.rank == from);
+            var result = AllOfThem.FirstOrDefault(v => v.rank == from);
             if (result == null)
             {
                 Logging.Info("Unknown Federation Rating rank " + from);

@@ -6,7 +6,13 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class RingHotspotsEvent : Event
+    public class RingHotspotsEvent (
+        DateTime timestamp,
+        ulong? systemAddress,
+        string bodyName,
+        long bodyId,
+        List<CommodityAmount> hotspots )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Ring hotspots detected";
         public const string DESCRIPTION = "Triggered when hotspots are detected in a ring";
@@ -17,24 +23,16 @@ namespace EddiEvents
         ];
 
         [PublicAPI("The ring where hotspots were detected")]
-        public string bodyname { get; private set; }
+        public string bodyname { get; private set; } = bodyName;
 
         [PublicAPI( "The numeric system address of the star system where hotspots were detected" )]
-        public ulong? systemAddress { get; private set; }
+        public ulong? systemAddress { get; private set; } = systemAddress;
 
         [PublicAPI("A list of ring hotspots (as objects with properties 'commodity' and 'amount')")]
-        public List<CommodityAmount> hotspots { get; private set; }
+        public List<CommodityAmount> hotspots { get; private set; } = hotspots;
 
         // Not intended to be user facing
 
-        public long bodyId { get; private set; }
-
-        public RingHotspotsEvent(DateTime timestamp, ulong? systemAddress, string bodyName, long bodyId, List<CommodityAmount> hotspots) : base(timestamp, NAME)
-        {
-            this.systemAddress = systemAddress;
-            this.bodyname = bodyName;
-            this.bodyId = bodyId;
-            this.hotspots = hotspots;
-        }
+        public long bodyId { get; private set; } = bodyId;
     }
 }

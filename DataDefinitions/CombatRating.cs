@@ -58,7 +58,7 @@ namespace EddiDataDefinitions
 
         public static CombatRating FromRank(int from)
         {
-            CombatRating result = AllOfThem.FirstOrDefault(v => v.rank == from);
+            var result = AllOfThem.FirstOrDefault(v => v.rank == from);
             if (result == null)
             {
                 Logging.Info("Unknown Combat Rating rank " + from);

@@ -29,7 +29,7 @@ namespace EddiSpeechResponder
                 Logging.Error("Failed to find " + fileName, ex);
                 markdown = "";
             }
-            string html = CommonMark.CommonMarkConverter.Convert(markdown);
+            var html = CommonMark.CommonMarkConverter.Convert(markdown);
             html = "<head>  <meta charset=\"UTF-8\"> </head> " + html;
 
             // Insert the HTML

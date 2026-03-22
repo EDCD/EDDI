@@ -16,7 +16,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -139,7 +138,7 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                if ( EDDI.FromVA )
+                if ( EDDI.Instance.FromVA )
                 {
                     RuntimeWriteToLog( "The EDDI plugin is fully operational.", "green" );
                     return;
@@ -167,7 +166,7 @@ namespace EddiVoiceAttackResponder
 
         private static void InvokeVolume ()
         {
-            int? volumeInt = RuntimeGetInt( "Volume" );
+            var volumeInt = RuntimeGetInt( "Volume" );
             var config = ConfigService.Instance.speechServiceConfiguration;
 
             if ( config is null ) { return; }
@@ -192,7 +191,7 @@ namespace EddiVoiceAttackResponder
 
             // Refresh the UI with the new volume (only in standalone mode)
             // In plugin mode, the UI is running in a separate process and will refresh on its own
-            if ( !EDDI.FromVA )
+            if ( !EDDI.Instance.FromVA )
             {
                 if ( Application.Current?.Dispatcher != null )
                 {
@@ -206,8 +205,7 @@ namespace EddiVoiceAttackResponder
 
                         foreach ( var tab in mainWindow.MainTabControl.Items )
                         {
-                            if ( tab is System.Windows.Controls.TabItem tabItem &&
-                                 tabItem.Content is TextToSpeechTab tts )
+                            if ( tab is System.Windows.Controls.TabItem item && item.Content is TextToSpeechTab tts )
                             {
                                 tts.ConfigureTTS();
                             }
@@ -219,7 +217,7 @@ namespace EddiVoiceAttackResponder
 
         private static async Task InvokeInaraProfileDetailsAsync ()
         {
-            string commanderName = RuntimeGetText( "Name" );
+            var commanderName = RuntimeGetText( "Name" );
             if ( commanderName == null )
             {
                 return;
@@ -227,7 +225,7 @@ namespace EddiVoiceAttackResponder
 
             try
             {
-                EddiInaraService.IInaraService inaraService = new EddiInaraService.InaraService();
+                var inaraService = new EddiInaraService.InaraService();
                 var result = await inaraService.GetCommanderProfileAsync( commanderName ).ConfigureAwait( false );
                 if ( result != null )
                 {
@@ -266,8 +264,7 @@ namespace EddiVoiceAttackResponder
                         {
                             try
                             {
-                                if ( Application.Current?.MainWindow?.Visibility == Visibility.Collapsed
-                                     || Application.Current?.MainWindow?.Visibility == Visibility.Hidden )
+                                if ( Application.Current?.MainWindow?.Visibility is Visibility.Collapsed or Visibility.Hidden )
                                 {
                                     Application.Current.MainWindow?.Show();
                                 }
@@ -366,7 +363,7 @@ namespace EddiVoiceAttackResponder
                     return;
                 }
 
-                string systemUri =
+                var systemUri =
                     $"https://inara.cz/elite/starsystem/?search={EDDI.Instance.CurrentStarSystem.systemAddress}";
                 OpenOrStoreURI( systemUri );
                 VoiceAttackVariables.setStatus( "Operational" );
@@ -397,7 +394,7 @@ namespace EddiVoiceAttackResponder
                     return;
                 }
 
-                string stationUri = $"https://inara.cz/elite/station/?search={EDDI.Instance.CurrentStation.marketId}";
+                var stationUri = $"https://inara.cz/elite/station/?search={EDDI.Instance.CurrentStation.marketId}";
                 OpenOrStoreURI( stationUri );
                 VoiceAttackVariables.setStatus( "Operational" );
             }
@@ -420,7 +417,7 @@ namespace EddiVoiceAttackResponder
                     return;
                 }
 
-                string carrierUri =
+                var carrierUri =
                     $"https://inara.cz/elite/cmdr-fleetcarrier/?search={EDDI.Instance.FleetCarrier.callsign}";
                 OpenOrStoreURI( carrierUri );
                 VoiceAttackVariables.setStatus( "Operational" );
@@ -445,7 +442,7 @@ namespace EddiVoiceAttackResponder
                     return;
                 }
 
-                string cmdrUri = $"https://inara.cz/elite/cmdr/{inaraID}/";
+                var cmdrUri = $"https://inara.cz/elite/cmdr/{inaraID}/";
                 OpenOrStoreURI( cmdrUri );
                 VoiceAttackVariables.setStatus( "Operational" );
             }
@@ -491,7 +488,7 @@ namespace EddiVoiceAttackResponder
                     return;
                 }
 
-                string shipUri = EDDI.Instance.CurrentShip.EDShipyardUri();
+                var shipUri = EDDI.Instance.CurrentShip.EDShipyardUri();
                 OpenOrStoreURI( shipUri );
                 VoiceAttackVariables.setStatus( "Operational" );
             }
@@ -508,10 +505,10 @@ namespace EddiVoiceAttackResponder
         /// </summary>
         private static void HandleUri ( string uri )
         {
-            bool? useClipboard = RuntimeGetBoolean( "EDDI use clipboard" );
-            if ( useClipboard != null && useClipboard == true )
+            var useClipboard = RuntimeGetBoolean( "EDDI use clipboard" );
+            if ( useClipboard is true )
             {
-                Thread thread = new Thread( () =>
+                var thread = new Thread( () =>
                 {
                     try
                     {
@@ -529,7 +526,7 @@ namespace EddiVoiceAttackResponder
             }
             else
             {
-                ProcessStartInfo proc = new ProcessStartInfo( Net.GetDefaultBrowserPath(), "\"" + uri + "\"" )
+                var proc = new ProcessStartInfo( Net.GetDefaultBrowserPath(), "\"" + uri + "\"" )
                 {
                     UseShellExecute = true
                 };
@@ -542,7 +539,7 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                string script = RuntimeGetText( "Script" );
+                var script = RuntimeGetText( "Script" );
                 if ( script == null )
                 {
                     return;
@@ -550,9 +547,9 @@ namespace EddiVoiceAttackResponder
 
                 int? priority = RuntimeGetInt( "Priority" ) ?? 3;
 
-                string voice = RuntimeGetText( "Voice" );
+                var voice = RuntimeGetText( "Voice" );
 
-                string speech = SpeechFromScript( script );
+                var speech = SpeechFromScript( script );
 
                 Ship ship = null;
                 if ( EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP )
@@ -574,7 +571,7 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                string script = RuntimeGetText( "Script" );
+                var script = RuntimeGetText( "Script" );
                 if ( script == null )
                 {
                     return;
@@ -582,9 +579,9 @@ namespace EddiVoiceAttackResponder
 
                 int? priority = RuntimeGetInt( "Priority" ) ?? 3;
 
-                string voice = RuntimeGetText( "Voice" );
+                var voice = RuntimeGetText( "Voice" );
 
-                string speech = SpeechFromScript( script );
+                var speech = SpeechFromScript( script );
 
                 Ship ship = null;
                 if ( EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP )
@@ -622,15 +619,15 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                string script = RuntimeGetText( "Script" );
+                var script = RuntimeGetText( "Script" );
                 if ( script == null )
                 {
                     return;
                 }
 
-                int? priority = RuntimeGetInt( "Priority" );
+                var priority = RuntimeGetInt( "Priority" );
 
-                string voice = RuntimeGetText( "Voice" );
+                var voice = RuntimeGetText( "Voice" );
 
                 var speechResponder = (SpeechResponder)EDDI.Instance.ObtainResponder( "Speech responder" );
                 if ( speechResponder == null )
@@ -682,7 +679,7 @@ namespace EddiVoiceAttackResponder
 
         private static void InvokeSetSpeechResponderPersonality ()
         {
-            string personality = RuntimeGetText( "Personality" );
+            var personality = RuntimeGetText( "Personality" );
             try
             {
                 var speechResponder = (SpeechResponder)EDDI.Instance.ObtainResponder( "Speech responder" );
@@ -698,7 +695,7 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                string name = RuntimeGetText( "State variable" );
+                var name = RuntimeGetText( "State variable" );
                 if ( string.IsNullOrEmpty( name ) )
                 {
                     Logging.Info( "No value in the VoiceAttack text variable 'State variable'; nothing to set" );
@@ -706,30 +703,30 @@ namespace EddiVoiceAttackResponder
                 }
 
                 // State variable names are lower-case
-                string stateVariableName = name.ToLowerInvariant().Replace( " ", "_" );
+                var stateVariableName = name.ToLowerInvariant().Replace( " ", "_" );
 
-                string strValue = RuntimeGetText( "State variable text value" );
+                var strValue = RuntimeGetText( "State variable text value" );
                 if ( !string.IsNullOrEmpty( strValue ) )
                 {
                     EDDI.Instance.State[ stateVariableName ] = strValue;
                     return;
                 }
 
-                int? intValue = RuntimeGetInt( "State variable int value" );
+                var intValue = RuntimeGetInt( "State variable int value" );
                 if ( intValue != null )
                 {
                     EDDI.Instance.State[ stateVariableName ] = intValue;
                     return;
                 }
 
-                bool? boolValue = RuntimeGetBoolean( "State variable bool value" );
+                var boolValue = RuntimeGetBoolean( "State variable bool value" );
                 if ( boolValue != null )
                 {
                     EDDI.Instance.State[ stateVariableName ] = boolValue;
                     return;
                 }
 
-                decimal? decValue = RuntimeGetDecimal( "State variable decimal value" );
+                var decValue = RuntimeGetDecimal( "State variable decimal value" );
                 if ( decValue != null )
                 {
                     EDDI.Instance.State[ stateVariableName ] = decValue;
@@ -895,7 +892,7 @@ namespace EddiVoiceAttackResponder
             }
 
             // Variable replacement
-            Ship ship = EDDI.Instance.CurrentShip;
+            var ship = EDDI.Instance.CurrentShip;
             if ( ship != null )
             {
                 script = script.Replace( "$=", ship.phoneticname );
@@ -907,17 +904,17 @@ namespace EddiVoiceAttackResponder
             script = script.Replace( "$-", cmdrScript );
 
             // Multiple choice selection
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             // Step 1 - resolve any options in square brackets
-            Match matchResult = Regex.Match( script, @"\[[^\]]*\]|[^\[\]]+" );
+            var matchResult = GeneratedRegex.VoiceAttackCommandPermutationsRegex().Match( script );
             while ( matchResult.Success )
             {
                 if ( matchResult.Value.StartsWith( '[' ) )
                 {
                     // Remove the brackets and pick one of the options
-                    string result = matchResult.Value.Substring( 1, matchResult.Value.Length - 2 );
-                    string[] options = result.Split( ';' );
+                    var result = matchResult.Value.Substring( 1, matchResult.Value.Length - 2 );
+                    var options = result.Split( ';' );
                     sb.Append( options[ random.Next( 0, options.Length ) ] );
                 }
                 else
@@ -929,13 +926,13 @@ namespace EddiVoiceAttackResponder
                 matchResult = matchResult.NextMatch();
             }
 
-            string res = sb.ToString();
+            var res = sb.ToString();
 
             // Step 2 - resolve phrases separated by semicolons
             if ( res.Contains( ';' ) )
             {
                 // Pick one of the options
-                string[] options = res.Split( ';' );
+                var options = res.Split( ';' );
                 res = options[ random.Next( 0, options.Length ) ];
             }
 
@@ -952,7 +949,7 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                string comment = RuntimeGetText( "EDDI system comment" );
+                var comment = RuntimeGetText( "EDDI system comment" );
                 if ( comment == null )
                 {
                     return;
@@ -982,7 +979,7 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                string type = RuntimeGetText( "Type variable" );
+                var type = RuntimeGetText( "Type variable" );
                 if ( !string.IsNullOrEmpty( type ) )
                 {
                     var detail = EDDI.Instance.CurrentShip?.JumpDetails( type );
@@ -1001,12 +998,12 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                string type = RuntimeGetText( "Type variable" );
-                string string0 = RuntimeGetText( "System variable" );
-                string string1 = RuntimeGetText( "System variable 2" ) ??
-                                 RuntimeGetText( "Station variable" );
-                decimal? numeric = RuntimeGetDecimal( "Numeric variable" );
-                bool? boolean = RuntimeGetBoolean( "Boolean variable" );
+                var type = RuntimeGetText( "Type variable" );
+                var string0 = RuntimeGetText( "System variable" );
+                var string1 = RuntimeGetText( "System variable 2" ) ??
+                              RuntimeGetText( "Station variable" );
+                var numeric = RuntimeGetDecimal( "Numeric variable" );
+                var boolean = RuntimeGetBoolean( "Boolean variable" );
 
                 RuntimeSetText( "Type variable", null );
                 RuntimeSetText( "System variable", null );

@@ -1,7 +1,6 @@
 ﻿using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Rendering;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -33,17 +32,17 @@ namespace EddiSpeechResponder
 
             public void Draw(TextView textView, DrawingContext drawingContext)
             {
-                if (textView == null) { throw new ArgumentNullException(nameof(textView)); }
-                if (drawingContext == null) { throw new ArgumentNullException(nameof(drawingContext)); }
+                ArgumentNullException.ThrowIfNull( textView );
+                ArgumentNullException.ThrowIfNull( drawingContext );
                 if (diffSegments == null || !textView.VisualLinesValid) { return; }
 
                 var visualLines = textView.VisualLines;
                 if (visualLines.Count == 0) { return; }
 
-                int viewStart = visualLines.First().FirstDocumentLine.Offset;
-                int viewEnd = visualLines.Last().LastDocumentLine.EndOffset;
+                var viewStart = visualLines.First().FirstDocumentLine.Offset;
+                var viewEnd = visualLines.Last().LastDocumentLine.EndOffset;
                 var segmentsOnScreen = diffSegments.FindOverlappingSegments(viewStart, viewEnd - viewStart);
-                foreach (DiffSegment segment in segmentsOnScreen)
+                foreach (var segment in segmentsOnScreen)
                 {
                     DrawSegment(segment, textView, drawingContext);
                 }
@@ -51,7 +50,7 @@ namespace EddiSpeechResponder
 
             private void DrawSegment(DiffSegment segment, TextView textView, DrawingContext drawingContext)
             {
-                BackgroundGeometryBuilder geoBuilder = new BackgroundGeometryBuilder
+                var geoBuilder = new BackgroundGeometryBuilder
                 {
                     AlignToWholePixels = true,
                     BorderThickness = 0,
@@ -74,7 +73,7 @@ namespace EddiSpeechResponder
                         break;
                 }
 
-                Geometry geometry = geoBuilder.CreateGeometry();
+                var geometry = geoBuilder.CreateGeometry();
                 if (geometry != null)
                 {
                     drawingContext.DrawGeometry(markerBrush, null, geometry);
@@ -93,16 +92,16 @@ namespace EddiSpeechResponder
 
         private void ParseDiffs(string oldScript, string newScript)
         {
-            StringBuilder textBuilder = new StringBuilder();
-            List<DiffItem> diffItems = Diff.DiffTexts(oldScript, newScript);
+            var textBuilder = new StringBuilder();
+            var diffItems = Diff.DiffTexts(oldScript, newScript);
 
-            foreach (DiffItem diffItem in diffItems)
+            foreach (var diffItem in diffItems)
             {
                 switch (diffItem.type)
                 {
                     case DiffItem.DiffType.Deleted:
                     case DiffItem.DiffType.Inserted:
-                        DiffSegment segment = new DiffSegment()
+                        var segment = new DiffSegment()
                         {
                             StartOffset = textBuilder.Length,
                             Length = diffItem.data.Length,
@@ -116,7 +115,7 @@ namespace EddiSpeechResponder
 
             try
             {
-                string newline = Environment.NewLine;
+                var newline = Environment.NewLine;
                 textBuilder.Remove(textBuilder.Length - newline.Length, newline.Length);
             }
             catch (ArgumentOutOfRangeException) { } // pass

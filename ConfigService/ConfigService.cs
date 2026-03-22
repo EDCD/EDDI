@@ -372,6 +372,9 @@ namespace EddiConfigService
 
         private void CopyConfigurations ( string fromDirectory, string toDirectory )
         {
+            ArgumentNullException.ThrowIfNull( fromDirectory );
+            ArgumentNullException.ThrowIfNull( toDirectory );
+            
             try
             {
                 if ( !Directory.Exists( toDirectory ) )
@@ -484,9 +487,12 @@ namespace EddiConfigService
                 {
                     Logging.Error( $"Failed to load {configType.Name}", ex );
                     var config = (Config)Activator.CreateInstance( configType );
-                    config.PropertyChanged -= OnConfigPropertyChanged;
-                    config.PropertyChanged += OnConfigPropertyChanged;
-                    configs[ configType.Name ] = config;
+                    if ( config != null )
+                    {
+                        config.PropertyChanged -= OnConfigPropertyChanged;
+                        config.PropertyChanged += OnConfigPropertyChanged;
+                        configs[ configType.Name ] = config;
+                    }
                 }
             }
 
@@ -624,8 +630,8 @@ namespace EddiConfigService
                  commanderConfigVal is CommanderConfiguration commanderConfig )
             {
                 if ( configs.TryGetValue( nameof( EDDIConfiguration ), out var eddiConfigVal ) &&
-                    eddiConfigVal is EDDIConfiguration eddiConfig &&
-                    eddiConfig._additionalData is IDictionary<string, JToken> eddiConfigAdditionalData )
+                     eddiConfigVal is EDDIConfiguration configuration &&
+                     configuration._additionalData is IDictionary<string, JToken> eddiConfigAdditionalData )
                 {
                     if ( eddiConfigAdditionalData.TryGetValue( "CommanderName", out var commanderName ) )
                     {

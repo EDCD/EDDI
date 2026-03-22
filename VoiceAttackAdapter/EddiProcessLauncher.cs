@@ -163,8 +163,8 @@ namespace EddiVoiceAttackAdapter
         private static async Task<bool> WaitForServerReadyAsync(CancellationToken cancellationToken = default)
         {
             var stopwatch = Stopwatch.StartNew();
-            int attemptCount = 0;
-            bool backgroundPollingLogged = false;
+            var attemptCount = 0;
+            var backgroundPollingLogged = false;
 
             while ( true )
             {

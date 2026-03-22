@@ -6,26 +6,21 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class DockingTimedOutEvent : Event
+    public class DockingTimedOutEvent ( DateTime timestamp, string station, StationModel stationType )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Docking timed out";
         public const string DESCRIPTION = "Triggered when your docking request times out";
         public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"DockingCancelled\",\"StationName\":\"Jameson Memorial\", \"StationType\":\"Orbis\"}";
 
         [PublicAPI("The station at which the docking request has timed out")]
-        public string station { get; private set; }
+        public string station { get; private set; } = station;
 
         [PublicAPI("The localized model / type of the station at which docking has timed out")]
         public string stationtype => stationDefinition?.localizedName;
 
         // Not intended to be user facing
-        public StationModel stationDefinition { get; private set; }
-
-        public DockingTimedOutEvent(DateTime timestamp, string station, StationModel stationType ) : base(timestamp, NAME)
-        {
-            this.station = station;
-            this.stationDefinition = stationType;
-        }
+        public StationModel stationDefinition { get; private set; } = stationType;
 
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {

@@ -74,7 +74,7 @@ namespace Utilities
             {
                 try
                 {
-                    using ( var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false) )
+                    await using ( var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false) )
                     {
                         if ( stream != null )
                         {
@@ -117,7 +117,7 @@ namespace Utilities
                         return null;
                     }
 
-                    using ( var fs = new FileStream( fileName, FileMode.OpenOrCreate, FileAccess.Write ) )
+                    await using ( var fs = new FileStream( fileName, FileMode.OpenOrCreate, FileAccess.Write ) )
                     {
                         await response.Content.CopyToAsync( fs ).ConfigureAwait( true );
                     }

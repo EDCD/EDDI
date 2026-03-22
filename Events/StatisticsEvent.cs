@@ -7,7 +7,7 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class StatisticsEvent : Event
+    public class StatisticsEvent ( DateTime timestamp, Statistics statistics ) : Event( timestamp, NAME )
     {
         public const string NAME = "Statistics";
         public const string DESCRIPTION = "Statistics provided at the beginning of a game session";
@@ -60,12 +60,7 @@ namespace EddiEvents
 
         // Not intended to be user facing
 
-        private Statistics statistics { get; set; }
-
-        public StatisticsEvent(DateTime timestamp, Statistics statistics) : base(timestamp, NAME)
-        {
-            this.statistics = statistics;
-        }
+        private Statistics statistics { get; set; } = statistics;
 
         public static bool Handle ( DateTime timestamp, string line, ref List<Event> events, bool fromLogLoad )
         {

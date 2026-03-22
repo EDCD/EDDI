@@ -9,9 +9,9 @@ namespace Tests
     [STATestClass, TestCategory( "UnitTests" )]
     public class EddiCoreHotkeyTests : TestBase
     {
-        private List<HotkeyAction> hotkeyActions =>
+        private static List<HotkeyAction> hotkeyActions =>
             [ new( "Test", "Test", () => Console.WriteLine( @"TestAction" ) ) ];
-        private HotkeyActionCollection hotkeyCollection => new( hotkeyActions );
+        private static HotkeyActionCollection hotkeyCollection => new( hotkeyActions );
 
         private static HotkeyRegistration CreateRegistration ( HotkeyActionCollection collection )
         {

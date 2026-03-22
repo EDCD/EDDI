@@ -77,7 +77,7 @@ namespace Utilities
             foreach (var eventProperty in objectProperties)
             {
                 // We ignore some keys which we've marked in advance
-                bool passProperty = false;
+                var passProperty = false;
                 foreach (var attribute in eventProperty.GetCustomAttributes())
                 {
                     if (attribute is PublicAPIAttribute publicAPIAttribute)
@@ -96,7 +96,7 @@ namespace Utilities
             foreach (var eventField in objectFields)
             {
                 // We ignore some keys which we've marked in advance
-                bool passField = false;
+                var passField = false;
                 foreach (var attribute in eventField.GetCustomAttributes())
                 {
                     if (attribute is PublicAPIAttribute publicAPIAttribute)
@@ -276,27 +276,19 @@ namespace Utilities
         }
     }
 
-    public class MetaVariable
+    public class MetaVariable ( List<string> keysPath, Type type, string description = null, object value = null )
     {
         /// <summary> The full path to access the key </summary>
-        public List<string> keysPath { get; set; }
+        public List<string> keysPath { get; set; } = keysPath;
 
         /// <summary> The variable's type </summary>
-        public Type type { get; }
+        public Type type { get; } = type;
 
         /// <summary> The variable's description (if any) </summary>
-        public string description { get; }
+        public string description { get; } = description;
 
         /// <summary> The variable's value (if any) </summary>
-        public object value { get; set;  }
-
-        public MetaVariable(List<string> keysPath, Type type, string description = null, object value = null)
-        {
-            this.keysPath = keysPath;
-            this.type = type;
-            this.description = description;
-            this.value = value;
-        }
+        public object value { get; set;  } = value;
     }
 
     public class CottleVariable

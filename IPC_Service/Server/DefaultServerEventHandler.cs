@@ -60,8 +60,8 @@ namespace EddiIPC_Service.Server
                     EddiVersion = Constants.EDDI_VERSION.ToString(),
                     ServerName = $"{Constants.EDDI_NAME}-IPC",
                     Accepted = true,
-                    Capabilities = new List<string>( ServerCapabilities.AllCapabilities ),
-                    SupportedMessageTypes = new List<string>( ServerCapabilities.AllMessageTypes ),
+                    Capabilities = [ ..ServerCapabilities.AllCapabilities ],
+                    SupportedMessageTypes = [ ..ServerCapabilities.AllMessageTypes ],
                     SessionId = context.SessionId
                 };
 
@@ -176,7 +176,7 @@ namespace EddiIPC_Service.Server
                 var enable = false;
                 if ( cmdData.Parameters?.TryGetValue( "enable", out var enableObj ) ?? false )
                 {
-                    enable = enableObj is bool b && b;
+                    enable = enableObj is true;
                 }
 
                 System.Version? voiceAttackVersion = null;

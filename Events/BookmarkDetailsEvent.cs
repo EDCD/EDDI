@@ -4,14 +4,15 @@ using Utilities;
 
 namespace EddiEvents
 {
-    public class BookmarkDetailsEvent : Event
+    public class BookmarkDetailsEvent ( DateTime timestamp, string request, NavBookmark bookmark )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Bookmark details";
         public const string DESCRIPTION = "Triggered when a bookmark has been added or updated";
         public const string SAMPLE = null;
 
         [PublicAPI("The bookmark request type (location, update, add, remove)")]
-        public string request { get; private set; }
+        public string request { get; private set; } = request;
 
         [PublicAPI("The bookmarked system name")] 
         public string systemname => bookmark?.systemname;
@@ -41,12 +42,5 @@ namespace EddiEvents
         public bool landable => bookmark?.landable ?? false;
 
         // Variables below are not intended to be user facing
-        private readonly NavBookmark bookmark;
-
-        public BookmarkDetailsEvent(DateTime timestamp, string request, NavBookmark bookmark) : base(timestamp, NAME)
-        {
-            this.request = request;
-            this.bookmark = bookmark;
-        }
     }
 }

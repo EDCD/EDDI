@@ -5,11 +5,11 @@ using Utilities;
 
 namespace EddiEvents
 {
-    public class NavRouteEvent : Event
+    public class NavRouteEvent ( DateTime timestamp, List<NavRouteInfoItem> route ) : Event( timestamp, NAME )
     {
         public const string NAME = "Nav route";
         public const string DESCRIPTION = "Triggered when the navigation route is updated";
-        public static NavRouteEvent SAMPLE = new(DateTime.UtcNow, [
+        public static readonly NavRouteEvent SAMPLE = new(DateTime.UtcNow, [
             new NavRouteInfoItem( "Cemiess", 1522322606443, [ 66.06250M, -105.34375M, 27.09375M ],
                 "G" ),
             new NavRouteInfoItem( "CT Tucanae", 358864556762, [ 66.40625M, -123.37500M, 51.90625M ],
@@ -19,7 +19,7 @@ namespace EddiEvents
         ] );
 
         [PublicAPI("The plotted route (this is a collection of NavWaypoint objects)")]
-        public List<NavRouteInfoItem> route { get; }
+        public List<NavRouteInfoItem> route { get; } = route;
 
         // The route includes the originating star system - we need this to calculate 
         // distances but it should not be included in the jump count.
@@ -32,15 +32,10 @@ namespace EddiEvents
         [PublicAPI("The direct line distance to the destination starsystem, in light years")]
         public decimal? directdistance => CalculateDirectDistance();
 
-        public NavRouteEvent(DateTime timestamp, List<NavRouteInfoItem> route) : base(timestamp, NAME)
-        {
-            this.route = route;
-        }
-        
         private decimal? CalculateTotalDistance()
         {
             decimal? dist = 0M;
-            for (int i = 0; i < jumps; i++)
+            for (var i = 0; i < jumps; i++)
             {
                 var curr = route[i];
                 var dest = route[i + 1];

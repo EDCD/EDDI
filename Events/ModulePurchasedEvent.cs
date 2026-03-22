@@ -6,7 +6,18 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class ModulePurchasedEvent : Event
+    public class ModulePurchasedEvent (
+        DateTime timestamp,
+        string ship,
+        int shipid,
+        string slot,
+        Module buymodule,
+        long buyprice,
+        Module sellmodule,
+        long? sellprice,
+        Module storedmodule,
+        long marketId )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Module purchased";
         public const string DESCRIPTION = "Triggered when you purchase a module in outfitting to install on your ship";
@@ -21,44 +32,31 @@ namespace EddiEvents
         public string ship => shipDefinition?.model;
 
         [PublicAPI("The ID of the ship for which the module was purchased")]
-        public int shipid { get; private set; }
+        public int shipid { get; private set; } = shipid;
 
         [PublicAPI("The outfitting slot")]
-        public string slot { get; private set; }
+        public string slot { get; private set; } = slot;
 
         [PublicAPI("The module (object) purchased")]
-        public Module buymodule { get; private set; }
+        public Module buymodule { get; private set; } = buymodule;
 
         [PublicAPI("The price of the module being purchased")]
-        public long buyprice { get; private set; }
+        public long buyprice { get; private set; } = buyprice;
 
         [PublicAPI("The module (object) being sold (if replacing an existing module)")]
-        public Module sellmodule { get; private set; }
+        public Module sellmodule { get; private set; } = sellmodule;
 
         [PublicAPI("The price of the sold module (if replacing an existing module)")]
-        public long? sellprice { get; private set; }
+        public long? sellprice { get; private set; } = sellprice;
 
         [PublicAPI("The module (object) being stored (if existing module stored)")]
-        public Module storedmodule { get; private set; }
+        public Module storedmodule { get; private set; } = storedmodule;
 
         // Not intended to be user facing
 
-        public long marketId { get; }
+        public long marketId { get; } = marketId;
 
-        public Ship shipDefinition { get; }
-
-        public ModulePurchasedEvent(DateTime timestamp, string ship, int shipid, string slot, Module buymodule, long buyprice, Module sellmodule, long? sellprice, Module storedmodule, long marketId) : base(timestamp, NAME)
-        {
-            this.shipDefinition = ShipDefinitions.FromEDModel(ship);
-            this.shipid = shipid;
-            this.slot = slot;
-            this.buymodule = buymodule;
-            this.buyprice = buyprice;
-            this.sellmodule = sellmodule;
-            this.sellprice = sellprice;
-            this.storedmodule = storedmodule;
-            this.marketId = marketId;
-        }
+        public Ship shipDefinition { get; } = ShipDefinitions.FromEDModel(ship);
 
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data,
             ref List<Event> events, bool fromLogLoad )

@@ -129,16 +129,16 @@ namespace EddiCore.Hotkeys
 
             // Disallow single alphanumeric keys without modifiers
             if ( modifiers == ModifierKeys.None &&
-                 ( ( key >= Key.A && key <= Key.Z ) || ( key >= Key.D0 && key <= Key.D9 ) ) )
+                 ( key is >= Key.A and <= Key.Z || key is >= Key.D0 and <= Key.D9 ) )
             {
                 hotkeyTextBlock.Text = Properties.Resources.hotkey_input_need_modifier;
                 return false;
             }
 
             // Disallow Shift as the only modifier for alphanumerics, numpad, and Oem keys
-            if ( modifiers == ModifierKeys.Shift && ( ( key >= Key.A && key <= Key.Z ) ||
-                                                      ( key >= Key.D0 && key <= Key.D9 ) ||
-                                                      ( key >= Key.NumPad0 && key <= Key.NumPad9 ) ||
+            if ( modifiers == ModifierKeys.Shift && ( key is >= Key.A and <= Key.Z ||
+                                                      key is >= Key.D0 and <= Key.D9 ||
+                                                      key is >= Key.NumPad0 and <= Key.NumPad9 ||
                                                       key.ToString().StartsWith( "Oem" ) ) )
             {
                 hotkeyTextBlock.Text = Properties.Resources.hotkey_input_need_more_modifiers;

@@ -138,7 +138,7 @@ namespace EddiVoiceAttackAdapter
         {
             const int checkIntervalMs = 2000;
             const int maxRestartAttempts = 3;
-            int restartAttempts = 0;
+            var restartAttempts = 0;
 
             while (!_isShuttingDown && !cancellationToken.IsCancellationRequested)
             {
@@ -223,7 +223,6 @@ namespace EddiVoiceAttackAdapter
 
             Logging.Debug("EDDI crash monitoring stopped");
         }
-
 
         [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
         public static void VA_Exit1( dynamic _ )
@@ -315,8 +314,7 @@ namespace EddiVoiceAttackAdapter
             var commandPayload = BuildInvocationPayload();
 
             // Route command through bridge to EDDI.exe responder via IPC
-            var bridge = new VoiceAttackCommandBridge();
-            Task<object?> task = bridge.RouteCommandAsync( commandContext, commandPayload );
+            var task = VoiceAttackCommandBridge.RouteCommandAsync( commandContext, commandPayload );
             task.SafeFireAndForget( LogException );
         }
 

@@ -43,7 +43,7 @@ namespace EddiDataDefinitions
             set { _routeFuelTotal = value; OnPropertyChanged(); }
         }
 
-        public ObservableCollection<NavWaypoint> Waypoints { get; } = new();
+        public ObservableCollection<NavWaypoint> Waypoints { get; } = [ ];
 
         public List<NavWaypoint> UnvisitedWaypoints => Waypoints.Where(wp => !wp.visited).ToList();
 
@@ -135,7 +135,7 @@ namespace EddiDataDefinitions
                 {
                     // Calculate fuel for each hop and total fuel used
                     Waypoints.First().fuelUsedTotal = 0;
-                    for (int i = 0; i < Waypoints.Count - 1; i++)
+                    for (var i = 0; i < Waypoints.Count - 1; i++)
                     {
                         Waypoints[i + 1].fuelUsedTotal = Waypoints[i].fuelUsedTotal + Waypoints[i + 1].fuelUsed;
                     }
@@ -157,7 +157,7 @@ namespace EddiDataDefinitions
             {
                 // Calculate distance of each hop and total distance traveled
                 Waypoints.First().distanceTraveled = 0;
-                for (int i = 0; i < Waypoints.Count - 1; i++)
+                for (var i = 0; i < Waypoints.Count - 1; i++)
                 {
                     Waypoints[i + 1].distance = Functions.StellarDistanceLy(
                         Waypoints[i].x, Waypoints[i].y, Waypoints[i].z,
@@ -169,7 +169,7 @@ namespace EddiDataDefinitions
                 Waypoints.Last().distanceTraveled = RouteDistance;
                 
                 // Calculate distance remaining and set index value
-                int j = 0;
+                var j = 0;
                 foreach (var waypoint in Waypoints)
                 {
                     waypoint.distanceRemaining = RouteDistance - waypoint.distanceTraveled;

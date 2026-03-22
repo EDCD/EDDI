@@ -45,7 +45,7 @@ namespace Tests
                 var CottleVars = vars.AsCottleVariables();
                 var VoiceAttackVars = VoiceAttackVariables.Convert(vars, "EDDI", entry.Key);
 
-                if (!vars.Any())
+                if (vars.Count == 0 )
                 {
                     output.Add("This event has no variables.");
                     output.Add("To respond to this event in VoiceAttack, create a command entitled ((EDDI " + entry.Key.ToLowerInvariant() + ")).");
@@ -62,7 +62,7 @@ namespace Tests
                     output.Add("");
                 }
 
-                if (CottleVars.Any())
+                if (CottleVars.Count > 0)
                 {
                     output.Add("When using this event in the [Speech responder](Speech-Responder) the information about this event is available under the `event` object.  The available variables are as follows:");
                     output.Add("");
@@ -76,7 +76,7 @@ namespace Tests
                     }
                 }
 
-                if (VoiceAttackVars.Any())
+                if (VoiceAttackVars.Count > 0 )
                 {
                     output.Add("");
                     output.Add("To respond to this event in VoiceAttack, create a command entitled ((EDDI " + entry.Key.ToLowerInvariant() + ")). VoiceAttack variables will be generated to allow you to access the event information.");

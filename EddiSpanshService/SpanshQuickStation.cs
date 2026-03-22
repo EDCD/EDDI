@@ -68,7 +68,7 @@ namespace EddiSpanshService
             return stations.RemoveNulls();
         }
 
-        public NavWaypoint ParseQuickStationWaypoint ( JToken stationData )
+        public static NavWaypoint ParseQuickStationWaypoint ( JToken stationData )
         {
             try
             {

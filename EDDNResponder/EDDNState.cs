@@ -5,15 +5,9 @@ namespace EddiEddnResponder
 {
     public class EDDNState
     {
-        public readonly GameVersionAugmenter GameVersion;
+        public readonly GameVersionAugmenter GameVersion = new();
 
-        public readonly LocationAugmenter Location;
-
-        public EDDNState()
-        {
-            GameVersion = new GameVersionAugmenter();
-            Location = new LocationAugmenter();
-        }
+        public readonly LocationAugmenter Location = new();
 
         public void GetStateInfo ( string edType, IDictionary<string, object> data )
         {

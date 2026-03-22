@@ -43,7 +43,7 @@ namespace EddiDataDefinitions
 
         public static ExobiologistRating FromRank(int from)
         {
-            ExobiologistRating result = AllOfThem.FirstOrDefault(v => v.rank == from);
+            var result = AllOfThem.FirstOrDefault(v => v.rank == from);
             if (result == null)
             {
                 Logging.Info("Unknown Exobiologist Rating rank " + from);

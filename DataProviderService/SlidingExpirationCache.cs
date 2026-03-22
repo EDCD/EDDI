@@ -74,6 +74,7 @@ namespace EddiDataProviderService
         public void Dispose ()
         {
             cleanupTimer?.Dispose();
+            GC.SuppressFinalize( this );
         }
     }
 }

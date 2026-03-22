@@ -5,9 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using Utilities;
 
@@ -19,8 +17,7 @@ namespace EddiStatusService
         // Declare our constants
         private const int pollingIntervalActiveMs = 250;
         private const int pollingIntervalRelaxedMs = 5000;
-        private static readonly Regex JsonRegex = new(@"^{.*}$");
-        private static readonly string Directory = GetSavedGamesDir();
+        private static readonly string Directory = Files.GetEliteSavedGamesDir();
 
         // Public Read Variables
         private Status CurrentStatus { get; set; } = new();
@@ -80,10 +77,10 @@ namespace EddiStatusService
             {
                 try
                 {
-                    using (FileStream fs = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                    using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
+                    using (var fs = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    using (var reader = new StreamReader(fs, Encoding.UTF8))
                     {
-                        string LastStatusJson = reader.ReadLine() ?? string.Empty;
+                        var LastStatusJson = reader.ReadLine() ?? string.Empty;
 
                         // Main loop
                         while (running)
@@ -119,7 +116,7 @@ namespace EddiStatusService
             running = false;
         }
 
-        private void WaitForStatusFile(ref FileInfo fileInfo)
+        private static void WaitForStatusFile (ref FileInfo fileInfo)
         {
             // Status.json could not be found. Sleep until a Status.json file is found.
             Logging.Info("Error locating Elite Dangerous Status.json. Status monitor is not active. Have you installed and run Elite Dangerous previously? ");
@@ -133,7 +130,7 @@ namespace EddiStatusService
 
         private string ReadStatus(string LastStatusJson, FileStream fs, StreamReader reader)
         {
-            string thisStatusJson = string.Empty;
+            var thisStatusJson = string.Empty;
             try
             {
                 fs.Seek(0, SeekOrigin.Begin);
@@ -145,10 +142,10 @@ namespace EddiStatusService
             }
             if (LastStatusJson != thisStatusJson && !string.IsNullOrWhiteSpace(thisStatusJson))
             {
-                Status status = ParseStatusEntry(thisStatusJson);
+                var status = ParseStatusEntry(thisStatusJson);
 
                 // Spin off a thread to pass status entry updates in the background
-                Thread updateThread = new Thread(() => handleStatus(status))
+                var updateThread = new Thread(() => handleStatus(status))
                 {
                     IsBackground = true
                 };
@@ -160,13 +157,13 @@ namespace EddiStatusService
 
         public Status ParseStatusEntry(string line)
         {
-            Status status = new Status() { raw = line };
+            var status = new Status() { raw = line };
             try
             {
-                Match match = JsonRegex.Match(line);
+                var match = GeneratedRegex.JsonWrappedRegex().Match(line);
                 if (match.Success)
                 {
-                    IDictionary<string, object> data = Deserializtion.DeserializeData(line);
+                    var data = Deserializtion.DeserializeData(line);
 
                     // Every status event has a timestamp field
                     status.timestamp = DateTime.UtcNow;
@@ -188,14 +185,14 @@ namespace EddiStatusService
                         return status;
                     }
 
-                    data.TryGetValue("Pips", out object val);
-                    List<long> pips = ((List<object>)val)?.Cast<long>()?.ToList(); // The 'TryGetValue' function returns these values as type 'object<long>'
+                    data.TryGetValue("Pips", out var val);
+                    var pips = ((List<object>)val)?.Cast<long>()?.ToList(); // The 'TryGetValue' function returns these values as type 'object<long>'
                     status.system_pips = pips != null ? ((decimal?)pips[0] / 2) : null; // Set system pips (converting from half pips)
                     status.engine_pips = pips != null ? ((decimal?)pips[1] / 2) : null; // Set engine pips (converting from half pips)
                     status.weapon_pips = pips != null ? ((decimal?)pips[2] / 2) : null; // Set weapon pips (converting from half pips)
 
                     status.firegroup = JsonParsing.getOptionalInt(data, "FireGroup");
-                    int? gui_focus = JsonParsing.getOptionalInt(data, "GuiFocus");
+                    var gui_focus = JsonParsing.getOptionalInt(data, "GuiFocus");
                     switch (gui_focus)
                     {
                         case null:
@@ -264,7 +261,7 @@ namespace EddiStatusService
                     status.longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
                     status.altitude = JsonParsing.getOptionalDecimal(data, "Altitude");
                     status.heading = JsonParsing.getOptionalDecimal(data, "Heading");
-                    if (data.TryGetValue("Fuel", out object fuelData))
+                    if (data.TryGetValue("Fuel", out var fuelData))
                     {
                         if (fuelData is IDictionary<string, object> fuelInfo)
                         {
@@ -287,7 +284,7 @@ namespace EddiStatusService
                     status.gravity = JsonParsing.getOptionalDecimal(data, "Gravity"); // Gravity, relative to 1G
 
                     // When not on foot
-                    if (data.TryGetValue("Destination", out object destinationData))
+                    if (data.TryGetValue("Destination", out var destinationData))
                     {
                         if (destinationData is IDictionary<string, object> destinationInfo)
                         {
@@ -297,7 +294,7 @@ namespace EddiStatusService
                             status.destination_localized_name = JsonParsing.getString(destinationInfo, "Name_Localised") ?? string.Empty;
 
                             // Destination might be a fleet carrier with name and carrier id in a single string. If so, we break them apart
-                            var fleetCarrierRegex = new Regex("^(.+)(?> )([A-Za-z0-9]{3}-[A-Za-z0-9]{3})$");
+                            var fleetCarrierRegex = GeneratedRegex.FleetCarrierNameAndIdRegex();
                             if (string.IsNullOrEmpty(status.destination_localized_name) && fleetCarrierRegex.IsMatch(status.destination_name))
                             {
                                 // Fleet carrier names include both the carrier name and carrier ID, we need to separate them
@@ -345,15 +342,15 @@ namespace EddiStatusService
             }
         }
 
-        private void OnStatus(EventHandler statusUpdatedEvent, Status status)
+        private static void OnStatus (EventHandler statusUpdatedEvent, Status status)
         {
             statusUpdatedEvent?.Invoke(status, EventArgs.Empty);
         }
 
         private void SetFuelExtras(Status status)
         {
-            decimal? fuel_rate = FuelConsumptionPerSecond(status.timestamp, status.fuel);
-            FuelPercentAndTime(status.vehicle, status.fuel, fuel_rate, out decimal? fuel_percent, out int? fuel_seconds);
+            var fuel_rate = FuelConsumptionPerSecond(status.timestamp, status.fuel);
+            FuelPercentAndTime(status.vehicle, status.fuel, fuel_rate, out var fuel_percent, out var fuel_seconds);
             status.fuel_percent = fuel_percent;
             status.fuel_seconds = fuel_seconds;
         }
@@ -369,8 +366,8 @@ namespace EddiStatusService
             fuelLog.Add(new KeyValuePair<DateTime, decimal?>(timestamp, fuel));
             if (fuelLog.Count > 1)
             {
-                decimal? fuelConsumed = fuelLog.FirstOrDefault().Value - fuelLog.LastOrDefault().Value;
-                TimeSpan timespan = fuelLog.LastOrDefault().Key - fuelLog.FirstOrDefault().Key;
+                var fuelConsumed = fuelLog.FirstOrDefault().Value - fuelLog.LastOrDefault().Value;
+                var timespan = fuelLog.LastOrDefault().Key - fuelLog.FirstOrDefault().Key;
 
                 return timespan.Seconds == 0 ? null : fuelConsumed / timespan.Seconds; // Return tons of fuel consumed per second
             }
@@ -393,7 +390,7 @@ namespace EddiStatusService
                 if (CurrentShip?.fueltanktotalcapacity > 0)
                 {
                     // Fuel recorded in Status.json includes the fuel carried in the Active Fuel Reservoir
-                    decimal percent = (decimal)(fuelRemaining / (CurrentShip.fueltanktotalcapacity + CurrentShip.activeFuelReservoirCapacity) * 100);
+                    var percent = (decimal)(fuelRemaining / (CurrentShip.fueltanktotalcapacity + CurrentShip.activeFuelReservoirCapacity) * 100);
                     fuel_percent = percent > 10 ? Math.Round(percent, 0) : Math.Round(percent, 1);
                     fuel_seconds = fuelPerSecond > 0 ? (int?)((CurrentShip.fueltanktotalcapacity + CurrentShip.activeFuelReservoirCapacity) / fuelPerSecond) : null;
                 }
@@ -401,7 +398,7 @@ namespace EddiStatusService
             else if (vehicle == Constants.VEHICLE_SRV)
             {
                 const decimal srvFuelTankCapacity = 0.45M;
-                decimal percent = (decimal)(fuelRemaining / srvFuelTankCapacity * 100);
+                var percent = (decimal)(fuelRemaining / srvFuelTankCapacity * 100);
                 fuel_percent = percent > 10 ? Math.Round(percent, 0) : Math.Round(percent, 1);
                 fuel_seconds = fuelPerSecond > 0 ? (int?)(srvFuelTankCapacity / fuelPerSecond) : null;
             }
@@ -414,11 +411,11 @@ namespace EddiStatusService
         private void SetSlope(Status status)
         {
             status.slope = null;
-            if (LastStatus?.planetradius != null && LastStatus?.altitude != null && LastStatus?.latitude != null && LastStatus?.longitude != null)
+            if (LastStatus != null && LastStatus.planetradius is not null && LastStatus.altitude is not null && LastStatus.latitude is not null && LastStatus.longitude is not null)
             {
                 if (status.planetradius != null && status.altitude != null && status.latitude != null && status.longitude != null)
                 {
-                    double square(double x) => x * x;
+                    static double square (double x) => x * x;
 
                     var radiusKm = (double)status.planetradius / 1000;
                     var deltaAltKm = (double)(status.altitude - LastStatus.altitude) / 1000;
@@ -440,25 +437,6 @@ namespace EddiStatusService
                     status.slope = Math.Round((decimal)slopeDegrees, 1);
                 }
             }
-        }
-        
-        private static string GetSavedGamesDir()
-        {
-            int result = NativeMethods.SHGetKnownFolderPath(new Guid("4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4"), 0, new IntPtr(0), out IntPtr path);
-            if (result >= 0)
-            {
-                return Marshal.PtrToStringUni(path) + @"\Frontier Developments\Elite Dangerous";
-            }
-            else
-            {
-                throw new ExternalException("Failed to find the saved games directory.", result);
-            }
-        }
-
-        internal class NativeMethods
-        {
-            [DllImport("Shell32.dll")]
-            internal static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)] Guid rfid, uint dwFlags, IntPtr hToken, out IntPtr ppszPath);
         }
     }
 }

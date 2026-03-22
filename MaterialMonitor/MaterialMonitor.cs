@@ -173,8 +173,8 @@ namespace EddiMaterialMonitor
         private void handleMaterialInventoryEvent(MaterialInventoryEvent @event)
         {
             // Set all listed material quantities to match the event
-            List<string> knownNames = new List<string>();
-            foreach (MaterialAmount materialAmount in @event.inventory)
+            var knownNames = new List<string>();
+            foreach (var materialAmount in @event.inventory)
             {
                 setMaterial(materialAmount.edname, materialAmount.amount);
                 knownNames.Add(materialAmount.edname);
@@ -253,7 +253,7 @@ namespace EddiMaterialMonitor
         {
             if (@event.materials?.Count > 0)
             {
-                foreach (MaterialAmount component in @event.materials)
+                foreach (var component in @event.materials)
                 {
                     decMaterial(component.edname, component.amount, @event.fromLoad);
                 }
@@ -266,7 +266,7 @@ namespace EddiMaterialMonitor
         {
             if (@event.materials?.Count > 0)
             {
-                foreach (MaterialAmount component in @event.materials)
+                foreach (var component in @event.materials)
                 {
                     decMaterial(component.edname, component.amount, @event.fromLoad);
                 }
@@ -279,7 +279,7 @@ namespace EddiMaterialMonitor
         {
             if (@event.materials?.Count > 0)
             {
-                foreach (MaterialAmount material in @event.materials)
+                foreach (var material in @event.materials)
                 {
                     decMaterial(material.edname, material.amount, @event.fromLoad);
                 }
@@ -292,7 +292,7 @@ namespace EddiMaterialMonitor
         {
             if (@event.materialsrewards?.Count > 0)
             {
-                foreach (MaterialAmount material in @event.materialsrewards)
+                foreach (var material in @event.materialsrewards)
                 {
                     incMaterial(material.edname, material.amount, @event.fromLoad);
                 }
@@ -429,8 +429,8 @@ namespace EddiMaterialMonitor
         {
             lock (inventoryLock)
             {
-                Material material = Material.FromEDName(edname);
-                MaterialAmount ma = inventory.FirstOrDefault( inv => inv.edname == material?.edname );
+                var material = Material.FromEDName(edname);
+                var ma = inventory.FirstOrDefault( inv => inv.edname == material?.edname );
                 if (ma == null)
                 {
                     // No information for the current material - create one and set it to amount
@@ -476,19 +476,19 @@ namespace EddiMaterialMonitor
                 var configuration = ConfigService.Instance.materialMonitorConfiguration;
 
                 // Build a new inventory
-                List<MaterialAmount> newInventory = new List<MaterialAmount>();
+                var newInventory = new List<MaterialAmount>();
 
                 // Start with the materials we have in the log
-                foreach (MaterialAmount ma in configuration.materials)
+                foreach (var ma in configuration.materials)
                 {
-                    MaterialAmount ma2 = new MaterialAmount(ma.edname, ma.amount, ma.minimum, ma.desired, ma.maximum);
+                    var ma2 = new MaterialAmount(ma.edname, ma.amount, ma.minimum, ma.desired, ma.maximum);
                     // Make sure the edname is unique before adding the material to the new inventory 
                     if (newInventory.All(inv => inv.edname != ma2.edname))
                     {
                         // Set material maximums if they aren't already defined
                         if (ma2.maximum == null)
                         {
-                            int rarityLevel = Material.FromEDName(ma2.edname)?.Rarity.level ?? 0;
+                            var rarityLevel = Material.FromEDName(ma2.edname)?.Rarity.level ?? 0;
                             if (rarityLevel > 0)
                             {
                                 ma2.maximum = (-50 * rarityLevel) + 350;
@@ -499,9 +499,9 @@ namespace EddiMaterialMonitor
                 }
 
                 // Add in any new materials
-                foreach (Material material in Material.AllOfThem.ToList())
+                foreach (var material in Material.AllOfThem.ToList())
                 {
-                    MaterialAmount ma = newInventory.FirstOrDefault( inv => inv.edname == material.edname );
+                    var ma = newInventory.FirstOrDefault( inv => inv.edname == material.edname );
                     if (ma == null)
                     {
                         // We don't have this one - add it and set it to zero
@@ -516,7 +516,7 @@ namespace EddiMaterialMonitor
 
                 // Update the inventory 
                 inventory.Clear();
-                foreach (MaterialAmount ma in newInventory)
+                foreach (var ma in newInventory)
                 {
                     inventory.Add(ma);
                 }
@@ -527,7 +527,7 @@ namespace EddiMaterialMonitor
         {
             if (handler != null)
             {
-                SynchronizationContext uiSyncContext = SynchronizationContext.Current ?? new SynchronizationContext();
+                var uiSyncContext = SynchronizationContext.Current ?? new SynchronizationContext();
                 if (uiSyncContext == null)
                 {
                     handler(sender, EventArgs.Empty);

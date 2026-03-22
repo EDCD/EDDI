@@ -132,8 +132,8 @@ namespace EddiSpeechResponder
         public Personality(string name, string description, Dictionary<string, Script> scripts)
         {
             // Ensure that the name doesn't have any illegal characters
-            string regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
-            Regex r = new Regex($"[{Regex.Escape(regexSearch)}]");
+            var regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+            var r = new Regex($"[{Regex.Escape(regexSearch)}]");
             Name = r.Replace(name, "");
 
             Name = name;
@@ -153,9 +153,9 @@ namespace EddiSpeechResponder
                 directory = Constants.DATA_DIR + @"\personalities";
                 Directory.CreateDirectory(directory);
             }
-            foreach (FileInfo file in new DirectoryInfo(directory).GetFiles("*.json", SearchOption.AllDirectories))
+            foreach (var file in new DirectoryInfo(directory).GetFiles("*.json", SearchOption.AllDirectories))
             {
-                Personality personality = FromFile(file.FullName);
+                var personality = FromFile(file.FullName);
                 if (personality != null)
                 {
                     personalities.Add(personality);
@@ -197,7 +197,7 @@ namespace EddiSpeechResponder
             }
 
             Personality personality = null;
-            string data = Files.Read(filename);
+            var data = Files.Read(filename);
             if (data != null)
             {
                 try
@@ -209,7 +209,7 @@ namespace EddiSpeechResponder
                     if (!isDefault)
                     {
                         // malformed JSON for some reason: rename so that the user can examine and fix it.
-                        string newFileName = filename + ".malformed";
+                        var newFileName = filename + ".malformed";
                         if (File.Exists(newFileName))
                         {
                             // no point keeping a history: only the latest is likely to be useful. Pro users will be using version control anyway.
@@ -262,7 +262,7 @@ namespace EddiSpeechResponder
 
             if (filename != DEFAULT_PATH)
             {
-                string json = JsonConvert.SerializeObject(this, Formatting.Indented);
+                var json = JsonConvert.SerializeObject(this, Formatting.Indented);
                 Files.Write(filename, json);
             }
         }
@@ -332,20 +332,20 @@ namespace EddiSpeechResponder
         public Personality Copy(string name, string description)
         {
             // Tidy the name up to avoid bad characters
-            string regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
-            Regex r = new Regex(string.Format("[{0}]", Regex.Escape(regexSearch)));
+            var regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+            var r = new Regex(string.Format("[{0}]", Regex.Escape(regexSearch)));
             name = r.Replace(name, "");
 
             // Save a copy of this personality
-            string iname = name.ToLowerInvariant();
-            string copyPath = Constants.DATA_DIR + @"\personalities\" + iname + ".json";
+            var iname = name.ToLowerInvariant();
+            var copyPath = Constants.DATA_DIR + @"\personalities\" + iname + ".json";
             // Ensure it doesn't exist
             if (!File.Exists(copyPath))
             {
                 ToFile(copyPath);
             }
             // Load the personality back in
-            Personality newPersonality = FromFile(copyPath);
+            var newPersonality = FromFile(copyPath);
             // Change its name and description and save it back out again
             newPersonality.Name = name;
             newPersonality.Description = description;
@@ -452,7 +452,7 @@ namespace EddiSpeechResponder
 
         public static Script UpgradeScript(Script personalityScript, Script defaultScript)
         {
-            Script script = personalityScript ?? defaultScript;
+            var script = personalityScript ?? defaultScript;
             if (script != null)
             {
                 if (defaultScript != null)

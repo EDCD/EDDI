@@ -6,7 +6,7 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class MissionsEvent : Event
+    public class MissionsEvent ( DateTime timestamp, List<Mission> missions ) : Event( timestamp, NAME )
     {
         public const string NAME = "Missions";
         public const string DESCRIPTION = "Triggered at startup, with basic information of the Mission Log";
@@ -14,12 +14,7 @@ namespace EddiEvents
 
         // Not intended to be user facing
 
-        public List<Mission> missions { get; private set; }
-
-        public MissionsEvent(DateTime timestamp, List<Mission> missions) : base(timestamp, NAME)
-        {
-            this.missions = missions;
-        }
+        public List<Mission> missions { get; private set; } = missions;
 
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {

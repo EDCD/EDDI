@@ -52,13 +52,13 @@ namespace EddiEvents
         {
             if (contributiontype == "Commodity")
             {
-                CommodityDefinition definition = commodityAmount?.commodityDefinition;
+                var definition = commodityAmount?.commodityDefinition;
                 contribution = definition?.localizedName;
                 category = definition?.Category?.localizedName;
             }
             else if (contributiontype == "Materials")
             {
-                Material definition = Material.FromEDName(materialAmount?.edname);
+                var definition = Material.FromEDName(materialAmount?.edname);
                 contribution = definition?.localizedName;
                 category = definition?.Category?.localizedName;
             }

@@ -33,7 +33,7 @@ namespace EddiDataDefinitions
             get => Allegiance?.invariantName ?? Superpower.None.invariantName;
             set
             {
-                Superpower aDef = Superpower.FromName(value);
+                var aDef = Superpower.FromName(value);
                 this.Allegiance = aDef;
             }
         }
@@ -107,9 +107,9 @@ namespace EddiDataDefinitions
             }
         }
 
-        public List<string> factionSystems { get; set; } = new();
-        public List<string> interstellarBountyFactions { get; set; } = new();
-        public List<FactionReport> factionReports { get; set; } = new();
+        public List<string> factionSystems { get; set; } = [ ];
+        public List<string> interstellarBountyFactions { get; set; } = [ ];
+        public List<FactionReport> factionReports { get; set; } = [ ];
 
         [JsonIgnore]
         private string _faction;

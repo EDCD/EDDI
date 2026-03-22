@@ -6,39 +6,35 @@ using Utilities;
 
 namespace EddiDataDefinitions
 {
-    public class ShipyardInfo
+    public class ShipyardInfo (
+        DateTime timestamp,
+        long marketId,
+        string stationName,
+        string starSystem,
+        bool horizons,
+        bool allowCobraMkIv,
+        List<ShipyardInfoItem> priceList )
     {
         [JsonProperty]
-        public DateTime timestamp { get; }
+        public DateTime timestamp { get; } = timestamp;
 
         [JsonProperty]
-        public long MarketID { get; }
+        public long MarketID { get; } = marketId;
 
         [JsonProperty]
-        public string StationName { get; }
+        public string StationName { get; } = stationName;
 
         [JsonProperty]
-        public string StarSystem { get; }
+        public string StarSystem { get; } = starSystem;
 
         [JsonProperty]
-        public bool Horizons { get; }
+        public bool Horizons { get; } = horizons;
 
         [JsonProperty]
-        public bool AllowCobraMkIV { get; }
+        public bool AllowCobraMkIV { get; } = allowCobraMkIv;
 
         [JsonProperty]
-        public List<ShipyardInfoItem> PriceList { get; }
-
-        public ShipyardInfo(DateTime timestamp, long marketID, string stationName, string starSystem, bool horizons, bool allowCobraMkIV, List<ShipyardInfoItem> priceList)
-        {
-            this.timestamp = timestamp;
-            MarketID = marketID;
-            StationName = stationName;
-            StarSystem = starSystem;
-            Horizons = horizons;
-            AllowCobraMkIV = allowCobraMkIV;
-            PriceList = priceList ?? new List<ShipyardInfoItem>();
-        }
+        public List<ShipyardInfoItem> PriceList { get; } = priceList ?? [ ];
 
         [ UsedImplicitly ]
         public static bool TryFromFile ( DateTime journalTimeStamp, 

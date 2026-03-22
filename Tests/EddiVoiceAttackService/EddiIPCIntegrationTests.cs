@@ -2,10 +2,10 @@
 
 using EddiIPC_Service.Messages;
 using EddiIPC_Service.Server;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests.EddiVoiceAttackService
 {
@@ -18,6 +18,9 @@ namespace Tests.EddiVoiceAttackService
     {
         private string? _testConfigDir;
 
+        // ReSharper disable once MemberCanBePrivate.Global
+        public TestContext TestContext { get; set; } = null!;
+        
         [TestInitialize]
         public void Setup()
         {
@@ -44,31 +47,31 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        [Timeout(5000)]
+        [Timeout(5000, CooperativeCancellation = true )]
         public async Task IPCServer_CanBeInitialized()
         {
             // Arrange
             var server = new IPCServer();
 
             // Act
-            await server.StartAsync();
+            await server.StartAsync( TestContext.CancellationToken );
 
             // Assert
             Assert.IsTrue(server.IsRunning, "Server should be running");
-            Assert.IsTrue(server.Port > 0, "Server port should be assigned");
-            Assert.IsTrue(server.Port >= 12345 && server.Port <= 12450, "Port should be in valid range");
+            Assert.IsGreaterThan(0, server.Port, "Server port should be assigned");
+            Assert.IsTrue(server.Port is >= 12345 and <= 12450, "Port should be in valid range");
 
             // Cleanup
-            await server.StopAsync();
+            await server.StopAsync( TestContext.CancellationToken );
         }
 
         [TestMethod]
-        [Timeout(5000)]
+        [Timeout(5000, CooperativeCancellation = true )]
         public async Task DefaultEventHandler_CanBeCreated()
         {
             // Arrange
             var server = new IPCServer();
-            await server.StartAsync();
+            await server.StartAsync( TestContext.CancellationToken );
 
             // Act
             var handler = new DefaultServerEventHandler(server);
@@ -77,16 +80,16 @@ namespace Tests.EddiVoiceAttackService
             Assert.IsNotNull(handler, "Handler should be created successfully");
 
             // Cleanup
-            await server.StopAsync();
+            await server.StopAsync( TestContext.CancellationToken );
         }
 
         [TestMethod]
-        [Timeout(5000)]
+        [Timeout(5000, CooperativeCancellation = true )]
         public async Task Handlers_CanBeRegistered()
         {
             // Arrange
             var server = new IPCServer();
-            await server.StartAsync();
+            await server.StartAsync( TestContext.CancellationToken );
             var handler = new DefaultServerEventHandler(server);
             var router = server.Router;
 
@@ -101,16 +104,16 @@ namespace Tests.EddiVoiceAttackService
             Assert.IsTrue(router.HasHandlers(MessageTypes.Command), "Command handler should be registered");
 
             // Cleanup
-            await server.StopAsync();
+            await server.StopAsync( TestContext.CancellationToken );
         }
 
         [TestMethod]
-        [Timeout(5000)]
+        [Timeout(5000, CooperativeCancellation = true )]
         public async Task BroadcastEventAsync_CanBeCalled()
         {
             // Arrange
             var server = new IPCServer();
-            await server.StartAsync();
+            await server.StartAsync( TestContext.CancellationToken );
             var handler = new DefaultServerEventHandler(server);
             var eventMessage = MessageEnvelope.Create(MessageTypes.Event,
                 new EventData { EventType = "LocationChanged", EventName = "Location" });
@@ -122,34 +125,34 @@ namespace Tests.EddiVoiceAttackService
             // If no exception is thrown, broadcasting works
 
             // Cleanup
-            await server.StopAsync();
+            await server.StopAsync( TestContext.CancellationToken );
         }
 
         [TestMethod]
-        [Timeout(5000)]
+        [Timeout(5000, CooperativeCancellation = true )]
         public async Task ServerLifecycle_StartStop_Works()
         {
             // Arrange
             var server = new IPCServer();
 
             // Act - Start
-            await server.StartAsync();
+            await server.StartAsync( TestContext.CancellationToken );
             Assert.IsTrue(server.IsRunning, "Server should be running after start");
 
             // Act - Stop
-            await server.StopAsync();
+            await server.StopAsync( TestContext.CancellationToken );
             Assert.IsFalse(server.IsRunning, "Server should not be running after stop");
 
             // Assert - Try to start again
-            await server.StartAsync();
+            await server.StartAsync( TestContext.CancellationToken );
             Assert.IsTrue(server.IsRunning, "Server should restart successfully");
 
             // Cleanup
-            await server.StopAsync();
+            await server.StopAsync( TestContext.CancellationToken );
         }
 
         [TestMethod]
-        [Timeout(5000)]
+        [Timeout(5000, CooperativeCancellation = true )]
         public async Task MultipleServers_CanRunConcurrently()
         {
             // Arrange
@@ -157,8 +160,8 @@ namespace Tests.EddiVoiceAttackService
             var server2 = new IPCServer();
 
             // Act
-            await server1.StartAsync();
-            await server2.StartAsync();
+            await server1.StartAsync( TestContext.CancellationToken );
+            await server2.StartAsync( TestContext.CancellationToken );
 
             // Assert
             Assert.IsTrue(server1.IsRunning, "Server 1 should be running");
@@ -166,17 +169,17 @@ namespace Tests.EddiVoiceAttackService
             Assert.AreNotEqual(server1.Port, server2.Port, "Servers should use different ports");
 
             // Cleanup
-            await server1.StopAsync();
-            await server2.StopAsync();
+            await server1.StopAsync( TestContext.CancellationToken );
+            await server2.StopAsync( TestContext.CancellationToken );
         }
 
         [TestMethod]
-        [Timeout(5000)]
+        [Timeout(5000, CooperativeCancellation = true )]
         public async Task HandleConnectAsync_SendsAcknowledgment()
         {
             // Arrange
             var server = new IPCServer();
-            await server.StartAsync();
+            await server.StartAsync( TestContext.CancellationToken );
 
             var handler = new DefaultServerEventHandler(server);
             var connectMessage = MessageEnvelope.Create(MessageTypes.Connect,
@@ -193,9 +196,9 @@ namespace Tests.EddiVoiceAttackService
             dummyClient.Start();
             var port = ((System.Net.IPEndPoint)dummyClient.LocalEndpoint).Port;
 
-            var acceptTask = dummyClient.AcceptTcpClientAsync();
+            var acceptTask = dummyClient.AcceptTcpClientAsync(TestContext.CancellationToken);
             var testClient = new System.Net.Sockets.TcpClient();
-            await testClient.ConnectAsync(System.Net.IPAddress.Loopback, port);
+            await testClient.ConnectAsync(System.Net.IPAddress.Loopback, port, TestContext.CancellationToken );
             var acceptedClient = await acceptTask.ConfigureAwait(false);
             dummyClient.Stop();
 
@@ -207,37 +210,37 @@ namespace Tests.EddiVoiceAttackService
             // Cleanup
             acceptedClient.Dispose();
             context.Dispose();
-            await server.StopAsync();
+            await server.StopAsync( TestContext.CancellationToken );
         }
 
         [TestMethod]
-        [Timeout(5000)]
+        [Timeout(5000, CooperativeCancellation = true )]
         public async Task StartAsync_BeginsAcceptingConnectionsImmediately()
         {
             // Arrange
             var server = new IPCServer();
-            await server.StartAsync();
+            await server.StartAsync( TestContext.CancellationToken );
 
             var client = new System.Net.Sockets.TcpClient();
 
             try
             {
                 // Act
-                await client.ConnectAsync(System.Net.IPAddress.Loopback, server.Port);
+                await client.ConnectAsync(System.Net.IPAddress.Loopback, server.Port, TestContext.CancellationToken );
 
                 // Assert
                 var deadline = DateTime.UtcNow.AddSeconds(1);
                 while (DateTime.UtcNow < deadline && server.ConnectionCount == 0)
                 {
-                    await Task.Delay(25);
+                    await Task.Delay(25, TestContext.CancellationToken );
                 }
 
-                Assert.IsTrue(server.ConnectionCount > 0, "Server should accept client connections immediately after startup.");
+                Assert.IsGreaterThan(0, server.ConnectionCount, "Server should accept client connections immediately after startup.");
             }
             finally
             {
                 client.Dispose();
-                await server.StopAsync();
+                await server.StopAsync( TestContext.CancellationToken );
             }
         }
     }

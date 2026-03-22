@@ -90,7 +90,7 @@ namespace EddiNavigationService
         public object Convert(object value, Type targetType, object parameter,
             System.Globalization.CultureInfo culture)
         {
-            if (value is null || value is "") { return value; }
+            if (value is null or "") { return value; }
             return ((QueryGroup)value).LocalizedName();
         }
 

@@ -16,11 +16,6 @@ namespace EddiDataDefinitions
         [JsonProperty("CarrierID")]
         public string callsign { get; set; }
 
-        public List<FCMaterialInfoItem> Items { get; }
-
-        public FCMaterialsInfo()
-        {
-            Items = new List<FCMaterialInfoItem>();
-        }
+        public List<FCMaterialInfoItem> Items { get; } = [ ];
     }
 }

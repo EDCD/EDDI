@@ -30,7 +30,7 @@ namespace Tests
 
         private static readonly StarSystemSqLiteRepository fakeStarSystemRepository = StarSystemSqLiteRepository.Create( true );
 
-        internal void MakeSafe()
+        internal static void MakeSafe()
         {
             // Prevent telemetry data from being reported based on test results
             Utilities.TelemetryService.Telemetry.TelemetryEnabled = false;
@@ -39,18 +39,18 @@ namespace Tests
             Utilities.Files.unitTesting = true;
             ConfigService.unitTesting = true;
             CompanionAppService.unitTesting = true;
-            DataProviderService.unitTesting = true;
 
             // Set ourselves as in a beta game session to stop automatic sending of data to remote systems
             EDDI.Instance.gameIsBeta = true;
         }
 
-        internal DataProviderService CreateTestDataProvider ()
+        internal static DataProviderService CreateTestDataProvider ()
         {
             return DataProviderService.Create( 
                 fakeEdsmService, 
                 fakeSpanshService,
-                fakeStarSystemRepository
+                fakeStarSystemRepository, 
+                true
                 );
         }
 

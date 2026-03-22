@@ -497,7 +497,7 @@ namespace EddiDataDefinitions
 
         /// <summary>The Commander's friends</summary>
         [PublicAPI]
-        public List<Friend> friends = new();
+        public List<Friend> friends = [ ];
 
         /// <summary>The Commander's status and progress with the various engineers</summary>
         [PublicAPI]
@@ -560,7 +560,7 @@ namespace EddiDataDefinitions
 
         public string SpokenName()
         {
-            string spokenName = string.Empty;
+            var spokenName = string.Empty;
             if (!string.IsNullOrWhiteSpace(phoneticName))
             {
                 spokenName = "<phoneme alphabet=\"ipa\" ph=\"" + phoneticName + "\">" + name + "</phoneme>";

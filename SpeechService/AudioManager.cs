@@ -11,7 +11,6 @@ namespace EddiSpeechService
     {
         private static readonly object activeAudioLock = new();
         private readonly ConcurrentDictionary<IWavePlayer, CancellationTokenSource> activeAudioTS = new();
-        private readonly SoundManager SoundManager;
         
         public bool eddiAudioPlaying
         {
@@ -24,15 +23,10 @@ namespace EddiSpeechService
             }
         }
 
-        public AudioManager ( SoundManager soundManager )
-        {
-            this.SoundManager = soundManager;
-        }
-
         public async Task PlayAudioAsync ( string fileName, decimal? volumeOverride )
         {
             var absolutePath = Files.GetAbsoluteFilePath( Constants.DATA_DIR, fileName );
-            using ( var audioSource = new AudioFileReader( absolutePath ) )
+            await using ( var audioSource = new AudioFileReader( absolutePath ) )
             using ( var soundOut = SoundManager.GetSoundOut( audioSource ) )
             {
                 if ( soundOut == null )

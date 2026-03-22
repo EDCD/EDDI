@@ -27,7 +27,6 @@ namespace EddiIPC_Service.Client
         private NetworkStream? _networkStream;
         private CancellationTokenSource? _cancellationTokenSource;
         private Task? _receiveLoopTask;
-        private bool _isConnected;
         private bool _disposed;
 
         // Request/response correlation tracking
@@ -43,7 +42,7 @@ namespace EddiIPC_Service.Client
         private DateTime _lastActivityAt;
         private readonly List<long> _responseTimes = [ ];
 
-        public bool IsConnected => _isConnected;
+        public bool IsConnected { get; private set; }
 
         public event EventHandler<MessageReceivedEventArgs>? MessageReceived;
         public event EventHandler<ConnectionLostEventArgs>? ConnectionLost;
@@ -53,7 +52,7 @@ namespace EddiIPC_Service.Client
         /// </summary>
         public async Task ConnectAsync ( string host, int port, CancellationToken cancellationToken = default )
         {
-            if ( _isConnected )
+            if ( IsConnected )
             {
                 throw new InvalidOperationException( "Client is already connected" );
             }
@@ -69,7 +68,7 @@ namespace EddiIPC_Service.Client
                 }
 
                 _networkStream = _tcpClient.GetStream();
-                _isConnected = true;
+                IsConnected = true;
                 _serverAddress = host;
                 _serverPort = port;
                 _sessionId = Guid.NewGuid().ToString();
@@ -89,7 +88,7 @@ namespace EddiIPC_Service.Client
             }
             catch ( Exception )
             {
-                _isConnected = false;
+                IsConnected = false;
                 _tcpClient?.Dispose();
                 _tcpClient = null;
                 _networkStream?.Dispose();
@@ -103,7 +102,7 @@ namespace EddiIPC_Service.Client
         /// </summary>
         public async Task DisconnectAsync ( CancellationToken cancellationToken = default )
         {
-            if ( !_isConnected )
+            if ( !IsConnected )
             {
                 return;
             }
@@ -123,7 +122,7 @@ namespace EddiIPC_Service.Client
                     }
                 }
 
-                _isConnected = false;
+                IsConnected = false;
 
                 // Stop receive loop
                 if ( _cancellationTokenSource != null )
@@ -155,15 +154,11 @@ namespace EddiIPC_Service.Client
             CancellationToken cancellationToken = default )
             where TResponse : class
         {
-            if ( !_isConnected )
+            if ( !IsConnected )
             {
                 throw new InvalidOperationException( "Client is not connected to IPC server" );
             }
-
-            if ( command == null )
-            {
-                throw new ArgumentNullException( nameof(command) );
-            }
+            ArgumentNullException.ThrowIfNull( command );
 
             var requestId = Guid.NewGuid().ToString( "D" );
             var envelope = MessageEnvelope.Create( MessageTypes.Command, command, requestId );
@@ -218,15 +213,11 @@ namespace EddiIPC_Service.Client
         /// </summary>
         public async Task SendEventAsync ( EventData eventData, CancellationToken cancellationToken = default )
         {
-            if ( !_isConnected )
+            if ( !IsConnected )
             {
                 throw new InvalidOperationException( "Client is not connected to IPC server" );
             }
-
-            if ( eventData == null )
-            {
-                throw new ArgumentNullException( nameof(eventData) );
-            }
+            ArgumentNullException.ThrowIfNull( eventData );
 
             var envelope = MessageEnvelope.Create( MessageTypes.Event, eventData );
 
@@ -247,11 +238,11 @@ namespace EddiIPC_Service.Client
         {
             return await Task.FromResult( new ConnectionStatus
             {
-                IsConnected = _isConnected,
+                IsConnected = IsConnected,
                 ServerAddress = _serverAddress,
                 ServerPort = _serverPort,
                 SessionId = _sessionId,
-                ConnectedAt = _isConnected ? _connectedAt : null,
+                ConnectedAt = IsConnected ? _connectedAt : null,
                 MessagesSent = _messagesSent,
                 MessagesReceived = _messagesReceived,
                 LastActivityAt = _lastActivityAt,
@@ -302,7 +293,7 @@ namespace EddiIPC_Service.Client
                 try
                 {
                     rentedBuffer = ArrayPool<byte>.Shared.Rent( serialized.Length * 2 );
-                    int bytesWritten = Encoding.UTF8.GetBytes( serialized, 0, serialized.Length, rentedBuffer, 0 );
+                    var bytesWritten = Encoding.UTF8.GetBytes( serialized, 0, serialized.Length, rentedBuffer, 0 );
 
                     // Write data (includes length prefix and JSON)
                     await _networkStream.WriteAsync( rentedBuffer, 0, bytesWritten, cancellationToken ).ConfigureAwait( false );
@@ -321,7 +312,7 @@ namespace EddiIPC_Service.Client
             }
             catch ( Exception )
             {
-                _isConnected = false;
+                IsConnected = false;
                 throw;
             }
         }
@@ -333,7 +324,7 @@ namespace EddiIPC_Service.Client
                 return;
             }
 
-            byte[] rentedBuffer = ArrayPool<byte>.Shared.Rent( 4096 );
+            var rentedBuffer = ArrayPool<byte>.Shared.Rent( 4096 );
             var bufferedBytes = new List<byte>( 8192 ); // Pre-allocate with typical message capacity
             try
             {
@@ -341,7 +332,7 @@ namespace EddiIPC_Service.Client
                 {
                     try
                     {
-                        int bytesRead = await _networkStream
+                        var bytesRead = await _networkStream
                             .ReadAsync( rentedBuffer, 0, 4096, cancellationToken )
                             .ConfigureAwait( false );
 
@@ -391,7 +382,7 @@ namespace EddiIPC_Service.Client
             finally
             {
                 ArrayPool<byte>.Shared.Return( rentedBuffer );
-                _isConnected = false;
+                IsConnected = false;
                 ConnectionLost?.Invoke( this, new ConnectionLostEventArgs( "Receive loop ended" ) );
             }
         }
@@ -487,7 +478,7 @@ namespace EddiIPC_Service.Client
 
             try
             {
-                if ( _isConnected )
+                if ( IsConnected )
                 {
                     DisconnectAsync().GetResultOrTimeout( TimeSpan.FromSeconds(2) );
                 }
@@ -506,7 +497,7 @@ namespace EddiIPC_Service.Client
             }
 
             _pendingRequests.Clear();
-
+            GC.SuppressFinalize(this);
             _disposed = true;
         }
 

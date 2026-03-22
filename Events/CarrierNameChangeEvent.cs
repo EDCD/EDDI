@@ -5,31 +5,28 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class CarrierNameChangeEvent : Event
+    public class CarrierNameChangeEvent (
+        DateTime timestamp,
+        long carrierId,
+        StationModel carrierType,
+        string callsign,
+        string name )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Carrier name changed";
         public const string DESCRIPTION = "Triggered when your fleet carrier’s name is changed";
         public const string SAMPLE = "{ \"timestamp\": \"2020-05-15T20:54:37Z\", \"event\": \"CarrierNameChange\", \"CarrierID\": 3700571136, \"Name\": \"GARY TOBAI\", \"Callsign\": \"G53-K3Q\" }";
 
         [PublicAPI("The callsign (alphanumeric designation) of your fleet carrier")]
-        public string callsign { get; private set; }
+        public string callsign { get; private set; } = callsign;
 
         [PublicAPI("The new name of your fleet carrier")]
-        public string name { get; private set; }
+        public string name { get; private set; } = name;
 
         [PublicAPI( "The carrier's numeric ID" )]
-        public long carrierID { get; private set; }
+        public long carrierID { get; private set; } = carrierId;
 
         [PublicAPI( "The carrier type (e.g. Fleet Carrier or Squadron Carrier), as an object with 'localizedName' and 'invariantName' properties" )]
-        public StationModel carrierType { get; private set; }
-
-        public CarrierNameChangeEvent ( DateTime timestamp, long carrierId,
-            StationModel carrierType, string callsign, string name ) : base(timestamp, NAME)
-        {
-            this.carrierID = carrierId;
-            this.carrierType = carrierType;
-            this.callsign = callsign;
-            this.name = name;
-        }
+        public StationModel carrierType { get; private set; } = carrierType;
     }
 }

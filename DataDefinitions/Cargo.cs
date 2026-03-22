@@ -146,7 +146,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        [PublicAPI, Obsolete]
+        [PublicAPI, Obsolete("Please use commodityDef instead")]
         public CommodityDefinition commodity => commodityDef;
         
         [JsonExtensionData]
@@ -222,13 +222,9 @@ namespace EddiDataDefinitions
         /// <param name="acquistionAmount">The amount of cargo to add</param>
         public void AddDetailedQty ( ulong missionID, int acquistionAmount )
         {
-            if ( missionCargo.ContainsKey( missionID ) )
+            if ( !missionCargo.TryAdd( missionID, acquistionAmount ) )
             {
                 missionCargo[ missionID ] += acquistionAmount;
-            }
-            else
-            {
-                missionCargo.Add( missionID, acquistionAmount );
             }
             haulage = missionCargo.Values.Sum();
         }

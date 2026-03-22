@@ -20,7 +20,7 @@ namespace Tests
             MakeSafe();
         }
 
-        private string Render ( string template, Dictionary<Value, Value> vars )
+        private static string Render ( string template, Dictionary<Value, Value> vars )
         {
             var document = Document.CreateDefault( template ).DocumentOrThrow;
             var store = Context.CreateBuiltin( vars );
@@ -78,17 +78,17 @@ namespace Tests
             {
                 results.Add(Render(template, vars).Trim());
             }
-            Assert.IsTrue(results.Contains(@"The letter is a."));
+            Assert.Contains( @"The letter is a.", results );
             results.RemoveAll(result => result == @"The letter is a.");
-            Assert.IsTrue(results.Contains(@"The letter is b."));
+            Assert.Contains( @"The letter is b.", results );
             results.RemoveAll(result => result == @"The letter is b.");
-            Assert.IsTrue(results.Contains(@"The letter is c."));
+            Assert.Contains( @"The letter is c.", results );
             results.RemoveAll(result => result == @"The letter is c.");
-            Assert.IsTrue(results.Contains(@"The letter is d."));
+            Assert.Contains( @"The letter is d.", results );
             results.RemoveAll(result => result == @"The letter is d.");
-            Assert.IsTrue(results.Contains(@"The letter is ."));
+            Assert.Contains( @"The letter is .", results );
             results.RemoveAll(result => result == @"The letter is .");
-            Assert.AreEqual(0, results.Count);
+            Assert.IsEmpty(results);
         }
 
         [TestMethod]
@@ -147,13 +147,13 @@ namespace Tests
             {
                 results.Add(resolver.resolveFromName("test", dict, true));
             }
-            Assert.IsTrue(results.Contains(@"The letter is a."));
+            Assert.Contains( @"The letter is a.", results );
             results.RemoveAll(result => result == @"The letter is a.");
-            Assert.IsTrue(results.Contains(@"The letter is b."));
+            Assert.Contains( @"The letter is b.", results);
             results.RemoveAll(result => result == @"The letter is b.");
-            Assert.IsTrue(results.Contains(@"The letter is c."));
+            Assert.Contains( @"The letter is c.", results );
             results.RemoveAll(result => result == @"The letter is c.");
-            Assert.AreEqual(0, results.Count);
+            Assert.IsEmpty(results);
         }
 
         [TestMethod]
@@ -273,15 +273,12 @@ namespace Tests
             Assert.AreEqual(expectedOutout, combinedTemplates);
 
             // Verify that error locations are captured correctly
-            try
+            if ( flaw_start != "" || flaw_end != "" )
             {
-                Render( combinedTemplates, new Dictionary<Value, Value>() );
-            }
-            catch ( Cottle.Exceptions.ParseException e )
-            {
+                var e = Assert.ThrowsExactly<Cottle.Exceptions.ParseException>( () => Render( combinedTemplates, new Dictionary<Value, Value>() ) );
                 templateBuilder.FetchTemplateItemFromOffset( combinedTemplates, e.LocationStart, out var scriptName, out var scriptLine );
-                Assert.AreEqual(flawedTemplateNumber.ToString(), scriptName);
-                Assert.AreEqual(flawedTemplateLine, scriptLine);
+                Assert.AreEqual( flawedTemplateNumber.ToString(), scriptName );
+                Assert.AreEqual( flawedTemplateLine, scriptLine );
             }
         }
     }

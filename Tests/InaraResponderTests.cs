@@ -217,7 +217,7 @@ namespace Tests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Count);
+            Assert.HasCount( 1, result);
             Assert.AreEqual("Slot01", result["slotName"]);
         }
 
@@ -382,7 +382,7 @@ namespace Tests
 
             // Assert
             Assert.IsTrue(task.IsCompleted && !task.IsFaulted );
-            Assert.IsTrue(fakeInaraService.EnqueuedEvents.Count > 0);
+            Assert.IsNotEmpty( fakeInaraService.EnqueuedEvents );
         }
 
         [TestMethod]
@@ -404,7 +404,7 @@ namespace Tests
 
             // Assert
             Assert.IsTrue(task.IsCompleted && !task.IsFaulted );
-            Assert.IsTrue(fakeInaraService.EnqueuedEvents.Count > 0);
+            Assert.IsNotEmpty( fakeInaraService.EnqueuedEvents );
         }
         
         #endregion

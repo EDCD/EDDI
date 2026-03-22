@@ -56,8 +56,8 @@ namespace EddiDataDefinitions
                 return null;
             }
 
-            string tidiedName = edName.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", "");
-            return AllOfThem.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedName);
+            var tidiedName = edName.Replace(" ", "").Replace(".", "").Replace("-", "");
+            return AllOfThem.FirstOrDefault(v => string.Equals( v.edname, tidiedName, StringComparison.OrdinalIgnoreCase ) );
         }
 
         public static new Power FromName ( string name )

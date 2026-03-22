@@ -352,7 +352,7 @@ namespace EddiVoiceAttackResponder
                     setShipModuleValues(ship?.sensors, prefix + " sensors" );
                     setShipModuleValues(ship?.fueltank, prefix + " fuel tank" );
 
-                    if (EDDI.Instance.CurrentStation?.outfitting.Any() ?? false)
+                    if ( EDDI.Instance.CurrentStation is not null && EDDI.Instance.CurrentStation.outfitting.Count > 0 )
                     {
                         var stationOutfitting = EDDI.Instance.CurrentStation?.outfitting.ToList();
                         setShipModuleOutfittingValues(ship?.lifesupport, stationOutfitting, prefix + " life support" );
@@ -522,7 +522,7 @@ namespace EddiVoiceAttackResponder
                     RuntimeSetDecimal(prefix + " distance from home", system?.distancefromhome);
                     RuntimeSetInt(prefix + " visits", system?.visits);
                     RuntimeSetDate(prefix + " previous visit", system?.visits > 1 ? system.lastvisit : null);
-                    RuntimeSetDecimal(prefix + " minutes since previous visit", system?.visits > 1 && system.lastvisit.HasValue 
+                    RuntimeSetDecimal(prefix + " minutes since previous visit", system != null && system.visits > 1 && system.lastvisit is not null 
                         ? (long)(DateTime.UtcNow - system.lastvisit.Value).TotalMinutes 
                         : (decimal?)null);
                     RuntimeSetDecimal(prefix + " population", system?.population);
@@ -561,7 +561,7 @@ namespace EddiVoiceAttackResponder
                         RuntimeSetInt(prefix + " planetary settlements", system.stations.Count(s => s.IsPlanetarySettlement()));
 
                         Body primaryBody = null;
-                        if (system.bodies != null && system.bodies.Count > 0)
+                        if (system.bodies is { } list && list.Count > 0 )
                         {
                             primaryBody = system.bodies[0].distance == 0 ? system.bodies[0] : null;
                         }
@@ -884,7 +884,7 @@ namespace EddiVoiceAttackResponder
             }
 
             batch.Depth++;
-            var shouldFlush = false;
+            bool shouldFlush;
             try
             {
                 action();

@@ -32,7 +32,7 @@ namespace Tests
             var station = FrontierApiStation.FromJson(null, json);
             var actualModules = station.outfitting;
 
-            Assert.AreEqual(165, actualModules.Count);
+            Assert.HasCount( 165, actualModules);
             foreach (var expectedModule in incompleteExpectedModules)
             {
                 foreach (var actualModule in actualModules)
@@ -67,7 +67,7 @@ namespace Tests
             var station = FrontierApiStation.FromJson(null, json);
             var actualShips = station.ships;
 
-            Assert.AreEqual(expectedShips.Count, actualShips.Count);
+            Assert.HasCount( expectedShips.Count, actualShips);
             foreach (var expectedShip in expectedShips)
             {
                 foreach (var actualShip in actualShips)
@@ -200,7 +200,7 @@ namespace Tests
             // Test commodities separately to minimize redundant data entry
             var incompleteExpectedCommodities = expectedStation.eddnCommodityMarketQuotes;
             var actualCommodities = actualStation.eddnCommodityMarketQuotes;
-            Assert.AreEqual(117, actualCommodities.Count);
+            Assert.HasCount( 117, actualCommodities );
             foreach (var expectedCommodity in incompleteExpectedCommodities)
             {
                 foreach (var actualCommodity in actualCommodities)
@@ -261,7 +261,7 @@ namespace Tests
                 StationService.FromEDName("shop"),
                 StationService.FromEDName("engineer"),
             }));
-            Assert.AreEqual(117, updatedStation.commodities.Count);
+            Assert.HasCount( 117, updatedStation.commodities);
             Assert.IsTrue(new CommodityMarketQuote(CommodityDefinition.FromEDName("Tritium")) 
             { 
                 buyprice = 41179, 
@@ -273,7 +273,7 @@ namespace Tests
                 StatusFlags = [ "Producer" ]
             }.DeepEquals(updatedStation.commodities.FirstOrDefault(c => c.EliteID == 128961249)));
             Assert.AreEqual(42558, CommodityDefinition.FromEDName("Tritium")?.avgprice); 
-            Assert.AreEqual(6, updatedStation.prohibited.Count);
+            Assert.HasCount( 6, updatedStation.prohibited);
             Assert.IsTrue(CommodityDefinition.FromEDName("Tobacco").DeepEquals(updatedStation.prohibited.FirstOrDefault(p => p.EliteID == 128049213)));
             Assert.AreEqual(Dates.fromDateTimeToSeconds(marketTimestamp), updatedStation.commoditiesupdatedat);
         }

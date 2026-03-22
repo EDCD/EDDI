@@ -12,7 +12,7 @@ namespace EddiEddnResponder.Schemas
     {
         public List<string> edTypes => [ "DockingGranted" ];
 
-        public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
+        public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState, EDDNSender eddnSender )
         {
             try
             {
@@ -25,7 +25,7 @@ namespace EddiEddnResponder.Schemas
                 // Apply data augments
                 data = eddnState.GameVersion.AugmentVersion(data);
 
-                EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/dockinggranted/1", data, eddnState);
+                eddnSender.SendToEDDN("https://eddn.edcd.io/schemas/dockinggranted/1", data, eddnState);
                 return true;
             }
             catch (Exception e)

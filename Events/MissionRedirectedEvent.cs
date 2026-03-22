@@ -4,38 +4,36 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class MissionRedirectedEvent : Event
+    public class MissionRedirectedEvent (
+        DateTime timestamp,
+        ulong missionid,
+        string name,
+        string newdestinationstation,
+        string olddestinationstation,
+        string newdestinationsystem,
+        string olddestinationsystem )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Mission redirected";
         public const string DESCRIPTION = "Triggered when a mission is redirected";
         public const string SAMPLE = "{ \"timestamp\": \"2017-08-01T09:04:07Z\", \"event\": \"MissionRedirected\", \"MissionID\": 65367315, \"Name\":\"Mission_Courier\", \"NewDestinationStation\": \"Metcalf Orbital\", \"OldDestinationStation\": \"Cuffey Orbital\", \"NewDestinationSystem\": \"Cemiess\", \"OldDestinationSystem\": \"Vequess\" }";
 
         [PublicAPI("The ID of the mission")]
-        public ulong missionid { get; private set; }
+        public ulong missionid { get; private set; } = missionid;
 
         [PublicAPI("The name of the mission")]
-        public string name { get; private set; }
+        public string name { get; private set; } = name;
 
         [PublicAPI("The new destination station for the mission")]
-        public string newdestinationstation { get; private set; }
+        public string newdestinationstation { get; private set; } = newdestinationstation;
 
         [PublicAPI("The old destination station for the mission")]
-        public string olddestinationstation { get; private set; }
+        public string olddestinationstation { get; private set; } = olddestinationstation;
 
         [PublicAPI("The new destination system for the mission")]
-        public string newdestinationsystem { get; private set; }
+        public string newdestinationsystem { get; private set; } = newdestinationsystem;
 
         [PublicAPI("The old destination system for the mission")]
-        public string olddestinationsystem { get; private set; }
-
-        public MissionRedirectedEvent(DateTime timestamp, ulong missionid, string name, string newdestinationstation, string olddestinationstation, string newdestinationsystem, string olddestinationsystem) : base(timestamp, NAME)
-        {
-            this.missionid = missionid;
-            this.name = name;
-            this.newdestinationstation = newdestinationstation;
-            this.olddestinationstation = olddestinationstation;
-            this.newdestinationsystem = newdestinationsystem;
-            this.olddestinationsystem = olddestinationsystem;
-        }
+        public string olddestinationsystem { get; private set; } = olddestinationsystem;
     }
 }

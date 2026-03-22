@@ -22,26 +22,20 @@ namespace EddiNavigationMonitor
 
         private void SelectionCheckboxChecked(object sender, RoutedEventArgs e)
         {
-            if (sender is CheckBox checkBox)
+            if (sender is CheckBox box && box.DataContext is NavBookmark bookmark )
             {
-                if (checkBox.DataContext is NavBookmark bookmark)
+                if (!SelectedBookmarks.Contains(bookmark))
                 {
-                    if (!SelectedBookmarks.Contains(bookmark))
-                    {
-                        SelectedBookmarks.Add(bookmark);
-                    }
+                    SelectedBookmarks.Add(bookmark);
                 }
             }
         }
 
         private void SelectionCheckboxUnchecked(object sender, RoutedEventArgs e)
         {
-            if (sender is CheckBox checkBox)
+            if (sender is CheckBox box && box.DataContext is NavBookmark bookmark )
             {
-                if (checkBox.DataContext is NavBookmark bookmark)
-                {
-                    SelectedBookmarks.Remove( bookmark );
-                }
+                SelectedBookmarks.Remove( bookmark );
             }
         }
 

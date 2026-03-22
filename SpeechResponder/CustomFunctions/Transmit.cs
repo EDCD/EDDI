@@ -7,7 +7,9 @@ using System.Collections.Generic;
 namespace EddiSpeechResponder.CustomFunctions
 {
     [UsedImplicitly]
-    public class Transmit : RecursiveFunction, ICustomFunction
+    [ method: UsedImplicitly]
+    public class Transmit ( IContext context, Dictionary<string, Script> scripts )
+        : RecursiveFunction( context, scripts ), ICustomFunction
     {
         public string name => "Transmit";
         public FunctionCategory Category => FunctionCategory.Phonetic;
@@ -22,9 +24,5 @@ namespace EddiSpeechResponder.CustomFunctions
             }
             return "The Transmit function is used improperly. Please review the documentation for correct usage.";
         });
-
-        [UsedImplicitly]
-        public Transmit ( IContext context, Dictionary<string, Script> scripts ) : base( context, scripts )
-        { }
     }
 }

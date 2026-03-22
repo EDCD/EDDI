@@ -127,7 +127,7 @@ namespace EddiGalnetMonitor
                         cmd.CommandText = SELECT_BY_UUID_SQL;
                         cmd.Prepare();
                         cmd.Parameters.AddWithValue("@uuid", uuid);
-                        using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                        using (var rdr = cmd.ExecuteReader())
                         {
                             if (rdr.Read())
                             {
@@ -180,7 +180,7 @@ namespace EddiGalnetMonitor
                         }
                         cmd.Prepare();
                         cmd.Parameters.AddWithValue("@category", category);
-                        using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                        using (var rdr = cmd.ExecuteReader())
                         {
                             while (rdr.Read())
                             {
@@ -211,7 +211,7 @@ namespace EddiGalnetMonitor
             lock (insertLock)
             {
                 // Before we insert we attempt to fetch to ensure that we don't have it present
-                News existingNews = GetArticle(news.id);
+                var existingNews = GetArticle(news.id);
                 if (existingNews == null)
                 {
                     Logging.Debug("Creating new news" + news.title);

@@ -20,12 +20,15 @@ namespace Tests.EddiVoiceAttackService
         private VoiceAttackPluginClient? _pluginClient;
         private string _configFilePath = string.Empty;
 
+        // ReSharper disable once MemberCanBePrivate.Global
+        public TestContext TestContext { get; set; } = null!;
+        
         [TestInitialize]
         public async Task Initialize()
         {
             // Start a real IPC server
             _server = new IPCServer();
-            await _server.StartAsync();
+            await _server.StartAsync( TestContext.CancellationToken );
 
             // Create config file for port discovery
             _configFilePath = CreateIpcConfigFile(_server.Port);
@@ -43,7 +46,7 @@ namespace Tests.EddiVoiceAttackService
                 {
                     if (_pluginClient.IsConnected)
                     {
-                        await _pluginClient.DisconnectAsync();
+                        await _pluginClient.DisconnectAsync( TestContext.CancellationToken );
                     }
                     _pluginClient.Dispose();
                 }
@@ -57,7 +60,7 @@ namespace Tests.EddiVoiceAttackService
             {
                 try
                 {
-                    await _server.StopAsync();
+                    await _server.StopAsync( TestContext.CancellationToken );
                 }
                 catch
                 {
@@ -82,7 +85,7 @@ namespace Tests.EddiVoiceAttackService
         #region Initialization Tests
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout( 15000, CooperativeCancellation = true )]
         public async Task IsConnected_InitiallyFalse()
         {
             // Arrange
@@ -93,7 +96,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout( 15000, CooperativeCancellation = true )]
         public async Task Initialize_WithValidConfigFile_Succeeds()
         {
             // Arrange
@@ -101,14 +104,14 @@ namespace Tests.EddiVoiceAttackService
             Assert.IsNotNull(_server);
 
             // Act
-            await _pluginClient.InitializeAsync();
+            await _pluginClient.InitializeAsync( TestContext.CancellationToken );
 
             // Assert
             Assert.IsTrue(_pluginClient.IsConnected);
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout( 15000, CooperativeCancellation = true )]
         public async Task Initialize_WithMissingConfigFile_ThrowsFileNotFoundException()
         {
             // Arrange
@@ -118,7 +121,7 @@ namespace Tests.EddiVoiceAttackService
             // Act & Assert
             try
             {
-                await pluginClient.InitializeAsync();
+                await pluginClient.InitializeAsync( TestContext.CancellationToken );
                 Assert.Fail("Should have thrown FileNotFoundException");
             }
             catch (FileNotFoundException)
@@ -132,7 +135,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout( 15000, CooperativeCancellation = true )]
         public async Task Initialize_WithInvalidJson_ThrowsJsonException()
         {
             // Arrange
@@ -143,10 +146,10 @@ namespace Tests.EddiVoiceAttackService
             // Act & Assert
             try
             {
-                await pluginClient.InitializeAsync();
+                await pluginClient.InitializeAsync( TestContext.CancellationToken );
                 Assert.Fail("Should have thrown exception");
             }
-            catch (Exception ex) when (ex is JsonException || ex is ArgumentException)
+            catch (Exception ex) when (ex is JsonException or ArgumentException)
             {
                 // Expected
             }
@@ -161,7 +164,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout( 15000, CooperativeCancellation = true )]
         public async Task Initialize_WithInvalidPort_ThrowsException()
         {
             // Arrange
@@ -173,7 +176,7 @@ namespace Tests.EddiVoiceAttackService
             // Act & Assert
             try
             {
-                await pluginClient.InitializeAsync();
+                await pluginClient.InitializeAsync( TestContext.CancellationToken );
                 Assert.Fail("Should have thrown exception");
             }
             catch (Exception)
@@ -191,7 +194,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout( 15000, CooperativeCancellation = true )]
         public async Task Initialize_CanBeCancelled()
         {
             // Arrange
@@ -215,7 +218,7 @@ namespace Tests.EddiVoiceAttackService
         #region Plugin Command Tests
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout( 15000, CooperativeCancellation = true )]
         public async Task SendCommandAsync_WhenNotInitialized_ThrowsInvalidOperationException()
         {
             // Arrange
@@ -225,7 +228,7 @@ namespace Tests.EddiVoiceAttackService
             // Act & Assert
             try
             {
-                await _pluginClient.SendCommandAsync("test.command", new { });
+                await _pluginClient.SendCommandAsync("test.command", new { }, TestContext.CancellationToken );
                 Assert.Fail("Should have thrown InvalidOperationException");
             }
             catch (InvalidOperationException)
@@ -235,13 +238,13 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout( 15000, CooperativeCancellation = true )]
         public async Task SendCommandAsync_WhenInitialized_SendsCommandThroughIpc()
         {
             // Arrange
             Assert.IsNotNull(_pluginClient);
             Assert.IsNotNull(_server);
-            await _pluginClient.InitializeAsync();
+            await _pluginClient.InitializeAsync( TestContext.CancellationToken );
             Assert.IsTrue(_pluginClient.IsConnected);
 
             // Act
@@ -249,7 +252,7 @@ namespace Tests.EddiVoiceAttackService
                 new CancellationTokenSource(TimeSpan.FromSeconds(5)).Token);
 
             // Give server time to receive
-            await Task.Delay(100);
+            await Task.Delay(100, TestContext.CancellationToken );
 
             // Assert
             // Task should be waiting for response
@@ -257,12 +260,12 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout(15000, CooperativeCancellation = true)]
         public async Task SendCommandAsync_WithTimeout_ThrowsOperationCanceledException()
         {
             // Arrange
             Assert.IsNotNull(_pluginClient);
-            await _pluginClient.InitializeAsync();
+            await _pluginClient.InitializeAsync( TestContext.CancellationToken );
             var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(50));
 
             // Act & Assert
@@ -278,17 +281,17 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout(15000, CooperativeCancellation = true)]
         public async Task SendCommandAsync_WithNullCommandName_ThrowsArgumentNullException()
         {
             // Arrange
             Assert.IsNotNull(_pluginClient);
-            await _pluginClient.InitializeAsync();
+            await _pluginClient.InitializeAsync( TestContext.CancellationToken );
 
             // Act & Assert
             try
             {
-                await _pluginClient.SendCommandAsync(null!, new { });
+                await _pluginClient.SendCommandAsync(null!, new { }, TestContext.CancellationToken );
                 Assert.Fail("Should have thrown ArgumentNullException");
             }
             catch (ArgumentNullException)
@@ -298,19 +301,19 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout(15000, CooperativeCancellation = true)]
         public async Task SendCommandAsync_WithNullParameters_UsesEmptyObject()
         {
             // Arrange
             Assert.IsNotNull(_pluginClient);
-            await _pluginClient.InitializeAsync();
+            await _pluginClient.InitializeAsync( TestContext.CancellationToken );
 
             // Act
             var task = _pluginClient.SendCommandAsync("test.command", null, 
                 new CancellationTokenSource(TimeSpan.FromSeconds(5)).Token);
 
             // Give server time to receive
-            await Task.Delay(100);
+            await Task.Delay(100, TestContext.CancellationToken );
 
             // Assert - should not throw
             Assert.IsFalse(task.IsCompleted);
@@ -321,7 +324,7 @@ namespace Tests.EddiVoiceAttackService
         #region Plugin Event Tests
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout( 15000, CooperativeCancellation = true )]
         public async Task SendEventAsync_WhenNotInitialized_ThrowsInvalidOperationException()
         {
             // Arrange
@@ -330,7 +333,7 @@ namespace Tests.EddiVoiceAttackService
             // Act & Assert
             try
             {
-                await _pluginClient.SendEventAsync("test.event", new { });
+                await _pluginClient.SendEventAsync("test.event", new { }, TestContext.CancellationToken );
                 Assert.Fail("Should have thrown InvalidOperationException");
             }
             catch (InvalidOperationException)
@@ -340,35 +343,35 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout( 15000, CooperativeCancellation = true )]
         public async Task SendEventAsync_WhenInitialized_SendsEventThroughIpc()
         {
             // Arrange
             Assert.IsNotNull(_pluginClient);
-            await _pluginClient.InitializeAsync();
+            await _pluginClient.InitializeAsync( TestContext.CancellationToken );
 
             // Act
-            await _pluginClient.SendEventAsync("player.jumped", new { coords = new { x = 1, y = 2, z = 3 } });
+            await _pluginClient.SendEventAsync("player.jumped", new { coords = new { x = 1, y = 2, z = 3 } }, TestContext.CancellationToken );
 
             // Give server time to process
-            await Task.Delay(100);
+            await Task.Delay(100, TestContext.CancellationToken );
 
             // Assert - if no exception, event was sent
             Assert.IsTrue(_pluginClient.IsConnected);
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout( 15000, CooperativeCancellation = true )]
         public async Task SendEventAsync_WithNullEventName_ThrowsArgumentNullException()
         {
             // Arrange
             Assert.IsNotNull(_pluginClient);
-            await _pluginClient.InitializeAsync();
+            await _pluginClient.InitializeAsync( TestContext.CancellationToken );
 
             // Act & Assert
             try
             {
-                await _pluginClient.SendEventAsync(null!, new { });
+                await _pluginClient.SendEventAsync(null!, new { }, TestContext.CancellationToken );
                 Assert.Fail("Should have thrown ArgumentNullException");
             }
             catch (ArgumentNullException)
@@ -378,18 +381,18 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout( 15000, CooperativeCancellation = true )]
         public async Task SendEventAsync_WithNullPayload_UsesEmptyObject()
         {
             // Arrange
             Assert.IsNotNull(_pluginClient);
-            await _pluginClient.InitializeAsync();
+            await _pluginClient.InitializeAsync( TestContext.CancellationToken );
 
             // Act
-            await _pluginClient.SendEventAsync("test.event", null);
+            await _pluginClient.SendEventAsync("test.event", null, TestContext.CancellationToken );
 
             // Give server time to process
-            await Task.Delay(100);
+            await Task.Delay(100, TestContext.CancellationToken );
 
             // Assert - should not throw
             Assert.IsTrue(_pluginClient.IsConnected);
@@ -400,23 +403,23 @@ namespace Tests.EddiVoiceAttackService
         #region Connection Management Tests
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout( 15000, CooperativeCancellation = true )]
         public async Task DisconnectAsync_WhenInitialized_ClearsIsConnected()
         {
             // Arrange
             Assert.IsNotNull(_pluginClient);
-            await _pluginClient.InitializeAsync();
+            await _pluginClient.InitializeAsync( TestContext.CancellationToken );
             Assert.IsTrue(_pluginClient.IsConnected);
 
             // Act
-            await _pluginClient.DisconnectAsync();
+            await _pluginClient.DisconnectAsync( TestContext.CancellationToken );
 
             // Assert
             Assert.IsFalse(_pluginClient.IsConnected);
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout( 15000, CooperativeCancellation = true )]
         public async Task DisconnectAsync_WhenNotInitialized_DoesNotThrow()
         {
             // Arrange
@@ -424,23 +427,23 @@ namespace Tests.EddiVoiceAttackService
             Assert.IsFalse(_pluginClient.IsConnected);
 
             // Act & Assert
-            await _pluginClient.DisconnectAsync(); // Should not throw
+            await _pluginClient.DisconnectAsync( TestContext.CancellationToken ); // Should not throw
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout( 15000, CooperativeCancellation = true )]
         public async Task Reconnect_AfterDisconnect_Succeeds()
         {
             // Arrange
             Assert.IsNotNull(_pluginClient);
-            await _pluginClient.InitializeAsync();
+            await _pluginClient.InitializeAsync( TestContext.CancellationToken );
             Assert.IsTrue(_pluginClient.IsConnected);
 
             // Act
-            await _pluginClient.DisconnectAsync();
+            await _pluginClient.DisconnectAsync( TestContext.CancellationToken );
             Assert.IsFalse(_pluginClient.IsConnected);
 
-            await _pluginClient.InitializeAsync();
+            await _pluginClient.InitializeAsync( TestContext.CancellationToken );
 
             // Assert
             Assert.IsTrue(_pluginClient.IsConnected);
@@ -451,12 +454,12 @@ namespace Tests.EddiVoiceAttackService
         #region Status and Metadata Tests
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout( 15000, CooperativeCancellation = true )]
         public async Task GetServerStatusAsync_WhenConnected_ReturnsStatus()
         {
             // Arrange
             Assert.IsNotNull(_pluginClient);
-            await _pluginClient.InitializeAsync();
+            await _pluginClient.InitializeAsync( TestContext.CancellationToken );
 
             // Act
             var status = await _pluginClient.GetServerStatusAsync();
@@ -467,7 +470,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout( 15000, CooperativeCancellation = true )]
         public async Task GetServerStatusAsync_WhenNotConnected_ReturnsDisconnectedStatus()
         {
             // Arrange
@@ -482,7 +485,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout( 15000, CooperativeCancellation = true )]
         public async Task PluginName_IsSet()
         {
             // Arrange
@@ -490,11 +493,11 @@ namespace Tests.EddiVoiceAttackService
 
             // Act & Assert
             Assert.IsNotNull(_pluginClient.PluginName);
-            Assert.IsTrue(_pluginClient.PluginName.Length > 0);
+            Assert.IsGreaterThan(0, _pluginClient.PluginName.Length );
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout( 15000, CooperativeCancellation = true )]
         public async Task PluginVersion_IsSet()
         {
             // Arrange
@@ -502,7 +505,7 @@ namespace Tests.EddiVoiceAttackService
 
             // Act & Assert
             Assert.IsNotNull(_pluginClient.PluginVersion);
-            Assert.IsTrue(_pluginClient.PluginVersion.Length > 0);
+            Assert.IsGreaterThan(0, _pluginClient.PluginVersion.Length );
         }
 
         #endregion
@@ -510,12 +513,12 @@ namespace Tests.EddiVoiceAttackService
         #region Disposal Tests
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout( 15000, CooperativeCancellation = true )]
         public async Task Dispose_ClearsResources()
         {
             // Arrange
             Assert.IsNotNull(_pluginClient);
-            await _pluginClient.InitializeAsync();
+            await _pluginClient.InitializeAsync( TestContext.CancellationToken );
             Assert.IsTrue(_pluginClient.IsConnected);
 
             // Act
@@ -526,7 +529,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout( 15000, CooperativeCancellation = true )]
         public async Task Dispose_CanBeCalledMultipleTimes()
         {
             // Arrange
@@ -541,7 +544,7 @@ namespace Tests.EddiVoiceAttackService
 
         #region Helper Methods
 
-        private string CreateIpcConfigFile(int port)
+        private static string CreateIpcConfigFile(int port)
         {
             var configPath = Path.Combine(Path.GetTempPath(), $"ipc_config_{Guid.NewGuid():N}.json");
             var config = new { port };

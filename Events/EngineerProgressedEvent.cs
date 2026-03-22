@@ -5,7 +5,8 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class EngineerProgressedEvent : Event
+    public class EngineerProgressedEvent ( DateTime timestamp, Engineer engineer, string type )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Engineer progressed";
         public const string DESCRIPTION = "Triggered at startup and when you reach a new rank with an engineer";
@@ -21,19 +22,13 @@ namespace EddiEvents
         public string stage => Engineer?.stage;
 
         [PublicAPI("The type of progress that is applicable (Rank/Stage) (not written at startup)")]
-        public string progresstype { get; private set; }
+        public string progresstype { get; private set; } = type;
 
         // Not intended to be user facing
         
-        public Engineer Engineer { get; private set; }
+        public Engineer Engineer { get; private set; } = engineer;
 
         // Omitted, only written at startup and for an array of engineers rather than for a single engineer.
         public int? rankprogress => Engineer?.rankprogress;
-
-        public EngineerProgressedEvent(DateTime timestamp, Engineer Engineer, string type) : base(timestamp, NAME)
-        {
-            this.Engineer = Engineer;
-            this.progresstype = type;
-        }
     }
 }

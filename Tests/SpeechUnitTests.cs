@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Utilities;
 
 namespace Tests
 {
@@ -23,7 +24,7 @@ namespace Tests
 
         private string CondenseSpaces(string s)
         {
-            return System.Text.RegularExpressions.Regex.Replace(s, @"\s+", " ");
+            return GeneratedRegex.WhiteSpaceRegex().Replace(s, " ");
         }
 
         [TestMethod]
@@ -113,11 +114,11 @@ namespace Tests
             Assert.IsNotNull(speechQueue.priorityQueues.ElementAtOrDefault(speech.priority));
 
             speechQueue.priorityQueues[speech.priority].Enqueue(speech);
-            Assert.AreEqual(1, speechQueue.priorityQueues[speech.priority].Count);
+            Assert.HasCount( 1, speechQueue.priorityQueues[ speech.priority ] );
 
             speechQueue.DequeueAllSpeech();
 
-            Assert.AreEqual(0, speechQueue.priorityQueues[speech.priority].Count);
+            Assert.HasCount( 0, speechQueue.priorityQueues[ speech.priority ] );
         }
 
         [TestMethod]
@@ -133,11 +134,11 @@ namespace Tests
             speechQueue.priorityQueues[speech2.priority].Enqueue(speech2);
             speechQueue.priorityQueues[speech3.priority].Enqueue(speech3);
 
-            Assert.AreEqual(3, speechQueue.priorityQueues[3].Count);
+            Assert.HasCount( 3, speechQueue.priorityQueues[3]);
 
             speechQueue.DequeueSpeechOfType("Body scan");
 
-            Assert.AreEqual(2, speechQueue.priorityQueues[3].Count);
+            Assert.HasCount( 2, speechQueue.priorityQueues[ 3 ] );
             if (speechQueue.priorityQueues[3].TryDequeue(out var result1))
             {
                 Assert.AreEqual("FSD engaged", result1.eventType);
@@ -239,8 +240,8 @@ namespace Tests
                 }
             }
 
-            Assert.IsTrue(sevenCount > 750);
-            Assert.IsTrue(sevenCount < 1500);
+            Assert.IsGreaterThan(750, sevenCount );
+            Assert.IsLessThan(1500, sevenCount );
 
             var expectedHashSet = new HashSet<string>(pathingOptions.Select(CondenseSpaces));
             Assert.IsTrue( pathingResults.SetEquals( expectedHashSet ) );
@@ -305,21 +306,16 @@ namespace Tests
             speechQueue.Enqueue( new EddiSpeech( "Test speech 3", voice: null, priority: 3, eventType: "Body scanned", shipSize: null, radio: false ) );
 
             Assert.AreEqual( 3, speechQueue.priorityQueues.SelectMany( q => q ).Count() );
-            try
-            {
-                // Only the speech of type "Hull damaged" should be removed, null types and other types should remain in place.
-                speechQueue.DequeueSpeechOfType( "Hull damaged" );
-                Assert.AreEqual( 2, speechQueue.priorityQueues.SelectMany( q => q ).Count() );
-                // Verify that the order of remaining speech of the same priority is unchanged.
-                var priorityqueues = speechQueue.priorityQueues;
-                Assert.IsNotNull( priorityqueues );
-                Assert.AreEqual( "Test speech 1", priorityqueues[ 3 ].First().message );
-                Assert.AreEqual( "Test speech 3", priorityqueues[ 3 ].Last().message );
-            }
-            catch ( Exception )
-            {
-                Assert.Fail();
-            }
+            
+            // Only the speech of type "Hull damaged" should be removed, null types and other types should remain in place.
+            speechQueue.DequeueSpeechOfType( "Hull damaged" );
+            Assert.AreEqual( 2, speechQueue.priorityQueues.SelectMany( q => q ).Count() );
+            
+            // Verify that the order of remaining speech of the same priority is unchanged.
+            var priorityqueues = speechQueue.priorityQueues;
+            Assert.IsNotNull( priorityqueues );
+            Assert.AreEqual( "Test speech 1", priorityqueues[ 3 ].First().message );
+            Assert.AreEqual( "Test speech 3", priorityqueues[ 3 ].Last().message );
 
             speechQueue.DequeueAllSpeech();
         }
@@ -389,7 +385,7 @@ namespace Tests
                     }
                 }
             }
-            Assert.AreEqual(0, missingScripts.Count);
+            Assert.IsEmpty( missingScripts );
         }
 
         [TestMethod]

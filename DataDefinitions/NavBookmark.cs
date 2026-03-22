@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 
 namespace EddiDataDefinitions
 {
@@ -162,7 +161,7 @@ namespace EddiDataDefinitions
                 }
             }
         }
-        [JsonIgnore] private SortedSet<DateTime> _visitLog = new();
+        [JsonIgnore] private SortedSet<DateTime> _visitLog = [ ];
 
         [JsonIgnore] public bool visited => visitLog.Count > 0;
 

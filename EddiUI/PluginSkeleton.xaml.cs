@@ -21,7 +21,7 @@ namespace EddiUI
 
         private void pluginenabled_Checked(object sender, RoutedEventArgs e)
         {
-            if ( sender is CheckBox checkBox && checkBox.IsLoaded )
+            if ( sender is CheckBox box && box.IsLoaded )
             {
                 var configuration = ConfigService.Instance.eddiConfiguration;
                 configuration.Plugins[ pluginName ] = true;
@@ -33,7 +33,7 @@ namespace EddiUI
 
         private void pluginenabled_Unchecked(object sender, RoutedEventArgs e)
         {
-            if ( sender is CheckBox checkBox && checkBox.IsLoaded )
+            if ( sender is CheckBox box && box.IsLoaded )
             {
                 var configuration = ConfigService.Instance.eddiConfiguration;
                 configuration.Plugins[ pluginName ] = false;

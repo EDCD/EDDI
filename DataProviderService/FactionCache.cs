@@ -1,13 +1,10 @@
 ﻿using EddiDataDefinitions;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace EddiDataProviderService
 {
-    public class FactionCache : SlidingExpirationCache<string, Faction>
+    public class FactionCache ( int expirationSeconds ) : SlidingExpirationCache<string, Faction>( expirationSeconds )
     {
-        public FactionCache ( int expirationSeconds ) : base( expirationSeconds ) { }
-
         /// <summary>
         /// Add or update a faction in the cache. Retain faction presence information
         /// </summary>

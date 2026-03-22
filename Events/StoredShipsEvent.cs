@@ -6,7 +6,13 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class StoredShipsEvent : Event
+    public class StoredShipsEvent (
+        DateTime timestamp,
+        long marketId,
+        string station,
+        string system,
+        List<Ship> shipyard )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Stored ships";
         public const string DESCRIPTION = "Triggered when the `Shipyard` screen is opened, providing a list of all stored ships";
@@ -14,20 +20,12 @@ namespace EddiEvents
 
         // Not intended to be user facing
 
-        public string station { get; private set; }
-        
-        public string system { get; private set; }
+        public string station { get; private set; } = station;
 
-        public List<Ship> shipyard { get; set; }
+        public string system { get; private set; } = system;
 
-        public long marketId { get; private set; }
-        
-        public StoredShipsEvent(DateTime timestamp, long marketId, string station, string system, List<Ship> shipyard) : base(timestamp, NAME)
-        {
-            this.marketId = marketId;
-            this.station = station;
-            this.system = system;
-            this.shipyard = shipyard;
-        }
+        public List<Ship> shipyard { get; set; } = shipyard;
+
+        public long marketId { get; private set; } = marketId;
     }
 }

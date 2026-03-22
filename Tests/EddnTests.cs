@@ -25,7 +25,7 @@ namespace Tests
             MakeSafe();
         }
 
-        private EDDNResponder CreateEddnResponder()
+        private static EDDNResponder CreateEddnResponder()
         {
             EDDI.Instance.DataProvider = CreateTestDataProvider();
             FakeSpanshHttpClient.Expect( "system/2724879894859", Encoding.UTF8.GetString( Resources.SpanshQuickStarSystemPleiadesSector_HR_W_d1_79 ) );
@@ -45,8 +45,8 @@ namespace Tests
         public void TestEddnSchemaInitialization()
         {
             var responder = CreateEddnResponder();
-            Assert.IsTrue( responder.schemas.Any() );
-            Assert.IsTrue( responder.capiSchemas.Any() );
+            Assert.IsNotEmpty( responder.schemas );
+            Assert.IsNotEmpty( responder.capiSchemas );
         }
 
         [TestMethod]
@@ -299,11 +299,11 @@ namespace Tests
             }";
 
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
             var jumpedEvent = (JumpedEvent)events[0];
 
             events = JournalMonitor.ParseJournalEntry(line2);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
             var dockedEvent = (DockedEvent)events[0];
 
             var responder = CreateEddnResponder();
@@ -637,7 +637,7 @@ namespace Tests
             {
                 if ( items[ 0 ] is IDictionary<string, object> item )
                 {
-                    Assert.AreEqual( 15, item.Keys.Count );
+                    Assert.HasCount( 15, item.Keys );
                     Assert.AreEqual( "Painite", item[ "Name_Localised" ] as string );
                 }
             }
@@ -647,7 +647,7 @@ namespace Tests
             }
 
             // Apply our "Handle" method to transform the data
-            Assert.IsTrue( commoditySchema.Handle( "Market", ref marketData, eddnState ) );
+            Assert.IsTrue( commoditySchema.Handle( "Market", ref marketData, eddnState, responder.eddnSender ) );
 
             // Validate the final data
             Assert.AreEqual( "2020-08-07T17:17:10Z", Dates.FromDateTimeToString( marketData[ "timestamp" ] as DateTime? ) );
@@ -668,7 +668,7 @@ namespace Tests
                     Assert.IsFalse( item.ContainsKey( "Producer" ) );
                     Assert.IsFalse( item.ContainsKey( "Rare" ) );
 
-                    Assert.AreEqual( 9, item.Count );
+                    Assert.HasCount( 9, item );
                     Assert.IsNotNull( item[ "name" ] );
                     Assert.AreEqual( "painite", item[ "name" ].ToString() );
                     Assert.IsNotNull( item[ "buyPrice" ] );
@@ -731,7 +731,7 @@ namespace Tests
             }
 
             // Apply our "Handle" method to transform the data
-            var handledData = commoditySchema?.Handle(profileJson, marketJson, new JObject(), new JObject(), eddnState);
+            var handledData = commoditySchema?.Handle(profileJson, marketJson, new JObject(), new JObject(), eddnState, responder.eddnSender);
             Assert.IsNotNull(handledData);
 
             // Validate the final data
@@ -741,7 +741,7 @@ namespace Tests
             Assert.IsTrue(handledData["economies"] is IEnumerable<object>);
             if (handledData["commodities"] is List<object> handledItems)
             {
-                Assert.AreEqual( 116, handledItems.Count );
+                Assert.HasCount( 116, handledItems );
                 if ( handledItems[0] is Dictionary<string, object> item)
                 {
                     Assert.IsFalse(item.ContainsKey("id"));
@@ -749,7 +749,7 @@ namespace Tests
                     Assert.IsFalse(item.ContainsKey("categoryname"));
                     Assert.IsFalse(item.ContainsKey("legality"));
 
-                    Assert.AreEqual(8, item.Count);
+                    Assert.HasCount( 8, item );
                     Assert.AreEqual("AgronomicTreatment", item["name"].ToString());
                     Assert.AreEqual(0, Convert.ToInt32(item["buyPrice"]));
                     Assert.AreEqual(3336, Convert.ToInt32(item["sellPrice"]));
@@ -788,10 +788,10 @@ namespace Tests
             Assert.AreEqual("X9X-9XX", fcmaterialsData["CarrierID"] as string);
             if (fcmaterialsData["Items"] is List<object> items)
             {
-                Assert.AreEqual( 2, items.Count );
+                Assert.HasCount( 2, items );
                 if ( items[0] is IDictionary<string, object> item)
                 {
-                    Assert.AreEqual(6, item.Keys.Count);
+                    Assert.HasCount( 6, item.Keys );
                     Assert.AreEqual("Chemical Superbase", item["Name_Localised"] as string);
                 }
             }
@@ -801,7 +801,7 @@ namespace Tests
             }
 
             // Apply our "Handle" method to transform the data
-            Assert.IsTrue(fcmaterialsSchema.Handle("FCMaterials", ref fcmaterialsData, eddnState));
+            Assert.IsTrue(fcmaterialsSchema.Handle("FCMaterials", ref fcmaterialsData, eddnState, responder.eddnSender ));
 
             // Validate the final data
             Assert.AreEqual("2022-11-08T03:15:30Z", Dates.FromDateTimeToString(fcmaterialsData["timestamp"] as DateTime?));
@@ -810,11 +810,11 @@ namespace Tests
             Assert.AreEqual("X9X-9XX", fcmaterialsData["CarrierID"] as string);
             if (fcmaterialsData["Items"] is List<object> handledItems)
             {
-                Assert.AreEqual( 2, handledItems.Count );
+                Assert.HasCount( 2, handledItems );
                 if ( handledItems.FirstOrDefault() is IDictionary<string, object> item)
                 {
                     Assert.IsFalse(item.ContainsKey("Name_Localised"));
-                    Assert.AreEqual(5, item.Count);
+                    Assert.HasCount( 5, item );
                     Assert.AreEqual(128961528, Convert.ToInt64(item["id"]));
                     Assert.AreEqual("$chemicalsuperbase_name;", item["Name"].ToString());
                     Assert.AreEqual(500, Convert.ToInt32(item["Price"]));
@@ -858,7 +858,7 @@ namespace Tests
             Assert.AreEqual(16, onFootMicroResources["purchases"].Children().Count());
             if (onFootMicroResources["sales"].Children().Values().FirstOrDefault() is JObject item)
             {
-                Assert.AreEqual(5, item.Count);
+                Assert.HasCount( 5, item );
                 Assert.IsNotNull( item[ "locName" ] );
                 Assert.AreEqual("Graphene", item["locName"].ToString());
             }
@@ -868,7 +868,7 @@ namespace Tests
             }
 
             // Apply our "Handle" method to transform the data
-            var handledData = fcmaterialsSchema?.Handle(null, fcMarketJson, null, null, eddnState);
+            var handledData = fcmaterialsSchema?.Handle(null, fcMarketJson, null, null, eddnState, responder.eddnSender);
             Assert.IsNotNull(handledData);
 
             // Validate the final data
@@ -880,13 +880,13 @@ namespace Tests
             {
                 var sales = handledItems["sales"] as Dictionary<string, object> ?? new Dictionary<string, object>();
                 var purchases = handledItems["purchases"] as Dictionary<string, object> ?? new Dictionary<string, object>();
-                Assert.AreEqual(1, sales.Count);
-                Assert.AreEqual(0, purchases.Count);
+                Assert.HasCount( 1, sales );
+                Assert.HasCount( 0, purchases );
                 if (sales["128064021"] is Dictionary<string, object> handledItem)
                 {
                     Assert.IsFalse(handledItem.ContainsKey("locName"));
 
-                    Assert.AreEqual(4, handledItem.Count);
+                    Assert.HasCount( 4, handledItem );
                     Assert.AreEqual(128064021, Convert.ToInt64(handledItem["id"]));
                     Assert.AreEqual("graphene", handledItem["name"].ToString());
                     Assert.AreEqual(1300, Convert.ToInt32(handledItem["price"]));
@@ -924,10 +924,10 @@ namespace Tests
             Assert.AreEqual("Gertrud", outfittingData["StarSystem"] as string);
             if (outfittingData["Items"] is List<object> items)
             {
-                Assert.AreEqual( 767, items.Count );
+                Assert.HasCount( 767, items );
                 if ( items[0] is IDictionary<string, object> item)
                 {
-                    Assert.AreEqual(3, item.Keys.Count);
+                    Assert.HasCount( 3, item.Keys );
                     Assert.AreEqual("hpt_cannon_gimbal_huge", item["Name"] as string);
                     Assert.AreEqual(128049444, item["id"] as long?);
                     Assert.AreEqual(4476576, item["BuyPrice"] as long?);
@@ -939,7 +939,7 @@ namespace Tests
             }
 
             // Apply our "Handle" method to transform the data
-            Assert.IsTrue(outfittingSchema.Handle("Outfitting", ref outfittingData, eddnState));
+            Assert.IsTrue(outfittingSchema.Handle("Outfitting", ref outfittingData, eddnState, responder.eddnSender ));
 
             // Validate the final data
             Assert.AreEqual("2022-11-21T00:05:07Z", Dates.FromDateTimeToString(outfittingData["timestamp"] as DateTime?));
@@ -948,7 +948,7 @@ namespace Tests
             Assert.AreEqual("Gertrud", outfittingData["systemName"] as string);
             if (outfittingData["modules"] is List<string> modules)
             {
-                Assert.AreEqual( 767, modules.Count );
+                Assert.HasCount( 767, modules );
                 Assert.AreEqual( "hpt_cannon_gimbal_huge", modules[ 0 ] );
             }
             else
@@ -981,7 +981,7 @@ namespace Tests
             Assert.AreEqual( 165, shipyardModules.Count() );
             if ( shipyardJson["modules"]?.Children().Values().FirstOrDefault() is JObject item)
             {
-                Assert.AreEqual(5, item.Count);
+                Assert.HasCount( 5, item );
                 Assert.IsNotNull( item[ "name" ] );
                 Assert.AreEqual("Hpt_ATDumbfireMissile_Fixed_Large", item["name"].ToString());
                 Assert.IsNotNull( item[ "category" ] );
@@ -1000,7 +1000,7 @@ namespace Tests
 
             // Apply our "Handle" method to transform the data
             var profileJson = JObject.Parse(@"{""lastSystem"":{""id"":99999,""name"":""Kurigosages"",""faction"":""independent""}}");
-            var outfittingData = outfittingSchema?.Handle(profileJson, null, shipyardJson, null, eddnState);
+            var outfittingData = outfittingSchema?.Handle(profileJson, null, shipyardJson, null, eddnState, responder.eddnSender);
             Assert.IsNotNull(outfittingData);
 
             // Validate the final data
@@ -1010,7 +1010,7 @@ namespace Tests
             Assert.AreEqual("Kurigosages", outfittingData["systemName"] as string);
             if (outfittingData["modules"] is List<string> modules)
             {
-                Assert.AreEqual( 164, modules.Count );
+                Assert.HasCount( 164, modules );
                 Assert.AreEqual( "Hpt_ATDumbfireMissile_Fixed_Large", modules[ 0 ] );
             }
             else
@@ -1040,10 +1040,10 @@ namespace Tests
             Assert.AreEqual("Gertrud", shipyardData["StarSystem"] as string);
             if (shipyardData["PriceList"] is List<object> items)
             {
-                Assert.AreEqual( 18, items.Count );
+                Assert.HasCount( 18, items );
                 if ( items[0] is IDictionary<string, object> item)
                 {
-                    Assert.AreEqual(3, item.Keys.Count);
+                    Assert.HasCount( 3, item.Keys );
                     Assert.AreEqual("sidewinder", item["ShipType"] as string);
                     Assert.AreEqual(128049249, item["id"] as long?);
                     Assert.AreEqual(26520, item["ShipPrice"] as long?);
@@ -1055,7 +1055,7 @@ namespace Tests
             }
 
             // Apply our "Handle" method to transform the data
-            Assert.IsTrue(shipyardSchema.Handle("Shipyard", ref shipyardData, eddnState));
+            Assert.IsTrue(shipyardSchema.Handle("Shipyard", ref shipyardData, eddnState, responder.eddnSender ));
 
             // Validate the final data
             Assert.AreEqual("2022-11-21T00:04:40Z", Dates.FromDateTimeToString(shipyardData["timestamp"] as DateTime?));
@@ -1064,7 +1064,7 @@ namespace Tests
             Assert.AreEqual("Gertrud", shipyardData["systemName"] as string);
             if (shipyardData["ships"] is List<string> ships)
             {
-                Assert.AreEqual( 18, ships.Count );
+                Assert.HasCount( 18, ships );
                 Assert.AreEqual( "sidewinder", ships[ 0 ] );
             }
             else
@@ -1114,7 +1114,7 @@ namespace Tests
 
             // Apply our "Handle" method to transform the data
             var profileJson = JObject.Parse(@"{""lastSystem"":{""id"":99999,""name"":""Kurigosages"",""faction"":""independent""}}");
-            var shipyardData = shipyardSchema?.Handle(profileJson, null, shipyardJson, null, eddnState);
+            var shipyardData = shipyardSchema?.Handle(profileJson, null, shipyardJson, null, eddnState, responder.eddnSender );
             Assert.IsNotNull(shipyardData);
 
             // Validate the final data
@@ -1125,7 +1125,7 @@ namespace Tests
             Assert.IsFalse(shipyardData["allowCobraMkIV"] as bool? ?? false);
             if (shipyardData["ships"] is List<string> ships)
             {
-                Assert.AreEqual( 8, ships.Count );
+                Assert.HasCount( 8, ships );
                 Assert.AreEqual( "Eagle", ships[ 0 ] );
             }
             else

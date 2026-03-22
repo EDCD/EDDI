@@ -10,7 +10,7 @@ namespace Tests
     [TestClass, TestCategory( "UnitTests" )]
     public class TelemetryTests : TestBase
     {
-        private Dictionary<string, object> PrepTelemetryData(object data)
+        private static Dictionary<string, object> PrepTelemetryData(object data)
         {
             return Logging.PrepareData( JToken.FromObject( data ) );
         }

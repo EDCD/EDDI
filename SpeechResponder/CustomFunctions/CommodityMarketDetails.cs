@@ -43,7 +43,7 @@ namespace EddiSpeechResponder.CustomFunctions
             }
         }, 0, 3);
 
-        private CommodityMarketQuote GetCommodityMarketDetails ( IReadOnlyList<Value> values, TimeSpan timeout )
+        private static CommodityMarketQuote GetCommodityMarketDetails ( IReadOnlyList<Value> values, TimeSpan timeout )
         {
             if ( values.Count == 1 )
             {
@@ -97,7 +97,7 @@ namespace EddiSpeechResponder.CustomFunctions
             }
             
             return await EDDI.Instance.DataProvider
-                .GetOrFetchStarSystemAsync( systemInput.Trim(), true, true, true )
+                .GetOrFetchStarSystemAsync( systemInput?.Trim(), true, true, true )
                 .ConfigureAwait( false );
         }
     }

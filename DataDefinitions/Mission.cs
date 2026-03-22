@@ -65,10 +65,9 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public TimeSpan? timeRemaining => expiry != null ? TimeSpanNearestSecond( expiry - DateTime.UtcNow ) : null;
 
-        private TimeSpan? TimeSpanNearestSecond ( TimeSpan? utcNow )
+        private static TimeSpan? TimeSpanNearestSecond ( TimeSpan? utcNow )
         {
-            if ( utcNow is null )
-            { return null; }
+            if ( utcNow is null ) { return null; }
             return new TimeSpan( utcNow.Value.Days, utcNow.Value.Hours, utcNow.Value.Minutes, utcNow.Value.Seconds );
         }
 
@@ -217,7 +216,7 @@ namespace EddiDataDefinitions
         [ JsonIgnore ] 
         public FactionState FactionState => GetFactionState( name );
 
-        private FactionState GetFactionState ( string missionName )
+        private static FactionState GetFactionState ( string missionName )
         {
             if ( string.IsNullOrEmpty( missionName ) ) { return null; }
 
@@ -226,13 +225,13 @@ namespace EddiDataDefinitions
             for ( var i = 2; i < elements.Length; i++ )
             {
                 var element = elements
-                    .ElementAtOrDefault(i)?
-                    .ToLowerInvariant();
+                    .ElementAtOrDefault(i);
 
                 // Return faction state when present
                 var factionState = FactionState
                     .AllOfThem
-                    .FirstOrDefault(s => s.edname.ToLowerInvariant() == element);
+                    .FirstOrDefault(s =>
+                        string.Equals( s.edname, element, StringComparison.OrdinalIgnoreCase ) );
                 if ( factionState != null ) { return factionState; }
             }
 
@@ -388,7 +387,7 @@ namespace EddiDataDefinitions
         [Utilities.PublicAPI, JsonIgnore]
         public string targettype => TargetType.FromEDName( targetTypeEDName )?.localizedName;
 
-        private string FallbackGetTargetFaction ( string localisedName )
+        private static string FallbackGetTargetFaction ( string localisedName )
         {
             if ( string.IsNullOrEmpty( localisedName ) )
             { return string.Empty; }
@@ -496,7 +495,7 @@ namespace EddiDataDefinitions
             this.shared = Shared;
             this.notes = notes;
             this.expiring = false;
-            destinationsystems = new List<NavWaypoint>();
+            destinationsystems = [ ];
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -5,49 +5,47 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class ModuleArrivedEvent : Event
+    public class ModuleArrivedEvent (
+        DateTime timestamp,
+        string ship,
+        int? shipid,
+        int storageslot,
+        long serverid,
+        Module module,
+        long transfercost,
+        long? transfertime,
+        string system,
+        string station )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Module arrived";
         public const string DESCRIPTION = "Triggered when your transferred module is arriving at its destination";
-        public static ModuleArrivedEvent SAMPLE = new(DateTime.UtcNow, "Adder", 106, 25, 128662525, Module.FromEDName("$hpt_cloudscanner_size0_class1_name;"), 322, 30, "Lalande 32151", "Lee Gateway");
+        public static readonly ModuleArrivedEvent SAMPLE = new(DateTime.UtcNow, "Adder", 106, 25, 128662525, Module.FromEDName("$hpt_cloudscanner_size0_class1_name;"), 322, 30, "Lalande 32151", "Lee Gateway");
 
         [PublicAPI("The ship you were in when you requested the transfer")]
-        public string ship { get; private set; }
+        public string ship { get; private set; } = ShipDefinitions.FromEDModel(ship).model;
 
         [PublicAPI("The ID of the ship you were in when you requested the transfer")]
-        public int? shipid { get; private set; }
+        public int? shipid { get; private set; } = shipid;
 
         [PublicAPI("The module (object) being transferred")]
-        public Module module { get; private set; }
+        public Module module { get; private set; } = module;
 
         [PublicAPI("The cost for the module transfer")]
-        public long transfercost { get; private set; }
+        public long transfercost { get; private set; } = transfercost;
 
         [PublicAPI("The time elapsed during the transfer (in seconds)")]
-        public long? transfertime { get; private set; }
+        public long? transfertime { get; private set; } = transfertime;
 
         [PublicAPI("The system at which the module shall arrive")]
-        public string system { get; private set; }
+        public string system { get; private set; } = system;
 
         [PublicAPI("The station at which the module shall arrive")]
-        public string station { get; private set; }
+        public string station { get; private set; } = station;
 
         // Not intended to be user facing
-        public int storageslot { get; private set; }
+        public int storageslot { get; private set; } = storageslot;
 
-        public long serverid { get; private set; }
-
-        public ModuleArrivedEvent(DateTime timestamp, string ship, int? shipid, int storageslot, long serverid, Module module, long transfercost, long? transfertime, string system, string station) : base(timestamp, NAME)
-        {
-            this.ship = ShipDefinitions.FromEDModel(ship).model;
-            this.shipid = shipid;
-            this.storageslot = storageslot;
-            this.serverid = serverid;
-            this.module = module;
-            this.transfercost = transfercost;
-            this.transfertime = transfertime;
-            this.system = system;
-            this.station = station;
-        }
+        public long serverid { get; private set; } = serverid;
     }
 }

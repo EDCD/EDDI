@@ -2,6 +2,7 @@
     <PropertyGroup>
         <OutputType>Library</OutputType>
         <UseWPF>true</UseWPF>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
         <OutputPath>..\bin\Debug\</OutputPath>

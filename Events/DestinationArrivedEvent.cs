@@ -1,13 +1,18 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using Utilities;
 
 namespace EddiEvents
 {
     [PublicAPI]
-    public class DestinationArrivedEvent : Event
+    public class DestinationArrivedEvent (
+        DateTime timestamp,
+        string invariantName,
+        string localizedName = null,
+        int? threat = null,
+        long? marketId = null )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Destination arrived";
         public const string DESCRIPTION = "Triggered when you drop into normal space at your selected destination";
@@ -20,28 +25,20 @@ namespace EddiEvents
         ];
 
         [PublicAPI("The name of the destination location, localized when applicable")]
-        public string name { get; private set; }
+        public string name { get; private set; } = string.IsNullOrEmpty( localizedName ) ? invariantName : localizedName;
 
         [PublicAPI( "The invariant name of the destination location" )]
-        public string invariantName { get; private set; }
+        public string invariantName { get; private set; } = invariantName;
 
         [PublicAPI( "The threat level at the destination location (0 is lowest) (typically only used for unidentified signal sources)" )]
-        public int threat { get; private set; }
-        
+        public int threat { get; private set; } = threat ?? 0;
+
         [PublicAPI( "True if the destination is a signal source" )]
         public bool isSignalSource { get; set; }
 
         // Not intended to be user facing
 
-        public long? marketID { get; private set; }
-
-        public DestinationArrivedEvent ( DateTime timestamp, string invariantName, string localizedName = null, int? threat = null, long? marketID = null) : base(timestamp, NAME)
-        {
-            this.invariantName = invariantName;
-            this.name = string.IsNullOrEmpty( localizedName ) ? invariantName : localizedName;
-            this.threat = threat ?? 0;
-            this.marketID = marketID;
-        }
+        public long? marketID { get; private set; } = marketId;
 
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {
@@ -69,11 +66,10 @@ namespace EddiEvents
             {
                 // Destination might be a fleet carrier with name and carrier ID in a single string.
                 // Check and break apart if needed.
-                var fleetCarrierRegex = new Regex( "^(.+)(?> )([A-Za-z0-9]{3}-[A-Za-z0-9]{3})$" );
-                if ( string.IsNullOrEmpty( typeLocalized ) && fleetCarrierRegex.IsMatch( type ) )
+                if ( string.IsNullOrEmpty( typeLocalized ) && GeneratedRegex.FleetCarrierNameAndIdRegex().IsMatch( type ) )
                 {
                     // Fleet carrier names include both the carrier name and carrier ID, we need to separate them
-                    var fleetCarrierParts = fleetCarrierRegex.Matches( type )[ 0 ].Groups;
+                    var fleetCarrierParts = GeneratedRegex.FleetCarrierNameAndIdRegex().Matches( type )[ 0 ].Groups;
                     if ( fleetCarrierParts.Count == 3 )
                     {
                         type = fleetCarrierParts[ 2 ].Value;

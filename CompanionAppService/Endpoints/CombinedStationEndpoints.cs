@@ -103,7 +103,7 @@ namespace EddiCompanionAppService.Endpoints
             return await GetCombinedStationAsync(expectedCommanderName, expectedStarSystemName, expectedMarketID, forceRefresh, profileJson).ConfigureAwait(false);
         }
 
-        private async Task<JObject> GetMarketAsync ()
+        private static async Task<JObject> GetMarketAsync ()
         {
             Logging.Debug( $"Getting {MARKET_URL} data" );
             var result = await GetEndpointAsync( MARKET_URL ).ConfigureAwait(false);
@@ -112,7 +112,7 @@ namespace EddiCompanionAppService.Endpoints
             return result;
         }
 
-        private async Task<JObject> GetShipyardAsync ()
+        private static async Task<JObject> GetShipyardAsync ()
         {
             Logging.Debug( $"Getting {SHIPYARD_URL} data" );
             var result = await GetEndpointAsync( SHIPYARD_URL ).ConfigureAwait(false);

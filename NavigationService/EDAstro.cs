@@ -37,7 +37,7 @@ namespace EddiNavigationService
                     }
                 }
 
-                foreach (JToken jToken in jArray)
+                foreach (var jToken in jArray)
                 {
                     try
                     {

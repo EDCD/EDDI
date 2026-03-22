@@ -5,7 +5,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Utilities;
 
 namespace EddiEvents
@@ -539,7 +538,7 @@ namespace EddiEvents
             // Standard compartment slots are in the form of "Slotnn_Sizen" or "Militarynn"
             if ( slot.Contains( "Slot" ) )
             {
-                var matches = Regex.Match(compartment.name, @"Size([0-9]+)");
+                var matches = GeneratedRegex.ShipSlotSizeRegex().Match(compartment.name);
                 if ( matches.Success )
                 {
                     compartment.size = Int32.Parse( matches.Groups[ 1 ].Value );
@@ -550,8 +549,12 @@ namespace EddiEvents
                 var slotSize = ShipDefinitions.FromEDModel(shipEDName, false)?.militarysize;
                 if ( slotSize is null )
                 {
-                    // We didn't expect to have a military slot on this ship.
-                    var data = new Dictionary<string, object>() { { "ShipEDName", shipEDName }, { "Slot", slot }, { "Exception", new ArgumentException() } };
+                    var data = new Dictionary<string, object>
+                    {
+                        { "ShipEDName", shipEDName }, 
+                        { "Slot", slot }, 
+                        { "Exception", new ArgumentException( "We didn't expect to have a military slot on this ship." ) }
+                    };
                     Logging.Error( $"Unexpected military slot found in ship edName {shipEDName}.", data );
                     return compartment;
                 }
@@ -570,7 +573,7 @@ namespace EddiEvents
             if ( string.IsNullOrEmpty( stationName ) || string.IsNullOrEmpty( stationTypeEdName ) ) { return; }
             
             // Normalize Powerplay Stronghold Carrier names
-            stationName = Regex.Replace( stationName, @"/^(Stronghold Carrier|Porte-vaisseaux de forteresse|Transportadora da potência|Носитель-база|Hochburg-Carrier|Portanaves bastión|\$ShipName_StrongholdCarrier(.*?))$/i", "Stronghold Carrier" );
+            stationName = GeneratedRegex.StrongholdCarrierRegex().Replace( stationName, "Stronghold Carrier" );
 
             // Fix known incorrectly reported StationType values.
             if ( stationName == "Stronghold Carrier" || stationName.StartsWith( "$EXT_PANEL_ColonisationShip" ) )

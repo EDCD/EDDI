@@ -2,9 +2,9 @@
 
 using EddiIPC_Service.Messages;
 using EddiIPC_Service.Server;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests.EddiVoiceAttackService
 {
@@ -14,6 +14,9 @@ namespace Tests.EddiVoiceAttackService
     [TestClass, TestCategory( "UnitTests" )]
     public class IPCServerTests
     {
+        // ReSharper disable once MemberCanBePrivate.Global
+        public TestContext TestContext { get; set; } = null!;
+        
         [TestMethod]
         public async Task StartAsync_StartsServerSuccessfully()
         {
@@ -21,15 +24,15 @@ namespace Tests.EddiVoiceAttackService
             var server = new IPCServer();
 
             // Act
-            await server.StartAsync();
+            await server.StartAsync( TestContext.CancellationToken );
 
             // Assert
             Assert.IsTrue(server.IsRunning, "Server should be running");
-            Assert.IsTrue(server.Port >= 12345 && server.Port <= 12450, "Port should be in valid range");
+            Assert.IsTrue(server.Port is >= 12345 and <= 12450, "Port should be in valid range");
             Assert.AreEqual(0, server.ConnectionCount, "Should have no connections initially");
 
             // Cleanup
-            await server.StopAsync();
+            await server.StopAsync( TestContext.CancellationToken );
         }
 
         [TestMethod]
@@ -37,11 +40,11 @@ namespace Tests.EddiVoiceAttackService
         {
             // Arrange
             var server = new IPCServer();
-            await server.StartAsync();
+            await server.StartAsync( TestContext.CancellationToken );
             Assert.IsTrue(server.IsRunning, "Server should be running");
 
             // Act
-            await server.StopAsync();
+            await server.StopAsync( TestContext.CancellationToken );
 
             // Assert
             Assert.IsFalse(server.IsRunning, "Server should not be running after stop");
@@ -52,18 +55,18 @@ namespace Tests.EddiVoiceAttackService
         {
             // Arrange
             var server = new IPCServer();
-            await server.StartAsync();
+            await server.StartAsync( TestContext.CancellationToken );
             var port1 = server.Port;
 
             // Act
-            await server.StartAsync(); // Call again
+            await server.StartAsync( TestContext.CancellationToken ); // Call again
             var port2 = server.Port;
 
             // Assert
             Assert.AreEqual(port1, port2, "Port should not change on second start");
 
             // Cleanup
-            await server.StopAsync();
+            await server.StopAsync( TestContext.CancellationToken );
         }
 
         [TestMethod]
@@ -73,7 +76,7 @@ namespace Tests.EddiVoiceAttackService
             var server = new IPCServer();
 
             // Act & Assert - should not throw
-            await server.StopAsync();
+            await server.StopAsync( TestContext.CancellationToken );
         }
 
         [TestMethod]
@@ -94,14 +97,14 @@ namespace Tests.EddiVoiceAttackService
         {
             // Arrange
             var server = new IPCServer();
-            await server.StartAsync();
+            await server.StartAsync( TestContext.CancellationToken );
             var message = MessageEnvelope.Create("Test", new DisconnectData { Reason = "user_shutdown" } );
 
             // Act & Assert - should not throw
-            await server.BroadcastAsync(message);
+            await server.BroadcastAsync(message, TestContext.CancellationToken );
 
             // Cleanup
-            await server.StopAsync();
+            await server.StopAsync( TestContext.CancellationToken );
         }
 
         [TestMethod]
@@ -109,7 +112,7 @@ namespace Tests.EddiVoiceAttackService
         {
             // Arrange
             var server = new IPCServer();
-            await server.StartAsync();
+            await server.StartAsync( TestContext.CancellationToken );
 
             // Act
             var count = server.ConnectionCount;
@@ -118,7 +121,7 @@ namespace Tests.EddiVoiceAttackService
             Assert.AreEqual(0, count, "Initial connection count should be 0");
 
             // Cleanup
-            await server.StopAsync();
+            await server.StopAsync( TestContext.CancellationToken );
         }
 
         [TestMethod]
@@ -136,14 +139,14 @@ namespace Tests.EddiVoiceAttackService
         {
             // Arrange
             var server = new IPCServer();
-            await server.StartAsync();
+            await server.StartAsync( TestContext.CancellationToken );
             var message = MessageEnvelope.Create("Test", new DisconnectData { Reason = "user_shutdown" } );
 
             // Act & Assert - should not throw
-            await server.SendToConnectionAsync("invalid-session-id", message);
+            await server.SendToConnectionAsync("invalid-session-id", message, TestContext.CancellationToken );
 
             // Cleanup
-            await server.StopAsync();
+            await server.StopAsync( TestContext.CancellationToken );
         }
 
         [TestMethod]
@@ -151,13 +154,13 @@ namespace Tests.EddiVoiceAttackService
         {
             // Arrange
             var server = new IPCServer();
-            await server.StartAsync();
+            await server.StartAsync( TestContext.CancellationToken );
             var message = MessageEnvelope.Create("Test", new DisconnectData { Reason = "user_shutdown" } );
 
             // Act & Assert
             try
             {
-                await server.SendToConnectionAsync(null!, message);
+                await server.SendToConnectionAsync(null!, message, TestContext.CancellationToken );
                 Assert.Fail("Expected ArgumentNullException");
             }
             catch (ArgumentNullException)
@@ -167,7 +170,7 @@ namespace Tests.EddiVoiceAttackService
             finally
             {
                 // Cleanup
-                await server.StopAsync();
+                await server.StopAsync( TestContext.CancellationToken );
             }
         }
 
@@ -176,12 +179,12 @@ namespace Tests.EddiVoiceAttackService
         {
             // Arrange
             var server = new IPCServer();
-            await server.StartAsync();
+            await server.StartAsync( TestContext.CancellationToken );
 
             // Act & Assert
             try
             {
-                await server.SendToConnectionAsync("test-session", null!);
+                await server.SendToConnectionAsync("test-session", null!, TestContext.CancellationToken );
                 Assert.Fail("Expected ArgumentNullException");
             }
             catch (ArgumentNullException)
@@ -191,7 +194,7 @@ namespace Tests.EddiVoiceAttackService
             finally
             {
                 // Cleanup
-                await server.StopAsync();
+                await server.StopAsync( TestContext.CancellationToken );
             }
         }
 
@@ -200,12 +203,12 @@ namespace Tests.EddiVoiceAttackService
         {
             // Arrange
             var server = new IPCServer();
-            await server.StartAsync();
+            await server.StartAsync( TestContext.CancellationToken );
 
             // Act & Assert
             try
             {
-                await server.BroadcastAsync(null!);
+                await server.BroadcastAsync(null!, TestContext.CancellationToken );
                 Assert.Fail("Expected ArgumentNullException");
             }
             catch (ArgumentNullException)
@@ -215,7 +218,7 @@ namespace Tests.EddiVoiceAttackService
             finally
             {
                 // Cleanup
-                await server.StopAsync();
+                await server.StopAsync( TestContext.CancellationToken );
             }
         }
 
@@ -224,27 +227,27 @@ namespace Tests.EddiVoiceAttackService
         {
             // Arrange
             var server = new IPCServer();
-            await server.StartAsync();
+            await server.StartAsync( TestContext.CancellationToken );
 
             // Act & Assert - should not throw
             await server.DisconnectAsync("invalid-session-id");
 
             // Cleanup
-            await server.StopAsync();
+            await server.StopAsync( TestContext.CancellationToken );
         }
 
         [TestMethod]
         public async Task MultipleStartStopCycles_WorkCorrectly()
         {
             // Arrange & Act & Assert
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 var server = new IPCServer();
-                await server.StartAsync();
+                await server.StartAsync( TestContext.CancellationToken );
             
                 Assert.IsTrue(server.IsRunning, $"Cycle {i}: Server should be running");
             
-                await server.StopAsync();
+                await server.StopAsync( TestContext.CancellationToken );
             
                 Assert.IsFalse(server.IsRunning, $"Cycle {i}: Server should be stopped");
             

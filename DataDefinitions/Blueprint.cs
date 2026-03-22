@@ -884,7 +884,7 @@ namespace EddiDataDefinitions
         public static Blueprint FromEliteID(long eliteID, Dictionary<string, object> rawData = null)
         {
             if (eliteID <= 0) { return null; }
-            BlueprintsByEliteID.TryGetValue(eliteID, out Blueprint blueprint);
+            BlueprintsByEliteID.TryGetValue(eliteID, out var blueprint);
             if (blueprint == null)
             {
                 // Unknown module; report the full object so that we can update the definitions
@@ -902,8 +902,8 @@ namespace EddiDataDefinitions
         public static Blueprint FromEDNameAndGrade(string edname, int grade)
         {
             if (string.IsNullOrEmpty(edname)) { return null; }
-            string tidiedEdName = edname.Replace("_", "");
-            if (int.TryParse(tidiedEdName.Last().ToString(), out int _))
+            var tidiedEdName = edname.Replace("_", "");
+            if (int.TryParse(tidiedEdName.Last().ToString(), out var _))
             {
                 return FromEDName(tidiedEdName);
             }
@@ -924,7 +924,7 @@ namespace EddiDataDefinitions
         public static Blueprint FromNameAndGrade(string name, int grade)
         {
             if (string.IsNullOrEmpty(name)) { return null; }
-            Blueprint result = FromName(name);
+            var result = FromName(name);
             // Since multiple blueprint grades share the same name, we may not have the correct blueprint yet.
             // We should, however, now have an edname that we can mutate into the correct grade.
             if (result != null && result.grade != grade)

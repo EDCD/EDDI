@@ -6,90 +6,88 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class CommanderContinuedEvent : Event
+    public class CommanderContinuedEvent (
+        DateTime timestamp,
+        string commander,
+        string frontierId,
+        bool horizons,
+        bool odyssey,
+        long? shipId,
+        string shipEdModel,
+        string shipName,
+        string shipIdent,
+        bool? startedLanded,
+        bool? startDead,
+        GameMode mode,
+        string group,
+        long credits,
+        long loan,
+        decimal? fuel,
+        decimal? fuelcapacity,
+        string version,
+        string build )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Commander continued";
         public const string DESCRIPTION = "Triggered when you continue an existing game";
         public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"LoadGame\",\"Commander\":\"HRC1\",\"FID\":\"F44396\",\"Horizons\":true,\"Ship\":\"CobraMkIII\",\"ShipID\":1,\"GameMode\":\"Group\",\"Group\":\"Mobius\",\"Credits\":600120,\"Loan\":0,\"ShipName\":\"jewel of parhoon\",\"ShipIdent\":\"hr-17f\",\"FuelLevel\":3.964024,\"FuelCapacity\":8}";
 
         [PublicAPI("The commander's name")]
-        public string commander { get; private set; }
+        public string commander { get; private set; } = commander;
 
         [PublicAPI("The game version includes the 'Horizons' DLC")]
-        public bool horizons { get; private set; }
+        public bool horizons { get; private set; } = horizons;
 
         [PublicAPI("The game version includes the 'Odyssey' DLC")]
-        public bool odyssey { get; private set; }
+        public bool odyssey { get; private set; } = odyssey;
 
         [PublicAPI("The commander's ship")]
         public string ship => shipEDModel == "TestBuggy" ? Constants.VEHICLE_SRV
-            : shipEDModel.ToLowerInvariant().Contains("fighter") ? Constants.VEHICLE_FIGHTER
-            : shipEDModel.ToLowerInvariant().Contains("suit") ? Constants.VEHICLE_LEGS
-            : shipEDModel.ToLowerInvariant().Contains("taxi") ? Constants.VEHICLE_TAXI
+            : shipEDModel.Contains("fighter", StringComparison.OrdinalIgnoreCase) ? Constants.VEHICLE_FIGHTER
+            : shipEDModel.Contains("suit", StringComparison.OrdinalIgnoreCase ) ? Constants.VEHICLE_LEGS
+            : shipEDModel.Contains("taxi", StringComparison.OrdinalIgnoreCase ) ? Constants.VEHICLE_TAXI
             : ShipDefinitions.FromEDModel(shipEDModel, false)?.model;
 
         [PublicAPI("The ID of the commander's ship")]
-        public long? shipid { get; private set; } // this serves double duty in the journal - for ships it is the localId (an integer value). For suits, it is the suit ID (a long).
+        public long? shipid { get; private set; } = shipId; // this serves double duty in the journal - for ships it is the localId (an integer value). For suits, it is the suit ID (a long).
 
         [PublicAPI("The game mode (Open, Group or Solo)")]
-        public string mode { get; private set; }
+        public string mode { get; private set; } = (mode?.localizedName);
 
         [PublicAPI("The name of the group (only if mode == Group)")]
-        public string group { get; private set; }
+        public string group { get; private set; } = group;
 
         [PublicAPI("The number of credits the commander has")]
-        public long credits { get; private set; }
+        public long credits { get; private set; } = credits;
 
         [PublicAPI("The current loan the commander has")]
-        public long loan { get; private set; }
+        public long loan { get; private set; } = loan;
 
         [PublicAPI("The current fuel level of the commander's vehicle")]
-        public decimal? fuel { get; private set; }
+        public decimal? fuel { get; private set; } = fuel;
 
         [PublicAPI("The total fuel capacity of the commander's vehicle")]
-        public decimal? fuelcapacity { get; private set; }
+        public decimal? fuelcapacity { get; private set; } = fuelcapacity;
 
         [PublicAPI("True if the commander is starting landed")]
-        public bool? startlanded { get; private set; }
+        public bool? startlanded { get; private set; } = startedLanded;
 
         [PublicAPI("True if the commander is starting dead / at the rebuy screen")]
-        public bool? startdead { get; private set; }
+        public bool? startdead { get; private set; } = startDead;
 
         // Not intended to be user facing
 
-        public string shipname { get; private set; }
+        public string shipname { get; private set; } = shipName;
 
-        public string shipident { get; private set; }
+        public string shipident { get; private set; } = shipIdent;
 
-        public string frontierID { get; private set; }
+        public string frontierID { get; private set; } = frontierId;
 
-        public string shipEDModel { get; private set; }
+        public string shipEDModel { get; private set; } = shipEdModel;
 
-        public string gameversion { get; private set; }
+        public string gameversion { get; private set; } = version;
 
-        public string gamebuild { get; private set; }
-
-        public CommanderContinuedEvent(DateTime timestamp, string commander, string frontierID, bool horizons, bool odyssey, long? shipId, string shipEdModel, string shipName, string shipIdent, bool? startedLanded, bool? startDead, GameMode mode, string group, long credits, long loan, decimal? fuel, decimal? fuelcapacity, string version, string build) : base(timestamp, NAME)
-        {
-            this.commander = commander;
-            this.frontierID = frontierID;
-            this.horizons = horizons;
-            this.odyssey = odyssey;
-            this.shipid = shipId;
-            this.shipEDModel = shipEdModel;
-            this.shipname = shipName;
-            this.shipident = shipIdent;
-            this.startlanded = startedLanded;
-            this.startdead = startDead;
-            this.mode = (mode?.localizedName);
-            this.group = group;
-            this.credits = credits;
-            this.loan = loan;
-            this.fuel = fuel;
-            this.fuelcapacity = fuelcapacity;
-            this.gameversion = version;
-            this.gamebuild = build;
-        }
+        public string gamebuild { get; private set; } = build;
 
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {
@@ -110,7 +108,7 @@ namespace EddiEvents
             // shipId may be null either if we're logging into CQC or if we're logging in while in an Apex taxi service
             if ( shipId == null )
             {
-                if ( !string.IsNullOrEmpty( shipEDModel ) && shipEDModel.ToLowerInvariant().Contains( "taxi" ) )
+                if ( !string.IsNullOrEmpty( shipEDModel ) && shipEDModel.Contains( "taxi", StringComparison.OrdinalIgnoreCase ) )
                 {
                     // This is a taxi
                 }

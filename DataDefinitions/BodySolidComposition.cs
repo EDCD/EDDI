@@ -5,7 +5,9 @@ using Utilities;
 namespace EddiDataDefinitions
 {
     /// <summary> Body Solid Composition </summary>
-    public class SolidComposition : ResourceBasedLocalizedEDName<SolidComposition>
+    [ method: JsonConstructor]
+    public class SolidComposition ( string edComposition, decimal percent = 0 )
+        : ResourceBasedLocalizedEDName<SolidComposition>( edComposition, edComposition )
     {
         static SolidComposition()
         {
@@ -22,7 +24,7 @@ namespace EddiDataDefinitions
         public string composition => localizedName;
 
         [PublicAPI, JsonProperty]
-        public decimal percent { get; set; } // Percent share of the solid body
+        public decimal percent { get; set; } = percent; // Percent share of the solid body
 
         // Not intended to be user facing
 
@@ -36,11 +38,5 @@ namespace EddiDataDefinitions
         // dummy used to ensure that the static constructor has run
         public SolidComposition() : this("")
         { }
-
-        [JsonConstructor]
-        public SolidComposition(string edComposition, decimal percent = 0) : base(edComposition, edComposition)
-        {
-            this.percent = percent;
-        }
     }
 }

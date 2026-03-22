@@ -6,7 +6,7 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class StarScannedEvent : Event
+    public class StarScannedEvent ( DateTime timestamp, string scantype, Body star ) : Event( timestamp, NAME )
     {
         public const string NAME = "Star scanned";
         public const string DESCRIPTION = "Triggered when you complete a scan of a stellar body";
@@ -117,7 +117,7 @@ namespace EddiEvents
         public decimal? rotationalperiodprobability => star?.rotationalperiodprobability;
 
         [PublicAPI("The type of scan event (AutoScan, Basic, Detailed, NavBeacon, NavBeaconDetail)")]
-        public string scantype { get; private set; } // One of AutoScan, Basic, Detailed, NavBeacon, NavBeaconDetail
+        public string scantype { get; private set; } = scantype; // One of AutoScan, Basic, Detailed, NavBeacon, NavBeaconDetail
                                                      // AutoScan events are detailed scans triggered via proximity. 
 
         [PublicAPI("True if the star is scoopable (K, G, B, F, O, A, M)")]
@@ -180,12 +180,6 @@ namespace EddiEvents
 
         public DateTime? scanned => star?.scannedDateTime;
 
-        public Body star { get; private set; }
-
-        public StarScannedEvent(DateTime timestamp, string scantype, Body star) : base(timestamp, NAME)
-        {
-            this.star = star;
-            this.scantype = scantype;
-        }
+        public Body star { get; private set; } = star;
     }
 }

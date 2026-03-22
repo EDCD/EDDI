@@ -46,14 +46,11 @@ namespace EddiInaraResponder
 
         private void InaraApiKeyChanged(object sender, TextChangedEventArgs e)
         {
-            if (sender is TextBox textBox)
+            if (sender is TextBox box && box.Name == "inaraApiKeyTextBox" )
             {
-                if (textBox.Name == "inaraApiKeyTextBox")
-                {
-                    SetAPIKeyValidity(true);
-                    inputTimer.Stop();
-                    inputTimer.Start();
-                }
+                SetAPIKeyValidity(true);
+                inputTimer.Stop();
+                inputTimer.Start();
             }
         }
 
@@ -110,7 +107,11 @@ namespace EddiInaraResponder
         
         public IEnumerable GetErrors ( string propertyName )
         {
-            return Errors.TryGetValue(propertyName, out var propertyErrors) ? propertyErrors : null;
+            ArgumentNullException.ThrowIfNull(propertyName);
+            
+            return Errors.TryGetValue( propertyName, out var propertyErrors ) 
+                ? propertyErrors 
+                : [ ];
         }
 
         private void ClearErrors(string propertyName)

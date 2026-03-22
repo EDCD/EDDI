@@ -18,12 +18,15 @@ namespace Tests.EddiVoiceAttackService
     {
         private IPCServer? _server;
         private IPCClient? _client;
-
+        
+        // ReSharper disable once MemberCanBePrivate.Global
+        public TestContext TestContext { get; set; } = null!;
+        
         [TestInitialize]
         public async Task Initialize()
         {
             _server = new IPCServer();
-            await _server.StartAsync();
+            await _server.StartAsync( TestContext.CancellationToken );
             _client = new IPCClient();
         }
 
@@ -36,7 +39,7 @@ namespace Tests.EddiVoiceAttackService
                 {
                     if (_client.IsConnected)
                     {
-                        await _client.DisconnectAsync().ConfigureAwait( false );
+                        await _client.DisconnectAsync( TestContext.CancellationToken ).ConfigureAwait( false );
                     }
                     _client.Dispose();
                 }
@@ -50,7 +53,7 @@ namespace Tests.EddiVoiceAttackService
             {
                 try
                 {
-                    await _server.StopAsync().ConfigureAwait( false );
+                    await _server.StopAsync( TestContext.CancellationToken ).ConfigureAwait( false );
                 }
                 catch
                 {
@@ -67,12 +70,12 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port).ConfigureAwait( false );
+            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken ).ConfigureAwait( false );
             Assert.IsTrue(_client.IsConnected);
 
             // Act
             var status1 = await _client.GetStatusAsync().ConfigureAwait( false );
-            await Task.Delay(6000).ConfigureAwait( false ); // Wait for heartbeat interval
+            await Task.Delay(6000, TestContext.CancellationToken ).ConfigureAwait( false ); // Wait for heartbeat interval
             var status2 = await _client.GetStatusAsync().ConfigureAwait( false );
 
             // Assert
@@ -86,14 +89,14 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port).ConfigureAwait( false );
+            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken ).ConfigureAwait( false );
             Assert.IsTrue(_client.IsConnected);
 
             // Act - Stop server to simulate dead connection
-            await _server.StopAsync().ConfigureAwait( false );
+            await _server.StopAsync( TestContext.CancellationToken ).ConfigureAwait( false );
 
             // Wait longer than heartbeat timeout
-            await Task.Delay(15000).ConfigureAwait( false ); // 10s timeout + 5s buffer
+            await Task.Delay(15000, TestContext.CancellationToken ).ConfigureAwait( false ); // 10s timeout + 5s buffer
 
             // Assert - Check connection is lost
             await _client.GetStatusAsync().ConfigureAwait( false );
@@ -110,22 +113,22 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
-            int originalPort = _server.Port;
-            await _client.ConnectAsync("127.0.0.1", originalPort).ConfigureAwait( false );
+            var originalPort = _server.Port;
+            await _client.ConnectAsync("127.0.0.1", originalPort, TestContext.CancellationToken ).ConfigureAwait( false );
             Assert.IsTrue(_client.IsConnected);
 
             // Act - Stop and restart server on same port
-            await _server.StopAsync().ConfigureAwait( false );
-            await Task.Delay(500).ConfigureAwait( false ); // Wait for cleanup
+            await _server.StopAsync( TestContext.CancellationToken ).ConfigureAwait( false );
+            await Task.Delay(500, TestContext.CancellationToken ).ConfigureAwait( false ); // Wait for cleanup
 
             _server = new IPCServer();
-            await _server.StartAsync().ConfigureAwait( false );
+            await _server.StartAsync( TestContext.CancellationToken ).ConfigureAwait( false );
             
             // Attempt reconnect
-            await _client.DisconnectAsync().ConfigureAwait( false );
+            await _client.DisconnectAsync( TestContext.CancellationToken ).ConfigureAwait( false );
             Assert.IsFalse(_client.IsConnected);
 
-            await _client.ConnectAsync("127.0.0.1", _server.Port).ConfigureAwait( false );
+            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken ).ConfigureAwait( false );
 
             // Assert
             Assert.IsTrue(_client.IsConnected);
@@ -146,7 +149,7 @@ namespace Tests.EddiVoiceAttackService
             // Attempt 4: 8 seconds delay
             // Max delay: 60 seconds
 
-            await _client.ConnectAsync("127.0.0.1", _server.Port).ConfigureAwait( false );
+            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken ).ConfigureAwait( false );
             var status1 = await _client.GetStatusAsync().ConfigureAwait( false );
             
             // Assert initial state
@@ -160,27 +163,27 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
-            int originalPort = _server.Port;
+            var originalPort = _server.Port;
 
             // Act & Assert
             // Try 1: Connect successfully
-            await _client.ConnectAsync("127.0.0.1", originalPort).ConfigureAwait( false );
+            await _client.ConnectAsync("127.0.0.1", originalPort, TestContext.CancellationToken ).ConfigureAwait( false );
             Assert.IsTrue(_client.IsConnected);
 
             // Disconnect
-            await _client.DisconnectAsync().ConfigureAwait( false );
+            await _client.DisconnectAsync( TestContext.CancellationToken ).ConfigureAwait( false );
             Assert.IsFalse(_client.IsConnected);
 
             // Try 2: Reconnect
-            await _client.ConnectAsync("127.0.0.1", originalPort).ConfigureAwait( false );
+            await _client.ConnectAsync("127.0.0.1", originalPort, TestContext.CancellationToken ).ConfigureAwait( false );
             Assert.IsTrue(_client.IsConnected);
 
             // Disconnect again
-            await _client.DisconnectAsync().ConfigureAwait( false );
+            await _client.DisconnectAsync( TestContext.CancellationToken ).ConfigureAwait( false );
             Assert.IsFalse(_client.IsConnected);
 
             // Try 3: Final reconnect
-            await _client.ConnectAsync("127.0.0.1", originalPort).ConfigureAwait( false );
+            await _client.ConnectAsync("127.0.0.1", originalPort, TestContext.CancellationToken ).ConfigureAwait( false );
             Assert.IsTrue(_client.IsConnected);
         }
 
@@ -223,7 +226,7 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port).ConfigureAwait( false );
+            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken ).ConfigureAwait( false );
 
             // Act
             var command = new CommandData { Command = "test", Target = "test" };
@@ -251,10 +254,10 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port).ConfigureAwait( false );
+            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken ).ConfigureAwait( false );
 
             // Act
-            await Task.Delay(1000).ConfigureAwait( false );
+            await Task.Delay(1000, TestContext.CancellationToken ).ConfigureAwait( false );
             var status = await _client.GetStatusAsync().ConfigureAwait( false );
 
             // Assert
@@ -269,13 +272,13 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port).ConfigureAwait( false );
+            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken ).ConfigureAwait( false );
 
             var status1 = await _client.GetStatusAsync().ConfigureAwait( false );
             var activity1 = status1.LastActivityAt;
 
             // Act
-            await Task.Delay(500).ConfigureAwait( false );
+            await Task.Delay(500, TestContext.CancellationToken ).ConfigureAwait( false );
             var status2 = await _client.GetStatusAsync().ConfigureAwait( false );
 
             // Assert
@@ -290,7 +293,7 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port).ConfigureAwait( false );
+            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken ).ConfigureAwait( false );
 
             // Act - Send command(s) and measure response time
             var command = new CommandData { Command = "test", Target = "test" };
@@ -322,15 +325,15 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port).ConfigureAwait( false );
+            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken ).ConfigureAwait( false );
 
             _client.ConnectionLost += (s, e) => _ = e;
 
             // Act
-            await _server.StopAsync().ConfigureAwait( false );
+            await _server.StopAsync( TestContext.CancellationToken ).ConfigureAwait( false );
             
             // Wait for connection to be detected as lost
-            await Task.Delay(2000).ConfigureAwait( false );
+            await Task.Delay(2000, TestContext.CancellationToken ).ConfigureAwait( false );
 
             // Assert
             // Connection should be lost (though event may not fire depending on timing)
@@ -347,16 +350,16 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port).ConfigureAwait( false );
+            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken ).ConfigureAwait( false );
 
             var command = new CommandData { Command = "test", Target = "test" };
 
             // Act - Stop server after connection
             _ = Task.Run(async () =>
             {
-                await Task.Delay(500).ConfigureAwait( false );
-                await _server.StopAsync().ConfigureAwait( false );
-            });
+                await Task.Delay(500, TestContext.CancellationToken ).ConfigureAwait( false );
+                await _server.StopAsync( TestContext.CancellationToken ).ConfigureAwait( false );
+            }, TestContext.CancellationToken );
 
             // Try to send command - should fail with appropriate error
             try
@@ -388,10 +391,10 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port).ConfigureAwait( false );
+            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken ).ConfigureAwait( false );
 
             // Act & Assert - Perform multiple status checks
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 var status = await _client.GetStatusAsync().ConfigureAwait( false );
                 Assert.IsTrue(status.IsConnected);
@@ -407,11 +410,11 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port).ConfigureAwait( false );
+            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken ).ConfigureAwait( false );
 
             // Act - Run multiple concurrent status checks
             var tasks = new Task[5];
-            for (int i = 0; i < 5; i++)
+            for (var i = 0; i < 5; i++)
             {
                 tasks[i] = _client.GetStatusAsync();
             }

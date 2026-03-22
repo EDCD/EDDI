@@ -24,8 +24,9 @@ namespace EddiEddnResponder
         // Schema reference: https://github.com/EDCD/EDDN/tree/master/schemas
 
         public readonly EDDNState eddnState = new();
-        public readonly List<ISchema> schemas = new();
-        public readonly List<ICapiSchema> capiSchemas = new();
+        public readonly List<ISchema> schemas = [ ];
+        public readonly List<ICapiSchema> capiSchemas = [ ];
+        internal readonly EDDNSender eddnSender = new();
 
         public string ResponderName()
         {
@@ -52,7 +53,7 @@ namespace EddiEddnResponder
             foreach (var schema in capiSchemas)
             {
                 // The same Frontier API data may be handled by multiple schemas so we always iterate through each.
-                schema.Handle(e.profileJson, e.marketJson, e.shipyardJson, e.fleetCarrierJson, eddnState);
+                schema.Handle( e.profileJson, e.marketJson, e.shipyardJson, e.fleetCarrierJson, eddnState, eddnSender );
             }
         }
 
@@ -96,9 +97,9 @@ namespace EddiEddnResponder
                     { "Event", data },
                     { "EDDN State", eddnState }
                 });
-            foreach (var schema in schemas)
+            foreach ( var schema in schemas )
             {
-                if (schema.Handle(edType, ref data, eddnState))
+                if ( schema.Handle( edType, ref data, eddnState, eddnSender ) )
                 {
                     break;
                 }
@@ -157,11 +158,11 @@ namespace EddiEddnResponder
                 }
             }
 
-            if ( !schemas.Any() )
+            if ( schemas.Count == 0 )
             {
                 Logging.Warn( "Failed to load EDDN journal schemas." );
             }
-            if ( !capiSchemas.Any() )
+            if ( capiSchemas.Count == 0 )
             {
                 Logging.Warn( "Failed to load EDDN Frontier API schemas." );
             }
@@ -169,7 +170,7 @@ namespace EddiEddnResponder
 
         internal void SetUnitTesting(bool unitTesting)
         {
-            EDDNSender.unitTesting = unitTesting;
+            eddnSender.unitTesting = unitTesting;
         }
 
         public UserControl ConfigurationTabItem()

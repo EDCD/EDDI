@@ -583,7 +583,7 @@ namespace EddiNavigationMonitor
             }
         }
 
-        private async Task UpdateDestinationDataAsync(NavWaypoint routeStart, NavWaypoint routeDestination)
+        private static async Task UpdateDestinationDataAsync(NavWaypoint routeStart, NavWaypoint routeDestination)
         {
             if ( routeDestination is null )
             {
@@ -690,7 +690,7 @@ namespace EddiNavigationMonitor
             return Functions.SurfaceDistanceKm(radiusMeters, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude) ?? 0;
         }
 
-        private async Task GetBookmarkExtrasAsync<T>(ObservableCollection<T> bookmarks) where T : NavBookmark
+        private static async Task GetBookmarkExtrasAsync<T>(ObservableCollection<T> bookmarks) where T : NavBookmark
         {
             // Retrieve extra details to supplement our bookmarks
 

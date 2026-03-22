@@ -19,7 +19,7 @@ namespace EddiEddnResponder.Schemas
         private long? lastSentMarketID;
         private DateTime? lastSentDateTime;
 
-        public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
+        public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState, EDDNSender eddnSender )
         {
             try
             {
@@ -48,13 +48,13 @@ namespace EddiEddnResponder.Schemas
 
                 // Only send the message if we have commodities
                 if (data.TryGetValue("Items", out var commoditiesList) &&
-                    commoditiesList is List<object> commodities && 
-                    commodities.Any())
+                    commoditiesList is List<object> list &&
+                    list.Count > 0 )
                 {
                     var handledData = new Dictionary<string, object>() as IDictionary<string, object>;
                     handledData["timestamp"] = data["timestamp"];
                     handledData["systemName"] = data["StarSystem"];
-                    handledData["stationName"] = data["StationName"]?.ToString().TrimEnd( '+', ' ' ); // Remove any +++ at the end of the station name
+                    handledData["stationName"] = data["StationName"]?.ToString()?.TrimEnd( '+', ' ' ); // Remove any +++ at the end of the station name
                     handledData["stationType"] = data["StationType"]; // market.json specific
                     handledData["marketId"] = data["MarketID"];
                     handledData["commodities"] = JArray.FromObject(data["Items"])
@@ -74,7 +74,7 @@ namespace EddiEddnResponder.Schemas
                     handledData = eddnState.GameVersion.AugmentVersion(handledData);
 
                     data = handledData;
-                    EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/commodity/3", handledData, eddnState);
+                    eddnSender.SendToEDDN("https://eddn.edcd.io/schemas/commodity/3", handledData, eddnState);
                     return true;
                 }
             }
@@ -85,7 +85,7 @@ namespace EddiEddnResponder.Schemas
             return false;
         }
 
-        private bool ApplyJournalMarketFilter(JToken c)
+        private static bool ApplyJournalMarketFilter(JToken c)
         {
             // Don't serialize non-marketable commodities such as drones / limpets
             if (c?["Category"]?.ToString()
@@ -104,7 +104,7 @@ namespace EddiEddnResponder.Schemas
         }
 
         public IDictionary<string, object> Handle ( JObject profileJson, JObject marketJson, JObject shipyardJson,
-            JObject fleetCarrierJson, EDDNState eddnState )
+            JObject fleetCarrierJson, EDDNState eddnState, EDDNSender eddnSender )
         {
             try
             {
@@ -159,7 +159,7 @@ namespace EddiEddnResponder.Schemas
                     // Apply data augments
                     data = eddnState.GameVersion.AugmentVersion(data);
 
-                    EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/commodity/3", data, eddnState, "CAPI-Live-market" );
+                    eddnSender.SendToEDDN("https://eddn.edcd.io/schemas/commodity/3", data, eddnState, "CAPI-Live-market" );
                     lastSentMarketID = marketID;
                     lastSentDateTime = timestamp;
                     return data;
@@ -172,7 +172,7 @@ namespace EddiEddnResponder.Schemas
             return null;
         }
 
-        private bool ApplyFrontierApiMarketFilter(JToken c)
+        private static bool ApplyFrontierApiMarketFilter(JToken c)
         {
             try
             {
@@ -196,7 +196,7 @@ namespace EddiEddnResponder.Schemas
             }
         }
 
-        private JObject FormatCommodity(JToken c, bool fromJournal)
+        private static JObject FormatCommodity(JToken c, bool fromJournal)
         {
             var handledC = new JObject();
             if (fromJournal)
@@ -227,7 +227,7 @@ namespace EddiEddnResponder.Schemas
                 {
                     statusFlags.Add("Rare");
                 }
-                if (statusFlags.Any())
+                if (statusFlags.Count > 0 )
                 {
                     handledC["statusFlags"] = JToken.FromObject(statusFlags);
                 }

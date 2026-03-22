@@ -1,7 +1,7 @@
 ﻿namespace EddiDataDefinitions
 {
     /// <summary> Asteroid material content </summary>
-    public class ModuleMount : ResourceBasedLocalizedEDName<ModuleMount>
+    public class ModuleMount ( string edName ) : ResourceBasedLocalizedEDName<ModuleMount>( edName, edName )
     {
         static ModuleMount()
         {
@@ -16,9 +16,6 @@
 
         // dummy used to ensure that the static constructor has run
         public ModuleMount() : this("")
-        { }
-
-        public ModuleMount(string edName) : base(edName, edName)
         { }
     }
 }

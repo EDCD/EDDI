@@ -1,10 +1,10 @@
 using EddiIPC_Service.Messages;
 using EddiIPC_Service.Messaging;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 
 namespace Tests.EddiVoiceAttackService
 {
@@ -365,7 +365,7 @@ namespace Tests.EddiVoiceAttackService
 
             // Assert
             Assert.AreEqual( 0, firstCount );
-            Assert.AreEqual( 0, firstMessages.Count );
+            Assert.IsEmpty( firstMessages );
             Assert.AreEqual( 0, firstBytesConsumed );
             Assert.AreEqual( 1, secondCount );
             Assert.AreEqual( serializedBytes.Length, secondBytesConsumed );

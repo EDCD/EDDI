@@ -6,7 +6,12 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class CargoTransferEvent : Event
+    public class CargoTransferEvent (
+        DateTime timestamp,
+        List<CommodityAmount> toShip,
+        List<CommodityAmount> toSrv,
+        List<CommodityAmount> toCarrier )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Cargo transfer";
         public const string DESCRIPTION = "Triggered when transferring commodities between your ship, SRV, or carrier";
@@ -18,19 +23,12 @@ namespace EddiEvents
         ];
 
         [PublicAPI("The commodities and amounts being transferred to your ship")]
-        public List<CommodityAmount> toship { get; private set; }
+        public List<CommodityAmount> toship { get; private set; } = toShip;
 
         [PublicAPI( "The commodities and amounts being transferred to your SRV" )]
-        public List<CommodityAmount> tosrv { get; private set; }
-        
-        [PublicAPI( "The commodities and amounts being transferred to your carrier" )]
-        public List<CommodityAmount> tocarrier { get; private set; }
+        public List<CommodityAmount> tosrv { get; private set; } = toSrv;
 
-        public CargoTransferEvent ( DateTime timestamp, List<CommodityAmount> toShip, List<CommodityAmount> toSRV, List<CommodityAmount> toCarrier ) : base(timestamp, NAME)
-        {
-            this.toship = toShip;
-            this.tosrv = toSRV;
-            this.tocarrier = toCarrier;
-        }
+        [PublicAPI( "The commodities and amounts being transferred to your carrier" )]
+        public List<CommodityAmount> tocarrier { get; private set; } = toCarrier;
     }
 }

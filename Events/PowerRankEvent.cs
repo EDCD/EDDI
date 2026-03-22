@@ -5,7 +5,7 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class PowerRankEvent : Event
+    public class PowerRankEvent ( DateTime timestamp, Power power, int rank ) : Event( timestamp, NAME )
     {
         public const string NAME = "Power rank";
         public const string DESCRIPTION = "Triggered when you are awarded a new rank by your pledged Powerplay power";
@@ -15,16 +15,10 @@ namespace EddiEvents
         public string power => (Power ?? Power.None).localizedName;
 
         [PublicAPI("The new rank you have been awarded")]
-        public int rank { get; set; }
-        
+        public int rank { get; set; } = rank;
+
         // Not intended to be user facing
 
-        public Power Power { get; private set; }
-
-        public PowerRankEvent ( DateTime timestamp, Power Power, int rank ) : base(timestamp, NAME)
-        {
-            this.Power = Power;
-            this.rank = rank;
-        }
+        public Power Power { get; private set; } = power;
     }
 }

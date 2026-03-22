@@ -142,7 +142,7 @@ namespace EddiCompanionAppService
         /// <summary>Initialize a custom URL responder for OAuth callbacks. This responder uses DDE and should only be called if the UI dispatcher is available.</summary>
         public void InitializeOAuthCallback()
         {
-            void logger ( string message ) => Logging.Error( message );
+            static void logger ( string message ) => Logging.Error( message );
             var appPath = System.Reflection.Assembly.GetEntryAssembly()?.Location;
             URLResponder = new CustomURLResponder(Constants.EDDI_URL_PROTOCOL, handleCallbackUrlAsync, logger, appPath);
         }
@@ -220,7 +220,7 @@ namespace EddiCompanionAppService
             }
 
             var byteVerifier = Encoding.ASCII.GetBytes(verifier);
-            var hash = SHA256.Create().ComputeHash(byteVerifier);
+            var hash = SHA256.HashData(byteVerifier);
             var codeChallenge = base64UrlEncode(hash);
             return codeChallenge;
         }
@@ -336,12 +336,6 @@ namespace EddiCompanionAppService
 
             using (var response = await httpClient.SendAsync( request ).ConfigureAwait(false) )
             {
-                if (response == null)
-                {
-                    Logging.Debug("Failed to contact API server");
-                    throw new EliteDangerousCompanionAppException("Failed to contact API server");
-                }
-
                 if (response.StatusCode == HttpStatusCode.Found)
                 {
                     return null;
@@ -476,12 +470,6 @@ namespace EddiCompanionAppService
 
                     using ( var response = await httpClient.SendAsync( request ).ConfigureAwait(false) )
                     {
-                        if ( response == null )
-                        {
-                            Logging.Debug( "Failed to contact API server" );
-                            throw new EliteDangerousCompanionAppException( "Failed to contact API server" );
-                        }
-
                         if ( response.StatusCode == HttpStatusCode.OK )
                         {
                             var timestamp = DateTime

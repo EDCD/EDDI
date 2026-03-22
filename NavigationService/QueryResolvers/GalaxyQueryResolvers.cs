@@ -42,7 +42,7 @@ namespace EddiNavigationService.QueryResolvers
 
         /// <summary> Route to the nearest star system that is eligible for fuel scoop refueling </summary>
         /// <returns> The query result </returns>
-        private async Task<RouteDetailsEvent> GetNearestScoopSystemAsync ( [ NotNull ] StarSystem startSystem, [ NotNull ] Dictionary<string, object> searchFilter )
+        private static async Task<RouteDetailsEvent> GetNearestScoopSystemAsync ( [ NotNull ] StarSystem startSystem, [ NotNull ] Dictionary<string, object> searchFilter )
         {
             if ( startSystem.x is null || startSystem.y is null || startSystem.z is null )
             {
@@ -76,7 +76,7 @@ namespace EddiNavigationService.QueryResolvers
 
         /// <summary> Obtains a neutron star route between the current star system and a named star system </summary>
         /// <returns> The query result </returns>
-        private async Task<RouteDetailsEvent> GetNeutronRouteAsync ( string targetSystemName, StarSystem startSystem, bool isSupercharged = false, bool useSupercharge = true, bool useInjections = false, bool excludeSecondary = false, bool fromUIquery = false )
+        private static async Task<RouteDetailsEvent> GetNeutronRouteAsync ( string targetSystemName, StarSystem startSystem, bool isSupercharged = false, bool useSupercharge = true, bool useInjections = false, bool excludeSecondary = false, bool fromUIquery = false )
         {
             if ( string.IsNullOrEmpty( targetSystemName ) )
             {
@@ -124,7 +124,7 @@ namespace EddiNavigationService.QueryResolvers
 
         /// <summary> Obtains a carrier route between the current carrier star system and a named star system </summary>
         /// <returns> The query result </returns>
-        private async Task<RouteDetailsEvent> GetCarrierRouteAsync ( [NotNull] string targetSystemName, [NotNull] StarSystem startSystem, long? usedCarrierCapacity = 0, string[] refuelDestinations = null, bool fromUIquery = false )
+        private static async Task<RouteDetailsEvent> GetCarrierRouteAsync ( [NotNull] string targetSystemName, [NotNull] StarSystem startSystem, long? usedCarrierCapacity = 0, string[] refuelDestinations = null, bool fromUIquery = false )
         {
             usedCarrierCapacity = usedCarrierCapacity ?? EDDI.Instance.FleetCarrier?.usedCapacity;
             if ( usedCarrierCapacity is null ) { return null; }

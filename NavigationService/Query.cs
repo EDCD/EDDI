@@ -1,34 +1,23 @@
 ﻿namespace EddiNavigationService
 {
-    public class Query
+    public class Query (
+        QueryType queryType,
+        string stringArg0 = null,
+        string stringArg1 = null,
+        decimal? numericArg = null,
+        bool? booleanArg = null,
+        bool fromUi = false )
     {
-        public QueryType QueryType { get; }
+        public QueryType QueryType { get; } = queryType;
 
-        public string StringArg0 { get; }
+        public string StringArg0 { get; } = stringArg0;
 
-        public string StringArg1 { get; }
+        public string StringArg1 { get; } = stringArg1;
 
-        public decimal? NumericArg { get; }
+        public decimal? NumericArg { get; } = numericArg;
 
-        public bool? BooleanArg { get; }
+        public bool? BooleanArg { get; } = booleanArg;
 
-        public bool FromUI { get; }
-
-        public Query ( 
-            QueryType queryType, 
-            string stringArg0 = null, 
-            string stringArg1 = null,
-            decimal? numericArg = null, 
-            bool? booleanArg = null, 
-            bool fromUI = false 
-            )
-        {
-            this.QueryType = queryType;
-            this.StringArg0 = stringArg0;
-            this.StringArg1 = stringArg1;
-            this.NumericArg = numericArg;
-            this.BooleanArg = booleanArg;
-            this.FromUI = fromUI;
-        }
+        public bool FromUI { get; } = fromUi;
     }
 }

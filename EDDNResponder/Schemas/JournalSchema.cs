@@ -21,7 +21,7 @@ namespace EddiEddnResponder.Schemas
             "Scan"
         ];
 
-        public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
+        public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState, EDDNSender eddnSender )
         {
             try
             {
@@ -37,7 +37,7 @@ namespace EddiEddnResponder.Schemas
                 data = eddnState.Location.AugmentStarPos( data );
                 data = eddnState.Location.AugmentStarSystemName( data );
                 
-                EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/journal/1", data, eddnState);
+                eddnSender.SendToEDDN("https://eddn.edcd.io/schemas/journal/1", data, eddnState);
                 return true;
             }
             catch (Exception e)
@@ -47,7 +47,7 @@ namespace EddiEddnResponder.Schemas
             }
         }
 
-        private bool CheckSanity(string edType, IDictionary<string, object> data)
+        private static bool CheckSanity(string edType, IDictionary<string, object> data)
         {
             // We've already vetted location data via the CheckLocationData method.
             // Perform any additional quality checks we think we need here.

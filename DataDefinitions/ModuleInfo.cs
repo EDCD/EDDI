@@ -6,19 +6,13 @@ using Utilities;
 
 namespace EddiDataDefinitions
 {
-    public class ModuleInfo
+    public class ModuleInfo ( DateTime timestamp, List<ModuleInfoItem> modules )
     {
         [JsonProperty]
-        public DateTime timestamp { get; }
+        public DateTime timestamp { get; } = timestamp;
 
         [JsonProperty]
-        public List<ModuleInfoItem> Modules { get; } 
-
-        public ModuleInfo(DateTime timestamp, List<ModuleInfoItem> modules)
-        {
-            this.timestamp = timestamp;
-            Modules = modules ?? new List<ModuleInfoItem>();
-        }
+        public List<ModuleInfoItem> Modules { get; } = modules ?? new List<ModuleInfoItem>();
 
         [UsedImplicitly]
         public static bool TryFromFile (

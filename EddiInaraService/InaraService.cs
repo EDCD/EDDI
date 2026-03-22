@@ -33,7 +33,7 @@ namespace EddiInaraService
         private readonly HttpClient httpClient;
         private static bool tooManyRequests; // This must be static so that it is visible to child threads and tasks
         private static readonly BlockingCollection<InaraAPIEvent> queuedAPIEvents = new();
-        private readonly List<string> invalidAPIEvents = new();
+        private readonly List<string> invalidAPIEvents = [ ];
         private static CancellationTokenSource syncCancellationTS; // This must be static so that it is visible to child threads and tasks
         private bool eddiIsBeta;
         public static EventHandler invalidAPIkey;
@@ -96,7 +96,7 @@ namespace EddiInaraService
                                 if ( holdingQueue.Count > 0 )
                                 {
                                     var sendingQueue = holdingQueue.ToList();
-                                    holdingQueue = new List<InaraAPIEvent>();
+                                    holdingQueue = [ ];
                                     await SendAPIEventsAsync( sendingQueue ).ConfigureAwait(false);
                                     await Task.Delay( !tooManyRequests
                                         ? syncIntervalMilliSeconds
@@ -238,10 +238,10 @@ namespace EddiInaraService
             }
 
             // Flag each event with a unique ID we can use when processing responses
-            List<InaraAPIEvent> indexedEvents = new List<InaraAPIEvent>();
-            for (int i = 0; i < events.Count; i++)
+            var indexedEvents = new List<InaraAPIEvent>();
+            for (var i = 0; i < events.Count; i++)
             {
-                InaraAPIEvent indexedEvent = events[i];
+                var indexedEvent = events[i];
                 indexedEvent.eventCustomID = i;
 
                 // Exclude and discard events with issues that have returned a code 400 error in this instance.
@@ -267,7 +267,7 @@ namespace EddiInaraService
             if (inaraResponse.eventStatus == 200) { return true; }
 
             // Anything else - something is wrong.
-            Dictionary<string, object> data = new Dictionary<string, object>()
+            var data = new Dictionary<string, object>()
             {
                 { "InaraAPIEvent", indexedEvents.Find(e => e.eventCustomID == inaraResponse.eventCustomID) },
                 { "InaraResponse", inaraResponse },

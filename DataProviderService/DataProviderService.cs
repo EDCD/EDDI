@@ -28,25 +28,27 @@ namespace EddiDataProviderService
 
         public readonly CancellationTokenSource cts = new();
 
-        public static bool unitTesting;
+        public readonly bool unitTesting;
 
         private DataProviderService ( StarMapService edsmService = null,
-            SpanshService spanshService = null, StarSystemSqLiteRepository starSystemRepository = null )
+            SpanshService spanshService = null, StarSystemSqLiteRepository starSystemRepository = null, bool unitTesting = false )
         {
             factionCache = new FactionCache( 3600 ); // Keep a cache of factions for 1 hour
             starSystemCache = new StarSystemCache( 300 ); // Keep a cache of star systems for 5 minutes
             this.edsmService = edsmService;
             this.spanshService = spanshService;
             this.starSystemRepository = starSystemRepository;
+            this.unitTesting = unitTesting;
         }
 
         public static DataProviderService Create ( StarMapService newEdsmService = null,
-            SpanshService newSpanshService = null, StarSystemSqLiteRepository newStarSystemRepository = null )
+            SpanshService newSpanshService = null, StarSystemSqLiteRepository newStarSystemRepository = null, bool unitTesting = false )
         {
             return new DataProviderService(
                 newEdsmService ?? new StarMapService(),
                 newSpanshService ?? new SpanshService(),
-                newStarSystemRepository ?? StarSystemSqLiteRepository.Create( unitTesting ) 
+                newStarSystemRepository ?? StarSystemSqLiteRepository.Create( unitTesting ),
+                unitTesting
                 );
         }
 
@@ -156,7 +158,7 @@ namespace EddiDataProviderService
             results.AddRange( localDbSystems );
 
             // Fetch from external data providers (when so instructed)
-            if ( missingSystems().Any() && fetchIfMissing )
+            if ( missingSystems().Length > 0 && fetchIfMissing )
             {
                 var fetchedSystems = await FetchSystemsDataAsync( missingSystems(), showMarketDetails ).ConfigureAwait( false ) ?? new List<StarSystem>();
                 if ( fetchedSystems.Count > 0 )
@@ -180,7 +182,7 @@ namespace EddiDataProviderService
                     await SaveStarSystemsAsync( fetchedSystems, cts.Token ).ConfigureAwait(false);
                 }
 
-                if ( missingSystems().Any() )
+                if ( missingSystems().Length > 0 )
                 {
                     Logging.Warn( "Unable to retrieve data on all requested star systems.", missingSystems() );
                 }
@@ -199,7 +201,7 @@ namespace EddiDataProviderService
         private async Task<List<StarSystem>> GetOrFetchQuickStarSystemsAsync ( ulong[] systemAddresses, bool fetchIfMissing = true )
         {
             var results = new List<StarSystem>();
-            if ( systemAddresses is null || !systemAddresses.Any() ) { return results; }
+            if ( systemAddresses is null || systemAddresses.Length == 0 ) { return results; }
 
             ulong[] missingSystems () => systemAddresses.Where( k => results.All( s => s.systemAddress != k ) ).Distinct().ToArray();
 
@@ -210,13 +212,13 @@ namespace EddiDataProviderService
             results.AddRange( await GetSqlStarSystemsAsync( missingSystems(), false ).ConfigureAwait(false) );
 
             // Fetch from external data providers (when so instructed)
-            if ( missingSystems().Any() && fetchIfMissing )
+            if ( missingSystems().Length > 0 && fetchIfMissing )
             {
                 // Add the external data to our results
                 results.AddRange( await spanshService.GetQuickStarSystemsAsync( missingSystems(), cts.Token ).ConfigureAwait( false ) );
             }
 
-            if ( missingSystems().Any() )
+            if ( missingSystems().Length > 0 )
             {
                 Logging.Warn( "Unable to retrieve data on all requested star systems.", missingSystems() );
             }
@@ -242,7 +244,7 @@ namespace EddiDataProviderService
         public async Task<List<NavWaypoint>> GetOrFetchSystemWaypointsAsync ( string[] systemNames )
         {
             var results = new List<NavWaypoint>();
-            if ( systemNames is null || !systemNames.Any() ) { return results; }
+            if ( systemNames is null || systemNames.Length == 0 ) { return results; }
 
             string[] missingSystems () => systemNames.Where( k => results.All( s => s.systemName != k ) ).Distinct().ToArray();
 
@@ -546,7 +548,7 @@ namespace EddiDataProviderService
                 Logging.Warn( "Spansh API responded with: " + data[ "error" ] );
                 return null;
             }
-            return spanshService.ParseQuickStationWaypoint( data?[ "results" ]?.FirstOrDefault() );
+            return SpanshService.ParseQuickStationWaypoint( data?[ "results" ]?.FirstOrDefault() );
         }
 
         /// <summary>
@@ -567,7 +569,7 @@ namespace EddiDataProviderService
             }
             return ParseQuickBody( data?[ "results" ]?.FirstOrDefault() );
 
-            NavWaypoint ParseQuickBody ( JToken bodyData )
+            static NavWaypoint ParseQuickBody ( JToken bodyData )
             {
                 if ( bodyData is null ) { return null; }
 

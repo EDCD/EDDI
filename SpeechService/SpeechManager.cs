@@ -15,7 +15,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Schema;
@@ -25,7 +24,6 @@ namespace EddiSpeechService
 {
     public class SpeechManager : IDisposable, INotifyPropertyChanged
     {
-        private readonly SoundManager SoundManager;
         public readonly AudioManager AudioManager;
 
         private const float ActiveSpeechFadeOutMilliseconds = 250;
@@ -54,8 +52,7 @@ namespace EddiSpeechService
 
         public SpeechManager ()
         {
-            SoundManager = new SoundManager();
-            AudioManager = new AudioManager( SoundManager );
+            AudioManager = new AudioManager();
             
             var voiceStore = new HashSet<VoiceDetails>(); // Use a Hashset to ensure no duplicates
 
@@ -135,7 +132,10 @@ namespace EddiSpeechService
                             try
                             {
                                 var schema = XmlSchema.Read( resourceStream, null );
-                                SpeechFormatter.lexiconSchemas.Add( schema );
+                                if ( schema != null )
+                                {
+                                    SpeechFormatter.lexiconSchemas.Add( schema );
+                                }
                             }
                             catch ( Exception e )
                             {
@@ -478,7 +478,7 @@ namespace EddiSpeechService
                     SpeechFormatter.UnpackVoiceTags( statement, out voice, out statement );
                 }
 
-                using ( var stream = getSpeechStream( voice ?? defaultVoice, statement ) )
+                await using ( var stream = getSpeechStream( voice ?? defaultVoice, statement ) )
                 {
                     if ( stream == null )
                     {
@@ -512,7 +512,7 @@ namespace EddiSpeechService
                 if ( stream is null || stream.Length == 0 )
                 {
                     // Try again, with speech devoid of SSML
-                    stream = speak( requestedVoice, Regex.Replace( speech, "<.*?>", string.Empty ) );
+                    stream = speak( requestedVoice, GeneratedRegex.SsmlTagRegex().Replace( speech, string.Empty ) );
                 }
                 return stream;
             }

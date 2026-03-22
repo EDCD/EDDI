@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Utilities;
-using Newtonsoft.Json;
 
 namespace EddiDataDefinitions
 {
@@ -1024,18 +1024,18 @@ namespace EddiDataDefinitions
             this.maxK = maxK;
             this.minP = minP;
             this.maxP = maxP;
-            this.planetClass = !string.IsNullOrEmpty( planetClass ) ? planetClass.Split( ';' ).ToList() : new List<string>();
-            this.atmosphereClass = !string.IsNullOrEmpty( atmosphereClass ) ? atmosphereClass.Split( ';' ).ToList() : new List<string>();
-            this.atmosphereComposition = !string.IsNullOrEmpty( atmosphereComposition ) ? atmosphereComposition.Split( ';' ).ToList() : new List<string>();
-            this.volcanism = !string.IsNullOrEmpty( volcanism ) ? volcanism.Split( ';' ).ToList() : new List<string>();
-            this.primaryStar = !string.IsNullOrEmpty( primaryStar ) ? primaryStar.Split( ';' ).ToList() : new List<string>();
-            this.localStar = !string.IsNullOrEmpty( localStar ) ? localStar.Split( ';' ).ToList() : new List<string>();
-            this.materials = !string.IsNullOrEmpty( materials ) ? materials.Split( ',' ).ToList() : new List<string>();
-            this.systemBodies = !string.IsNullOrEmpty( systemBodies ) ? systemBodies.Split( ',' ).ToList() : new List<string>();
+            this.planetClass = !string.IsNullOrEmpty( planetClass ) ? planetClass.Split( ';' ).ToList() : [ ];
+            this.atmosphereClass = !string.IsNullOrEmpty( atmosphereClass ) ? atmosphereClass.Split( ';' ).ToList() : [ ];
+            this.atmosphereComposition = !string.IsNullOrEmpty( atmosphereComposition ) ? atmosphereComposition.Split( ';' ).ToList() : [ ];
+            this.volcanism = !string.IsNullOrEmpty( volcanism ) ? volcanism.Split( ';' ).ToList() : [ ];
+            this.primaryStar = !string.IsNullOrEmpty( primaryStar ) ? primaryStar.Split( ';' ).ToList() : [ ];
+            this.localStar = !string.IsNullOrEmpty( localStar ) ? localStar.Split( ';' ).ToList() : [ ];
+            this.materials = !string.IsNullOrEmpty( materials ) ? materials.Split( ',' ).ToList() : [ ];
+            this.systemBodies = !string.IsNullOrEmpty( systemBodies ) ? systemBodies.Split( ',' ).ToList() : [ ];
             this.nebulaDistance = nebulaDistance;
             this.distanceFromArrival = distanceFromArrival;
             this.geologicalsPresent = geologicalsPresent;
-            this.regions = !string.IsNullOrEmpty( regions ) ? regions.Split( ',' ).ToList() : new List<string>();
+            this.regions = !string.IsNullOrEmpty( regions ) ? regions.Split( ',' ).ToList() : [ ];
         }
 
         /// <summary>

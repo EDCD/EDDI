@@ -1,7 +1,9 @@
 ﻿namespace EddiDataDefinitions
 {
     /// <summary> Asteroid material content </summary>
-    public class AsteroidMaterialContent : ResourceBasedLocalizedEDName<AsteroidMaterialContent>
+    public class AsteroidMaterialContent ( string edName )
+        : ResourceBasedLocalizedEDName<AsteroidMaterialContent>( edName,
+            edName.Replace( "$AsteroidMaterialContent_", "" ).Replace( ";", "" ) )
     {
         static AsteroidMaterialContent()
         {
@@ -16,9 +18,6 @@
 
         // dummy used to ensure that the static constructor has run
         public AsteroidMaterialContent() : this("")
-        { }
-
-        public AsteroidMaterialContent(string edName) : base(edName, edName.Replace("$AsteroidMaterialContent_", "").Replace(";", ""))
         { }
     }
 }

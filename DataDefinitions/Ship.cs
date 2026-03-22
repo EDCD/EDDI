@@ -257,7 +257,7 @@ namespace EddiDataDefinitions
         {
             if (Role == null) // legacy shipmonitor JSON
             {
-                string roleName = (string)additionalJsonData["role"];
+                var roleName = (string)additionalJsonData["role"];
                 Role = Role.FromEDName(roleName) ?? Role.FromName(roleName);
             }
             else
@@ -266,9 +266,9 @@ namespace EddiDataDefinitions
                 Role = Role.FromEDName(Role.edname);
             }
 
-            if (EDName is null && !(model is null)) // legacy shipmonitor JSON may not include EDName or EDID
+            if (EDName is null && model is not null) // legacy shipmonitor JSON may not include EDName or EDID
             {
-                Ship template = ShipDefinitions.FromModel(model);
+                var template = ShipDefinitions.FromModel(model);
                 EDName = EDName ?? template?.EDName;
             }
             additionalJsonData = null;
@@ -455,7 +455,7 @@ namespace EddiDataDefinitions
             get => _hardpoints;
             set { _hardpoints = value; OnPropertyChanged(); }
         }
-        private List<Hardpoint> _hardpoints = new();
+        private List<Hardpoint> _hardpoints = [ ];
 
         [Utilities.PublicAPI, NotNull, ItemNotNull]
         public List<Compartment> compartments
@@ -463,7 +463,7 @@ namespace EddiDataDefinitions
             get => _compartments;
             set { _compartments = value; OnPropertyChanged(); }
         }
-        private List<Compartment> _compartments = new();
+        private List<Compartment> _compartments = [ ];
 
         [Utilities.PublicAPI, NotNull, ItemNotNull]
         public List<LaunchBay> launchbays
@@ -471,7 +471,7 @@ namespace EddiDataDefinitions
             get => _launchbays;
             set { _launchbays = value; OnPropertyChanged(); }
         }
-        private List<LaunchBay> _launchbays = new();
+        private List<LaunchBay> _launchbays = [ ];
 
         public string paintjob { get; set; }
 
@@ -593,7 +593,7 @@ namespace EddiDataDefinitions
             else
             {
                 result = "";
-                foreach (Translation item in phoneticModel)
+                foreach (var item in phoneticModel)
                 {
                     result += "<phoneme alphabet=\"ipa\" ph=\"" + item.to + "\">" + item.from + "</phoneme> ";
                 }
@@ -638,10 +638,10 @@ namespace EddiDataDefinitions
             if (raw != null)
             {
                 // Generate an EDShipyard import URI to retain as much information as possible
-                string uri = "https://edsy.org/";
+                var uri = "https://edsy.org/";
 
                 // Take the ship's JSON, gzip it, then turn it in to base64 and attach it to the base uri
-                string unescapedraw = raw.Replace(@"\""", @"""");
+                var unescapedraw = raw.Replace(@"\""", @"""");
                 var bytes = Encoding.UTF8.GetBytes(unescapedraw);
                 using (var streamIn = new MemoryStream(bytes))
                 using (var streamOut = new MemoryStream())
@@ -663,7 +663,7 @@ namespace EddiDataDefinitions
         /// </summary>
         public void Augment()
         {
-            Ship template = ShipDefinitions.FromModel(model);
+            var template = ShipDefinitions.FromModel(model);
             if (template != null)
             {
                 EDName = template.EDName;
@@ -692,7 +692,7 @@ namespace EddiDataDefinitions
                     case "next":
                         {
                             currentFuel += fuelInReservoir ?? activeFuelReservoirCapacity;
-                            decimal jumpRange = JumpRange( currentFuel, cargoTonnage );
+                            var jumpRange = JumpRange( currentFuel, cargoTonnage );
                             return new JumpDetail(jumpRange, 1);
                         }
                     case "max":
@@ -704,7 +704,7 @@ namespace EddiDataDefinitions
                         {
                             currentFuel += fuelInReservoir ?? activeFuelReservoirCapacity;
                             decimal total = 0;
-                            int jumps = 0;
+                            var jumps = 0;
                             while (currentFuel > 0)
                             {
                                 total += JumpRange( Math.Min( currentFuel, maxfuelperjump ), cargoTonnage );
@@ -717,7 +717,7 @@ namespace EddiDataDefinitions
                         {
                             currentFuel = ( fueltanktotalcapacity ?? 0 ) + activeFuelReservoirCapacity;
                             decimal total = 0;
-                            int jumps = 0;
+                            var jumps = 0;
                             while ( currentFuel > 0)
                             {
                                 total += JumpRange( Math.Min( currentFuel, maxfuelperjump ), cargoTonnage );
@@ -753,7 +753,7 @@ namespace EddiDataDefinitions
             return JumpRange( optimalMass, mass, fuel, linearConstant, powerConstant, guardianFsdBoosterRange, boostModifier );
         }
 
-        private decimal JumpRange ( double optimalMass, double mass, double fuel, double linearConstant, double powerConstant, double guardianFsdBoosterRange, double boostModifier )
+        private static decimal JumpRange ( double optimalMass, double mass, double fuel, double linearConstant, double powerConstant, double guardianFsdBoosterRange, double boostModifier )
         {
             if ( linearConstant == 0 || powerConstant == 0 )
             {
@@ -839,50 +839,31 @@ namespace EddiDataDefinitions
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
-        public class Location
+        [ method: JsonConstructor]
+        public class Location (
+            string systemName,
+            ulong systemAddress,
+            decimal? x,
+            decimal? y,
+            decimal? z,
+            string stationName,
+            long? marketId )
         {
-            public string systemName { get; set; }
-            public ulong systemAddress { get; set; }
-            public decimal? x { get; set; }
-            public decimal? y { get; set; }
-            public decimal? z { get; set; }
-            public string stationName { get; set; }
-            public long? marketId { get; set; }
+            public string systemName { get; set; } = systemName;
+            public ulong systemAddress { get; set; } = systemAddress;
+            public decimal? x { get; set; } = x;
+            public decimal? y { get; set; } = y;
+            public decimal? z { get; set; } = z;
+            public string stationName { get; set; } = stationName;
+            public long? marketId { get; set; } = marketId;
 
             // Default constructor
-            [JsonConstructor]
-            public Location ( string systemName, ulong systemAddress, decimal? x, decimal? y, decimal? z, string stationName, long? marketId )
-            {
-                this.systemName = systemName;
-                this.systemAddress = systemAddress;
-                this.x = x;
-                this.y = y;
-                this.z = z;
-                this.stationName = stationName;
-                this.marketId = marketId;
-            }
 
-            public Location ( [NotNull] StarSystem starSystem, string stationName, long? marketId )
-            {
-                systemName = starSystem.systemname;
-                systemAddress = starSystem.systemAddress;
-                x = starSystem.x;
-                y = starSystem.y;
-                z = starSystem.z;
-                this.stationName = stationName;
-                this.marketId = marketId;
-            }
+            public Location ( [NotNull] StarSystem starSystem, string stationName, long? marketId ) : this( starSystem.systemname, starSystem.systemAddress, starSystem.x, starSystem.y, starSystem.z, stationName, marketId )
+            { }
 
-            public Location ( [NotNull] NavWaypoint waypoint )
-            {
-                systemName = waypoint.systemName;
-                systemAddress = waypoint.systemAddress;
-                x = waypoint.x;
-                y = waypoint.y;
-                z = waypoint.z;
-                stationName = waypoint.stationName;
-                marketId = waypoint.marketID;
-            }
+            public Location ( [NotNull] NavWaypoint waypoint ) : this( waypoint.systemName, waypoint.systemAddress, waypoint.x, waypoint.y, waypoint.z, waypoint.stationName, waypoint.marketID )
+            { }
         }
     }
 }

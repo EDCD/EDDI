@@ -8,7 +8,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Versioning;
-using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
 using Windows.Media.SpeechSynthesis;
@@ -128,7 +127,7 @@ namespace EddiSpeechService.SpeechSynthesizers
             SpeechSynthesisStream stream = null;
             var synthTask = Task.Run( async () =>
             {
-                double ConvertSpeakingRate(int rate)
+                static double ConvertSpeakingRate(int rate)
                 {
                     // Convert from rate from -10 to 10 (with 0 being normal speed) to rate from 0.5X to 3X (with 1.0 being normal speed)
                     var result = 1.0;

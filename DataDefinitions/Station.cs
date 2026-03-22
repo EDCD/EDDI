@@ -84,7 +84,7 @@ namespace EddiDataDefinitions
         /// <summary>A list of the services offered by this station</summary>
         public List<StationService> stationServices
         {
-            get => _stationServices ?? new List<StationService>();
+            get => _stationServices ?? [ ];
             set { _stationServices = value; OnPropertyChanged();}
         }
         private List<StationService> _stationServices;
@@ -95,8 +95,8 @@ namespace EddiDataDefinitions
         {
             get
             {
-                List<string> services = new List<string>();
-                foreach (StationService service in stationServices)
+                var services = new List<string>();
+                foreach (var service in stationServices)
                 {
                     if (service != null) { services.Add(service.localizedName); }
                 }
@@ -228,8 +228,8 @@ namespace EddiDataDefinitions
         {
             get
             {
-                List<string> localizedEconomiesFromShares = new List<string>(2);
-                foreach (EconomyShare economyShare in economyShares)
+                var localizedEconomiesFromShares = new List<string>(2);
+                foreach (var economyShare in economyShares)
                 {
                     localizedEconomiesFromShares.Add(economyShare.economy.localizedName);
                 }
@@ -241,7 +241,7 @@ namespace EddiDataDefinitions
         [PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<CommodityMarketQuote> commodities
         {
-            get => _commodities ?? ( _commodities = new List<CommodityMarketQuote>() );
+            get => _commodities ?? ( _commodities = [ ] );
             set { _commodities = value; OnPropertyChanged();}
         }
         private List<CommodityMarketQuote> _commodities;
@@ -264,7 +264,7 @@ namespace EddiDataDefinitions
         [PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<CommodityDefinition> prohibited
         {
-            get => _prohibited ?? ( _prohibited = new List<CommodityDefinition>() );
+            get => _prohibited ?? ( _prohibited = [ ] );
             set { _prohibited = value; OnPropertyChanged();}
         }
         private List<CommodityDefinition> _prohibited;
@@ -273,7 +273,7 @@ namespace EddiDataDefinitions
         [PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<Module> outfitting
         {
-            get => _outfitting ?? ( _outfitting = new List<Module>() );
+            get => _outfitting ?? ( _outfitting = [ ] );
             set { _outfitting = value; OnPropertyChanged();}
         }
 
@@ -283,7 +283,7 @@ namespace EddiDataDefinitions
         [PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<Ship> shipyard
         {
-            get => _shipyard ?? ( _shipyard = new List<Ship>() );
+            get => _shipyard ?? ( _shipyard = [ ] );
             set { _shipyard = value; OnPropertyChanged();}
         }
         private List<Ship> _shipyard;

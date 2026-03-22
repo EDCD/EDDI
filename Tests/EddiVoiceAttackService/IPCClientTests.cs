@@ -16,6 +16,9 @@ namespace Tests.EddiVoiceAttackService
     [TestClass, TestCategory( "UnitTests" )]
     public class IPCClientTests
     {
+        // ReSharper disable once MemberCanBePrivate.Global
+        public TestContext TestContext { get; set; } = null!;
+        
         private IPCServer? _server;
         private IPCClient? _client;
 
@@ -24,7 +27,7 @@ namespace Tests.EddiVoiceAttackService
         {
             // Start a real IPC server for integration testing
             _server = new IPCServer();
-            await _server.StartAsync();
+            await _server.StartAsync( TestContext.CancellationToken );
 
             // Create client instance
             _client = new IPCClient();
@@ -39,7 +42,7 @@ namespace Tests.EddiVoiceAttackService
                 {
                     if (_client.IsConnected)
                     {
-                        await _client.DisconnectAsync();
+                        await _client.DisconnectAsync( TestContext.CancellationToken );
                     }
                     _client.Dispose();
                 }
@@ -53,7 +56,7 @@ namespace Tests.EddiVoiceAttackService
             {
                 try
                 {
-                    await _server.StopAsync();
+                    await _server.StopAsync( TestContext.CancellationToken );
                 }
                 catch
                 {
@@ -82,7 +85,7 @@ namespace Tests.EddiVoiceAttackService
             Assert.IsNotNull(_server);
 
             // Act
-            await _client.ConnectAsync("127.0.0.1", _server.Port);
+            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken );
 
             // Assert
             Assert.IsTrue(_client.IsConnected);
@@ -97,7 +100,7 @@ namespace Tests.EddiVoiceAttackService
             // Act & Assert
             try
             {
-                await _client.ConnectAsync("192.0.2.1", 9999); // Non-routable IP
+                await _client.ConnectAsync("192.0.2.1", 9999, TestContext.CancellationToken ); // Non-routable IP
                 Assert.Fail("Should have thrown an exception");
             }
             catch (Exception)
@@ -112,12 +115,12 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port);
+            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken );
 
             // Act & Assert
             try
             {
-                await _client.ConnectAsync("127.0.0.1", _server.Port);
+                await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken );
                 Assert.Fail("Should have thrown InvalidOperationException");
             }
             catch (InvalidOperationException)
@@ -152,11 +155,11 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port);
+            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken );
             Assert.IsTrue(_client.IsConnected);
 
             // Act
-            await _client.DisconnectAsync();
+            await _client.DisconnectAsync( TestContext.CancellationToken );
 
             // Assert
             Assert.IsFalse(_client.IsConnected);
@@ -170,7 +173,7 @@ namespace Tests.EddiVoiceAttackService
             Assert.IsFalse(_client.IsConnected);
 
             // Act & Assert
-            await _client.DisconnectAsync(); // Should not throw
+            await _client.DisconnectAsync( TestContext.CancellationToken ); // Should not throw
         }
 
         [TestMethod]
@@ -179,7 +182,7 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port);
+            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken );
             var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(100));
 
             // Act & Assert
@@ -208,7 +211,7 @@ namespace Tests.EddiVoiceAttackService
             // Act & Assert
             try
             {
-                await _client.SendCommandAsync<object>(command);
+                await _client.SendCommandAsync<object>(command, TestContext.CancellationToken );
                 Assert.Fail("Should have thrown InvalidOperationException");
             }
             catch (InvalidOperationException)
@@ -227,7 +230,7 @@ namespace Tests.EddiVoiceAttackService
             // Act & Assert
             try
             {
-                await _client.SendEventAsync(eventData);
+                await _client.SendEventAsync(eventData, TestContext.CancellationToken );
                 Assert.Fail("Should have thrown InvalidOperationException");
             }
             catch (InvalidOperationException)
@@ -242,7 +245,7 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port);
+            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken );
             var command = new CommandData { Command = "test.command", Target = "test" };
 
             // Act
@@ -250,7 +253,7 @@ namespace Tests.EddiVoiceAttackService
             var task = _client.SendCommandAsync<object>(command, new CancellationTokenSource(TimeSpan.FromSeconds(5)).Token);
 
             // Give server time to receive
-            await Task.Delay(100);
+            await Task.Delay(100, TestContext.CancellationToken );
 
             // Assert
             // Task should be waiting for response (not completed yet)
@@ -263,14 +266,14 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port);
+            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken );
             var eventData = new EventData { EventType = "test", EventName = "test.event" };
 
             // Act
-            await _client.SendEventAsync(eventData);
+            await _client.SendEventAsync(eventData, TestContext.CancellationToken );
 
             // Give server time to receive
-            await Task.Delay(100);
+            await Task.Delay(100, TestContext.CancellationToken );
 
             // Assert - if no exception thrown, message was sent
             Assert.IsTrue(_client.IsConnected);
@@ -282,7 +285,7 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port);
+            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken );
             var command = new CommandData { Command = "test.command", Target = "test" };
             var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(100));
 
@@ -323,7 +326,7 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port);
+            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken );
 
             // Act
             var status = await _client.GetStatusAsync();
@@ -343,18 +346,18 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port);
+            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken );
 
             // Act - send some messages
             var eventData = new EventData { EventType = "test", EventName = "test.event" };
-            await _client.SendEventAsync(eventData);
-            await Task.Delay(100); // Give time to process
+            await _client.SendEventAsync(eventData, TestContext.CancellationToken );
+            await Task.Delay(100, TestContext.CancellationToken ); // Give time to process
 
             var status = await _client.GetStatusAsync();
 
             // Assert
             Assert.IsNotNull(status);
-            Assert.IsTrue(status.MessagesSent >= 1, "Should have sent at least one message");
+            Assert.IsGreaterThanOrEqualTo(1, status.MessagesSent, "Should have sent at least one message");
         }
 
         [TestMethod]
@@ -363,7 +366,7 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port);
+            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken );
 
             _client.MessageReceived += (s, e) =>
             {
@@ -375,8 +378,8 @@ namespace Tests.EddiVoiceAttackService
                 MessageTypes.Event,
                 new EventData { EventType = "test", EventName = "test.event" }
             );
-            await _server.BroadcastAsync(eventMessage);
-            await Task.Delay(200); // Give time to process
+            await _server.BroadcastAsync(eventMessage, TestContext.CancellationToken );
+            await Task.Delay(200, TestContext.CancellationToken ); // Give time to process
 
             // Assert
             // Note: This test assumes successful message delivery
@@ -393,7 +396,7 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port);
+            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken );
             var command = new CommandData { Command = "test.command", Target = "test" };
             var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(50));
 
@@ -415,7 +418,7 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port);
+            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken );
             Assert.IsTrue(_client.IsConnected);
 
             // Act

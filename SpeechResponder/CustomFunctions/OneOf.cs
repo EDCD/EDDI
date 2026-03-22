@@ -7,7 +7,9 @@ using System.Collections.Generic;
 namespace EddiSpeechResponder.CustomFunctions
 {
     [UsedImplicitly]
-    public class OneOf : RecursiveFunction, ICustomFunction
+    [ method: UsedImplicitly]
+    public class OneOf ( IContext context, Dictionary<string, Script> scripts )
+        : RecursiveFunction( context, scripts ), ICustomFunction
     {
         public string name => "OneOf";
         public FunctionCategory Category => FunctionCategory.Dynamic;
@@ -19,7 +21,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public IFunction function => Function.CreateNativeVariadic( ( runtime, values, writer ) =>
         {
             Value result;
-            if ( values.Count == 1 && values[ 0 ].Type == ValueContent.Map )
+            if ( values is [ var value ] && value.Type == ValueContent.Map )
             {
                 values[ 0 ].Fields.TryGet( random.Next( values[ 0 ].Fields.Count ), out result );
             }
@@ -30,9 +32,5 @@ namespace EddiSpeechResponder.CustomFunctions
             }
             return ScriptResolver.resolveFromValue( result.AsString, GetContext( runtime.Globals ), false );
         } );
-
-        [UsedImplicitly]
-        public OneOf ( IContext context, Dictionary<string, Script> scripts ) : base( context, scripts )
-        { }
     }
 }

@@ -32,7 +32,7 @@ namespace EddiSpanshService
                 if ( string.IsNullOrEmpty( responseJson ) )
                 {
                     Logging.Warn( "Unable to handle server response." );
-                    return new List<NavWaypoint>();
+                    return [ ];
                 }
 
                 Logging.Debug( "Spansh responded with " + responseJson );
@@ -55,10 +55,10 @@ namespace EddiSpanshService
                 Logging.Warn( he.Message, he );
             }
 
-            return new List<NavWaypoint>();
+            return [ ];
         }
 
-        private string PrepareRequest(string partialSystemName)
+        private static string PrepareRequest (string partialSystemName)
         {
             var requestUri = $"systems/field_values/system_names?q={partialSystemName}";
             return requestUri;

@@ -43,7 +43,7 @@ namespace EddiCompanionAppService
                 RegisterAppPath(name, absoluteAppPath);
             }
 
-            bool success = Setup(name);
+            var success = Setup(name);
             if (!success)
             {
                 CleanUp();
@@ -76,25 +76,25 @@ namespace EddiCompanionAppService
         {
             try
             {
-                RegistryKey currentUser = Registry.CurrentUser;
-                RegistryKey baseKey = currentUser.CreateSubKey( $"Software\\Classes\\{name}" );
+                var currentUser = Registry.CurrentUser;
+                var baseKey = currentUser.CreateSubKey( $"Software\\Classes\\{name}" );
                 using ( baseKey )
                 {
                     baseKey?.SetValue( "", $"URL Protocol {name}" );
                     baseKey?.SetValue( "URL Protocol", "" );
-                    RegistryKey defaultIcon = baseKey?.CreateSubKey( "Default Icon" );
+                    var defaultIcon = baseKey?.CreateSubKey( "Default Icon" );
                     using ( defaultIcon )
                     {
                         defaultIcon?.SetValue( "", $"{absoluteAppPath},0" );
                     }
 
-                    RegistryKey open = baseKey?.CreateSubKey( "shell\\open\\command" );
+                    var open = baseKey?.CreateSubKey( "shell\\open\\command" );
                     using ( open )
                     {
                         open?.SetValue( "", $"\"{absoluteAppPath}\" \"%1\"" );
                     }
 
-                    RegistryKey ddeexec = baseKey?.CreateSubKey( "shell\\open\\ddeexec" );
+                    var ddeexec = baseKey?.CreateSubKey( "shell\\open\\ddeexec" );
                     using ( ddeexec )
                     {
                         ddeexec?.SetValue( "", "%1" );
@@ -109,7 +109,7 @@ namespace EddiCompanionAppService
 
         private bool Setup(string name)
         {
-            uint result = NativeMethods.DdeInitializeW(ref DdeInstance, ddeDelegate, (uint)(CallbackFilters.CBF_SKIP_ALLNOTIFICATIONS | CallbackFilters.CBF_FAIL_REQUESTS | CallbackFilters.CBF_FAIL_POKES), 0);
+            var result = NativeMethods.DdeInitializeW(ref DdeInstance, ddeDelegate, (uint)(CallbackFilters.CBF_SKIP_ALLNOTIFICATIONS | CallbackFilters.CBF_FAIL_REQUESTS | CallbackFilters.CBF_FAIL_POKES), 0);
             if (result != 0)
             {
                 logger?.Invoke($"Error {result} initialising DDE.");
@@ -127,7 +127,7 @@ namespace EddiCompanionAppService
                 LogDDEErrorIfFalse(false, "creating TopicHandle");
                 return false;
             }
-            IntPtr nameResult = NativeMethods.DdeNameService(DdeInstance, ServerNameHandle, IntPtr.Zero, (uint)DdeNameServiceCommands.DNS_REGISTER);
+            var nameResult = NativeMethods.DdeNameService(DdeInstance, ServerNameHandle, IntPtr.Zero, (uint)DdeNameServiceCommands.DNS_REGISTER);
             if (nameResult == IntPtr.Zero)
             {
                 LogDDEErrorIfFalse(false, "registering DdeNameService");
@@ -143,7 +143,7 @@ namespace EddiCompanionAppService
                 return;
             }
             // best error handling we can do here is to log the results and plough on
-            IntPtr nameResult = NativeMethods.DdeNameService(DdeInstance, ServerNameHandle, IntPtr.Zero, (uint)DdeNameServiceCommands.DNS_UNREGISTER);
+            var nameResult = NativeMethods.DdeNameService(DdeInstance, ServerNameHandle, IntPtr.Zero, (uint)DdeNameServiceCommands.DNS_UNREGISTER);
             if (nameResult != IntPtr.Zero)
             {
                 LogDDEErrorIfFalse(false, "unregistering DdeNameService");
@@ -152,7 +152,7 @@ namespace EddiCompanionAppService
             FreeStringHandleIfNeeded(ref ServerNameHandle, "ServerNameHandle");
             if (DdeInstance != 0)
             {
-                bool success = NativeMethods.DdeUninitialize(DdeInstance);
+                var success = NativeMethods.DdeUninitialize(DdeInstance);
                 LogDDEErrorIfFalse(success, "DdeUninitialize");
                 DdeInstance = 0;
             }
@@ -162,7 +162,7 @@ namespace EddiCompanionAppService
         {
             if (stringHandle != IntPtr.Zero)
             {
-                bool success = NativeMethods.DdeFreeStringHandle(DdeInstance, stringHandle);
+                var success = NativeMethods.DdeFreeStringHandle(DdeInstance, stringHandle);
                 LogDDEErrorIfFalse(success, $"DdeFreeStringHandle {context}");
                 stringHandle = new IntPtr(0);
             }
@@ -172,7 +172,7 @@ namespace EddiCompanionAppService
         {
             if (!success)
             {
-                uint error = NativeMethods.DdeGetLastError(DdeInstance);
+                var error = NativeMethods.DdeGetLastError(DdeInstance);
                 if (error == 0x4006) // DMLERR_INVALIDPARAMETER -- false positive every time
                 {
                     return;
@@ -184,15 +184,15 @@ namespace EddiCompanionAppService
         // https://msdn.microsoft.com/en-us/library/ms648742%28v=VS.85%29.aspx?f=255&MSPPError=-2147217396
         private IntPtr DdeCallback(uint uType, uint uFmt, IntPtr hconv, IntPtr hsz1, IntPtr hsz2, IntPtr hdata, UIntPtr dwData1, UIntPtr dwData2)
         {
-            DDEMsgType type = (DDEMsgType)uType;
+            var type = (DDEMsgType)uType;
             switch (type)
             {
                 case DDEMsgType.XTYP_CONNECT:
-                    bool isValid = (NativeMethods.DdeCmpStringHandles(hsz1, TopicHandle) == 0
-                                 && NativeMethods.DdeCmpStringHandles(hsz2, ServerNameHandle) == 0);
+                    var isValid = (NativeMethods.DdeCmpStringHandles(hsz1, TopicHandle) == 0
+                                   && NativeMethods.DdeCmpStringHandles(hsz2, ServerNameHandle) == 0);
                     return new IntPtr(isValid ? 1 : 0);
                 case DDEMsgType.XTYP_EXECUTE:
-                    string url = FromDdeStringHandle(hdata);
+                    var url = FromDdeStringHandle(hdata);
                     urlHandler?.Invoke(url);
                     return new IntPtr((int)DdeResult.DDE_FACK);
                 default:
@@ -214,7 +214,7 @@ namespace EddiCompanionAppService
             // DdeGetData fills the buffer.
             var size = NativeMethods.DdeGetData(handle, null, 0, 0);
             var buffer = new byte[size];
-            NativeMethods.DdeGetData(handle, buffer, size, 0);
+            _ = NativeMethods.DdeGetData(handle, buffer, size, 0);
             return buffer;
         }
 
@@ -236,11 +236,6 @@ namespace EddiCompanionAppService
         {
             DDE_FACK = 0x8000,
             DDE_FBUSY = 0x4000,
-            DDE_FDEFERUPD = 0x4000,
-            DDE_FACKREQ = 0x8000,
-            DDE_FRELEASE = 0x2000,
-            DDE_FREQUESTED = 0x1000,
-            DDE_FAPPSTATUS = 0x00ff,
             DDE_FNOTPROCESSED = 0x0000,
         }
 
@@ -291,7 +286,7 @@ namespace EddiCompanionAppService
             XTYP_WILDCONNECT = (0x00E0 | XCLASS_DATA | XTYPF_NOBLOCK),
         }
 
-        private class NativeMethods
+        private static class NativeMethods
         {
             [DllImport("User32.dll")]
             internal static extern uint DdeInitializeW(ref uint DDEInstance, DdeDelegate pfnCallback, uint afCmd, uint ulRes);

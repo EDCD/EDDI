@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
-using System.Text.RegularExpressions;
 using Utilities;
 
 [assembly: InternalsVisibleTo( "Tests" )]
@@ -58,7 +57,7 @@ namespace EddiDataDefinitions
         [PublicAPI]
         public List<Ring> rings
         {
-            get => _rings ?? new List<Ring>();
+            get => _rings ?? [ ];
             set => _rings = value;
         }
         private List<Ring> _rings;
@@ -175,7 +174,7 @@ namespace EddiDataDefinitions
         /// <summary>The parent bodies to this body, if any</summary>
         public List<IDictionary<string, int>> parents
         {
-            get => _parents ?? new List<IDictionary<string, int>>();
+            get => _parents ?? [ ];
             set
             {
                 if (bodyType == null)
@@ -308,7 +307,7 @@ namespace EddiDataDefinitions
             this.bodyname = bodyName;
             this.radius = radiusKm;
             this.bodyType = BodyType.Star;
-            this.rings = rings ?? new List<Ring>();
+            this.rings = rings ?? [ ];
             this.temperature = temperatureKelvin;
             this.bodyId = bodyId;
 
@@ -397,7 +396,7 @@ namespace EddiDataDefinitions
 
         /// <summary>The atmosphere's composition</summary>
         [PublicAPI]
-        public List<AtmosphereComposition> atmospherecompositions { get; set; } = new();
+        public List<AtmosphereComposition> atmospherecompositions { get; set; } = [ ];
 
         /// <summary>If this body can be landed upon</summary>
         [PublicAPI]
@@ -439,11 +438,11 @@ namespace EddiDataDefinitions
 
         /// <summary>The solid body composition of the body</summary>
         [PublicAPI]
-        public List<SolidComposition> solidcompositions { get; set; } = new();
+        public List<SolidComposition> solidcompositions { get; set; } = [ ];
 
         /// <summary>The materials present at the surface of the body</summary>
         [PublicAPI]
-        public List<MaterialPresence> materials { get; set; } = new();
+        public List<MaterialPresence> materials { get; set; } = [ ];
 
         /// <summary>The reserve level (localized name)</summary>
         [PublicAPI, JsonIgnore, Obsolete("Please use reserveLevel instead")]
@@ -458,7 +457,7 @@ namespace EddiDataDefinitions
             this.bodyname = bodyName;
             this.bodyType = (bool)parents?.Exists(p => p.ContainsKey("Planet"))
                         ? BodyType.Moon : BodyType.Planet;
-            this.rings = rings ?? new List<Ring>();
+            this.rings = rings ?? [ ];
             this.temperature = temperatureKelvin;
             this.bodyId = bodyId;
 
@@ -640,23 +639,23 @@ namespace EddiDataDefinitions
 
             if (bodyType != null && bodyType?.invariantName != "Star")
             {
-                double radiusKm = Convert.ToDouble(radius);
+                var radiusKm = Convert.ToDouble(radius);
                 radiusM = (radiusKm * 1000);
 
-                double earthmasses = Convert.ToDouble(earthmass);
+                var earthmasses = Convert.ToDouble(earthmass);
                 massKg = earthmasses * Constants.earthMassKg;
             }
             else if (bodyType?.invariantName == "Star")
             {
-                double radiusKm = Convert.ToDouble(radius);
+                var radiusKm = Convert.ToDouble(radius);
                 radiusM = (radiusKm * 1000);
 
-                double solarMasses = Convert.ToDouble(solarmass);
+                var solarMasses = Convert.ToDouble(solarmass);
                 massKg = solarMasses * Constants.solMassKg;
             }
             if (massKg > 0 && radiusM > 0)
             {
-                double cubicMeters = 4.0 / 3 * Math.PI * Math.Pow(radiusM, 3);
+                var cubicMeters = 4.0 / 3 * Math.PI * Math.Pow(radiusM, 3);
                 return (decimal?)(massKg / cubicMeters);
             }
             else { return null; }
@@ -679,7 +678,7 @@ namespace EddiDataDefinitions
             var shortName = (systemname == null || bodyname == systemname || !bodyname.StartsWith(systemname)) 
                 ? bodyname 
                 : bodyname.Replace(systemname, "").Trim();
-            if ( bodyType == BodyType.Star && Regex.IsMatch( shortName.ToUpper(), @"(?<STARS>(?<=^|\s)[A-E]+)" ) )
+            if ( bodyType == BodyType.Star && GeneratedRegex.STARS().IsMatch( shortName.ToUpper() ) )
             {
                 // Status destinations can have incorrect casing on star names. Fix that here.
                 shortName = shortName.ToUpper();
@@ -691,23 +690,23 @@ namespace EddiDataDefinitions
 
         #region Legacy data conversions
         [JsonExtensionData]
-        private IDictionary<string, JToken> _additionalData = new Dictionary<string, JToken>();
+        private Dictionary<string, JToken> _additionalData = new();
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
             if (bodyType == null)
             {
-                _additionalData.TryGetValue("Type", out JToken var);
-                BodyType typ = var?.ToObject<BodyType>();
+                _additionalData.TryGetValue("Type", out var var);
+                var typ = var?.ToObject<BodyType>();
                 bodyType = typ;
             }
             if (absolutemagnitude == null)
             {
-                _additionalData.TryGetValue("absoluteMagnitude", out JToken val);
+                _additionalData.TryGetValue("absoluteMagnitude", out var val);
                 if (val != null)
                 {
-                    decimal? absoluteMagnitude = val.ToObject<decimal?>();
+                    var absoluteMagnitude = val.ToObject<decimal?>();
                     absolutemagnitude = absoluteMagnitude;
                 }
             }

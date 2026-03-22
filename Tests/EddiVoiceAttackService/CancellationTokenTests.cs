@@ -2,10 +2,10 @@
 
 using EddiIPC_Service.Messages;
 using EddiIPC_Service.Server;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests.EddiVoiceAttackService
 {
@@ -16,8 +16,11 @@ namespace Tests.EddiVoiceAttackService
     [TestClass, TestCategory( "UnitTests" )]
     public class CancellationTokenTests
     {
+        // ReSharper disable once MemberCanBePrivate.Global
+        public TestContext TestContext { get; set; } = null!;
+
         [TestMethod]
-        [Timeout(5000)]
+        [Timeout(5000, CooperativeCancellation = true )]
         public async Task StartAsync_CanBeCancelled_BeforeCompletion()
         {
             // Arrange
@@ -41,7 +44,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        [Timeout(5000)]
+        [Timeout(5000, CooperativeCancellation = true )]
         public async Task StartAsync_CompletesNormally_WhenNotCancelled()
         {
             // Arrange
@@ -50,40 +53,40 @@ namespace Tests.EddiVoiceAttackService
 
             // Act
             await server.StartAsync(cts.Token);
-            await Task.Delay(100); // Let server initialize
+            await Task.Delay(100, cts.Token ); // Let server initialize
 
             // Assert
             Assert.IsTrue(server.IsRunning, "Server should be running");
-            Assert.IsTrue(server.Port > 0, "Server should have valid port");
+            Assert.IsGreaterThan(0, server.Port, "Server should have valid port");
 
             // Cleanup
-            await server.StopAsync();
+            await server.StopAsync( cts.Token );
         }
 
         [TestMethod]
-        [Timeout(5000)]
+        [Timeout(5000, CooperativeCancellation = true )]
         public async Task StartAsync_DefaultToken_Works()
         {
             // Arrange
             var server = new IPCServer();
 
             // Act
-            await server.StartAsync(); // No token provided, should work with default
+            await server.StartAsync(TestContext.CancellationToken); // No token provided, should work with default
 
             // Assert
             Assert.IsTrue(server.IsRunning, "Server should start with default token");
 
             // Cleanup
-            await server.StopAsync();
+            await server.StopAsync( TestContext.CancellationToken );
         }
 
         [TestMethod]
-        [Timeout(5000)]
+        [Timeout( 5000, CooperativeCancellation = true )]
         public async Task StopAsync_CanBeCancelled()
         {
             // Arrange
             var server = new IPCServer();
-            await server.StartAsync();
+            await server.StartAsync( TestContext.CancellationToken );
             var cts = new CancellationTokenSource();
             cts.CancelAfter(100);
 
@@ -102,12 +105,12 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        [Timeout(5000)]
+        [Timeout(5000, CooperativeCancellation = true )]
         public async Task BroadcastAsync_CanBeCancelled()
         {
             // Arrange
             var server = new IPCServer();
-            await server.StartAsync();
+            await server.StartAsync( TestContext.CancellationToken );
 
             var message = MessageEnvelope.Create("Test", "test-data");
             var cts = new CancellationTokenSource();
@@ -125,7 +128,7 @@ namespace Tests.EddiVoiceAttackService
             }
 
             // Cleanup
-            await server.StopAsync();
+            await server.StopAsync( cts.Token );
         }
             }
         }

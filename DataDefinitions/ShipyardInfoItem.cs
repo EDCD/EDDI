@@ -32,7 +32,7 @@ namespace EddiDataDefinitions
 
         public Ship ToShip()
         {
-            Ship ship = ShipDefinitions.FromEDModel( edModel, false );
+            var ship = ShipDefinitions.FromEDModel( edModel, false );
             if (ship == null)
             {
                 // Unknown ship; report the full object so that we can update the definitions 

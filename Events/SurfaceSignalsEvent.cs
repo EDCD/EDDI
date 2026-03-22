@@ -7,7 +7,15 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class SurfaceSignalsEvent : Event
+    public class SurfaceSignalsEvent (
+        DateTime timestamp,
+        string detectionType,
+        ulong? systemAddress,
+        string bodyName,
+        long bodyId,
+        List<SignalAmount> surfaceSignals,
+        List<OrganicGenus> genera )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Surface signals detected";
         public const string DESCRIPTION = "Triggered when surface signal sources are detected";
@@ -19,32 +27,22 @@ namespace EddiEvents
         ];
 
         [PublicAPI("The signal detection type (either 'FSS' or 'SAA'")]
-        public string detectionType { get; private set; }
+        public string detectionType { get; private set; } = detectionType;
 
         [PublicAPI("The body where surface signals were detected")]
-        public string bodyname { get; private set; }
+        public string bodyname { get; private set; } = bodyName;
 
         [PublicAPI( "The numeric ID of the body where surface signals were detected" )]
-        public long bodyId { get; private set; }
+        public long bodyId { get; private set; } = bodyId;
 
         [PublicAPI( "The numeric system address of the star system containing the surface signal" )]
-        public ulong? systemAddress { get; private set; }
+        public ulong? systemAddress { get; private set; } = systemAddress;
 
         [PublicAPI("A list of signals (as objects)")]
-        public List<SignalAmount> surfacesignals { get; private set; }
+        public List<SignalAmount> surfacesignals { get; private set; } = surfaceSignals ?? [ ];
 
         [PublicAPI( "A list of the genus of each detected biological signal (as objects, when biological signals are detected after mapping the surface)" )]
-        public List<OrganicGenus> genera { get; private set; }
-
-        public SurfaceSignalsEvent (DateTime timestamp, string detectionType, ulong? systemAddress, string bodyName, long bodyId, List<SignalAmount> surfaceSignals, List<OrganicGenus> genera ) : base(timestamp, NAME)
-        {
-            this.detectionType = detectionType;
-            this.systemAddress = systemAddress;
-            this.bodyname = bodyName;
-            this.bodyId = bodyId;
-            this.surfacesignals = surfaceSignals ?? [ ];
-            this.genera = genera ?? [ ];
-        }
+        public List<OrganicGenus> genera { get; private set; } = genera ?? [ ];
 
         public static bool Handle ( DateTime timestamp, string edType, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {

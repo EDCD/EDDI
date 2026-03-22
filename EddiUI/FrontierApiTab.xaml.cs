@@ -49,9 +49,9 @@ namespace EddiUI
                     case CompanionAppService.State.ConnectionLost:
                         companionAppStatusValue.Text = Properties.Resources.frontierApiNotConnected;
                         companionAppButton.Content = Properties.Resources.login;
-                        companionAppButton.IsEnabled = !EDDI.FromVA;
+                        companionAppButton.IsEnabled = !EDDI.Instance.FromVA;
                         companionAppText.Text =
-                            !EDDI.FromVA ? "" : Properties.Resources.frontier_api_cant_login_from_va;
+                            !EDDI.Instance.FromVA ? "" : Properties.Resources.frontier_api_cant_login_from_va;
                         break;
                     case CompanionAppService.State.AwaitingCallback:
                         companionAppStatusValue.Text = Properties.Resources.frontierApiConnecting;
@@ -97,7 +97,7 @@ namespace EddiUI
                         // Logout from the companion EddiApplication and start again
                         CompanionAppService.Instance.Logout();
                         await SpeechService.Instance.SayAsync( null, Properties.Resources.frontier_api_reset, 0 ).ConfigureAwait(true);
-                        if ( EDDI.FromVA )
+                        if ( EDDI.Instance.FromVA )
                         {
                             await SpeechService.Instance.SayAsync( null, Properties.Resources.frontier_api_cant_login_from_va, 0 ).ConfigureAwait(true);
                         }

@@ -84,8 +84,8 @@ namespace EddiEvents
             this.rebuy = rebuy;
             this.hot = hot;
             this.paintjob = paintjob;
-            this.hardpoints = hardpoints ?? new List<Hardpoint>();
-            this.compartments = compartments ?? new List<Compartment>();
+            this.hardpoints = hardpoints ?? [ ];
+            this.compartments = compartments ?? [ ];
 
             frameShiftDrive = this.compartments.FirstOrDefault( c =>
                 c.name?.Equals( "FrameShiftDrive", StringComparison.InvariantCultureIgnoreCase ) ?? false )?.module;

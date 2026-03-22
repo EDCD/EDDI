@@ -5,7 +5,12 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class CommodityCollectedEvent : Event
+    public class CommodityCollectedEvent (
+        DateTime timestamp,
+        CommodityDefinition commodity,
+        ulong? missionid,
+        bool stolen )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Commodity collected";
         public const string DESCRIPTION = "Triggered when you pick up a commodity in your ship or SRV";
@@ -15,20 +20,13 @@ namespace EddiEvents
         public string commodity => commodityDefinition?.localizedName;
 
         [PublicAPI("If the commodity is stolen")]
-        public bool stolen { get; }
+        public bool stolen { get; } = stolen;
 
         [PublicAPI("ID of the mission-related commodity, if applicable")]
-        public ulong? missionid { get; }
+        public ulong? missionid { get; } = missionid;
 
         // Not intended to be user facing
 
-        public CommodityDefinition commodityDefinition { get; }
-
-        public CommodityCollectedEvent(DateTime timestamp, CommodityDefinition commodity, ulong? missionid, bool stolen) : base(timestamp, NAME)
-        {
-            this.commodityDefinition = commodity;
-            this.missionid = missionid;
-            this.stolen = stolen;
-        }
+        public CommodityDefinition commodityDefinition { get; } = commodity;
     }
 }

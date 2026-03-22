@@ -6,7 +6,7 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class CommunityGoalsEvent : Event
+    public class CommunityGoalsEvent ( DateTime timestamp, List<CommunityGoal> goals ) : Event( timestamp, NAME )
     {
         public const string NAME = "Community goals";
         public const string DESCRIPTION = "Triggered when checking the status of community goals";
@@ -14,11 +14,6 @@ namespace EddiEvents
 
         // Not intended to be user facing
 
-        public List<CommunityGoal> goals { get; }
-
-        public CommunityGoalsEvent(DateTime timestamp, List<CommunityGoal> goals) : base(timestamp, NAME)
-        {
-            this.goals = goals;
-        }
+        public List<CommunityGoal> goals { get; } = goals;
     }
 }

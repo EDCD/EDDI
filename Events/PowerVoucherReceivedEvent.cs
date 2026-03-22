@@ -6,7 +6,8 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class PowerVoucherReceivedEvent : Event
+    public class PowerVoucherReceivedEvent ( DateTime timestamp, Power power, List<string> systems )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Power voucher received";
         public const string DESCRIPTION = "Triggered when a commander turns in combat vouchers against an opposing power";
@@ -16,16 +17,10 @@ namespace EddiEvents
         public string power => (Power ?? Power.None).localizedName;
 
         [PublicAPI("The systems for which the commander is turning in the vouchers")]
-        public List<string> systems { get; private set; }
+        public List<string> systems { get; private set; } = systems;
 
         // Not intended to be user facing
 
-        public Power Power { get; private set; }
-
-        public PowerVoucherReceivedEvent(DateTime timestamp, Power Power, List<string> systems) : base(timestamp, NAME)
-        {
-            this.Power = Power;
-            this.systems = systems;
-        }
+        public Power Power { get; private set; } = power;
     }
 }

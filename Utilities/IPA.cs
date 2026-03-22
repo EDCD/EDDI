@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Windows.Controls;
 
 namespace Utilities
@@ -182,7 +181,7 @@ namespace Utilities
         public static bool IsValid(char value)
         {
             int unicodeDecimalCode = Convert.ToUInt16(value);
-            string unicodeHexCode = unicodeDecimalCode.ToString("X4");
+            var unicodeHexCode = unicodeDecimalCode.ToString("X4");
             return validIPA.ContainsKey(unicodeHexCode);
         }
 
@@ -218,15 +217,15 @@ namespace Utilities
         {
             if (value != null)
             {
-                string[] invalidChars = IPA.InvalidChars(value.ToString());
+                var invalidChars = IPA.InvalidChars(value.ToString());
                 if (invalidChars.Length > 0)
                 {
-                    string invalid = "";
-                    foreach (string str in invalidChars)
+                    var invalid = "";
+                    foreach (var str in invalidChars)
                     {
                         invalid = invalid + (string.IsNullOrEmpty(invalid) ? "" : ", ") + (str == " " ? "(space)" : str);
                     }
-                    string errMsg = @"Contains invalid characters: """ + invalid + @""". Please copy and paste characters directly from a valid source.";
+                    var errMsg = @"Contains invalid characters: """ + invalid + @""". Please copy and paste characters directly from a valid source.";
                     Logging.Debug(errMsg + " Discarding last input.");
                     return new ValidationResult(false, errMsg);
                 }

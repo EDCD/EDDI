@@ -46,7 +46,7 @@ namespace EddiEddnResponder.Toolkit
 
             // Need to remove personal data from any Dictionary or List type child objects
             IDictionary<string, object> fixedData = new Dictionary<string, object>();
-            foreach (KeyValuePair<string, object> item in data)
+            foreach (var item in data)
             {
                 if (item.Value is Dictionary<string, object> dict)
                 {
@@ -61,7 +61,7 @@ namespace EddiEddnResponder.Toolkit
                 if (item.Value is List<object> list)
                 {
                     var newList = new List<object>();
-                    for (int i = 0; i < list.Count; i++)
+                    for (var i = 0; i < list.Count; i++)
                     {
                         if (list[i] is Dictionary<string, object> listDict)
                         {
@@ -76,7 +76,7 @@ namespace EddiEddnResponder.Toolkit
                 if (item.Value is JArray jArray)
                 {
                     var newArray = new List<object>();
-                    for (int i = 0; i < jArray.Count; i++)
+                    for (var i = 0; i < jArray.Count; i++)
                     {
                         if (jArray[i] is JObject listJObject)
                         {

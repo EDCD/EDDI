@@ -71,7 +71,7 @@ namespace EddiSpanshService
             return null;
         }
 
-        private string CarrierRouteRequest ( string currentSystem, string[] targetSystems, long usedCarrierCapacity,
+        private static string CarrierRouteRequest ( string currentSystem, string[] targetSystems, long usedCarrierCapacity,
             bool calculateTotalFuelRequired, string[] refuel_destinations )
         {
             var relativePath = "fleetcarrier/route";
@@ -98,7 +98,7 @@ namespace EddiSpanshService
             return $"{relativePath}?{string.Join( "&", queryParams )}";
         }
 
-        private NavWaypointCollection ParseCarrierRoute(JToken routeResult)
+        private static NavWaypointCollection ParseCarrierRoute(JToken routeResult)
         {
             if (routeResult is null) { return null; }
 

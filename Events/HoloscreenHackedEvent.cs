@@ -5,7 +5,8 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class HoloscreenHackedEvent : Event
+    public class HoloscreenHackedEvent ( DateTime timestamp, Power powerBefore, Power powerAfter )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Holoscreen hacked";
         public const string DESCRIPTION = "Triggered when you hack a power's holoscreen.";
@@ -18,18 +19,12 @@ namespace EddiEvents
         public string before => powerBefore?.localizedName;
 
         [PublicAPI( "The powerplay power displayed before the hack, as an object" )]
-        public Power powerBefore { get; private set; }
+        public Power powerBefore { get; private set; } = powerBefore;
 
         [ PublicAPI( "The powerplay power displayed after the hack, as a localized string" ) ]
         public string after => powerAfter?.localizedName;
 
         [PublicAPI( "The powerplay power displayed after the hack, as an object" )]
-        public Power powerAfter { get; private set; }
-
-        public HoloscreenHackedEvent ( DateTime timestamp, Power powerBefore, Power powerAfter) : base(timestamp, NAME)
-        {
-            this.powerBefore = powerBefore;
-            this.powerAfter = powerAfter;
-        }
+        public Power powerAfter { get; private set; } = powerAfter;
     }
 }

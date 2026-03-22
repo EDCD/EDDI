@@ -122,7 +122,7 @@ namespace EddiConfigService.Configurations
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
-            if (!shipyard.Any())
+            if (shipyard.IsEmpty)
             {
                 // Used to be in a separate 'ships' file so try that to allow migration
                 var oldFilename = Constants.DATA_DIR + @"\ships.json";
@@ -130,7 +130,7 @@ namespace EddiConfigService.Configurations
                 {
                     try
                     {
-                        string oldData = Files.Read(oldFilename);
+                        var oldData = Files.Read(oldFilename);
                         if (oldData != null)
                         {
                             var oldShipsConfiguration = JsonConvert.DeserializeObject<Dictionary<string, List<Ship>>>(oldData);

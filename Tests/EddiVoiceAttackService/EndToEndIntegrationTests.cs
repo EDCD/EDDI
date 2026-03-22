@@ -23,20 +23,17 @@ namespace Tests.EddiVoiceAttackService
     [TestClass, TestCategory( "UnitTests" )]
     public class EndToEndIntegrationTests
     {
-        private sealed class TestCommandDispatcher : ICommandDispatcher
+        // ReSharper disable once MemberCanBePrivate.Global
+        public TestContext TestContext { get; set; } = null!;
+        
+        private sealed class TestCommandDispatcher ( Action<string, IReadOnlyDictionary<string, object>?> onDispatch )
+            : ICommandDispatcher
         {
-            private readonly Action<string, IReadOnlyDictionary<string, object>?> _onDispatch;
-
-            public TestCommandDispatcher( Action<string, IReadOnlyDictionary<string, object>?> onDispatch )
-            {
-                _onDispatch = onDispatch;
-            }
-
             public Task DispatchAsync(string commandName, IReadOnlyDictionary<string, object>? parameters = null,
                 CancellationToken cancellationToken = default)
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                _onDispatch( commandName, parameters );
+                onDispatch( commandName, parameters );
                 return Task.CompletedTask;
             }
         }
@@ -59,7 +56,7 @@ namespace Tests.EddiVoiceAttackService
         {
             // Start IPC server
             _server = new IPCServer();
-            await _server.StartAsync().ConfigureAwait( false );
+            await _server.StartAsync( TestContext.CancellationToken ).ConfigureAwait( false );
 
             _dispatchedCommands.Clear();
             _dispatchSignal = new ManualResetEventSlim( false );
@@ -119,7 +116,7 @@ namespace Tests.EddiVoiceAttackService
 
             try
             {
-                await VoiceAttackPluginHost.Instance.DisconnectAsync().ConfigureAwait( false );
+                await VoiceAttackPluginHost.Instance.DisconnectAsync( TestContext.CancellationToken ).ConfigureAwait( false );
             }
             catch
             {
@@ -141,7 +138,7 @@ namespace Tests.EddiVoiceAttackService
             {
                 try
                 {
-                    await _server.StopAsync().ConfigureAwait( false );
+                    await _server.StopAsync( TestContext.CancellationToken ).ConfigureAwait( false );
                 }
                 catch
                 {
@@ -164,8 +161,8 @@ namespace Tests.EddiVoiceAttackService
 
         #region Full Integration Flow Tests
 
-        [TestMethod]
-        [Timeout(15000)]
+        [TestMethod, DoNotParallelize]
+        [Timeout(15000, CooperativeCancellation = true )]
         public async Task E2E_PluginClient_ConnectToServer()
         {
             // Arrange
@@ -175,7 +172,7 @@ namespace Tests.EddiVoiceAttackService
             try
             {
                 // Act
-                await pluginClient.InitializeAsync().ConfigureAwait( false );
+                await pluginClient.InitializeAsync( TestContext.CancellationToken ).ConfigureAwait( false );
 
                 // Assert
                 Assert.IsTrue(pluginClient.IsConnected);
@@ -189,13 +186,13 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout(15000, CooperativeCancellation = true )]
         public async Task E2E_PluginClient_SendCommand_ReceiveResponse()
         {
             // Arrange
             Assert.IsNotNull(_configFilePath);
             var pluginClient = new VoiceAttackPluginClient(_configFilePath);
-            await pluginClient.InitializeAsync().ConfigureAwait( false );
+            await pluginClient.InitializeAsync( TestContext.CancellationToken ).ConfigureAwait( false );
 
             try
             {
@@ -207,12 +204,12 @@ namespace Tests.EddiVoiceAttackService
 
                 // Assert
                 Assert.IsTrue(pluginClient.IsConnected);
-                Assert.IsTrue( _dispatchSignal?.Wait( 3000 ) ?? false, "Expected command dispatch within 3 seconds" );
+                Assert.IsTrue( _dispatchSignal?.Wait( 3000, TestContext.CancellationToken ) ?? false, "Expected command dispatch within 3 seconds" );
 
                 (string Command, IReadOnlyDictionary<string, object>? Parameters) dispatch;
                 lock ( _dispatchLock )
                 {
-                    Assert.AreEqual( 1, _dispatchedCommands.Count, "Expected a single dispatched command" );
+                    Assert.HasCount( 1, _dispatchedCommands, "Expected a single dispatched command" );
                     dispatch = _dispatchedCommands[ 0 ];
                 }
 
@@ -224,7 +221,7 @@ namespace Tests.EddiVoiceAttackService
                 Assert.IsTrue( TryReadCommandResponseStatus( response, out var status, out var message ),
                     "Expected command response payload to be readable" );
                 Assert.AreEqual( "success", status );
-                StringAssert.Contains( message, "executed successfully" );
+                Assert.Contains( "executed successfully", message );
             }
             finally
             {
@@ -233,13 +230,13 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout(15000, CooperativeCancellation = true )]
         public async Task E2E_RuntimeEventDispatcher_Broadcast_ReachesPluginClient()
         {
             // Arrange
             Assert.IsNotNull( _configFilePath );
             var pluginClient = new VoiceAttackPluginClient( _configFilePath );
-            await pluginClient.InitializeAsync().ConfigureAwait( false );
+            await pluginClient.InitializeAsync( TestContext.CancellationToken ).ConfigureAwait( false );
 
             var eventReceived = new TaskCompletionSource<MessageEnvelope>( TaskCreationOptions.RunContinuationsAsynchronously );
             pluginClient.MessageReceived += ( _, args ) =>
@@ -275,12 +272,12 @@ namespace Tests.EddiVoiceAttackService
                             }
                         }
                     }
-                } ).ConfigureAwait( false );
+                }, TestContext.CancellationToken ).ConfigureAwait( false );
 
                 // Assert
                 Assert.IsTrue( dispatched, "Runtime dispatcher should be registered" );
 
-                var completed = await Task.WhenAny( eventReceived.Task, Task.Delay( 3000 ) ).ConfigureAwait( false );
+                var completed = await Task.WhenAny( eventReceived.Task, Task.Delay( 3000, TestContext.CancellationToken ) ).ConfigureAwait( false );
                 Assert.AreSame( eventReceived.Task, completed, "Expected runtime event broadcast within 3 seconds" );
 
                 var envelope = await eventReceived.Task.ConfigureAwait( false );
@@ -301,22 +298,22 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout(15000, CooperativeCancellation = true )]
         public async Task E2E_PluginClient_SendEvent_NoResponse()
         {
             // Arrange
             Assert.IsNotNull(_configFilePath);
             var pluginClient = new VoiceAttackPluginClient(_configFilePath);
-            await pluginClient.InitializeAsync().ConfigureAwait( false );
+            await pluginClient.InitializeAsync( TestContext.CancellationToken ).ConfigureAwait( false );
 
             try
             {
                 // Act
                 await pluginClient.SendEventAsync("player.docked", 
-                    new { station = "Jameson Station", system = "Sol" }).ConfigureAwait( false );
+                    new { station = "Jameson Station", system = "Sol" }, TestContext.CancellationToken ).ConfigureAwait( false );
 
                 // Give server time to process
-                await Task.Delay(200).ConfigureAwait( false );
+                await Task.Delay(200, TestContext.CancellationToken ).ConfigureAwait( false );
 
                 // Assert
                 Assert.IsTrue(pluginClient.IsConnected);
@@ -328,7 +325,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout(15000, CooperativeCancellation = true )]
         public async Task E2E_MultiplePluginClients_ConnectSimultaneously()
         {
             // Arrange
@@ -339,11 +336,11 @@ namespace Tests.EddiVoiceAttackService
             {
                 // Act
                 var tasks = new Task[3];
-                for (int i = 0; i < 3; i++)
+                for (var i = 0; i < 3; i++)
                 {
                     var client = new VoiceAttackPluginClient(_configFilePath);
                     clients.Add(client);
-                    tasks[i] = client.InitializeAsync();
+                    tasks[i] = client.InitializeAsync( TestContext.CancellationToken );
                 }
 
                 await Task.WhenAll(tasks).ConfigureAwait( false );
@@ -364,27 +361,27 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout(15000, CooperativeCancellation = true )]
         public async Task E2E_PluginClient_SendMultipleMessages()
         {
             // Arrange
             Assert.IsNotNull(_configFilePath);
             var pluginClient = new VoiceAttackPluginClient(_configFilePath);
-            await pluginClient.InitializeAsync().ConfigureAwait( false );
+            await pluginClient.InitializeAsync( TestContext.CancellationToken ).ConfigureAwait( false );
 
             try
             {
                 // Act & Assert
-                for (int i = 0; i < 5; i++)
+                for (var i = 0; i < 5; i++)
                 {
-                    await pluginClient.SendEventAsync($"test.event.{i}", new { index = i }).ConfigureAwait( false );
-                    await Task.Delay(100).ConfigureAwait( false );
+                    await pluginClient.SendEventAsync($"test.event.{i}", new { index = i }, TestContext.CancellationToken ).ConfigureAwait( false );
+                    await Task.Delay(100, TestContext.CancellationToken ).ConfigureAwait( false );
                 }
 
                 // Verify connection still active
                 var status = await pluginClient.GetServerStatusAsync().ConfigureAwait( false );
                 Assert.IsTrue(status.IsConnected);
-                Assert.IsTrue(status.MessagesSent >= 5);
+                Assert.IsGreaterThanOrEqualTo(5, status.MessagesSent );
             }
             finally
             {
@@ -397,7 +394,7 @@ namespace Tests.EddiVoiceAttackService
         #region Protocol Compliance Tests
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout(15000, CooperativeCancellation = true )]
         public async Task E2E_MessageProtocol_ConnectAck_Contains_ServerCapabilities()
         {
             // Arrange
@@ -407,7 +404,7 @@ namespace Tests.EddiVoiceAttackService
             try
             {
                 // Act
-                await client.ConnectAsync("127.0.0.1", _server.Port).ConfigureAwait( false );
+                await client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken ).ConfigureAwait( false );
 
                 // Assert
                 var status = await client.GetStatusAsync().ConfigureAwait( false );
@@ -421,7 +418,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout(15000, CooperativeCancellation = true )]
         public async Task E2E_MessageProtocol_SessionId_Unique_PerConnection()
         {
             // Arrange
@@ -432,8 +429,8 @@ namespace Tests.EddiVoiceAttackService
             try
             {
                 // Act
-                await client1.ConnectAsync("127.0.0.1", _server.Port).ConfigureAwait( false );
-                await client2.ConnectAsync("127.0.0.1", _server.Port).ConfigureAwait( false );
+                await client1.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken ).ConfigureAwait( false );
+                await client2.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken ).ConfigureAwait( false );
 
                 var status1 = await client1.GetStatusAsync().ConfigureAwait( false );
                 var status2 = await client2.GetStatusAsync().ConfigureAwait( false );
@@ -455,7 +452,7 @@ namespace Tests.EddiVoiceAttackService
         #region Lifecycle Tests
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout(15000, CooperativeCancellation = true )]
         public async Task E2E_CompleteLifecycle_Initialize_Use_Disconnect()
         {
             // Arrange
@@ -464,18 +461,18 @@ namespace Tests.EddiVoiceAttackService
 
             // Act & Assert
             // 1. Initialize
-            await pluginClient.InitializeAsync().ConfigureAwait( false );
+            await pluginClient.InitializeAsync( TestContext.CancellationToken ).ConfigureAwait( false );
             Assert.IsTrue(pluginClient.IsConnected);
 
             // 2. Use (send messages)
-            await pluginClient.SendEventAsync("lifecycle.test", new { phase = "active" }).ConfigureAwait( false );
-            await Task.Delay(100).ConfigureAwait( false );
+            await pluginClient.SendEventAsync("lifecycle.test", new { phase = "active" }, TestContext.CancellationToken ).ConfigureAwait( false );
+            await Task.Delay(100, TestContext.CancellationToken ).ConfigureAwait( false );
 
             var status = await pluginClient.GetServerStatusAsync().ConfigureAwait( false );
             Assert.IsTrue(status.IsConnected);
 
             // 3. Disconnect
-            await pluginClient.DisconnectAsync().ConfigureAwait( false );
+            await pluginClient.DisconnectAsync( TestContext.CancellationToken ).ConfigureAwait( false );
             Assert.IsFalse(pluginClient.IsConnected);
 
             // 4. Verify cleanup
@@ -486,7 +483,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout(15000, CooperativeCancellation = true )]
         public async Task E2E_Reconnection_AfterDisconnect()
         {
             // Arrange
@@ -497,16 +494,16 @@ namespace Tests.EddiVoiceAttackService
             {
                 // Act & Assert
                 // 1. First connection
-                await pluginClient.InitializeAsync().ConfigureAwait( false );
+                await pluginClient.InitializeAsync( TestContext.CancellationToken ).ConfigureAwait( false );
                 var status1 = await pluginClient.GetServerStatusAsync().ConfigureAwait( false );
                 Assert.IsTrue(status1.IsConnected);
 
                 // 2. Disconnect
-                await pluginClient.DisconnectAsync().ConfigureAwait( false );
+                await pluginClient.DisconnectAsync( TestContext.CancellationToken ).ConfigureAwait( false );
                 Assert.IsFalse(pluginClient.IsConnected);
 
                 // 3. Reconnect
-                await pluginClient.InitializeAsync().ConfigureAwait( false );
+                await pluginClient.InitializeAsync( TestContext.CancellationToken ).ConfigureAwait( false );
                 var status2 = await pluginClient.GetServerStatusAsync().ConfigureAwait( false );
                 Assert.IsTrue(status2.IsConnected);
 
@@ -524,7 +521,7 @@ namespace Tests.EddiVoiceAttackService
         #region Error Handling Tests
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout(15000, CooperativeCancellation = true )]
         public async Task E2E_InvalidConfigFile_ProperError()
         {
             // Arrange
@@ -534,7 +531,7 @@ namespace Tests.EddiVoiceAttackService
             // Act & Assert
             try
             {
-                await pluginClient.InitializeAsync().ConfigureAwait( false );
+                await pluginClient.InitializeAsync( TestContext.CancellationToken ).ConfigureAwait( false );
                 Assert.Fail("Should have thrown FileNotFoundException");
             }
             catch (FileNotFoundException)
@@ -548,7 +545,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout(15000, CooperativeCancellation = true )]
         public async Task E2E_ServerNotAvailable_ProperError()
         {
             // Arrange
@@ -567,7 +564,7 @@ namespace Tests.EddiVoiceAttackService
                     await pluginClient.InitializeAsync(cts.Token).ConfigureAwait( false );
                     Assert.Fail("Should have thrown exception");
                 }
-                catch (Exception ex) when (ex is InvalidOperationException || ex is OperationCanceledException)
+                catch (Exception ex) when (ex is InvalidOperationException or OperationCanceledException)
                 {
                     // Expected
                 }
@@ -584,13 +581,13 @@ namespace Tests.EddiVoiceAttackService
         #region Performance Tests
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout(15000, CooperativeCancellation = true )]
         public async Task E2E_ResponseTime_Acceptable()
         {
             // Arrange
             Assert.IsNotNull(_configFilePath);
             var pluginClient = new VoiceAttackPluginClient(_configFilePath);
-            await pluginClient.InitializeAsync().ConfigureAwait( false );
+            await pluginClient.InitializeAsync( TestContext.CancellationToken ).ConfigureAwait( false );
 
             try
             {
@@ -598,17 +595,16 @@ namespace Tests.EddiVoiceAttackService
                 var stopwatch = System.Diagnostics.Stopwatch.StartNew();
 
                 // Send multiple events and measure time
-                for (int i = 0; i < 10; i++)
+                for (var i = 0; i < 10; i++)
                 {
-                    await pluginClient.SendEventAsync($"perf.test.{i}", new { index = i }).ConfigureAwait( false );
+                    await pluginClient.SendEventAsync($"perf.test.{i}", new { index = i }, TestContext.CancellationToken ).ConfigureAwait( false );
                 }
 
                 stopwatch.Stop();
 
                 // Assert
                 // 10 events should complete in reasonable time (< 2 seconds)
-                Assert.IsTrue(stopwatch.ElapsedMilliseconds < 2000,
-                    $"10 events took {stopwatch.ElapsedMilliseconds}ms, expected < 2000ms");
+                Assert.IsLessThan( 2000, stopwatch.ElapsedMilliseconds, $"10 events took {stopwatch.ElapsedMilliseconds}ms, expected < 2000ms" );
             }
             finally
             {
@@ -661,7 +657,7 @@ namespace Tests.EddiVoiceAttackService
             return eventData != null;
         }
 
-        private string CreateConfigFile(int port)
+        private static string CreateConfigFile(int port)
         {
             var configPath = Path.Combine(Path.GetTempPath(), $"e2e_config_{Guid.NewGuid():N}.json");
             var config = new { port };
@@ -674,13 +670,13 @@ namespace Tests.EddiVoiceAttackService
         #region Responder Mode Tests
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout(15000, CooperativeCancellation = true )]
         public async Task E2E_SetResponderMode_Command_InvokesRegisteredHandler()
         {
             // Arrange
             Assert.IsNotNull(_configFilePath);
             var pluginClient = new VoiceAttackPluginClient(_configFilePath);
-            await pluginClient.InitializeAsync().ConfigureAwait( false );
+            await pluginClient.InitializeAsync( TestContext.CancellationToken ).ConfigureAwait( false );
 
             try
             {
@@ -699,15 +695,15 @@ namespace Tests.EddiVoiceAttackService
                     new CancellationTokenSource(TimeSpan.FromSeconds(5)).Token).ConfigureAwait( false );
 
                 // Assert
-                Assert.IsTrue( _responderModeSignal?.Wait( 3000 ) ?? false,
+                Assert.IsTrue( _responderModeSignal?.Wait( 3000, TestContext.CancellationToken ) ?? false,
                     "Expected responder-mode handler invocation within 3 seconds" );
-                Assert.AreEqual( true, _responderModeEnabled );
+                Assert.IsTrue( _responderModeEnabled );
                 Assert.AreEqual( new System.Version( 2, 1, 0 ), _responderModeVersion );
 
                 Assert.IsTrue( TryReadCommandResponseStatus( response, out var status, out var message ),
                     "Expected command response payload to be readable" );
                 Assert.AreEqual( "success", status );
-                StringAssert.Contains( message, "Responder mode enabled" );
+                Assert.Contains( message, "Responder mode enabled" );
             }
             finally
             {
@@ -716,13 +712,13 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        [Timeout(15000)]
+        [Timeout(15000, CooperativeCancellation = true )]
         public async Task E2E_SetResponderMode_Command_WhenHandlerMissing_ReturnsErrorStatus()
         {
             // Arrange
             Assert.IsNotNull(_configFilePath);
             var pluginClient = new VoiceAttackPluginClient(_configFilePath);
-            await pluginClient.InitializeAsync().ConfigureAwait( false );
+            await pluginClient.InitializeAsync( TestContext.CancellationToken ).ConfigureAwait( false );
             _responderModeRegistration?.Dispose();
             _responderModeRegistration = null;
 
@@ -741,7 +737,7 @@ namespace Tests.EddiVoiceAttackService
                 Assert.IsTrue( TryReadCommandResponseStatus( response, out var status, out var message ),
                     "Expected command response payload to be readable" );
                 Assert.AreEqual( "error", status );
-                StringAssert.Contains( message, "not registered" );
+                Assert.Contains( "not registered", message );
             }
             finally
             {
@@ -752,7 +748,7 @@ namespace Tests.EddiVoiceAttackService
         #endregion
 
         [TestMethod]
-        [Timeout(20000)]
+        [Timeout(20000, CooperativeCancellation = true )]
         public async Task E2E_PluginHost_ReconnectsAfterConfigPortReplacement()
         {
             // Arrange
@@ -760,7 +756,7 @@ namespace Tests.EddiVoiceAttackService
             WriteHostConfigFile( _server.Port );
 
             var host = VoiceAttackPluginHost.Instance;
-            await host.InitializeAsync().ConfigureAwait( false );
+            await host.InitializeAsync( TestContext.CancellationToken ).ConfigureAwait( false );
             Assert.IsNotNull( host.Client );
 
             var initialClient = host.Client;
@@ -772,7 +768,7 @@ namespace Tests.EddiVoiceAttackService
 
             try
             {
-                await replacementServer.StartAsync().ConfigureAwait( false );
+                await replacementServer.StartAsync( TestContext.CancellationToken ).ConfigureAwait( false );
                 replacementEventHandler = new DefaultServerEventHandler( replacementServer );
                 replacementServer.Router.RegisterHandler( MessageTypes.Connect, replacementEventHandler.HandleConnectAsync );
                 replacementServer.Router.RegisterHandler( MessageTypes.Disconnect, replacementEventHandler.HandleDisconnectAsync );
@@ -780,14 +776,14 @@ namespace Tests.EddiVoiceAttackService
                 replacementServer.Router.RegisterHandler( MessageTypes.Event, replacementEventHandler.HandleEventAsync );
 
                 WriteHostConfigFile( replacementServer.Port );
-                await _server.StopAsync().ConfigureAwait( false );
+                await _server.StopAsync( TestContext.CancellationToken ).ConfigureAwait( false );
                 _server = null;
 
                 await WaitForConditionAsync( () => host.Client is null, "Expected plugin host to observe original server disconnect." )
                     .ConfigureAwait( false );
 
                 // Act
-                await host.InitializeAsync().ConfigureAwait( false );
+                await host.InitializeAsync( TestContext.CancellationToken ).ConfigureAwait( false );
 
                 // Assert
                 Assert.IsNotNull( host.Client );
@@ -799,7 +795,7 @@ namespace Tests.EddiVoiceAttackService
             }
             finally
             {
-                await replacementServer.StopAsync().ConfigureAwait( false );
+                await replacementServer.StopAsync( TestContext.CancellationToken ).ConfigureAwait( false );
             }
         }
 

@@ -13,10 +13,10 @@ namespace EddiEvents
         public const string SAMPLE = "{ \"timestamp\":\"2020-06-11T19:29:59Z\", \"event\":\"Repair\", \"Items\":[ \"$krait_light_cockpit_name;\", \"Hull\", \"$modularcargobaydoor_name;\", \"$Hpt_BasicMissileRack_Fixed_Small_name;\" ,\"Wear\" ], \"Cost\":50830 }";
 
         [PublicAPI("The non-module items repaired (e.g. 'All', 'Ship Integrity', 'Hull', 'Paint')")]
-        public List<string> items { get; private set; } = new();
+        public List<string> items { get; private set; } = [ ];
 
         [PublicAPI("Module objects representing module items repaired")]
-        public List<Module> modules { get; private set; } = new();
+        public List<Module> modules { get; private set; } = [ ];
 
         [PublicAPI("The price of the repair")]
         public long price { get; private set; }
@@ -29,7 +29,7 @@ namespace EddiEvents
 
         // Not intended to be user facing
         
-        public List<string> itemEDNames { get; private set; } = new();
+        public List<string> itemEDNames { get; private set; } = [ ];
 
         public ShipRepairedEvent(DateTime timestamp, string itemEDName, long price) : base(timestamp, NAME)
         {
@@ -48,7 +48,7 @@ namespace EddiEvents
         private void handleItems()
         {
             // Each item might be "All", "Wear", "Hull", "Paint", or the name of a module
-            foreach (string itemEDName in itemEDNames)
+            foreach (var itemEDName in itemEDNames)
             {
                 if (itemEDName == "Wear")
                 {

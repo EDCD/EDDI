@@ -5,7 +5,13 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class FleetCarrierMaterialsEvent : Event
+    public class FleetCarrierMaterialsEvent (
+        DateTime timestamp,
+        long carrierId,
+        string carrierName,
+        string callsign,
+        FCMaterialsInfo info )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Fleet carrier materials";
         public const string DESCRIPTION = "Triggered when the FCMaterials.json file has been updated";
@@ -13,20 +19,12 @@ namespace EddiEvents
 
         // Not intended to be user facing
 
-        public long carrierId { get; private set; }
+        public long carrierId { get; private set; } = carrierId;
 
-        public string carrierName { get; private set; }
+        public string carrierName { get; private set; } = carrierName;
 
-        public string callsign { get; private set; }
+        public string callsign { get; private set; } = callsign;
 
-        public FCMaterialsInfo info { get; private set; }
-
-        public FleetCarrierMaterialsEvent(DateTime timestamp, long carrierId, string carrierName, string callsign, FCMaterialsInfo info) : base(timestamp, NAME)
-        {
-            this.carrierId = carrierId;
-            this.carrierName = carrierName;
-            this.callsign = callsign;
-            this.info = info;
-        }
+        public FCMaterialsInfo info { get; private set; } = info;
     }
 }

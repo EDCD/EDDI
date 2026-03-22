@@ -9,7 +9,6 @@ using System;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using Utilities;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -37,18 +36,12 @@ namespace EddiSpeechResponder.CustomFunctions
             var shipyard = ConfigService.Instance.shipMonitorConfiguration?.shipyard;
             var ship = localId is null ? EDDI.Instance.CurrentShip : shipyard?.FirstOrDefault(s => s.LocalId == localId);
 
-            switch (callsignType)
+            return callsignType switch
             {
-                default:
-                    // CommanderName
-                    return phoneticCallsign(ship, ConfigService.Instance.commanderConfiguration.commanderName );
-                case 1:
-                    // Variant: ShipName
-                    return phoneticCallsign(ship, ship?.name);
-                case 2:
-                    // Variant: ShipID
-                    return phoneticCallsign(ship, ship?.ident);
-            }
+                1 => phoneticCallsign( ship, ship?.name ), // Variant: ShipName
+                2 => phoneticCallsign( ship, ship?.ident ), // Variant: ShipID
+                _ => phoneticCallsign( ship, ConfigService.Instance.commanderConfiguration.commanderName ) // CommanderName
+            };
         }, 0, 2);
 
         internal static string phoneticCallsign(Ship ship, string id)
@@ -63,7 +56,7 @@ namespace EddiSpeechResponder.CustomFunctions
             {
                 case "Lakon Spaceways":
                     // First word names (e.g. Lakon ...)
-                    if (phoneticmanufacturer != null && phoneticmanufacturer.Any())
+                    if (phoneticmanufacturer != null && phoneticmanufacturer.Count > 0 )
                     {
                         sb.Append("<phoneme alphabet=\"ipa\" ph=\"" + phoneticmanufacturer.First().to + "\">" + phoneticmanufacturer.First().from + "</phoneme> ");
                     }
@@ -74,7 +67,7 @@ namespace EddiSpeechResponder.CustomFunctions
                     break;
                 case "Faulcon DeLacy":
                     // Last word names (e.g. DeLacy ...)
-                    if (phoneticmanufacturer != null && phoneticmanufacturer.Any())
+                    if (phoneticmanufacturer != null && phoneticmanufacturer.Count > 0 )
                     {
                         sb.Append("<phoneme alphabet=\"ipa\" ph=\"" + phoneticmanufacturer.Last().to + "\">" + phoneticmanufacturer.Last().from + "</phoneme> ");
                     }
@@ -85,9 +78,9 @@ namespace EddiSpeechResponder.CustomFunctions
                     break;
                 default:
                     // Full names (e.g. Core Dynamics ..., Gutamaya ..., Saud Kruger ..., Zorgon Peterson ...)
-                    if (phoneticmanufacturer != null && phoneticmanufacturer.Any())
+                    if (phoneticmanufacturer != null && phoneticmanufacturer.Count > 0 )
                     {
-                        foreach (Translation item in phoneticmanufacturer) { sb.Append("<phoneme alphabet=\"ipa\" ph=\"" + item.to + "\">" + item.from + "</phoneme> "); }
+                        foreach (var item in phoneticmanufacturer) { sb.Append("<phoneme alphabet=\"ipa\" ph=\"" + item.to + "\">" + item.from + "</phoneme> "); }
                     }
                     else
                     {

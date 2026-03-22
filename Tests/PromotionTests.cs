@@ -13,11 +13,11 @@ namespace Tests
             MakeSafe();
         }
 
-        private void ParseSampleByName(string sampleName)
+        private static void ParseSampleByName(string sampleName)
         {
             var sample = Events.SampleByName(sampleName) as string;
             var sampleEvents = JournalMonitor.ParseJournalEntry(sample);
-            Assert.AreEqual(1, sampleEvents.Count, $"Expected one event, got {sampleEvents.Count}");
+            Assert.HasCount( 1, sampleEvents, $"Expected one event, got {sampleEvents.Count}");
         }
 
         [TestMethod]

@@ -6,24 +6,17 @@ using System.Threading.Tasks;
 
 namespace EddiSpeechResponder.ScriptRecoveryService
 {
-    public class ScriptRecoveryService
+    public class ScriptRecoveryService ( EditScriptWindow scriptWindow )
     {
         static ScriptRecoveryService()
         {
             WorkingDirectory = Utilities.Constants.DATA_DIR;
         }
 
-        public ScriptRecoveryService(EditScriptWindow scriptWindow)
-        {
-            _scriptWindow = scriptWindow;
-            _lockRoot = new object();
-        }
-
         private static readonly string WorkingDirectory;
-        private string _tempFileName => Path.Combine(WorkingDirectory, "editedScript.temp");
-        private readonly EditScriptWindow _scriptWindow;
+        private static string _tempFileName => Path.Combine(WorkingDirectory, "editedScript.temp");
         private bool _scriptSaveCallGuard;
-        private readonly object _lockRoot;
+        private readonly object _lockRoot = new();
         private static CancellationTokenSource cancellationTS; // This must be static so that it is visible to child threads and tasks
 
         public static Script GetRecoveredScript()
@@ -54,7 +47,7 @@ namespace EddiSpeechResponder.ScriptRecoveryService
                 File.Delete(_tempFileName);
             }
 
-            _scriptWindow.revisedScript.PropertyChanged += _scriptWindow_PropertyChanged;
+            scriptWindow.revisedScript.PropertyChanged += _scriptWindow_PropertyChanged;
             cancellationTS = new CancellationTokenSource();
         }
 
@@ -63,7 +56,7 @@ namespace EddiSpeechResponder.ScriptRecoveryService
             if (e.PropertyName == nameof(EditScriptWindow.revisedScript.Value))
             {
                 //the script value has changed. Begin the callguard and save the script value
-                BeginScriptSave(_scriptWindow);
+                BeginScriptSave(scriptWindow);
             }
         }
 
@@ -117,7 +110,7 @@ namespace EddiSpeechResponder.ScriptRecoveryService
                 }
             }
 
-            _scriptWindow.revisedScript.PropertyChanged -= _scriptWindow_PropertyChanged;
+            scriptWindow.revisedScript.PropertyChanged -= _scriptWindow_PropertyChanged;
         }
     }
 }

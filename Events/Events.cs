@@ -4,12 +4,12 @@ using System.Reflection;
 
 namespace EddiEvents
 {
-    public class Events
+    public abstract class Events
     {
-        public static IDictionary<string, Type> TYPES = new Dictionary<string, Type>();
-        private static readonly IDictionary<string, IList<object>> SAMPLES = new Dictionary<string, IList<object>>();
-        private static readonly IDictionary<string, string> DEFAULTS = new Dictionary<string, string>();
-        public static readonly IDictionary<string, string> DESCRIPTIONS = new Dictionary<string, string>();
+        public static readonly Dictionary<string, Type> TYPES = new();
+        private static readonly Dictionary<string, IList<object>> SAMPLES = new();
+        private static readonly Dictionary<string, string> DEFAULTS = new();
+        public static readonly Dictionary<string, string> DESCRIPTIONS = new();
 
         static Events()
         {
@@ -68,7 +68,7 @@ namespace EddiEvents
 
         public static Type TypeByName(string name)
         {
-            TYPES.TryGetValue(name, out Type value);
+            TYPES.TryGetValue(name, out var value);
             return value;
         }
 
@@ -90,13 +90,13 @@ namespace EddiEvents
 
         public static string DescriptionByName(string name)
         {
-            DESCRIPTIONS.TryGetValue(name, out string value);
+            DESCRIPTIONS.TryGetValue(name, out var value);
             return value;
         }
 
         public static string DefaultByName(string name)
         {
-            DEFAULTS.TryGetValue(name, out string value);
+            DEFAULTS.TryGetValue(name, out var value);
             return value;
         }
     }

@@ -5,7 +5,7 @@ using Utilities;
 
 namespace EddiSpeechService
 {
-    public class SoundManager
+    public static class SoundManager
     {
         internal static IWavePlayer GetSoundOut ( IWaveProvider provider )
         {

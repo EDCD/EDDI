@@ -13,8 +13,6 @@ namespace EddiIPC_Service.Server
     /// </summary>
     public class ConnectionContext : IDisposable
     {
-        private readonly TcpClient? _client;
-        private readonly NetworkStream? _stream;
         private readonly object _lockObj = new();
         private bool _disposed;
 
@@ -22,10 +20,10 @@ namespace EddiIPC_Service.Server
         public string SessionId { get; }
 
         /// <summary>Client's TCP connection</summary>
-        public TcpClient? Client => _client;
+        public TcpClient? Client { get; }
 
         /// <summary>Network stream for reading/writing</summary>
-        public NetworkStream? Stream => _stream;
+        public NetworkStream? Stream { get; }
 
         /// <summary>Whether client has completed Connect handshake</summary>
         public bool IsAuthenticated { get; set; }
@@ -52,8 +50,8 @@ namespace EddiIPC_Service.Server
         {
             ArgumentNullException.ThrowIfNull(client);
         
-            _client = client;
-            _stream = client.GetStream();
+            Client = client;
+            Stream = client.GetStream();
             SessionId = Guid.NewGuid().ToString("D");
             IsAuthenticated = false;
         }
@@ -121,7 +119,7 @@ namespace EddiIPC_Service.Server
                 try
                 {
                     // Check if socket is still connected
-                    return _client?.Connected ?? false;
+                    return Client?.Connected ?? false;
                 }
                 catch
                 {
@@ -140,9 +138,9 @@ namespace EddiIPC_Service.Server
 
             try
             {
-                _stream?.Dispose();
-                _client?.Close();
-                _client?.Dispose();
+                Stream?.Dispose();
+                Client?.Close();
+                Client?.Dispose();
             }
             catch
             {

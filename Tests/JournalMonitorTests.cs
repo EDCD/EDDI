@@ -28,7 +28,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2016-09-22T21:34:30Z"", ""event"":""Scan"", ""BodyName"":""Nemehim 4"", ""StarSystem"":""Nemehim"", ""SystemAddress"":1733388440282, ""DistanceFromArrivalLS"":1115.837646, ""TidalLock"":false, ""TerraformState"":"""", ""PlanetClass"":""Rocky ice body"", ""Atmosphere"":"""", ""Volcanism"":"""", ""MassEM"":0.013448, ""Radius"":1688803.625000, ""SurfaceGravity"":1.879402, ""SurfaceTemperature"":103.615654, ""SurfacePressure"":0.000000, ""Landable"":true, ""Materials"":{ ""iron"":18.8, ""sulphur"":17.7, ""carbon"":14.9, ""nickel"":14.3, ""phosphorus"":9.6, ""chromium"":8.5, ""manganese"":7.8, ""zinc"":5.1, ""molybdenum"":1.2, ""tungsten"":1.0, ""tellurium"":1.0 }, ""OrbitalPeriod"":122165280.000000, ""RotationPeriod"":112645.117188 }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
         }
 
         [TestMethod]
@@ -36,7 +36,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2016 - 11 - 01T18: 49:07Z"", ""event"":""Scan"", ""BodyName"":""Grea Bloae HH-T d4-44 4"", ""StarSystem"":""Grea Bloae HH-T d4-44"", ""SystemAddress"":1520309296811, ""DistanceFromArrivalLS"":703.763611, ""TidalLock"":false, ""TerraformState"":""Terraformable"", ""PlanetClass"":""High metal content body"", ""Atmosphere"":""hot thick carbon dioxide atmosphere"", ""Volcanism"":""minor metallic magma volcanism"", ""MassEM"":2.171783, ""Radius"":7622170.500000, ""SurfaceGravity"":14.899396, ""SurfaceTemperature"":836.165466, ""SurfacePressure"":33000114.000000, ""Landable"":false, ""SemiMajorAxis"":210957926400.000000, ""Eccentricity"":0.000248, ""OrbitalInclination"":0.015659, ""Periapsis"":104.416656, ""OrbitalPeriod"":48801056.000000, ""RotationPeriod"":79442.242188 }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
             Assert.IsInstanceOfType(events[0], typeof(BodyScannedEvent));
             var ev = events[0] as BodyScannedEvent;
             Assert.IsNotNull(ev);
@@ -120,7 +120,7 @@ namespace Tests
             }";
 
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
             Assert.IsInstanceOfType(events[0], typeof(BodyScannedEvent));
             var ev = events[0] as BodyScannedEvent;
             Assert.IsNotNull(ev);
@@ -136,7 +136,7 @@ namespace Tests
             // Test new scan data from game version 3.4.
             var line = @"{ ""timestamp"":""2019-04-12T04:42:10Z"", ""event"":""Scan"", ""ScanType"":""AutoScan"", ""BodyName"":""HR 1185 A 1"", ""BodyID"":4, ""StarSystem"":""HR 1185"", ""SystemAddress"":1774711381, ""Parents"":[ {""Null"":3}, {""Star"":1}, {""Null"":0} ], ""DistanceFromArrivalLS"":45.276505, ""TidalLock"":true, ""TerraformState"":"""", ""PlanetClass"":""High metal content body"", ""Atmosphere"":""hot thick silicate vapour atmosphere"", ""AtmosphereType"":""SilicateVapour"", ""AtmosphereComposition"":[ { ""Name"":""Silicates"", ""Percent"":99.989662 } ], ""Volcanism"":""major silicate vapour geysers volcanism"", ""MassEM"":2.428317, ""Radius"":8014977.000000, ""SurfaceGravity"":15.066424, ""SurfaceTemperature"":4894.569336, ""SurfacePressure"":6359968768.000000, ""Landable"":false, ""Composition"":{ ""Ice"":0.000073, ""Rock"":0.671092, ""Metal"":0.322412 }, ""SemiMajorAxis"":15315170.000000, ""Eccentricity"":0.021248, ""OrbitalInclination"":-4.599963, ""Periapsis"":144.548447, ""OrbitalPeriod"":27184.082031, ""RotationPeriod"":39590.453125, ""AxialTilt"":0.120614, ""WasDiscovered"":true, ""WasMapped"":true }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
             Assert.IsInstanceOfType(events[0], typeof(BodyScannedEvent));
             var ev = events[0] as BodyScannedEvent;
             Assert.IsNotNull(ev);
@@ -231,7 +231,7 @@ namespace Tests
                 ""WasMapped"": true
             }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
             Assert.IsInstanceOfType(events[0], typeof(BodyScannedEvent));
             var ev = events[0] as BodyScannedEvent;
             Assert.IsNotNull(ev);
@@ -245,7 +245,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2016-10-27T08:51:23Z"", ""event"":""Scan"", ""BodyName"":""Vela Dark Region FG-Y d3"", ""StarSystem"":""Vela Dark Region FG-Y d3"", ""SystemAddress"":113757866339, ""DistanceFromArrivalLS"":0.000000, ""StarType"":""K"", ""StellarMass"":0.960938, ""Radius"":692146368.000000, ""AbsoluteMagnitude"":5.375961, ""Age_MY"":230, ""SurfaceTemperature"":5108.000000, ""RotationPeriod"":393121.093750, ""Rings"":[ { ""Name"":""Vela Dark Region FG-Y d3 A Belt"", ""RingClass"":""eRingClass_Metalic"", ""MassMT"":1.2262e+10, ""InnerRad"":1.2288e+09, ""OuterRad"":2.3812e+09 } ] }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
 
             var theEvent = (StarScannedEvent)events[0];
 
@@ -277,7 +277,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2016-10-28T12:07:09Z"", ""event"":""Scan"", ""BodyName"":""Col 285 Sector CG-X d1-44"", ""StarSystem"":""Col 285 Sector CG-X d1-44"", ""SystemAddress"":1522272307539, ""DistanceFromArrivalLS"":0.000000, ""StarType"":""TTS"", ""StellarMass"":0.808594, ""Radius"":659162816.000000, ""AbsoluteMagnitude"":6.411560, ""Age_MY"":154, ""SurfaceTemperature"":4124.000000, ""RotationPeriod"":341417.281250, ""Rings"":[ { ""Name"":""Col 285 Sector CG-X d1-44 A Belt"", ""RingClass"":""eRingClass_Rocky"", ""MassMT"":1.1625e+13, ""InnerRad"":1.0876e+09, ""OuterRad"":2.4192e+09 } ] }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
 
             var theEvent = (StarScannedEvent)events[0];
             Assert.AreEqual((decimal)659162.816, theEvent.radius);
@@ -292,7 +292,7 @@ namespace Tests
             // Gamer version 3.4
             var line = @"{ ""timestamp"":""2019-04-12T04:49:10Z"", ""event"":""Scan"", ""ScanType"":""Detailed"", ""BodyName"":""Pleiades Sector MN-T c3-14 B"", ""BodyID"":2, ""StarSystem"":""Pleiades Sector MN-T c3-14"", ""SystemAddress"":3932008911514, ""Parents"":[ {""Null"":0} ], ""DistanceFromArrivalLS"":84306.257813, ""StarType"":""M"", ""Subclass"":8, ""StellarMass"":0.246094, ""Radius"":316421920.000000, ""AbsoluteMagnitude"":10.680222, ""Age_MY"":702, ""SurfaceTemperature"":2228.000000, ""Luminosity"":""Va"", ""SemiMajorAxis"":20863141281792.000000, ""Eccentricity"":0.278661, ""OrbitalInclination"":-103.465088, ""Periapsis"":32.983871, ""OrbitalPeriod"":104334450688.000000, ""RotationPeriod"":212050.531250, ""AxialTilt"":0.000000, ""WasDiscovered"":true, ""WasMapped"":false }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
 
             var theEvent = (StarScannedEvent)events[0];
             Assert.AreEqual(8, theEvent.stellarsubclass);
@@ -309,7 +309,7 @@ namespace Tests
             Assert.AreEqual(2, theEvent.bodyId);
             Assert.IsNull(theEvent.mapped);
             Assert.IsInstanceOfType(theEvent.scanned, typeof(DateTime));
-            Assert.AreEqual(1, theEvent.parents.Count);
+            Assert.HasCount( 1, theEvent.parents);
             // Stellar extras
             Assert.AreEqual(85, theEvent.absolutemagnitudeprobability);
             Assert.AreEqual(14, theEvent.densityprobability);
@@ -327,7 +327,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2016-10-27T08:49:08Z"", ""event"":""ShipyardNew"", ""ShipType"":""belugaliner"", ""NewShipID"":56 }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
         }
 
         [TestMethod]
@@ -335,7 +335,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2016-09-21T07:00:17Z"",""event"":""Interdiction"",""Success"":true,""Interdicted"":""Torval's Shield"",""IsPlayer"":false,""Faction"":""Zemina Torval"",""Power"":""Empire""}";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
             if ( events[0] is ShipInterdictionEvent @event )
             {
                 Assert.AreEqual( "Zemina Torval", @event.faction );
@@ -356,7 +356,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2023-11-29T22:21:30Z"",""event"":""Interdiction"",""Success"":true,""IsPlayer"":true,""Interdicted"":""*redacted*"",""CombatRank"":5}";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
             if ( events[ 0 ] is ShipInterdictionEvent @event )
             {
                 Assert.IsNull( @event.faction );
@@ -377,7 +377,7 @@ namespace Tests
         {
             var line = @"{""timestamp"":""2016-06-10T14:31:00Z"", ""event"":""Fileheader"", ""part"":1, ""gameversion"":""2.2"", ""build"":""r131487/r0 "" }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
 
             var theEvent = (FileHeaderEvent)events[0];
 
@@ -389,7 +389,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2017-04-14T19:34:32Z"", ""event"":""Docked"", ""StationName"":""Freeholm"", ""StationType"":""AsteroidBase"", ""StarSystem"":""Artemis"", ""StationFaction"":{ ""Name"":""Artemis Empire Assembly"", ""FactionState"":""Boom"" }, ""StationGovernment"":""$government_Patronage;"", ""StationGovernment_Localised"":""Patronage"", ""StationAllegiance"":""Empire"", ""StationEconomy"":""$economy_Industrial;"", ""StationEconomy_Localised"":""Industrial"", ""StationEconomies"": [ { ""Name"": ""$economy_Industrial;"", ""Proportion"": 0.7 }, { ""Name"": ""$economy_Extraction;"", ""Proportion"": 0.3 } ], ""DistFromStarLS"":2527.211914, ""StationServices"":[""Refuel""], ""MarketID"": 128169720, ""SystemAddress"": 3107509474002, ""LandingPads"": {""Large"": 7, ""Medium"": 8, ""Small"": 4 } }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
 
             var theEvent = (DockedEvent)events[0];
 
@@ -397,9 +397,9 @@ namespace Tests
 
             Assert.AreEqual(128169720, theEvent.marketId);
             Assert.AreEqual((ulong)3107509474002, theEvent.systemAddress);
-            Assert.AreEqual(1, theEvent.stationservices.Count);
+            Assert.HasCount( 1, theEvent.stationservices);
             Assert.AreEqual("Refuel", theEvent.stationservices[0]);
-            Assert.AreEqual(2, theEvent.economyShares.Count);
+            Assert.HasCount( 2, theEvent.economyShares);
             Assert.AreEqual("Industrial", theEvent.economyShares[0].economy.invariantName);
             Assert.AreEqual(0.7M, theEvent.economyShares[0].proportion);
             Assert.AreEqual("Extraction", theEvent.economyShares[1].economy.invariantName);
@@ -415,7 +415,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2018-04-01T05:21:24Z"", ""event"":""Docked"", ""StationName"":""Donaldson"", ""StationState"":""UnderRepairs"", ""StationType"":""Orbis"", ""StarSystem"":""Alioth"", ""SystemAddress"":1109989017963, ""MarketID"":128141048, ""StationFaction"":{ ""Name"":""Alioth Pro-Alliance Grou"", ""FactionState"":""Boom"" }, ""StationGovernment"":""$government_Democracy;"", ""StationGovernment_Localised"":""Democracy"", ""StationAllegiance"":""Alliance"", ""StationServices"":[ ""Dock"", ""Autodock"", ""BlackMarket"", ""Commodities"", ""Contacts"", ""Exploration"", ""Missions"", ""Outfitting"", ""CrewLounge"", ""Rearm"", ""Refuel"", ""Repair"", ""Shipyard"", ""Tuning"", ""Workshop"", ""MissionsGenerated"", ""FlightController"", ""StationOperations"", ""Powerplay"", ""SearchAndRescue"" ], ""StationEconomy"":""$economy_Service;"", ""StationEconomy_Localised"":""Service"", ""StationEconomies"":[ { ""Name"":""$economy_Service;"", ""Name_Localised"":""Service"", ""Proportion"":1.000000 } ], ""DistFromStarLS"":4632.417480, ""LandingPads"": {""Large"": 6, ""Medium"": 11, ""Small"": 10 }  }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
 
             var theEvent = (DockedEvent)events[0];
 
@@ -427,8 +427,8 @@ namespace Tests
             Assert.AreEqual("Boom", factionState.invariantName);
             Assert.AreEqual("Democracy", theEvent.controllingfaction.Government.invariantName);
             Assert.AreEqual("Alliance", theEvent.controllingfaction.Allegiance.invariantName);
-            Assert.AreEqual(20, theEvent.stationservices.Count);
-            Assert.AreEqual(1, theEvent.economyShares.Count);
+            Assert.HasCount( 20, theEvent.stationservices);
+            Assert.HasCount( 1, theEvent.economyShares);
             Assert.AreEqual("Service", theEvent.economyShares[0].economy.invariantName);
             Assert.AreEqual(1.0M, theEvent.economyShares[0].proportion);
             Assert.AreEqual(StationState.UnderRepairs, theEvent.stationState);
@@ -442,7 +442,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2018-04-01T05:21:24Z"", ""event"":""Docked"", ""StationName"":""Katzenstein Dock"", ""StationType"":""Coriolis"", ""StarSystem"":""36 Ophiuchi"", ""SystemAddress"":1865903245675, ""MarketID"":3228939264, ""StationFaction"":{ ""Name"":""36 Ophiuchi Future"", ""FactionState"":""Boom"" }, ""StationGovernment"":""$government_Democracy;"", ""StationGovernment_Localised"":""Democracy"", ""StationAllegiance"":""Federation"", ""StationServices"":[ ""Dock"", ""Autodock"", ""BlackMarket"", ""Commodities"", ""Contacts"", ""Exploration"", ""Missions"", ""Outfitting"", ""CrewLounge"", ""Rearm"", ""Refuel"", ""Repair"", ""Shipyard"", ""Tuning"", ""Workshop"", ""MissionsGenerated"", ""FlightController"", ""StationOperations"", ""Powerplay"", ""SearchAndRescue"", ""StationMenu"" ], ""StationEconomy"":""$economy_Refinery;"", ""StationEconomy_Localised"":""Refinery"", ""StationEconomies"":[ { ""Name"":""$economy_Refinery;"", ""Name_Localised"":""Refinery"", ""Proportion"":0.84 }, { ""Name"":""$economy_Refinery;"", ""Name_Localised"":""Refinery"", ""Proportion"":0.16 } ], ""DistFromStarLS"":4217877.0 }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
 
             var theEvent = (DockedEvent)events[0];
 
@@ -454,8 +454,8 @@ namespace Tests
             Assert.AreEqual("Boom", factionState.invariantName);
             Assert.AreEqual("Democracy", theEvent.controllingfaction.Government.invariantName);
             Assert.AreEqual("Federation", theEvent.controllingfaction.Allegiance.invariantName);
-            Assert.AreEqual(21, theEvent.stationservices.Count);
-            Assert.AreEqual(1, theEvent.economyShares.Count);
+            Assert.HasCount( 21, theEvent.stationservices);
+            Assert.HasCount( 1, theEvent.economyShares);
 
             // The Station definition should consolidate the economy shares. 
             Assert.AreEqual("Refinery", theEvent.economyShares[0].economy.invariantName);
@@ -467,7 +467,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2025-08-19T15:04:13Z"", ""event"":""Docked"", ""StationName"":""JK40"", ""StationType"":""FleetCarrier"", ""Taxi"":false, ""Multicrew"":false, ""StarSystem"":""Mizar"", ""SystemAddress"":259008758964, ""MarketID"":3713100288, ""StationFaction"":{ ""Name"":""FleetCarrier"" }, ""StationGovernment"":""$government_Carrier;"", ""StationGovernment_Localised"":""Propiedad privada"", ""StationServices"":[ ""dock"", ""autodock"", ""contacts"", ""crewlounge"", ""shipyard"", ""engineer"", ""flightcontroller"", ""stationoperations"", ""stationMenu"", ""carriermanagement"", ""carrierfuel"", ""socialspace"", ""squadronBank"" ], ""StationEconomy"":""$economy_Carrier;"", ""StationEconomy_Localised"":""Empresa privada"", ""StationEconomies"":[ { ""Name"":""$economy_Carrier;"", ""Name_Localised"":""Empresa privada"", ""Proportion"":1.000000 } ], ""DistFromStarLS"":0.000000, ""LandingPads"":{ ""Small"":8, ""Medium"":8, ""Large"":16 } }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
 
             var theEvent = (DockedEvent)events[0];
 
@@ -475,7 +475,7 @@ namespace Tests
             Assert.AreEqual( "SquadronCarrier", theEvent.stationModel.edname );
             Assert.AreEqual( "JK40", theEvent.station );
             Assert.AreEqual( "Mizar", theEvent.system );
-            Assert.IsTrue( theEvent.Station.stationServices.Contains(StationService.SquadronBank) );
+            Assert.Contains( StationService.SquadronBank, theEvent.Station.stationServices );
         }
 
         [TestMethod]
@@ -483,7 +483,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2018-06-04T07:43:11Z"", ""event"":""DockingCancelled"", ""MarketID"":3227840768, ""StationName"":""Laval Terminal"", ""StationType"":""Orbis"" }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
 
             var theEvent = (DockingCancelledEvent)events[0];
 
@@ -497,7 +497,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2018-06-04T01:53:29Z"", ""event"":""DockingDenied"", ""Reason"":""Offences"", ""MarketID"":3223343616, ""StationName"":""Ray Gateway"", ""StationType"":""Coriolis"" }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
             var theEvent = (DockingDeniedEvent)events[0];
             Assert.AreEqual("Coriolis", theEvent.stationDefinition.basename);
             Assert.AreEqual("Ray Gateway", theEvent.station);
@@ -509,7 +509,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2018-06-04T07:34:07Z"", ""event"":""DockingRequested"", ""MarketID"":3222020352, ""StationName"":""Morris Enterprise"", ""StationType"":""Bernal"", ""LandingPads"": {""Large"": 9, ""Medium"": 18, ""Small"": 17 }, }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
             var theEvent = (DockingRequestedEvent)events[0];
             Assert.AreEqual( "Bernal", theEvent.stationDefinition.basename );
             Assert.AreEqual( "Morris Enterprise", theEvent.station );
@@ -524,7 +524,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2018-06-04T07:53:34Z"", ""event"":""DockingGranted"", ""LandingPad"":17, ""MarketID"":128850247, ""StationName"":""Simbad's Refuge"", ""StationType"":""AsteroidBase"" }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
             var theEvent = (DockingGrantedEvent)events[0];
             Assert.AreEqual("AsteroidBase", theEvent.stationDefinition.basename);
             Assert.AreEqual(17, theEvent.landingpad);
@@ -538,7 +538,7 @@ namespace Tests
             var line = @"{ ""timestamp"":""2016-10-07T03:02:44Z"", ""event"":""ReceiveText"", ""From"":""$ShipName_Police_Federation;"", ""From_Localised"":""Federal Security Service"", ""Message"":""$Police_StartPatrol03;"", ""Message_Localised"":""Receiving five by five, I'm in the air now, joining patrol."", ""Channel"":""npc"" }";
 
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
 
             var theEvent = (MessageReceivedEvent)events[0];
 
@@ -554,7 +554,7 @@ namespace Tests
             var line = @"{ ""timestamp"":""2016-10-06T12:48:56Z"", ""event"":""ReceiveText"", ""From"":""$npc_name_decorate:#name=Jonathan Dallard;"", ""From_Localised"":""Jonathan Dallard"", ""Message"":""$Pirate_OnStartScanCargo07;"", ""Message_Localised"":""Do you have anything of value?"", ""Channel"":""npc"" }";
 
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(2, events.Count);
+            Assert.HasCount( 2, events);
 
             var event1 = (MessageReceivedEvent)events[0];
 
@@ -573,7 +573,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2018-11-15T06:16:23Z"", ""event"":""ReceiveText"", ""From"":"""", ""Message"":""$COMMS_entered:#name=ICZ JH-V c2-7;"", ""Message_Localised"":""Entered Channel: ICZ JH-V c2-7"", ""Channel"":""npc"" }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(0, events.Count);
+            Assert.HasCount( 0, events );
         }
 
         [TestMethod]
@@ -582,7 +582,7 @@ namespace Tests
             var line = "{ \"timestamp\":\"2017-10-12T19:58:46Z\", \"event\":\"ReceiveText\", \"From\":\"SlowIce\", \"Message\":\"good luck\", \"Channel\":\"player\" }";
 
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
 
             var event1 = (MessageReceivedEvent)events[0];
 
@@ -598,7 +598,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2017 - 10 - 12T20: 39:25Z"", ""event"":""ReceiveText"", ""From"":""Rebecca Lansing"", ""Message"":""Hi there"", ""Channel"":""local"" }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
 
             var event1 = (MessageReceivedEvent)events[0];
 
@@ -614,7 +614,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2017-10-12T21:11:10Z"", ""event"":""ReceiveText"", ""From"":""SlowIce"", ""Message"":""hello"", ""Channel"":""wing"" }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
 
             var event1 = (MessageReceivedEvent)events[0];
 
@@ -631,7 +631,7 @@ namespace Tests
             // Test for messages received from multicrew. These are received without a defined key for 'Channel' in the player journal.
             var line = @"{ ""timestamp"":""2017 - 12 - 06T22: 40:54Z"", ""event"":""ReceiveText"", ""From"":""Nexonoid"", ""Message"":""whats up"" }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
 
             var event1 = (MessageReceivedEvent)events[0];
 
@@ -652,7 +652,7 @@ namespace Tests
             FakeSpanshHttpClient.Expect( "systems/field_values/system_names?q=Tupa", @"{""min_max"":[{""id64"":908419142354,""name"":""Tupa"",""x"":-63.625,""y"":-9.96875,""z"":0.0625}],""values"":[""Tupa""]}" );
 
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
 
             var event1 = (MissionAcceptedEvent)events[0];
 
@@ -670,8 +670,8 @@ namespace Tests
             var events2 = JournalMonitor.ParseJournalEntry(line2);
 
             // Both should generate one event
-            Assert.AreEqual(1, events1.Count);
-            Assert.AreEqual(1, events2.Count);
+            Assert.HasCount( 1, events1);
+            Assert.HasCount( 1, events2);
             var event1 = (FriendsEvent)events1[0];
             var event2 = (FriendsEvent)events2[0];
             Assert.AreEqual("Online", event1.status);
@@ -683,7 +683,7 @@ namespace Tests
         {
             var line = @"{""timestamp"":""2018-05-26T22:04:09Z"",""event"":""SearchAndRescue"",""MarketID"":3228973824,""Name"":""usscargoblackbox"",""Name_Localised"":""Black Box"",""Count"":1,""Reward"":21184}";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var sarEvent = (SearchAndRescueEvent)events[0];
             Assert.AreEqual("Black Box", sarEvent.commodity.invariantName);
             Assert.AreEqual("Salvage", sarEvent.commodity.Category.invariantName);
@@ -694,7 +694,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2018 - 02 - 07T07: 13:39Z"", ""event"":""SupercruiseExit"", ""StarSystem"":""Wyrd"", ""SystemAddress"":5031654888146, ""Body"":""Vonarburg Co-operative"", ""BodyID"":35, ""BodyType"":""Station"" }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var normalSpaceEvent = (EnteredNormalSpaceEvent)events[0];
             Assert.AreEqual("Vonarburg Co-operative", normalSpaceEvent.bodyname);
             Assert.AreEqual("Station", normalSpaceEvent.bodytype);
@@ -793,7 +793,7 @@ namespace Tests
             }";
 
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var jumpedEvent = (JumpedEvent)events[0];
             Assert.AreEqual("Diaguandri", jumpedEvent.system);
             Assert.AreEqual((ulong)670417429889, jumpedEvent.systemAddress);
@@ -841,7 +841,7 @@ namespace Tests
                 ""FuelLevel"": 27.728828
             }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var jumpedEvent = (JumpedEvent)events[0];
             Assert.AreEqual("None", jumpedEvent.factionstate);
         }
@@ -872,7 +872,7 @@ namespace Tests
             }";
 
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var jumpedEvent = (JumpedEvent)events[0];
             Assert.AreEqual("None", jumpedEvent.factionstate);
         }
@@ -994,7 +994,7 @@ namespace Tests
             }";
 
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var @event = (LocationEvent)events[0];
 
             Assert.AreEqual("Ray Gateway", @event.bodyname);
@@ -1152,7 +1152,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2018 - 10 - 30T20: 45:07Z"", ""event"":""AnyUnhandledEvent""}";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var @event = (UnhandledEvent)events[0];
 
             Assert.AreEqual("AnyUnhandledEvent", @event.edType);
@@ -1164,7 +1164,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2018-10-17T16:17:55Z"", ""event"":""SquadronCreated"", ""SquadronName"":""TestSquadron"" }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
 
             var event1 = (SquadronStatusEvent)events[0];
             Assert.AreEqual("TestSquadron", event1.name);
@@ -1176,7 +1176,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2018-10-17T16:17:55Z"", ""event"":""SquadronDemotion"", ""SquadronName"":""TestSquadron"", ""OldRank"":3, ""NewRank"":2 }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
 
             var event1 = (SquadronRankEvent)events[0];
             Assert.AreEqual("TestSquadron", event1.name);
@@ -1189,7 +1189,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2018-12-09T18:39:32Z"", ""event"":""Location"", ""Docked"":false, ""StarSystem"":""Col 285 Sector SP-K b23-7"", ""SystemAddress"":16065459463649, ""StarPos"":[112.31250,13.46875,153.06250], ""SystemAllegiance"":"""", ""SystemEconomy"":""$economy_None;"", ""SystemEconomy_Localised"":""None"", ""SystemSecondEconomy"":""$economy_None;"", ""SystemSecondEconomy_Localised"":""None"", ""SystemGovernment"":""$government_None;"", ""SystemGovernment_Localised"":""None"", ""SystemSecurity"":""$GAlAXY_MAP_INFO_state_anarchy;"", ""SystemSecurity_Localised"":""Anarchy"", ""Population"":0, ""Body"":""Col 285 Sector SP-K b23-7 A"", ""BodyID"":1, ""BodyType"":""Star"" }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var @event = (LocationEvent)events[0];
 
             Assert.IsNotNull(@event.raw);
@@ -1209,7 +1209,7 @@ namespace Tests
             
             var line = "{ \"timestamp\":\"2018-12-25T20:07:06Z\", \"event\":\"FSDJump\", \"StarSystem\":\"LHS 20\", \"SystemAddress\":33656303199641, \"StarPos\":[11.18750,-37.37500,-31.84375], \"SystemAllegiance\":\"Federation\", \"SystemEconomy\":\"$economy_HighTech;\", \"SystemEconomy_Localised\":\"High Tech\", \"SystemSecondEconomy\":\"$economy_Refinery;\", \"SystemSecondEconomy_Localised\":\"Refinery\", \"SystemGovernment\":\"$government_Democracy;\", \"SystemGovernment_Localised\":\"Democracy\", \"SystemSecurity\":\"$SYSTEM_SECURITY_medium;\", \"SystemSecurity_Localised\":\"Medium Security\", \"Population\":9500553, \"JumpDist\":20.361, \"FuelUsed\":3.065896, \"FuelLevel\":19.762932, \"Factions\":[ { \"Name\":\"Pilots Federation Local Branch\", \"FactionState\":\"None\", \"Government\":\"Democracy\", \"Influence\":0.000000, \"Allegiance\":\"PilotsFederation\", \"Happiness\":\"\", \"MyReputation\":6.106290 }, { \"Name\":\"Shenetserii Confederation\", \"FactionState\":\"None\", \"Government\":\"Confederacy\", \"Influence\":0.127000, \"Allegiance\":\"Federation\", \"Happiness\":\"$Faction_HappinessBand2;\", \"Happiness_Localised\":\"Happy\", \"MyReputation\":18.809999, \"PendingStates\":[ { \"State\":\"War\", \"Trend\":0 } ] }, { \"Name\":\"LHS 20 Company\", \"FactionState\":\"None\", \"Government\":\"Corporate\", \"Influence\":0.127000, \"Allegiance\":\"Federation\", \"Happiness\":\"$Faction_HappinessBand2;\", \"Happiness_Localised\":\"Happy\", \"MyReputation\":4.950000, \"PendingStates\":[ { \"State\":\"War\", \"Trend\":0 } ] }, { \"Name\":\"Traditional LHS 20 Defence Party\", \"FactionState\":\"None\", \"Government\":\"Dictatorship\", \"Influence\":0.087000, \"Allegiance\":\"Independent\", \"Happiness\":\"$Faction_HappinessBand2;\", \"Happiness_Localised\":\"Happy\", \"MyReputation\":2.640000 }, { \"Name\":\"Movement for LHS 20 Liberals\", \"FactionState\":\"CivilWar\", \"Government\":\"Democracy\", \"Influence\":0.226000, \"Allegiance\":\"Federation\", \"Happiness\":\"$Faction_HappinessBand2;\", \"Happiness_Localised\":\"Happy\", \"SquadronFaction\":true, \"HomeSystem\":true, \"MyReputation\":100.000000, \"ActiveStates\":[ { \"State\":\"CivilLiberty\" }, { \"State\":\"Investment\" }, { \"State\":\"CivilWar\" } ] }, { \"Name\":\"Nationalists of LHS 20\", \"FactionState\":\"None\", \"Government\":\"Dictatorship\", \"Influence\":0.105000, \"Allegiance\":\"Independent\", \"Happiness\":\"$Faction_HappinessBand2;\", \"Happiness_Localised\":\"Happy\", \"MyReputation\":0.000000 }, { \"Name\":\"LHS 20 Organisation\", \"FactionState\":\"CivilWar\", \"Government\":\"Anarchy\", \"Influence\":0.166000, \"Allegiance\":\"Independent\", \"Happiness\":\"$Faction_HappinessBand2;\", \"Happiness_Localised\":\"Happy\", \"MyReputation\":5.940000, \"ActiveStates\":[ { \"State\":\"CivilWar\" } ] }, { \"Name\":\"LHS 20 Engineers\", \"FactionState\":\"None\", \"Government\":\"Corporate\", \"Influence\":0.162000, \"Allegiance\":\"Federation\", \"Happiness\":\"$Faction_HappinessBand2;\", \"Happiness_Localised\":\"Happy\", \"MyReputation\":15.000000 } ], \"SystemFaction\":{ \"Name\":\"Movement for LHS 20 Liberals\", \"FactionState\":\"CivilWar\" } }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var @event = (JumpedEvent)events[0];
             Assert.IsNotNull(@event);
             Assert.IsInstanceOfType(@event, typeof(JumpedEvent));
@@ -1223,7 +1223,7 @@ namespace Tests
         {
             var line = "{ \"timestamp\":\"2019-01-25T00:06:36Z\", \"event\":\"StoredModules\", \"MarketID\":128928173, \"StationName\":\"Rock of Isolation\", \"StarSystem\":\"Omega Sector OD-S b4-0\", \"Items\":[ { \"Name\":\"$int_shieldgenerator_size7_class3_fast_name;\", \"Name_Localised\":\"Bi-Weave Shield\", \"StorageSlot\":52, \"StarSystem\":\"Omega Sector VE-Q b5-15\", \"MarketID\":128757071, \"TransferCost\":9729, \"TransferTime\":480, \"BuyPrice\":7501033, \"Hot\":false, \"EngineerModifications\":\"ShieldGenerator_Thermic\", \"Level\":5, \"Quality\":0.000000 }, { \"Name\":\"$int_cargorack_size7_class1_name;\", \"Name_Localised\":\"Cargo Rack\", \"StorageSlot\":101, \"StarSystem\":\"Omega Sector OD-S b4-0\", \"MarketID\":128928173, \"TransferCost\":0, \"TransferTime\":0, \"BuyPrice\":976616, \"Hot\":false }, { \"Name\":\"$int_hyperdrive_size6_class5_name;\", \"Name_Localised\":\"FSD\", \"StorageSlot\":53, \"StarSystem\":\"Shinrarta Dezhra\", \"MarketID\":128666762, \"TransferCost\":4535529, \"TransferTime\":55231, \"BuyPrice\":13752602, \"Hot\":false, \"EngineerModifications\":\"FSD_LongRange\", \"Level\":5, \"Quality\":0.000000 }, { \"Name\":\"$int_shieldgenerator_size5_class3_fast_name;\", \"Name_Localised\":\"Bi-Weave Shield\", \"StorageSlot\":116, \"StarSystem\":\"Shinrarta Dezhra\", \"MarketID\":128666762, \"TransferCost\":280636, \"TransferTime\":55231, \"BuyPrice\":850659, \"Hot\":false, \"EngineerModifications\":\"ShieldGenerator_Optimised\", \"Level\":3, \"Quality\":0.000000 }, { \"Name\":\"$hpt_multicannon_gimbal_huge_name;\", \"Name_Localised\":\"Multi-Cannon\", \"StorageSlot\":107, \"StarSystem\":\"Shinrarta Dezhra\", \"MarketID\":128666762, \"TransferCost\":1787862, \"TransferTime\":55231, \"BuyPrice\":5420960, \"Hot\":false, \"EngineerModifications\":\"Weapon_Overcharged\", \"Level\":4, \"Quality\":0.838000 }, { \"Name\":\"$int_repairer_size4_class5_name;\", \"Name_Localised\":\"AFM Unit\", \"StorageSlot\":114, \"StarSystem\":\"Shinrarta Dezhra\", \"MarketID\":128666762, \"TransferCost\":1367146, \"TransferTime\":55231, \"BuyPrice\":4145240, \"Hot\":false, \"EngineerModifications\":\"Misc_Shielded\", \"Level\":3, \"Quality\":1.000000 }, { \"Name\":\"$int_refinery_size4_class5_name;\", \"Name_Localised\":\"Refinery\", \"StorageSlot\":102, \"StarSystem\":\"Omega Sector OD-S b4-0\", \"MarketID\":128928173, \"TransferCost\":0, \"TransferTime\":0, \"BuyPrice\":3730077, \"Hot\":false }, { \"Name\":\"$int_fsdinterdictor_size4_class3_name;\", \"Name_Localised\":\"FSD Interdictor\", \"StorageSlot\":110, \"InTransit\":true, \"BuyPrice\":2311546, \"Hot\":false, \"EngineerModifications\":\"FSDinterdictor_Expanded\", \"Level\":4, \"Quality\":0.979500 }, { \"Name\":\"$int_hullreinforcement_size4_class2_name;\", \"Name_Localised\":\"Hull Reinforcement\", \"StorageSlot\":105, \"InTransit\":true, \"BuyPrice\":171113, \"Hot\":false, \"EngineerModifications\":\"HullReinforcement_HeavyDuty\", \"Level\":4, \"Quality\":0.000000 }, { \"Name\":\"$int_shieldgenerator_size3_class3_fast_name;\", \"Name_Localised\":\"Bi-Weave Shield\", \"StorageSlot\":113, \"StarSystem\":\"Shinrarta Dezhra\", \"MarketID\":128666762, \"TransferCost\":24597, \"TransferTime\":55231, \"BuyPrice\":74284, \"Hot\":false, \"EngineerModifications\":\"ShieldGenerator_Optimised\", \"Level\":5, \"Quality\":0.956700 }, { \"Name\":\"$int_modulereinforcement_size3_class2_name;\", \"Name_Localised\":\"Module Reinforcement\", \"StorageSlot\":120, \"StarSystem\":\"HIP 21066\", \"MarketID\":3221959680, \"TransferCost\":27804, \"TransferTime\":56644, \"BuyPrice\":81900, \"Hot\":false }, { \"Name\":\"$int_hullreinforcement_size3_class2_name;\", \"Name_Localised\":\"Hull Reinforcement\", \"StorageSlot\":115, \"StarSystem\":\"Shinrarta Dezhra\", \"MarketID\":128666762, \"TransferCost\":24408, \"TransferTime\":55231, \"BuyPrice\":73710, \"Hot\":false, \"EngineerModifications\":\"HullReinforcement_HeavyDuty\", \"Level\":4, \"Quality\":0.605000 }, { \"Name\":\"$int_dronecontrol_collection_size3_class2_name;\", \"Name_Localised\":\"Collector\", \"StorageSlot\":118, \"StarSystem\":\"Omega Sector OD-S b4-0\", \"MarketID\":128928173, \"TransferCost\":0, \"TransferTime\":0, \"BuyPrice\":10530, \"Hot\":false, \"EngineerModifications\":\"CollectionLimpet_LightWeight\", \"Level\":5, \"Quality\":0.000000 }, { \"Name\":\"$int_dronecontrol_fueltransfer_size3_class2_name;\", \"Name_Localised\":\"Fuel Transfer\", \"StorageSlot\":57, \"StarSystem\":\"Shinrarta Dezhra\", \"MarketID\":128666762, \"TransferCost\":3225, \"TransferTime\":55231, \"BuyPrice\":9477, \"Hot\":false, \"EngineerModifications\":\"FuelTransferLimpet_LightWeight\", \"Level\":4, \"Quality\":0.000000 }, { \"Name\":\"$hpt_mining_seismchrgwarhd_turret_medium_name;\", \"Name_Localised\":\"Seismic Charge\", \"StorageSlot\":111, \"StarSystem\":\"Omega Sector OD-S b4-0\", \"MarketID\":128928173, \"TransferCost\":0, \"TransferTime\":0, \"BuyPrice\":390988, \"Hot\":false }, { \"Name\":\"$hpt_mining_subsurfdispmisle_turret_medium_name;\", \"Name_Localised\":\"Disp. Missile\", \"StorageSlot\":109, \"StarSystem\":\"Omega Sector OD-S b4-0\", \"MarketID\":128928173, \"TransferCost\":0, \"TransferTime\":0, \"BuyPrice\":334986, \"Hot\":false }, { \"Name\":\"$int_modulereinforcement_size2_class2_name;\", \"Name_Localised\":\"Module Reinforcement\", \"StorageSlot\":112, \"StarSystem\":\"Wayutabal\", \"MarketID\":3224777984, \"TransferCost\":11773, \"TransferTime\":55696, \"BuyPrice\":35100, \"Hot\":false }, { \"Name\":\"$hpt_mininglaser_turret_medium_name;\", \"Name_Localised\":\"Mining Laser\", \"StorageSlot\":108, \"StarSystem\":\"Omega Sector OD-S b4-0\", \"MarketID\":128928173, \"TransferCost\":0, \"TransferTime\":0, \"BuyPrice\":28587, \"Hot\":false }, { \"Name\":\"$int_dronecontrol_prospector_size1_class5_name;\", \"Name_Localised\":\"Prospector\", \"StorageSlot\":104, \"StarSystem\":\"Omega Sector OD-S b4-0\", \"MarketID\":128928173, \"TransferCost\":0, \"TransferTime\":0, \"BuyPrice\":8424, \"Hot\":false }, { \"Name\":\"$hpt_mining_abrblstr_turret_small_name;\", \"Name_Localised\":\"Abrasion Blaster\", \"StorageSlot\":106, \"StarSystem\":\"Omega Sector OD-S b4-0\", \"MarketID\":128928173, \"TransferCost\":0, \"TransferTime\":0, \"BuyPrice\":24114, \"Hot\":false }, { \"Name\":\"$int_corrosionproofcargorack_size1_class2_name;\", \"Name_Localised\":\"Corrosion Resistant Cargo Rack\", \"StorageSlot\":59, \"StarSystem\":\"Maia\", \"MarketID\":128679559, \"TransferCost\":4376, \"TransferTime\":58455, \"BuyPrice\":12249, \"Hot\":false }, { \"Name\":\"$int_corrosionproofcargorack_size1_class2_name;\", \"Name_Localised\":\"Corrosion Resistant Cargo Rack\", \"StorageSlot\":51, \"StarSystem\":\"Maia\", \"MarketID\":128679559, \"TransferCost\":4376, \"TransferTime\":58455, \"BuyPrice\":12249, \"Hot\":false }, { \"Name\":\"$int_corrosionproofcargorack_size1_class2_name;\", \"Name_Localised\":\"Corrosion Resistant Cargo Rack\", \"StorageSlot\":58, \"StarSystem\":\"Shinrarta Dezhra\", \"MarketID\":128666762, \"TransferCost\":3621, \"TransferTime\":55231, \"BuyPrice\":10679, \"Hot\":false }, { \"Name\":\"$hpt_mrascanner_size0_class5_name;\", \"Name_Localised\":\"Pulse Wave\", \"StorageSlot\":100, \"StarSystem\":\"Omega Sector OD-S b4-0\", \"MarketID\":128928173, \"TransferCost\":0, \"TransferTime\":0, \"BuyPrice\":909217, \"Hot\":false }, { \"Name\":\"$hpt_heatsinklauncher_turret_tiny_name;\", \"Name_Localised\":\"Heatsink\", \"StorageSlot\":119, \"StarSystem\":\"Shinrarta Dezhra\", \"MarketID\":128666762, \"TransferCost\":1254, \"TransferTime\":55231, \"BuyPrice\":3500, \"Hot\":false, \"EngineerModifications\":\"HeatSinkLauncher_HeatSinkCapacity\", \"Level\":3, \"Quality\":0.000000 } ] }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var @event = (StoredModulesEvent)events[0];
             Assert.IsNotNull(@event);
             Assert.IsInstanceOfType(@event, typeof(StoredModulesEvent));
@@ -1234,7 +1234,7 @@ namespace Tests
         {
             var line = @"{""timestamp"":""2019-03-10T16:09:36Z"", ""event"":""FSSAllBodiesFound"", ""SystemName"":""Dumbae DN-I d10-6057"", ""SystemAddress"":208127228285531, ""Count"":19 }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var @event = (SystemScanComplete)events[0];
             Assert.IsNotNull(@event);
             Assert.IsInstanceOfType(@event, typeof(SystemScanComplete));
@@ -1248,12 +1248,12 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2018-11-14T10:35:35Z"", ""event"":""MultiSellExplorationData"", ""Discovered"":[ { ""SystemName"":""HIP 84742"", ""NumBodies"":23 }, { ""SystemName"":""Col 359 Sector NY-S b20-1"", ""NumBodies"":9 } ], ""BaseValue"":2938186, ""Bonus"":291000, ""TotalEarnings"":3229186 }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var @event = (ExplorationDataSoldEvent)events[0];
             Assert.IsNotNull(@event);
             Assert.IsInstanceOfType(@event, typeof(ExplorationDataSoldEvent));
             Assert.IsNotNull( @event.systems );
-            Assert.AreEqual(2, @event.systems.Count);
+            Assert.HasCount( 2, @event.systems);
             Assert.AreEqual(2938186M, @event.reward);
             Assert.AreEqual(291000M, @event.bonus);
             Assert.AreEqual(3229186M, @event.total);
@@ -1311,9 +1311,9 @@ namespace Tests
             Assert.AreEqual("PBSF SPACE ODDITY", @event.signalSource.localizedName);
             Assert.AreEqual("XBH-64Y", @event.signalSource.invariantName);
 
-            var testSystem = new StarSystem() { systemname = "Test System" };
+            var testSystem = new StarSystem { systemname = "Test System" };
             testSystem.AddOrUpdateSignalSources( [ @event.signalSource ] );
-            Assert.AreEqual(1, testSystem.carriersignalsources.Count);
+            Assert.HasCount( 1, testSystem.carriersignalsources);
         }
 
         [ TestMethod ]
@@ -1384,7 +1384,7 @@ namespace Tests
             Assert.IsNotNull(@event);
             Assert.IsInstanceOfType(@event, typeof(JumpedEvent));
             Assert.IsNotNull(@event.conflicts);
-            Assert.AreEqual(1, @event.conflicts.Count);
+            Assert.HasCount( 1, @event.conflicts);
             Assert.AreEqual("Election", @event.conflicts[0].factionState.invariantName);
             Assert.AreEqual("active", @event.conflicts[0].status);
             Assert.AreEqual("Crockett Gateway", @event.conflicts[0].stake);
@@ -1403,7 +1403,7 @@ namespace Tests
             var events = JournalMonitor.ParseJournalEntry(line);
             // Ideally we'd assert that it logs no warnings but that's not easy without mocking the logging framework.
             // Instead we test for a stanza that comes after the missing TG_ENCOUNTERS stanza.
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var statisticsEvent = (StatisticsEvent)events[0];
             Assert.AreEqual(7083, statisticsEvent.multicrew.timetotalseconds);
         }
@@ -1459,7 +1459,7 @@ namespace Tests
             // When an engineer is unlocked, there should be an event for the change in stage and a second event for the change in rank...
             var updateLine = "{ \"timestamp\":\"2018-01-16T09:34:36Z\", \"event\":\"EngineerProgress\", \"Engineer\":\"Zacariah Nemo\", \"EngineerID\":300050, \"Progress\":\"Unlocked\", \"Rank\":1, \"RankProgress\":0 }";
             events = JournalMonitor.ParseJournalEntry(updateLine);
-            Assert.AreEqual(2, events.Count);
+            Assert.HasCount( 2, events );
             var stageEvent = (EngineerProgressedEvent)events[0];
             Assert.IsNotNull(stageEvent.Engineer);
             Assert.AreEqual("Zacariah Nemo", stageEvent.Engineer.name);
@@ -1472,7 +1472,7 @@ namespace Tests
             // We expect one event for the change in rank...
             var updateLine2 = "{ \"timestamp\":\"2018-01-16T09:34:36Z\", \"event\":\"EngineerProgress\", \"Engineer\":\"Zacariah Nemo\", \"EngineerID\":300050, \"Progress\":\"Unlocked\", \"Rank\":2, \"RankProgress\":0 }";
             events = JournalMonitor.ParseJournalEntry(updateLine2);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var rankEvent2 = (EngineerProgressedEvent)events[0];
             Assert.IsNotNull(rankEvent2.Engineer);
             Assert.AreEqual(2, rankEvent2.Engineer.rank);
@@ -1490,8 +1490,8 @@ namespace Tests
             Assert.AreEqual(3700571136, @event.carrierID);
             Assert.AreEqual("FleetCarrier", @event.carrierFaction.name);
             Assert.AreEqual("Private Ownership", @event.carrierFaction.Government.invariantName);
-            Assert.AreEqual(17, @event.carrierServices.Count);
-            Assert.AreEqual(1, @event.carrierEconomies.Count);
+            Assert.HasCount( 17, @event.carrierServices);
+            Assert.HasCount( 1, @event.carrierEconomies);
             Assert.AreEqual("Private Enterprise", @event.carrierEconomies[0].economy.invariantName);
             Assert.AreEqual("Aparctias", @event.systemname);
             Assert.AreEqual((ulong)358797513434, @event.systemAddress);
@@ -1509,12 +1509,12 @@ namespace Tests
             Assert.AreEqual("Star", @event.bodyType.invariantName);
             Assert.AreEqual("Yuri Grom", @event.Power.invariantName);
             Assert.AreEqual("Exploited", @event.PowerState.invariantName);
-            Assert.AreEqual(7, @event.factions.Count);
+            Assert.HasCount( 7, @event.factions);
             Assert.AreEqual("EG Union", @event.controllingsystemfaction.name);
             var factionState = @event.controllingsystemfaction.presences.FirstOrDefault( p => p.systemName == "Aparctias" )?.FactionState;
             Assert.IsNotNull(factionState);
             Assert.AreEqual("War", factionState.invariantName);
-            Assert.AreEqual(1, @event.conflicts.Count);
+            Assert.HasCount( 1, @event.conflicts);
             Assert.AreEqual("EG Union", @event.conflicts[0].faction1);
             Assert.AreEqual("Paladin Consortium", @event.conflicts[0].faction2);
         }
@@ -1532,8 +1532,8 @@ namespace Tests
             Assert.IsNull(@event.carrierID);
             Assert.IsNull(@event.carrierFaction?.name);
             Assert.IsNull(@event.carrierFaction?.Government.invariantName);
-            Assert.AreEqual(0, @event.carrierServices.Count);
-            Assert.AreEqual(0, @event.carrierEconomies.Count);
+            Assert.HasCount( 0, @event.carrierServices);
+            Assert.HasCount( 0, @event.carrierEconomies);
             Assert.AreEqual( "Pro Eurl WL-P c5-24", @event.systemname);
             Assert.AreEqual((ulong)6684613284658, @event.systemAddress);
             Assert.AreEqual( 2191.1875M, @event.x);
@@ -1550,9 +1550,9 @@ namespace Tests
             Assert.AreEqual("Star", @event.bodyType.invariantName);
             Assert.IsNull(@event.Power?.invariantName);
             Assert.AreEqual("Unoccupied", @event.PowerState.invariantName);
-            Assert.AreEqual(0, @event.factions.Count);
+            Assert.HasCount( 0, @event.factions );
             Assert.IsNull(@event.controllingsystemfaction?.name);
-            Assert.AreEqual(0, @event.conflicts.Count);
+            Assert.HasCount( 0, @event.conflicts );
         }
 
         [TestMethod]
@@ -1564,7 +1564,7 @@ namespace Tests
             Assert.IsInstanceOfType(@event.items, typeof(List<string>));
             Assert.IsInstanceOfType(@event.modules, typeof(List<Module>));
             Assert.AreEqual(EddiDataDefinitions.Properties.Modules.ShipIntegrity, @event.items[0]);
-            Assert.AreEqual(0, @event.modules.Count);
+            Assert.HasCount( 0, @event.modules );
             Assert.AreEqual(2824, @event.price);
         }
 
@@ -1576,8 +1576,8 @@ namespace Tests
             var @event = (ShipRepairedEvent)events[0];
             Assert.IsInstanceOfType(@event.items, typeof(List<string>));
             Assert.IsInstanceOfType(@event.modules, typeof(List<Module>));
-            Assert.AreEqual(0, @event.items.Count);
-            Assert.AreEqual(5, @event.modules.Count);
+            Assert.HasCount( 0, @event.items );
+            Assert.HasCount( 5, @event.modules);
             Assert.AreEqual(34590, @event.price);
         }
 
@@ -1590,7 +1590,7 @@ namespace Tests
             Assert.IsInstanceOfType(@event.items, typeof(List<string>));
             Assert.IsInstanceOfType(@event.modules, typeof(List<Module>));
             Assert.AreEqual("All", @event.items[0]);
-            Assert.AreEqual(0, @event.modules.Count);
+            Assert.HasCount( 0, @event.modules );
             Assert.AreEqual(104817, @event.price);
         }
 
@@ -1603,7 +1603,7 @@ namespace Tests
             Assert.IsInstanceOfType(@event.items, typeof(List<string>));
             Assert.IsInstanceOfType(@event.modules, typeof(List<Module>));
             Assert.AreEqual(EddiDataDefinitions.Properties.Modules.ShipIntegrity, @event.items[0]);
-            Assert.AreEqual(0, @event.modules.Count);
+            Assert.HasCount( 0, @event.modules );
             Assert.AreEqual(2824, @event.price);
         }
 
@@ -1742,7 +1742,7 @@ namespace Tests
                 ""Loan"": 0
             }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
 
             var @event = (CommanderContinuedEvent)events[0];
             Assert.AreEqual("Commander continued", @event.type);
@@ -1779,7 +1779,7 @@ namespace Tests
                 ""Loan"": 0
             }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
 
             var @event = (CommanderContinuedEvent)events[0];
             Assert.AreEqual("Commander continued", @event.type);
@@ -1813,7 +1813,7 @@ namespace Tests
                 ""Loan"": 0
             }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
 
             var @event = (EnteredCQCEvent)events[0];
             Assert.AreEqual("John Jameson", @event.commander);
@@ -1842,7 +1842,7 @@ namespace Tests
             }";
 
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
 
             var @event = (CommanderContinuedEvent)events[0];
             Assert.AreEqual("Commander continued", @event.type);
@@ -1870,7 +1870,7 @@ namespace Tests
         public void TestDiedEvent(string line, string expected)
         {
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var @event = (DiedEvent)events[0];
             var actual = JsonConvert.SerializeObject( @event );
             Assert.AreEqual(expected, actual);
@@ -1883,7 +1883,7 @@ namespace Tests
         public void TestEmbarkEvent(string line, bool toMulticrew, bool toShip, bool toSRV, bool toTaxi, int? toLocalId, string systemName, ulong systemAddress, string bodyName, int? bodyId, string station, string stationType, long? marketId, bool onStation, bool onPlanet)
         {
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var @event = (EmbarkEvent)events[0];
             Assert.AreEqual(toMulticrew, @event.tomulticrew);
             Assert.AreEqual(toShip, @event.toship);
@@ -1908,7 +1908,7 @@ namespace Tests
         public void TestDisembarkEvent(string line, bool fromMulticrew, bool fromShip, bool fromSRV, bool fromTaxi, int? fromLocalId, string systemName, ulong systemAddress, string bodyName, int? bodyId, string station, string stationType, long? marketId, bool onStation, bool onPlanet)
         {
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var @event = (DisembarkEvent)events[0];
             Assert.AreEqual(fromMulticrew, @event.frommulticrew);
             Assert.AreEqual(fromShip, @event.fromship);
@@ -1942,7 +1942,7 @@ namespace Tests
             }
 
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var @event = (BackpackChangedEvent)events[0];
 
             if (isAdded)
@@ -1973,7 +1973,7 @@ namespace Tests
         public void TestBookTransport(string line, string expectedType, int expectedPrice, string expectedStarSystem, string expectedDestination)
         {
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var @event = (BookTransportEvent)events[0];
 
             Assert.AreEqual(expectedType, @event.transporttype);
@@ -1988,7 +1988,7 @@ namespace Tests
         public void TestCancelTransport(string line, string expectedType, int expectedRefund)
         {
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var @event = (CancelTransportEvent)events[0];
 
             Assert.AreEqual(expectedType, @event.transporttype);
@@ -2000,10 +2000,10 @@ namespace Tests
         {
             var line = "{ \"timestamp\":\"2021-04-30T21:41:34Z\", \"event\":\"BuyMicroResources\", \"Name\":\"healthpack\", \"Name_Localised\":\"Medkit\", \"Category\":\"Consumable\", \"Count\":2, \"Price\":2000, \"MarketID\":3221524992 }";
             var events = JournalMonitor.ParseJournalEntry( line );
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var @event = (MicroResourcesPurchasedEvent)events[0];
 
-            Assert.AreEqual(1, @event.resourceamounts.Count);
+            Assert.HasCount( 1, @event.resourceamounts);
             Assert.AreEqual("Medkit", @event.resourceamounts[0].invariantName);
             Assert.AreEqual(MicroResourceCategory.Consumables.invariantName, @event.resourceamounts[ 0 ].invariantCategory);
             Assert.AreEqual(2, @event.resourceamounts[ 0 ].amount);
@@ -2012,10 +2012,10 @@ namespace Tests
 
             var line2 = "{ \"timestamp\":\"2024-05-25T05:05:16Z\", \"event\":\"BuyMicroResources\", \"TotalCount\":10, \"MicroResources\":[ { \"Name\":\"opticalfibre\", \"Name_Localised\":\"Optical Fibre\", \"Category\":\"Component\", \"Count\":10 } ], \"Price\":6000, \"MarketID\":3707594240 }";
             events = JournalMonitor.ParseJournalEntry( line2 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             @event = (MicroResourcesPurchasedEvent)events[0];
 
-            Assert.AreEqual( 1, @event.resourceamounts.Count );
+            Assert.HasCount( 1, @event.resourceamounts );
             Assert.AreEqual( "Optical Fiber", @event.resourceamounts[ 0 ].invariantName );
             Assert.AreEqual( MicroResourceCategory.Components.invariantName, @event.resourceamounts[ 0 ].invariantCategory );
             Assert.AreEqual( 10, @event.resourceamounts[ 0 ].amount );
@@ -2030,7 +2030,7 @@ namespace Tests
         public void TestBuySuitEvent(string line, string expectedInvariantName, int expectedGrade, long? expectedSuitId, int? expectedPrice)
         {
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var @event = (SuitPurchasedEvent)events[0];
             Assert.AreEqual(expectedInvariantName, @event.suit_invariant);
             Assert.AreEqual(expectedGrade, @event.Suit.grade);
@@ -2044,7 +2044,7 @@ namespace Tests
         public void TestEngineerContributedEvent(string line, string engineer, string contributiontype, string commodity, string material, string category, int amount, int total)
         {
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var @event = (EngineerContributedEvent)events[0];
 
             Assert.AreEqual(engineer, @event.Engineer.name);
@@ -2075,7 +2075,7 @@ namespace Tests
             int expectedThargoidSignals, int expectedOtherSignals)
         {
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var @event = (SurfaceSignalsEvent)events[0];
 
             Assert.AreEqual(expectedDetectionType, @event.detectionType);
@@ -2098,10 +2098,10 @@ namespace Tests
             var line3 = @"{ ""timestamp"":""2023-10-20T23:43:59Z"", ""event"":""Bounty"", ""Rewards"":[ { ""Faction"":""New Gungkuni Alliance"", ""Reward"":67748 } ], ""PilotName"":""$npc_name_decorate:#name=Morty;"", ""PilotName_Localised"":""Morty"", ""Target"":""cobramkiii"", ""Target_Localised"":""Cobra Mk III"", ""TotalReward"":67748, ""VictimFaction"":""Copityar Purple Posse"" }";
 
             var events1 = JournalMonitor.ParseJournalEntry( line1 );
-            Assert.AreEqual( 1, events1.Count );
+            Assert.HasCount( 1, events1 );
             var event1 = (BountyAwardedEvent)events1[ 0 ];
             Assert.IsNotNull( event1 );
-            Assert.AreEqual( 1, event1.rewards.Count );
+            Assert.HasCount( 1, event1.rewards );
             Assert.AreEqual( "Duwali Liberty Party", event1.rewards[ 0 ].faction );
             Assert.AreEqual( 2050, event1.rewards[ 0 ].amount );
             Assert.AreEqual( "Researcher", event1.target );
@@ -2110,10 +2110,10 @@ namespace Tests
             Assert.AreEqual( "Duwali Partnership", event1.faction );
 
             var events2 = JournalMonitor.ParseJournalEntry( line2 );
-            Assert.AreEqual( 1, events2.Count );
+            Assert.HasCount( 1, events2 );
             var event2 = (BountyAwardedEvent)events2[ 0 ];
             Assert.IsNotNull( event2 );
-            Assert.AreEqual( 1, event2.rewards.Count );
+            Assert.HasCount( 1, event2.rewards );
             Assert.AreEqual( "Defence Party of Duwali", event2.rewards[ 0 ].faction );
             Assert.AreEqual( 14100, event2.rewards[ 0 ].amount );
             Assert.AreEqual( "Technician", event2.target );
@@ -2122,10 +2122,10 @@ namespace Tests
             Assert.AreEqual( "Duwali Partnership", event2.faction );
 
             var events3 = JournalMonitor.ParseJournalEntry( line3 );
-            Assert.AreEqual( 1, events3.Count );
+            Assert.HasCount( 1, events3 );
             var event3 = (BountyAwardedEvent)events3[ 0 ];
             Assert.IsNotNull( event3 );
-            Assert.AreEqual( 1, event3.rewards.Count );
+            Assert.HasCount( 1, event3.rewards );
             Assert.AreEqual( "New Gungkuni Alliance", event3.rewards[ 0 ].faction );
             Assert.AreEqual( 67748, event3.rewards[ 0 ].amount );
             Assert.AreEqual( "Cobra Mk. III", event3.target );
@@ -2203,29 +2203,29 @@ namespace Tests
             };
             var nextSystem = new StarSystem() { systemname = "TestSystem", systemAddress = 9999999999999 };
             nextSystem.AddOrUpdateBody(nextSystemStar);
-            Assert.AreEqual(1, nextSystem.bodies.Count);
+            Assert.HasCount( 1, nextSystem.bodies );
             EDDI.Instance.NextStarSystem = nextSystem;
 
             var events = JournalMonitor.ParseJournalEntry(startJump);
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (FSDEngagedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             events = JournalMonitor.ParseJournalEntry(fsdJump);
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (JumpedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Test that the current star system has been updated
             var currentStarSystem = EDDI.Instance.CurrentStarSystem;
             Assert.IsNotNull(currentStarSystem);
-            Assert.AreEqual( 1, currentStarSystem.bodies.Count );
+            Assert.HasCount( 1, currentStarSystem.bodies );
 
             // Scan 1
             events = JournalMonitor.ParseJournalEntry(scan1);
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (StarScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Test that the temporary star has been replaced by the main star
-            Assert.AreEqual(1, currentStarSystem.bodies.Count);
+            Assert.HasCount( 1, currentStarSystem.bodies );
             var mainStar = currentStarSystem.bodies.FirstOrDefault();
             Assert.IsNotNull( mainStar );
             Assert.AreEqual( BodyType.Star, mainStar.bodyType );
@@ -2238,236 +2238,236 @@ namespace Tests
 
             // Verify duplicate scans are not double counted
             events = JournalMonitor.ParseJournalEntry( scan1 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (StarScannedEvent)events[ 0 ] ).ConfigureAwait(false);
-            Assert.AreEqual( 1, currentStarSystem.bodies.Count );
+            Assert.HasCount( 1, currentStarSystem.bodies );
 
             // Scan 2
             events = JournalMonitor.ParseJournalEntry(scan2);
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
-            Assert.AreEqual( 2, currentStarSystem.bodies.Count );
+            Assert.HasCount( 2, currentStarSystem.bodies );
 
             // Scan 3
             events = JournalMonitor.ParseJournalEntry(scan3);
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 4
             events = JournalMonitor.ParseJournalEntry(scan4);
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 5
             events = JournalMonitor.ParseJournalEntry(scan5);
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 6
             events = JournalMonitor.ParseJournalEntry(scan6);
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 7
             events = JournalMonitor.ParseJournalEntry(scan7);
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Discovery Scan
-            Assert.AreEqual( 7, currentStarSystem.bodies.Count );
+            Assert.HasCount( 7, currentStarSystem.bodies );
             events = JournalMonitor.ParseJournalEntry(discoveryScan);
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (DiscoveryScanEvent)events[ 0 ] ).ConfigureAwait(false);
             Assert.AreEqual( 45, currentStarSystem.totalbodies );
 
             // Scan 8
             events = JournalMonitor.ParseJournalEntry( scan8 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (StarScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 9
             events = JournalMonitor.ParseJournalEntry( scan9 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (StarScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 10
             events = JournalMonitor.ParseJournalEntry( scan10 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 11
             events = JournalMonitor.ParseJournalEntry( scan11 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 12
             events = JournalMonitor.ParseJournalEntry( scan12 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 13
             events = JournalMonitor.ParseJournalEntry( scan13 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 14
             events = JournalMonitor.ParseJournalEntry( scan14 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 15
             events = JournalMonitor.ParseJournalEntry( scan15 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 16
             events = JournalMonitor.ParseJournalEntry( scan16 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 17
             events = JournalMonitor.ParseJournalEntry( scan17 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 18
             events = JournalMonitor.ParseJournalEntry( scan18 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 19
             events = JournalMonitor.ParseJournalEntry( scan19 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 20
             events = JournalMonitor.ParseJournalEntry( scan20 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 21
             events = JournalMonitor.ParseJournalEntry( scan21 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 22
             events = JournalMonitor.ParseJournalEntry( scan22 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 23
             events = JournalMonitor.ParseJournalEntry( scan23 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 24
             events = JournalMonitor.ParseJournalEntry( scan24 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 25
             events = JournalMonitor.ParseJournalEntry( scan25 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 26
             events = JournalMonitor.ParseJournalEntry( scan26 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 27
             events = JournalMonitor.ParseJournalEntry( scan27 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 28
             events = JournalMonitor.ParseJournalEntry( scan28 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 29
             events = JournalMonitor.ParseJournalEntry( scan29 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 30
             events = JournalMonitor.ParseJournalEntry( scan30 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 31
             events = JournalMonitor.ParseJournalEntry( scan31 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 32
             events = JournalMonitor.ParseJournalEntry( scan32 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 33
             events = JournalMonitor.ParseJournalEntry( scan33 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 34
             events = JournalMonitor.ParseJournalEntry( scan34 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 35
             events = JournalMonitor.ParseJournalEntry( scan35 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 36
             events = JournalMonitor.ParseJournalEntry( scan36 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 37
             events = JournalMonitor.ParseJournalEntry( scan37 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 38
             events = JournalMonitor.ParseJournalEntry( scan38 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 39
             events = JournalMonitor.ParseJournalEntry( scan39 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 40
             events = JournalMonitor.ParseJournalEntry( scan40 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 41
             events = JournalMonitor.ParseJournalEntry( scan41 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 42
             events = JournalMonitor.ParseJournalEntry( scan42 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 43
             events = JournalMonitor.ParseJournalEntry( scan43 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 44
             events = JournalMonitor.ParseJournalEntry( scan44 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Scan 45
             events = JournalMonitor.ParseJournalEntry( scan45 );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             Assert.AreEqual( 45, currentStarSystem.totalbodies );
@@ -2476,7 +2476,7 @@ namespace Tests
             Assert.AreEqual( 20, currentStarSystem.bodies.Count( b => b.bodyType == BodyType.Moon ) );
 
             events = JournalMonitor.ParseJournalEntry( allBodiesFound );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             await EDDI.Instance.HandleEventAsync( (SystemScanComplete)events[ 0 ] ).ConfigureAwait(false);
             Assert.AreEqual(45, ( (SystemScanComplete)events[ 0 ] ).count );
         }
@@ -2490,7 +2490,7 @@ namespace Tests
             var events = JournalMonitor.ParseJournalEntries( [
                 @"{ ""timestamp"":""2023-11-24T20:22:45Z"", ""event"":""SystemsShutdown"" }"
             ] );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             Assert.AreEqual(typeof(ShipShutdownEvent), events[0].GetType() );
             Assert.IsFalse( ((ShipShutdownEvent)events[ 0 ]).partialshutdown );
 
@@ -2499,14 +2499,14 @@ namespace Tests
             events = JournalMonitor.ParseJournalEntries( [
                 @"{ ""timestamp"":""2023-11-24T20:22:53Z"", ""event"":""SystemsShutdown"" }"
             ] );
-            Assert.AreEqual( 0, events.Count );
+            Assert.HasCount( 0, events );
 
             // New `ShipShutdown` events should be suppressed for the next 30 seconds. Test at 8 + 24 = 32 seconds.
             Thread.Sleep( TimeSpan.FromSeconds( 24 ) );
             events = JournalMonitor.ParseJournalEntries( [
                 @"{ ""timestamp"":""2023-11-24T20:23:17Z"", ""event"":""SystemsShutdown"" }"
             ] );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             Assert.AreEqual( typeof( ShipShutdownEvent ), events[ 0 ].GetType() );
             Assert.IsFalse( ( (ShipShutdownEvent)events[ 0 ] ).partialshutdown );
         }
@@ -2524,7 +2524,7 @@ namespace Tests
             };
 
             var events = JournalMonitor.ParseJournalEntries( lines );
-            Assert.AreEqual( 2, events.Count, $"Observed event types: {string.Join("; ", events.Select(e => e.type))}" );
+            Assert.HasCount( 2, events, $"Observed event types: {string.Join("; ", events.Select(e => e.type))}" );
             Assert.AreEqual( typeof(ShipShutdownEvent), events[ 0 ].GetType() );
             Assert.IsTrue( ( (ShipShutdownEvent)events[ 0 ] ).partialshutdown );
         }
@@ -2540,7 +2540,7 @@ namespace Tests
         public void TestShipTargeted ( string line, bool targetLocked, int? scanStage, string edModel, string pilotName, string rankEDName, string shieldHealth, string hullHealth, string faction, string legalStatus, int? bounty, string subsystemLocalizedName, string subsystemHealth )
         {
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var @event = (ShipTargetedEvent)events[ 0 ];
 
             Assert.AreEqual( targetLocked, @event.targetlocked);
@@ -2632,7 +2632,7 @@ namespace Tests
             Assert.AreEqual( "int_dronecontrol_collection_size3_class5", @event.module.edname.ToLowerInvariant() );
             Assert.AreEqual( "Krait Mk. II", @event.ship );
             Assert.AreEqual( 81, @event.shipid );
-            Assert.IsTrue( @event.engineermodifications.Length > 0 );
+            Assert.IsGreaterThan( 0, @event.engineermodifications.Length );
         }
 
         [TestMethod]
@@ -2645,7 +2645,9 @@ namespace Tests
             Assert.AreEqual( "Omega Sector OD-S b4-0", @event.system );
             Assert.AreEqual( "Rock of Isolation", @event.station );
             Assert.AreEqual( 128928173, @event.marketId );
-            var storedModule = @event.storedmodules.FirstOrDefault(m => m.module.edname.ToLowerInvariant() == "int_hyperdrive_size6_class5");
+            var storedModule = @event.storedmodules.FirstOrDefault(m =>
+                string.Equals( m.module.edname, "int_hyperdrive_size6_class5",
+                    StringComparison.OrdinalIgnoreCase ) );
             Assert.IsNotNull( storedModule );
             Assert.AreEqual( "Shinrarta Dezhra", storedModule.system );
             Assert.AreEqual( 128666762, storedModule.marketid );
@@ -2672,7 +2674,7 @@ namespace Tests
         {
             var line = "{ \"timestamp\":\"2016-09-20T18:14:26Z\", \"event\":\"ShipyardBuy\", \"ShipType\":\"Empire_Eagle\", \"ShipPrice\":10000, \"SellOldShip\":\"CobraMkIII\", \"SellShipID\":42, \"SellPrice\":950787, \"MarketID\":128132856 }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
 
             var @event = (ShipPurchasedEvent)events[0];
             Assert.AreEqual( "Imperial Eagle", @event.ship );

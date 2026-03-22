@@ -161,7 +161,7 @@ namespace EddiDataDefinitions
             if ( model == null ) { return null; }
 
             var Ship = new Ship();
-            if (ShipsByModel.TryGetValue(model.ToLowerInvariant(), out Ship Template))
+            if (ShipsByModel.TryGetValue(model.ToLowerInvariant(), out var Template))
             {
                 Ship.EDName = Template.EDName;
                 Ship.manufacturer = Template.manufacturer;
@@ -185,7 +185,7 @@ namespace EddiDataDefinitions
             if ( edModel == null ) { return null; }
 
             var Ship = new Ship();
-            if (ShipsByEDModel.TryGetValue(edModel.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("_", ""), out Ship Template))
+            if (ShipsByEDModel.TryGetValue(edModel.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("_", ""), out var Template))
             {
                 Ship.EDName = Template.EDName;
                 Ship.manufacturer = Template.manufacturer;

@@ -184,7 +184,7 @@ namespace EddiStarMapService
                         {
                             ReEnqueueEvents( eventData );
                         }
-                        else if ( response.msgnum >= 100 && response.msgnum <= 104 )
+                        else if ( response.msgnum is >= 100 and <= 104 )
                         {
                             // 100 -  Everything went fine! 
                             // 101 -  The journal message was already processed in our database. 

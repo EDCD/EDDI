@@ -49,14 +49,14 @@ namespace EddiInaraResponder
             InaraService.invalidAPIkey += ( s, e ) =>
                 OnInvalidAPIkeyAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
 
-            inaraService.Start( EDDI.Instance.EddiIsBeta() );
+            inaraService.Start( EDDI.EddiIsBeta() );
             FetchInaraCommanderId();
             
             Logging.Info($"Initialized {ResponderName()}");
             return true;
         }
 
-        private async Task OnInvalidAPIkeyAsync ()
+        private static async Task OnInvalidAPIkeyAsync ()
         {
             try
             {
@@ -72,13 +72,15 @@ namespace EddiInaraResponder
 
         public void Stop()
         {
+            InaraService.invalidAPIkey -= ( s, e ) =>
+                OnInvalidAPIkeyAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
             inaraService.Stop();
         }
 
         public void Reload()
         {
             Stop();
-            inaraService.Start(EDDI.Instance.EddiIsBeta());
+            inaraService.Start(EDDI.EddiIsBeta());
             FetchInaraCommanderId(); 
         }
 
@@ -427,9 +429,9 @@ namespace EddiInaraResponder
 
         private void handleCommunityGoalsEvent(CommunityGoalsEvent @event)
         {
-            foreach (CommunityGoal goal in @event.goals)
+            foreach (var goal in @event.goals)
             {
-                Dictionary<string, object> cgEventData = new Dictionary<string, object>()
+                var cgEventData = new Dictionary<string, object>()
                 {
                     { "communitygoalGameID", goal.cgid },
                     { "communitygoalName", goal.name },
@@ -694,7 +696,7 @@ namespace EddiInaraResponder
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderShip", currentShipData));
 
             var modulesData = new List<Dictionary<string, object>>();
-            foreach (Hardpoint hardpoint in @event.hardpoints)
+            foreach (var hardpoint in @event.hardpoints)
             {
                 if (hardpoint != null)
                 {
@@ -702,7 +704,7 @@ namespace EddiInaraResponder
                     modulesData.Add(moduleData);
                 }
             }
-            foreach (Compartment compartment in @event.compartments)
+            foreach (var compartment in @event.compartments)
             {
                 if (compartment != null)
                 {
@@ -745,7 +747,7 @@ namespace EddiInaraResponder
                 if (module.modified)
                 {
                     List<Dictionary<string, object>> modifiers = [ ];
-                    foreach (EngineeringModifier modifier in module.modifiers)
+                    foreach (var modifier in module.modifiers)
                     {
                         if (modifier.currentValue != null)
                         {
@@ -767,7 +769,7 @@ namespace EddiInaraResponder
                         }
                     }
 
-                    Dictionary<string, object> engineering = new Dictionary<string, object>()
+                    var engineering = new Dictionary<string, object>()
                     {
                         {"blueprintName", module.modificationEDName},
                         {"blueprintLevel", module.engineerlevel},
@@ -894,9 +896,9 @@ namespace EddiInaraResponder
         private void handleStoredModulesEvent(StoredModulesEvent @event)
         {
             List<Dictionary<string, object>> eventData = [ ];
-            foreach (StoredModule storedModule in @event.storedmodules)
+            foreach (var storedModule in @event.storedmodules)
             {
-                Dictionary<string, object> moduleData = new Dictionary<string, object>()
+                var moduleData = new Dictionary<string, object>()
                 {
                     { "itemName", storedModule?.module?.edname },
                     { "itemValue", storedModule?.module?.price },
@@ -907,7 +909,7 @@ namespace EddiInaraResponder
                 };
                 if (storedModule?.module != null && (storedModule.module?.modified ?? false))
                 {
-                    Dictionary<string, object> engineering = new Dictionary<string, object>()
+                    var engineering = new Dictionary<string, object>()
                     {
                         { "blueprintName", storedModule.module.modificationEDName },
                         { "blueprintLevel", storedModule.module.engineerlevel },
@@ -927,7 +929,7 @@ namespace EddiInaraResponder
         private void handleMaterialInventoryEvent(MaterialInventoryEvent @event)
         {
             List<Dictionary<string, object>> eventData = [ ];
-            foreach (MaterialAmount materialAmount in @event.inventory)
+            foreach (var materialAmount in @event.inventory)
             {
                 eventData.Add(new Dictionary<string, object>()
                 {
@@ -942,7 +944,7 @@ namespace EddiInaraResponder
         {
             if (@event.materials?.Count > 0)
             {
-                foreach (MaterialAmount materialAmount in @event.materials)
+                foreach (var materialAmount in @event.materials)
                 {
                     inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderInventoryMaterialsItem", new Dictionary<string, object>()
                     {
@@ -953,7 +955,7 @@ namespace EddiInaraResponder
             }
             if (@event.commodities?.Count > 0)
             {
-                foreach (CommodityAmount commodityAmount in @event.commodities)
+                foreach (var commodityAmount in @event.commodities)
                 {
                     inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderInventoryCargoItem", new Dictionary<string, object>()
                     {
@@ -968,7 +970,7 @@ namespace EddiInaraResponder
         {
             if (@event.materials?.Count > 0)
             {
-                foreach (MaterialAmount materialAmount in @event.materials)
+                foreach (var materialAmount in @event.materials)
                 {
                     inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderInventoryMaterialsItem", new Dictionary<string, object>()
                     {
@@ -1015,7 +1017,7 @@ namespace EddiInaraResponder
         {
             if (@event.materials?.Count > 0)
             {
-                foreach (MaterialAmount materialAmount in @event.materials)
+                foreach (var materialAmount in @event.materials)
                 {
                     inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderInventoryMaterialsItem", new Dictionary<string, object>()
                     {
@@ -1026,7 +1028,7 @@ namespace EddiInaraResponder
             }
             if (@event.commodities?.Count > 0)
             {
-                foreach (CommodityAmount commodityAmount in @event.commodities)
+                foreach (var commodityAmount in @event.commodities)
                 {
                     inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderInventoryCargoItem", new Dictionary<string, object>()
                     {
@@ -1049,7 +1051,7 @@ namespace EddiInaraResponder
         private void handleCargoEvent(CargoEvent @event)
         {
             List<Dictionary<string, object>> eventData = [ ];
-            foreach (CargoInfoItem cargoInfo in @event.inventory)
+            foreach (var cargoInfo in @event.inventory)
             {
                 eventData.Add(new Dictionary<string, object>()
                 {
@@ -1063,7 +1065,7 @@ namespace EddiInaraResponder
         private void handleDiedEvent(DiedEvent @event)
         {
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderInventoryCargo", (List<Dictionary<string, object>>)[ ] ));
-            Dictionary<string, object> diedEventData = new Dictionary<string, object>()
+            var diedEventData = new Dictionary<string, object>()
             {
                 { "starsystemName", EDDI.Instance.CurrentStarSystem?.systemname }
             };
@@ -1184,7 +1186,7 @@ namespace EddiInaraResponder
 
         private void handleLocationEvent(LocationEvent @event)
         {
-            List<Dictionary<string, object>> minorFactionRepData = minorFactionReputations(@event.factions);
+            var minorFactionRepData = minorFactionReputations(@event.factions);
             if (minorFactionRepData.Count > 0)
             {
                 inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderReputationMinorFaction", minorFactionRepData));
@@ -1205,7 +1207,7 @@ namespace EddiInaraResponder
 
         private void handleJumpedEvent(JumpedEvent @event)
         {
-            List<Dictionary<string, object>> minorFactionRepData = minorFactionReputations(@event.factions);
+            var minorFactionRepData = minorFactionReputations(@event.factions);
             if (minorFactionRepData.Count > 0)
             {
                 inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderReputationMinorFaction", minorFactionRepData));
@@ -1231,9 +1233,9 @@ namespace EddiInaraResponder
         {
             // Reputation progress in a range: [-1..1], which corresponds to a reputation range from -100% (hostile) to 100% (allied).
             List<Dictionary<string, object>> eventData = [ ];
-            foreach (Faction faction in factions)
+            foreach (var faction in factions)
             {
-                if (faction != null && faction.myreputation > -10M && faction.myreputation < 5M) // faction.myreputation is out of 100.
+                if (faction != null && faction.myreputation is > -10M and < 5M) // faction.myreputation is out of 100.
                 {
                     // Skip posting updates for factions where the commander has a near neutral reputation modifier (-10% to 5%).
                     continue;
@@ -1377,8 +1379,8 @@ namespace EddiInaraResponder
         private void handleEngineerProgressedEvent(EngineerProgressedEvent @event)
         {
             // Send engineer rank progress to Inara
-            IDictionary<string, object> data = Deserializtion.DeserializeData(@event.raw);
-            data.TryGetValue("Engineers", out object val);
+            var data = Deserializtion.DeserializeData(@event.raw);
+            data.TryGetValue("Engineers", out var val);
             if (val != null)
             {
                 // This is a startup entry, containing data about all known engineers
@@ -1413,13 +1415,13 @@ namespace EddiInaraResponder
 
         private static Dictionary<string, object> parseEngineerInara(IDictionary<string, object> engineerData)
         {
-            Dictionary<string, object> engineer = new Dictionary<string, object>()
+            var engineer = new Dictionary<string, object>()
             {
                 { "engineerName", JsonParsing.getString(engineerData, "Engineer") },
                 { "rankStage", JsonParsing.getString(engineerData, "Progress") }
             };
-            int? rank = JsonParsing.getOptionalInt(engineerData, "Rank");
-            if (!(rank is null))
+            var rank = JsonParsing.getOptionalInt(engineerData, "Rank");
+            if (rank is not null)
             {
                 engineer.Add("rankValue", rank);
             }
@@ -1431,7 +1433,7 @@ namespace EddiInaraResponder
             // Send the commanders game statistics to Inara
             // Prepare and send the raw event, less the event name and timestamp. Please note that the statistics 
             // are always overridden as a whole, so any partial updates will cause erasing of the rest.
-            IDictionary<string, object> data = Deserializtion.DeserializeData(@event.raw);
+            var data = Deserializtion.DeserializeData(@event.raw);
             data.Remove("timestamp");
             data.Remove("event");
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderGameStatistics", (Dictionary<string, object>)data));
@@ -1443,7 +1445,7 @@ namespace EddiInaraResponder
             // spam player's credits log with unusable data and they won't be most likely very happy about it. 
             // It may be good to set credits just on the session start, session end and on the big changes 
             // or in hourly intervals.
-            long? startingAssets = (long?)JObject.FromObject(data)["Bank_Account"]?["Current_Wealth"];
+            var startingAssets = (long?)JObject.FromObject(data)["Bank_Account"]?["Current_Wealth"];
             data = new Dictionary<string, object>()
             {
                 {"commanderCredits", startingCredits},
@@ -1464,7 +1466,7 @@ namespace EddiInaraResponder
             startingLoan = @event.loan;
         }
 
-        private void handleCommanderStartedEvent(CommanderStartedEvent @event)
+        private static void handleCommanderStartedEvent(CommanderStartedEvent @event)
         {
             var inaraConfiguration = ConfigService.Instance.inaraConfiguration;
             if (inaraConfiguration.commanderName != @event.name || inaraConfiguration.commanderFrontierID != @event.frontierID)
@@ -1475,7 +1477,7 @@ namespace EddiInaraResponder
             }
         }
 
-        private void handleCommanderLoadingEvent(CommanderLoadingEvent @event)
+        private static void handleCommanderLoadingEvent(CommanderLoadingEvent @event)
         {
             var inaraConfiguration = ConfigService.Instance.inaraConfiguration;
             if (inaraConfiguration.commanderName != @event.name || inaraConfiguration.commanderFrontierID != @event.frontierID)
@@ -1493,7 +1495,7 @@ namespace EddiInaraResponder
             // rewards).
             if (@event.permitsawarded?.Count > 0)
             {
-                foreach (string systemName in @event.permitsawarded)
+                foreach (var systemName in @event.permitsawarded)
                 {
                     if (string.IsNullOrEmpty(systemName)) { continue; }
                     inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderPermit", new Dictionary<string, object>() { { "starsystemName", systemName } }));
@@ -1501,7 +1503,7 @@ namespace EddiInaraResponder
             }
             if (@event.materialsrewards?.Count > 0)
             {
-                foreach (MaterialAmount materialAmount in @event.materialsrewards)
+                foreach (var materialAmount in @event.materialsrewards)
                 {
                     inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderInventoryMaterialsItem", new Dictionary<string, object>()
                     {
@@ -1514,7 +1516,7 @@ namespace EddiInaraResponder
             }
             if (@event.commodityrewards?.Count > 0)
             {
-                foreach (CommodityAmount commodityAmount in @event.commodityrewards)
+                foreach (var commodityAmount in @event.commodityrewards)
                 {
                     inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderInventoryCargoItem", new Dictionary<string, object>()
                     {
@@ -1526,8 +1528,8 @@ namespace EddiInaraResponder
                 }
             }
 
-            IDictionary<string, object> missionCompletedObj = Deserializtion.DeserializeData(@event.raw);
-            Dictionary<string, object> eventData = new Dictionary<string, object>() { { "missionGameID", @event.missionid } };
+            var missionCompletedObj = Deserializtion.DeserializeData(@event.raw);
+            var eventData = new Dictionary<string, object>() { { "missionGameID", @event.missionid } };
             if (@event.donation > 0)
             {
                 eventData.Add("donationCredits", @event.donation);
@@ -1543,7 +1545,7 @@ namespace EddiInaraResponder
             if (@event.commodityrewards?.Count > 0)
             {
                 var rewardCommodities = new List<Dictionary<string, object>>();
-                missionCompletedObj.TryGetValue("CommodityReward", out object commodityRewardVal);
+                missionCompletedObj.TryGetValue("CommodityReward", out var commodityRewardVal);
                 if (commodityRewardVal != null)
                 {
                     foreach (var obj in (List<object>)commodityRewardVal)
@@ -1565,7 +1567,7 @@ namespace EddiInaraResponder
             if (@event.materialsrewards?.Count > 0)
             {
                 var rewardMaterials = new List<Dictionary<string, object>>();
-                missionCompletedObj.TryGetValue("MaterialsReward", out object materialsRewardVal);
+                missionCompletedObj.TryGetValue("MaterialsReward", out var materialsRewardVal);
                 if (materialsRewardVal != null)
                 {
                     foreach (var obj in (List<object>)materialsRewardVal)
@@ -1584,25 +1586,25 @@ namespace EddiInaraResponder
                 }
                 eventData.Add("rewardMaterials", rewardMaterials);
             }
-            missionCompletedObj.TryGetValue("FactionEffects", out object factionEffectsVal);
+            missionCompletedObj.TryGetValue("FactionEffects", out var factionEffectsVal);
             if (factionEffectsVal is List<object> factionEffects)
             {
                 List<Dictionary<string, object>> minorfactionEffects = [ ];
                 foreach (var obj in factionEffects)
                 {
-                    if ( !( obj is Dictionary<string, object> factionEffect ) ) { continue; }
+                    if ( obj is not Dictionary<string, object> factionEffect ) { continue; }
                     var factionName = JsonParsing.getString(factionEffect, "Faction");
                     var minorfactionEffect = new Dictionary<string, object>() { { "minorfactionName", factionName } };
-                    factionEffect.TryGetValue ( "Effect", out object effectsVal );
+                    factionEffect.TryGetValue ( "Effect", out var effectsVal );
                     if ( effectsVal is List<object> effects )
                     {
                         foreach ( var eff in effects )
                         {
-                            if ( !( eff is Dictionary<string, object> effect ) ) { continue; }
-                            effect.TryGetValue ( "Influence", out object influenceVal );
+                            if ( eff is not Dictionary<string, object> effect ) { continue; }
+                            effect.TryGetValue ( "Influence", out var influenceVal );
                             if ( influenceVal is Dictionary<string, object> influenceData )
                             {
-                                string influence = JsonParsing.getString(influenceData, "Influence");
+                                var influence = JsonParsing.getString(influenceData, "Influence");
                                 minorfactionEffect.Add ( "influenceGain", influence );
                             }
                             var reputation = JsonParsing.getString(effect, "Reputation");

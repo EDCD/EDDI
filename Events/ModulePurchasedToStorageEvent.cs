@@ -6,7 +6,8 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class ModulePurchasedToStorageEvent : Event
+    public class ModulePurchasedToStorageEvent ( DateTime timestamp, Module buymodule, long buyprice, long marketId )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Module purchased to storage";
         public const string DESCRIPTION = "Triggered when you purchase and store a module without installing it on your ship";
@@ -18,21 +19,14 @@ namespace EddiEvents
         ];
 
         [PublicAPI("The module (object) purchased")]
-        public Module buymodule { get; private set; }
+        public Module buymodule { get; private set; } = buymodule;
 
         [PublicAPI("The price of the module being purchased")]
-        public long buyprice { get; private set; }
+        public long buyprice { get; private set; } = buyprice;
 
         // Not intended to be user facing
 
-        public long marketId { get; }
-        
-        public ModulePurchasedToStorageEvent ( DateTime timestamp, Module buymodule, long buyprice, long marketId ) : base(timestamp, NAME)
-        {
-            this.buymodule = buymodule;
-            this.buyprice = buyprice;
-            this.marketId = marketId;
-        }
+        public long marketId { get; } = marketId;
 
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {

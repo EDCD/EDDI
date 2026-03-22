@@ -49,7 +49,7 @@ namespace EddiEddpMonitor
         {
             configuration = ConfigService.Instance.eddpConfiguration;
             var watches = new ObservableCollection<BgsWatch>();
-            foreach (BgsWatch watch in configuration.watches)
+            foreach (var watch in configuration.watches)
             {
                 watches.Add(watch);
             }
@@ -58,12 +58,9 @@ namespace EddiEddpMonitor
 
         private void eddpWatchesUpdated(object sender, DataTransferEventArgs e)
         {
-            if (sender is DataGrid dataGrid)
+            if (sender is DataGrid grid && grid.IsLoaded )
             {
-                if (dataGrid.IsLoaded)
-                {
-                    updateWatchesConfiguration();
-                }
+                updateWatchesConfiguration();
             }
         }
 
@@ -74,7 +71,7 @@ namespace EddiEddpMonitor
 
         private void eddpAddWatch(object sender, RoutedEventArgs e)
         {
-            BgsWatch bgsWatch = new BgsWatch { Name = Properties.EddpResources.new_watch };
+            var bgsWatch = new BgsWatch { Name = Properties.EddpResources.new_watch };
 
             configuration.watches.Add(bgsWatch);
             updateWatchesConfiguration();
@@ -84,7 +81,7 @@ namespace EddiEddpMonitor
 
         private void eddpDeleteWatch(object sender, RoutedEventArgs e)
         {
-            BgsWatch bgsWatch = (BgsWatch)((Button)e.Source).DataContext;
+            var bgsWatch = (BgsWatch)((Button)e.Source).DataContext;
             configuration.watches.Remove(bgsWatch);
             updateWatchesConfiguration();
             Watches.Remove(bgsWatch);

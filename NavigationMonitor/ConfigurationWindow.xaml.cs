@@ -14,7 +14,7 @@ namespace EddiNavigationMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        private NavigationMonitor navigationMonitor()
+        private static NavigationMonitor navigationMonitor()
         {
             return (NavigationMonitor)EDDI.Instance.ObtainMonitor("Navigation monitor");
         }
@@ -48,8 +48,8 @@ namespace EddiNavigationMonitor
 
         public void SwitchToTab(string tabHeader)
         {
-            int index = 0;
-            for (int i = 0; i < tabControl.Items.Count; i++)
+            var index = 0;
+            for (var i = 0; i < tabControl.Items.Count; i++)
             {
                 if (tabControl.Items[i] is TabItem tabItem
                     && tabItem.Header.Equals(tabHeader))
@@ -63,21 +63,18 @@ namespace EddiNavigationMonitor
 
         public void addBookmark(object sender, RoutedEventArgs e)
         {
-            if (sender is Button button)
+            if (sender is Button button && button.DataContext is NavWaypoint navWaypoint )
             {
-                if (button.DataContext is NavWaypoint navWaypoint)
+                var navBookmark = new NavBookmark(navWaypoint.systemName, navWaypoint.systemAddress, navWaypoint.x, navWaypoint.y, navWaypoint.z, null, null, false, null, null, false);
+                if (!navigationMonitor().Bookmarks
+                        .Any(b => b.systemname == navWaypoint.systemName 
+                                  && b.x == navWaypoint.x 
+                                  && b.y == navWaypoint.y 
+                                  && b.z == navWaypoint.z))
                 {
-                    var navBookmark = new NavBookmark(navWaypoint.systemName, navWaypoint.systemAddress, navWaypoint.x, navWaypoint.y, navWaypoint.z, null, null, false, null, null, false);
-                    if (!navigationMonitor().Bookmarks
-                            .Any(b => b.systemname == navWaypoint.systemName 
-                                      && b.x == navWaypoint.x 
-                                      && b.y == navWaypoint.y 
-                                      && b.z == navWaypoint.z))
-                    {
-                        navigationMonitor().Bookmarks.Add(navBookmark);
-                        navigationMonitor().WriteNavConfig();
-                        EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "add", navBookmark));
-                    }
+                    navigationMonitor().Bookmarks.Add(navBookmark);
+                    navigationMonitor().WriteNavConfig();
+                    EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "add", navBookmark));
                 }
             }
         }

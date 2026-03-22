@@ -1242,7 +1242,7 @@ namespace EddiDataDefinitions
 
         // Need pricing confirmed
 
-        public static HashSet<string> PowerPlayModules =
+        private static readonly HashSet<string> PowerPlayModules =
         [
             "Int_ShieldGenerator_Size1_Class5_Strong", // Prismatic shields
             "Int_ShieldGenerator_Size2_Class5_Strong", // Prismatic shields
@@ -1282,8 +1282,8 @@ namespace EddiDataDefinitions
         {
             if ( rawEDName == null || rawEDName == "Null" )
             { return null; }
-            string edName = NormalizedEDName(rawEDName);
-            Module module = ResourceBasedLocalizedEDName<Module>.FromEDName(edName);
+            var edName = NormalizedEDName(rawEDName);
+            var module = ResourceBasedLocalizedEDName<Module>.FromEDName(edName);
             if ( module == null )
             {
                 // Unknown module; report the full object if we can so that we can update the definitions
@@ -1304,7 +1304,7 @@ namespace EddiDataDefinitions
             try
             {
                 Logging.Debug( $"Converting OutfittingInfoItem to Module: ", item );
-                Module module = new Module(FromEDName(item.edName, item) ?? new Module());
+                var module = new Module(FromEDName(item.edName, item) ?? new Module());
                 if ( module.invariantName == null )
                 {
                     // Create a basic module & supplement from the info available

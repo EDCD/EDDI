@@ -40,7 +40,7 @@ namespace EddiCore
         public bool SpeechResponderModalWait { get; set; }
 
         private static bool started;
-        public static bool running = true;
+        public bool running;
 
         public bool inTelepresence { get; internal set; }
 
@@ -97,7 +97,7 @@ namespace EddiCore
                     // or may be missing a Semantic Version altogether (e.g. "Fleet Carriers Update - Patch 11")
                     var versionRegex = new Regex(@"^(?<engine>0|[1-9]\d*)\.(?<major>0|[1-9]\d*)(?:\.(?<minor>\d*))?(?:\.(?<patch>\d*))?");
                     GameVersion = !string.IsNullOrEmpty(v) &&
-                                  System.Version.TryParse(versionRegex.Match(v).Value, out System.Version versionResult)
+                                  System.Version.TryParse(versionRegex.Match(v).Value, out var versionResult)
                         ? versionResult
                         : null;
 
@@ -132,7 +132,7 @@ namespace EddiCore
         }
 
         // True if we have been started by VoiceAttack
-        public static bool FromVA;
+        public bool FromVA;
 
         private static void Init()
         {
@@ -415,7 +415,6 @@ namespace EddiCore
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " starting");
                 DataProvider = DataProviderService.Create();
 
-
                 var configuration = ConfigService.Instance.eddiConfiguration;
                 Logging.Verbose = configuration.VerboseLogging;
 
@@ -558,9 +557,9 @@ namespace EddiCore
             }
         }
 
-        public bool EddiIsBeta() => Constants.EDDI_VERSION.phase < Utilities.Version.TestPhase.rc;
+        public static bool EddiIsBeta() => Constants.EDDI_VERSION.phase < Utilities.Version.TestPhase.rc;
 
-        public bool ShouldUseTestEndpoints()
+        public static bool ShouldUseTestEndpoints()
         {
 #if DEBUG
             return true;
@@ -577,7 +576,7 @@ namespace EddiCore
                 var configuration = ConfigService.Instance.eddiConfiguration;
                 foreach (var monitor in monitors)
                 {
-                    if (!configuration.Plugins.TryGetValue(monitor.MonitorName(), out bool enabled))
+                    if (!configuration.Plugins.TryGetValue(monitor.MonitorName(), out var enabled))
                     {
                         // No information; default to enabled
                         enabled = true;
@@ -601,7 +600,7 @@ namespace EddiCore
                         continue;
                     }
 
-                    if (!configuration.Plugins.TryGetValue(responder.ResponderName(), out bool enabled))
+                    if (!configuration.Plugins.TryGetValue(responder.ResponderName(), out var enabled))
                     {
                         // No information; default to enabled
                         enabled = true;
@@ -695,11 +694,11 @@ namespace EddiCore
         /// </summary>
         public void Reload()
         {
-            foreach (IEddiResponder responder in responders)
+            foreach (var responder in responders)
             {
                 responder.Reload();
             }
-            foreach (IEddiMonitor monitor in monitors)
+            foreach (var monitor in monitors)
             {
                 monitor.Reload();
             }
@@ -712,7 +711,7 @@ namespace EddiCore
         /// </summary>
         public IEddiMonitor ObtainMonitor(string invariantName)
         {
-            foreach (IEddiMonitor monitor in monitors)
+            foreach (var monitor in monitors)
             {
                 if (monitor.MonitorName().Equals(invariantName, StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -725,7 +724,7 @@ namespace EddiCore
         /// <summary> Obtain a named responder </summary>
         public IEddiResponder ObtainResponder(string invariantName)
         {
-            foreach (IEddiResponder responder in responders)
+            foreach (var responder in responders)
             {
                 if (responder.ResponderName().Equals(invariantName, StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -750,7 +749,7 @@ namespace EddiCore
                 {
                     // Remove the responder from the active list.
                     var newResponders = new ConcurrentBag<IEddiResponder>();
-                    while (activeResponders.TryTake(out IEddiResponder item))
+                    while (activeResponders.TryTake(out var item))
                     {
                         if (item != responder) { newResponders.Add(item); }
                     }
@@ -939,11 +938,11 @@ namespace EddiCore
                         break;
                     }
 
-                    // Exponential backoff (max 30s) + small jitter (0ï¿½500ms), except when unit testing
+                    // Exponential backoff (max 30s) + small jitter, except when unit testing
                     var exponent = Math.Min(Math.Max(0, consecutiveFailures - 1), 5);
                     var backoffSeconds = Math.Min(30, 1 << exponent);
                     var jitterMs = rng.Next(0, 500);
-                    var delay = DataProviderService.unitTesting 
+                    var delay = DataProvider.unitTesting 
                         ? TimeSpan.Zero 
                         : TimeSpan.FromSeconds(backoffSeconds) + TimeSpan.FromMilliseconds(jitterMs);
 
@@ -966,7 +965,7 @@ namespace EddiCore
 
             return;
 
-            TimeSpan ElapsedSince ( long startTimestamp )
+            static TimeSpan ElapsedSince ( long startTimestamp )
             {
                 var delta = Stopwatch.GetTimestamp() - startTimestamp;
                 var seconds = (double)delta / Stopwatch.Frequency;
@@ -986,7 +985,7 @@ namespace EddiCore
             // Start (or restart) our event handler thread (as long as we are not unit testing)
             if ( !eventHandlerTS.Token.IsCancellationRequested && 
                  ( eventConsumerThread is null || eventConsumerThread?.Status >= TaskStatus.RanToCompletion ) && 
-                 !DataProviderService.unitTesting )
+                 !DataProvider.unitTesting )
             {
                 eventConsumerThread?.Dispose();
                 eventConsumerThread = Task.Run(dequeueEventsAsync, eventHandlerTS.Token);
@@ -1015,7 +1014,7 @@ namespace EddiCore
             if ( @event != null )
             {
                 // Event handling is disabled when running a legacy game version.
-                if ( GameVersion != null && GameVersion < minGameVersion && !( @event is FileHeaderEvent ) ) { return; }
+                if ( GameVersion != null && GameVersion < minGameVersion && @event is not FileHeaderEvent ) { return; }
 
                 try
                 {
@@ -1206,7 +1205,7 @@ namespace EddiCore
         private async Task<bool> eventRingHotspotsAsync ( RingHotspotsEvent @event )
         {
             var ring = CurrentStarSystem?.bodies?
-                .Where(b => b.rings?.Any() ?? false)
+                .Where(b => b.rings is { } list && list.Count > 0 )
                 .SelectMany(b => b.rings)
                 .FirstOrDefault(r => r.name == @event.bodyname);
             if ( ring != null )
@@ -1552,7 +1551,7 @@ namespace EddiCore
                     body.scannedDateTime = @event.timestamp;
                     bodiesToUpdate.Add(body);
                 }
-                if (bodiesToUpdate.Any()) { CurrentStarSystem.AddOrUpdateBodies(bodiesToUpdate); }
+                if ( bodiesToUpdate.Count > 0 ) { CurrentStarSystem.AddOrUpdateBodies(bodiesToUpdate); }
                 // Save the updated star system data
                 await DataProvider.SaveStarSystemAsync(CurrentStarSystem).ConfigureAwait(false);
             }
@@ -1574,7 +1573,7 @@ namespace EddiCore
                         body.scannedDateTime = @event.timestamp;
                         bodiesToUpdate.Add(body);
                     }
-                    if (bodiesToUpdate.Any()) { CurrentStarSystem.AddOrUpdateBodies(bodiesToUpdate); }
+                    if ( bodiesToUpdate.Count > 0 ) { CurrentStarSystem.AddOrUpdateBodies(bodiesToUpdate); }
                 }
 
                 await DataProvider.SaveStarSystemAsync(CurrentStarSystem).ConfigureAwait(false);
@@ -1962,11 +1961,11 @@ namespace EddiCore
         {
             await updateCurrentStellarBodyAsync( @event.bodyname, @event.bodyId, @event.systemname, @event.systemAddress ).ConfigureAwait(false);
 
-            if (@event.taxi != null && @event.taxi == true)
+            if (@event.taxi is true)
             {
                 Vehicle = Constants.VEHICLE_TAXI;
             }
-            else if (@event.multicrew != null && @event.multicrew == true)
+            else if (@event.multicrew is true)
             {
                 Vehicle = Constants.VEHICLE_MULTICREW;
             }
@@ -1976,11 +1975,11 @@ namespace EddiCore
             if (@event.latitude != null && @event.longitude != null)
             {
                 Environment = Constants.ENVIRONMENT_LANDED;
-                if (@event.taxi != null && @event.taxi == true)
+                if (@event.taxi is true)
                 {
                     Vehicle = Constants.VEHICLE_TAXI;
                 }
-                else if (@event.multicrew != null && @event.multicrew == true)
+                else if (@event.multicrew is true)
                 {
                     Vehicle = Constants.VEHICLE_MULTICREW;
                 }
@@ -2013,11 +2012,11 @@ namespace EddiCore
 
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
 
-            if (theEvent.taxi != null && theEvent.taxi == true)
+            if (theEvent.taxi is true)
             {
                 Vehicle = Constants.VEHICLE_TAXI;
             }
-            else if (theEvent.multicrew != null && theEvent.multicrew == true)
+            else if (theEvent.multicrew is true)
             {
                 Vehicle = Constants.VEHICLE_MULTICREW;
             }
@@ -2616,7 +2615,7 @@ namespace EddiCore
 
             // We use an un-named temporary star at distance 0M during the FSD Target event.
             // Try to match and replace that temporary star if it exists. Otherwise, match by body name.
-            Body star = CurrentStarSystem.bodies?
+            var star = CurrentStarSystem.bodies?
                 .Where(s => s.bodyType == BodyType.Star).ToList()
                 .Find(s => 
                     (string.IsNullOrEmpty(s.bodyname) && s.distance == 0M && s.distance == theEvent.distance) || 
@@ -2746,7 +2745,7 @@ namespace EddiCore
             return success;
         }
 
-        private void setSystemDistanceFromHome(StarSystem system)
+        private static void setSystemDistanceFromHome(StarSystem system)
         {
             var commanderConfig = ConfigService.Instance.commanderConfiguration;
             var homeX = commanderConfig.homeSystemX;
@@ -2769,7 +2768,7 @@ namespace EddiCore
         /// <summary>
         /// Find all monitors
         /// </summary>
-        public List<IEddiMonitor> findMonitors()
+        public static List<IEddiMonitor> findMonitors()
         {
             var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             if (string.IsNullOrEmpty(path))
@@ -2850,7 +2849,7 @@ namespace EddiCore
         /// <summary>
         /// Find all responders
         /// </summary>
-        public List<IEddiResponder> findResponders()
+        public static List<IEddiResponder> findResponders()
         {
             var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             if (string.IsNullOrEmpty(path))
@@ -2868,7 +2867,7 @@ namespace EddiCore
                     var assembly = Assembly.LoadFrom(file.FullName);
                     foreach (var type in assembly.GetTypes())
                     {
-                        if ( !type.IsInterface && !type.IsAbstract && !( pluginType.FullName is null ) )
+                        if ( !type.IsInterface && !type.IsAbstract && pluginType.FullName is not null )
                         {
                             if ( type.GetInterface( pluginType.FullName ) != null )
                             {

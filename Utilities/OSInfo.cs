@@ -1,5 +1,4 @@
 ﻿using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
 
 namespace Utilities
 {
@@ -9,7 +8,7 @@ namespace Utilities
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                var osVersionString = Regex.Match(RuntimeInformation.OSDescription.Trim(), @"(?<=\s)((?>\d+.){1,3}(?>\d+)(?>\/\d+)?)$").Value;
+                var osVersionString = GeneratedRegex.OsVersionRegex().Match(RuntimeInformation.OSDescription.Trim()).Value;
                 if (!string.IsNullOrEmpty(osVersionString))
                 {
                     if (System.Version.TryParse(osVersionString, out osVersion))

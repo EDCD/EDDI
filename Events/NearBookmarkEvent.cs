@@ -5,14 +5,15 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class NearBookmarkEvent : Event
+    public class NearBookmarkEvent ( DateTime timestamp, bool approachingBookmark, NavBookmark bookmark )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Near bookmark";
         public const string DESCRIPTION = "Triggered when entering or departing the nearby radius of a bookmark";
         public const string SAMPLE = null;
 
         [PublicAPI("A boolean value. True if you are entering the nearby radius of the bookmark and and false if you are leaving")]
-        public bool near { get; private set; }
+        public bool near { get; private set; } = approachingBookmark;
 
         [PublicAPI("The bookmarked system name")]
         public string systemname => bookmark?.systemname;
@@ -42,12 +43,5 @@ namespace EddiEvents
         public bool landable => bookmark?.landable ?? false;
 
         // Variables below are not intended to be user facing
-        private readonly NavBookmark bookmark;
-
-        public NearBookmarkEvent(DateTime timestamp, bool approachingBookmark, NavBookmark bookmark) : base(timestamp, NAME)
-        {
-            this.near = approachingBookmark;
-            this.bookmark = bookmark;
-        }
     }
 }

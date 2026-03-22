@@ -20,7 +20,7 @@ namespace EddiVoiceAttackResponder
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            EDDI.FromVA = enable;
+            EDDI.Instance.FromVA = enable;
             if ( voiceAttackVersion != null )
             {
                 App.VoiceAttackVersion = voiceAttackVersion;

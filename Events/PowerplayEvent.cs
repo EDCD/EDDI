@@ -6,7 +6,8 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class PowerplayEvent : Event
+    public class PowerplayEvent ( DateTime timestamp, Power power, int rank, int merits, TimeSpan timePledged )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Powerplay";
         public const string DESCRIPTION = "Triggered periodically when pledged to a power";
@@ -16,11 +17,11 @@ namespace EddiEvents
         public string power => Power?.localizedName;
 
         [PublicAPI("Your rank with the power")]
-        public int rank { get; private set; }
+        public int rank { get; private set; } = rank;
 
         [PublicAPI("Your merits with the power")]
-        public int merits { get; private set; }
-        
+        public int merits { get; private set; } = merits;
+
         [PublicAPI("The amount of time that you've been pledged, in days")]
         public int timepledgeddays => (int)Math.Floor(timePledged.TotalDays);
 
@@ -29,17 +30,9 @@ namespace EddiEvents
 
         // Not intended to be user facing
 
-        public Power Power { get; private set; }
-        
-        public TimeSpan timePledged { get; private set; }
+        public Power Power { get; private set; } = power;
 
-        public PowerplayEvent ( DateTime timestamp, Power Power, int rank, int merits, TimeSpan timePledged ) : base(timestamp, NAME)
-        {
-            this.Power = Power;
-            this.rank = rank;
-            this.merits = merits;
-            this.timePledged = timePledged;
-        }
+        public TimeSpan timePledged { get; private set; } = timePledged;
 
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {

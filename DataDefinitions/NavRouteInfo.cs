@@ -2,24 +2,17 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Utilities;
 
 namespace EddiDataDefinitions
 {
-    public class NavRouteInfo
+    public class NavRouteInfo ( DateTime timestamp, List<NavRouteInfoItem> route )
     {
         [JsonProperty]
-        private DateTime timestamp { get; }
+        private DateTime timestamp { get; } = timestamp;
 
         [JsonProperty]
-        public List<NavRouteInfoItem> Route { get; }
-
-        public NavRouteInfo(DateTime timestamp, List<NavRouteInfoItem> route)
-        {
-            this.timestamp = timestamp;
-            Route = route ?? new List<NavRouteInfoItem>();
-        }
+        public List<NavRouteInfoItem> Route { get; } = route ?? [ ];
 
         [UsedImplicitly]
         public static bool TryFromFile (

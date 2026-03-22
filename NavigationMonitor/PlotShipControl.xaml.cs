@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,7 +20,7 @@ namespace EddiNavigationMonitor
     /// </summary>
     public partial class PlotShipControl
     {
-        private NavigationMonitor navigationMonitor ()
+        private static NavigationMonitor navigationMonitor ()
         {
             return (NavigationMonitor)EDDI.Instance.ObtainMonitor( "Navigation monitor" );
         }
@@ -79,7 +78,7 @@ namespace EddiNavigationMonitor
 
         private void OnPlottedRouteChanged ( object sender, PropertyChangedEventArgs e )
         {
-            if ( !( sender is NavWaypointCollection navWaypointCollection ) )
+            if ( sender is not NavWaypointCollection navWaypointCollection )
             {
                 return;
             }
@@ -109,7 +108,7 @@ namespace EddiNavigationMonitor
         {
             // Don't update the UI while guidance is locked.
             var config = ConfigService.Instance.navigationMonitorConfiguration;
-            if ( config.plottedRouteList != null && config.plottedRouteList.GuidanceEnabled )
+            if ( config.plottedRouteList is { } collection && collection.GuidanceEnabled )
             {
                 return;
             }
@@ -186,7 +185,7 @@ namespace EddiNavigationMonitor
         private void updateOrbitalStationsCheckbox ()
         {
             var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-            bool isChecked = prioritizeOrbitalStations.IsChecked ?? false;
+            var isChecked = prioritizeOrbitalStations.IsChecked ?? false;
             if ( navConfig.prioritizeOrbitalStations != isChecked )
             {
                 navConfig.prioritizeOrbitalStations = isChecked;
@@ -414,7 +413,7 @@ namespace EddiNavigationMonitor
 
         private void searchStationDropDownUpdated ( object sender, SelectionChangedEventArgs e )
         {
-            string searchStationName = searchStationDropDown.SelectedItem?.ToString();
+            var searchStationName = searchStationDropDown.SelectedItem?.ToString();
             if ( NavigationService.Instance.LastQueryStationArg != searchStationName )
             {
                 NavigationService.Instance.LastQueryStationArg = searchStationName == Properties.NavigationMonitor.no_station ? null : searchStationName;
@@ -423,10 +422,8 @@ namespace EddiNavigationMonitor
 
         private void EnsureValidInteger ( object sender, TextCompositionEventArgs e )
         {
-            // Match valid characters
-            Regex regex = new Regex(@"[0-9]");
-            // Swallow the character doesn't match the regex
-            e.Handled = !regex.IsMatch( e.Text );
+            // Swallow the character if it doesn't match the regex
+            e.Handled = !GeneratedRegex.IsIntegerRegex().IsMatch( e.Text );
         }
 
         private void DataGrid_LoadingRow ( object sender, DataGridRowEventArgs e )
@@ -481,34 +478,25 @@ namespace EddiNavigationMonitor
 
         private void addBookmark ( object sender, RoutedEventArgs e )
         {
-            if ( Parent is TabItem parentTab && parentTab.Parent is TabControl parentTabControl )
+            if ( Parent is TabItem item && item.Parent is TabControl control && control.Parent is DockPanel panel && panel.Parent is ConfigurationWindow configurationWindow )
             {
-                if ( parentTabControl.Parent is DockPanel dockPanel )
-                {
-                    if ( dockPanel.Parent is ConfigurationWindow configurationWindow )
-                    {
-                        configurationWindow.SwitchToTab( Properties.NavigationMonitor.tab_bookmarks );
-                        configurationWindow.addBookmark( sender, e );
-                    }
-                }
+                configurationWindow.SwitchToTab( Properties.NavigationMonitor.tab_bookmarks );
+                configurationWindow.addBookmark( sender, e );
             }
         }
 
         private void copySystemNameToClipboard ( object sender, RoutedEventArgs e )
         {
-            if ( sender is Button button )
+            if ( sender is Button button && button.DataContext is NavWaypoint navWaypoint )
             {
-                if ( button.DataContext is NavWaypoint navWaypoint )
+                try
                 {
-                    try
-                    {
-                        Clipboard.Clear();
-                        Clipboard.SetData( DataFormats.Text, navWaypoint.systemName );
-                    }
-                    catch ( Exception ex )
-                    {
-                        Logging.Warn( "Failed to set clipboard", ex );
-                    }
+                    Clipboard.Clear();
+                    Clipboard.SetData( DataFormats.Text, navWaypoint.systemName );
+                }
+                catch ( Exception ex )
+                {
+                    Logging.Warn( "Failed to set clipboard", ex );
                 }
             }
         }

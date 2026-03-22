@@ -5,7 +5,7 @@ using Utilities;
 namespace EddiDataDefinitions
 {
     // Player suits
-    public class Suit : ResourceBasedLocalizedEDName<Suit>
+    public class Suit ( string edname ) : ResourceBasedLocalizedEDName<Suit>( edname, edname )
     {
         static Suit()
         {
@@ -15,9 +15,6 @@ namespace EddiDataDefinitions
 
         // dummy used to ensure that the static constructor has run
         public Suit() : this("")
-        { }
-
-        public Suit(string edname) : base(edname, edname)
         { }
 
         public static readonly Suit ExplorationSuit = new("ExplorationSuit");

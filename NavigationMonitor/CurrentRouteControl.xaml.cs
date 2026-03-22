@@ -12,7 +12,7 @@ namespace EddiNavigationMonitor
     /// </summary>
     public partial class CurrentRouteControl : UserControl
     {
-        private NavigationMonitor navigationMonitor()
+        private static NavigationMonitor navigationMonitor()
         {
             return (NavigationMonitor)EDDI.Instance.ObtainMonitor("Navigation monitor");
         }
@@ -30,34 +30,25 @@ namespace EddiNavigationMonitor
 
         private void addBookmark(object sender, RoutedEventArgs e)
         {
-            if (Parent is TabItem parentTab && parentTab.Parent is TabControl parentTabControl)
+            if (Parent is TabItem item && item.Parent is TabControl control && control.Parent is DockPanel panel && panel.Parent is ConfigurationWindow configurationWindow )
             {
-                if (parentTabControl.Parent is DockPanel dockPanel)
-                {
-                    if (dockPanel.Parent is ConfigurationWindow configurationWindow)
-                    {
-                        configurationWindow.SwitchToTab(Properties.NavigationMonitor.tab_bookmarks);
-                        configurationWindow.addBookmark(sender, e);
-                    }
-                }
+                configurationWindow.SwitchToTab(Properties.NavigationMonitor.tab_bookmarks);
+                configurationWindow.addBookmark(sender, e);
             }
         }
 
         private void copySystemNameToClipboard(object sender, RoutedEventArgs e)
         {
-            if (sender is Button button)
+            if (sender is Button button && button.DataContext is NavWaypoint navWaypoint )
             {
-                if (button.DataContext is NavWaypoint navWaypoint)
+                try
                 {
-                    try
-                    {
-                        Clipboard.Clear();
-                        Clipboard.SetData( DataFormats.Text, navWaypoint.systemName );
-                    }
-                    catch ( Exception ex )
-                    {
-                        Logging.Warn( "Failed to set clipboard", ex );
-                    }
+                    Clipboard.Clear();
+                    Clipboard.SetData( DataFormats.Text, navWaypoint.systemName );
+                }
+                catch ( Exception ex )
+                {
+                    Logging.Warn( "Failed to set clipboard", ex );
                 }
             }
         }

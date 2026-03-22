@@ -28,10 +28,7 @@ public static class MessageSerializer
     /// <exception cref="ArgumentException">If message fails validation</exception>
     public static string Serialize ( MessageEnvelope message )
     {
-        if ( message == null )
-        {
-            throw new ArgumentNullException( nameof(message) );
-        }
+        ArgumentNullException.ThrowIfNull( message );
 
         try
         {
@@ -92,7 +89,7 @@ public static class MessageSerializer
             if ( !TryReadPayload( serialized.AsSpan( newlineIndex + 1 ), declaredLength, out var jsonPart,
                     out var charsConsumed ) )
             {
-                var actualLength = Encoding.UTF8.GetByteCount( serialized.Substring( newlineIndex + 1 ) );
+                var actualLength = Encoding.UTF8.GetByteCount( serialized.AsSpan( newlineIndex + 1 ) );
                 throw new ArgumentException(
                     $"Length mismatch: declared {declaredLength} bytes but payload is {actualLength} bytes." );
             }
@@ -113,8 +110,7 @@ public static class MessageSerializer
         }
     }
 
-    public static int DeserializeMessages ( ReadOnlySpan<byte> buffer, out List<MessageEnvelope> messages,
-        out int bytesConsumed )
+    public static int DeserializeMessages ( ReadOnlySpan<byte> buffer, out List<MessageEnvelope> messages, out int bytesConsumed )
     {
         messages = new List<MessageEnvelope>();
         bytesConsumed = 0;
@@ -167,10 +163,7 @@ public static class MessageSerializer
                 DateFormatString = "O"
             } );
 
-            if ( message is null )
-            {
-                throw new ArgumentException( "JSON deserialized to null." );
-            }
+            ArgumentNullException.ThrowIfNull( message ); // JSON deserialized to null.
 
             message.Validate();
             return message;

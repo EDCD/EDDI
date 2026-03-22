@@ -92,7 +92,7 @@ namespace EddiDataDefinitions
                 return null;
             }
 
-            string normalizedEDName = edname.Replace(" ", "").Replace("-", "");
+            var normalizedEDName = edname.Replace(" ", "").Replace("-", "");
             return ResourceBasedLocalizedEDName<PlanetClass>.FromEDName(normalizedEDName);
         }
 

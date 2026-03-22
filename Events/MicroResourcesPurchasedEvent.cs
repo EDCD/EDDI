@@ -7,7 +7,12 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class MicroResourcesPurchasedEvent : Event
+    public class MicroResourcesPurchasedEvent (
+        DateTime timestamp,
+        List<MicroResourceAmount> resourceAmounts,
+        int price,
+        long? marketid )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Micro resources purchased";
         public const string DESCRIPTION = "Triggered when you buy micro resources";
@@ -18,23 +23,16 @@ namespace EddiEvents
         ];
 
         [PublicAPI( "A list of purchased micro resources with name, category, and amount for each" )]
-        public List<MicroResourceAmount> resourceamounts { get; }
+        public List<MicroResourceAmount> resourceamounts { get; } = resourceAmounts ?? [ ];
 
         [ PublicAPI( "The total count of micro resources purchased" ) ]
         public int totalamount => resourceamounts.Sum( r => r.amount );
 
         [ PublicAPI( "The total price paid for all micro resources" ) ]
-        public int price { get; }
+        public int price { get; } = price;
 
         // Not intended to be user facing
 
-        public long? marketid { get; }
-
-        public MicroResourcesPurchasedEvent(DateTime timestamp, List<MicroResourceAmount> resourceAmounts, int price, long? marketid) : base(timestamp, NAME)
-        {
-            this.resourceamounts = resourceAmounts ?? [ ];
-            this.price = price;
-            this.marketid = marketid;
-        }
+        public long? marketid { get; } = marketid;
     }
 }

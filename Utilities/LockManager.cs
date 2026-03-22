@@ -28,7 +28,7 @@ namespace Utilities
 
         private static LockCount GetLock(string lockName)
         {
-            if (_locks.TryGetValue(lockName.ToLower(), out LockCount lc))
+            if (_locks.TryGetValue(lockName.ToLower(), out var lc))
             {
                 lc.count++;
                 return lc;
@@ -44,11 +44,11 @@ namespace Utilities
 
         private static void Unlock(string lockName)
         {
-            if (_locks.TryGetValue(lockName.ToLower(), out LockCount lc))
+            if (_locks.TryGetValue(lockName.ToLower(), out var lc))
             {
                 lc.count--;
                 if (lc.count != 0) { return; }
-                _locks.TryRemove(lockName.ToLower(), out LockCount _);
+                _locks.TryRemove(lockName.ToLower(), out var _);
             }
         }
     }

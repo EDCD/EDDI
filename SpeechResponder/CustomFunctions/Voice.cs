@@ -16,7 +16,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public Type ReturnType => typeof( string );
         public IFunction function => Function.CreateNativeMinMax( ( runtime, values, writer ) =>
         {
-            string text = values[0].AsString;
+            var text = values[0].AsString;
             var voice = SpeechService.Instance.allVoices?.SingleOrDefault(v => string.Equals(v.name, values[1].AsString ?? string.Empty, StringComparison.InvariantCultureIgnoreCase));
             if (voice != null && values.Count == 2)
             {

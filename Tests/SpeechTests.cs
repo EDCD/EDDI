@@ -66,7 +66,7 @@ namespace Tests
         [TestMethod, DoNotParallelize]
         public void TestAudio ()
         {
-            EventWaitHandle waitHandle = new AutoResetEvent(false);
+            var waitHandle = new AutoResetEvent(false);
 
             using ( var stream = new MemoryStream() )
             using ( var synth = new SpeechSynthesizer() )

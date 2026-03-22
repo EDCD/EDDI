@@ -29,7 +29,7 @@
 
         new public static RingComposition FromEDName(string edname)
         {
-            string normalizedEDName = edname
+            var normalizedEDName = edname
                 .Replace("eRingClass_", "")
                 .Replace("-", "")
                 .Replace("Metalic", "Metallic");

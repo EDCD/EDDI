@@ -77,7 +77,7 @@ namespace EddiCompanionAppService
         {
             filename = filename ?? dataPath ?? defaultPath;
 
-            string json = JsonConvert.SerializeObject(this, Formatting.Indented);
+            var json = JsonConvert.SerializeObject(this, Formatting.Indented);
             Files.Write(filename, json);
         }
     }

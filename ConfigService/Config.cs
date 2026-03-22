@@ -29,10 +29,8 @@ namespace EddiConfigService
     }
 
     [AttributeUsage( AttributeTargets.Class )]
-    public class RelativePathAttribute : Attribute
+    public class RelativePathAttribute ( string relativePath ) : Attribute
     {
-        public string relativePath { get; }
-
-        public RelativePathAttribute(string relativePath) { this.relativePath = relativePath; }
+        public string relativePath { get; } = relativePath;
     }
 }

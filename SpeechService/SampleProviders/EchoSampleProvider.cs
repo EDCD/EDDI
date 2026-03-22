@@ -18,7 +18,7 @@ namespace EddiSpeechService.SampleProviders
         {
             if ( fxLevel <= 0 )
             {
-                _delayBuffer = Array.Empty<float>();
+                _delayBuffer = [];
                 _wet = 0f;
                 _dry = 1f;
                 _feedback = 0f;

@@ -31,14 +31,14 @@ namespace EddiDataDefinitions
         private long _bankBalance;
         private long _bankReservedBalance;
         private long _bankPurchaseAllocationsBalance;
-        private JArray _cargo = new();
-        private JArray _carrierLockerAssets = new();
-        private JArray _carrierLockerGoods = new();
-        private JArray _carrierLockerData = new();
-        private JArray _commoditySalesOrders = new();
-        private JArray _commodityPurchaseOrders = new();
-        private JArray _microresourceSalesOrders = new();
-        private JArray _microresourcePurchaseOrders = new();
+        private JArray _cargo = [ ];
+        private JArray _carrierLockerAssets = [ ];
+        private JArray _carrierLockerGoods = [ ];
+        private JArray _carrierLockerData = [ ];
+        private JArray _commoditySalesOrders = [ ];
+        private JArray _commodityPurchaseOrders = [ ];
+        private JArray _microresourceSalesOrders = [ ];
+        private JArray _microresourcePurchaseOrders = [ ];
 
         public long carrierID
         {
@@ -402,10 +402,10 @@ namespace EddiDataDefinitions
                 Logging.Debug("Updating fleet carrier from json: ", newJson);
 
                 // Name must be converted from a hexadecimal to a string
-                string ConvertHexString(string hexString)
+                static string ConvertHexString (string hexString)
                 {
-                    string ascii = string.Empty;
-                    for (int i = 0; i < hexString.Length; i += 2)
+                    var ascii = string.Empty;
+                    for (var i = 0; i < hexString.Length; i += 2)
                     {
                         var hs = hexString.Substring(i, 2);
                         var decval = Convert.ToUInt32(hs, 16);

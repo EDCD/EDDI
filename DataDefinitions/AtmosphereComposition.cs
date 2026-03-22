@@ -5,7 +5,9 @@ using Utilities;
 namespace EddiDataDefinitions
 {
     /// <summary> Atmosphere Composition </summary>
-    public class AtmosphereComposition : ResourceBasedLocalizedEDName<AtmosphereComposition>
+    [ method: JsonConstructor]
+    public class AtmosphereComposition ( string edComposition, decimal percent = 0 )
+        : ResourceBasedLocalizedEDName<AtmosphereComposition>( edComposition, edComposition )
     {
         static AtmosphereComposition()
         {
@@ -32,7 +34,7 @@ namespace EddiDataDefinitions
         public string composition => localizedName;
         
         [PublicAPI, JsonProperty]
-        public decimal percent { get; set; } // Percent share of the atmosphere
+        public decimal percent { get; set; } = percent; // Percent share of the atmosphere
 
         // Not intended to be user facing
 
@@ -45,11 +47,5 @@ namespace EddiDataDefinitions
         // dummy used to ensure that the static constructor has run
         public AtmosphereComposition() : this("")
         { }
-
-        [JsonConstructor]
-        public AtmosphereComposition(string edComposition, decimal percent = 0) : base(edComposition, edComposition)
-        {
-            this.percent = percent;
-        }
     }
 }

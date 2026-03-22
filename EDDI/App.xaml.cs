@@ -1,6 +1,6 @@
+using EddiCompanionAppService;
 using EddiConfigService;
 using EddiConfigService.Configurations;
-using EddiCompanionAppService;
 using EddiCore;
 using EddiCore.Upgrader;
 using EddiSpeechService;
@@ -34,7 +34,7 @@ namespace Eddi
         {
             // Parse command-line arguments
             args ??= Environment.GetCommandLineArgs().Skip( 1 ).ToArray();
-            EDDI.FromVA = args.Any( arg => arg.Equals( "--voice-attack-plugin", StringComparison.OrdinalIgnoreCase ) );
+            EDDI.Instance.FromVA = args.Any( arg => arg.Equals( "--voice-attack-plugin", StringComparison.OrdinalIgnoreCase ) );
             VoiceAttackVersion = ParseVoiceAttackVersion( args );
 
             if ( VoiceAttackVersion != null )
@@ -136,7 +136,7 @@ namespace Eddi
             var preloadTasks = PreloadCriticalServicesAsync();
             Task.WaitAll( preloadTasks.ToArray() );
 
-            if ( EDDI.FromVA )
+            if ( EDDI.Instance.FromVA )
             {
                 // Create the MainWindow with visibility controlled by code-behind logic
                 // (hidden by default in VA mode, shown on demand via VA commands)
@@ -209,7 +209,7 @@ namespace Eddi
         // For standalone, this will be handled here.
         public static bool AlreadyRunning()
         {
-            eddiMutex = new Mutex(true, Constants.EDDI_SYSTEM_MUTEX_NAME, out bool firstOwner);
+            eddiMutex = new Mutex(true, Constants.EDDI_SYSTEM_MUTEX_NAME, out var firstOwner);
             return !firstOwner;
         }
 

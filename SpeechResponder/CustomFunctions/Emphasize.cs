@@ -41,17 +41,13 @@ namespace EddiSpeechResponder.CustomFunctions
             }
             if (values.Count == 2)
             {
-                switch (values[1].AsString.ToLowerInvariant())
+                return values[ 1 ].AsString.ToLowerInvariant() switch
                 {
-                    default:
-                        return strong(values[0].AsString);
-                    case "moderate":
-                        return moderate(values[0].AsString);
-                    case "none":
-                        return none(values[0].AsString);
-                    case "reduced":
-                        return reduced(values[0].AsString);
-                }
+                    "moderate" => moderate( values[ 0 ].AsString ),
+                    "none" => none( values[ 0 ].AsString ),
+                    "reduced" => reduced( values[ 0 ].AsString ),
+                    _ => strong( values[ 0 ].AsString )
+                };
             }
             return "The Emphasize function is used improperly. Please review the documentation for correct usage.";
         }, 1, 2);

@@ -200,7 +200,7 @@ namespace Tests
 
             starSystem.AddOrUpdateBody(body);
 
-            Assert.AreEqual(1, starSystem.bodies.Count);
+            Assert.HasCount( 1, starSystem.bodies);
         }
 
         [TestMethod]
@@ -213,7 +213,7 @@ namespace Tests
 
             starSystem.AddOrUpdateBody(updatedBody);
 
-            Assert.AreEqual(1, starSystem.bodies.Count);
+            Assert.HasCount( 1, starSystem.bodies );
             var actualBody = starSystem.bodies[0];
             Assert.AreEqual("testSystem 1", actualBody.bodyname);
             Assert.AreEqual(BodyType.Moon, actualBody.bodyType);
@@ -229,7 +229,7 @@ namespace Tests
             Assert.AreEqual(grade, blueprint.grade);
             Assert.IsNotNull( blueprint.blueprintTemplate );
             Assert.AreEqual("SensorFastScan", blueprint.blueprintTemplate.edname);
-            Assert.AreEqual(3, blueprint.materials.Count);
+            Assert.HasCount( 3, blueprint.materials );
             Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("phosphorus"));
             Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("uncutfocuscrystals"));
             Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("symmetrickeys"));
@@ -245,7 +245,7 @@ namespace Tests
             Assert.IsNotNull(blueprintFromTemplate);
             Assert.AreEqual(grade, blueprintFromTemplate.grade);
             Assert.AreEqual("SensorFastScan", blueprintFromTemplate.blueprintTemplate.edname);
-            Assert.AreEqual(3, blueprintFromTemplate.materials.Count);
+            Assert.HasCount( 3, blueprintFromTemplate.materials );
             var materials = blueprintFromTemplate.materials.Select(m => m.edname).ToArray();
             Assert.IsTrue(materials.Contains("phosphorus"));
             Assert.IsTrue(materials.Contains("uncutfocuscrystals"));
@@ -263,7 +263,7 @@ namespace Tests
             Assert.AreEqual(grade, blueprint.grade);
             Assert.IsNotNull( blueprint.blueprintTemplate );
             Assert.AreEqual("EngineDirty", blueprint.blueprintTemplate.edname);
-            Assert.AreEqual(3, blueprint.materials.Count);
+            Assert.HasCount( 3, blueprint.materials );
             Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("industrialfirmware"));
             Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("cadmium"));
             Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("pharmaceuticalisolators"));
@@ -286,7 +286,7 @@ namespace Tests
             Assert.IsNotNull(blueprint);
             Assert.AreEqual(3, blueprint.grade);
             Assert.IsNotNull(blueprint.blueprintTemplate);
-            Assert.AreEqual(3, blueprint.materials.Count);
+            Assert.HasCount( 3, blueprint.materials );
             Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("phosphorus"));
             Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("uncutfocuscrystals"));
             Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("symmetrickeys"));
@@ -522,7 +522,7 @@ namespace Tests
             Assert.AreEqual(3702012928, info.MarketID);
             Assert.AreEqual("X9K-WTW", info.StationName);
             Assert.AreEqual("Gateway", info.StarSystem);
-            Assert.AreEqual(expectedMarketInfoItems.Count, info.Items.Count);
+            Assert.HasCount( expectedMarketInfoItems.Count, info.Items);
 
             foreach (var item in info.Items)
             {
@@ -585,7 +585,7 @@ namespace Tests
             };
 
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var @event = (JumpedEvent)events[0];
             Assert.IsTrue(@event.controllingfaction.DeepEquals(expectedSystemFaction));
         }
@@ -654,7 +654,7 @@ namespace Tests
         public void TestEngineerFromName ()
         {
             // Arrange
-            string name = "Didi Vatermann";
+            var name = "Didi Vatermann";
 
             // Act
             var engineer = Engineer.FromName(name);
@@ -682,7 +682,7 @@ namespace Tests
         public void TestEngineerFromNameOrId ()
         {
             // Arrange
-            string name = "Didi Vatermann";
+            var name = "Didi Vatermann";
             long id = 300000;
 
             // Act
@@ -719,7 +719,7 @@ namespace Tests
             var json = DeserializeJsonResource<string>( Resources.shipLocker );
             var info = JsonConvert.DeserializeObject<MicroResourceInfo>( json );
 
-            Assert.AreEqual( 38, info.Items.Count );
+            Assert.HasCount( 38, info.Items );
             Assert.AreEqual( "WeaponSchematic", info.Items[ 0 ].edname );
             Assert.AreEqual( 1, info.Items[ 0 ].amount );
             Assert.AreEqual( "Item", info.Items[ 0 ].microResource.Category.edname );
@@ -727,7 +727,7 @@ namespace Tests
             Assert.AreEqual( 0, info.Items[ 0 ].ownerId );
             Assert.IsNull( info.Items[ 0 ].price );
 
-            Assert.AreEqual( 33, info.Components.Count );
+            Assert.HasCount( 33, info.Components );
             Assert.AreEqual( "Graphene", info.Components[ 1 ].edname );
             Assert.AreEqual( 55, info.Components[ 1 ].amount );
             Assert.AreEqual( "Component", info.Components[ 1 ].microResource.Category.edname );
@@ -735,7 +735,7 @@ namespace Tests
             Assert.AreEqual( 0, info.Components[ 1 ].ownerId );
             Assert.IsNull( info.Components[ 1 ].price );
 
-            Assert.AreEqual( 6, info.Consumables.Count );
+            Assert.HasCount( 6, info.Consumables );
             Assert.AreEqual( "HealthPack", info.Consumables[ 0 ].edname );
             Assert.AreEqual( 56, info.Consumables[ 0 ].amount );
             Assert.AreEqual( "Consumable", info.Consumables[ 0 ].microResource.Category.edname );
@@ -743,7 +743,7 @@ namespace Tests
             Assert.AreEqual( 0, info.Consumables[ 0 ].ownerId );
             Assert.IsNull( info.Consumables[ 0 ].price );
 
-            Assert.AreEqual( 70, info.Data.Count );
+            Assert.HasCount( 70, info.Data );
             Assert.AreEqual( "InternalCorrespondence", info.Data[ 0 ].edname );
             Assert.AreEqual( 5, info.Data[ 0 ].amount );
             Assert.AreEqual( "Data", info.Data[ 0 ].microResource.Category.edname );
@@ -893,7 +893,7 @@ namespace Tests
             var starsystem = new StarSystem() { systemname = "Test System", systemAddress = 999999999 };
             var body = new Body();
             starsystem.AddOrUpdateBody(body);
-            Assert.AreEqual(1, starsystem.bodies.Count);
+            Assert.HasCount( 1, starsystem.bodies );
             try
             {
                 _ = JsonConvert.SerializeObject(starsystem);
@@ -905,25 +905,11 @@ namespace Tests
             }
 
             starsystem.bodies[0].bodyname = "Test body";
-            try
-            {
-                _ = JsonConvert.SerializeObject(starsystem);
-            }
-            catch (Exception)
-            {
-                Assert.Fail("Serialization should not fail - body has `bodyname` property set.");
-            }
+            _ = JsonConvert.SerializeObject( starsystem ); // Serialization should not throw - body has `bodyname` property set.
 
             starsystem.bodies[0].bodyname = null;
             starsystem.bodies[0].distance = 0M;
-            try
-            {
-                _ = JsonConvert.SerializeObject(starsystem);
-            }
-            catch (Exception)
-            {
-                Assert.Fail("Serialization should not fail - body has `distance` property set.");
-            }
+            _ = JsonConvert.SerializeObject( starsystem ); // Serialization should not throw - body has `distance` property set.
         }
 
         [TestMethod]

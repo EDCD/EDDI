@@ -6,7 +6,14 @@ using Utilities;
 namespace EddiEvents
 {
     [ PublicAPI ]
-    public class ScanOrganicEvent : Event
+    public class ScanOrganicEvent (
+        DateTime timestamp,
+        ulong systemAddress,
+        int bodyId,
+        string scanType,
+        int? scanStage,
+        Organic organic )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Scan organic";
         public const string DESCRIPTION = "Triggered when an organic scan is made";
@@ -20,35 +27,26 @@ namespace EddiEvents
         ];
 
         [PublicAPI( "The numeric ID of the star system where the organism was scanned" )]
-        public ulong systemAddress { get; private set; }
+        public ulong systemAddress { get; private set; } = systemAddress;
 
         [PublicAPI( "The numeric ID of the body where the organism was scanned" )]
-        public int bodyId { get; private set; }
-        
+        public int bodyId { get; private set; } = bodyId;
+
         [PublicAPI( "The type of scan (e.g. 'Log' for the 1st scan, 'Sample' for the 2nd and 3rd scans, and then 'Analyse' once the genetic sampler completes processing the samples)" ) ]
-        public string scanType { get; private set; }
+        public string scanType { get; private set; } = scanType;
 
         [ PublicAPI( "The numerical index of the scan type, if known (e.g. 1, 2, 3, or 4)" ) ]
-        public int? scanStage => _scanStage;
+        public int? scanStage { get; private set; } = scanStage;
 
         [ PublicAPI( "The minimum distance in meters that you need to travel before you can scan this organism again (if known)" )]
         public int? minSampleDistance => organic?.minimumDistanceMeters;
 
         [ PublicAPI( "An object holding data about the organism currently being sampled" ) ]
-        public Organic organic { get; set; }
+        public Organic organic { get; set; } = organic;
 
         // Not intended to be user facing
         private static int? _scanStage;
         private static string _scanTarget;
-
-        public ScanOrganicEvent ( DateTime timestamp, ulong systemAddress, int bodyId, string scanType,
-            Organic organic ) : base( timestamp, NAME )
-        {
-            this.systemAddress = systemAddress;
-            this.bodyId = bodyId;
-            this.scanType = scanType;
-            this.organic = organic;
-        }
 
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {
@@ -72,7 +70,7 @@ namespace EddiEvents
             }
             _scanTarget = variant?.edname;
 
-            events.Add( new ScanOrganicEvent( timestamp, systemAddress, bodyId, scanType, organic ) { raw = line, fromLoad = fromLogLoad } );
+            events.Add( new ScanOrganicEvent( timestamp, systemAddress, bodyId, scanType, _scanStage, organic ) { raw = line, fromLoad = fromLogLoad } );
             return true;
         }
     }

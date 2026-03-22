@@ -6,7 +6,8 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class SignalDetectedEvent : Event
+    public class SignalDetectedEvent ( DateTime timestamp, ulong systemAddress, SignalSource source )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Signal detected";
         public const string DESCRIPTION = "Triggered when a signal source is detected";
@@ -50,15 +51,9 @@ namespace EddiEvents
 
         // Not intended to be user facing
 
-        public SignalSource signalSource { get; private set; }
+        public SignalSource signalSource { get; private set; } = source;
 
-        public ulong systemAddress { get; private set; } // Caution: scan events from the destination system can register after StartJump and before we actually leave the originating system
-
-        public SignalDetectedEvent(DateTime timestamp, ulong systemAddress, SignalSource source) : base(timestamp, NAME)
-        {
-            this.systemAddress = systemAddress;
-            this.signalSource = source;
-        }
+        public ulong systemAddress { get; private set; } = systemAddress; // Caution: scan events from the destination system can register after StartJump and before we actually leave the originating system
 
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {

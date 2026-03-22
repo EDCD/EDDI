@@ -11,7 +11,6 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -284,7 +283,7 @@ namespace EddiShipMonitor
         }
 
         // Set the ship name conditionally, avoiding filtered names
-        private void setShipName(Ship ship, string name)
+        private static void setShipName(Ship ship, string name)
         {
             if (ship is null) { return; }
             if (string.IsNullOrEmpty(name))
@@ -298,7 +297,7 @@ namespace EddiShipMonitor
         }
 
         // Set the ship ident conditionally, avoiding filtered idents
-        private void setShipIdent(Ship ship, string ident)
+        private static void setShipIdent(Ship ship, string ident)
         {
             if (ship is null) { return; }
             if (string.IsNullOrEmpty(ident))
@@ -816,7 +815,7 @@ namespace EddiShipMonitor
             }
         }
 
-        private void handleShipAFMURepairedEvent()
+        private static void handleShipAFMURepairedEvent()
         {
             // This doesn't give us enough information at present to do anything useful
         }
@@ -845,7 +844,7 @@ namespace EddiShipMonitor
             // We use status to track current fuel level so we won't update the ship fuel level here
         }
 
-        private void handleShipRestockedEvent()
+        private static void handleShipRestockedEvent()
         {
             // TODO
         }
@@ -891,7 +890,7 @@ namespace EddiShipMonitor
             }
         }
 
-        private void handleModuleSoldFromStorageEvent()
+        private static void handleModuleSoldFromStorageEvent()
         {
             // We don't do anything here as the ship object is unaffected
         }
@@ -1011,7 +1010,7 @@ namespace EddiShipMonitor
             }
         }
 
-        private void handleModuleTransferEvent()
+        private static void handleModuleTransferEvent()
         {
             // We don't do anything here as the ship object is unaffected
         }
@@ -1294,7 +1293,7 @@ namespace EddiShipMonitor
                         lock ( shipyardLock )
                         {
                             // Update launch bays from profile
-                            if ( profileCurrentShip.launchbays.Any() )
+                            if ( profileCurrentShip.launchbays.Count > 0 )
                             {
                                 ship.launchbays = profileCurrentShip.launchbays;
                             }
@@ -1817,8 +1816,8 @@ namespace EddiShipMonitor
             {
                 if (slot.Contains("Slot"))
                 {
-                    var matches = Regex.Match(slot, @"Size([0-9]+)");
-                    if (matches.Success)
+                    var matches = GeneratedRegex.ShipSlotSizeRegex().Match(slot);
+                    if ( matches.Success)
                     {
                         return int.Parse(matches.Groups[1].Value);
                     }
@@ -1991,24 +1990,24 @@ namespace EddiShipMonitor
         }
 
         /// <summary> See if we're in a fighter </summary>
-        private bool inFighter(string model)
+        private static bool inFighter(string model)
         {
             return model.Contains("Fighter");
         }
 
         /// <summary> See if we're in a buggy / SRV </summary>
-        private bool inBuggy(string edModel)
+        private static bool inBuggy(string edModel)
         {
             return edModel.Contains("Buggy") || edModel.Contains("SRV");
         }
 
         /// <summary> See if we're on foot </summary>
-        private bool onFoot(string edModel)
+        private static bool onFoot(string edModel)
         {
             return edModel.Contains("Suit");
         }
 
-        private bool inTaxi(string edModel)
+        private static bool inTaxi(string edModel)
         {
             return edModel.Contains("_taxi");
         }

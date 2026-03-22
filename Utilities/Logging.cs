@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Utilities.TelemetryService;
@@ -18,8 +17,6 @@ namespace Utilities
 {
     public class Logging : Telemetry
     {
-        private static readonly Regex JsonRegex = new(@"^{.*}$", RegexOptions.Singleline);
-
         private static readonly string LogFile = Constants.DATA_DIR + @"\eddi.log";
 
         public static bool Verbose { get; set; }
@@ -109,7 +106,7 @@ namespace Utilities
 
                 if ( data.Type == JTokenType.String )
                 {
-                    if ( JsonRegex.IsMatch( data.ToString() ) )
+                    if ( GeneratedRegex.JsonWrappedRegex().IsMatch( data.ToString() ) )
                     {
                         var jToken = JToken.Parse( data.ToString() );
                         data = jToken;
@@ -161,7 +158,7 @@ namespace Utilities
                     Console.WriteLine( str );
 
                     // Log to file
-                    using ( StreamWriter file = new StreamWriter( LogFile, true ) )
+                    using ( var file = new StreamWriter( LogFile, true ) )
                     {
                         file.WriteLine( str );
                     }

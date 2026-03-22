@@ -86,16 +86,16 @@ namespace EddiEddnResponder.Toolkit
 
                     if ( data.ContainsKey( "SystemAddress" ) )
                     {
-                        ulong SystemAddress = JsonParsing.getULong(data, "SystemAddress");
+                        var SystemAddress = JsonParsing.getULong(data, "SystemAddress");
                         // Some events are bugged and return a SystemAddress of 1, regardless of the system we are in.
                         // We need to ignore data that matches this pattern.
                         systemAddress = ( SystemAddress > 1 ? SystemAddress : systemAddress );
                     }
 
-                    data.TryGetValue("StarPos", out object starpos);
+                    data.TryGetValue("StarPos", out var starpos);
                     if (starpos != null)
                     {
-                        List<object> starPos = (List<object>)starpos;
+                        var starPos = (List<object>)starpos;
                         systemX = Math.Round(JsonParsing.getDecimal("X", starPos[0]) * 32M) / 32M;
                         systemY = Math.Round(JsonParsing.getDecimal("Y", starPos[1]) * 32M) / 32M;
                         systemZ = Math.Round(JsonParsing.getDecimal("Z", starPos[2]) * 32M) / 32M;

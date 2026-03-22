@@ -3,19 +3,12 @@ using System;
 
 namespace EddiSpeechService.SampleProviders
 {
-    public class BufferedSampleProvider : ISampleProvider
+    public class BufferedSampleProvider ( float[] samples, int sampleRate, int channels = 1 ) : ISampleProvider
     {
-        private readonly float[] _samples;
-        private int _position;
+        private readonly float[] _samples = samples ?? throw new ArgumentNullException( nameof( samples ) );
+        private int _position = 0;
 
-        public WaveFormat WaveFormat { get; }
-
-        public BufferedSampleProvider ( float[] samples, int sampleRate, int channels = 1 )
-        {
-            _samples = samples ?? throw new ArgumentNullException( nameof( samples ) );
-            _position = 0;
-            WaveFormat = WaveFormat.CreateIeeeFloatWaveFormat( sampleRate, channels );
-        }
+        public WaveFormat WaveFormat { get; } = WaveFormat.CreateIeeeFloatWaveFormat( sampleRate, channels );
 
         public int Read ( float[] buffer, int offset, int count )
         {

@@ -43,7 +43,7 @@ namespace EddiDataDefinitions
         // As this is quite dynamic data and the data we receive at any given time is likely to be incomplete, 
         // we won't save it to the local database at this time.
         [PublicAPI( "A list of FactionPresence objects. Unless called from the *FactionDetails()* function, only details from the current system will be included here" )]
-        public List<FactionPresence> presences { get; set; } = new();
+        public List<FactionPresence> presences { get; set; } = [ ];
 
         // Not intended to be user facing
 
@@ -52,19 +52,13 @@ namespace EddiDataDefinitions
         public DateTime updatedAt { get; set; }
     }
 
-    public class FactionTrendingState
+    public class FactionTrendingState ( FactionState factionState, int? trend )
     {
         [PublicAPI]
-        public FactionState factionState { get; private set; }
+        public FactionState factionState { get; private set; } = factionState;
 
         [PublicAPI]
-        public int? trend { get; private set; }
-
-        public FactionTrendingState(FactionState factionState, int? trend)
-        {
-            this.factionState = factionState;
-            this.trend = trend;
-        }
+        public int? trend { get; private set; } = trend;
     }
 
     public class FactionPresence
@@ -90,13 +84,13 @@ namespace EddiDataDefinitions
         public decimal? influence { get; set; }
 
         [PublicAPI( "(For recently visited systems only) A list of FactionState objects" )]
-        public List<FactionState> ActiveStates { get; set; } = new();
+        public List<FactionState> ActiveStates { get; set; } = [ ];
 
         [PublicAPI( "(For recently visited systems only) A list of pending FactionState objects and trend values" )]
-        public List<FactionTrendingState> PendingStates { get; set; } = new();
+        public List<FactionTrendingState> PendingStates { get; set; } = [ ];
 
         [PublicAPI( "(For recently visited systems only) A list of recent prior FactionState objects and trend values" )]
-        public List<FactionTrendingState> RecoveringStates { get; set; } = new();
+        public List<FactionTrendingState> RecoveringStates { get; set; } = [ ];
 
         [PublicAPI( "(For recently visited systems only) The current happiness level of the faction within the system, as an object" )]
         public Happiness Happiness

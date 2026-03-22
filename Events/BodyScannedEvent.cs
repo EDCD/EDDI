@@ -6,7 +6,7 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class BodyScannedEvent : Event
+    public class BodyScannedEvent ( DateTime timestamp, string scantype, Body body ) : Event( timestamp, NAME )
     {
         public const string NAME = "Body scanned";
         public const string DESCRIPTION = "Triggered when you complete a scan of a planetary body";
@@ -20,7 +20,7 @@ namespace EddiEvents
         // Variable names for this event should match the class property names for maximum compatibility with the BodyDetails() function in Cottle
 
         [PublicAPI("The type of scan event (AutoScan, Basic, Detailed, NavBeacon, NavBeaconDetail)")]
-        public string scantype { get; private set; } // One of AutoScan, Basic, Detailed, NavBeacon, NavBeaconDetail
+        public string scantype { get; private set; } = scantype; // One of AutoScan, Basic, Detailed, NavBeacon, NavBeaconDetail
                                                      // AutoScan events are detailed scans triggered via proximity. 
 
         [PublicAPI("The name of the body that has been scanned")]
@@ -169,7 +169,7 @@ namespace EddiEvents
 
         // Variables below are not intended to be user facing
 
-        public Body body { get; private set; }
+        public Body body { get; private set; } = body;
 
         public List<IDictionary<string, int>> parents => body.parents;
 
@@ -198,11 +198,5 @@ namespace EddiEvents
 
         [Obsolete("Use tilt instead")]
         public decimal? axialtilt => tilt;  // This is the object property reported from the BodyDetails() function
-
-        public BodyScannedEvent(DateTime timestamp, string scantype, Body body) : base(timestamp, NAME)
-        {
-            this.body = body;
-            this.scantype = scantype;
-        }
     }
 }

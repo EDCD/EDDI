@@ -4,7 +4,6 @@ using EddiNavigationService;
 using EddiSpeechResponder.ScriptResolverService;
 using JetBrains.Annotations;
 using System;
-using System.Linq;
 using System.Reflection;
 using Utilities;
 

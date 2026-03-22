@@ -2,12 +2,12 @@
 
 using EddiIPC_Service.Messages;
 using EddiIPC_Service.Server;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests.EddiVoiceAttackService
 {
@@ -28,7 +28,7 @@ namespace Tests.EddiVoiceAttackService
             listener.Start();
             var port = ((IPEndPoint)listener.LocalEndpoint).Port;
 
-            var task = listener.AcceptTcpClientAsync();
+            _ = listener.AcceptTcpClientAsync();
             _testClient = new TcpClient();
             _testClient.Connect(IPAddress.Loopback, port);
         
@@ -49,7 +49,7 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             var router = new MessageRouter();
 
-            async Task TestHandler(MessageEnvelope msg, ConnectionContext ctx)
+            static async Task TestHandler(MessageEnvelope msg, ConnectionContext ctx)
             {
                 await Task.CompletedTask;
             }
@@ -185,8 +185,8 @@ namespace Tests.EddiVoiceAttackService
         {
             // Arrange
             var router = new MessageRouter();
-        
-            async Task Handler(MessageEnvelope msg, ConnectionContext ctx) => await Task.CompletedTask;
+
+            static async Task Handler(MessageEnvelope msg, ConnectionContext ctx) => await Task.CompletedTask;
 
             router.RegisterHandler("Test", Handler);
             router.RegisterHandler("Test", Handler);
@@ -214,8 +214,8 @@ namespace Tests.EddiVoiceAttackService
         {
             // Arrange
             var router = new MessageRouter();
-        
-            async Task Handler(MessageEnvelope msg, ConnectionContext ctx) => await Task.CompletedTask;
+
+            static async Task Handler(MessageEnvelope msg, ConnectionContext ctx) => await Task.CompletedTask;
 
             router.RegisterHandler("Type1", Handler);
             router.RegisterHandler("Type2", Handler);
@@ -235,7 +235,7 @@ namespace Tests.EddiVoiceAttackService
         {
             // Arrange
             var router = new MessageRouter();
-            async Task Handler(MessageEnvelope msg, ConnectionContext ctx) => await Task.CompletedTask;
+            static async Task Handler(MessageEnvelope msg, ConnectionContext ctx) => await Task.CompletedTask;
 
             // Act & Assert
             try

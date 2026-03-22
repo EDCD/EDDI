@@ -59,7 +59,7 @@ namespace EddiDataDefinitions
             {
                 if (this.definition == null)
                 {
-                    CommodityDefinition newDef = CommodityDefinition.FromNameOrEDName(value);
+                    var newDef = CommodityDefinition.FromNameOrEDName(value);
                     this.definition = newDef;
                 }
             }

@@ -17,7 +17,7 @@ namespace Tests
             MakeSafe();
         }
 
-        private string ResolveScript(string script, Dictionary<string, Tuple<Type, Value>> vars = null)
+        private static string ResolveScript(string script, Dictionary<string, Tuple<Type, Value>> vars = null)
         {
             return ScriptResolver.resolveFromValue(script, ScriptResolver.buildContext(vars), true);
         }

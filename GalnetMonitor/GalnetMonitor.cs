@@ -152,7 +152,7 @@ namespace EddiGalnetMonitor
 
         private void FetchGalnet ()
         {
-            List<News> newsItems = new List<News>();
+            var newsItems = new List<News>();
             string firstUid = null;
 
             locales.TryGetValue( configuration.language, out locale );
@@ -218,7 +218,7 @@ namespace EddiGalnetMonitor
                 }
             }
         }
-        private List<FeedItem> GetFeedItems ( string url, bool fromAltUrl = false )
+        private static List<FeedItem> GetFeedItems ( string url, bool fromAltUrl = false )
         {
             var items = new List<FeedItem>();
             try
@@ -289,7 +289,7 @@ namespace EddiGalnetMonitor
         /// <param name="title"></param>
         /// <param name="content"></param>
         /// <returns></returns>
-        private string assignCategory ( string title, string content )
+        private static string assignCategory ( string title, string content )
         {
             try
             {
@@ -321,7 +321,7 @@ namespace EddiGalnetMonitor
             return GetGalnetResource( "categoryArticle" );
         }
 
-        private string GetGalnetResource ( string basename )
+        private static string GetGalnetResource ( string basename )
         {
             try
             {
@@ -357,7 +357,7 @@ namespace EddiGalnetMonitor
             var subDirs = rootInfo.GetDirectories();
             foreach ( var dir in subDirs )
             {
-                string name = dir.Name;
+                var name = dir.Name;
                 if ( name == "x86" ||
                     name == "x64" ||
                     !dir.GetFiles().Any( f => f.Extension.Equals( ".dll" ) )
@@ -365,7 +365,7 @@ namespace EddiGalnetMonitor
                 {
                     continue;
                 }
-                if ( !dir.GetFiles().Any() )
+                if ( dir.GetFiles().Length == 0 )
                 {
                     continue;
                 }

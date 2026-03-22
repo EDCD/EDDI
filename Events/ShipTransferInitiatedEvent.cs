@@ -5,7 +5,16 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class ShipTransferInitiatedEvent : Event
+    public class ShipTransferInitiatedEvent (
+        DateTime timestamp,
+        Ship ship,
+        string system,
+        decimal distance,
+        long? price,
+        long? time,
+        long fromMarketId,
+        long toMarketId )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Ship transfer initiated";
         public const string DESCRIPTION = "Triggered when you initiate a ship transfer";
@@ -21,34 +30,23 @@ namespace EddiEvents
         public string phoneticname => Ship.phoneticname;
 
         [PublicAPI("The system from which the ship is being transferred")]
-        public string system { get; private set; }
+        public string system { get; private set; } = system;
 
         [PublicAPI("The distance that the transferred ship needs to travel, in light years")]
-        public decimal distance { get; private set; }
+        public decimal distance { get; private set; } = distance;
 
         [PublicAPI("The price of transferring the ship")]
-        public long? price { get; private set; }
+        public long? price { get; private set; } = price;
 
         [PublicAPI("The time in seconds to complete transferring the ship")]
-        public long? time { get; private set; }
+        public long? time { get; private set; } = time;
 
         // Not intended to be user facing
 
-        public long fromMarketId { get; private set; }
+        public long fromMarketId { get; private set; } = fromMarketId;
 
-        public long toMarketId { get; private set; }
-        
-        public Ship Ship { get; private set; }
+        public long toMarketId { get; private set; } = toMarketId;
 
-        public ShipTransferInitiatedEvent(DateTime timestamp, Ship Ship, string system, decimal distance, long? price, long? time, long fromMarketId, long toMarketId) : base(timestamp, NAME)
-        {
-            this.Ship = Ship;
-            this.system = system;
-            this.distance = distance;
-            this.price = price;
-            this.time = time;
-            this.fromMarketId = fromMarketId;
-            this.toMarketId = toMarketId;
-        }
+        public Ship Ship { get; private set; } = ship;
     }
 }

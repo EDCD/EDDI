@@ -19,7 +19,7 @@ namespace EddiVoiceAttackAdapter.Client
     public class VoiceAttackPluginClient : IDisposable
     {
         private readonly string _configFilePath;
-        private IIPCClient? _ipcClient;
+        private IPCClient? _ipcClient;
         private bool _disposed;
         private int _port;
 
@@ -258,7 +258,7 @@ namespace EddiVoiceAttackAdapter.Client
 
             _ipcClient?.Dispose();
             _ipcClient = null;
-
+            GC.SuppressFinalize( this );
             _disposed = true;
         }
 

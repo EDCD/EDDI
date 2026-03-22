@@ -18,7 +18,7 @@ namespace EddiEddnResponder.Schemas
         private long? lastSentMarketID;
         private DateTime? lastSentDateTime;
 
-        public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
+        public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState, EDDNSender eddnSender )
         {
             try
             {
@@ -39,12 +39,12 @@ namespace EddiEddnResponder.Schemas
                 if (data.TryGetValue("Items", out var modulesList))
                 {
                     // Only send the message if we have modules
-                    if (modulesList is List<object> modules && modules.Any())
+                    if (modulesList is List<object> modules && modules.Count > 0 )
                     {
                         var handledData = new Dictionary<string, object>() as IDictionary<string, object>;
                         handledData["timestamp"] = data["timestamp"];
                         handledData["systemName"] = data["StarSystem"];
-                        handledData["stationName"] = data["StationName"]?.ToString().TrimEnd( '+', ' ' ); // Remove any +++ at the end of the station name
+                        handledData["stationName"] = data["StationName"]?.ToString()?.TrimEnd( '+', ' ' ); // Remove any +++ at the end of the station name
                         handledData["marketId"] = data["MarketID"];
                         handledData["modules"] = modules
                             .Select(m => (m as Dictionary<string, object> ?? new Dictionary<string, object>())["Name"]?.ToString())
@@ -55,7 +55,7 @@ namespace EddiEddnResponder.Schemas
                         // Apply data augments
                         handledData = eddnState.GameVersion.AugmentVersion(handledData);
 
-                        EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/outfitting/2", handledData, eddnState);
+                        eddnSender.SendToEDDN("https://eddn.edcd.io/schemas/outfitting/2", handledData, eddnState);
                         data = handledData;
                         return true;
                     }
@@ -69,7 +69,7 @@ namespace EddiEddnResponder.Schemas
         }
 
         public IDictionary<string, object> Handle ( JObject profileJson, JObject marketJson, JObject shipyardJson,
-            JObject fleetCarrierJson, EDDNState eddnState )
+            JObject fleetCarrierJson, EDDNState eddnState, EDDNSender eddnSender )
         {
             try
             {
@@ -98,7 +98,7 @@ namespace EddiEddnResponder.Schemas
                     .ToList();
 
                 // Continue if our modules list is not empty
-                if (modules.Any())
+                if (modules.Count > 0 )
                 {
                     var data = new Dictionary<string, object>() as IDictionary<string, object>;
                     data.Add("timestamp", timestamp);
@@ -110,7 +110,7 @@ namespace EddiEddnResponder.Schemas
                     // Apply data augments
                     data = eddnState.GameVersion.AugmentVersion(data);
 
-                    EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/outfitting/2", data, eddnState, "CAPI-Live-shipyard" );
+                    eddnSender.SendToEDDN("https://eddn.edcd.io/schemas/outfitting/2", data, eddnState, "CAPI-Live-shipyard" );
                     lastSentMarketID = marketID;
                     lastSentDateTime = timestamp;
                     return data;
@@ -124,7 +124,7 @@ namespace EddiEddnResponder.Schemas
             return null;
         }
 
-        private bool ApplyModuleNameFilter(string m)
+        private static bool ApplyModuleNameFilter(string m)
         {
             // Filter items that aren't weapons/utilities (Hpt_*), standard/internal modules (Int_*) or armour (*_Armour_*)
             // and the "Int_PlanetApproachSuite" module (for historical reasons)
@@ -136,7 +136,7 @@ namespace EddiEddnResponder.Schemas
                    m != "Int_PlanetApproachSuite";
         }
 
-        private bool ApplyModuleSkuFilter(JToken m)
+        private static bool ApplyModuleSkuFilter(JToken m)
         {
             // Filter items that have a non-null "sku" property, unless it's "ELITE_HORIZONS_V_PLANETARY_LANDINGS" (i.e. PowerPlay and tech broker items).
             return m != null && (

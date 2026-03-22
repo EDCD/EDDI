@@ -41,7 +41,7 @@ namespace EddiVoiceAttackResponder
 
         public Task HandleAsync ( Event @event )
         {
-            if ( EDDI.FromVA && !@event.fromLoad && !( @event is UnhandledEvent ) )
+            if ( EDDI.Instance.FromVA && !@event.fromLoad && @event is not UnhandledEvent )
             {
                 voiceAttackEventHandler.Handle( @event );
             }
@@ -51,7 +51,7 @@ namespace EddiVoiceAttackResponder
 
         public bool Start()
         {
-            if (EDDI.FromVA)
+            if (EDDI.Instance.FromVA )
             {
                 // Set up our event responder.
                 voiceAttackEventHandler = new VoiceAttackEventHandling();
@@ -94,7 +94,7 @@ namespace EddiVoiceAttackResponder
 
         public Task HandleStatusAsync ( Status status )
         {
-            if ( EDDI.FromVA )
+            if ( EDDI.Instance.FromVA )
             {
                 VoiceAttackVariables.setStatusValues( status, "Status" );
             }

@@ -9,7 +9,7 @@ namespace EddiCargoMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        private CargoMonitor cargoMonitor()
+        private static CargoMonitor cargoMonitor()
         {
             return (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
         }

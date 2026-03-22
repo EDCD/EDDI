@@ -5,7 +5,17 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class CommoditySoldEvent : Event
+    public class CommoditySoldEvent (
+        DateTime timestamp,
+        long marketid,
+        CommodityDefinition commodity,
+        int amount,
+        long price,
+        long profit,
+        bool illegal,
+        bool stolen,
+        bool blackmarket )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Commodity sold";
         public const string DESCRIPTION = "Triggered when you sell a commodity to the markets";
@@ -16,43 +26,31 @@ namespace EddiEvents
         ];
 
         [PublicAPI("The market ID of the commodity sold")]
-        public long marketid { get; }
-        
+        public long marketid { get; } = marketid;
+
         [PublicAPI ("The name of the commodity sold")]
         public string commodity => commodityDefinition?.localizedName ?? CommodityDefinition.Unknown.localizedName;
 
         [PublicAPI("The amount of the commodity sold")]
-        public int amount { get; }
+        public int amount { get; } = amount;
 
         [PublicAPI("The price obtained per unit of the commodity sold")]
-        public long price { get; }
+        public long price { get; } = price;
 
         [PublicAPI("The number of credits profit per unit of the commodity sold")]
-        public long profit { get; }
+        public long profit { get; } = profit;
 
         [PublicAPI("True if the commodity is illegal at the place of sale")]
-        public bool illegal { get; }
+        public bool illegal { get; } = illegal;
 
         [PublicAPI("True if the commodity was stolen")]
-        public bool stolen { get; }
+        public bool stolen { get; } = stolen;
 
         [PublicAPI("True if the commodity was sold to a black market")]
-        public bool blackmarket { get; }
+        public bool blackmarket { get; } = blackmarket;
 
         // Not intended to be user facing
 
-        public CommodityDefinition commodityDefinition { get; }
-
-        public CommoditySoldEvent(DateTime timestamp, long marketid, CommodityDefinition commodity, int amount, long price, long profit, bool illegal, bool stolen, bool blackmarket) : base(timestamp, NAME)
-        {
-            this.marketid = marketid;
-            this.amount = amount;
-            this.price = price;
-            this.profit = profit;
-            this.illegal = illegal;
-            this.stolen = stolen;
-            this.blackmarket = blackmarket;
-            this.commodityDefinition = commodity;
-        }
+        public CommodityDefinition commodityDefinition { get; } = commodity;
     }
 }

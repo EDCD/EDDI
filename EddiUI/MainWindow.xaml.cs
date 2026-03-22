@@ -13,12 +13,10 @@ using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
-using System.Windows.Input;
 using System.Windows.Media;
 using Utilities;
 
@@ -32,24 +30,15 @@ namespace EddiUI
     {
         public System.Windows.Controls.TabControl MainTabControl => tabControl;
 
-        internal struct LanguageDef : IComparable<LanguageDef>
+        internal struct LanguageDef ( CultureInfo ci, string displayName ) : IComparable<LanguageDef>
         {
-            public CultureInfo ci;
-            public string displayName { get; set; }
+            public CultureInfo ci = ci;
+            public string displayName { get; set; } = displayName;
 
-            public LanguageDef(CultureInfo ci)
-            {
-                this.ci = ci;
-                this.displayName = $"{ci.NativeName} ({ci.DisplayName})";
-            }
+            public LanguageDef(CultureInfo ci) : this( ci, $"{ci.NativeName} ({ci.DisplayName})" )
+            { }
 
-            public LanguageDef(CultureInfo ci, string displayName)
-            {
-                this.ci = ci;
-                this.displayName = displayName;
-            }
-
-            public int CompareTo(LanguageDef rhs)
+            public readonly int CompareTo(LanguageDef rhs)
             {
                 return string.Compare(displayName, rhs.displayName, StringComparison.Ordinal);
             }
@@ -71,7 +60,7 @@ namespace EddiUI
                     eddiConfiguration.Maximized = false;
 
                     // If opened from VoiceAttack, don't allow minimized state
-                    eddiConfiguration.Minimized = !EDDI.FromVA;
+                    eddiConfiguration.Minimized = !EDDI.Instance.FromVA;
 
                     break;
                 default:
@@ -91,14 +80,14 @@ namespace EddiUI
 
         private void RestoreWindowState()
         {
-            int designedHeight = (int)MinHeight;
-            int designedWidth = (int)MinWidth;
+            var designedHeight = (int)MinHeight;
+            var designedWidth = (int)MinWidth;
 
             var eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-            Rect windowPosition = eddiConfiguration.MainWindowPosition;
+            var windowPosition = eddiConfiguration.MainWindowPosition;
 
             // In VA mode, hide window; in standalone mode, ensure window is visible
-            Visibility = EDDI.FromVA ? Visibility.Collapsed : Visibility.Visible;
+            Visibility = EDDI.Instance.FromVA ? Visibility.Collapsed : Visibility.Visible;
 
             // WPF uses DPI scaled units rather than true pixels.
             // Retrieve the DPI scaling for the controlling monitor (where the top left pixel is located).
@@ -136,9 +125,9 @@ namespace EddiUI
                 }
 
                 // Check whether the rectangle is completely visible on-screen
-                bool testUpperLeft = false;
-                bool testLowerRight = false;
-                foreach (Screen screen in Screen.AllScreens)
+                var testUpperLeft = false;
+                var testLowerRight = false;
+                foreach (var screen in Screen.AllScreens)
                 {
                     if (rect.X >= applyDpiScale(screen.Bounds.X, dpi.DpiScaleX) && rect.Y >= applyDpiScale(screen.Bounds.Y, dpi.DpiScaleY)) // The upper and left bounds fall on a valid screen
                     {
@@ -169,7 +158,7 @@ namespace EddiUI
 
         public MainWindow()
         {
-            if (!EDDI.FromVA)
+            if (!EDDI.Instance.FromVA )
             {
                 var splashScreen = new SplashScreen( Assembly.GetExecutingAssembly(), "logo-with-alpha.png");
                 splashScreen.Show(true);
@@ -188,7 +177,7 @@ namespace EddiUI
 
             // Configure the EDDI tab
             // Need to set up the correct information in the hero text depending on from where we were started
-            if ( EDDI.FromVA)
+            if ( EDDI.Instance.FromVA )
             {
                 // Allow the EDDI VA plugin to change window state
                 VaWindowStateChange += OnVaWindowStateChange;
@@ -224,7 +213,7 @@ namespace EddiUI
         private void MainWindow_Loaded ( object sender, RoutedEventArgs e )
         {
             // Show window in standalone mode (keep hidden in VA mode, shown on demand by VA plugin)
-            if ( !EDDI.FromVA )
+            if ( !EDDI.Instance.FromVA )
             {
                 Visibility = Visibility.Visible;
             }
@@ -238,14 +227,9 @@ namespace EddiUI
             EDDI.Instance.HotkeyManager.UnregisterAllHotkeys();
         }
 
-        internal class TabItemComparer : Comparer<TabItem>
+        internal class TabItemComparer ( StringComparer stringComparer ) : Comparer<TabItem>
         {
-            public StringComparer stringComparer { get; }
-
-            public TabItemComparer(StringComparer stringComparer)
-            {
-                this.stringComparer = stringComparer;
-            }
+            public StringComparer stringComparer { get; } = stringComparer;
 
             public override int Compare(TabItem x, TabItem y)
             {
@@ -256,19 +240,19 @@ namespace EddiUI
         private void LoadAndSortTabs(EDDIConfiguration eddiConfiguration)
         {
             // Sort all but the first TabItem by name, ignoring case
-            ItemCollection items = tabControl.Items;
-            List<TabItem> sortedItems = new List<TabItem>();
+            var items = tabControl.Items;
+            var sortedItems = new List<TabItem>();
             foreach (var item in items)
             {
                 sortedItems.Add(item as TabItem);
             }
 
-            List<TabItem> monitors = LoadMonitors(eddiConfiguration);
+            var monitors = LoadMonitors(eddiConfiguration);
             sortedItems.AddRange(monitors);
-            List<TabItem> responders = LoadResponders(eddiConfiguration);
+            var responders = LoadResponders(eddiConfiguration);
             sortedItems.AddRange(responders);
 
-            TabItemComparer comparer = new TabItemComparer(StringComparer.CurrentCultureIgnoreCase);
+            var comparer = new TabItemComparer(StringComparer.CurrentCultureIgnoreCase);
             sortedItems.Sort(1, sortedItems.Count - 1, comparer);
 
             items.Clear();
@@ -278,7 +262,7 @@ namespace EddiUI
             }
         }
 
-        internal List<LanguageDef> GetAvailableLangs()
+        internal static List<LanguageDef> GetAvailableLangs()
         {
             var cultures = new List<LanguageDef>
             {
@@ -298,7 +282,7 @@ namespace EddiUI
             var subDirs = rootInfo.GetDirectories();
             foreach ( var dir in subDirs )
             {
-                string name = dir.Name;
+                var name = dir.Name;
                 if ( name == "x86" || 
                      name == "x64" || 
                      !dir.GetFiles().Any( f => f.Extension.Equals( ".dll" ) )
@@ -323,7 +307,7 @@ namespace EddiUI
             return cultures;
         }
 
-        private List<TabItem> LoadMonitors(EDDIConfiguration eddiConfiguration)
+        private static List<TabItem> LoadMonitors(EDDIConfiguration eddiConfiguration)
         {
             var result = new List<TabItem>();
             foreach (var monitor in EDDI.Instance.monitors)
@@ -334,10 +318,10 @@ namespace EddiUI
                 // Only show a tab if this can be turned off or has configuration elements
                 if (monitorConfiguration != null || !monitor.IsRequired())
                 {
-                    PluginSkeleton skeleton = new PluginSkeleton(monitor.MonitorName(), !monitor.IsRequired());
+                    var skeleton = new PluginSkeleton(monitor.MonitorName(), !monitor.IsRequired());
                     skeleton.plugindescription.Text = monitor.MonitorDescription();
 
-                    if (eddiConfiguration.Plugins.TryGetValue(monitor.MonitorName(), out bool enabled))
+                    if (eddiConfiguration.Plugins.TryGetValue(monitor.MonitorName(), out var enabled))
                     {
                         skeleton.pluginenabled.IsChecked = enabled;
                     }
@@ -361,17 +345,17 @@ namespace EddiUI
             return result;
         }
 
-        private List<TabItem> LoadResponders(EDDIConfiguration eddiConfiguration)
+        private static List<TabItem> LoadResponders(EDDIConfiguration eddiConfiguration)
         {
             var result = new List<TabItem>();
-            foreach (IEddiResponder responder in EDDI.Instance.responders)
+            foreach (var responder in EDDI.Instance.responders)
             {
                 Logging.Debug("Adding configuration tab for " + responder.ResponderName());
 
                 var skeleton = new PluginSkeleton(responder.ResponderName());
                 skeleton.plugindescription.Text = responder.ResponderDescription();
 
-                if (eddiConfiguration.Plugins.TryGetValue(responder.ResponderName(), out bool enabled))
+                if (eddiConfiguration.Plugins.TryGetValue(responder.ResponderName(), out var enabled))
                 {
                     skeleton.pluginenabled.IsChecked = enabled;
                 }
@@ -383,7 +367,7 @@ namespace EddiUI
                 }
 
                 // Add responder-specific configuration items
-                System.Windows.Controls.UserControl monitorConfiguration = responder.ConfigurationTabItem();
+                var monitorConfiguration = responder.ConfigurationTabItem();
                 if (monitorConfiguration != null)
                 {
                     monitorConfiguration.Margin = new Thickness(10);
@@ -402,7 +386,7 @@ namespace EddiUI
             var eddiConfiguration = ConfigService.Instance.eddiConfiguration;
             if (sender is Window senderWindow && (eddiConfiguration.Maximized || eddiConfiguration.Minimized))
             {
-                if (eddiConfiguration.Minimized && !EDDI.FromVA)
+                if (eddiConfiguration.Minimized && !EDDI.Instance.FromVA )
                 {
                     senderWindow.WindowState = WindowState.Minimized;
                 }
@@ -411,7 +395,7 @@ namespace EddiUI
                     senderWindow.WindowState = WindowState.Maximized;
                 }
 
-                if (!EDDI.FromVA)
+                if (!EDDI.Instance.FromVA )
                 {
                     Visibility = Visibility.Visible;
                 }
@@ -420,7 +404,7 @@ namespace EddiUI
 
         private void verboseLoggingEnabled(object sender, RoutedEventArgs e)
         {
-            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
+            var eddiConfiguration = ConfigService.Instance.eddiConfiguration;
             eddiConfiguration.VerboseLogging = eddiVerboseLogging.IsChecked ?? false;
             Logging.Verbose = eddiConfiguration.VerboseLogging;
             ConfigService.Instance.eddiConfiguration = eddiConfiguration;
@@ -428,7 +412,7 @@ namespace EddiUI
 
         private void verboseLoggingDisabled(object sender, RoutedEventArgs e)
         {
-            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
+            var eddiConfiguration = ConfigService.Instance.eddiConfiguration;
             eddiConfiguration.VerboseLogging = eddiVerboseLogging.IsChecked ?? false;
             Logging.Verbose = eddiConfiguration.VerboseLogging;
             ConfigService.Instance.eddiConfiguration = eddiConfiguration;
@@ -480,13 +464,13 @@ namespace EddiUI
                 {
                     statusText.Text = string.Format( Properties.Resources.update_message, EddiUpgrader.UpgradeVersion );
                     // Do not show upgrade button if EDDI is started from VA
-                    upgradeButton.Visibility = EDDI.FromVA ? Visibility.Collapsed : Visibility.Visible;
+                    upgradeButton.Visibility = EDDI.Instance.FromVA ? Visibility.Collapsed : Visibility.Visible;
                 }
                 else
                 {
                     upgradeButton.Visibility = Visibility.Collapsed;
                     var capiState = CompanionAppService.Instance.CurrentState;
-                    if ( !EDDI.running )
+                    if ( !EDDI.Instance.running )
                     {
                         statusText.Text = Properties.Resources.safe_mode;
                     }
@@ -531,19 +515,11 @@ namespace EddiUI
             // to empty somewhere between here and OnClosed.
             System.Windows.Application.Current?.Dispatcher?.Invoke(SaveWindowState);
 
-            if (EDDI.FromVA)
+            if (EDDI.Instance.FromVA )
             {
                 e.Cancel = true;
                 Hide();
             }
-        }
-
-        internal void EnsureValidDecimal(object sender, TextCompositionEventArgs e)
-        {
-            // Match valid characters
-            Regex regex = new Regex(@"[0-9\.]");
-            // Swallow the character doesn't match the regex
-            e.Handled = !regex.IsMatch(e.Text);
         }
 
         private async void createGithubIssueClicked(object sender, RoutedEventArgs e)
@@ -574,7 +550,7 @@ namespace EddiUI
 
         private void ChangeLog_Click(object sender, RoutedEventArgs e)
         {
-            ChangeLogWindow changeLog = new ChangeLogWindow();
+            var changeLog = new ChangeLogWindow();
             changeLog.Show();
         }
 
@@ -582,10 +558,10 @@ namespace EddiUI
         {
             try
             {
-                string issueLogDir = Constants.DATA_DIR + @"\logexport\";
+                var issueLogDir = Constants.DATA_DIR + @"\logexport\";
                 Directory.CreateDirectory(issueLogDir);
 
-                string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\eddi_issue.zip";
+                var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\eddi_issue.zip";
 
                 // Create temporary, truncated issue log files
                 prepareLog(issueLogDir + "eddi.log", Constants.DATA_DIR + @"\eddi.log");
@@ -596,7 +572,7 @@ namespace EddiUI
                 ZipFile.CreateFromDirectory(issueLogDir, desktopPath);
 
                 // Clear temporary issue log files & the temporary directory
-                foreach (string filePath in Directory.GetFiles(issueLogDir))
+                foreach (var filePath in Directory.GetFiles(issueLogDir))
                 {
                     File.Delete(filePath);
                 }
@@ -620,16 +596,16 @@ namespace EddiUI
 
                 // Truncate log files more than the specified size MB in size
                 const long maxLogSizeBytes = 5 * 1024 * 1024; // 5 MB (before zipping)
-                FileInfo logFile = new FileInfo(toTruncatedLogPath);
+                var logFile = new FileInfo(toTruncatedLogPath);
                 if (logFile.Length > maxLogSizeBytes)
                 {
-                    using (MemoryStream ms = new MemoryStream((int)maxLogSizeBytes))
+                    using (var ms = new MemoryStream((int)maxLogSizeBytes))
                     {
-                        using (FileStream issueLog = new FileStream(toTruncatedLogPath, FileMode.Open, FileAccess.ReadWrite))
+                        using (var issueLog = new FileStream(toTruncatedLogPath, FileMode.Open, FileAccess.ReadWrite))
                         {
                             issueLog.Seek(-1 * maxLogSizeBytes, SeekOrigin.End);
                             // advance to after next line end
-                            int c = 0;
+                            var c = 0;
                             while ((c = issueLog.ReadByte()) != -1)
                             {
                                 if (c == '\n')
@@ -649,7 +625,7 @@ namespace EddiUI
             }
         }
 
-        private void createGithubIssue ()
+        private static void createGithubIssue ()
         {
             OpenInBrowser( "https://github.com/EDCD/EDDI/issues/new?template=bug_report.md" );
         }
@@ -661,7 +637,7 @@ namespace EddiUI
 
         private void EDDIClicked(object sender, RoutedEventArgs e)
         {
-            OpenInBrowser( EDDI.Instance.EddiIsBeta()
+            OpenInBrowser( EDDI.EddiIsBeta()
                 ? "https://github.com/EDCD/EDDI/blob/develop/README.md"
                 : "https://github.com/EDCD/EDDI/blob/stable/README.md" );
         }
@@ -673,12 +649,12 @@ namespace EddiUI
 
         private void TroubleshootClicked(object sender, RoutedEventArgs e)
         {
-            OpenInBrowser( EDDI.Instance.EddiIsBeta()
+            OpenInBrowser( EDDI.EddiIsBeta()
                 ? "https://github.com/EDCD/EDDI/blob/develop/TROUBLESHOOTING.md"
                 : "https://github.com/EDCD/EDDI/blob/stable/TROUBLESHOOTING.md" );
         }
 
-        private void OpenInBrowser ( string url )
+        private static void OpenInBrowser ( string url )
         {
             try
             {

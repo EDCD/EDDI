@@ -45,7 +45,7 @@ namespace Tests
         public void TestMaterialMonitor()
         {
             var config = ConfigService.FromJson<MaterialMonitorConfiguration>(json);
-            Assert.AreEqual(2, config.materials.Count);
+            Assert.HasCount( 2, config.materials);
 
             var zirconiumAmount = config.materials[1];
             Assert.AreEqual("zirconium", zirconiumAmount.edname);

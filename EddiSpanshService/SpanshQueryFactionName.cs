@@ -32,7 +32,7 @@ namespace EddiSpanshService
             {
                 var maxResultsPerPage = 500;
                 int? count = null;
-                int page = 0;
+                var page = 0;
                 do
                 {
                     var systemQueryResult = await QueryAsync(QueryGroup.systems, searchFilters, cancellationToken, maxResultsPerPage, page).ConfigureAwait(false);
@@ -51,7 +51,7 @@ namespace EddiSpanshService
             }
 
             Faction faction = null;
-            if ( systemsQueryResults.Any() )
+            if ( systemsQueryResults.Count > 0 )
             {
                 faction = await GetFactionBaseDataAsync( factionName, presenceSystemName, systemsQueryResults, cancellationToken ).ConfigureAwait(false);
 

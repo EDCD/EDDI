@@ -2,7 +2,6 @@
 using EddiSpeechResponder.ScriptResolverService;
 using JetBrains.Annotations;
 using System;
-using System.Linq;
 
 namespace EddiSpeechResponder.CustomFunctions
 {

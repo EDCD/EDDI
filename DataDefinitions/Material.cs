@@ -292,7 +292,7 @@ namespace EddiDataDefinitions
 
         public static Material FromSymbol(string from)
         {
-            Material result = AllOfThem.FirstOrDefault(v => v.symbol == from);
+            var result = AllOfThem.FirstOrDefault(v => v.symbol == from);
             if (result == null)
             {
                 Logging.Info("Unknown material symbol " + from);
@@ -304,9 +304,9 @@ namespace EddiDataDefinitions
         {
             Body bestBody = null;
             decimal percentage = 0;
-            foreach (Body body in bodies.ToList().OrderBy(b => b.distance))
+            foreach (var body in bodies.ToList().OrderBy(b => b.distance))
             {
-                foreach (MaterialPresence materialPresence in body.materials)
+                foreach (var materialPresence in body.materials)
                 {
                     if (materialPresence?.definition?.edname == materialEdName)
                     {

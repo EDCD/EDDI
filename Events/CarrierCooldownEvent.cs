@@ -5,27 +5,37 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class CarrierCooldownEvent : Event
+    public class CarrierCooldownEvent (
+        DateTime timestamp,
+        long carrierId,
+        string carrierName,
+        StationModel carrierType,
+        string systemName,
+        ulong? systemAddress,
+        string bodyName,
+        long? bodyId,
+        BodyType bodyType )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Carrier cooldown";
         public const string DESCRIPTION = "Triggered when you either were docked at a fleet carrier during a jump or are the fleet carrier owner and it completes its cooldown";
-        public static CarrierCooldownEvent SAMPLE = new(DateTime.UtcNow, 3700571136, "G53-K3Q", StationModel.FleetCarrier, "Aparctias", 358797513434, "Aparctias", 0, BodyType.Star );
+        public static readonly CarrierCooldownEvent SAMPLE = new(DateTime.UtcNow, 3700571136, "G53-K3Q", StationModel.FleetCarrier, "Aparctias", 358797513434, "Aparctias", 0, BodyType.Star );
 
         // System variables
 
         [PublicAPI("The name of the system in which the carrier is located after a successful jump")]
-        public string systemname { get; private set; }
-        
+        public string systemname { get; private set; } = systemName;
+
         [PublicAPI( "The numeric system address of the system in which the carrier is located after a successful jump" )]
-        public ulong? systemAddress { get; private set; }
+        public ulong? systemAddress { get; private set; } = systemAddress;
 
         // Body variables
 
         [PublicAPI("The nearest body to the carrier, if any, after a successful jump")]
-        public string bodyname { get; private set; }
+        public string bodyname { get; private set; } = bodyName;
 
         [PublicAPI( "The numeric ID of the body nearest body to the carrier, if any, after a successful jump" )]
-        public long? bodyId { get; private set; }
+        public long? bodyId { get; private set; } = bodyId;
 
         [PublicAPI("The type of the body nearest to the carrier, if any (Star, Planet. etc.), after a successful jump  (only available if docked during the jump)")]
         public string bodytype => bodyType?.localizedName;
@@ -36,34 +46,20 @@ namespace EddiEvents
         // Carrier variables
 
         [PublicAPI("The name of the carrier (only available if docked during a successful jump)")]
-        public string carriername { get; private set; }
-        
+        public string carriername { get; private set; } = carrierName;
+
         [PublicAPI( "The carrier's numeric ID" )]
-        public long carrierID { get; private set; }
+        public long carrierID { get; private set; } = carrierId;
 
         [PublicAPI( "The carrier type (e.g. Fleet Carrier or Squadron Carrier), as an object with 'localizedName' and 'invariantName' properties" )]
-        public StationModel carrierType { get; private set; }
+        public StationModel carrierType { get; private set; } = carrierType;
 
         // These properties are not intended to be user facing
 
-        public BodyType bodyType { get; private set; }
+        public BodyType bodyType { get; private set; } = bodyType ?? BodyType.None;
 
-        public CarrierCooldownEvent ( DateTime timestamp, long carrierId, string carrierName, StationModel carrierType,
-            string systemName, ulong? systemAddress, string bodyName, long? bodyId, BodyType bodyType ) : base(timestamp, NAME)
-        {
-            // System
-            this.systemname = systemName;
-            this.systemAddress = systemAddress;
-
-            // Body
-            this.bodyname = bodyName;
-            this.bodyId = bodyId;
-            this.bodyType = bodyType ?? BodyType.None;
-
-            // Carrier
-            this.carrierID = carrierId;
-            this.carriername = carrierName;
-            this.carrierType = carrierType;
-        }
+        // System
+        // Body
+        // Carrier
     }
 }

@@ -36,7 +36,7 @@ namespace EddiStarMapService
         // If you need to do some testing on EDSM's API, please use the https://beta.edsm.net/ endpoint for sending data.
         private const string baseUrl = "https://www.edsm.net/";
 
-        private static readonly BlockingCollection<IDictionary<string, object>> queuedEvents = new();
+        private readonly BlockingCollection<IDictionary<string, object>> queuedEvents = new();
         private static readonly ConcurrentDictionary<string, ResourceRateLimit> resourceRateLimits = new();
 
         // This API only accepts and only returns data for the "live" galaxy, game version 4.0 or later.
@@ -167,7 +167,7 @@ namespace EddiStarMapService
             if (!string.IsNullOrEmpty(starMapCredentials?.apiKey))
             {
                 // Commander name might come from EDSM credentials or from the game and companion app
-                string cmdrName = starMapCredentials.commanderName ?? inGameCommanderName;
+                var cmdrName = starMapCredentials.commanderName ?? inGameCommanderName;
                 if (!string.IsNullOrEmpty(cmdrName))
                 {
                     apiKey = starMapCredentials.apiKey?.Trim();
@@ -232,18 +232,11 @@ namespace EddiStarMapService
 
     // public consolidated version of star map log information
     [UsedImplicitly]
-    public class StarMapInfo
+    public class StarMapInfo ( int visits, DateTime? lastVisited, string comment )
     {
-        public int Visits { get; set; }
-        public DateTime? LastVisited { get; set; }
-        public string Comment { get; set; }
-
-        public StarMapInfo(int visits, DateTime? lastVisited, string comment)
-        {
-            Visits = visits;
-            LastVisited = lastVisited;
-            Comment = comment;
-        }
+        public int Visits { get; set; } = visits;
+        public DateTime? LastVisited { get; set; } = lastVisited;
+        public string Comment { get; set; } = comment;
     }
 
     [UsedImplicitly]

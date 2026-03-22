@@ -99,11 +99,11 @@ namespace EddiSpanshService
                     station.systemname = starSystem.systemname;
                     station.systemAddress = starSystem.systemAddress;
                     return station;
-                } ).RemoveNulls().ToList() ?? new List<Station>() );
+                } ).RemoveNulls().ToList() ?? [ ] );
 
                 starSystem.factions.AddRange(
                     data[ "minor_faction_presences" ]?.AsParallel().Select( ParseQuickFaction ).RemoveNulls()
-                        .ToList() ?? new List<Faction>() );
+                        .ToList() ?? [ ] );
 
                 starSystem.lastupdated = DateTime.UtcNow;
                 return starSystem;
@@ -132,7 +132,7 @@ namespace EddiSpanshService
                         stationData[ "large_pads" ]?.Value<int?>() ?? 0 ),
                     stationServices = stationData[ "services" ]?
                         .Select( t => StationService.FromName( t.ToString() ) )
-                        .ToList() ?? new List<StationService>()
+                        .ToList() ?? [ ]
                 };
                 station.hasdocking = ( station.landingPads.Large + station.landingPads.Medium + station.landingPads.Small ) > 0;
                 return station;

@@ -21,6 +21,9 @@ namespace Tests.EddiVoiceAttackService
     [TestClass, TestCategory( "UnitTests" )]
     public class VoiceAttackInvokationHandlerTests : TestBase
     {
+        // ReSharper disable once MemberCanBePrivate.Global
+        public TestContext TestContext { get; set; } = null!;
+
         private readonly List<EventData> _dispatchedEvents = [];
         private ManualResetEventSlim _dispatchSignal = null!;
         private bool _fromVASaved;
@@ -32,8 +35,8 @@ namespace Tests.EddiVoiceAttackService
             MakeSafe();
 
             // Preserve and override the VA mode flag to avoid WPF Application.Current dispatcher calls
-            _fromVASaved = EDDI.FromVA;
-            EDDI.FromVA = true;
+            _fromVASaved = EDDI.Instance.FromVA;
+            EDDI.Instance.FromVA = true;
 
             _dispatchedEvents.Clear();
             _dispatchSignal = new ManualResetEventSlim( false );
@@ -50,7 +53,7 @@ namespace Tests.EddiVoiceAttackService
         [TestCleanup]
         public void Cleanup ()
         {
-            EDDI.FromVA = _fromVASaved;
+            EDDI.Instance.FromVA = _fromVASaved;
             _runtimeEventDispatcherRegistration?.Dispose();
             _runtimeEventDispatcherRegistration = null;
             _dispatchSignal.Dispose();
@@ -69,7 +72,7 @@ namespace Tests.EddiVoiceAttackService
         {
             var result = VoiceAttackInvokationHandler.SpeechFromScript( "[hello;world]" );
 
-            Assert.IsTrue( result == "hello" || result == "world",
+            Assert.IsTrue( result is "hello" or "world",
                 $"Expected 'hello' or 'world', but got '{result}'" );
         }
 
@@ -78,8 +81,7 @@ namespace Tests.EddiVoiceAttackService
         {
             var result = VoiceAttackInvokationHandler.SpeechFromScript( "hello;world" );
 
-            Assert.IsTrue( result == "hello" || result == "world",
-                $"Expected 'hello' or 'world', but got '{result}'" );
+            Assert.IsTrue( result is "hello" or "world", $"Expected 'hello' or 'world', but got '{result}'" );
         }
 
         [TestMethod]
@@ -88,8 +90,7 @@ namespace Tests.EddiVoiceAttackService
             var result = VoiceAttackInvokationHandler.SpeechFromScript( "Hello $-" );
 
             Assert.IsNotNull( result );
-            Assert.IsFalse( result.Contains( "$-" ),
-                $"Expected $- to be replaced, but result was '{result}'" );
+            Assert.DoesNotContain( "$-", result, $"Expected $- to be replaced, but result was '{result}'" );
         }
 
         [TestMethod]
@@ -100,8 +101,7 @@ namespace Tests.EddiVoiceAttackService
             var result = VoiceAttackInvokationHandler.SpeechFromScript( "Hello $=" );
 
             Assert.IsNotNull( result );
-            Assert.IsTrue( result.Contains( "$=" ),
-                $"Expected $= to be preserved with no ship, but result was '{result}'" );
+            Assert.Contains( "$=", result, $"Expected $= to be preserved with no ship, but result was '{result}'" );
         }
 
         #endregion
@@ -201,7 +201,7 @@ namespace Tests.EddiVoiceAttackService
                     [ "State variable bool value" ] = "true"
                 } );
 
-            Assert.AreEqual( true, EDDI.Instance.State[ "set_state_bool_test" ] );
+            Assert.IsTrue( (bool?)EDDI.Instance.State[ "set_state_bool_test" ] );
         }
 
         [TestMethod]
@@ -254,21 +254,27 @@ namespace Tests.EddiVoiceAttackService
             VoiceAttackInvokationHandler.HandleInvokedCommand( "totally_unrecognised_context_xyz", null );
         }
 
-        [TestMethod]
-        [Timeout( 5000 )]
+        [TestMethod, DoNotParallelize]
+        [Timeout( 5000, CooperativeCancellation = true )]
         public void HandleInvokedCommand_InitializeEddi_WhenFromVAIsTrue_DispatchesOperationalMessage ()
         {
             // Act - fire-and-forget; wait for the dispatcher signal
             VoiceAttackInvokationHandler.HandleInvokedCommand( "initialize eddi", null );
 
-            Assert.IsTrue( _dispatchSignal.Wait( 3000 ),
+            Assert.IsTrue( _dispatchSignal.Wait( 3000, TestContext.CancellationToken ),
                 "Expected a log dispatch within 3 seconds" );
-            Assert.IsTrue( _dispatchedEvents.Count > 0 );
+            Assert.IsNotEmpty( _dispatchedEvents );
 
             var payload = _dispatchedEvents[ 0 ].EventPayload;
             Assert.IsNotNull( payload );
-            Assert.IsTrue( payload.TryGetValue( "message", out var msg ) );
-            StringAssert.Contains( msg?.ToString(), "fully operational" );
+            if ( payload.TryGetValue( "message", out var msg ) && msg is string str )
+            {
+                Assert.Contains( "fully operational", str );
+            }
+            else
+            {
+                Assert.Fail( "Expected 'message' key with string value in dispatched event payload" );
+            }
         }
 
         #endregion

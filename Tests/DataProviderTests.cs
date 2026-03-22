@@ -94,8 +94,8 @@ namespace Tests
             Assert.IsNotNull(system);
             Assert.AreEqual("Macay", system.systemname);
             Assert.AreEqual(8898081, system.population);
-            Assert.AreEqual(2, system.stations.Count);
-            Assert.AreEqual(0, system.bodies.Count);
+            Assert.HasCount( 2, system.stations);
+            Assert.HasCount( 0, system.bodies );
         }
 
         [TestMethod]
@@ -106,8 +106,8 @@ namespace Tests
             Assert.IsNotNull(system);
             Assert.AreEqual("Lazdongand", system.systemname);
             Assert.AreEqual(75005, system.population);
-            Assert.AreEqual(3, system.stations.Count);
-            Assert.AreEqual(0, system.bodies.Count);
+            Assert.HasCount( 3, system.stations );
+            Assert.HasCount( 0, system.bodies );
         }
 
         [TestMethod]
@@ -118,8 +118,8 @@ namespace Tests
             Assert.IsNotNull(system);
             Assert.AreEqual("Aphros", system.systemname);
             Assert.AreEqual(0, system.population);
-            Assert.AreEqual(0, system.stations.Count);
-            Assert.AreEqual(8, system.bodies.Count);
+            Assert.HasCount( 0, system.stations );
+            Assert.HasCount( 8, system.bodies );
         }
 
         [TestMethod]
@@ -129,8 +129,8 @@ namespace Tests
 
             Assert.AreEqual("Zhu Baba", system.systemname);
             Assert.AreEqual(159918, system.population);
-            Assert.AreEqual(0, system.stations.Count);
-            Assert.AreEqual(30, system.bodies.Count);
+            Assert.HasCount( 0, system.stations );
+            Assert.HasCount( 30, system.bodies );
         }
 
         [TestMethod]

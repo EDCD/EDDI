@@ -1,14 +1,8 @@
 ﻿namespace Utilities
 {
-    public class Translation
+    public class Translation ( string from, string to )
     {
-        public string from { get; private set; }
-        public string to { get; private set; }
-
-        public Translation(string from, string to)
-        {
-            this.from = from;
-            this.to = to;
-        }
+        public string from { get; private set; } = from;
+        public string to { get; private set; } = to;
     }
 }

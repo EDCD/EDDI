@@ -43,7 +43,7 @@ namespace EddiDataDefinitions
 
         public static MercenaryRating FromRank(int from)
         {
-            MercenaryRating result = AllOfThem.FirstOrDefault(v => v.rank == from);
+            var result = AllOfThem.FirstOrDefault(v => v.rank == from);
             if (result == null)
             {
                 Logging.Info("Unknown Mercenary Rating rank " + from);

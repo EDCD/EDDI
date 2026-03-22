@@ -15,19 +15,15 @@ namespace EddiSpanshService
         Task<HttpResponseMessage> PostAsync ( string requestUri, HttpContent content, CancellationToken cancellationToken );
     }
 
-    public partial class SpanshService
+    public partial class SpanshService ( ISpanshHttpClient httpClient = null )
     {
         private const string baseUrl = "https://spansh.co.uk/api/";
-        private readonly ISpanshHttpClient spanshHttpClient;
+        private readonly ISpanshHttpClient spanshHttpClient = httpClient ?? new SpanshHttpClient( baseUrl );
 
         const int MaxRetries = 3; // Maximum number of retries
         const int InitialBackoffMilliseconds = 100; // Initial back-off time in milliseconds
 
         // Allow injection of a fake client for testing
-        public SpanshService ( ISpanshHttpClient httpClient = null )
-        {
-            spanshHttpClient = httpClient ?? new SpanshHttpClient( baseUrl );
-        }
 
         // Default HttpClient‐based implementation
         private class SpanshHttpClient : ISpanshHttpClient

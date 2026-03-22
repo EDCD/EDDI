@@ -277,7 +277,7 @@ namespace EddiDataDefinitions
         public static MicroResource FromEDName(string edname, string fallbackName = null, string categoryEdName = null)
         {
             if (edname == null) { return None; }
-            string normalizedEDName = edname
+            var normalizedEDName = edname
                 .ToLowerInvariant()
                 .Replace("$", "")
                 .Replace("_name;", "");

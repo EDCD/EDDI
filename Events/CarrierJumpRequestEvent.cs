@@ -5,7 +5,16 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class CarrierJumpRequestEvent : Event
+    public class CarrierJumpRequestEvent (
+        DateTime timestamp,
+        string systemName,
+        ulong systemAddress,
+        string bodyName,
+        long? bodyId,
+        long carrierId,
+        StationModel carrierType,
+        DateTime departureTime )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Carrier jump request";
         public const string DESCRIPTION = "Triggered when you request that your fleet carrier performs a jump";
@@ -14,18 +23,18 @@ namespace EddiEvents
         // System variables
 
         [PublicAPI("The name of the destination star system")]
-        public string systemname { get; private set; }
+        public string systemname { get; private set; } = systemName;
 
         [PublicAPI( "The numeric system address of the destination star system" )]
-        public ulong systemAddress { get; private set; }
+        public ulong systemAddress { get; private set; } = systemAddress;
 
         // Body variables
 
         [PublicAPI("The name of the destination body, if any")]
-        public string bodyname { get; private set; }
+        public string bodyname { get; private set; } = bodyName;
 
         [PublicAPI( "The numeric ID of the destination body, if any" )]
-        public long? bodyId { get; private set; }
+        public long? bodyId { get; private set; } = bodyId;
 
         [PublicAPI("The short name of the destination body, if any")]
         public string shortname => Body.GetShortName(bodyname, systemname);
@@ -33,30 +42,17 @@ namespace EddiEvents
         // Carrier variables
 
         [PublicAPI( "The carrier's numeric ID" )]
-        public long carrierID { get; private set; }
+        public long carrierID { get; private set; } = carrierId;
 
         [PublicAPI( "The carrier type (e.g. Fleet Carrier or Squadron Carrier), as an object with 'localizedName' and 'invariantName' properties" )]
-        public StationModel carrierType { get; private set; }
-        
+        public StationModel carrierType { get; private set; } = carrierType;
+
         // Not intended to be user facing
         
-        public DateTime departureTime { get; private set; }
+        public DateTime departureTime { get; private set; } = departureTime;
 
-        public CarrierJumpRequestEvent ( DateTime timestamp, string systemName, ulong systemAddress, string bodyName,
-            long? bodyId, long carrierId, StationModel carrierType, DateTime departureTime ) : base(timestamp, NAME)
-        {
-            // System
-            this.systemname = systemName;
-            this.systemAddress = systemAddress;
-
-            // Body
-            this.bodyname = bodyName;
-            this.bodyId = bodyId;
-
-            // Carrier
-            this.carrierID = carrierId;
-            this.carrierType = carrierType;
-            this.departureTime = departureTime;
-        }
+        // System
+        // Body
+        // Carrier
     }
 }

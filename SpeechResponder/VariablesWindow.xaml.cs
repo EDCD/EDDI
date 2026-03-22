@@ -21,7 +21,7 @@ namespace EddiSpeechResponder
             string markdown;
             try
             {
-                DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty);
+                var dir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty);
                 markdown = Files.Read(dir.FullName + @"\Variables.md");
             }
             catch (Exception ex)
@@ -36,7 +36,7 @@ namespace EddiSpeechResponder
             {
                 var vars = new MetaVariables(@type).Results;
                 var CottleVars = vars.AsCottleVariables();
-                if (CottleVars.Any())
+                if (CottleVars.Count > 0 )
                 {
                     markdown += "Information about this event is available under the `event` object.  Note that these variables are only valid for this particular script; other scripts triggered by different events will have different variables available to them.\n";
                     if (vars.Any(v => v.keysPath.Any(k => k.Contains(@"<index"))))
@@ -52,7 +52,7 @@ namespace EddiSpeechResponder
                 }
             }
 
-            string html = CommonMark.CommonMarkConverter.Convert(markdown);
+            var html = CommonMark.CommonMarkConverter.Convert(markdown);
             html = "<head>  <meta charset=\"UTF-8\"> </head> " + html;
 
             // Insert the HTML

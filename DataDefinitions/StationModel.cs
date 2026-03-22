@@ -48,7 +48,7 @@ namespace EddiDataDefinitions
             }
 
             // Translate from EDSM / EDDB station model names if these are present
-            Dictionary<string, StationModel> modelTranslations = new Dictionary<string, StationModel>()
+            var modelTranslations = new Dictionary<string, StationModel>()
             {
                 { "Coriolis Starport", Coriolis },
                 { "Bernal Starport", Bernal }, // Ocellus starports are described by the journal as either "Bernal" or "Ocellus"

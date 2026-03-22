@@ -6,11 +6,11 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class GalnetNewsPublishedEvent : Event
+    public class GalnetNewsPublishedEvent ( DateTime timestamp, List<News> items ) : Event( timestamp, NAME )
     {
         public const string NAME = "Galnet news published";
         public const string DESCRIPTION = "Triggered when news is published on Galnet";
-        public static GalnetNewsPublishedEvent SAMPLE = new(DateTime.UtcNow, [
+        public static readonly GalnetNewsPublishedEvent SAMPLE = new(DateTime.UtcNow, [
             new News( "testuuid1", "Article", "Galactic News: Ram Tah Releases Statement",
                 @"Earlier this month, engineer Ram Tah announced a research programme designed to uncover the secrets of the Synuefe ruins.",
                 DateTime.UtcNow, false ),
@@ -20,11 +20,6 @@ namespace EddiEvents
         ] );
 
         [PublicAPI("The published news items (as objects)")]
-        public List<News> items { get; private set; }
-
-        public GalnetNewsPublishedEvent(DateTime timestamp, List<News> items) : base(timestamp, NAME)
-        {
-            this.items = items;
-        }
+        public List<News> items { get; private set; } = items;
     }
 }

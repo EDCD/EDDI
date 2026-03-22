@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace EddiDataDefinitions
 {
@@ -68,11 +69,12 @@ namespace EddiDataDefinitions
                 return null;
             }
 
-            string tidiedLoadout = loadoutName.ToLowerInvariant()
+            var tidiedLoadout = loadoutName.ToLowerInvariant()
                 .Replace("_", "")
                 .Replace("fighterloadout", "")
                 .Replace("name", "");
-            return AllOfThem.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedLoadout);
+            return AllOfThem.FirstOrDefault(v =>
+                string.Equals( v.edname, tidiedLoadout, StringComparison.OrdinalIgnoreCase ) );
         }
     }
 }

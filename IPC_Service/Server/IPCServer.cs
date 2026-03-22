@@ -29,7 +29,6 @@ namespace EddiIPC_Service.Server
         private Task? _acceptConnectionsTask;
         private readonly Dictionary<string, ConnectionContext> _connections = new();
         private readonly object _connectionsLock = new();
-        private readonly MessageRouter _router;
         private DefaultServerEventHandler? _ipcHandler;
         private IDisposable? _runtimeEventDispatcherRegistration;
 
@@ -56,7 +55,7 @@ namespace EddiIPC_Service.Server
         /// </summary>
         public IPCServer ()
         {
-            _router = new MessageRouter();
+            Router = new MessageRouter();
             Port = 0;
             IsRunning = false;
         }
@@ -64,7 +63,7 @@ namespace EddiIPC_Service.Server
         /// <summary>
         /// Get the message router for registering handlers.
         /// </summary>
-        public MessageRouter Router => _router;
+        public MessageRouter Router { get; }
 
         /// <summary>
         /// Initialize IPC server for plugin mode communication.
@@ -238,7 +237,7 @@ namespace EddiIPC_Service.Server
                 try
                 {
                     rentedBuffer = ArrayPool<byte>.Shared.Rent( serialized.Length * 2 );
-                    int bytesWritten = Encoding.UTF8.GetBytes( serialized, 0, serialized.Length, rentedBuffer, 0 );
+                    var bytesWritten = Encoding.UTF8.GetBytes( serialized, 0, serialized.Length, rentedBuffer, 0 );
 
                     await context.Stream.WriteAsync( rentedBuffer, 0, bytesWritten, cancellationToken ).ConfigureAwait( false );
                     await context.Stream.FlushAsync( cancellationToken ).ConfigureAwait( false );
@@ -288,7 +287,7 @@ namespace EddiIPC_Service.Server
             try
             {
                 rentedBuffer = ArrayPool<byte>.Shared.Rent( serialized.Length * 2 );
-                int bytesWritten = Encoding.UTF8.GetBytes( serialized, 0, serialized.Length, rentedBuffer, 0 );
+                var bytesWritten = Encoding.UTF8.GetBytes( serialized, 0, serialized.Length, rentedBuffer, 0 );
 
                 var tasks = sessionIds.Select( id => SendToConnectionAsyncWithBuffer( id, rentedBuffer, bytesWritten, message.Type, cancellationToken ) );
                 await Task.WhenAll( tasks ).ConfigureAwait( false );
@@ -510,7 +509,7 @@ namespace EddiIPC_Service.Server
                                 try
                                 {
                                     message.Validate();
-                                    await _router.RouteAsync( message, context ).ConfigureAwait( false );
+                                    await Router.RouteAsync( message, context ).ConfigureAwait( false );
                                 }
                                 catch ( Exception ex )
                                 {
@@ -587,6 +586,7 @@ namespace EddiIPC_Service.Server
             }
 
             _cancellationTokenSource?.Dispose();
+            GC.SuppressFinalize( this );
         }
     }
 }

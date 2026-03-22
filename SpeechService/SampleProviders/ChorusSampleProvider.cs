@@ -372,28 +372,15 @@ namespace EddiSpeechService.SampleProviders
         private static float GetVoiceWeight ( int voiceIndex, float fxLevel )
         {
             // Spline-based activation curves (smooth, monotonic; no abrupt cuts)
-            float act;
-            switch ( voiceIndex )
+            float act = voiceIndex switch
             {
-                case 0:
-                    act = Curve.Voice0ActSpline.Evaluate( fxLevel );
-                    break;
-                case 1:
-                    act = Curve.Voice1ActSpline.Evaluate( fxLevel );
-                    break;
-                case 2:
-                    act = Curve.Voice2ActSpline.Evaluate( fxLevel );
-                    break;
-                case 3:
-                    act = Curve.Voice3ActSpline.Evaluate( fxLevel );
-                    break;
-                case 4:
-                    act = Curve.Voice4ActSpline.Evaluate( fxLevel );
-                    break;
-                default:
-                    act = Curve.Voice5ActSpline.Evaluate( fxLevel );
-                    break;
-            }
+                0 => Curve.Voice0ActSpline.Evaluate( fxLevel ),
+                1 => Curve.Voice1ActSpline.Evaluate( fxLevel ),
+                2 => Curve.Voice2ActSpline.Evaluate( fxLevel ),
+                3 => Curve.Voice3ActSpline.Evaluate( fxLevel ),
+                4 => Curve.Voice4ActSpline.Evaluate( fxLevel ),
+                _ => Curve.Voice5ActSpline.Evaluate( fxLevel )
+            };
 
             return Constants.VoiceBaseWeight * act;
         }

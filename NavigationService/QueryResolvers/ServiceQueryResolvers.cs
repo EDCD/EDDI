@@ -112,7 +112,7 @@ namespace EddiNavigationService.QueryResolvers
     #region ServiceQueryResolver
     public abstract class ServiceQueryResolver
     {
-        protected Task<RouteDetailsEvent> ResolveAsync ( QueryType queryType,
+        protected static Task<RouteDetailsEvent> ResolveAsync ( QueryType queryType,
             Dictionary<string, object> spanshQueryFilter,
             [ NotNull ] Query query,
             [ NotNull ] StarSystem startSystem ) => GetServiceSystemAsync( queryType, startSystem,

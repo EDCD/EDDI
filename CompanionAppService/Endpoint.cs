@@ -44,22 +44,19 @@ namespace EddiCompanionAppService
         }
     }
 
-    public class CompanionApiEndpointEventArgs : EventArgs
+    public class CompanionApiEndpointEventArgs (
+        JObject profileJson,
+        JObject marketJson,
+        JObject shipyardJson,
+        JObject fleetCarrierJson )
+        : EventArgs
     {
-        public readonly JObject profileJson;
+        public readonly JObject profileJson = profileJson;
 
-        public readonly JObject marketJson;
+        public readonly JObject marketJson = marketJson;
 
-        public readonly JObject shipyardJson;
+        public readonly JObject shipyardJson = shipyardJson;
 
-        public readonly JObject fleetCarrierJson;
-
-        public CompanionApiEndpointEventArgs(JObject profileJson, JObject marketJson, JObject shipyardJson, JObject fleetCarrierJson)
-        {
-            this.profileJson = profileJson;
-            this.marketJson = marketJson;
-            this.shipyardJson = shipyardJson;
-            this.fleetCarrierJson = fleetCarrierJson;
-        }
+        public readonly JObject fleetCarrierJson = fleetCarrierJson;
     }
 }

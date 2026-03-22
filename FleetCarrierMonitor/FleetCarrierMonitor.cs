@@ -154,7 +154,7 @@ namespace EddiFleetCarrierMonitor
             return Task.CompletedTask;
         }
 
-        private bool CarrierIsDecommissioned ( DateTime timestamp, FleetCarrier carrier )
+        private static bool CarrierIsDecommissioned ( DateTime timestamp, FleetCarrier carrier )
         {
             if ( timestamp > carrier?.DecomissionDateTime )
             {
@@ -173,7 +173,7 @@ namespace EddiFleetCarrierMonitor
             return false;
         }
 
-        private bool CarrierTimestampIsCurrent( DateTime timestamp, FleetCarrier carrier )
+        private static bool CarrierTimestampIsCurrent( DateTime timestamp, FleetCarrier carrier )
         {
             // We only want to update the carrier objects with new events
             return timestamp >= carrier?.timestamp;
@@ -503,7 +503,7 @@ namespace EddiFleetCarrierMonitor
             }
         }
 
-        private void handleFileHeaderEvent ()
+        private static void handleFileHeaderEvent ()
         {
             EDDI.Instance.FleetCarrier = ConfigService.Instance.fleetCarrierConfiguration.fleetCarrier;
             EDDI.Instance.SquadronCarrier = ConfigService.Instance.fleetCarrierConfiguration.squadronCarrier;
@@ -575,7 +575,7 @@ namespace EddiFleetCarrierMonitor
             return Task.CompletedTask;
         }
 
-        private async Task HandleCarrierJumpCancelledAsync ( CarrierJumpCancelledEvent cjc )
+        private static async Task HandleCarrierJumpCancelledAsync ( CarrierJumpCancelledEvent cjc )
         {
             var cts = ResetCarrierSchedule(cjc.carrierID);
             var token = cts.Token;
@@ -614,7 +614,7 @@ namespace EddiFleetCarrierMonitor
             }
         }
 
-        private async Task HandleCarrierJumpRequestAsync ( CarrierJumpRequestEvent cjr )
+        private static async Task HandleCarrierJumpRequestAsync ( CarrierJumpRequestEvent cjr )
         {
             var cts = ResetCarrierSchedule(cjr.carrierID);
             var token = cts.Token;
@@ -679,7 +679,7 @@ namespace EddiFleetCarrierMonitor
             }
         }
 
-        private async Task HandleCarrierJumpedAsync ( CarrierJumpedEvent cj )
+        private static async Task HandleCarrierJumpedAsync ( CarrierJumpedEvent cj )
         {
             if ( cj.carrierID == null ) { return; }
 
@@ -878,7 +878,7 @@ namespace EddiFleetCarrierMonitor
             }
         }
         
-        private void CleanupCarrierSchedule ( long carrierId, CancellationTokenSource cts )
+        private static void CleanupCarrierSchedule ( long carrierId, CancellationTokenSource cts )
         {
             // Remove only if the dictionary still points to THIS cts (prevents removing a newer one).
             if ( _carrierJumpCts.TryGetValue( carrierId, out var current ) && ReferenceEquals( current, cts ) )
@@ -913,7 +913,7 @@ namespace EddiFleetCarrierMonitor
             }
         }
 
-        private CancellationTokenSource ResetCarrierSchedule ( long carrierId )
+        private static CancellationTokenSource ResetCarrierSchedule ( long carrierId )
         {
             var newCts = new CancellationTokenSource();
 

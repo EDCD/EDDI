@@ -100,7 +100,7 @@ namespace EddiEddpMonitor
                     try
                     {
                         // We only listen for updates if the user has selected anything to listen to
-                        if (configuration.watches != null && configuration.watches.Count > 0)
+                        if (configuration.watches is { } list && list.Count > 0 )
                         {
                             //using (var subscriber = new SubscriberSocket())
                             //{

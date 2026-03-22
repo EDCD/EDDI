@@ -257,7 +257,7 @@ namespace EddiDataDefinitions
 
         public static void AddOrUpdate(Engineer engineer)
         {
-            int index = ENGINEERS.FindIndex(candidate => candidate.id == engineer.id);
+            var index = ENGINEERS.FindIndex(candidate => candidate.id == engineer.id);
             if (index != -1)
             {
                 ENGINEERS[index].name = engineer.name;
