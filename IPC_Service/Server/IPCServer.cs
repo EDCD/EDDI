@@ -3,6 +3,7 @@
 using EddiIPC_Service.Messages;
 using EddiIPC_Service.Messaging;
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -232,12 +233,25 @@ namespace EddiIPC_Service.Server
                 cancellationToken.ThrowIfCancellationRequested();
 
                 var serialized = MessageSerializer.Serialize( message );
-                var bytes = Encoding.UTF8.GetBytes( serialized );
+                // Use ArrayPool to reduce allocations
+                byte[]? rentedBuffer = null;
+                try
+                {
+                    rentedBuffer = ArrayPool<byte>.Shared.Rent( serialized.Length * 2 );
+                    int bytesWritten = Encoding.UTF8.GetBytes( serialized, 0, serialized.Length, rentedBuffer, 0 );
 
-                await context.Stream.WriteAsync( bytes, 0, bytes.Length, cancellationToken ).ConfigureAwait( false );
-                await context.Stream.FlushAsync( cancellationToken ).ConfigureAwait( false );
+                    await context.Stream.WriteAsync( rentedBuffer, 0, bytesWritten, cancellationToken ).ConfigureAwait( false );
+                    await context.Stream.FlushAsync( cancellationToken ).ConfigureAwait( false );
 
-                Logging.Debug( $"Sent {message.Type} message to session {sessionId}: {serialized}" );
+                    Logging.Debug( $"Sent {message.Type} message to session {sessionId}: {serialized}" );
+                }
+                finally
+                {
+                    if ( rentedBuffer != null )
+                    {
+                        ArrayPool<byte>.Shared.Return( rentedBuffer );
+                    }
+                }
             }
             catch ( OperationCanceledException )
             {
@@ -268,8 +282,52 @@ namespace EddiIPC_Service.Server
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            var tasks = sessionIds.Select( id => SendToConnectionAsync( id, message, cancellationToken ) );
-            await Task.WhenAll( tasks ).ConfigureAwait( false );
+            // Serialize once and reuse the bytes for all clients
+            var serialized = MessageSerializer.Serialize( message );
+            byte[]? rentedBuffer = null;
+            try
+            {
+                rentedBuffer = ArrayPool<byte>.Shared.Rent( serialized.Length * 2 );
+                int bytesWritten = Encoding.UTF8.GetBytes( serialized, 0, serialized.Length, rentedBuffer, 0 );
+
+                var tasks = sessionIds.Select( id => SendToConnectionAsyncWithBuffer( id, rentedBuffer, bytesWritten, message.Type, cancellationToken ) );
+                await Task.WhenAll( tasks ).ConfigureAwait( false );
+            }
+            finally
+            {
+                if ( rentedBuffer != null )
+                {
+                    ArrayPool<byte>.Shared.Return( rentedBuffer );
+                }
+            }
+        }
+
+        /// <summary>
+        /// Send pre-serialized message bytes to a connection (used by BroadcastAsync).
+        /// </summary>
+        private async Task SendToConnectionAsyncWithBuffer ( string sessionId, byte[] buffer, int length, string messageType, CancellationToken cancellationToken )
+        {
+            ConnectionContext? context;
+            lock ( _connectionsLock )
+            {
+                _connections.TryGetValue( sessionId, out context );
+            }
+
+            if ( context?.Stream is null )
+            {
+                return;
+            }
+
+            try
+            {
+                await context.Stream.WriteAsync( buffer, 0, length, cancellationToken ).ConfigureAwait( false );
+                await context.Stream.FlushAsync( cancellationToken ).ConfigureAwait( false );
+            }
+            catch ( Exception ex )
+            {
+                Logging.Error( $"Error broadcasting {messageType} to session {sessionId}: {ex.Message}" );
+                await DisconnectAsync( sessionId, "broadcast_error" );
+            }
         }
 
         /// <summary>
@@ -408,10 +466,11 @@ namespace EddiIPC_Service.Server
 
             Logging.Info( $"Client connected: session {context.SessionId}" );
 
+            byte[]? rentedBuffer = null;
             try
             {
-                var buffer = new byte[ 65536 ];
-                var remainingBytes = new List<byte>();
+                rentedBuffer = ArrayPool<byte>.Shared.Rent( 65536 );
+                var remainingBytes = new List<byte>( 131072 ); // Pre-allocate with typical message capacity
 
                 while ( !cancellationToken.IsCancellationRequested && context.IsConnected )
                 {
@@ -419,7 +478,7 @@ namespace EddiIPC_Service.Server
                     {
                         ArgumentNullException.ThrowIfNull( context.Stream, "Client stream is null" );
 
-                        var bytesRead = await context.Stream.ReadAsync( buffer, 0, buffer.Length, cancellationToken )
+                        var bytesRead = await context.Stream.ReadAsync( rentedBuffer, 0, 65536, cancellationToken )
                             .ConfigureAwait( false );
 
                         if ( bytesRead == 0 )
@@ -427,7 +486,8 @@ namespace EddiIPC_Service.Server
                             break;
                         }
 
-                        remainingBytes.AddRange( buffer.AsSpan( 0, bytesRead ).ToArray() );
+                        // Directly add span instead of ToArray() + AddRange() to reduce allocations
+                        remainingBytes.AddRange( rentedBuffer.AsSpan( 0, bytesRead ) );
 
                         while ( remainingBytes.Count > 0 )
                         {
@@ -480,12 +540,13 @@ namespace EddiIPC_Service.Server
                     }
                 }
             }
-            catch ( Exception ex )
-            {
-                Logging.Error( $"Error in client handler for session {context.SessionId}: {ex.Message}", ex );
-            }
             finally
             {
+                if ( rentedBuffer != null )
+                {
+                    ArrayPool<byte>.Shared.Return( rentedBuffer );
+                }
+
                 lock ( _connectionsLock )
                 {
                     _connections.Remove( context.SessionId );

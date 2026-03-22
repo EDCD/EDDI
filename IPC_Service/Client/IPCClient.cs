@@ -3,6 +3,7 @@ using EddiIPC_Service.Messages;
 using EddiIPC_Service.Messaging;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Buffers;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -296,14 +297,27 @@ namespace EddiIPC_Service.Client
             try
             {
                 var serialized = MessageSerializer.Serialize( envelope );
-                var data = Encoding.UTF8.GetBytes( serialized );
+                // Use ArrayPool to reduce allocations
+                byte[]? rentedBuffer = null;
+                try
+                {
+                    rentedBuffer = ArrayPool<byte>.Shared.Rent( serialized.Length * 2 );
+                    int bytesWritten = Encoding.UTF8.GetBytes( serialized, 0, serialized.Length, rentedBuffer, 0 );
 
-                // Write data (includes length prefix and JSON)
-                await _networkStream.WriteAsync( data, 0, data.Length, cancellationToken ).ConfigureAwait( false );
-                await _networkStream.FlushAsync( cancellationToken ).ConfigureAwait( false );
+                    // Write data (includes length prefix and JSON)
+                    await _networkStream.WriteAsync( rentedBuffer, 0, bytesWritten, cancellationToken ).ConfigureAwait( false );
+                    await _networkStream.FlushAsync( cancellationToken ).ConfigureAwait( false );
 
-                _messagesSent++;
-                _lastActivityAt = DateTime.UtcNow;
+                    _messagesSent++;
+                    _lastActivityAt = DateTime.UtcNow;
+                }
+                finally
+                {
+                    if ( rentedBuffer != null )
+                    {
+                        ArrayPool<byte>.Shared.Return( rentedBuffer );
+                    }
+                }
             }
             catch ( Exception )
             {
@@ -319,16 +333,16 @@ namespace EddiIPC_Service.Client
                 return;
             }
 
-            var bufferedBytes = new List<byte>();
+            byte[] rentedBuffer = ArrayPool<byte>.Shared.Rent( 4096 );
+            var bufferedBytes = new List<byte>( 8192 ); // Pre-allocate with typical message capacity
             try
             {
                 while ( !cancellationToken.IsCancellationRequested && ( _tcpClient?.Connected ?? false ) )
                 {
                     try
                     {
-                        var receiveBuffer = new byte[ 4096 ];
                         int bytesRead = await _networkStream
-                            .ReadAsync( receiveBuffer, 0, receiveBuffer.Length, cancellationToken )
+                            .ReadAsync( rentedBuffer, 0, 4096, cancellationToken )
                             .ConfigureAwait( false );
 
                         if ( bytesRead == 0 )
@@ -337,7 +351,8 @@ namespace EddiIPC_Service.Client
                             break;
                         }
 
-                        bufferedBytes.AddRange( receiveBuffer.AsSpan( 0, bytesRead ).ToArray() );
+                        // More efficient: directly extend the list instead of ToArray() + AddRange()
+                        bufferedBytes.AddRange( rentedBuffer.AsSpan( 0, bytesRead ) );
 
                         while ( bufferedBytes.Count > 0 )
                         {
@@ -375,6 +390,7 @@ namespace EddiIPC_Service.Client
             }
             finally
             {
+                ArrayPool<byte>.Shared.Return( rentedBuffer );
                 _isConnected = false;
                 ConnectionLost?.Invoke( this, new ConnectionLostEventArgs( "Receive loop ended" ) );
             }
