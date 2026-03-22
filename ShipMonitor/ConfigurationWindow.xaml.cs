@@ -111,7 +111,7 @@ namespace EddiShipMonitor
                     // Last-gasp attempt if we have a shorter URL
                     if (uri.Length < 2048)
                     {
-                        Process.Start(uri);
+                        Process.Start( new ProcessStartInfo( uri ) { UseShellExecute = true } );
                     }
                     else
                     {

@@ -128,77 +128,70 @@ namespace EddiSpeechService.SpeechSynthesizers
             SpeechSynthesisStream stream = null;
             var synthTask = Task.Run( async () =>
             {
-                try
+                double ConvertSpeakingRate(int rate)
                 {
-                    double ConvertSpeakingRate(int rate)
+                    // Convert from rate from -10 to 10 (with 0 being normal speed) to rate from 0.5X to 3X (with 1.0 being normal speed)
+                    var result = 1.0;
+                    if (rate < 0)
                     {
-                        // Convert from rate from -10 to 10 (with 0 being normal speed) to rate from 0.5X to 3X (with 1.0 being normal speed)
-                        var result = 1.0;
-                        if (rate < 0)
-                        {
-                            result += rate * 0.05;
-                        }
-                        else if (rate > 0)
-                        {
-                            result += rate * 0.2;
-                        }
-
-                        return result;
+                        result += rate * 0.05;
+                    }
+                    else if (rate > 0)
+                    {
+                        result += rate * 0.2;
                     }
 
-                    if (!voice.name.Equals(synth.Voice.DisplayName))
-                    {
-                        Logging.Debug("Selecting voice " + voice.name);
-                        synth.Voice =
-                            SpeechSynthesizer.AllVoices.FirstOrDefault(v =>
-                                v.DisplayName == voice.name);
-                    }
-
-                    synth.Options.SpeakingRate = ConvertSpeakingRate(Configuration.Rate);
-                    synth.Options.AudioVolume = (double)Configuration.Volume / 100;         // Volume is on a 0 - 1 scale
-                    Logging.Debug("Configuration is: ", Configuration);
-
-                    SpeechFormatter.PrepareSpeech(voice, ref speech, out var useSSML);
-                    if (useSSML)
-                    {
-                        try
-                        {
-                            Logging.Debug("Feeding SSML to synthesizer: " + speech);
-                            stream = await synth.SynthesizeSsmlToStreamAsync(speech);
-                        }
-                        catch (Exception ex)
-                        {
-                            var badSpeech = new Dictionary<string, object>
-                            {
-                                { "voice", voice },
-                                { "speech", speech },
-                                { "exception", ex }
-                            };
-                            if ( speech.Contains("<phoneme") )
-                            {
-                                Logging.Warn("Speech failed. Stripping IPA tags and re-trying.", badSpeech);
-                                stream = await synth.SynthesizeSsmlToStreamAsync(SpeechFormatter.DisableIPA(speech));
-                            }
-                            else
-                            {
-                                Logging.Warn("Speech failed. Stripping all SSML tags and re-trying.", badSpeech);
-                                speech = SpeechFormatter.StripSSML( speech );
-                                stream = await synth.SynthesizeTextToStreamAsync(speech);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Logging.Debug("Feeding normal text to synthesizer: " + speech);
-                        stream = await synth.SynthesizeTextToStreamAsync(speech);
-                    }
-
-                    stream.Seek(0);
+                    return result;
                 }
-                catch (ThreadAbortException)
+
+                if (!voice.name.Equals(synth.Voice.DisplayName))
                 {
-                    Logging.Debug("Thread aborted");
+                    Logging.Debug("Selecting voice " + voice.name);
+                    synth.Voice =
+                        SpeechSynthesizer.AllVoices.FirstOrDefault(v =>
+                            v.DisplayName == voice.name);
                 }
+
+                synth.Options.SpeakingRate = ConvertSpeakingRate(Configuration.Rate);
+                synth.Options.AudioVolume = (double)Configuration.Volume / 100;         // Volume is on a 0 - 1 scale
+                Logging.Debug("Configuration is: ", Configuration);
+
+                SpeechFormatter.PrepareSpeech(voice, ref speech, out var useSSML);
+                if (useSSML)
+                {
+                    try
+                    {
+                        Logging.Debug("Feeding SSML to synthesizer: " + speech);
+                        stream = await synth.SynthesizeSsmlToStreamAsync(speech);
+                    }
+                    catch (Exception ex)
+                    {
+                        var badSpeech = new Dictionary<string, object>
+                        {
+                            { "voice", voice },
+                            { "speech", speech },
+                            { "exception", ex }
+                        };
+                        if ( speech.Contains("<phoneme") )
+                        {
+                            Logging.Warn("Speech failed. Stripping IPA tags and re-trying.", badSpeech);
+                            stream = await synth.SynthesizeSsmlToStreamAsync(SpeechFormatter.DisableIPA(speech));
+                        }
+                        else
+                        {
+                            Logging.Warn("Speech failed. Stripping all SSML tags and re-trying.", badSpeech);
+                            speech = SpeechFormatter.StripSSML( speech );
+                            stream = await synth.SynthesizeTextToStreamAsync(speech);
+                        }
+                    }
+                }
+                else
+                {
+                    Logging.Debug("Feeding normal text to synthesizer: " + speech);
+                    stream = await synth.SynthesizeTextToStreamAsync(speech);
+                }
+
+                stream.Seek(0);
             });
 
             try
@@ -207,10 +200,7 @@ namespace EddiSpeechService.SpeechSynthesizers
             }
             catch (AggregateException ae)
             {
-                foreach (var ex in ae.InnerExceptions)
-                {
-                    throw ex;
-                }
+                System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(ae.InnerExceptions[0]).Throw();
             }
 
             return stream;

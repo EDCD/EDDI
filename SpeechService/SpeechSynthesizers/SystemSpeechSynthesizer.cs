@@ -202,10 +202,7 @@ namespace EddiSpeechService.SpeechSynthesizers
             }
             catch (AggregateException ae)
             {
-                foreach (var ex in ae.InnerExceptions)
-                {
-                    throw ex;
-                }
+                System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(ae.InnerExceptions[0]).Throw();
             }
 
             return stream;
