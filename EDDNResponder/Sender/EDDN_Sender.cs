@@ -116,7 +116,19 @@ namespace EddiEddnResponder.Sender
 
             try
             {
-                var response = await SendRequestAsync(json).ConfigureAwait(false);
+                HttpResponseMessage response;
+                try
+                {
+                    response = await SendRequestAsync( json ).ConfigureAwait(false);
+                }
+                catch ( HttpRequestException hre ) when ( hre.HttpRequestError == HttpRequestError.ResponseEnded )
+                {
+                    // Transient network error where the server ends the connection before sending a response. Retry once.
+                    Logging.Warn( $"EDDN {body.schemaRef} connection ended prematurely, retrying in {shortRetryDelaySeconds}s" );
+                    await Task.Delay( TimeSpan.FromSeconds( shortRetryDelaySeconds ) ).ConfigureAwait(false);
+                    response = await SendRequestAsync( json ).ConfigureAwait(false);
+                }
+
                 if ( response.StatusCode == HttpStatusCode.RequestTimeout ||
                      response.StatusCode == HttpStatusCode.GatewayTimeout ) // Code 408 or 504
                 {
