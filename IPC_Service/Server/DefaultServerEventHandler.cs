@@ -114,7 +114,7 @@ namespace EddiIPC_Service.Server
 
             try
             {
-                if ( !TryGetMessageData( message.Data, out CommandData? cmdData ) )
+                if ( !TryGetMessageData( message.Data, out CommandData? cmdData ) || cmdData is null )
                 {
                     await SendCommandErrorResponseAsync( context.SessionId, message.Id, "Invalid command data format" );
                     return;

@@ -2,6 +2,7 @@ using EddiIPC_Service.Messages;
 using EddiIPC_Service.Messaging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
@@ -17,15 +18,15 @@ namespace Tests.EddiVoiceAttackService
         private const string TestMessageId = "12345678-1234-1234-1234-123456789012";
 
         [ TestMethod ]
-        public void Serialize_HeartbeatMessage_ProducesLengthPrefixedJson ()
+        public void Serialize_DisconnectMessage_ProducesLengthPrefixedJson ()
         {
             // Arrange
             var envelope = new MessageEnvelope
             {
-                Type = "Heartbeat",
+                Type = MessageTypes.Disconnect,
                 Timestamp = "2025-01-20T15:30:45.123Z",
                 Id = TestMessageId,
-                Data = new HeartbeatData { Status = "alive", UptimeMs = 5000 }
+                Data = new DisconnectData { Reason = "user_shutdown" }
             };
 
             // Act
@@ -54,10 +55,10 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             var json = JsonConvert.SerializeObject( new MessageEnvelope
             {
-                Type = "Heartbeat",
+                Type = MessageTypes.Disconnect,
                 Timestamp = "2025-01-20T15:30:45.123Z",
                 Id = TestMessageId,
-                Data = new HeartbeatData { Status = "alive", UptimeMs = 5000 }
+                Data = new DisconnectData { Reason = "user_shutdown" }
             } );
             var jsonBytes = System.Text.Encoding.UTF8.GetBytes( json );
             var serialized = $"{jsonBytes.Length}\n{json}";
@@ -67,7 +68,7 @@ namespace Tests.EddiVoiceAttackService
 
             // Assert
             Assert.IsNotNull( deserialized );
-            Assert.AreEqual( "Heartbeat", deserialized.Type );
+            Assert.AreEqual( MessageTypes.Disconnect, deserialized.Type );
             Assert.AreEqual( TestMessageId, deserialized.Id );
         }
 
@@ -77,15 +78,15 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             var original = new MessageEnvelope
             {
-                Type = "Connect",
+                Type = MessageTypes.Connect,
                 Timestamp = "2025-01-20T15:30:45.123Z",
                 Id = TestMessageId,
                 Data = new ConnectData
                 {
                     PluginVersion = "5.0.0",
                     PluginName = "EDDI VoiceAttack Plugin",
-                    Capabilities = [ "events", "commands" ],
-                    SupportedMessageTypes = [ "Connect", "Heartbeat", "Disconnect" ]
+                    Capabilities = ServerCapabilities.AllCapabilities,
+                    SupportedMessageTypes = ServerCapabilities.AllMessageTypes
                 }
             };
 
@@ -103,7 +104,7 @@ namespace Tests.EddiVoiceAttackService
         public void Deserialize_MissingLengthPrefix_ThrowsException ()
         {
             // Arrange
-            const string invalidMessage = "{\"type\":\"Heartbeat\"}"; // No length prefix
+            const string invalidMessage = "{\"type\":\"Disconnect\"}"; // No length prefix
 
             // Act & Assert
             try
@@ -121,7 +122,7 @@ namespace Tests.EddiVoiceAttackService
         public void Deserialize_InvalidLengthPrefix_ThrowsException ()
         {
             // Arrange
-            const string invalidMessage = "abc\n{\"type\":\"Heartbeat\"}"; // Non-numeric length
+            const string invalidMessage = "abc\n{\"type\":\"Disconnect\"}"; // Non-numeric length
 
             // Act & Assert
             try
@@ -161,7 +162,7 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             var json = JsonConvert.SerializeObject( new
             {
-                Type = "Heartbeat"
+                Type = MessageTypes.Disconnect
             } ); // Missing Id, Timestamp, Version, Data
             var jsonBytes = System.Text.Encoding.UTF8.GetBytes( json );
             var incompleteMessage = $"{jsonBytes.Length}\n{json}";
@@ -282,7 +283,7 @@ namespace Tests.EddiVoiceAttackService
         public void Deserialize_PayloadLengthMismatch_ThrowsException ()
         {
             // Arrange - Declare wrong length
-            const string json = "{\"type\":\"Heartbeat\"}";
+            const string json = "{\"type\":\"Disconnect\"}";
             const int wrongLength = 999; // Actual payload is much shorter
             var malformedMessage = $"{wrongLength}\n{json}";
 
@@ -304,16 +305,16 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             var messages = new List<MessageEnvelope>
             {
-                MessageEnvelope.Create( "Heartbeat", new HeartbeatData { Status = "alive", UptimeMs = 1000 } ),
-                MessageEnvelope.Create( "Connect",
+                MessageEnvelope.Create( MessageTypes.Disconnect, new DisconnectData { Reason = "user_shutdown" } ),
+                MessageEnvelope.Create( MessageTypes.Connect,
                     new ConnectData
                     {
                         PluginVersion = "5.0.0",
                         PluginName = "Plugin",
                         Capabilities = [ "events" ],
-                        SupportedMessageTypes = [ "Heartbeat" ]
+                        SupportedMessageTypes = [ MessageTypes.Disconnect ]
                     } ),
-                MessageEnvelope.Create( "Disconnect", new DisconnectData { Reason = "shutdown" } )
+                MessageEnvelope.Create( MessageTypes.Disconnect, new DisconnectData { Reason = "shutdown" } )
             };
 
             // Act & Assert
@@ -325,6 +326,66 @@ namespace Tests.EddiVoiceAttackService
                 var actualLength = System.Text.Encoding.UTF8.GetByteCount( parts[ 1 ] );
                 Assert.AreEqual( declaredLength, actualLength, $"Length mismatch for {msg.Type}" );
             }
+        }
+
+        [ TestMethod ]
+        public void DeserializeMessages_Utf8PayloadSplitAcrossBuffers_ReconstructsMessage ()
+        {
+            // Arrange
+            var envelope = new MessageEnvelope
+            {
+                Type = "Event",
+                Timestamp = "2025-01-20T15:30:45.123Z",
+                Id = TestMessageId,
+                Data = new EventData
+                {
+                    EventType = "Test",
+                    EventName = "Plugin reconnect 🚀",
+                    EventPayload = new Dictionary<string, object>
+                    {
+                        { "host", "EDDI 🚀" },
+                        { "state", "replacement" }
+                    }
+                }
+            };
+            var serialized = MessageSerializer.Serialize( envelope );
+            var serializedBytes = System.Text.Encoding.UTF8.GetBytes( serialized );
+            var splitIndex = FindSplitInsideMultibyteSequence( serializedBytes, "🚀" );
+
+            // Act
+            var firstSegment = serializedBytes.AsSpan( 0, splitIndex );
+            var firstCount = MessageSerializer.DeserializeMessages( firstSegment, out var firstMessages,
+                out var firstBytesConsumed );
+
+            var reassembled = new byte[ serializedBytes.Length ];
+            Array.Copy( serializedBytes, 0, reassembled, 0, splitIndex );
+            Array.Copy( serializedBytes, splitIndex, reassembled, splitIndex, serializedBytes.Length - splitIndex );
+            var secondCount = MessageSerializer.DeserializeMessages( reassembled, out var secondMessages,
+                out var secondBytesConsumed );
+
+            // Assert
+            Assert.AreEqual( 0, firstCount );
+            Assert.AreEqual( 0, firstMessages.Count );
+            Assert.AreEqual( 0, firstBytesConsumed );
+            Assert.AreEqual( 1, secondCount );
+            Assert.AreEqual( serializedBytes.Length, secondBytesConsumed );
+            Assert.AreEqual( "Event", secondMessages[ 0 ].Type );
+            Assert.AreEqual( TestMessageId, secondMessages[ 0 ].Id );
+        }
+
+        private static int FindSplitInsideMultibyteSequence ( byte[] buffer, string value )
+        {
+            var sequence = System.Text.Encoding.UTF8.GetBytes( value );
+            for ( var i = 0; i <= (buffer.Length - sequence.Length); i++ )
+            {
+                if ( buffer.Skip( i ).Take( sequence.Length ).SequenceEqual( sequence ) )
+                {
+                    return i + 1;
+                }
+            }
+
+            Assert.Fail( $"Unable to locate UTF-8 sequence for '{value}' in serialized payload." );
+            return 0;
         }
     }
 }

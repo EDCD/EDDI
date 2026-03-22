@@ -2,6 +2,8 @@
 
 using EddiIPC_Service.Messages;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,32 +14,48 @@ namespace EddiIPC_Service.Server
     /// </summary>
     public static class RuntimeEventDispatcher
     {
-        private static readonly object sync = new();
-        private static Func<EventData, CancellationToken, Task<bool>>? dispatcher;
-
-        /// <summary>
-        /// Register dispatcher implementation.
-        /// </summary>
-        /// <param name="runtimeDispatcher">Dispatcher callback.</param>
-        public static void RegisterDispatcher( Func<EventData, CancellationToken, Task<bool>> runtimeDispatcher )
+        private sealed class Registration : IDisposable
         {
-            ArgumentNullException.ThrowIfNull( runtimeDispatcher );
+            private readonly object _owner;
+            private bool _disposed;
 
-            lock ( sync )
+            internal Registration( object owner )
             {
-                dispatcher = runtimeDispatcher;
+                _owner = owner;
+            }
+
+            public void Dispose()
+            {
+                if ( _disposed )
+                {
+                    return;
+                }
+
+                UnregisterDispatcher( _owner );
+                _disposed = true;
             }
         }
 
+        private static readonly object sync = new();
+        private static readonly Dictionary<object, Func<EventData, CancellationToken, Task<bool>>> dispatchers = [];
+
         /// <summary>
-        /// Clear dispatcher registration.
+        /// Register dispatcher implementation.
+        /// Dispose the returned handle to unregister the dispatcher that was added by this call.
         /// </summary>
-        public static void ClearDispatcher()
+        /// <param name="runtimeDispatcher">Dispatcher callback.</param>
+        /// <returns>An owned registration handle.</returns>
+        public static IDisposable RegisterDispatcher( Func<EventData, CancellationToken, Task<bool>> runtimeDispatcher )
         {
+            ArgumentNullException.ThrowIfNull( runtimeDispatcher );
+
+            var owner = new object();
             lock ( sync )
             {
-                dispatcher = null;
+                dispatchers[ owner ] = runtimeDispatcher;
             }
+
+            return new Registration( owner );
         }
 
         /// <summary>
@@ -45,23 +63,38 @@ namespace EddiIPC_Service.Server
         /// </summary>
         /// <param name="eventData">Event payload envelope data.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>True when dispatch path is registered and executed.</returns>
+        /// <returns>True when at least one registered dispatch path executed successfully.</returns>
         public static async Task<bool> DispatchAsync( EventData eventData, CancellationToken cancellationToken = default )
         {
             ArgumentNullException.ThrowIfNull( eventData );
 
-            Func<EventData, CancellationToken, Task<bool>>? runtimeDispatcher;
+            List<Func<EventData, CancellationToken, Task<bool>>> runtimeDispatchers;
             lock ( sync )
             {
-                runtimeDispatcher = dispatcher;
+                runtimeDispatchers = dispatchers.Values.ToList();
             }
 
-            if ( runtimeDispatcher == null )
+            if ( runtimeDispatchers.Count == 0 )
             {
                 return false;
             }
 
-            return await runtimeDispatcher( eventData, cancellationToken ).ConfigureAwait( false );
+            var dispatched = false;
+            foreach ( var runtimeDispatcher in runtimeDispatchers )
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                dispatched = await runtimeDispatcher( eventData, cancellationToken ).ConfigureAwait( false ) || dispatched;
+            }
+
+            return dispatched;
+        }
+
+        private static void UnregisterDispatcher( object owner )
+        {
+            lock ( sync )
+            {
+                dispatchers.Remove( owner );
+            }
         }
     }
 }

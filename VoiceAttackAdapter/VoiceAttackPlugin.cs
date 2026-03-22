@@ -26,7 +26,8 @@ namespace EddiVoiceAttackAdapter
         public static Guid VA_Id() => new("{4AD8E3A4-CEFA-4558-B503-1CC9B99A07C1}");
 
         internal static dynamic? VaProxy;
-        internal static System.Version? VaVersion
+
+        private static System.Version? VaVersion
         {
             get
             {
@@ -37,14 +38,19 @@ namespace EddiVoiceAttackAdapter
             }
         }
 
-        internal static readonly object vaProxyLock = new();
-        private static bool _isShuttingDown = false;
-        private static Task? _crashMonitorTask;
+        private static readonly object vaProxyLock = new();
+        private static bool _isShuttingDown;
         private static bool _runtimeReceiverSubscribed;
+        private static VoiceAttackPluginClient? _runtimeReceiverClient;
+        private static CancellationTokenSource? _shutdownCancellationTokenSource;
 
         [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
         public static void VA_Init1(dynamic vaProxy)
         {
+            _isShuttingDown = false;
+            _shutdownCancellationTokenSource?.Dispose();
+            _shutdownCancellationTokenSource = new CancellationTokenSource();
+
             // Store VA proxy for variable read/write access
             if (vaProxy != null)
             {
@@ -56,7 +62,8 @@ namespace EddiVoiceAttackAdapter
 
             // Launch EDDI process and establish IPC connection immediately
             // (no need for callback; plugin is already running in VoiceAttack)
-            Task.Run(async () => await LaunchEddiAndInitializeIpcAsync().ConfigureAwait(false))
+            var shutdownToken = _shutdownCancellationTokenSource.Token;
+            Task.Run(async () => await LaunchEddiAndInitializeIpcAsync(shutdownToken).ConfigureAwait(false))
                 .SafeFireAndForget(ex => Logging.Error("Failed to initialize VoiceAttack plugin", ex));
         }
 
@@ -64,14 +71,15 @@ namespace EddiVoiceAttackAdapter
         /// Launch EDDI process and establish IPC connection for responder mode.
         /// Called on background thread to avoid blocking VoiceAttack.
         /// </summary>
-        private static async Task LaunchEddiAndInitializeIpcAsync()
+        private static async Task LaunchEddiAndInitializeIpcAsync(CancellationToken cancellationToken)
         {
             try
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 Logging.Info("VoiceAttack plugin: Launching EDDI process");
 
                 // Launch EDDI as separate process or connect to existing instance
-                var launchSuccess = await EddiProcessLauncher.LaunchEddiIfNeededAsync(true, VaVersion).ConfigureAwait(false);
+                var launchSuccess = await EddiProcessLauncher.LaunchEddiIfNeededAsync(true, VaVersion, cancellationToken).ConfigureAwait(false);
                 if (!launchSuccess)
                 {
                     Logging.Warn("Failed to launch or connect to EDDI standalone process");
@@ -82,14 +90,14 @@ namespace EddiVoiceAttackAdapter
                 // Initialize IPC client for command/query/event dispatch
                 try
                 {
-                    await VoiceAttackPluginHost.Instance.InitializeAsync().ConfigureAwait(false);
+                    await VoiceAttackPluginHost.Instance.InitializeAsync( cancellationToken ).ConfigureAwait(false);
                     Logging.Debug("IPC client initialized");
 
                     RegisterRuntimeEventReceiver();
 
                     // Send responder mode handshake to EDDI.exe
                     // This sets EDDI.FromVA = true and triggers VoiceAttackResponderMode initialization in EDDI.exe
-                    var responderModeEnabled = await VoiceAttackPluginHost.Instance.SendSetResponderModeAsync(true, VaVersion).ConfigureAwait(false);
+                    var responderModeEnabled = await VoiceAttackPluginHost.Instance.SendSetResponderModeAsync(true, VaVersion, cancellationToken ).ConfigureAwait(false);
                     if (!responderModeEnabled)
                     {
                         Logging.Warn("VoiceAttack responder mode handshake was not acknowledged");
@@ -100,13 +108,20 @@ namespace EddiVoiceAttackAdapter
                     Logging.Info("VoiceAttack responder mode handshake sent");
                     WriteToLog( "The EDDI plugin is fully operational.", "green" );
 
-                    // Start background task to monitor for EDDI crashes
-                    _crashMonitorTask = MonitorEddiProcessAsync();
+                    // Start background task to monitor for EDDI crashes we launched ourselves
+                    if ( EddiProcessLauncher.HasManagedEddiProcess() )
+                    {
+                        _ = MonitorEddiProcessAsync(cancellationToken);
+                    }
                 }
                 catch (Exception ex)
                 {
                     Logging.Warn($"Failed to initialize IPC client: {ex.Message}");
                 }
+            }
+            catch ( OperationCanceledException )
+            {
+                Logging.Debug( "VoiceAttack plugin initialization was cancelled" );
             }
             catch (Exception e)
             {
@@ -119,17 +134,17 @@ namespace EddiVoiceAttackAdapter
         /// Monitor EDDI process for unexpected crashes and automatically restart if needed.
         /// Runs in background until intentional shutdown is signaled.
         /// </summary>
-        private static async Task MonitorEddiProcessAsync()
+        private static async Task MonitorEddiProcessAsync(CancellationToken cancellationToken)
         {
             const int checkIntervalMs = 2000;
             const int maxRestartAttempts = 3;
             int restartAttempts = 0;
 
-            while (!_isShuttingDown)
+            while (!_isShuttingDown && !cancellationToken.IsCancellationRequested)
             {
                 try
                 {
-                    await Task.Delay(checkIntervalMs).ConfigureAwait(false);
+                    await Task.Delay(checkIntervalMs, cancellationToken).ConfigureAwait(false);
 
                     // Check if EDDI process has exited unexpectedly
                     if (EddiProcessLauncher.HasEddiProcessExited())
@@ -154,12 +169,12 @@ namespace EddiVoiceAttackAdapter
                             try
                             {
                                 // Relaunch EDDI and reinitialize IPC
-                                var restartSuccess = await EddiProcessLauncher.LaunchEddiIfNeededAsync(true, VaVersion).ConfigureAwait(false);
+                                var restartSuccess = await EddiProcessLauncher.LaunchEddiIfNeededAsync(true, VaVersion, cancellationToken).ConfigureAwait(false);
                                 if (restartSuccess)
                                 {
-                                    await VoiceAttackPluginHost.Instance.InitializeAsync().ConfigureAwait(false);
+                                    await VoiceAttackPluginHost.Instance.InitializeAsync( cancellationToken ).ConfigureAwait(false);
                                     RegisterRuntimeEventReceiver();
-                                    var responderModeEnabled = await VoiceAttackPluginHost.Instance.SendSetResponderModeAsync(true, VaVersion).ConfigureAwait(false);
+                                    var responderModeEnabled = await VoiceAttackPluginHost.Instance.SendSetResponderModeAsync(true, VaVersion, cancellationToken ).ConfigureAwait(false);
                                     if (!responderModeEnabled)
                                     {
                                         Logging.Warn("EDDI restart completed but responder mode handshake was not acknowledged");
@@ -177,6 +192,11 @@ namespace EddiVoiceAttackAdapter
                                     WriteToLog($"Failed to restart EDDI (attempt {restartAttempts}/{maxRestartAttempts}). Will retry...", "orange");
                                 }
                             }
+                            catch ( OperationCanceledException )
+                            {
+                                Logging.Debug( "EDDI restart monitoring was cancelled" );
+                                break;
+                            }
                             catch (Exception restartEx)
                             {
                                 Logging.Warn($"Exception during EDDI restart: {restartEx.Message}");
@@ -191,6 +211,10 @@ namespace EddiVoiceAttackAdapter
                         }
                     }
                 }
+                catch ( OperationCanceledException ) when ( cancellationToken.IsCancellationRequested )
+                {
+                    break;
+                }
                 catch (Exception ex)
                 {
                     Logging.Error($"Error in crash monitoring: {ex.Message}", ex);
@@ -200,11 +224,13 @@ namespace EddiVoiceAttackAdapter
             Logging.Debug("EDDI crash monitoring stopped");
         }
 
+
         [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
         public static void VA_Exit1( dynamic _ )
         {
             // Signal intentional shutdown to stop crash monitoring and prevent restart
             _isShuttingDown = true;
+            _shutdownCancellationTokenSource?.Cancel();
 
             Logging.Info("EDDI VoiceAttack plugin exiting");
 
@@ -236,6 +262,8 @@ namespace EddiVoiceAttackAdapter
 
             // Give background tasks a moment to gracefully shut down
             Thread.Sleep( 500 );
+            _shutdownCancellationTokenSource?.Dispose();
+            _shutdownCancellationTokenSource = null;
 
             // Dispose of plugin host
             try
@@ -272,7 +300,8 @@ namespace EddiVoiceAttackAdapter
             var commandContext = vaProxy.Context as string;
             if ( string.Equals( commandContext, "initialize eddi", StringComparison.OrdinalIgnoreCase ) )
             {
-                Task.Run( async () => await LaunchEddiAndInitializeIpcAsync().ConfigureAwait(false) )
+                var shutdownToken = _shutdownCancellationTokenSource?.Token ?? CancellationToken.None;
+                Task.Run( async () => await LaunchEddiAndInitializeIpcAsync(shutdownToken).ConfigureAwait(false), shutdownToken )
                     .SafeFireAndForget( ex => Logging.Error( "Failed to run initialize eddi bootstrap", ex ) );
                 return;
             }
@@ -332,34 +361,40 @@ namespace EddiVoiceAttackAdapter
 
         private static void RegisterRuntimeEventReceiver()
         {
-            if (_runtimeReceiverSubscribed)
+            var client = VoiceAttackPluginHost.Instance.Client;
+            if ( ReferenceEquals( _runtimeReceiverClient, client ) && _runtimeReceiverSubscribed )
             {
                 return;
             }
 
-            var client = VoiceAttackPluginHost.Instance.Client;
+            if ( _runtimeReceiverClient != null )
+            {
+                _runtimeReceiverClient.MessageReceived -= VoiceAttackRuntimeEventReceiver.HandleMessageReceived;
+                _runtimeReceiverClient = null;
+                _runtimeReceiverSubscribed = false;
+            }
+
             if (client == null)
             {
                 return;
             }
 
             client.MessageReceived += VoiceAttackRuntimeEventReceiver.HandleMessageReceived;
+            _runtimeReceiverClient = client;
             _runtimeReceiverSubscribed = true;
         }
 
         private static void UnregisterRuntimeEventReceiver()
         {
-            if (!_runtimeReceiverSubscribed)
+            if (!_runtimeReceiverSubscribed || _runtimeReceiverClient == null)
             {
+                _runtimeReceiverSubscribed = false;
+                _runtimeReceiverClient = null;
                 return;
             }
 
-            var client = VoiceAttackPluginHost.Instance.Client;
-            if (client != null)
-            {
-                client.MessageReceived -= VoiceAttackRuntimeEventReceiver.HandleMessageReceived;
-            }
-
+            _runtimeReceiverClient.MessageReceived -= VoiceAttackRuntimeEventReceiver.HandleMessageReceived;
+            _runtimeReceiverClient = null;
             _runtimeReceiverSubscribed = false;
         }
 

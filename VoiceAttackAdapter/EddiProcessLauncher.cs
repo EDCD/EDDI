@@ -17,8 +17,10 @@ namespace EddiVoiceAttackAdapter
     public static class EddiProcessLauncher
     {
         private const int LaunchTimeoutMs = 15000;  // 15 seconds to wait for EDDI to launch and be ready
-        private const int ConnectionRetryIntervalMs = 500;  // Check for IPC server every 500ms
+        private const int ConnectionRetryIntervalMs = 500;  // Check for IPC server every 500ms during initial startup
+        private const int BackgroundConnectionRetryIntervalMs = 3000;  // Continue polling every 3 seconds if a connection isn't established within the initial startup window
         private static Process? _eddiProcess;
+        private static bool _managedEddiProcess;
 
         /// <summary>
         /// Attempts to launch the standalone EDDI process if it's not already running.
@@ -28,22 +30,31 @@ namespace EddiVoiceAttackAdapter
         /// <param name="voiceAttackVersion">Optional VoiceAttack host application version</param>
         /// <returns>True if EDI process launched successfully or was already running; False if launch failed</returns>
         public static async Task<bool> LaunchEddiIfNeededAsync(bool fromVoiceAttack = true,
-            System.Version? voiceAttackVersion = null)
+            System.Version? voiceAttackVersion = null, CancellationToken cancellationToken = default)
         {
             try
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 // Try to connect to existing EDDI server first
                 Logging.Debug("Attempting to connect to existing EDDI server...");
-                var isConnected = await AttemptServerConnectionAsync().ConfigureAwait(false);
+                var isConnected = await AttemptServerConnectionAsync(cancellationToken).ConfigureAwait(false);
                 if (isConnected)
                 {
+                    _eddiProcess = null;
+                    _managedEddiProcess = false;
                     Logging.Info("Connected to existing EDDI standalone instance");
                     return true;
                 }
 
                 // No server running, launch EDDI.exe
                 Logging.Info("No existing EDDI server found; launching EDDI.exe as separate process");
-                return await LaunchEddiProcessAsync(fromVoiceAttack, voiceAttackVersion).ConfigureAwait(false);
+                return await LaunchEddiProcessAsync(fromVoiceAttack, voiceAttackVersion, cancellationToken).ConfigureAwait(false);
+            }
+            catch (OperationCanceledException)
+            {
+                Logging.Debug("EDDI process launch was cancelled");
+                throw;
             }
             catch (Exception ex)
             {
@@ -56,11 +67,12 @@ namespace EddiVoiceAttackAdapter
         /// Attempts to connect to an existing EDDI IPC server.
         /// </summary>
         /// <returns>True if server is reachable; False if no server is running</returns>
-        private static async Task<bool> AttemptServerConnectionAsync()
+        private static async Task<bool> AttemptServerConnectionAsync(CancellationToken cancellationToken = default)
         {
             try
             {
-                var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));
+                using var cts = CancellationTokenSource.CreateLinkedTokenSource( cancellationToken );
+                cts.CancelAfter( TimeSpan.FromSeconds( 3 ) );
                 await Client.VoiceAttackPluginHost.Instance
                     .InitializeAsync(cts.Token)
                     .ConfigureAwait(false);
@@ -68,7 +80,7 @@ namespace EddiVoiceAttackAdapter
                 // If initialization succeeds without throwing, check if we're connected
                 return Client.VoiceAttackPluginHost.Instance.Client != null;
             }
-            catch (OperationCanceledException)
+            catch (OperationCanceledException) when ( !cancellationToken.IsCancellationRequested )
             {
                 Logging.Debug("Server connection attempt timed out");
                 return false;
@@ -84,10 +96,13 @@ namespace EddiVoiceAttackAdapter
         /// Launches the EDDI.exe process and waits for it to be ready.
         /// </summary>
         /// <returns>True if process launched and became ready; False otherwise</returns>
-        private static async Task<bool> LaunchEddiProcessAsync(bool fromVoiceAttack, System.Version? voiceAttackVersion)
+        private static async Task<bool> LaunchEddiProcessAsync(bool fromVoiceAttack, System.Version? voiceAttackVersion,
+            CancellationToken cancellationToken = default)
         {
             try
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 var eddiPath = GetEddiExecutablePath();
                 if (!File.Exists(eddiPath))
                 {
@@ -117,14 +132,21 @@ namespace EddiVoiceAttackAdapter
                 _eddiProcess = Process.Start(startInfo);
                 if (_eddiProcess == null)
                 {
+                    _managedEddiProcess = false;
                     Logging.Error("Failed to start EDDI process");
                     return false;
                 }
 
+                _managedEddiProcess = true;
                 Logging.Info($"EDDI process started with PID {_eddiProcess.Id}");
 
                 // Wait for the IPC server to be ready
-                return await WaitForServerReadyAsync().ConfigureAwait(false);
+                return await WaitForServerReadyAsync(cancellationToken).ConfigureAwait(false);
+            }
+            catch (OperationCanceledException)
+            {
+                Logging.Debug("Waiting for the EDDI IPC server was cancelled");
+                throw;
             }
             catch (Exception ex)
             {
@@ -138,18 +160,21 @@ namespace EddiVoiceAttackAdapter
         /// Uses exponential backoff to avoid overwhelming the server during startup.
         /// </summary>
         /// <returns>True if server became ready; False if timeout occurred</returns>
-        private static async Task<bool> WaitForServerReadyAsync()
+        private static async Task<bool> WaitForServerReadyAsync(CancellationToken cancellationToken = default)
         {
             var stopwatch = Stopwatch.StartNew();
             int attemptCount = 0;
+            bool backgroundPollingLogged = false;
 
-            while (stopwatch.ElapsedMilliseconds < LaunchTimeoutMs)
+            while ( true )
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 attemptCount++;
 
                 try
                 {
-                    var cts = new CancellationTokenSource(TimeSpan.FromSeconds(2));
+                    using var cts = CancellationTokenSource.CreateLinkedTokenSource( cancellationToken );
+                    cts.CancelAfter( TimeSpan.FromSeconds( 2 ) );
                     await Client.VoiceAttackPluginHost.Instance
                         .InitializeAsync(cts.Token)
                         .ConfigureAwait(false);
@@ -161,21 +186,34 @@ namespace EddiVoiceAttackAdapter
                         return true;
                     }
                 }
-                catch (OperationCanceledException)
+                catch (OperationCanceledException) when ( !cancellationToken.IsCancellationRequested )
                 {
-                    // Expected during early startup attempts
+                    Logging.Debug($"Server ready check timed out (attempt {attemptCount})");
                 }
                 catch (Exception ex)
                 {
                     Logging.Debug($"Server ready check failed (attempt {attemptCount}): {ex.Message}");
                 }
 
-                // Wait before retrying
-                await Task.Delay(ConnectionRetryIntervalMs).ConfigureAwait(false);
-            }
+                if ( _eddiProcess?.HasExited ?? false )
+                {
+                    _managedEddiProcess = false;
+                    Logging.Warn($"EDDI process exited before the IPC server became ready ({attemptCount} attempts)");
+                    return false;
+                }
 
-            Logging.Warn($"EDDI IPC server did not become ready within {LaunchTimeoutMs}ms ({attemptCount} attempts)");
-            return false;
+                var stillInInitialStartupWindow = stopwatch.ElapsedMilliseconds < LaunchTimeoutMs;
+                if ( !stillInInitialStartupWindow && !backgroundPollingLogged )
+                {
+                    Logging.Info($"EDDI IPC server was not ready within the initial {LaunchTimeoutMs}ms window ({attemptCount} attempts); continuing low-frequency polling");
+                    backgroundPollingLogged = true;
+                }
+
+                await Task.Delay(
+                        stillInInitialStartupWindow ? ConnectionRetryIntervalMs : BackgroundConnectionRetryIntervalMs,
+                        cancellationToken)
+                    .ConfigureAwait(false);
+            }
         }
 
         /// <summary>
@@ -210,7 +248,12 @@ namespace EddiVoiceAttackAdapter
         /// <returns>True if process has exited; False if still running</returns>
         public static bool HasEddiProcessExited()
         {
-            return _eddiProcess == null || _eddiProcess.HasExited;
+            return _managedEddiProcess && (_eddiProcess == null || _eddiProcess.HasExited);
+        }
+
+        internal static bool HasManagedEddiProcess()
+        {
+            return _managedEddiProcess;
         }
 
         /// <summary>
@@ -220,8 +263,10 @@ namespace EddiVoiceAttackAdapter
         {
             try
             {
-                if (_eddiProcess == null || _eddiProcess.HasExited)
+                if ( !_managedEddiProcess || _eddiProcess == null || _eddiProcess.HasExited )
                 {
+                    _managedEddiProcess = false;
+                    _eddiProcess = null;
                     return;
                 }
 
@@ -237,6 +282,7 @@ namespace EddiVoiceAttackAdapter
 
                 _eddiProcess.Dispose();
                 _eddiProcess = null;
+                _managedEddiProcess = false;
             }
             catch (Exception ex)
             {

@@ -95,7 +95,7 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             var server = new IPCServer();
             await server.StartAsync();
-            var message = MessageEnvelope.Create("Test", new HeartbeatData { Status = "alive", UptimeMs = 0 });
+            var message = MessageEnvelope.Create("Test", new DisconnectData { Reason = "user_shutdown" } );
 
             // Act & Assert - should not throw
             await server.BroadcastAsync(message);
@@ -137,7 +137,7 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             var server = new IPCServer();
             await server.StartAsync();
-            var message = MessageEnvelope.Create("Test", new HeartbeatData { Status = "alive", UptimeMs = 0 });
+            var message = MessageEnvelope.Create("Test", new DisconnectData { Reason = "user_shutdown" } );
 
             // Act & Assert - should not throw
             await server.SendToConnectionAsync("invalid-session-id", message);
@@ -152,7 +152,7 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             var server = new IPCServer();
             await server.StartAsync();
-            var message = MessageEnvelope.Create("Test", new HeartbeatData { Status = "alive", UptimeMs = 0 });
+            var message = MessageEnvelope.Create("Test", new DisconnectData { Reason = "user_shutdown" } );
 
             // Act & Assert
             try

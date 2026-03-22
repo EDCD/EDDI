@@ -19,7 +19,6 @@ namespace EddiVoiceAttackAdapter.Client
         private static readonly object _instanceLock = new();
 
         private VoiceAttackPluginClient? _pluginClient;
-        private bool _initialized;
         private bool _disposed;
 
         /// <summary>
@@ -52,11 +51,6 @@ namespace EddiVoiceAttackAdapter.Client
         public VoiceAttackPluginClient? Client => _pluginClient?.IsConnected ?? false ? _pluginClient : null;
 
         /// <summary>
-        /// Gets a value indicating whether the host has attempted initialization.
-        /// </summary>
-        public bool IsInitialized => _initialized;
-
-        /// <summary>
         /// Initializes the plugin client by reading the IPC configuration file
         /// and establishing connection to the IPC server.
         /// </summary>
@@ -71,7 +65,6 @@ namespace EddiVoiceAttackAdapter.Client
             // If we already have a connected client, initialization is complete.
             if (_pluginClient?.IsConnected ?? false)
             {
-                _initialized = true;
                 return;
             }
 
@@ -85,7 +78,7 @@ namespace EddiVoiceAttackAdapter.Client
                 
                 if (!File.Exists(configPath))
                 {
-                    Logging.Warn($"IPC configuration file not found at {configPath}. Plugin will operate without IPC connectivity.");
+                    Logging.Debug($"IPC configuration file not found at {configPath}; IPC polling will retry later.");
                     return;
                 }
 
@@ -96,15 +89,14 @@ namespace EddiVoiceAttackAdapter.Client
                 await _pluginClient.InitializeAsync(cancellationToken).ConfigureAwait(false);
                 
                 Logging.Info("VoiceAttack plugin IPC client initialized successfully");
-                _initialized = _pluginClient.IsConnected;
             }
             catch (OperationCanceledException)
             {
-                Logging.Warn("VoiceAttack plugin IPC client initialization was cancelled");
+                Logging.Debug("VoiceAttack plugin IPC client initialization timed out while polling for server readiness");
             }
             catch (Exception ex)
             {
-                Logging.Warn($"Failed to initialize VoiceAttack plugin IPC client: {ex.Message}");
+                Logging.Debug($"VoiceAttack plugin IPC client initialization attempt failed: {ex.Message}");
                 _pluginClient?.Dispose();
                 _pluginClient = null;
             }

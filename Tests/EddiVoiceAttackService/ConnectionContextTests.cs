@@ -72,7 +72,7 @@ namespace Tests.EddiVoiceAttackService
         {
             // Arrange
             var context = new ConnectionContext( _testClient! );
-            var message = MessageEnvelope.Create( "Test", new HeartbeatData { Status = "alive", UptimeMs = 0 } );
+            var message = MessageEnvelope.Create( "Test", new DisconnectData { Reason = "user_shutdown" } );
 
             // Act
             context.EnqueueOutgoingMessage( message );
@@ -89,8 +89,8 @@ namespace Tests.EddiVoiceAttackService
         {
             // Arrange
             var context = new ConnectionContext( _testClient! );
-            var msg1 = MessageEnvelope.Create( "Test1", new HeartbeatData { Status = "alive", UptimeMs = 1 } );
-            var msg2 = MessageEnvelope.Create( "Test2", new HeartbeatData { Status = "alive", UptimeMs = 2 } );
+            var msg1 = MessageEnvelope.Create( "Test1", new DisconnectData { Reason = "user_shutdown" } );
+            var msg2 = MessageEnvelope.Create( "Test2", new DisconnectData { Reason = "network_error" } );
 
             context.EnqueueOutgoingMessage( msg1 );
             context.EnqueueOutgoingMessage( msg2 );
@@ -104,37 +104,6 @@ namespace Tests.EddiVoiceAttackService
             Assert.AreEqual( msg1.Id, dequeued1?.Id, "First dequeued message should be msg1" );
             Assert.AreEqual( msg2.Id, dequeued2?.Id, "Second dequeued message should be msg2" );
             Assert.IsNull( dequeued3, "Third dequeue should return null" );
-
-            context.Dispose();
-        }
-
-        [ TestMethod ]
-        public void IsHeartbeatTimedOut_DetectsTimeout ()
-        {
-            // Arrange
-            var context = new ConnectionContext( _testClient! );
-
-            // Act - Set heartbeat to old timestamp
-            context.LastHeartbeatUtc = DateTime.UtcNow.AddSeconds( -15 );
-
-            // Assert
-            Assert.IsTrue( context.IsHeartbeatTimedOut( 10 ), "Should detect timeout after 10 seconds" );
-            Assert.IsFalse( context.IsHeartbeatTimedOut( 20 ), "Should not timeout within 20 seconds" );
-
-            context.Dispose();
-        }
-
-        [ TestMethod ]
-        public void IsHeartbeatTimedOut_ReturnsRecentTimestamp ()
-        {
-            // Arrange
-            var context = new ConnectionContext( _testClient! );
-
-            // Act - Heartbeat is recent (just created)
-            var isTimedOut = context.IsHeartbeatTimedOut( 10 );
-
-            // Assert
-            Assert.IsFalse( isTimedOut, "Recent heartbeat should not timeout" );
 
             context.Dispose();
         }
@@ -159,7 +128,7 @@ namespace Tests.EddiVoiceAttackService
         {
             // Arrange
             var context = new ConnectionContext( _testClient! );
-            var msg = MessageEnvelope.Create( "Test", new HeartbeatData { Status = "alive", UptimeMs = 0 } );
+            var msg = MessageEnvelope.Create( "Test", new DisconnectData { Reason = "user_shutdown" } );
 
             // Act & Assert
             Assert.AreEqual( 0, context.OutgoingMessageCount, "Initial count should be 0" );

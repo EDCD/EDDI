@@ -34,14 +34,14 @@ namespace EddiVoiceAttackAdapter
                 return;
             }
 
-            var eventType = eventData[ "eventType" ]?.Value<string>();
-            var eventName = eventData[ "eventName" ]?.Value<string>();
+            var eventType = GetString( eventData, RuntimePayloadKeys.EventEnvelope.EventType );
+            var eventName = GetString( eventData, RuntimePayloadKeys.EventEnvelope.EventName );
             if ( !string.Equals( eventType, RuntimeEventType, StringComparison.OrdinalIgnoreCase ) )
             {
                 return;
             }
 
-            if ( eventData[ "eventPayload" ] is not JObject payload )
+            if ( GetToken( eventData, RuntimePayloadKeys.EventEnvelope.EventPayload ) is not JObject payload )
             {
                 return;
             }
@@ -54,16 +54,47 @@ namespace EddiVoiceAttackAdapter
 
             if ( string.Equals( eventName, CommandActionEventName, StringComparison.OrdinalIgnoreCase ) )
             {
+                if ( GetToken( payload, RuntimePayloadKeys.CommandActionPayload.Actions ) is JArray actions )
+                {
+                    HandleCommandActions( actions );
+                    return;
+                }
+
+                HandleCommandAction( payload );
+            }
+        }
+
+        private static string? GetString( JObject source, string propertyName )
+        {
+            return GetToken( source, propertyName )?.Value<string>();
+        }
+
+        private static JToken? GetToken( JObject source, string propertyName )
+        {
+            return source.TryGetValue( propertyName, out var token )
+                ? token
+                : null;
+        }
+
+        private static void HandleCommandActions( JArray actions )
+        {
+            foreach ( var token in actions )
+            {
+                if ( token is not JObject payload )
+                {
+                    continue;
+                }
+
                 HandleCommandAction( payload );
             }
         }
 
         private static async Task HandleDispatchEventAsync( JObject payload )
         {
-            var commandName = payload[ "commandName" ]?.Value<string>();
-            var eddiEventType = payload[ "eventType" ]?.Value<string>();
+            var commandName = GetString( payload, RuntimePayloadKeys.DispatchPayload.CommandName );
+            var eddiEventType = GetString( payload, RuntimePayloadKeys.DispatchPayload.EventType );
 
-            if ( payload[ "clearVariables" ] is JArray clearVariables )
+            if ( GetToken( payload, RuntimePayloadKeys.DispatchPayload.ClearVariables ) is JArray clearVariables )
             {
                 ApplyVariables( clearVariables );
             }
@@ -73,7 +104,7 @@ namespace EddiVoiceAttackAdapter
                 VoiceAttackPlugin.SetText( "EDDI event", eddiEventType );
             }
 
-            if ( payload[ "setVariables" ] is JArray setVariables )
+            if ( GetToken( payload, RuntimePayloadKeys.DispatchPayload.SetVariables ) is JArray setVariables )
             {
                 ApplyVariables( setVariables );
             }
@@ -96,7 +127,7 @@ namespace EddiVoiceAttackAdapter
 
         private static void HandleCommandAction( JObject payload )
         {
-            var action = payload[ "action" ]?.Value<string>();
+            var action = GetString( payload, RuntimePayloadKeys.CommandActionPayload.Action );
             if ( string.IsNullOrWhiteSpace( action ) )
             {
                 return;
@@ -106,28 +137,34 @@ namespace EddiVoiceAttackAdapter
             {
                 case "write_log":
                     VoiceAttackPlugin.WriteToLog(
-                        payload[ "message" ]?.Value<string>() ?? string.Empty,
-                        payload[ "color" ]?.Value<string>() ?? "white" );
+                        GetString( payload, RuntimePayloadKeys.CommandActionPayload.Message ) ?? string.Empty,
+                        GetString( payload, RuntimePayloadKeys.CommandActionPayload.Color ) ?? "white" );
                     break;
                 case "set_text":
-                    VoiceAttackPlugin.SetText( payload[ "key" ]?.Value<string>() ?? string.Empty,
-                        payload[ "value" ]?.Type == JTokenType.Null ? null : payload[ "value" ]?.ToString() );
+                    var textValue = GetToken( payload, RuntimePayloadKeys.CommandActionPayload.Value );
+                    VoiceAttackPlugin.SetText(
+                        GetString( payload, RuntimePayloadKeys.CommandActionPayload.Key ) ?? string.Empty,
+                        textValue?.Type == JTokenType.Null ? null : textValue?.ToString() );
                     break;
                 case "set_int":
-                    VoiceAttackPlugin.SetInt( payload[ "key" ]?.Value<string>() ?? string.Empty,
-                        ParseInt( payload[ "value" ] ) );
+                    VoiceAttackPlugin.SetInt(
+                        GetString( payload, RuntimePayloadKeys.CommandActionPayload.Key ) ?? string.Empty,
+                        ParseInt( GetToken( payload, RuntimePayloadKeys.CommandActionPayload.Value ) ) );
                     break;
                 case "set_decimal":
-                    VoiceAttackPlugin.SetDecimal( payload[ "key" ]?.Value<string>() ?? string.Empty,
-                        ParseDecimal( payload[ "value" ] ) );
+                    VoiceAttackPlugin.SetDecimal(
+                        GetString( payload, RuntimePayloadKeys.CommandActionPayload.Key ) ?? string.Empty,
+                        ParseDecimal( GetToken( payload, RuntimePayloadKeys.CommandActionPayload.Value ) ) );
                     break;
                 case "set_boolean":
-                    VoiceAttackPlugin.SetBoolean( payload[ "key" ]?.Value<string>() ?? string.Empty,
-                        ParseBoolean( payload[ "value" ] ) );
+                    VoiceAttackPlugin.SetBoolean(
+                        GetString( payload, RuntimePayloadKeys.CommandActionPayload.Key ) ?? string.Empty,
+                        ParseBoolean( GetToken( payload, RuntimePayloadKeys.CommandActionPayload.Value ) ) );
                     break;
                 case "set_date":
-                    VoiceAttackPlugin.SetDate( payload[ "key" ]?.Value<string>() ?? string.Empty,
-                        ParseDateTime( payload[ "value" ] ) );
+                    VoiceAttackPlugin.SetDate(
+                        GetString( payload, RuntimePayloadKeys.CommandActionPayload.Key ) ?? string.Empty,
+                        ParseDateTime( GetToken( payload, RuntimePayloadKeys.CommandActionPayload.Value ) ) );
                     break;
             }
         }
@@ -141,14 +178,14 @@ namespace EddiVoiceAttackAdapter
                     continue;
                 }
 
-                var key = variable[ "key" ]?.Value<string>();
+                var key = GetString( variable, RuntimePayloadKeys.VariablePayload.Key );
                 if ( string.IsNullOrWhiteSpace( key ) )
                 {
                     continue;
                 }
 
-                var type = variable[ "type" ]?.Value<string>() ?? "text";
-                var valueToken = variable[ "value" ];
+                var type = GetString( variable, RuntimePayloadKeys.VariablePayload.Type ) ?? "text";
+                var valueToken = GetToken( variable, RuntimePayloadKeys.VariablePayload.Value );
 
                 switch ( type )
                 {

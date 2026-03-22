@@ -96,8 +96,8 @@ namespace Tests.EddiVoiceAttackService
                 await Task.CompletedTask;
             }
 
-            router.RegisterHandler("Heartbeat", TestHandler);
-            var message = MessageEnvelope.Create("Heartbeat", new HeartbeatData { Status = "alive", UptimeMs = 0 });
+            router.RegisterHandler(MessageTypes.Disconnect, TestHandler);
+            var message = MessageEnvelope.Create("Disconnect", new DisconnectData { Reason = "user_shutdown" } );
 
             // Act
             await router.RouteAsync(message, _testContext!);
@@ -129,7 +129,7 @@ namespace Tests.EddiVoiceAttackService
 
             router.RegisterHandler("Test", Handler1);
             router.RegisterHandler("Test", Handler2);
-            var message = MessageEnvelope.Create("Test", new HeartbeatData { Status = "alive", UptimeMs = 0 });
+            var message = MessageEnvelope.Create("Test", new DisconnectData { Reason = "user_shutdown" });
 
             // Act
             await router.RouteAsync(message, _testContext!);
@@ -160,7 +160,7 @@ namespace Tests.EddiVoiceAttackService
 
             router.RegisterHandler("Test", FailingHandler);
             router.RegisterHandler("Test", SuccessHandler);
-            var message = MessageEnvelope.Create("Test", new HeartbeatData { Status = "alive", UptimeMs = 0 });
+            var message = MessageEnvelope.Create("Test", new DisconnectData { Reason = "user_shutdown" } );
 
             // Act - should not throw
             await router.RouteAsync(message, _testContext!);
@@ -174,7 +174,7 @@ namespace Tests.EddiVoiceAttackService
         {
             // Arrange
             var router = new MessageRouter();
-            var message = MessageEnvelope.Create("Unhandled", new HeartbeatData { Status = "alive", UptimeMs = 0 });
+            var message = MessageEnvelope.Create("Unhandled", new DisconnectData { Reason = "user_shutdown" } );
 
             // Act & Assert - should not throw
             await router.RouteAsync(message, _testContext!);
@@ -290,7 +290,7 @@ namespace Tests.EddiVoiceAttackService
         {
             // Arrange
             var router = new MessageRouter();
-            var message = MessageEnvelope.Create("Test", new HeartbeatData { Status = "alive", UptimeMs = 0 });
+            var message = MessageEnvelope.Create("Test", new DisconnectData { Reason = "user_shutdown" } );
 
             // Act & Assert
             try

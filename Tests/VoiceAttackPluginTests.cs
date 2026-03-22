@@ -2,14 +2,21 @@
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
+using EddiIPC_Service.Client;
+using EddiIPC_Service.Messages;
+using EddiIPC_Service.Server;
 using EddiJournalMonitor;
 using EddiVoiceAttackAdapter;
 using EddiVoiceAttackResponder;
 using JetBrains.Annotations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Tests.Properties;
@@ -123,26 +130,188 @@ namespace Tests
                    vaBooleans.ContainsKey( varName ) || 
                    vaDates.ContainsKey(varName);
         }
+
+        public void ApplyRuntimeEvent( EventData eventData )
+        {
+            ArgumentNullException.ThrowIfNull( eventData );
+
+            if ( !string.Equals( eventData.EventType, "va_runtime", StringComparison.OrdinalIgnoreCase ) ||
+                 !string.Equals( eventData.EventName, "command_action", StringComparison.OrdinalIgnoreCase ) )
+            {
+                return;
+            }
+
+            if ( eventData.EventPayload.TryGetValue( "actions", out var batchedActions ) &&
+                 batchedActions is IEnumerable<object> actions )
+            {
+                foreach ( var actionPayload in actions.OfType<IDictionary<string, object>>() )
+                {
+                    ApplyRuntimeAction( actionPayload );
+                }
+                return;
+            }
+
+            ApplyRuntimeAction( eventData.EventPayload );
+        }
+
+        private void ApplyRuntimeAction( IDictionary<string, object> payload )
+        {
+            if ( !payload.TryGetValue( "action", out var actionValue ) )
+            {
+                return;
+            }
+
+            var action = actionValue?.ToString();
+            if ( string.IsNullOrWhiteSpace( action ) )
+            {
+                return;
+            }
+
+            var key = payload.TryGetValue( "key", out var keyValue )
+                ? keyValue?.ToString() ?? string.Empty
+                : string.Empty;
+
+            payload.TryGetValue( "value", out var value );
+
+            switch ( action )
+            {
+                case "write_log":
+                    WriteToLog(
+                        payload.TryGetValue( "message", out var messageValue )
+                            ? messageValue?.ToString() ?? string.Empty
+                            : string.Empty,
+                        payload.TryGetValue( "color", out var colorValue )
+                            ? colorValue?.ToString() ?? "white"
+                            : "white" );
+                    break;
+                case "set_text":
+                    SetText( key, value?.ToString() );
+                    break;
+                case "set_int":
+                    SetInt( key, ParseInt( value ) );
+                    break;
+                case "set_decimal":
+                    SetDecimal( key, ParseDecimal( value ) );
+                    break;
+                case "set_boolean":
+                    SetBoolean( key, ParseBoolean( value ) );
+                    break;
+                case "set_date":
+                    SetDate( key, ParseDateTime( value ) );
+                    break;
+            }
+        }
+
+        private static bool? ParseBoolean( object value )
+        {
+            if ( value == null )
+            {
+                return null;
+            }
+
+            if ( value is bool typed )
+            {
+                return typed;
+            }
+
+            return bool.TryParse( value.ToString(), out var parsed )
+                ? parsed
+                : null;
+        }
+
+        private static DateTime? ParseDateTime( object value )
+        {
+            if ( value == null )
+            {
+                return null;
+            }
+
+            if ( value is DateTime typed )
+            {
+                return typed;
+            }
+
+            return DateTime.TryParse( value.ToString(), CultureInfo.InvariantCulture,
+                DateTimeStyles.RoundtripKind, out var parsed )
+                ? parsed
+                : null;
+        }
+
+        private static decimal? ParseDecimal( object value )
+        {
+            if ( value == null )
+            {
+                return null;
+            }
+
+            return decimal.TryParse( value.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture,
+                out var parsed )
+                ? parsed
+                : null;
+        }
+
+        private static int? ParseInt( object value )
+        {
+            if ( value == null )
+            {
+                return null;
+            }
+
+            return int.TryParse( value.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture,
+                out var parsed )
+                ? parsed
+                : null;
+        }
     }
 
     [TestClass, TestCategory("UnitTests")]
     public class VoiceAttackPluginTests : TestBase
     {
         private MockVAProxy mockVAProxy;
+        private IDisposable _runtimeEventDispatcherRegistration;
+        private readonly List<EventData> _runtimeEvents = [];
 
         [ TestInitialize]
         public void Start()
         {
             MakeSafe();
             ResetVaProxy();
+            _runtimeEvents.Clear();
+            _runtimeEventDispatcherRegistration = RuntimeEventDispatcher.RegisterDispatcher( ( eventData, _ ) =>
+            {
+                _runtimeEvents.Add( eventData );
+                mockVAProxy.ApplyRuntimeEvent( eventData );
+                return Task.FromResult( true );
+            } );
         }
 
         [TestCleanup]
         public void ResetVaProxy ()
         {
+            _runtimeEventDispatcherRegistration?.Dispose();
+            _runtimeEventDispatcherRegistration = null;
             dynamic vaProxy = new MockVAProxy();
             mockVAProxy = (MockVAProxy)vaProxy;
             VoiceAttackPlugin.VaProxy = mockVAProxy;
+        }
+
+        [TestMethod]
+        public void TestSetState_BatchesRuntimeActions()
+        {
+            var dict = new Dictionary<string, object>
+            {
+                [ "1" ] = "test",
+                [ "2" ] = 123
+            };
+
+            VoiceAttackVariables.setDictionaryValues( dict, "state" );
+
+            Assert.AreEqual( 1, _runtimeEvents.Count );
+            Assert.AreEqual( "va_runtime", _runtimeEvents[0].EventType );
+            Assert.AreEqual( "command_action", _runtimeEvents[0].EventName );
+            Assert.IsTrue( _runtimeEvents[0].EventPayload.TryGetValue( "actions", out var actionsPayload ) );
+            Assert.IsInstanceOfType( actionsPayload, typeof( List<Dictionary<string, object>> ) );
+            Assert.IsTrue( ((List<Dictionary<string, object>>)actionsPayload).Count > 1 );
         }
 
         [TestMethod]
@@ -174,7 +343,8 @@ namespace Tests
             };
 
             VoiceAttackVariables.setDictionaryValues( dict, "state" );
-            Assert.AreEqual( dict.FirstOrDefault( kv => kv.Key == varName ).Value?.ToString(), mockVAProxy.GetText( "EDDI state " + varName ) );
+            Assert.AreEqual( dict.FirstOrDefault( kv => kv.Key == varName ).Value?.ToString() ?? string.Empty,
+                mockVAProxy.GetText( "EDDI state " + varName ) );
             Assert.AreEqual( decimalResult is null 
                 ? null 
                 : (decimal?)decimal.Parse(decimalResult), mockVAProxy.GetDecimal( "EDDI state " + varName ) );
@@ -334,7 +504,7 @@ namespace Tests
             Assert.AreEqual( "TK-29K", mockVAProxy.GetText("Ship ident") );
             Assert.AreEqual( "Combat", mockVAProxy.GetText("Ship role") );
             Assert.AreEqual( 201065994, mockVAProxy.GetDecimal( "Ship value" ) );
-            Assert.AreEqual( 10053299, mockVAProxy.GetDecimal("Ship rebuy") );
+            Assert.AreEqual( 10053299, mockVAProxy.GetDecimal("Ship rebuy" ) );
             Assert.AreEqual( 100M, mockVAProxy.GetDecimal("Ship health") );
             Assert.AreEqual( 16, mockVAProxy.GetInt( "Ship cargo capacity" ) );
             Assert.AreEqual( 8, mockVAProxy.GetInt("Ship compartments") );
@@ -358,7 +528,7 @@ namespace Tests
             Assert.AreEqual( "The Dynamo", mockVAProxy.GetText("Ship name") );
             Assert.AreEqual( "TK-20C", mockVAProxy.GetText("Ship ident") );
             Assert.AreEqual( "Multipurpose", mockVAProxy.GetText("Ship role") );
-            Assert.AreEqual( 8605684, mockVAProxy.GetDecimal("Ship value") );
+            Assert.AreEqual( 8605684, mockVAProxy.GetDecimal("Ship value" ) );
             Assert.AreEqual( 0, mockVAProxy.GetDecimal("Ship rebuy") );
             Assert.AreEqual( 100M, mockVAProxy.GetDecimal("Ship health") );
             Assert.AreEqual( 0, mockVAProxy.GetInt("Ship cargo capacity") );
@@ -366,17 +536,44 @@ namespace Tests
             Assert.IsNull( mockVAProxy.GetInt("Ship compartment 0 size") );
             Assert.IsFalse( mockVAProxy.GetBoolean("Ship compartment 0 occupied") );
             Assert.IsNull(mockVAProxy.GetInt("Ship compartment 0 module class") );
-            Assert.IsNull( mockVAProxy.GetText("Ship compartment 0 module grade") );
+            Assert.AreEqual( string.Empty, mockVAProxy.GetText("Ship compartment 0 module grade") );
             Assert.IsNull(mockVAProxy.GetDecimal("Ship compartment 0 module health"));
             Assert.IsNull(mockVAProxy.GetDecimal("Ship compartment 0 module cost"));
             Assert.IsNull(mockVAProxy.GetDecimal("Ship compartment 0 module value"));
             Assert.AreEqual( 0, mockVAProxy.GetInt("Ship hardpoints") );
             Assert.IsFalse(mockVAProxy.GetBoolean("Ship large hardpoint 0 occupied"));
             Assert.IsNull(mockVAProxy.GetInt("Ship large hardpoint 0 module class"));
-            Assert.IsNull(mockVAProxy.GetText("Ship large hardpoint 0 module grade"));
+            Assert.AreEqual( string.Empty, mockVAProxy.GetText("Ship large hardpoint 0 module grade") );
             Assert.IsNull(mockVAProxy.GetDecimal("Ship large hardpoint 0 module health"));
             Assert.IsNull(mockVAProxy.GetDecimal("Ship large hardpoint 0 module cost"));
             Assert.IsNull(mockVAProxy.GetDecimal("Ship large hardpoint 0 module value"));
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void HasEddiProcessExited_WhenConnectedToExternalInstance_ReturnsFalse()
+        {
+            var launcherType = typeof( EddiProcessLauncher );
+            var managedField = launcherType.GetField( "_managedEddiProcess", BindingFlags.NonPublic | BindingFlags.Static );
+            var processField = launcherType.GetField( "_eddiProcess", BindingFlags.NonPublic | BindingFlags.Static );
+
+            Assert.IsNotNull( managedField );
+            Assert.IsNotNull( processField );
+
+            var originalManaged = (bool?)managedField.GetValue( null );
+            var originalProcess = (Process)processField.GetValue( null );
+
+            try
+            {
+                managedField.SetValue( null, false );
+                processField.SetValue( null, null );
+
+                Assert.IsFalse( EddiProcessLauncher.HasEddiProcessExited() );
+            }
+            finally
+            {
+                managedField.SetValue( null, originalManaged );
+                processField.SetValue( null, originalProcess );
+            }
         }
 
         [TestMethod, DoNotParallelize]
@@ -390,6 +587,37 @@ namespace Tests
 
             VoiceAttackVariables.setStarSystemValues( sol, "System" );
             Assert.AreEqual( "Sol", mockVAProxy.GetText("System name"));
+        }
+
+        [TestMethod]
+        public async Task RuntimeReceiver_PascalCaseRuntimeMetadata_AppliesCommandActions()
+        {
+            var runtimeEventPayload = JObject.Parse(
+                """
+                {
+                  "EventType": "va_runtime",
+                  "EventName": "command_action",
+                  "EventPayload": {
+                    "actions": [
+                      { "action": "set_text", "key": "Status vehicle", "value": "Ship" },
+                      { "action": "set_boolean", "key": "Status being interdicted", "value": false }
+                    ]
+                  }
+                }
+                """ );
+
+            var envelope = MessageEnvelope.Create( MessageTypes.Event, runtimeEventPayload );
+            var eventArgs = new MessageReceivedEventArgs( MessageTypes.Event, envelope );
+
+            VoiceAttackRuntimeEventReceiver.HandleMessageReceived( null, eventArgs );
+
+            for ( var i = 0; i < 20 && mockVAProxy.GetText( "Status vehicle" ) != "Ship"; i++ )
+            {
+                await Task.Delay( 25 ).ConfigureAwait( false );
+            }
+
+            Assert.AreEqual( "Ship", mockVAProxy.GetText( "Status vehicle" ) );
+            Assert.AreEqual( false, mockVAProxy.GetBoolean( "Status being interdicted" ) );
         }
     }
 }

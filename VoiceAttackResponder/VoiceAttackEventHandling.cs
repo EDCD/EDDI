@@ -16,6 +16,9 @@ namespace EddiVoiceAttackResponder
 {
     internal class VoiceAttackEventHandling
     {
+        private const string RuntimeEventType = "va_runtime";
+        private const string DispatchEventName = "dispatch_event";
+
         private readonly ConcurrentDictionary<string, TaskQueue<Event>> taskQueues = new();
         private readonly CancellationTokenSource consumerCancellationTS = new();
 
@@ -80,8 +83,8 @@ namespace EddiVoiceAttackResponder
                 var payload = BuildRuntimePayload( commandName, @event );
                 var eventData = new EventData
                 {
-                    EventType = "va_runtime",
-                    EventName = "dispatch_event",
+                    EventType = RuntimeEventType,
+                    EventName = DispatchEventName,
                     EventPayload = payload
                 };
 
@@ -133,10 +136,10 @@ namespace EddiVoiceAttackResponder
 
             return new Dictionary<string, object>
             {
-                { "commandName", commandName },
-                { "eventType", eventType },
-                { "clearVariables", clearVariables },
-                { "setVariables", setVariables }
+                { RuntimePayloadKeys.DispatchPayload.CommandName, commandName },
+                { RuntimePayloadKeys.DispatchPayload.EventType, eventType },
+                { RuntimePayloadKeys.DispatchPayload.ClearVariables, clearVariables },
+                { RuntimePayloadKeys.DispatchPayload.SetVariables, setVariables }
             };
         }
 
@@ -144,9 +147,9 @@ namespace EddiVoiceAttackResponder
         {
             return new Dictionary<string, object?>
             {
-                { "key", variable.key },
-                { "type", ResolveVariableTypeName( variable.variableType ) },
-                { "value", variable.value }
+                { RuntimePayloadKeys.VariablePayload.Key, variable.key },
+                { RuntimePayloadKeys.VariablePayload.Type, ResolveVariableTypeName( variable.variableType ) },
+                { RuntimePayloadKeys.VariablePayload.Value, variable.value }
             };
         }
 
@@ -154,9 +157,9 @@ namespace EddiVoiceAttackResponder
         {
             return new Dictionary<string, object?>
             {
-                { "key", variable.key },
-                { "type", ResolveVariableTypeName( variable.variableType ) },
-                { "value", null }
+                { RuntimePayloadKeys.VariablePayload.Key, variable.key },
+                { RuntimePayloadKeys.VariablePayload.Type, ResolveVariableTypeName( variable.variableType ) },
+                { RuntimePayloadKeys.VariablePayload.Value, null }
             };
         }
 

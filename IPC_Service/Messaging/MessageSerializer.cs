@@ -1,7 +1,9 @@
 using EddiIPC_Service.Messages;
 using Newtonsoft.Json;
 using System;
+using System.Buffers;
 using System.Collections.Generic;
+using System.Text;
 using Utilities;
 
 namespace EddiIPC_Service.Messaging;
@@ -10,7 +12,7 @@ namespace EddiIPC_Service.Messaging;
 /// Serializes and deserializes IPC messages using length-prefixed JSON encoding.
 /// 
 /// Format: [LENGTH]\n[PAYLOAD]
-/// - LENGTH: Unicode character count of JSON payload (unsigned int)
+/// - LENGTH: UTF-8 byte count of JSON payload (unsigned int)
 /// - PAYLOAD: JSON string
 /// 
 /// Example: "147\n{\"type\":\"Heartbeat\",...}"
@@ -50,7 +52,8 @@ public static class MessageSerializer
                 Formatting = Formatting.None
             } );
 
-            return $"{json.Length}\n{json}";
+            var payloadLength = Encoding.UTF8.GetByteCount( json );
+            return $"{payloadLength}\n{json}";
         }
         catch ( JsonException ex )
         {
@@ -67,14 +70,13 @@ public static class MessageSerializer
     /// <exception cref="ArgumentException">If format is invalid or payload is malformed</exception>
     public static MessageEnvelope Deserialize ( string serialized )
     {
-        if ( string.IsNullOrEmpty( serialized ) )
+        if ( string.IsNullOrWhiteSpace( serialized ) )
         {
             throw new ArgumentException( @"Serialized message cannot be null or empty.", nameof(serialized) );
         }
 
         try
         {
-            // Split on first newline
             var newlineIndex = serialized.IndexOf( '\n' );
             if ( newlineIndex <= 0 )
             {
@@ -87,25 +89,20 @@ public static class MessageSerializer
                 throw new ArgumentException( $"Invalid length prefix: '{lengthPart}' is not a positive integer." );
             }
 
-            var jsonPart = serialized.Substring( newlineIndex + 1 );
-
-            // Verify character count matches declared length
-            if ( jsonPart.Length != declaredLength )
+            if ( !TryReadPayload( serialized.AsSpan( newlineIndex + 1 ), declaredLength, out var jsonPart,
+                    out var charsConsumed ) )
             {
-                throw new ArgumentException( $"Length mismatch: declared {declaredLength} chars but payload is {jsonPart.Length} chars." );
+                var actualLength = Encoding.UTF8.GetByteCount( serialized.Substring( newlineIndex + 1 ) );
+                throw new ArgumentException(
+                    $"Length mismatch: declared {declaredLength} bytes but payload is {actualLength} bytes." );
             }
 
-            // Deserialize JSON
-            var message = JsonConvert.DeserializeObject<MessageEnvelope>( jsonPart, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, DateFormatString = "O" } );
-
-            if ( message is null )
+            if ( (newlineIndex + 1 + charsConsumed) != serialized.Length )
             {
-                throw new ArgumentException( "JSON deserialized to null." );
+                throw new ArgumentException( "Message contains trailing data beyond the declared payload length." );
             }
 
-            // Validate envelope
-            message.Validate();
-
+            var message = DeserializePayload( jsonPart );
             Logging.Debug( $"Deserialized message: type={message.Type}, id={message.Id}" );
             return message;
         }
@@ -114,69 +111,107 @@ public static class MessageSerializer
             Logging.Error( $"Failed to deserialize message: {ex.Message}" );
             throw new ArgumentException( $"Message payload is not valid JSON: {ex.Message}", ex );
         }
-        catch ( ArgumentException )
-        {
-            throw; // Re-throw validation/format errors
-        }
-        catch ( Exception ex )
-        {
-            Logging.Error( $"Unexpected error during deserialization: {ex.Message}" );
-            throw new ArgumentException( $"Deserialization failed: {ex.Message}", ex );
-        }
     }
 
-    /// <summary>
-    /// Deserialize multiple length-prefixed messages from a stream.
-    /// Handles partial messages and provides remaining unprocessed data.
-    /// </summary>
-    /// <param name="buffer">Buffer containing one or more messages</param>
-    /// <param name="messages">Output list of successfully deserialized messages</param>
-    /// <param name="remaining">Output: unprocessed data (partial message, etc.)</param>
-    /// <returns>Number of complete messages deserialized</returns>
-    public static int DeserializeMessages ( string buffer, out List<MessageEnvelope> messages, out string remaining )
+    public static int DeserializeMessages ( ReadOnlySpan<byte> buffer, out List<MessageEnvelope> messages,
+        out int bytesConsumed )
     {
         messages = new List<MessageEnvelope>();
-        remaining = buffer;
+        bytesConsumed = 0;
 
-        while ( !string.IsNullOrEmpty( remaining ) )
+        while ( !buffer.IsEmpty )
         {
-            var newlineIndex = remaining.IndexOf( '\n' );
+            var newlineIndex = buffer.IndexOf( (byte)'\n' );
             if ( newlineIndex <= 0 )
             {
-                break; // No complete length prefix yet
+                break;
             }
 
-            var lengthPart = remaining.Substring( 0, newlineIndex );
+            var lengthPart = Encoding.ASCII.GetString( buffer.Slice( 0, newlineIndex ) );
             if ( !int.TryParse( lengthPart, out var declaredLength ) || declaredLength <= 0 )
             {
-                break; // Invalid length, stop processing
+                break;
             }
 
             var jsonStart = newlineIndex + 1;
-            if ( ( jsonStart + declaredLength ) > remaining.Length )
+            if ( ( jsonStart + declaredLength ) > buffer.Length )
             {
-                break; // Not enough data yet for complete payload
+                break;
             }
 
-            var jsonPart = remaining.Substring( jsonStart, declaredLength );
+            var jsonPart = Encoding.UTF8.GetString( buffer.Slice( jsonStart, declaredLength ) );
             try
             {
-                var message = JsonConvert.DeserializeObject<MessageEnvelope>( jsonPart );
-                if ( message != null )
-                {
-                    message.Validate();
-                    messages.Add( message );
-                }
+                messages.Add( DeserializePayload( jsonPart ) );
             }
-            catch
+            catch ( ArgumentException ex )
             {
-                // Skip malformed messages, continue processing
-                Logging.Warn( "Skipped malformed message during batch deserialization." );
+                Logging.Warn( $"Skipped malformed message during batch deserialization: {ex.Message}" );
             }
 
-            remaining = remaining.Substring( jsonStart + declaredLength );
+            var consumed = jsonStart + declaredLength;
+            bytesConsumed += consumed;
+            buffer = buffer.Slice( consumed );
         }
 
         return messages.Count;
+    }
+
+    private static MessageEnvelope DeserializePayload ( string jsonPart )
+    {
+        try
+        {
+            var message = JsonConvert.DeserializeObject<MessageEnvelope>( jsonPart, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DateFormatString = "O"
+            } );
+
+            if ( message is null )
+            {
+                throw new ArgumentException( "JSON deserialized to null." );
+            }
+
+            message.Validate();
+            return message;
+        }
+        catch ( JsonException ex )
+        {
+            throw new ArgumentException( $"Message payload is not valid JSON: {ex.Message}", ex );
+        }
+    }
+
+    private static bool TryReadPayload ( ReadOnlySpan<char> buffer, int declaredLength, out string payload,
+        out int charsConsumed )
+    {
+        payload = string.Empty;
+        charsConsumed = 0;
+
+        var byteCount = 0;
+        while ( charsConsumed < buffer.Length && byteCount < declaredLength )
+        {
+            var status = Rune.DecodeFromUtf16( buffer.Slice( charsConsumed ), out var rune, out var runeCharsConsumed );
+            if ( status != OperationStatus.Done )
+            {
+                return false;
+            }
+
+            var runeLength = rune.Utf8SequenceLength;
+            if ( (byteCount + runeLength) > declaredLength )
+            {
+                return false;
+            }
+
+            byteCount += runeLength;
+            charsConsumed += runeCharsConsumed;
+        }
+
+        if ( byteCount != declaredLength )
+        {
+            return false;
+        }
+
+        payload = buffer.Slice( 0, charsConsumed ).ToString();
+        return true;
     }
 }

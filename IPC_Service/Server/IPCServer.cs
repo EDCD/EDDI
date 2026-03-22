@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,6 +30,7 @@ namespace EddiIPC_Service.Server
         private readonly object _connectionsLock = new();
         private readonly MessageRouter _router;
         private DefaultServerEventHandler? _ipcHandler;
+        private IDisposable? _runtimeEventDispatcherRegistration;
 
         /// <summary>Server port (auto-selected from range 12345-12450)</summary>
         public int Port { get; private set; }
@@ -64,13 +66,14 @@ namespace EddiIPC_Service.Server
         public MessageRouter Router => _router;
 
         /// <summary>
-        /// Initialize IPC server and heartbeat monitor for plugin mode communication.
+        /// Initialize IPC server for plugin mode communication.
         /// </summary>
         public void InitializeIpcServer ()
         {
             _ipcHandler = new DefaultServerEventHandler( this );
 
-            RuntimeEventDispatcher.RegisterDispatcher( async ( eventData, cancellationToken ) =>
+            _runtimeEventDispatcherRegistration?.Dispose();
+            _runtimeEventDispatcherRegistration = RuntimeEventDispatcher.RegisterDispatcher( async ( eventData, cancellationToken ) =>
             {
                 var message = MessageEnvelope.Create( MessageTypes.Event, eventData );
                 await BroadcastAsync( message, cancellationToken ).ConfigureAwait( false );
@@ -178,7 +181,8 @@ namespace EddiIPC_Service.Server
                 _listener?.Stop();
                 _listener?.Dispose();
 
-                RuntimeEventDispatcher.ClearDispatcher();
+                _runtimeEventDispatcherRegistration?.Dispose();
+                _runtimeEventDispatcherRegistration = null;
 
                 IsRunning = false;
                 Logging.Info( "IPC Server stopped successfully" );
@@ -233,7 +237,7 @@ namespace EddiIPC_Service.Server
                 await context.Stream.WriteAsync( bytes, 0, bytes.Length, cancellationToken ).ConfigureAwait( false );
                 await context.Stream.FlushAsync( cancellationToken ).ConfigureAwait( false );
 
-                Logging.Debug( $"Sent {message.Type} message to session {sessionId}" );
+                Logging.Debug( $"Sent {message.Type} message to session {sessionId}: {serialized}" );
             }
             catch ( OperationCanceledException )
             {
@@ -406,8 +410,8 @@ namespace EddiIPC_Service.Server
 
             try
             {
-                var buffer = new byte[ 65536 ]; // 64KB buffer for message reading
-                var remainingData = string.Empty;
+                var buffer = new byte[ 65536 ];
+                var remainingBytes = new List<byte>();
 
                 while ( !cancellationToken.IsCancellationRequested && context.IsConnected )
                 {
@@ -420,42 +424,38 @@ namespace EddiIPC_Service.Server
 
                         if ( bytesRead == 0 )
                         {
-                            // Client disconnected
                             break;
                         }
 
-                        // Append received bytes to remaining data
-                        var receivedText = Encoding.UTF8.GetString( buffer, 0, bytesRead );
-                        remainingData += receivedText;
+                        remainingBytes.AddRange( buffer.AsSpan( 0, bytesRead ).ToArray() );
 
-                        // Process complete messages
-                        while ( true )
+                        while ( remainingBytes.Count > 0 )
                         {
-                            var messageCount = MessageSerializer.DeserializeMessages( remainingData, out var messages,
-                                out remainingData );
-                            if ( messageCount == 0 )
+                            var messageCount = MessageSerializer.DeserializeMessages(
+                                CollectionsMarshal.AsSpan( remainingBytes ), out var messages, out var bytesConsumed );
+                            if ( bytesConsumed == 0 )
+                            {
                                 break;
+                            }
+
+                            remainingBytes.RemoveRange( 0, bytesConsumed );
+
+                            if ( messageCount == 0 )
+                            {
+                                continue;
+                            }
 
                             foreach ( var message in messages )
                             {
                                 try
                                 {
                                     message.Validate();
-
-                                    // Update heartbeat timestamp
-                                    if ( message.Type == "Heartbeat" )
-                                    {
-                                        context.LastHeartbeatUtc = DateTime.UtcNow;
-                                    }
-
-                                    // Route to handlers
                                     await _router.RouteAsync( message, context ).ConfigureAwait( false );
                                 }
                                 catch ( Exception ex )
                                 {
                                     Logging.Error( $"Error processing message: {ex.Message}", ex );
 
-                                    // Send error response
                                     var errorMsg = MessageEnvelope.Create( "Error",
                                         new ErrorData
                                         {
@@ -476,7 +476,6 @@ namespace EddiIPC_Service.Server
                     }
                     catch ( IOException )
                     {
-                        // Connection lost
                         break;
                     }
                 }
@@ -487,7 +486,6 @@ namespace EddiIPC_Service.Server
             }
             finally
             {
-                // Clean up
                 lock ( _connectionsLock )
                 {
                     _connections.Remove( context.SessionId );

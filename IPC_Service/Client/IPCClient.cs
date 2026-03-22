@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -318,7 +319,7 @@ namespace EddiIPC_Service.Client
                 return;
             }
 
-            var buffer = new StringBuilder();
+            var bufferedBytes = new List<byte>();
             try
             {
                 while ( !cancellationToken.IsCancellationRequested && ( _tcpClient?.Connected ?? false ) )
@@ -336,34 +337,28 @@ namespace EddiIPC_Service.Client
                             break;
                         }
 
-                        var text = Encoding.UTF8.GetString( receiveBuffer, 0, bytesRead );
-                        buffer.Append( text );
+                        bufferedBytes.AddRange( receiveBuffer.AsSpan( 0, bytesRead ).ToArray() );
 
-                        // Try to deserialize messages from buffer
-                        while ( !string.IsNullOrEmpty( buffer.ToString() ) )
+                        while ( bufferedBytes.Count > 0 )
                         {
-                            try
+                            var messageCount = MessageSerializer.DeserializeMessages(
+                                CollectionsMarshal.AsSpan( bufferedBytes ), out var messages, out var bytesConsumed );
+
+                            if ( bytesConsumed == 0 )
                             {
-                                var bufferContent = buffer.ToString();
-                                var messageCount = MessageSerializer.DeserializeMessages( bufferContent,
-                                    out var messages, out var remaining );
-
-                                if ( messageCount == 0 )
-                                {
-                                    break; // No complete messages yet
-                                }
-
-                                buffer.Clear();
-                                buffer.Append( remaining );
-
-                                foreach ( var message in messages )
-                                {
-                                    ProcessReceivedMessage( message );
-                                }
+                                break;
                             }
-                            catch ( ArgumentException )
+
+                            bufferedBytes.RemoveRange( 0, bytesConsumed );
+
+                            if ( messageCount == 0 )
                             {
-                                break; // Invalid message, wait for more data
+                                continue;
+                            }
+
+                            foreach ( var message in messages )
+                            {
+                                ProcessReceivedMessage( message );
                             }
                         }
                     }
@@ -435,7 +430,7 @@ namespace EddiIPC_Service.Client
                     requestId = token.Value<string>() ?? string.Empty;
                     break;
                 case IDictionary<string, object> dictionary when dictionary.TryGetValue( propertyName, out var value ):
-                    requestId = value?.ToString() ?? string.Empty;
+                    requestId = value.ToString() ?? string.Empty;
                     break;
             }
 
@@ -450,7 +445,7 @@ namespace EddiIPC_Service.Client
                 JObject json when json.TryGetValue( nameof( ErrorData.Message ), StringComparison.OrdinalIgnoreCase, out var token ) =>
                     token.Value<string>() ?? "IPC server returned an error response.",
                 IDictionary<string, object> dictionary when dictionary.TryGetValue( nameof( ErrorData.Message ), out var value ) =>
-                    value?.ToString() ?? "IPC server returned an error response.",
+                    value.ToString() ?? "IPC server returned an error response.",
                 _ => "IPC server returned an error response."
             };
         }

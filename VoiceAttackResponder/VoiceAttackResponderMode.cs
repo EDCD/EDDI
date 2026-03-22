@@ -23,7 +23,6 @@ namespace EddiVoiceAttackResponder
     /// </summary>
     internal static class VoiceAttackResponderMode
     {
-        private static EddiVoiceAttackAdapter.Client.VoiceAttackEventHandler? _eventHandler;
         private static PropertyChangedEventHandler? _propertyChangedHandler;
         private static bool _initialized;
 
@@ -53,18 +52,9 @@ namespace EddiVoiceAttackResponder
                 CompanionAppService.Instance.StateChanged += OnCapiStateChanged;
                 EddiConfigService.ConfigService.Instance.PropertyChanged += VoiceAttackVariables.updateConfigurationValues;
 
-                // Initialize event handler for EDDI event dispatch through IPC
-                try
-                {
-                    _eventHandler = new EddiVoiceAttackAdapter.Client.VoiceAttackEventHandler();
-                    _propertyChangedHandler = DispatchEddiEventAsync;
-                    EDDI.Instance.PropertyChanged += _propertyChangedHandler;
-                    Logging.Debug("Event handler initialized for EDDI event dispatch to VoiceAttack");
-                }
-                catch (Exception ex)
-                {
-                    Logging.Warn($"Failed to initialize event handler: {ex.Message}");
-                }
+                _propertyChangedHandler = DispatchEddiEventAsync;
+                EDDI.Instance.PropertyChanged += _propertyChangedHandler;
+                Logging.Debug("EDDI property-change forwarding registered for VoiceAttack IPC broadcast");
 
                 // Check for available upgrades and notify user
                 if (EddiUpgrader.UpgradeAvailable)
@@ -123,7 +113,6 @@ namespace EddiVoiceAttackResponder
                 CompanionAppService.Instance.StateChanged -= OnCapiStateChanged;
                 EddiConfigService.ConfigService.Instance.PropertyChanged -= VoiceAttackVariables.updateConfigurationValues;
 
-                _eventHandler = null;
                 _initialized = false;
 
                 Logging.Info("EDDI VoiceAttack responder mode shutdown complete");
@@ -165,25 +154,35 @@ namespace EddiVoiceAttackResponder
         /// </summary>
         private static void DispatchEddiEventAsync(object? sender, PropertyChangedEventArgs? e)
         {
-            if (_eventHandler == null || string.IsNullOrEmpty(e?.PropertyName))
+            if (string.IsNullOrEmpty(e?.PropertyName))
             {
                 return;
             }
 
-            // Dispatch event through handler asynchronously (fire-and-forget with error handling)
-            var task = _eventHandler.DispatchEventAsync(
-                eventType: "EddiPropertyChanged",
-                eventName: e.PropertyName,
-                eventPayload: new System.Collections.Generic.Dictionary<string, object>
-                {
-                    { "property", e.PropertyName }
-                }
-            );
-
-            task.SafeFireAndForget(ex => Logging.Error($"Failed to dispatch EDDI property event to VoiceAttack: {ex.Message}", ex));
+            DispatchEddiEventCoreAsync(e.PropertyName)
+                .SafeFireAndForget(ex => Logging.Error($"Failed to dispatch EDDI property event to VoiceAttack: {ex.Message}", ex));
         }
 
-        private static void RuntimeWriteToLog( string message, string color )
+        private static async Task DispatchEddiEventCoreAsync(string propertyName)
+        {
+            var eventData = new EventData
+            {
+                EventType = "EddiPropertyChanged",
+                EventName = propertyName,
+                EventPayload = new Dictionary<string, object>
+                {
+                    { "property", propertyName }
+                }
+            };
+
+            var dispatched = await RuntimeEventDispatcher.DispatchAsync(eventData).ConfigureAwait(false);
+            if (!dispatched)
+            {
+                Logging.Debug($"Property change '{propertyName}' could not be dispatched because no runtime IPC dispatcher is registered");
+            }
+        }
+
+        private static void RuntimeWriteToLog( string? message, string? color )
         {
             try
             {

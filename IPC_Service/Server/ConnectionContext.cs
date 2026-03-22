@@ -27,9 +27,6 @@ namespace EddiIPC_Service.Server
         /// <summary>Network stream for reading/writing</summary>
         public NetworkStream? Stream => _stream;
 
-        /// <summary>Time of last successful heartbeat (UTC)</summary>
-        public DateTime LastHeartbeatUtc { get; set; }
-
         /// <summary>Whether client has completed Connect handshake</summary>
         public bool IsAuthenticated { get; set; }
 
@@ -58,7 +55,6 @@ namespace EddiIPC_Service.Server
             _client = client;
             _stream = client.GetStream();
             SessionId = Guid.NewGuid().ToString("D");
-            LastHeartbeatUtc = DateTime.UtcNow;
             IsAuthenticated = false;
         }
 
@@ -132,23 +128,6 @@ namespace EddiIPC_Service.Server
                     return false;
                 }
             }
-        }
-
-        /// <summary>
-        /// Check if heartbeat has timed out (no response for 10 seconds).
-        /// </summary>
-        public bool IsHeartbeatTimedOut(int timeoutSeconds = 10)
-        {
-            return DateTime.UtcNow.Subtract(LastHeartbeatUtc).TotalSeconds > timeoutSeconds;
-        }
-
-        /// <summary>
-        /// Update the last heartbeat timestamp to now (UTC).
-        /// Called when heartbeat is received or sent.
-        /// </summary>
-        public void UpdateHeartbeat()
-        {
-            LastHeartbeatUtc = DateTime.UtcNow;
         }
 
         /// <summary>
