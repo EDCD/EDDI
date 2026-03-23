@@ -594,12 +594,6 @@ namespace EddiCore
 
                 foreach (var responder in responders)
                 {
-                    if ( !FromVA && responder.ResponderName() == "VoiceAttack responder" )
-                    {
-                        // When we are not running from VoiceAttack then we skip starting the VoiceAttack responder.
-                        continue;
-                    }
-
                     if (!configuration.Plugins.TryGetValue(responder.ResponderName(), out var enabled))
                     {
                         // No information; default to enabled
@@ -709,11 +703,11 @@ namespace EddiCore
         /// <summary>
         /// Obtain a named monitor
         /// </summary>
-        public IEddiMonitor ObtainMonitor(string invariantName)
+        public IEddiMonitor ObtainMonitor(string invariantName, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase )
         {
             foreach (var monitor in monitors)
             {
-                if (monitor.MonitorName().Equals(invariantName, StringComparison.InvariantCultureIgnoreCase))
+                if (monitor.MonitorName().Equals(invariantName, stringComparison))
                 {
                     return monitor;
                 }
@@ -722,11 +716,11 @@ namespace EddiCore
         }
 
         /// <summary> Obtain a named responder </summary>
-        public IEddiResponder ObtainResponder(string invariantName)
+        public IEddiResponder ObtainResponder(string invariantName, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase)
         {
             foreach (var responder in responders)
             {
-                if (responder.ResponderName().Equals(invariantName, StringComparison.InvariantCultureIgnoreCase))
+                if (responder.ResponderName().Equals(invariantName, stringComparison ) )
                 {
                     return responder;
                 }
@@ -735,9 +729,9 @@ namespace EddiCore
         }
 
         /// <summary> Disable a named responder for this session.  This does not update the on-disk status of the responder </summary>
-        public void DisableResponder(string invariantName)
+        public void DisableResponder(string invariantName, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase )
         {
-            var responder = ObtainResponder(invariantName);
+            var responder = ObtainResponder(invariantName, stringComparison);
             DisableResponder(responder);
         }
 
@@ -762,9 +756,9 @@ namespace EddiCore
         }
 
         /// <summary> Enable a named responder for this session.  This does not update the on-disk status of the responder </summary>
-        public void EnableResponder(string invariantName)
+        public void EnableResponder(string invariantName, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase )
         {
-            var responder = ObtainResponder(invariantName);
+            var responder = ObtainResponder(invariantName, stringComparison);
             EnableResponder(responder);
         }
 
@@ -781,9 +775,9 @@ namespace EddiCore
         }
 
         /// <summary> Disable a named monitor for this session.  This does not update the on-disk status of the responder </summary>
-        public void DisableMonitor(string invariantName)
+        public void DisableMonitor(string invariantName, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase )
         {
-            var monitor = ObtainMonitor(invariantName);
+            var monitor = ObtainMonitor(invariantName, stringComparison);
             DisableMonitor(monitor);
         }
 
@@ -824,9 +818,9 @@ namespace EddiCore
         }
 
         /// <summary> Enable a named monitor for this session.  This does not update the on-disk status of the responder </summary>
-        public void EnableMonitor(string invariantName)
+        public void EnableMonitor(string invariantName, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase )
         {
-            var monitor = ObtainMonitor(invariantName);
+            var monitor = ObtainMonitor(invariantName, stringComparison);
             EnableMonitor(monitor);
         }
 
@@ -857,11 +851,11 @@ namespace EddiCore
         }
 
         /// <summary> Reload a specific monitor or responder </summary>
-        public void Reload(string name)
+        public void Reload(string name, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase )
         {
             foreach (var responder in responders)
             {
-                if (responder.ResponderName().Contains( name, StringComparison.OrdinalIgnoreCase ) )
+                if (responder.ResponderName().Contains( name, stringComparison ) )
                 {
                     responder.Reload();
                     return;
@@ -869,7 +863,7 @@ namespace EddiCore
             }
             foreach (var monitor in monitors)
             {
-                if (monitor.MonitorName().Contains( name, StringComparison.OrdinalIgnoreCase ) )
+                if (monitor.MonitorName().Contains( name, stringComparison ) )
                 {
                     monitor.Reload();
                 }

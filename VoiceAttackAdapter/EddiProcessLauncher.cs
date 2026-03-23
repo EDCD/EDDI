@@ -3,6 +3,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -41,8 +42,8 @@ namespace EddiVoiceAttackAdapter
                 var isConnected = await AttemptServerConnectionAsync(cancellationToken).ConfigureAwait(false);
                 if (isConnected)
                 {
-                    _eddiProcess = null;
-                    _managedEddiProcess = false;
+                    _eddiProcess = Processes.ByName("Eddi").First();
+                    _managedEddiProcess = true;
                     Logging.Info("Connected to existing EDDI standalone instance");
                     return true;
                 }

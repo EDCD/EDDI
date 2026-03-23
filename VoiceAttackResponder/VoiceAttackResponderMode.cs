@@ -69,7 +69,6 @@ namespace EddiVoiceAttackResponder
                         .SafeFireAndForget(ex => Logging.Error(ex.Message, ex));
                 }
 
-                RuntimeWriteToLog("The EDDI plugin is fully operational.", "green");
                 VoiceAttackVariables.setStatus("Operational");
 
                 // Fire initialization event

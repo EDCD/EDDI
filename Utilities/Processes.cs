@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 
 namespace Utilities
 {
@@ -6,14 +7,19 @@ namespace Utilities
     {
         private const string eliteDangerousProcessName = "EliteDangerous";
 
-        private static bool IsProcessRunning ( string processName )
+        private static Process[] ProcessesStartingWith ( string processName )
         {
-            return System.Diagnostics.Process.GetProcesses().Any( p => p.ProcessName.StartsWith( processName ) );
+            return Process.GetProcesses().Where( p => p.ProcessName.StartsWith( processName ) ).ToArray();
+        }
+
+        public static Process[] ByName ( string processName )
+        {
+            return Process.GetProcessesByName(processName);
         }
 
         public static bool IsEliteRunning ()
         {
-            return IsProcessRunning( eliteDangerousProcessName );
+            return ProcessesStartingWith( eliteDangerousProcessName ).Length > 0;
         }
     }
 }

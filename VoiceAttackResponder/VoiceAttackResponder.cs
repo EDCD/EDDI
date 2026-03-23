@@ -2,6 +2,7 @@
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiIPC_Service.Server;
+using JetBrains.Annotations;
 using System;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -14,15 +15,12 @@ namespace EddiVoiceAttackResponder
     /// <summary>
     /// A responder for EDDI to provide information to VoiceAttack.  This is very simple, just adding events to the VoiceAttack plugin's event queue
     /// </summary>
-    class VoiceAttackResponder : IEddiResponder
+    [UsedImplicitly]
+    public class VoiceAttackResponder : IEddiResponder
     {
-        private static VoiceAttackEventHandling voiceAttackEventHandler;
-        private IDisposable _commandDispatcherRegistration;
-        private IDisposable _responderModeRegistration;
-
-        public VoiceAttackResponder()
-        {
-        }
+        private static readonly VoiceAttackEventHandling voiceAttackEventHandler = new();
+        [UsedImplicitly] private IDisposable _commandDispatcherRegistration = CommandDispatcherRegistry.RegisterCommandDispatcher( new VoiceAttackCommandDispatcher() );
+        [UsedImplicitly] private IDisposable _responderModeRegistration = ResponderModeRegistry.RegisterHandler( VoiceAttackResponderModeHandler.SetResponderModeAsync );
 
         public string ResponderName()
         {
@@ -53,33 +51,18 @@ namespace EddiVoiceAttackResponder
         {
             if (EDDI.Instance.FromVA )
             {
-                // Set up our event responder.
-                voiceAttackEventHandler = new VoiceAttackEventHandling();
-                _responderModeRegistration?.Dispose();
-                _commandDispatcherRegistration?.Dispose();
-                _responderModeRegistration = ResponderModeRegistry.RegisterHandler( VoiceAttackResponderModeHandler.SetResponderModeAsync );
-                _commandDispatcherRegistration = CommandDispatcherRegistry.RegisterCommandDispatcher(new VoiceAttackCommandDispatcher());
-                Logging.Info( "Started VoiceAttack responder" );
-
                 // Initialize responder mode: subscribe to EDDI events and set up VoiceAttack variable synchronization
                 VoiceAttackResponderMode.InitializeAsync().SafeFireAndForget( 
                     ex => Logging.Error( "Failed to initialize VoiceAttack responder mode", ex ) );
 
                 return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
         public void Stop ()
         {
-            _commandDispatcherRegistration?.Dispose();
-            _commandDispatcherRegistration = null;
-            _responderModeRegistration?.Dispose();
-            _responderModeRegistration = null;
-
             // Cancel event queue threads and wait for them to complete
             voiceAttackEventHandler?.StopEventHandlingAsync().SafeFireAndForget( ex => Logging.Warn( ex.Message, ex ) );
         }
