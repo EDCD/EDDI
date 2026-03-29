@@ -16,9 +16,13 @@ namespace EddiVoiceAttackAdapter.Client
     /// Handles plugin-level initialization, command/query/event dispatch through IPC client,
     /// and lifecycle management specific to VoiceAttack plugin mode.
     /// </summary>
-    public class VoiceAttackPluginClient : IDisposable
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="VoiceAttackPluginClient"/> class.
+    /// </remarks>
+    /// <param name="configFilePath">Path to the IPC configuration file containing the server port</param>
+    public class VoiceAttackPluginClient ( string configFilePath ) : IDisposable
     {
-        private readonly string _configFilePath;
+        private readonly string _configFilePath = configFilePath ?? throw new ArgumentNullException(nameof(configFilePath));
         private IPCClient? _ipcClient;
         private bool _disposed;
         private int _port;
@@ -40,15 +44,6 @@ namespace EddiVoiceAttackAdapter.Client
         /// Gets a value indicating whether the plugin is connected to the IPC server.
         /// </summary>
         public bool IsConnected => _ipcClient?.IsConnected ?? false;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VoiceAttackPluginClient"/> class.
-        /// </summary>
-        /// <param name="configFilePath">Path to the IPC configuration file containing the server port</param>
-        public VoiceAttackPluginClient(string configFilePath)
-        {
-            _configFilePath = configFilePath ?? throw new ArgumentNullException(nameof(configFilePath));
-        }
 
         /// <summary>
         /// Initializes the plugin client by reading the config file and connecting to the IPC server.

@@ -30,10 +30,7 @@ namespace EddiNavigationMonitor
                 {
                     lock ( InstanceLock )
                     {
-                        if ( _instance == null )
-                        {
-                            _instance = new ConfigurationWindow();
-                        }
+                        _instance ??= new ConfigurationWindow();
                     }
                 }
                 return _instance;

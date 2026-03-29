@@ -29,7 +29,7 @@ namespace EddiMissionMonitor
 
         // Observable collection for us to handle changes
         public ObservableCollection<Mission> missions { get; private set; }
-        private readonly List<Mission> communityGoalHolder = new();
+        private readonly List<Mission> communityGoalHolder = [ ];
 
         private DateTime updateDat;
         public int? missionWarning;
@@ -59,7 +59,7 @@ namespace EddiMissionMonitor
 
         public MissionMonitor()
         {
-            missions = new ObservableCollection<Mission>();
+            missions = [ ];
             BindingOperations.CollectionRegistering += Missions_CollectionRegistering;
             initializeMissionMonitor();
         }
@@ -1056,7 +1056,7 @@ namespace EddiMissionMonitor
             }
         }
 
-        public bool UpdateRedirectStatus(Mission mission)
+        private static bool UpdateRedirectStatus(Mission mission)
         {
             if ( mission.originreturn && mission.originsystem == mission.destinationsystem
                 && mission.originstation == mission.destinationstation)

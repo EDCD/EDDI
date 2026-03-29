@@ -15,26 +15,26 @@ namespace EddiNavigationService.QueryResolvers
     internal class NearestScoopSystemResolver : IQueryResolver
     {
         public QueryType Type => QueryType.scoop;
-        public Dictionary<string, object> SpanshQueryFilter =>
+
+        private static readonly Dictionary<string, object> SpanshQueryFilter =
             new()
             {
                 { "type", new { value = new[] { "Star" } } },
-                { "subtype", new { value = new[] {
-                    "A (Blue-White super giant) Star",
-                    "A (Blue-White) Star",
-                    "B (Blue-White super giant) Star",
-                    "B (Blue-White) Star",
-                    "F (White super giant) Star",
-                    "F (White) Star",
-                    "G (White-Yellow super giant) Star",
-                    "G (White-Yellow) Star",
-                    "K (Yellow-Orange giant) Star",
-                    "K (Yellow-Orange) Star",
-                    "M (Red dwarf) Star",
-                    "M (Red giant) Star",
-                    "M (Red super giant) Star",
-                    "O (Blue-White) Star"
-                } } }
+                {
+                    "subtype",
+                    new
+                    {
+                        value = new[]
+                        {
+                            "A (Blue-White super giant) Star", "A (Blue-White) Star",
+                            "B (Blue-White super giant) Star", "B (Blue-White) Star",
+                            "F (White super giant) Star", "F (White) Star",
+                            "G (White-Yellow super giant) Star", "G (White-Yellow) Star",
+                            "K (Yellow-Orange giant) Star", "K (Yellow-Orange) Star", "M (Red dwarf) Star",
+                            "M (Red giant) Star", "M (Red super giant) Star", "O (Blue-White) Star"
+                        }
+                    }
+                }
             };
 
         public Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
@@ -126,7 +126,7 @@ namespace EddiNavigationService.QueryResolvers
         /// <returns> The query result </returns>
         private static async Task<RouteDetailsEvent> GetCarrierRouteAsync ( [NotNull] string targetSystemName, [NotNull] StarSystem startSystem, long? usedCarrierCapacity = 0, string[] refuelDestinations = null, bool fromUIquery = false )
         {
-            usedCarrierCapacity = usedCarrierCapacity ?? EDDI.Instance.FleetCarrier?.usedCapacity;
+            usedCarrierCapacity ??= EDDI.Instance.FleetCarrier?.usedCapacity;
             if ( usedCarrierCapacity is null ) { return null; }
 
             var plottedRouteList = await EDDI.Instance.DataProvider.FetchCarrierRouteAsync( startSystem.systemname,

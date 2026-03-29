@@ -224,14 +224,8 @@ namespace Tests
             Assert.AreEqual( "Jerome Archer", result.Power.invariantName );
             Assert.IsNotNull( result.powerState );
             Assert.AreEqual( "Stronghold", result.powerState.invariantName );
-            Assert.IsTrue( new[]
-                {
-                    "Aisling Duval",
-                    "Edmund Mahon", 
-                    "Li Yong-Rui",
-                    "Yuri Grom",
-                    "Zemina Torval"
-                }.All( n => result.NearbyPowers.Select( p => p.invariantName ).Contains( n ) ) );
+            var expectedPowers = new[] { "Aisling Duval", "Edmund Mahon", "Li Yong-Rui", "Yuri Grom", "Zemina Torval" };
+            Assert.IsTrue( expectedPowers.All( n => result.NearbyPowers.Select( p => p.invariantName ).Contains( n ) ) );
             Assert.HasCount( 0, result.ContestingPowers );
             Assert.IsEmpty( result.powerAcquisitionProgress );
             Assert.AreEqual( 1.056486M, result.powerControlProgress );
@@ -421,26 +415,13 @@ namespace Tests
             Assert.AreEqual( "Rescue Ship - Li Qing Jao", rescueStation.name );
             Assert.HasCount( 85, rescueStation.outfitting );
             Assert.AreEqual( "Lightweight Alloy", rescueStation.outfitting[0].invariantName );
-            Assert.IsTrue( new[]
-                {
-                    "Dock", 
-                    "Auto Dock", 
-                    "Black Market", 
-                    "Market", 
-                    "Contacts", 
-                    "Missions", 
-                    "Outfitting", 
-                    "Restock",
-                    "Refuel", 
-                    "Repair", 
-                    "Tuning", 
-                    "Workshop", 
-                    "Missions Generated", 
-                    "Flight Controller",
-                    "Station Operations", 
-                    "Search and Rescue", 
-                    "Station Menu"
-                }.All( s => rescueStation.stationServices.Select( svc => svc.invariantName ).Contains( s ) ) );
+            var expectedServices = new[]
+            {
+                "Dock", "Auto Dock", "Black Market", "Market", "Contacts", "Missions", "Outfitting", "Restock",
+                "Refuel", "Repair", "Tuning", "Workshop", "Missions Generated", "Flight Controller",
+                "Station Operations", "Search and Rescue", "Station Menu"
+            };
+            Assert.IsTrue( expectedServices.All( s => rescueStation.stationServices.Select( svc => svc.invariantName ).Contains( s ) ) );
             Assert.AreEqual( "Megaship", rescueStation.Model.invariantName );
             Assert.HasCount( 0, rescueStation.shipyard );
             Assert.AreEqual( 1616084366, rescueStation.updatedat );
@@ -469,37 +450,15 @@ namespace Tests
             Assert.AreEqual( "Titan City", orbitalStation.name );
             Assert.HasCount( 287, orbitalStation.outfitting );
             Assert.AreEqual( "Reinforced Alloy", orbitalStation.outfitting[ 1 ].invariantName );
-            Assert.IsTrue( new[]
-                {
-                    "Dock", 
-                    "Auto Dock", 
-                    "Market", 
-                    "Contacts", 
-                    "Universal Cartographics", 
-                    "Missions", 
-                    "Outfitting", 
-                    "Crew Lounge", 
-                    "Restock", 
-                    "Refuel", 
-                    "Repair", 
-                    "Shipyard", 
-                    "Tuning", 
-                    "Workshop", 
-                    "Missions Generated", 
-                    "Flight Controller", 
-                    "Station Operations", 
-                    "Powerplay", 
-                    "Search and Rescue", 
-                    "Station Menu", 
-                    "Shop", 
-                    "Livery", 
-                    "Social Space", 
-                    "Bartender", 
-                    "Vista Genomics", 
-                    "Pioneer Supplies", 
-                    "Apex Interstellar", 
-                    "Frontline Solutions"
-                }.All( s => orbitalStation.stationServices.Select( svc => svc.invariantName ).Contains( s ) ) );
+            var expectedServices2 = new[]
+            {
+                "Dock", "Auto Dock", "Market", "Contacts", "Universal Cartographics", "Missions", "Outfitting",
+                "Crew Lounge", "Restock", "Refuel", "Repair", "Shipyard", "Tuning", "Workshop",
+                "Missions Generated", "Flight Controller", "Station Operations", "Powerplay", "Search and Rescue",
+                "Station Menu", "Shop", "Livery", "Social Space", "Bartender", "Vista Genomics", "Pioneer Supplies",
+                "Apex Interstellar", "Frontline Solutions"
+            };
+            Assert.IsTrue( expectedServices2.All( s => orbitalStation.stationServices.Select( svc => svc.invariantName ).Contains( s ) ) );
             Assert.AreEqual( "Orbis Starport", orbitalStation.Model.invariantName );
             Assert.HasCount( 20, orbitalStation.shipyard );
             Assert.AreEqual( "Adder", orbitalStation.shipyard[ 0 ].model );
@@ -527,36 +486,15 @@ namespace Tests
             Assert.HasCount( 89, surfaceOutpost.commodities );
             Assert.AreEqual( "Walz Depot", surfaceOutpost.name );
             Assert.HasCount( 234, surfaceOutpost.outfitting );
-            Assert.IsTrue( new[]
-                {
-                    "Dock",
-                    "Auto Dock",
-                    "Market",
-                    "Contacts",
-                    "Universal Cartographics",
-                    "Missions",
-                    "Outfitting",
-                    "Crew Lounge",
-                    "Restock",
-                    "Refuel",
-                    "Repair",
-                    "Shipyard",
-                    "Workshop",
-                    "Missions Generated",
-                    "Flight Controller",
-                    "Station Operations",
-                    "Powerplay",
-                    "Search and Rescue",
-                    "Station Menu",
-                    "Shop",
-                    "Livery",
-                    "Social Space",
-                    "Bartender",
-                    "Vista Genomics",
-                    "Pioneer Supplies",
-                    "Apex Interstellar",
-                    "Frontline Solutions"
-                }.All( s => surfaceOutpost.stationServices.Select( svc => svc.invariantName ).Contains( s ) ) );
+            var expectedServices3 = new[]
+            {
+                "Dock", "Auto Dock", "Market", "Contacts", "Universal Cartographics", "Missions", "Outfitting",
+                "Crew Lounge", "Restock", "Refuel", "Repair", "Shipyard", "Workshop", "Missions Generated",
+                "Flight Controller", "Station Operations", "Powerplay", "Search and Rescue", "Station Menu", "Shop",
+                "Livery", "Social Space", "Bartender", "Vista Genomics", "Pioneer Supplies", "Apex Interstellar",
+                "Frontline Solutions"
+            };
+            Assert.IsTrue( expectedServices3.All( s => surfaceOutpost.stationServices.Select( svc => svc.invariantName ).Contains( s ) ) );
             Assert.AreEqual( "Surface Outpost", surfaceOutpost.Model.invariantName );
             Assert.HasCount( 12, surfaceOutpost.shipyard );
             Assert.AreEqual( "Asp Scout", surfaceOutpost.shipyard[ 0 ].model );

@@ -32,7 +32,7 @@ namespace EddiInaraService
         // Variables
         private readonly HttpClient httpClient;
         private static bool tooManyRequests; // This must be static so that it is visible to child threads and tasks
-        private static readonly BlockingCollection<InaraAPIEvent> queuedAPIEvents = new();
+        private static readonly BlockingCollection<InaraAPIEvent> queuedAPIEvents = [ ];
         private readonly List<string> invalidAPIEvents = [ ];
         private static CancellationTokenSource syncCancellationTS; // This must be static so that it is visible to child threads and tasks
         private bool eddiIsBeta;
@@ -128,7 +128,7 @@ namespace EddiInaraService
             var inaraResponses = new List<InaraResponse>();
             if ( events is null ) { return inaraResponses; }
 
-            if ( inaraConfiguration is null ) { inaraConfiguration = ConfigService.Instance.inaraConfiguration; }
+            inaraConfiguration ??= ConfigService.Instance.inaraConfiguration;
 
             if ( inaraConfiguration == null || !checkAPIcredentialsOk( inaraConfiguration ) )
             {
@@ -277,7 +277,7 @@ namespace EddiInaraService
             {
                 // 202 - Warning (everything is OK, but there may be multiple results for the input properties, etc.)
                 // 204 - 'Soft' error (everything was formally OK, but there are no results for the properties set, etc.)
-                if (inaraResponse.eventStatus == 202 || inaraResponse.eventStatus == 204)
+                if (inaraResponse.eventStatus is 202 or 204)
                 {
                     Logging.Warn("Inara warning or soft error reported: " + (inaraResponse.eventStatusText ?? "(No response)"), JsonConvert.SerializeObject(data));
                 }

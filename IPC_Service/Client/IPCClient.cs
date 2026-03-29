@@ -296,7 +296,7 @@ namespace EddiIPC_Service.Client
                     var bytesWritten = Encoding.UTF8.GetBytes( serialized, 0, serialized.Length, rentedBuffer, 0 );
 
                     // Write data (includes length prefix and JSON)
-                    await _networkStream.WriteAsync( rentedBuffer, 0, bytesWritten, cancellationToken ).ConfigureAwait( false );
+                    await _networkStream.WriteAsync( rentedBuffer.AsMemory( 0, bytesWritten ), cancellationToken ).ConfigureAwait( false );
                     await _networkStream.FlushAsync( cancellationToken ).ConfigureAwait( false );
 
                     _messagesSent++;
@@ -333,7 +333,7 @@ namespace EddiIPC_Service.Client
                     try
                     {
                         var bytesRead = await _networkStream
-                            .ReadAsync( rentedBuffer, 0, 4096, cancellationToken )
+                            .ReadAsync( rentedBuffer.AsMemory( 0, 4096 ), cancellationToken )
                             .ConfigureAwait( false );
 
                         if ( bytesRead == 0 )

@@ -32,7 +32,7 @@ namespace EddiSpeechService
 
         private void PrepareSpeechQueues()
         {
-            priorityQueues = new List<ConcurrentQueue<EddiSpeech>>();
+            priorityQueues = [ ];
 
             // Priority 0: System messages (always top priority)
             // Priority 1: Highest user settable priority, interrupts lower priorities

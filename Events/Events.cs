@@ -6,10 +6,10 @@ namespace EddiEvents
 {
     public abstract class Events
     {
-        public static readonly Dictionary<string, Type> TYPES = new();
-        private static readonly Dictionary<string, IList<object>> SAMPLES = new();
-        private static readonly Dictionary<string, string> DEFAULTS = new();
-        public static readonly Dictionary<string, string> DESCRIPTIONS = new();
+        public static readonly Dictionary<string, Type> TYPES = [ ];
+        private static readonly Dictionary<string, IList<object>> SAMPLES = [ ];
+        private static readonly Dictionary<string, string> DEFAULTS = [ ];
+        public static readonly Dictionary<string, string> DESCRIPTIONS = [ ];
 
         static Events()
         {

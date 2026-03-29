@@ -13,7 +13,7 @@ namespace EddiStarMapService
     {
         public async Task<List<StarMapResponseLogEntry>> getStarMapLogAsync ( DateTime? since = null, ulong[] systemAddresses = null )
         {
-            if ( !TrySetEdsmCredentials() ) { return new List<StarMapResponseLogEntry>(); }
+            if ( !TrySetEdsmCredentials() ) { return [ ]; }
 
             var url = $"{baseUrl}api-logs-v1/get-logs";
             var parameters = new Dictionary<string, string>

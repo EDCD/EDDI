@@ -263,7 +263,7 @@ namespace Tests.EddiVoiceAttackService
             // Assert
             Assert.IsTrue(status.IsConnected);
             Assert.IsNotNull(status.ConnectedAt);
-            Assert.IsTrue(status.ConnectedAt < DateTime.UtcNow);
+            Assert.IsLessThan( DateTime.UtcNow, (DateTime)status.ConnectedAt);
         }
 
         [TestMethod]
@@ -284,7 +284,7 @@ namespace Tests.EddiVoiceAttackService
             // Assert
             Assert.IsNotNull(activity1);
             Assert.IsNotNull(status2.LastActivityAt);
-            Assert.IsTrue(status2.LastActivityAt >= activity1);
+            Assert.IsGreaterThanOrEqualTo((DateTime)activity1, (DateTime)status2.LastActivityAt);
         }
 
         [TestMethod]

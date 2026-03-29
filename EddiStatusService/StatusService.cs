@@ -26,7 +26,7 @@ namespace EddiStatusService
 
         // Public Write variables (set elsewhere to assist with various calculations)
         public Ship CurrentShip;
-        public readonly List<KeyValuePair<DateTime, decimal?>> fuelLog = new();
+        public readonly List<KeyValuePair<DateTime, decimal?>> fuelLog = [ ];
         public EnteredNormalSpaceEvent lastEnteredNormalSpaceEvent;
 
         // Other variables used by this service

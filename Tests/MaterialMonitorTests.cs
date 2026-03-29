@@ -83,11 +83,9 @@ namespace Tests
         [TestMethod]
         public void TestMaterialThresholds()
         {
-            var materialMonitor = new MaterialMonitor();
-
             bool? TestIncThreshold(int previous, int amount, int? target)
             {
-                return materialMonitor.incMaterialThreshold( previous, amount, target );
+                return MaterialMonitor.CheckIncreaseMaterialThreshold( previous, amount, target );
             }
 
             // If no threshold target is specified, the result must be false
@@ -104,7 +102,7 @@ namespace Tests
 
             bool? TestDecThreshold(int previous, int amount, int? target)
             {
-                return materialMonitor.decMaterialThreshold( previous, amount, target );
+                return MaterialMonitor.CheckDecreaseMaterialThreshold( previous, amount, target );
             }
 
             // If no threshold target is specified, the result must be false

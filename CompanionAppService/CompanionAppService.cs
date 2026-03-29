@@ -20,15 +20,15 @@ namespace EddiCompanionAppService
     public class CompanionAppService : IDisposable, INotifyPropertyChanged, ICompanionAppServiceInitializer
     {
         // Implementation instructions from Frontier: https://hosting.zaonce.net/docs/oauth2/instructions.html
-        private static readonly string LIVE_SERVER = "https://companion.orerve.net";
-        private static readonly string BETA_SERVER = "https://pts-companion.orerve.net";
-        private static readonly string AUTH_SERVER = "https://auth.frontierstore.net";
+        private const string LIVE_SERVER = "https://companion.orerve.net";
+        private const string BETA_SERVER = "https://pts-companion.orerve.net";
+        private const string AUTH_SERVER = "https://auth.frontierstore.net";
         private static readonly string CALLBACK_URL = $"{Constants.EDDI_URL_PROTOCOL}://auth/";
-        private static readonly string AUTH_URL = "/auth";
-        private static readonly string DECODE_URL = "/decode";
-        private static readonly string TOKEN_URL = "/token";
-        private static readonly string AUDIENCE = "audience=all";
-        private static readonly string SCOPE = "scope=capi auth";
+        private const string AUTH_URL = "/auth";
+        private const string DECODE_URL = "/decode";
+        private const string TOKEN_URL = "/token";
+        private const string AUDIENCE = "audience=all";
+        private const string SCOPE = "scope=capi auth";
 
         private readonly HttpClient httpClient;
         private CustomURLResponder URLResponder;
@@ -301,7 +301,7 @@ namespace EddiCompanionAppService
                 {
                     paramsDict.TryGetValue("error", out desc);
                 }
-                desc = desc ?? "no error description";
+                desc ??= "no error description";
                 throw new EliteDangerousCompanionAppAuthenticationException($"Negative response from Frontier: {desc}");
             }
             return callback;

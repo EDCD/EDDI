@@ -269,7 +269,7 @@ namespace EddiDataDefinitions
             if (EDName is null && model is not null) // legacy shipmonitor JSON may not include EDName or EDID
             {
                 var template = ShipDefinitions.FromModel(model);
-                EDName = EDName ?? template?.EDName;
+                EDName ??= template?.EDName;
             }
             additionalJsonData = null;
         }
@@ -673,10 +673,7 @@ namespace EddiDataDefinitions
                 Size = template.Size;
                 militarysize = template.militarysize;
                 activeFuelReservoirCapacity = template.activeFuelReservoirCapacity;
-                if (Role == null)
-                {
-                    Role = Role.MultiPurpose;
-                }
+                Role ??= Role.MultiPurpose;
             }
         }
 

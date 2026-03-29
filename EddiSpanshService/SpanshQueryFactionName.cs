@@ -38,8 +38,8 @@ namespace EddiSpanshService
                     var systemQueryResult = await QueryAsync(QueryGroup.systems, searchFilters, cancellationToken, maxResultsPerPage, page).ConfigureAwait(false);
                     if ( systemQueryResult != null )
                     {
-                        count = count ?? systemQueryResult[ "count" ]?.Value<int?>();
-                        systemsQueryResults.AddRange( systemQueryResult[ "results" ]?.ToObject<List<JToken>>() ?? new List<JToken>() );
+                        count ??= systemQueryResult[ "count" ]?.Value<int?>();
+                        systemsQueryResults.AddRange( systemQueryResult[ "results" ]?.ToObject<List<JToken>>() ?? [ ] );
                         page++;
                     }
 

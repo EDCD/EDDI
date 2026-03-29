@@ -481,8 +481,7 @@ namespace Tests
             var ship = ShipDefinitions.FromModel(@event.ship);
             ship.LocalId = @event.shipid;
 
-            var shipMonitor = new ShipMonitor { updatedAt = DateTime.MinValue };
-            shipMonitor.AddModule( ship, @event.slot, @event.buymodule );
+            ShipMonitor.AddModule( ship, @event.slot, @event.buymodule );
             
             foreach ( var compartment in ship.compartments)
             {
@@ -505,12 +504,10 @@ namespace Tests
             ship.LocalId = @event.shipid;
             var slot = @event.slot;
             var module = @event.buymodule;
-
-            var shipMonitor = new ShipMonitor { updatedAt = DateTime.MinValue };
-            shipMonitor.AddModule( ship, slot, module );
+            ShipMonitor.AddModule( ship, slot, module );
 
             // now sell the module
-            shipMonitor.RemoveModule( ship, slot, null );
+            ShipMonitor.RemoveModule( ship, slot, null );
             foreach (var compartment in ship.compartments)
             {
                 if (compartment.name == "Military01")

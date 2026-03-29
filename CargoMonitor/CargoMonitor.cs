@@ -26,7 +26,7 @@ namespace EddiCargoMonitor
     public class CargoMonitor : IEddiMonitor
     {
         // Observable collection for us to handle changes
-        public ObservableCollection<Cargo> inventory { get; private set; } = new();
+        public ObservableCollection<Cargo> inventory { get; private set; } = [];
         public int cargoCarried => inventory.Sum(c => c.total);
         private DateTime updateDat;
 
@@ -564,7 +564,7 @@ namespace EddiCargoMonitor
             lock (inventoryLock)
             {
                 // Obtain current cargo inventory from configuration
-                configuration = configuration ?? ConfigService.Instance.cargoMonitorConfiguration;
+                configuration ??= ConfigService.Instance.cargoMonitorConfiguration;
                 updateDat = configuration.updatedat;
 
                 // Build a new inventory
@@ -573,10 +573,7 @@ namespace EddiCargoMonitor
                 // Start with the materials we have in the log
                 foreach (var cargo in configuration.cargo)
                 {
-                    if (cargo.commodityDef == null)
-                    {
-                        cargo.commodityDef = CommodityDefinition.FromEDName(cargo.edname);
-                    }
+                    cargo.commodityDef ??= CommodityDefinition.FromEDName(cargo.edname);
                     newInventory.Add(cargo);
                 }
 

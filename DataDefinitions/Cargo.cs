@@ -96,7 +96,7 @@ namespace EddiDataDefinitions
                 NotifyPropertyChanged( nameof( haulage ) );
             }
         }
-        private Dictionary<ulong, int> _missionCargo = new();
+        private Dictionary<ulong, int> _missionCargo = [ ];
 
         [JsonProperty, PublicAPI] 
         public int need

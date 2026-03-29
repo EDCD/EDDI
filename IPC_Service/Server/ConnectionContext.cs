@@ -146,7 +146,7 @@ namespace EddiIPC_Service.Server
             {
                 // Ignore errors during cleanup
             }
-
+            GC.SuppressFinalize(this);
             _disposed = true;
         }
     }

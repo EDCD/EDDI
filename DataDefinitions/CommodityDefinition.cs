@@ -11,7 +11,7 @@ namespace EddiDataDefinitions
 
     public class CommodityDefinition : ResourceBasedLocalizedEDName<CommodityDefinition>
     {
-        private static readonly Dictionary<long, CommodityDefinition> CommoditiesByEliteID = new();
+        private static readonly Dictionary<long, CommodityDefinition> CommoditiesByEliteID = [ ];
 
         static CommodityDefinition ()
         {
@@ -1218,10 +1218,7 @@ namespace EddiDataDefinitions
                 result = FromName( normalizedName );
             }
 
-            if ( result == null )
-            {
-                result = ResourceBasedLocalizedEDName<CommodityDefinition>.FromEDName( normalizedName );
-            }
+            result ??= ResourceBasedLocalizedEDName<CommodityDefinition>.FromEDName( normalizedName );
 
             return result;
         }

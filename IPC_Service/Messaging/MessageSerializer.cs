@@ -112,7 +112,7 @@ public static class MessageSerializer
 
     public static int DeserializeMessages ( ReadOnlySpan<byte> buffer, out List<MessageEnvelope> messages, out int bytesConsumed )
     {
-        messages = new List<MessageEnvelope>();
+        messages = [ ];
         bytesConsumed = 0;
 
         while ( !buffer.IsEmpty )

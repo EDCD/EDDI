@@ -196,7 +196,7 @@
                         <DataTemplate DataType="{x:Type local:Script}">
                             <ComboBox 
                                 SelectedValue="{Binding Path=Priority, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                ItemsSource="{Binding Priorities, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" 
+                                ItemsSource="{x:Static local:ConfigurationWindow.Priorities}" 
                                 SelectionChanged="eddiScriptsPriorityUpdated"
                                 >
                                 <ComboBox.Style>

@@ -20,7 +20,7 @@ namespace EddiSpanshService
         /// <returns>A list of basic system waypoints (with just system name, system address, and coordinates) ordered by match with the provided system name</returns>
         public async Task<List<NavWaypoint>> GetWaypointsBySystemNameAsync (string partialSystemName, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(partialSystemName)) { return new List<NavWaypoint>(); }
+            if (string.IsNullOrEmpty(partialSystemName)) { return [ ]; }
 
             try
             {

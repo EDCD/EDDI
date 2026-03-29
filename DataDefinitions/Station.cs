@@ -198,7 +198,7 @@ namespace EddiDataDefinitions
         [JsonIgnore, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<EconomyShare> economyShares
         {
-            get => _economyShares ?? ( _economyShares = new List<EconomyShare>( 2 ) );
+            get =>  _economyShares ??= new List<EconomyShare>( 2 ) ;
             set
             {
                 if (value.Count != value.Select(v => v.economy).Distinct().Count())
@@ -241,7 +241,7 @@ namespace EddiDataDefinitions
         [PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<CommodityMarketQuote> commodities
         {
-            get => _commodities ?? ( _commodities = [ ] );
+            get =>  _commodities ??= [ ] ;
             set { _commodities = value; OnPropertyChanged();}
         }
         private List<CommodityMarketQuote> _commodities;
@@ -264,7 +264,7 @@ namespace EddiDataDefinitions
         [PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<CommodityDefinition> prohibited
         {
-            get => _prohibited ?? ( _prohibited = [ ] );
+            get =>  _prohibited ??= [ ] ;
             set { _prohibited = value; OnPropertyChanged();}
         }
         private List<CommodityDefinition> _prohibited;
@@ -273,7 +273,7 @@ namespace EddiDataDefinitions
         [PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<Module> outfitting
         {
-            get => _outfitting ?? ( _outfitting = [ ] );
+            get =>  _outfitting ??= [ ] ;
             set { _outfitting = value; OnPropertyChanged();}
         }
 
@@ -283,7 +283,7 @@ namespace EddiDataDefinitions
         [PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<Ship> shipyard
         {
-            get => _shipyard ?? ( _shipyard = [ ] );
+            get =>  _shipyard ??= [ ] ;
             set { _shipyard = value; OnPropertyChanged();}
         }
         private List<Ship> _shipyard;

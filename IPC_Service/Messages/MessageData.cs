@@ -34,7 +34,7 @@ namespace EddiIPC_Service.Messages
     {
         public required string EventType { get; set; }
         public required string EventName { get; set; }
-        public Dictionary<string, object> EventPayload { get; set; } = new();
+        public Dictionary<string, object> EventPayload { get; set; } = [];
     }
 
     /// <summary>Command message data (VA Plugin → EDDI).</summary>
@@ -42,7 +42,7 @@ namespace EddiIPC_Service.Messages
     {
         public required string Command { get; set; } // "enable_monitor", "disable_monitor", etc.
         public required string Target { get; set; }
-        public Dictionary<string, object> Parameters { get; set; } = new();
+        public Dictionary<string, object> Parameters { get; set; } = [];
     }
 
     /// <summary>Command response data (EDDI → VA Plugin).</summary>
@@ -51,7 +51,7 @@ namespace EddiIPC_Service.Messages
         public required string CommandId { get; set; }
         public required string Status { get; set; } // "success" or "error"
         public string Message { get; set; } = string.Empty;
-        public Dictionary<string, object> Result { get; set; } = new();
+        public Dictionary<string, object> Result { get; set; } = [];
     }
 
     /// <summary>Error message data (either direction).</summary>
@@ -60,6 +60,6 @@ namespace EddiIPC_Service.Messages
         public required string ErrorCode { get; set; }
         public required string Message { get; set; }
         public string OriginalMessageId { get; set; } = string.Empty;
-        public Dictionary<string, object> Details { get; set; } = new();
+        public Dictionary<string, object> Details { get; set; } = [];
     }
 }

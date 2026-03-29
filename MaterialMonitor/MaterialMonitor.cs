@@ -27,7 +27,7 @@ namespace EddiMaterialMonitor
     public class MaterialMonitor : IEddiMonitor
     {
         // Observable collection for us to handle
-        public ObservableCollection<MaterialAmount> inventory { get; private set; } = new();
+        public ObservableCollection<MaterialAmount> inventory { get; private set; } = [ ];
 
         private static readonly object inventoryLock = new();
         public event EventHandler InventoryUpdatedEvent;
@@ -351,17 +351,17 @@ namespace EddiMaterialMonitor
                 ma.amount += Math.Min(amount, max - ma.amount);
                 Logging.Debug(ma.edname + ": " + previous + "->" + ma.amount);
 
-                if (ma.maximum != null && incMaterialThreshold(previous, ma.amount, ma.maximum))
+                if (ma.maximum != null && CheckIncreaseMaterialThreshold(previous, ma.amount, ma.maximum))
                 {
                     // We have crossed the high water threshold for this material
                     generatedEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, material, "Maximum", (int)ma.maximum, ma.amount, "Increase") { fromLoad = fromLogLoad });
                 }
-                if (ma.desired != null && incMaterialThreshold(previous, ma.amount, ma.desired))
+                if (ma.desired != null && CheckIncreaseMaterialThreshold(previous, ma.amount, ma.desired))
                 {
                     // We have crossed the desired threshold for this material
                     generatedEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, material, "Desired", (int)ma.desired, ma.amount, "Increase") { fromLoad = fromLogLoad });
                 }
-                if (ma.minimum != null && incMaterialThreshold(previous, ma.amount, ma.minimum))
+                if (ma.minimum != null && CheckIncreaseMaterialThreshold(previous, ma.amount, ma.minimum))
                 {
                     // We have crossed the minimum threshold for this material
                     generatedEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, material, "Minimum", (int)ma.minimum, ma.amount, "Increase") { fromLoad = fromLogLoad });
@@ -390,17 +390,17 @@ namespace EddiMaterialMonitor
                 Logging.Debug(ma.edname + ": " + previous + "->" + ma.amount);
 
                 // We have limits for this material; carry out relevant checks
-                if (ma.minimum != null && decMaterialThreshold(previous, ma.amount, ma.minimum))
+                if (ma.minimum != null && CheckDecreaseMaterialThreshold(previous, ma.amount, ma.minimum))
                 {
                     // We have crossed the minimum threshold for this material
                     generatedEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Minimum", (int)ma.minimum, ma.amount, "Decrease") { fromLoad = fromLogLoad });
                 }
-                if (ma.desired != null && decMaterialThreshold(previous, ma.amount, ma.desired))
+                if (ma.desired != null && CheckDecreaseMaterialThreshold(previous, ma.amount, ma.desired))
                 {
                     // We have crossed the desired threshold for this material
                     generatedEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Desired", (int)ma.desired, ma.amount, "Decrease") { fromLoad = fromLogLoad });
                 }
-                if (ma.maximum != null && decMaterialThreshold(previous, ma.amount, ma.maximum))
+                if (ma.maximum != null && CheckDecreaseMaterialThreshold(previous, ma.amount, ma.maximum))
                 {
                     // We have crossed the maximum threshold for this material
                     generatedEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Maximum", (int)ma.maximum, ma.amount, "Decrease") { fromLoad = fromLogLoad });
@@ -408,14 +408,14 @@ namespace EddiMaterialMonitor
             }
         }
 
-        internal bool incMaterialThreshold(int previous, int amount, int? target)
+        internal static bool CheckIncreaseMaterialThreshold(int previous, int amount, int? target)
         {
             // For the comparison operators <, >, <=, and >=, if one or both operands are null, the result is false
             // https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/nullable-value-types
             return previous < target && target <= amount;
         }
 
-        internal bool decMaterialThreshold(int previous, int amount, int? target)
+        internal static bool CheckDecreaseMaterialThreshold(int previous, int amount, int? target)
         {
             // For the comparison operators <, >, <=, and >=, if one or both operands are null, the result is false
             // https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/nullable-value-types

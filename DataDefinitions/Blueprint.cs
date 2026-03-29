@@ -13,9 +13,9 @@ namespace EddiDataDefinitions
     {
         static Blueprint ()
         {
+            BlueprintsByEliteID = [ ];
             resourceManager = Properties.Modifications.ResourceManager;
             resourceManager.IgnoreCase = true;
-            BlueprintsByEliteID = new Dictionary<long, Blueprint>();
 
             None = new Blueprint( null, "None", "None", -1 );
             _ = new Blueprint( 128673630, "ArmourAdvanced1", "ArmourAdvanced", 1 );

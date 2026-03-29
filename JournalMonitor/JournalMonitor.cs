@@ -392,7 +392,7 @@ namespace EddiJournalMonitor
                                         body = system?.BodyWithID(bodyId);
                                         if (body is not null)
                                         {
-                                            body.scannedDateTime = body.scannedDateTime ?? timestamp;
+                                            body.scannedDateTime ??= timestamp;
                                             body.mappedDateTime = timestamp;
                                             body.mappedEfficiently = probesUsed <= efficiencyTarget;
                                             events.Add(new BodyMappedEvent(timestamp, bodyName, body, systemAddress, probesUsed, efficiencyTarget) { raw = line, fromLoad = fromLogLoad });

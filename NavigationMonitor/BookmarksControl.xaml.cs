@@ -323,10 +323,7 @@ namespace EddiNavigationMonitor
                                 {
                                     navBookmark.latitude = (decimal)Math.Round((double)navConfig.tdLat, 4);
                                     navBookmark.longitude = (decimal)Math.Round((double)navConfig.tdLong, 4);
-                                    if (navBookmark.poi is null)
-                                    {
-                                        navBookmark.poi = navConfig.tdPOI;
-                                    }
+                                    navBookmark.poi ??= navConfig.tdPOI;
                                 }
                             }
                             else if (EDDI.Instance.Vehicle == Constants.VEHICLE_SRV || EDDI.Instance.Vehicle == Constants.VEHICLE_LEGS || EDDI.Instance.Vehicle == Constants.VEHICLE_FIGHTER)

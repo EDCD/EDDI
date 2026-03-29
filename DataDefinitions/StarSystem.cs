@@ -330,8 +330,7 @@ namespace EddiDataDefinitions
 
         private void OnFactionDeserialized ()
         {
-            if ( Faction == null )
-            { Faction = new Faction(); }
+            Faction ??= new Faction();
             var factionPresence = Faction.presences.FirstOrDefault(p => p.systemAddress == systemAddress) ?? new FactionPresence();
             if ( factionPresence.FactionState == null )
             {
@@ -520,10 +519,7 @@ namespace EddiDataDefinitions
 
             if ( oldBody.rings?.Count > 0 )
             {
-                if ( updatedBody.rings is null )
-                {
-                    updatedBody.rings = [ ];
-                }
+                updatedBody.rings ??= [ ];
 
                 foreach ( var oldRing in oldBody.rings )
                 {

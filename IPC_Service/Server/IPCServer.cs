@@ -27,7 +27,7 @@ namespace EddiIPC_Service.Server
         private TcpListener? _listener;
         private CancellationTokenSource? _cancellationTokenSource;
         private Task? _acceptConnectionsTask;
-        private readonly Dictionary<string, ConnectionContext> _connections = new();
+        private readonly Dictionary<string, ConnectionContext> _connections = [];
         private readonly object _connectionsLock = new();
         private DefaultServerEventHandler? _ipcHandler;
         private IDisposable? _runtimeEventDispatcherRegistration;
@@ -239,7 +239,7 @@ namespace EddiIPC_Service.Server
                     rentedBuffer = ArrayPool<byte>.Shared.Rent( serialized.Length * 2 );
                     var bytesWritten = Encoding.UTF8.GetBytes( serialized, 0, serialized.Length, rentedBuffer, 0 );
 
-                    await context.Stream.WriteAsync( rentedBuffer, 0, bytesWritten, cancellationToken ).ConfigureAwait( false );
+                    await context.Stream.WriteAsync( rentedBuffer.AsMemory( 0, bytesWritten ), cancellationToken ).ConfigureAwait( false );
                     await context.Stream.FlushAsync( cancellationToken ).ConfigureAwait( false );
 
                     Logging.Debug( $"Sent {message.Type} message to session {sessionId}: {serialized}" );
@@ -319,7 +319,7 @@ namespace EddiIPC_Service.Server
 
             try
             {
-                await context.Stream.WriteAsync( buffer, 0, length, cancellationToken ).ConfigureAwait( false );
+                await context.Stream.WriteAsync( buffer.AsMemory( 0, length ), cancellationToken ).ConfigureAwait( false );
                 await context.Stream.FlushAsync( cancellationToken ).ConfigureAwait( false );
             }
             catch ( Exception ex )
@@ -357,7 +357,7 @@ namespace EddiIPC_Service.Server
                 {
                     var serialized = MessageSerializer.Serialize( disconnect );
                     var bytes = Encoding.UTF8.GetBytes( serialized );
-                    await context.Stream.WriteAsync( bytes, 0, bytes.Length ).ConfigureAwait( false );
+                    await context.Stream.WriteAsync( bytes.AsMemory( 0, bytes.Length ) ).ConfigureAwait( false );
                     await context.Stream.FlushAsync().ConfigureAwait( false );
                 }
                 catch
@@ -477,7 +477,7 @@ namespace EddiIPC_Service.Server
                     {
                         ArgumentNullException.ThrowIfNull( context.Stream, "Client stream is null" );
 
-                        var bytesRead = await context.Stream.ReadAsync( rentedBuffer, 0, 65536, cancellationToken )
+                        var bytesRead = await context.Stream.ReadAsync( rentedBuffer.AsMemory( 0, 65536 ), cancellationToken )
                             .ConfigureAwait( false );
 
                         if ( bytesRead == 0 )

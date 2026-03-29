@@ -565,10 +565,7 @@ namespace EddiSpeechResponder
         {
             if ( Folding.IsChecked ?? false )
             {
-                if ( foldingMargin is null )
-                {
-                    foldingMargin = new FoldingMargin { FoldingManager = FoldingManager.Install( scriptView.TextArea ) };
-                }
+                foldingMargin ??= new FoldingMargin { FoldingManager = FoldingManager.Install( scriptView.TextArea ) };
                 foldingStrategy.UpdateFoldings( foldingMargin.FoldingManager, scriptView.Document );
             }
             else

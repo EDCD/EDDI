@@ -97,7 +97,7 @@ namespace EddiDataDefinitions
         {
             lock (resourceLock)
             {
-                AllOfThem = new List<T>();
+                AllOfThem = [];
             }
         }
 

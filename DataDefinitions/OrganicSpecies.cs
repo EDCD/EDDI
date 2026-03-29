@@ -176,10 +176,10 @@ namespace EddiDataDefinitions
         public decimal? maxG;
         public decimal? minK;
         public decimal? maxK;
-        public IList<string> planetClass;
-        public IList<string> atmosphereClass;
-        public IList<string> starClass;
-        public IList<string> volcanism;
+        public IList<string> planetClass = [ ];
+        public IList<string> atmosphereClass = [ ];
+        public IList<string> starClass = [ ];
+        public IList<string> volcanism = [ ];
 
         [JsonIgnore, PublicAPI]
         public string localizedDescription => Properties.OrganicSpeciesDesc.ResourceManager.GetString( edname );
@@ -201,12 +201,7 @@ namespace EddiDataDefinitions
         { }
 
         private OrganicSpecies ( string edname ) : base( edname, edname )
-        {
-            this.planetClass = new List<string>();
-            this.atmosphereClass = new List<string>();
-            this.starClass = new List<string>();
-            this.volcanism = new List<string>();
-        }
+        { }
 
         private OrganicSpecies ( string edname,
                                  OrganicGenus genus,

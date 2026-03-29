@@ -19,7 +19,7 @@ namespace EddiNavigationService
         private static NavigationService _instance;
         private static readonly object InstanceLock = new();
 
-        private readonly Dictionary<QueryType, IQueryResolver> queryResolvers = new();
+        private readonly Dictionary<QueryType, IQueryResolver> queryResolvers = [ ];
 
         // Search variables
         public StarSystem SearchStarSystem { get; private set; }

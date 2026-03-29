@@ -182,7 +182,7 @@ namespace EddiSpeechResponder
         /// </summary>
         public static Personality Default()
         {
-            return _defaultPersonality ?? ( _defaultPersonality = FromFile( DEFAULT_PATH, true ) );
+            return  _defaultPersonality ??= FromFile( DEFAULT_PATH, true ) ;
         }
 
         /// <summary>
@@ -251,14 +251,8 @@ namespace EddiSpeechResponder
         /// </summary>
         public void ToFile(string filename = null)
         {
-            if (filename == null)
-            {
-                filename = dataPath;
-            }
-            if (filename == null)
-            {
-                filename = DEFAULT_USER_PATH;
-            }
+            filename ??= dataPath;
+            filename ??= DEFAULT_USER_PATH;
 
             if (filename != DEFAULT_PATH)
             {

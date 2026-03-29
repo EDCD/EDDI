@@ -9,10 +9,10 @@ namespace EddiDataDefinitions
         /// <summary>
         /// Holds newly detected signal sources that are not yet associated with a star system.
         /// </summary>
-        public static readonly Dictionary<ulong, List<SignalSource>> newSignalSources = new();
+        public static readonly Dictionary<ulong, List<SignalSource>> newSignalSources = [ ];
 
         private readonly Timer _cleanupTimer;
-        private readonly List<StarSystem> _starSystems = new();
+        private readonly List<StarSystem> _starSystems = [ ];
         private readonly object _lock = new();
 
         /// <summary>
@@ -65,6 +65,7 @@ namespace EddiDataDefinitions
         public void Dispose ()
         {
             _cleanupTimer?.Dispose();
+            GC.SuppressFinalize( this );
         }
     }
 }

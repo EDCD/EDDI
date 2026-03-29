@@ -35,10 +35,7 @@ namespace EddiCompanionAppService.Endpoints
                 return cachedStationJson;
             }
 
-            if ( profileJson is null )
-            {
-                profileJson = await CompanionAppService.Instance.ProfileEndpoint.GetProfileAsync().ConfigureAwait(false);
-            }
+            profileJson ??= await CompanionAppService.Instance.ProfileEndpoint.GetProfileAsync().ConfigureAwait(false);
 
             if (profileJson != null)
             {

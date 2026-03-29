@@ -12,7 +12,7 @@ namespace EddiDataDefinitions
         public DateTime timestamp { get; } = timestamp;
 
         [JsonProperty]
-        public List<ModuleInfoItem> Modules { get; } = modules ?? new List<ModuleInfoItem>();
+        public List<ModuleInfoItem> Modules { get; } = modules ?? [ ];
 
         [UsedImplicitly]
         public static bool TryFromFile (

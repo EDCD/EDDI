@@ -19,8 +19,8 @@ namespace EddiVoiceAttackResponder
     public class VoiceAttackResponder : IEddiResponder
     {
         private static readonly VoiceAttackEventHandling voiceAttackEventHandler = new();
-        [UsedImplicitly] private IDisposable _commandDispatcherRegistration = CommandDispatcherRegistry.RegisterCommandDispatcher( new VoiceAttackCommandDispatcher() );
-        [UsedImplicitly] private IDisposable _responderModeRegistration = ResponderModeRegistry.RegisterHandler( VoiceAttackResponderModeHandler.SetResponderModeAsync );
+        [UsedImplicitly] private readonly IDisposable _commandDispatcherRegistration = CommandDispatcherRegistry.RegisterCommandDispatcher( new VoiceAttackCommandDispatcher() );
+        [UsedImplicitly] private readonly IDisposable _responderModeRegistration = ResponderModeRegistry.RegisterHandler( VoiceAttackResponderModeHandler.SetResponderModeAsync );
 
         public string ResponderName()
         {

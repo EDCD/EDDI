@@ -165,18 +165,7 @@ namespace EddiDataDefinitions
             var elements = tidiedName.Split('_').ToList();
 
             // Skip various obscure mission type elements that we don't need or that we're representing some other way
-            elements.RemoveAll( t =>
-                t == "mission" ||
-                t == "arriving" ||
-                t == "initial" ||
-                t == "leaving" ||
-                t == "plural" ||
-                t == "name" ||
-                t == "bs" ||
-                t == "ds" ||
-                t == "rs" ||
-                t == "mb"
-            );
+            elements.RemoveAll( t => t is "mission" or "arriving" or "initial" or "leaving" or "plural" or "name" or "bs" or "ds" or "rs" or "mb" );
 
             // Some elements should not be removed but should be moved to the end of the list.
             // Do that here.

@@ -36,7 +36,7 @@ namespace Tests
 
         #endregion
 
-        private readonly Dictionary<string, string> CannedContent = new();
+        private readonly Dictionary<string, string> CannedContent = [ ];
 
         private string FetchContentFromUri(string requestUri)
         {

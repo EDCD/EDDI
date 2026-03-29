@@ -34,7 +34,7 @@ namespace EddiCrimeMonitor
         private Dictionary<string, string> homeSystems;
         private DateTime updateDat;
         private string crimeAuthorityFaction;
-        public readonly List<Target> shipTargets = new();
+        public readonly List<Target> shipTargets = [ ];
 
         internal static readonly object recordLock = new();
         public event EventHandler RecordUpdatedEvent;
@@ -61,7 +61,7 @@ namespace EddiCrimeMonitor
 
         public CrimeMonitor()
         {
-            criminalrecord = new ObservableCollection<FactionRecord>();
+            criminalrecord = [ ];
             homeSystems = new Dictionary<string, string>();
             BindingOperations.CollectionRegistering += Record_CollectionRegistering;
             initializeCrimeMonitor();
@@ -842,7 +842,7 @@ namespace EddiCrimeMonitor
             lock (recordLock)
             {
                 // Obtain current criminal record from configuration
-                configuration = configuration ?? ConfigService.Instance.crimeMonitorConfiguration;
+                configuration ??= ConfigService.Instance.crimeMonitorConfiguration;
                 homeSystems = configuration.homeSystems;
                 updateDat = configuration.updatedat;
 

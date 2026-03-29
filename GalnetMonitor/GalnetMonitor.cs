@@ -30,7 +30,7 @@ namespace EddiGalnetMonitor
     [UsedImplicitly]
     public class GalnetMonitor : IEddiMonitor
     {
-        private static Dictionary<string, string> locales = new();
+        private static Dictionary<string, string> locales = [ ];
         private static string locale;
         private GalnetConfiguration configuration = ConfigService.Instance.galnetConfiguration;
         private static readonly ResourceManager resourceManager = Properties.GalnetMonitor.ResourceManager;
@@ -341,7 +341,7 @@ namespace EddiGalnetMonitor
             }
         }
 
-        public Dictionary<string, string> GetGalnetLocales ()
+        public static Dictionary<string, string> GetGalnetLocales ()
         {
             var galnetLocales = new Dictionary<string, string>
             {

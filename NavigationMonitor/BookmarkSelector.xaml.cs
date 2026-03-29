@@ -12,7 +12,7 @@ namespace EddiNavigationMonitor
     /// </summary>
     public partial class BookmarkSelector : Window
     {
-        public List<NavBookmark> SelectedBookmarks = new();
+        public List<NavBookmark> SelectedBookmarks = [ ];
 
         public BookmarkSelector(IEnumerable<NavBookmark> bookmarks)
         {

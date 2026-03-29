@@ -30,7 +30,7 @@ namespace EddiCompanionAppService
         public static CompanionAppCredentials Load(string filepath = null)
         {
             CompanionAppCredentials credentials = null;
-            filepath = filepath ?? defaultPath;
+            filepath ??= defaultPath;
 
             string data = null;
             if (System.IO.File.Exists(filepath))
@@ -75,7 +75,7 @@ namespace EddiCompanionAppService
         /// </summary>
         public void Save(string filename = null)
         {
-            filename = filename ?? dataPath ?? defaultPath;
+            filename ??= dataPath ?? defaultPath;
 
             var json = JsonConvert.SerializeObject(this, Formatting.Indented);
             Files.Write(filename, json);

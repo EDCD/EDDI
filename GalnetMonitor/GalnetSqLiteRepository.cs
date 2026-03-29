@@ -184,7 +184,7 @@ namespace EddiGalnetMonitor
                         {
                             while (rdr.Read())
                             {
-                                if (result == null) result = new List<News>();
+                                result ??= [ ];
                                 result.Add(new News(Convert.ToString(rdr["uuid"]), Convert.ToString(rdr["category"]), Convert.ToString(rdr["title"]), Convert.ToString(rdr["content"]), Convert.ToDateTime(rdr["published"]), Convert.ToBoolean(rdr["read"])));
                             }
                         }

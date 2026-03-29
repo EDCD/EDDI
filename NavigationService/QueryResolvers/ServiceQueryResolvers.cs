@@ -14,8 +14,7 @@ namespace EddiNavigationService.QueryResolvers
     public class EncodedMaterialsTrader : ServiceQueryResolver, IQueryResolver
     {
         public QueryType Type => QueryType.encoded;
-        public Dictionary<string, object> SpanshQueryFilter => 
-            new()
+        private static readonly Dictionary<string, object> SpanshQueryFilter = new()
             {
                 { "material_trader", new { value = new[] { "Encoded" } } }
             };
@@ -28,8 +27,7 @@ namespace EddiNavigationService.QueryResolvers
     public class GuardianTechBroker : ServiceQueryResolver, IQueryResolver
     {
         public QueryType Type => QueryType.guardian;
-        public Dictionary<string, object> SpanshQueryFilter => 
-            new()
+        private static readonly Dictionary<string, object> SpanshQueryFilter = new()
             {
                 { "technology_broker", new { value = new[] { "Guardian" } } }
             };
@@ -42,8 +40,7 @@ namespace EddiNavigationService.QueryResolvers
     public class HumanTechBroker : ServiceQueryResolver, IQueryResolver
     {
         public QueryType Type => QueryType.human;
-        public Dictionary<string, object> SpanshQueryFilter =>
-            new()
+        private static readonly Dictionary<string, object> SpanshQueryFilter = new()
             {
                 { "technology_broker", new { value = new[] { "Human" } } }
             };
@@ -56,8 +53,7 @@ namespace EddiNavigationService.QueryResolvers
     public class InterstellarFactors : ServiceQueryResolver, IQueryResolver
     {
         public QueryType Type => QueryType.facilitator;
-        public Dictionary<string, object> SpanshQueryFilter =>
-            new()
+        private static readonly Dictionary<string, object> SpanshQueryFilter = new()
             {
                 { "services", new { value = new[] { "Interstellar Factors Contact" } } }
             };
@@ -70,8 +66,7 @@ namespace EddiNavigationService.QueryResolvers
     public class ManufacturedMaterialsTrader : ServiceQueryResolver, IQueryResolver
     {
         public QueryType Type => QueryType.manufactured;
-        public Dictionary<string, object> SpanshQueryFilter =>
-            new()
+        private static readonly Dictionary<string, object> SpanshQueryFilter = new()
             {
                 { "material_trader", new { value = new[] { "Manufactured" } } }
             };
@@ -85,7 +80,7 @@ namespace EddiNavigationService.QueryResolvers
     {
         public QueryType Type => QueryType.raw;
 
-        public Dictionary<string, object> SpanshQueryFilter => new()
+        private static readonly Dictionary<string, object> SpanshQueryFilter = new()
         {
             { "material_trader", new { value = new[] { "Raw" } } }
         };
@@ -98,7 +93,7 @@ namespace EddiNavigationService.QueryResolvers
     public class ScorpionSrvVendor : ServiceQueryResolver, IQueryResolver
     {
         public QueryType Type => QueryType.scorpion;
-        public Dictionary<string, object> SpanshQueryFilter => new()
+        private static readonly Dictionary<string, object> SpanshQueryFilter = new()
         {
                 { "system_primary_economy", new { value = new[] { "Military" } } },
                 { "type", new { value = new[] { "Planetary Port" } } },

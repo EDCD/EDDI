@@ -26,17 +26,17 @@ namespace Tests
 {
     public class MockVAProxy
     {
-        [ UsedImplicitly ] public List<KeyValuePair<string, string>> vaLog = new();
+        [ UsedImplicitly ] public List<KeyValuePair<string, string>> vaLog = [ ];
 
-        private readonly Dictionary<string, string> vaStrings = new();
-        private readonly Dictionary<string, decimal?> vaDecimals = new();
-        private readonly Dictionary<string, int?> vaIntegers = new();
-        private readonly Dictionary<string, short?> vaShorts = new();
-        private readonly Dictionary<string, bool?> vaBooleans = new();
-        private readonly Dictionary<string, DateTime?> vaDates = new();
+        private readonly Dictionary<string, string> vaStrings = [ ];
+        private readonly Dictionary<string, decimal?> vaDecimals = [ ];
+        private readonly Dictionary<string, int?> vaIntegers = [ ];
+        private readonly Dictionary<string, short?> vaShorts = [ ];
+        private readonly Dictionary<string, bool?> vaBooleans = [ ];
+        private readonly Dictionary<string, DateTime?> vaDates = [ ];
 
         [ UsedImplicitly ] 
-        public System.Version VAVersion => new( 1, 16, 0 );
+        public static System.Version VAVersion => new( 1, 16, 0 );
 
         [ UsedImplicitly ]
         public void WriteToLog ( string msg, string color = null )
@@ -49,7 +49,7 @@ namespace Tests
         [UsedImplicitly]
         public string GetText ( string varName, bool retrieveFromProfile = false )
         {
-            return vaStrings.TryGetValue( varName, out var s ) ? s : null;
+            return vaStrings.GetValueOrDefault(varName);
         }
 
         [ UsedImplicitly ]
@@ -61,7 +61,7 @@ namespace Tests
         [ UsedImplicitly ]
         public int? GetInt ( string varName, bool retrieveFromProfile = false )
         {
-            return vaIntegers.TryGetValue(varName, out var i) ? i : null;
+            return vaIntegers.GetValueOrDefault(varName);
         }
 
         [ UsedImplicitly ]
@@ -73,7 +73,7 @@ namespace Tests
         [ UsedImplicitly ]
         public short? GetSmallInt ( string varName )
         {
-            return vaShorts.TryGetValue( varName, out var sh ) ? sh : null;
+            return vaShorts.GetValueOrDefault(varName);
         }
 
         [ UsedImplicitly ]
@@ -85,7 +85,7 @@ namespace Tests
         [ UsedImplicitly ]
         public bool? GetBoolean ( string varName, bool retrieveFromProfile = false )
         {
-            return vaBooleans.TryGetValue( varName, out var b ) ? b : null;
+            return vaBooleans.GetValueOrDefault(varName);
         }
 
         [ UsedImplicitly ]
@@ -97,7 +97,7 @@ namespace Tests
         [ UsedImplicitly ]
         public decimal? GetDecimal ( string varName, bool retrieveFromProfile = false )
         {
-            return vaDecimals.TryGetValue( varName, out var d ) ? d : null;
+            return vaDecimals.GetValueOrDefault(varName);
         }
 
         [ UsedImplicitly ]
@@ -109,7 +109,7 @@ namespace Tests
         [ UsedImplicitly ]
         public DateTime? GetDate ( string varName, bool retrieveFromProfile = false )
         {
-            return vaDates.TryGetValue( varName, out var dt ) ? dt : null;
+            return vaDates.GetValueOrDefault(varName);
         }
 
         [ UsedImplicitly ]
@@ -318,17 +318,17 @@ namespace Tests
         }
 
         [TestMethod]
-        [DataRow( "1", "1", "1", "1", "true" )] // Value is a string. Numeric results are set to 1 and bool is true.
-        [DataRow( "2", "123.45", "123", "123", "true" )] // Value is decimal. Integer and short values are rounded. Value exists so bool is true.
-        [DataRow( "3", "1234567.89", "1234568", null, "true" )] // Value is a decimal. Integer value is rounded, value is too large for short and thus is null. Value exists so bool is true.
-        [DataRow( "4", "12345", "12345", "12345", "true" )] // Value is a short and qualifies for all numeric types. Value exists so bool is true.
-        [DataRow( "5", "1", "1", "1", "true" )] // Value is boolean, numeric values are set to 1.
-        [DataRow( "6", "1", "1", "1", "true" )] // Value is boolean, numeric values are set to 1.
-        [DataRow( "7", null, null, null, null )] // Value is null, no values.
-        [DataRow( "8", "0", "0", "0", "false" )] // Value is zero in all numeric types and false as a boolean.
-        [DataRow( "9", "0", "0", "0", "false" )] // Value is zero in all numeric types and false as a boolean.
-        [DataRow( "10", "0", "0", "0", "false" )] // Value is zero in all numeric types and false as a boolean.
-        public void TestSetState ( string varName, string decimalResult, string integerResult, string shortresult, string booleanResult )
+        [DataRow( "1", "1", "1", "true" )] // Value is a string. Numeric results are set to 1 and bool is true.
+        [DataRow( "2", "123.45", "123", "true" )] // Value is decimal. Integer and short values are rounded. Value exists so bool is true.
+        [DataRow( "3", "1234567.89", "1234568", "true" )] // Value is a decimal. Integer value is rounded, value is too large for short and thus is null. Value exists so bool is true.
+        [DataRow( "4", "12345", "12345", "true" )] // Value is a short and qualifies for all numeric types. Value exists so bool is true.
+        [DataRow( "5", "1", "1",  "true" )] // Value is boolean, numeric values are set to 1.
+        [DataRow( "6", "1", "1", "true" )] // Value is boolean, numeric values are set to 1.
+        [DataRow( "7", null, null, null )] // Value is null, no values.
+        [DataRow( "8", "0", "0", "false" )] // Value is zero in all numeric types and false as a boolean.
+        [DataRow( "9", "0", "0", "false" )] // Value is zero in all numeric types and false as a boolean.
+        [DataRow( "10", "0", "0", "false" )] // Value is zero in all numeric types and false as a boolean.
+        public void TestSetState ( string varName, string decimalResult, string integerResult, string booleanResult )
         {
             // Define values using dynamic types for each varName. Expected returns are defined above.
             var dict = new Dictionary<string, object>
@@ -350,13 +350,13 @@ namespace Tests
                 mockVAProxy.GetText( "EDDI state " + varName ) );
             Assert.AreEqual( decimalResult is null 
                 ? null 
-                : (decimal?)decimal.Parse(decimalResult), mockVAProxy.GetDecimal( "EDDI state " + varName ) );
+                : decimal.Parse(decimalResult), mockVAProxy.GetDecimal( "EDDI state " + varName ) );
             Assert.AreEqual( integerResult is null 
                 ? null 
-                : (int?)int.Parse(integerResult), mockVAProxy.GetInt( "EDDI state " + varName ) );
+                : int.Parse(integerResult), mockVAProxy.GetInt( "EDDI state " + varName ) );
             Assert.AreEqual( booleanResult is null
                 ? null 
-                : (bool?)bool.Parse(booleanResult), mockVAProxy.GetBoolean( "EDDI state " + varName ) );
+                : bool.Parse(booleanResult), mockVAProxy.GetBoolean( "EDDI state " + varName ) );
         }
 
         [TestMethod]

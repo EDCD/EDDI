@@ -13,12 +13,12 @@ using Utilities;
 
 namespace EddiCore.Upgrader
 {
-    public abstract class EddiUpgrader
+    public static class EddiUpgrader
     {
 
         // Upgrade information
         public static bool UpgradeAvailable => !string.IsNullOrEmpty(UpgradeLocation);
-        public static string UpgradeVersion;
+        public static string UpgradeVersion { get; private set; }
         private static string UpgradeLocation;
 
         /// <summary>

@@ -9,7 +9,7 @@ namespace EddiConfigService.Configurations
     [JsonObject(MemberSerialization.OptOut), RelativePath(@"\missionmonitor.json")]
     public class MissionMonitorConfiguration : Config
     {
-        private List<Mission> _missions = new();
+        private List<Mission> _missions = [];
         private DateTime _updatedat;
         private int _goalsCount;
         private int _missionsCount;

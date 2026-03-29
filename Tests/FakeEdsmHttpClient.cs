@@ -13,7 +13,7 @@ namespace Tests
 {
     internal class FakeEdsmHttpClient : IEdsmHttpClient
     {
-        private readonly Dictionary<string, string> CannedContent = new();
+        private readonly Dictionary<string, string> CannedContent =  [ ];
 
         public Task<string> GetAsync ( string url, CancellationToken ct )
         {

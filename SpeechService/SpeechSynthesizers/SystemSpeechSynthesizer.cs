@@ -198,7 +198,7 @@ namespace EddiSpeechService.SpeechSynthesizers
 
             try
             {
-                Task.WaitAll(synthTask);
+                synthTask.Wait();
             }
             catch (AggregateException ae)
             {

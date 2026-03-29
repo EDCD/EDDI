@@ -147,7 +147,7 @@ namespace System
             }
 
             // If already completed successfully, nothing to do
-            if ( task.Status == TaskStatus.RanToCompletion || task.Status == TaskStatus.Canceled )
+            if ( task.Status is TaskStatus.RanToCompletion or TaskStatus.Canceled )
             {
                 return;
             }
@@ -170,7 +170,7 @@ namespace System
             }
 
             // If already completed successfully, nothing to do
-            if ( task.Status == TaskStatus.RanToCompletion || task.Status == TaskStatus.Canceled )
+            if ( task.Status is TaskStatus.RanToCompletion or TaskStatus.Canceled )
             {
                 return;
             }

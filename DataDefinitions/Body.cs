@@ -363,7 +363,7 @@ namespace EddiDataDefinitions
             var k = 1200d; // base value
 
             // Override constants for specific types of bodies
-            if ( stellarclass == "H" || stellarclass == "N" )
+            if ( stellarclass is "H" or "N" )
             {
                 // Black holes and Neutron stars
                 k = 22628;
@@ -546,7 +546,7 @@ namespace EddiDataDefinitions
             {
                 k = 96932; // Ammonia worlds
             }
-            else if ( planetClass.edname == "EarthLikeBody" || planetClass.edname == "WaterWorld" )
+            else if ( planetClass.edname is "EarthLikeBody" or "WaterWorld" )
             {
                 k = 64831; // Earth-like & water worlds
                 k_terraformable = 116295;
@@ -570,7 +570,7 @@ namespace EddiDataDefinitions
             }
 
             // Terraformability is a scale from 0-100%, but since we don't know the % we'll assume 100% for the time being.
-            k = terraformState.edname == "Terraformable" || terraformState.edname == "Terraformed"
+            k = terraformState.edname is "Terraformable" or "Terraformed"
                 ? k + k_terraformable
                 : k;
 
@@ -690,7 +690,7 @@ namespace EddiDataDefinitions
 
         #region Legacy data conversions
         [JsonExtensionData]
-        private Dictionary<string, JToken> _additionalData = new();
+        private Dictionary<string, JToken> _additionalData = [ ];
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)

@@ -29,7 +29,7 @@ namespace EddiDataDefinitions
         public bool Horizons { get; }
         
         [JsonProperty]
-        public List<OutfittingInfoItem> Items { get; } = items ?? new List<OutfittingInfoItem>();
+        public List<OutfittingInfoItem> Items { get; } = items ?? [];
 
         [ UsedImplicitly ]
         public static bool TryFromFile ( DateTime journalTimeStamp, string expectedStarSystem, string expectedStation,

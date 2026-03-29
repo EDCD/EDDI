@@ -164,10 +164,7 @@ namespace EddiDataDefinitions
                     // Unknown or obsolete commodity definition; report the full object so that we can update the definitions 
                     Logging.Info("Commodity definition error: " + edName, JsonConvert.SerializeObject(this));
                 }
-                if (definition is null)
-                {
-                    definition = new CommodityDefinition(EliteID, edName, CommodityCategory.FromEDName(category), meanPrice);
-                }
+                definition ??= new CommodityDefinition(EliteID, edName, CommodityCategory.FromEDName(category), meanPrice);
                 var quote = new CommodityMarketQuote(definition)
                 {
                     avgprice = meanPrice,

@@ -28,9 +28,9 @@ namespace EddiNavigationMonitor
         #region Collections
 
         // Observable collection for us to handle changes to Bookmarks
-        public ObservableCollection<NavBookmark> Bookmarks = new();
+        public ObservableCollection<NavBookmark> Bookmarks = [ ];
 
-        public readonly ObservableCollection<NavBookmark> GalacticPOIs = new();
+        public readonly ObservableCollection<NavBookmark> GalacticPOIs = [ ];
 
         // Navigation route data
         public NavWaypointCollection NavRoute = new() { FillVisitedGaps = true };
@@ -506,7 +506,7 @@ namespace EddiNavigationMonitor
                 var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
 
                 // Restore our bookmarks
-                Bookmarks = navConfig.bookmarks ?? new ObservableCollection<NavBookmark>();
+                Bookmarks = navConfig.bookmarks ?? [ ];
 
                 // Restore our in-game routing
                 NavRoute = navConfig.navRouteList ?? new NavWaypointCollection(null, true);

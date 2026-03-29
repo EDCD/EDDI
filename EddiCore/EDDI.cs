@@ -164,7 +164,7 @@ namespace EddiCore
         public List<IEddiMonitor> monitors = [ ];
         internal ConcurrentBag<IEddiMonitor> activeMonitors = [ ];
         private static readonly object monitorLock = new();
-        private readonly Dictionary<string, CancellationTokenSource> _monitorCancellationTokens = new();
+        private readonly Dictionary<string, CancellationTokenSource> _monitorCancellationTokens = [ ];
         private bool IsMonitorActive ( string name ) => activeMonitors.Any( m => m.MonitorName().Equals(name, StringComparison.OrdinalIgnoreCase) );
 
         public List<IEddiResponder> responders = [ ];
@@ -384,7 +384,7 @@ namespace EddiCore
         }
 
         // Information from the last events of each type that we've received (for reference)
-        public ConcurrentDictionary<string, Event> lastEventOfType { get; } = new();
+        public ConcurrentDictionary<string, Event> lastEventOfType { get; } = [ ];
 
         // Current vehicle of player
         public string Vehicle
@@ -398,10 +398,10 @@ namespace EddiCore
         }
         private string vehicle = Constants.VEHICLE_SHIP;
 
-        public readonly ObservableConcurrentDictionary<string, object> State = new();
+        public readonly ObservableConcurrentDictionary<string, object> State = [ ];
 
         // The event queue
-        private BlockingCollection<Event> eventQueue { get; } = new();
+        private BlockingCollection<Event> eventQueue { get; } = [ ];
         private readonly CancellationTokenSource eventHandlerTS = new();
         private Task eventConsumerThread;
 
@@ -1427,10 +1427,7 @@ namespace EddiCore
 
                 // If the carrier is not found in the current or last star system but a fleet carrier object is present,
                 // we can generate current station information from the FleetCarrier object
-                if ( CurrentStation == null )
-                {
-                    CurrentStation = FleetCarrier?.Market?.UpdateStation( @event.timestamp, new Station() );
-                }
+                CurrentStation ??= FleetCarrier?.Market?.UpdateStation( @event.timestamp, new Station() );
 
                 // Update current station properties
                 if ( CurrentStation != null )
@@ -2678,7 +2675,7 @@ namespace EddiCore
                         CurrentStarSystem?.stations != null)
                     {
                         // Only set the current station if it is not present, otherwise we leave it to events
-                        CurrentStation = CurrentStation ?? CurrentStarSystem.stations.FirstOrDefault(s => s.marketId == profile.LastStationMarketID)
+                        CurrentStation ??= CurrentStarSystem.stations.FirstOrDefault(s => s.marketId == profile.LastStationMarketID)
                             ?? CurrentStarSystem.stations.FirstOrDefault(s => s.name == profile.LastStationName);
                         if (CurrentStation != null)
                         {

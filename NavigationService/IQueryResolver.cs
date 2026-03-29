@@ -9,7 +9,7 @@ namespace EddiNavigationService
     public interface IQueryResolver
     {
         QueryType Type { get; }
-        Dictionary<string, object> SpanshQueryFilter { get; }
+        static readonly Dictionary<string, object> SpanshQueryFilter = [ ];
         Task<RouteDetailsEvent> ResolveAsync ( [NotNull] Query query, [NotNull] StarSystem startSystem );
     }
 }

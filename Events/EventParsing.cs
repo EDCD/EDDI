@@ -387,8 +387,7 @@ namespace EddiEvents
 
             var category = JsonParsing.getString(resourceData, "Category");
             var fallbackCategoryName = JsonParsing.getString(resourceData, "Category_Localised");
-            if ( microResource.Category is null )
-            { microResource.Category = MicroResourceCategory.FromEDName( category ); }
+            microResource.Category ??= MicroResourceCategory.FromEDName( category );
             if ( microResource.Category != null )
             {
                 microResource.Category.fallbackLocalizedName = fallbackCategoryName;
@@ -403,7 +402,7 @@ namespace EddiEvents
             controllingPower = Power.FromEDName( JsonParsing.getString( data, "ControllingPower" ) );
 
             // This is a list of all powers within range to acquire this star system
-            powersInAcquisitionRange = new List<Power>();
+            powersInAcquisitionRange = [ ];
             data.TryGetValue( "Powers", out var powersVal );
             if ( powersVal is List<object> powerNames )
             {
@@ -414,7 +413,7 @@ namespace EddiEvents
             }
 
             // While the system is not controlled by any power there is a `PowerplayConflictProgress` key which measures the progress of each power towards control of that star system
-            powerAcquisitionProgress = new List<PowerAcquisitionProgress>();
+            powerAcquisitionProgress = [ ];
             if ( data.TryGetValue( "PowerplayConflictProgress", out var conflictProgressData ) &&
                  conflictProgressData is Dictionary<string, decimal> conflictProgress )
             {

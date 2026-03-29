@@ -257,10 +257,7 @@ namespace Eddi
 
         public static void ApplyAnyOverrideCulture(EDDIConfiguration configuration = null)
         {
-            if ( configuration is null )
-            {
-                configuration = ConfigService.Instance.eddiConfiguration;
-            }
+            configuration ??= ConfigService.Instance.eddiConfiguration;
 
             try
             {

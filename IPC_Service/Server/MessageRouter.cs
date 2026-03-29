@@ -14,7 +14,7 @@ namespace EddiIPC_Service.Server;
 /// </summary>
 public class MessageRouter
 {
-    private readonly Dictionary<string, List<Func<MessageEnvelope, ConnectionContext, Task>>> _handlers = new();
+    private readonly Dictionary<string, List<Func<MessageEnvelope, ConnectionContext, Task>>> _handlers = [];
     private readonly object _lockObj = new();
 
     /// <summary>

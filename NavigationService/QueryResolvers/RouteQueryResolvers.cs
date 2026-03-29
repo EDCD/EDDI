@@ -56,7 +56,7 @@ namespace EddiNavigationService.QueryResolvers
                         : await EDDI.Instance.DataProvider.FetchStationWaypointAsync( lastWaypoint.x, lastWaypoint.y, lastWaypoint.z,
                             new Dictionary<string, object> { { "name", new { value = new[] { stationName } } } } ).ConfigureAwait(false);
 
-                    return new RouteDetailsEvent( DateTime.UtcNow, nameof(QueryType.set), firstUnvisitedWaypoint?.systemName, firstUnvisitedWaypoint?.systemAddress, firstUnvisitedWaypoint?.systemAddress == dest.systemAddress ? dest.stationName : null, firstUnvisitedWaypoint?.systemAddress == dest.systemAddress ? dest.marketID : null, navRouteList, navRouteList.Waypoints.Count, firstUnvisitedWaypoint?.missionids ?? new List<ulong>() );
+                    return new RouteDetailsEvent( DateTime.UtcNow, nameof(QueryType.set), firstUnvisitedWaypoint?.systemName, firstUnvisitedWaypoint?.systemAddress, firstUnvisitedWaypoint?.systemAddress == dest.systemAddress ? dest.stationName : null, firstUnvisitedWaypoint?.systemAddress == dest.systemAddress ? dest.marketID : null, navRouteList, navRouteList.Waypoints.Count, firstUnvisitedWaypoint?.missionids ?? [ ] );
 
                 }
             }
@@ -109,7 +109,7 @@ namespace EddiNavigationService.QueryResolvers
 
             if ( NavigationService.Instance.LastQuery.Group () == QueryGroup.missions )
             {
-                var missionsList = ConfigService.Instance.missionMonitorConfiguration?.missions?.ToList() ?? new List<Mission>();
+                var missionsList = ConfigService.Instance.missionMonitorConfiguration?.missions?.ToList() ?? [ ];
                 if ( missionsList
                     .Where ( m => m != null && m.statusDef == MissionStatus.Active )
                     .Any ( m => m.destinationsystem == currentSystem.systemname ) )

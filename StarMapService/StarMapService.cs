@@ -36,8 +36,8 @@ namespace EddiStarMapService
         // If you need to do some testing on EDSM's API, please use the https://beta.edsm.net/ endpoint for sending data.
         private const string baseUrl = "https://www.edsm.net/";
 
-        private readonly BlockingCollection<IDictionary<string, object>> queuedEvents = new();
-        private static readonly ConcurrentDictionary<string, ResourceRateLimit> resourceRateLimits = new();
+        private readonly BlockingCollection<IDictionary<string, object>> queuedEvents = [ ];
+        private static readonly ConcurrentDictionary<string, ResourceRateLimit> resourceRateLimits = [ ];
 
         // This API only accepts and only returns data for the "live" galaxy, game version 4.0 or later.
         private static readonly System.Version minGameVersion = new(4, 0);

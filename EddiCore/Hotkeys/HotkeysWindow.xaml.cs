@@ -26,7 +26,7 @@ namespace EddiCore.Hotkeys
             ConfigureHotkeys();
         }
 
-        private readonly HashSet<Key> pressedKeys = new();
+        private readonly HashSet<Key> pressedKeys = [ ];
         private KeyGesture currentKeyGesture;
 
         private void ConfigureHotkeys ()

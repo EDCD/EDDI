@@ -130,7 +130,7 @@ namespace EddiConfigService
 
         private ConfigService ()
         {
-            _dirtyConfigs = new HashSet<string>();
+            _dirtyConfigs = [ ];
 
             // Initialize debounced save timer
             _saveTimer = new Timer(
@@ -499,7 +499,7 @@ namespace EddiConfigService
             return configs.ToImmutableDictionary();
         }
 
-        private Config LoadConfiguration ( Type configType, string filename )
+        private static Config LoadConfiguration ( Type configType, string filename )
         {
             if ( !File.Exists( filename ) && unitTesting )
             {
@@ -707,7 +707,7 @@ namespace EddiConfigService
 
         #region Helper Methods
 
-        private IEnumerable<Type> GetConfigTypes ()
+        private static IEnumerable<Type> GetConfigTypes ()
         {
             return Assembly.GetExecutingAssembly()
                 .GetTypes()
@@ -718,7 +718,7 @@ namespace EddiConfigService
         }
 
         /// <summary>Gets the data directory for the specified commander FID</summary>
-        private string GetDataDirectory ( string commanderFID = null )
+        private static string GetDataDirectory ( string commanderFID = null )
         {
             return $@"{Constants.DATA_DIR}{( !string.IsNullOrEmpty( commanderFID ) ? @"\" + commanderFID : null )}";
         }
@@ -754,7 +754,7 @@ namespace EddiConfigService
                 _dirtyConfigs.Clear();
 
                 // capture keys to notify outside of lock
-                keysToNotify = _currentConfigs?.Keys.ToList() ?? new List<string>();
+                keysToNotify = _currentConfigs?.Keys.ToList() ?? [ ];
             }
 
             // Notify subscribers outside the lock to avoid re-entrancy/deadlocks

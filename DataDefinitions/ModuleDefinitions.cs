@@ -1280,7 +1280,7 @@ namespace EddiDataDefinitions
 
         public static Module FromEDName ( string rawEDName, object rawData = null )
         {
-            if ( rawEDName == null || rawEDName == "Null" )
+            if ( rawEDName is null or "Null" )
             { return null; }
             var edName = NormalizedEDName(rawEDName);
             var module = ResourceBasedLocalizedEDName<Module>.FromEDName(edName);

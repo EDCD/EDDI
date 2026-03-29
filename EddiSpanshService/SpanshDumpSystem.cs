@@ -350,29 +350,26 @@ namespace EddiSpanshService
                         ? StationModel.OnFootSettlement
                         : FromSpanshStationModel( stationData[ "type" ]?.ToString() ),
                     distancefromstar = stationData[ "distanceToArrival" ]?.Value<decimal?>() ??
-                                       bodyData?[ "distanceToArrival" ]?.Value<decimal?>() // Light seconds
+                                       bodyData?[ "distanceToArrival" ]?.Value<decimal?>(),
+                    // TODO: Add ground settlement body name, body ID, latitude / longitude?
+                    Faction = starSystem.factions.FirstOrDefault( f =>
+                                  f.name == stationData[ "controllingFaction" ]?.ToString() ) ??
+                              ( stationData[ "controllingFaction" ]?.ToString() is null
+                                  ? null
+                                  : new Faction
+                                  {
+                                      name = stationData[ "controllingFaction" ]?.ToString() ?? string.Empty,
+                                      Allegiance =
+                                          Superpower.FromName( stationData[ "allegiance" ]?.ToString() ) ?? Superpower.None,
+                                      Government = Government.FromName( stationData[ "government" ]?.ToString() ) ??
+                                                   Government.None,
+                                  } ),
+                    landingPads = new StationLandingPads(
+                        stationData[ "landingPads" ]?[ "small" ]?.Value<int>() ?? 0,
+                        stationData[ "landingPads" ]?[ "medium" ]?.Value<int>() ?? 0,
+                        stationData[ "landingPads" ]?[ "large" ]?.Value<int>() ?? 0 )
+                    // Light seconds
                 };
-
-                // TODO: Add ground settlement body name, body ID, latitude / longitude?
-
-                station.Faction =
-                    starSystem.factions.FirstOrDefault( f =>
-                        f.name == stationData[ "controllingFaction" ]?.ToString() ) ??
-                    ( stationData[ "controllingFaction" ]?.ToString() is null
-                        ? null
-                        : new Faction
-                        {
-                            name = stationData[ "controllingFaction" ]?.ToString() ?? string.Empty,
-                            Allegiance =
-                                Superpower.FromName( stationData[ "allegiance" ]?.ToString() ) ?? Superpower.None,
-                            Government = Government.FromName( stationData[ "government" ]?.ToString() ) ??
-                                         Government.None,
-                        } );
-
-                station.landingPads = new StationLandingPads(
-                    stationData[ "landingPads" ]?[ "small" ]?.Value<int>() ?? 0,
-                    stationData[ "landingPads" ]?[ "medium" ]?.Value<int>() ?? 0,
-                    stationData[ "landingPads" ]?[ "large" ]?.Value<int>() ?? 0 );
 
                 var economyShares = stationData[ "economies" ]?.Select( economyToken =>
                 {

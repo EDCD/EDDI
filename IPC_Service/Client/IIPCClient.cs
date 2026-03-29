@@ -78,51 +78,39 @@ namespace EddiIPC_Service.Client
     /// <summary>
     /// Event arguments for when a message is received from the server.
     /// </summary>
-    public class MessageReceivedEventArgs : EventArgs
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="MessageReceivedEventArgs"/> class.
+    /// </remarks>
+    public class MessageReceivedEventArgs ( string messageType, MessageEnvelope messageEnvelope ) : EventArgs
     {
         /// <summary>
         /// Gets the type of message received.
         /// </summary>
-        public string MessageType { get; }
+        public string MessageType { get; } = messageType ?? throw new ArgumentNullException( nameof( messageType ) );
 
         /// <summary>
         /// Gets the message envelope containing the full message details.
         /// </summary>
-        public MessageEnvelope MessageEnvelope { get; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MessageReceivedEventArgs"/> class.
-        /// </summary>
-        public MessageReceivedEventArgs(string messageType, MessageEnvelope messageEnvelope)
-        {
-            MessageType = messageType ?? throw new ArgumentNullException(nameof(messageType));
-            MessageEnvelope = messageEnvelope ?? throw new ArgumentNullException(nameof(messageEnvelope));
-        }
+        public MessageEnvelope MessageEnvelope { get; } = messageEnvelope ?? throw new ArgumentNullException( nameof( messageEnvelope ) );
     }
 
     /// <summary>
     /// Event arguments for when the connection is lost.
     /// </summary>
-    public class ConnectionLostEventArgs : EventArgs
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="ConnectionLostEventArgs"/> class.
+    /// </remarks>
+    public class ConnectionLostEventArgs ( string reason, Exception? exception = null ) : EventArgs
     {
         /// <summary>
         /// Gets the reason the connection was lost.
         /// </summary>
-        public string Reason { get; }
+        public string Reason { get; } = reason ?? throw new ArgumentNullException( nameof( reason ) );
 
         /// <summary>
         /// Gets the exception that caused the connection loss, if any.
         /// </summary>
-        public Exception? Exception { get; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConnectionLostEventArgs"/> class.
-        /// </summary>
-        public ConnectionLostEventArgs(string reason, Exception? exception = null)
-        {
-            Reason = reason ?? throw new ArgumentNullException(nameof(reason));
-            Exception = exception;
-        }
+        public Exception? Exception { get; } = exception;
     }
 
     /// <summary>

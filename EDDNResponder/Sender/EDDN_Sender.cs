@@ -40,7 +40,7 @@ namespace EddiEddnResponder.Sender
         }
 
         // Schemas identified as invalid by the server
-        private static readonly List<string> invalidSchemas = new();
+        private static readonly List<string> invalidSchemas = [ ];
 
         public void SendToEDDN ( string schema, IDictionary<string, object> data, EDDNState eddnState,
             string gameVersionOverride = null )

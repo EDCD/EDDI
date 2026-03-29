@@ -36,7 +36,7 @@ namespace EddiSpeechResponder
             }
         }
 
-        public IEnumerable<int?> Priorities => SpeechService.Instance.speechQueue.priorities;
+        public static IEnumerable<int?> Priorities => SpeechService.Instance.speechQueue.priorities;
 
         private SpeechResponder SpeechResponder { get; }
 

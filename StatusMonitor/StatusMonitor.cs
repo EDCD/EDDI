@@ -87,7 +87,7 @@ namespace EddiStatusMonitor
 
         internal void _handleStatus ( Status status, out List<Event> events )
         {
-            events = new List<Event>();
+            events = [ ];
             if ( status is null ) { return; }
 
             lock ( statusLock )
@@ -393,13 +393,13 @@ namespace EddiStatusMonitor
             }
         }
 
-        internal void handleEnteredNormalSpaceEvent( EnteredNormalSpaceEvent @event )
+        private void handleEnteredNormalSpaceEvent( EnteredNormalSpaceEvent @event )
         {
             // We can derive a "Glide" event from the context in our status
             StatusService.Instance.lastEnteredNormalSpaceEvent = @event;
         }
 
-        internal void handleMusicEvent ( MusicEvent @event )
+        private void handleMusicEvent ( MusicEvent @event )
         {
             // Derive a "Station mailslot" event from changes to music tracks
             Status status = null;

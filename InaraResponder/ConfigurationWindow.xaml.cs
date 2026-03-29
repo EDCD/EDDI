@@ -93,15 +93,19 @@ namespace EddiInaraResponder
 
         #region Implement INotifyDataErrorInfo for validation
 
-        private readonly Dictionary<string, List<string>> Errors = new();
+        private readonly Dictionary<string, List<string>> Errors = [ ];
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
         public bool HasErrors => Errors.Count > 0;
         
         private void ReportError(string propertyName, string errorMessage)
         {
             if (string.IsNullOrEmpty(propertyName)) { return; }
-            if (!Errors.ContainsKey(propertyName)) { Errors.Add(propertyName, new List<string>()); }
-            Errors[propertyName].Add(errorMessage);
+            if ( !Errors.TryGetValue( propertyName, out var list ) )
+            {
+                list = [];
+                Errors.Add( propertyName, list );
+            }
+            list.Add( errorMessage );
             ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
         }
         

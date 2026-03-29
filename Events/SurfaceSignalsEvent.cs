@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Utilities;
 
@@ -62,9 +63,8 @@ namespace EddiEvents
                     foreach ( var signal in ( (List<object>)signalsVal ).Cast<IDictionary<string, object>>() )
                     {
                         var commodityEdName = JsonParsing.getString( signal, "Type" );
-                        var type = CommodityDefinition.FromEDName( commodityEdName ) ??
-                                   throw new ArgumentException( $@"Unknown ring signal type: {commodityEdName}",
-                                       nameof(commodityEdName) );
+                        var type = CommodityDefinition.FromEDName( commodityEdName ) ?? 
+                                   throw new InvalidDataException( $@"Unknown ring signal type: {commodityEdName}" );
                         type.fallbackLocalizedName = JsonParsing.getString( signal, "Type_Localised" );
                         var amount = JsonParsing.getInt( signal, "Count" );
                         hotspots.Add( new CommodityAmount( type, amount ) );

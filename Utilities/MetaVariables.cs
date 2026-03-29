@@ -62,8 +62,8 @@ namespace Utilities
         /// <param name="keysPath">(Used internally, do not set) The path to the specific key</param>
         private List<MetaVariable> GetVariables(Type reflectionObjectType, int? maxRecursionLevel, object reflectionObject = null, List<string> keysPath = null)
         {
-            if (keysPath is null) { keysPath = [ ]; }
-            if (Results is null) { Results = [ ]; }
+            keysPath ??= [ ];
+            Results ??= [ ];
 
             // Some types don't need to be decomposed further.
             if (undecomposedTypes.Contains(reflectionObjectType))

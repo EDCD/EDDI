@@ -71,7 +71,7 @@ namespace EddiCrimeMonitor
                             }
                             crimeMonitor()?.writeRecord();
                         } );
-                        Task.WaitAll( UpdateRecordTask );
+                        UpdateRecordTask.Wait();
                     }
                     catch ( OperationCanceledException )
                     {

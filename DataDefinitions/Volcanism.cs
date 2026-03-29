@@ -58,7 +58,7 @@ namespace EddiDataDefinitions
         public string localizedAmount => GetLocalizedString(edAmount);
 
         // Translation of composition of volcanism 
-        private static readonly Dictionary<string, string> COMPOSITIONS = new();
+        private static readonly Dictionary<string, string> COMPOSITIONS = [];
 
         private static string GetInvariantString (string name)
         {

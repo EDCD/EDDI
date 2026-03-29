@@ -375,13 +375,14 @@ namespace Tests
                     if (!@localizedDefaultPersonality.Scripts.ContainsKey(script.Key))
                     {
                         // Missing script found
-                        if (!missingScripts.ContainsKey(fileInfo.Name))
+                        if ( !missingScripts.TryGetValue( fileInfo.Name, out var list ) )
                         {
                             // Make sure we've initialized a list to record it
-                            missingScripts[fileInfo.Name] = new List<string>();
+                            list = [];
+                            missingScripts[ fileInfo.Name ] = list;
                         }
                         // Record the missing script
-                        missingScripts[fileInfo.Name].Add(script.Key);
+                        list.Add( script.Key );
                     }
                 }
             }

@@ -96,7 +96,7 @@ namespace EddiEvents
 
             // Get station services data
             data.TryGetValue( "StationServices", out var val );
-            var stationservices = (val as List<object>)?.Cast<string>()?.ToList() ?? new List<string>();
+            var stationservices = (val as List<object>)?.Cast<string>()?.ToList() ?? [ ];
             var stationServices = new List<StationService>();
             foreach ( var service in stationservices )
             {
@@ -105,7 +105,7 @@ namespace EddiEvents
 
             // Get station economies and their shares
             data.TryGetValue( "StationEconomies", out var val2 );
-            var economies = val2 as List<object> ?? new List<object>();
+            var economies = val2 as List<object> ?? [ ];
             var Economies = new List<EconomyShare>();
             foreach ( var economyshare in economies.Cast<IDictionary<string, object>>() )
             {

@@ -47,7 +47,7 @@ namespace EddiCore.Hotkeys
         // Hook internals
         private IntPtr hookHandle = IntPtr.Zero;
         private LowLevelKeyboardProc hookProc; // keep delegate alive
-        private readonly HashSet<int> keysDown = new();
+        private readonly HashSet<int> keysDown = [ ];
 
         // Tracked modifier state
         private bool shiftDown;

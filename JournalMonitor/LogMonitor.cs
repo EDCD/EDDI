@@ -22,7 +22,7 @@ namespace EddiJournalMonitor
         private const int pollingIntervalActiveMs = 100;
         private const int pollingIntervalRelaxedMs = 5000;
 
-        private BlockingCollection<JournalChunk> journalQueue = new();
+        private BlockingCollection<JournalChunk> journalQueue = [ ];
         private CancellationTokenSource cancellationTokenSource = new();
 
         // Keep track of status

@@ -54,7 +54,7 @@ namespace EddiEvents
                 {
                     items.Add(EddiDataDefinitions.Properties.Modules.ShipIntegrity);
                 }
-                else if (itemEDName == "All" || itemEDName == "Paint" || itemEDName == "Hull")
+                else if (itemEDName is "All" or "Paint" or "Hull")
                 {
                     items.Add(itemEDName);
                 }

@@ -21,7 +21,7 @@ namespace EddiGalnetMonitor
             InitializeComponent();
 
             var configuration = ConfigService.Instance.galnetConfiguration;
-            var langs = galnetMonitor()?.GetGalnetLocales();
+            var langs = GalnetMonitor.GetGalnetLocales();
             languageComboBox.ItemsSource = langs?.Keys ?? new Dictionary<string, string>().Keys;
             languageComboBox.SelectedValue = configuration.language;
             galnetAlwaysOnCheckBox.IsChecked = configuration.galnetAlwaysOn;

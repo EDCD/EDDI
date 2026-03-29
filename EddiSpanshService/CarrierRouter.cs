@@ -104,7 +104,7 @@ namespace EddiSpanshService
 
             var results = new List<NavWaypoint>();
 
-            foreach (var jump in routeResult["jumps"]?.ToObject<JArray>() ?? new JArray())
+            foreach (var jump in routeResult["jumps"]?.ToObject<JArray>() ?? [ ] )
             {
                 if ( jump[ "id64" ] != null && jump["x"] != null && jump["y"] != null && jump["z"] != null)
                 {

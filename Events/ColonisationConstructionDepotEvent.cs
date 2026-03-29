@@ -7,7 +7,7 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class ColonisationConstructionDepotEvent : Event
+    public class ColonisationConstructionDepotEvent ( DateTime timestamp, long marketID, decimal progress, bool constructionComplete, bool constructionFailed, List<CommodityAmount> requiredResources ) : Event( timestamp, NAME )
     {
         public const string NAME = "Colonisation construction depot";
         public const string DESCRIPTION = "Triggered when progress is updated at the colonisation construction depot where you are docked";
@@ -18,28 +18,19 @@ namespace EddiEvents
         ];
 
         [PublicAPI( "The numeric market ID of the construction location" )]
-        public long marketID { get; private set; }
+        public long marketID { get; private set; } = marketID;
 
-        [PublicAPI("The percent progress towards completion of the construction location")]
-        public decimal progress { get; private set; }
+        [PublicAPI( "The percent progress towards completion of the construction location" )]
+        public decimal progress { get; private set; } = progress;
 
-        [PublicAPI("True if construction is completed")]
-        public bool isCompleted { get; private set; }
+        [PublicAPI( "True if construction is completed" )]
+        public bool isCompleted { get; private set; } = constructionComplete;
 
         [PublicAPI( "True if construction is failed" )]
-        public bool isFailed { get; private set; }
+        public bool isFailed { get; private set; } = constructionFailed;
 
         [PublicAPI( "The commodities and amounts needed to complete construction, ordered from most needed to least" )]
-        public List<CommodityAmount> needs { get; private set; }
-
-        public ColonisationConstructionDepotEvent ( DateTime timestamp, long marketID, decimal progress, bool constructionComplete, bool constructionFailed, List<CommodityAmount> requiredResources ) : base( timestamp, NAME )
-        {
-            this.marketID = marketID;
-            this.progress = progress;
-            this.isCompleted = constructionComplete;
-            this.isFailed = constructionFailed;
-            this.needs = requiredResources.OrderByDescending(r => r.amount).ToList();
-        }
+        public List<CommodityAmount> needs { get; private set; } = requiredResources.OrderByDescending( r => r.amount ).ToList();
 
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {

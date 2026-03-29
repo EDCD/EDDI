@@ -135,7 +135,7 @@ namespace EddiDataDefinitions
         }
 
         [JsonExtensionData]
-        private Dictionary<string, JToken> _additionalData = new();
+        private Dictionary<string, JToken> _additionalData = [];
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)

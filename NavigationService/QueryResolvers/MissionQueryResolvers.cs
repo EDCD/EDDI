@@ -386,7 +386,7 @@ namespace EddiNavigationService.QueryResolvers
         private static bool CalculateRepetiveNearestNeighbor ( List<NavWaypoint> inputSystems, List<Mission> missions, out List<NavWaypoint> outputRoute, NavWaypoint homeSystem = null )
         {
             var found = false;
-            outputRoute = new List<NavWaypoint> ();
+            outputRoute = [ ];
 
             var numSystems = inputSystems.Count;
             if ( numSystems > 1 )

@@ -245,7 +245,8 @@ namespace EddiCommanderMonitor
                 // Ensure collection modifications happen on the UI thread
                 if ( System.Windows.Application.Current?.Dispatcher?.CheckAccess() == false )
                 {
-                    await System.Windows.Application.Current.Dispatcher.InvokeAsync( () => FetchSquadronSystemAsync(systemName) );
+                    await System.Windows.Application.Current.Dispatcher.InvokeAsync( async () =>
+                        await FetchSquadronSystemAsync( systemName ) );
                     return;
                 }
                 
@@ -311,7 +312,7 @@ namespace EddiCommanderMonitor
         }
         private Faction _selectedSquadronFaction;
 
-        public ObservableCollection<Power> SquadronPowers => new( Power.AllOfThem
+        public static ObservableCollection<Power> SquadronPowers => new( Power.AllOfThem
             .Except( [ Power.None ] )
             .OrderBy( p => p.localizedName )
             .Prepend( Power.None )
@@ -893,7 +894,7 @@ namespace EddiCommanderMonitor
         private Commander ReadCommander ( CommanderConfiguration configuration = null )
         {
             // Obtain current commander from our configuration
-            configuration = configuration ?? ConfigService.Instance.commanderConfiguration;
+            configuration ??= ConfigService.Instance.commanderConfiguration;
             var commander = new Commander
             {
                 name = configuration.commanderName,

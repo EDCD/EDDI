@@ -19,7 +19,7 @@ namespace EddiConfigService.Configurations
         private DateTime _updatedat = DateTime.MinValue;
         private decimal _insurance = 0.05M;
         private string _exporttarget = "Coriolis";
-        private List<StoredModule> _storedmodules = new();
+        private List<StoredModule> _storedmodules = [];
         private int? _currentshipid;
         
         public int? currentshipid
