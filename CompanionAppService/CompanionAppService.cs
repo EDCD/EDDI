@@ -38,7 +38,7 @@ namespace EddiCompanionAppService
         private CompanionAppCredentials Credentials;
 
         public bool gameIsBeta { get; set; }
-        public static bool unitTesting;
+        public bool unitTesting;
 
         #region State Variables
 

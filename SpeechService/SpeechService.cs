@@ -64,7 +64,7 @@ namespace EddiSpeechService
 
         private async Task CompanionAppService_StateChangedAsync( CompanionAppService.State newState)
         {
-            if ( newState == CompanionAppService.State.ConnectionLost && !CompanionAppService.unitTesting )
+            if ( newState == CompanionAppService.State.ConnectionLost && !CompanionAppService.Instance.unitTesting )
             {
                 await SpeechManager
                     .EnqueueAsync( null, EddiCompanionAppService.Properties.CapiResources.frontier_api_lost, 0 )

@@ -94,7 +94,7 @@ namespace EddiCompanionAppService.Endpoints
             }
 
             // Data acquisition not successful, delay and retry (up to 5 times)
-            if (retries >= 5) { return null; }
+            if (retries >= 5 || CompanionAppService.Instance.unitTesting) { return null; }
             retries += 1;
             Thread.Sleep(TimeSpan.FromSeconds(10));
             return await GetCombinedStationAsync(expectedCommanderName, expectedStarSystemName, expectedMarketID, forceRefresh, profileJson).ConfigureAwait(false);

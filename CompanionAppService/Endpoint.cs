@@ -12,7 +12,7 @@ namespace EddiCompanionAppService
 
         protected static async Task<JObject> GetEndpointAsync(string endpointURL)
         {
-            if ( CompanionAppService.unitTesting ) { return null; }
+            if ( CompanionAppService.Instance.unitTesting ) { return null; }
 
             JObject newJson;
 

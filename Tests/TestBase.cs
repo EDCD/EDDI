@@ -38,7 +38,7 @@ namespace Tests
             // Don't write to permanent storage (do this before we initialize our EDDI instance)
             Utilities.Files.unitTesting = true;
             ConfigService.unitTesting = true;
-            CompanionAppService.unitTesting = true;
+            CompanionAppService.Instance.unitTesting = true;
 
             // Set ourselves as in a beta game session to stop automatic sending of data to remote systems
             EDDI.Instance.gameIsBeta = true;

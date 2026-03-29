@@ -2654,7 +2654,7 @@ namespace EddiCore
         /// <summary>Obtain information from the companion API and use it to refresh our own data</summary>
         public async Task<bool> refreshProfileAsync(bool refreshStation = false)
         {
-            if ( CompanionAppService.unitTesting ||
+            if ( CompanionAppService.Instance.unitTesting ||
                  CompanionAppService.Instance?.CurrentState != CompanionAppService.State.Authorized )
             {
                 return true;

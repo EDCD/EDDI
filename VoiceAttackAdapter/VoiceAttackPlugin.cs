@@ -4,6 +4,7 @@ using EddiVoiceAttackAdapter.Client;
 using JetBrains.Annotations;
 using Microsoft.CSharp.RuntimeBinder;
 using System;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,7 +34,26 @@ namespace EddiVoiceAttackAdapter
             {
                 lock ( vaProxyLock )
                 {
-                    return VaProxy?.VAVersion as System.Version;
+                    if ( VaProxy == null )
+                    {
+                        return null;
+                    }
+
+                    try
+                    {
+                        return VaProxy.VAVersion as System.Version;
+                    }
+                    catch ( RuntimeBinderException )
+                    {
+                        var vaVersionProperty = VaProxy.GetType().GetProperty(
+                            "VAVersion",
+                            BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static );
+
+                        return vaVersionProperty?.GetValue(
+                            vaVersionProperty.GetMethod?.IsStatic == true
+                                ? null
+                                : VaProxy ) as System.Version;
+                    }
                 }
             }
         }
