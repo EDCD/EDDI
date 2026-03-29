@@ -21,7 +21,13 @@ namespace EddiVoiceAttackResponder
             Process.Start( processInfo );
         }
 
-        private void VAVariablesClicked(object sender, RoutedEventArgs e)
+        private void VAEventsClicked(object sender, RoutedEventArgs e)
+        {
+            var processInfo = new ProcessStartInfo { FileName = "https://github.com/EDCD/EDDI/wiki/Events", UseShellExecute = true };
+            Process.Start( processInfo );
+        }
+
+        private void VAVariablesClicked ( object sender, RoutedEventArgs e )
         {
             var processInfo = new ProcessStartInfo { FileName = "https://github.com/EDCD/EDDI/wiki/VoiceAttack-Integration", UseShellExecute = true };
             Process.Start( processInfo );

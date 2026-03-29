@@ -19,7 +19,7 @@ namespace EddiVoiceAttackResponder.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class VoiceAttack {
@@ -79,7 +79,7 @@ namespace EddiVoiceAttackResponder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To integrate EDDI with VoiceAttack EDDI needs to be installed within VoiceAttack&apos;s &apos;Apps&apos; directory. The default path for this is &apos;C:\Program Files (x86)\VoiceAttack\Apps&apos;, and is where EDDI will be installed by default..
+        ///   Looks up a localized string similar to To integrate EDDI with VoiceAttack EDDI needs to be installed within VoiceAttack&apos;s &apos;Apps&apos; directory. The default path for this is &apos;C:\Program Files\VoiceAttack\Apps&apos;, and is where EDDI will be installed by default..
         /// </summary>
         public static string p1 {
             get {
@@ -88,7 +88,7 @@ namespace EddiVoiceAttackResponder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to EDDI will only work with versions of VoiceAttack 1.5.12.22 and higher. Note that this a beta release..
+        ///   Looks up a localized string similar to EDDI will only work with versions of VoiceAttack 2.0.0 and higher. .
         /// </summary>
         public static string p2 {
             get {

@@ -2,7 +2,7 @@ EDDI integrates with VoiceAttack in two ways.  Firstly, it generates a large num
 
 # Using EDDI with VoiceAttack
 
-N.B. EDDI requires at least version 2.0.0 of VoiceAttack 2 to function correctly.VoiceAttack version 1.X is no longer supported.
+N.B. EDDI requires VoiceAttack 2 (version 2.0.0+) to function correctly.VoiceAttack version 1.X is no longer supported.
 
 For EDDI to work with VoiceAttack it must be installed as a VoiceAttack plugin.  To do this EDDI should be installed within the `Apps` directory of your VoiceAttack installation; by default VoiceAttack installs in one of two locations: 
 - `C:\Program Files\VoiceAttack2\Apps` (for standard licenses)
@@ -10,7 +10,7 @@ For EDDI to work with VoiceAttack it must be installed as a VoiceAttack plugin. 
 
 VoiceAttack must be configured to use plugins.  To do so you must click on the VoiceAttack Options icon (a spanner) in the bottom-right corner of the VoiceAttack main screen, check the 'Enable plugin support' option, and then restart VoiceAttack.
 
-If EDDI is installed in the correct location and plugin support is enabled you should see a message when starting VoiceAttack along the lines of `Plugin EDDI 3.7.1 initialized`.
+If EDDI is installed in the correct location and plugin support is enabled you should see a message when starting VoiceAttack along the lines of `Plugin EDDI 5.0.0 initialized`.
 
 ## EDDI's VoiceAttack Profile
 
