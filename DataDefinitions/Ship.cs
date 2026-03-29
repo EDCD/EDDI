@@ -57,6 +57,11 @@ namespace EddiDataDefinitions
                 // The cargo capacity is calculated using a shift operator (`<<`), equiv to 2^(@class), calculated as an integer.
                 var capacity = 1 << m.@class; // 2^(@class)
 
+                // Special "LargeCargoRack" modules (e.g. available for the Panther Clipper Mk. II) have a 50% bonus to their capacity.
+                capacity = m.edname.Contains( "LargeCargoRack", StringComparison.InvariantCultureIgnoreCase )
+                    ? (int)Math.Round( capacity * 1.5 )
+                    : capacity;
+
                 // Some modules include an engineering modification which further increases their capacity. 
                 foreach ( var modifier in m.modifiers )
                 {
@@ -67,11 +72,6 @@ namespace EddiDataDefinitions
                     }
                 }
 
-                // Special "LargeCargoRack" modules (e.g. available for the Panther Clipper Mk. II) have a 50% bonus to their capacity.
-                capacity = m.edname.Contains( "LargeCargoRack", StringComparison.InvariantCultureIgnoreCase )
-                    ? (int)Math.Round( capacity * 1.5 )
-                    : capacity;
-                
                 return capacity;
             } );
         
