@@ -232,7 +232,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Water Gas Vents.
+        ///   Looks up a localized string similar to Water Gas Vent.
         /// </summary>
         public static string Gas_Vents_WaterGeysers {
             get {
@@ -241,7 +241,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Water Geysers.
+        ///   Looks up a localized string similar to Water Geyser.
         /// </summary>
         public static string Geysers_WaterGeysers {
             get {
@@ -250,7 +250,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ammonia Ice Fumaroles.
+        ///   Looks up a localized string similar to Ammonia Ice Fumarole.
         /// </summary>
         public static string IceFumarole_AmmoniaGeysers {
             get {
@@ -259,7 +259,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Carbon Dioxide Ice Fumaroles.
+        ///   Looks up a localized string similar to Carbon Dioxide Ice Fumarole.
         /// </summary>
         public static string IceFumarole_CarbonDioxideGeysers {
             get {
@@ -268,7 +268,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Methane Ice Fumaroles.
+        ///   Looks up a localized string similar to Methane Ice Fumarole.
         /// </summary>
         public static string IceFumarole_MethaneGeysers {
             get {
@@ -277,7 +277,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nitrogen Ice Fumaroles.
+        ///   Looks up a localized string similar to Nitrogen Ice Fumarole.
         /// </summary>
         public static string IceFumarole_NitrogenGeysers {
             get {
@@ -286,7 +286,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Silicate Vapour Ice Fumaroles.
+        ///   Looks up a localized string similar to Silicate Vapour Ice Fumarole.
         /// </summary>
         public static string IceFumarole_SilicateVapourGeysers {
             get {
@@ -295,7 +295,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sulphur Dioxide Ice Fumaroles.
+        ///   Looks up a localized string similar to Sulphur Dioxide Ice Fumarole.
         /// </summary>
         public static string IceFumarole_SulphurDioxideMagma {
             get {
@@ -304,7 +304,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Water Ice Fumaroles.
+        ///   Looks up a localized string similar to Water Ice Fumarole.
         /// </summary>
         public static string IceFumarole_WaterGeysers {
             get {
@@ -313,7 +313,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ammonia Ice Geysers.
+        ///   Looks up a localized string similar to Ammonia Ice Geyser.
         /// </summary>
         public static string IceGeysers_AmmoniaGeysers {
             get {
@@ -322,7 +322,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Carbon Dioxide Ice Geysers.
+        ///   Looks up a localized string similar to Carbon Dioxide Ice Geyser.
         /// </summary>
         public static string IceGeysers_CarbonDioxideGeysers {
             get {
@@ -331,7 +331,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Methane Ice Geysers.
+        ///   Looks up a localized string similar to Methane Ice Geyser.
         /// </summary>
         public static string IceGeysers_MethaneGeysers {
             get {
@@ -340,7 +340,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nitrogen Ice Geysers.
+        ///   Looks up a localized string similar to Nitrogen Ice Geyser.
         /// </summary>
         public static string IceGeysers_NitrogenGeysers {
             get {
