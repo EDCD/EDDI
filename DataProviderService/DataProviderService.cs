@@ -99,12 +99,12 @@ namespace EddiDataProviderService
             return results;
         }
 
-        public async Task<StarSystem> GetOrFetchStarSystemAsync ( ulong systemAddress, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showMarketDetails = false, bool fetchEdsmVisitsAndComments = true )
+        public async Task<StarSystem> GetOrFetchStarSystemAsync ( ulong systemAddress, bool fetchIfMissing = true, bool excludeStaleResults = true, bool showMarketDetails = false, bool fetchEdsmVisitsAndComments = true )
         {
             if ( systemAddress <= 0 ) { return null; }
 
             var starSystems = await GetOrFetchStarSystemsAsync( [ systemAddress ], fetchIfMissing,
-                refreshIfOutdated, showMarketDetails, fetchEdsmVisitsAndComments ).ConfigureAwait(false);
+                excludeStaleResults, showMarketDetails, fetchEdsmVisitsAndComments ).ConfigureAwait(false);
             return starSystems?.FirstOrDefault();
         }
 
@@ -113,11 +113,11 @@ namespace EddiDataProviderService
         /// </summary>
         /// <param name="systemName"></param>
         /// <param name="fetchIfMissing"></param>
-        /// <param name="refreshIfOutdated"></param>
+        /// <param name="excludeStaleResults"></param>
         /// <param name="showMarketDetails"></param>
         /// <param name="fetchEdsmVisitsAndComments"></param>
         /// <returns></returns>
-        public async Task<StarSystem> GetOrFetchStarSystemAsync ( string systemName, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showMarketDetails = false, bool fetchEdsmVisitsAndComments = true )
+        public async Task<StarSystem> GetOrFetchStarSystemAsync ( string systemName, bool fetchIfMissing = true, bool excludeStaleResults = true, bool showMarketDetails = false, bool fetchEdsmVisitsAndComments = true )
         {
             if ( string.IsNullOrEmpty( systemName ) ) { return null; }
 
@@ -125,7 +125,10 @@ namespace EddiDataProviderService
             if ( starSystemCache.TryGet( systemName, out var cachedSystem ) ) { return cachedSystem; }
 
             // Fetch from the local database. If there is more than one result, return the most recent result (by visits and then by update time)
-            var sqlStarSystems = await GetSqlStarSystemsAsync( [ systemName ], cts.Token, refreshIfOutdated ).ConfigureAwait(false);
+            var sqlStarSystems = await GetSqlStarSystemsAsync( [ systemName ], cts.Token ).ConfigureAwait(false);
+            sqlStarSystems = sqlStarSystems
+                .Where( s => !( excludeStaleResults && IsStale( s ) ) )
+                .ToList();
             if ( sqlStarSystems.Count > 0 )
             {
                 return sqlStarSystems
@@ -139,11 +142,11 @@ namespace EddiDataProviderService
             if ( fetchedWaypoint is null ) { return null; }
 
             var starSystems = await GetOrFetchStarSystemsAsync( [ fetchedWaypoint.systemAddress ], fetchIfMissing,
-                refreshIfOutdated, showMarketDetails, fetchEdsmVisitsAndComments ).ConfigureAwait(false);
+                excludeStaleResults, showMarketDetails, fetchEdsmVisitsAndComments ).ConfigureAwait(false);
             return starSystems?.FirstOrDefault();
         }
 
-        private async Task<List<StarSystem>> GetOrFetchStarSystemsAsync ( ulong[] systemAddresses, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showMarketDetails = false, bool fetchEdsmVisitsAndComments = true )
+        private async Task<List<StarSystem>> GetOrFetchStarSystemsAsync ( ulong[] systemAddresses, bool fetchIfMissing = true, bool excludeStaleResults = true, bool showMarketDetails = false, bool fetchEdsmVisitsAndComments = true )
         {
             var results = new List<StarSystem>();
             if ( systemAddresses is null || systemAddresses.Length == 0 ) { return results; }
@@ -152,15 +155,18 @@ namespace EddiDataProviderService
 
             // Fetch from cached systems
             results.AddRange( starSystemCache.GetRange( missingSystems() ) );
-            
-            // Fetch from the local database
-            var localDbSystems = await GetSqlStarSystemsAsync( missingSystems(), refreshIfOutdated ).ConfigureAwait( false );
-            results.AddRange( localDbSystems );
 
-            // Fetch from external data providers (when so instructed)
-            if ( missingSystems().Length > 0 && fetchIfMissing )
+            // Fetch from the local database, including stale results
+            var localDbSystems = await GetSqlStarSystemsAsync( missingSystems() ).ConfigureAwait( false );
+
+            // Add results to our results list (excluding stale results if `excludeStaleResults` is true)
+            results.AddRange( localDbSystems.Where( s => !( excludeStaleResults && IsStale( s ) ) ) );
+
+            // Fetch any remaining missing systems from external data providers (if `fetchIfMissing` is true)
+            var systemsToFetch = missingSystems();
+            if ( systemsToFetch.Length > 0 && fetchIfMissing )
             {
-                var fetchedSystems = await FetchSystemsDataAsync( missingSystems(), showMarketDetails ).ConfigureAwait( false ) ?? new List<StarSystem>();
+                var fetchedSystems = await FetchSystemsDataAsync( systemsToFetch, showMarketDetails ).ConfigureAwait( false ) ?? new List<StarSystem>();
                 if ( fetchedSystems.Count > 0 )
                 {
                     if ( fetchEdsmVisitsAndComments )
@@ -209,7 +215,7 @@ namespace EddiDataProviderService
             results.AddRange( starSystemCache.GetRange( missingSystems() ) );
 
             // Fetch from the local database
-            results.AddRange( await GetSqlStarSystemsAsync( missingSystems(), false ).ConfigureAwait(false) );
+            results.AddRange( await GetSqlStarSystemsAsync( missingSystems() ).ConfigureAwait(false) );
 
             // Fetch from external data providers (when so instructed)
             if ( missingSystems().Length > 0 && fetchIfMissing )
@@ -339,24 +345,34 @@ namespace EddiDataProviderService
 
         #region StarSystemSqlLiteRepository
 
-        private async Task<List<StarSystem>> GetSqlStarSystemsAsync ( ulong[] systemAddresses, bool refreshIfOutdated = true )
+        private async Task<List<StarSystem>> GetSqlStarSystemsAsync ( ulong[] systemAddresses )
         {
             var dbStarSystems = await starSystemRepository.GetSqlStarSystemsAsync( systemAddresses, cts.Token ).ConfigureAwait(false);
-            return DeserializeSqlStarSystems( dbStarSystems, refreshIfOutdated );
+            return DeserializeSqlStarSystems( dbStarSystems );
         }
 
-        private async Task<List<StarSystem>> GetSqlStarSystemsAsync ( string[] systemNames, CancellationToken cancellationToken, bool refreshIfOutdated = true )
+        private async Task<List<StarSystem>> GetSqlStarSystemsAsync ( string[] systemNames, CancellationToken cancellationToken )
         {
             var dbStarSystems = await starSystemRepository.GetSqlStarSystemsAsync( systemNames, cancellationToken ).ConfigureAwait(false);
-            return DeserializeSqlStarSystems( dbStarSystems, refreshIfOutdated );
+            return DeserializeSqlStarSystems( dbStarSystems );
         }
 
-        private List<StarSystem> DeserializeSqlStarSystems ( List<DatabaseStarSystem> dbStarSystems, bool refreshIfOutdated )
+        private static bool IsStale ( StarSystem starSystem )
+        {
+            // Consider a star system to be stale if it hasn't been updated within the last hour
+            // (for populated systems) or the last month (for unpopulated systems, which are
+            // less likely to have changed)
+            return starSystem.population > 0
+                ? starSystem.lastupdated < DateTime.UtcNow.AddHours( -1 )
+                : starSystem.lastupdated < DateTime.UtcNow.AddMonths( -1 );
+        }
+
+        private List<StarSystem> DeserializeSqlStarSystems ( List<DatabaseStarSystem> dbStarSystems )
         {
             var results = new List<StarSystem>();
             foreach ( var dbStarSystem in dbStarSystems )
             {
-                if ( HasKeyFields( dbStarSystem ) && IsRecent( refreshIfOutdated, dbStarSystem ) )
+                if ( HasKeyFields( dbStarSystem ) )
                 {
                     // Deserialize the result
                     var result = DeserializeStarSystem( dbStarSystem.systemAddress, dbStarSystem.systemJson );
@@ -374,20 +390,7 @@ namespace EddiDataProviderService
 
             return results;
 
-            // Consider a star system to be recent if it has been updated within the last hour
-            // (for populated systems) or the last month (for unpopulated systems, which are
-            // less likely to have changed)
-            bool IsRecent ( bool isRecencyImportant, DatabaseStarSystem dbStarSystem )
-            {
-                if ( isRecencyImportant )
-                {
-                    return dbStarSystem.population > 0
-                        ? dbStarSystem.lastUpdated >= DateTime.UtcNow.AddHours( -1 )
-                        : dbStarSystem.lastUpdated >= DateTime.UtcNow.AddMonths( -1 );
-                }
-                return true;
-            }
-            
+           
             bool HasKeyFields ( DatabaseStarSystem dbStarSystem )
             {
                 return dbStarSystem.systemAddress > 0 && 
@@ -749,7 +752,7 @@ namespace EddiDataProviderService
                 .Select( f => f.systemId64 )
                 .Distinct()
                 .ToArray();
-            var batchSystems = await GetOrFetchStarSystemsAsync( uniqueAddresses, refreshIfOutdated: false, fetchEdsmVisitsAndComments: false ).ConfigureAwait(false);
+            var batchSystems = await GetOrFetchStarSystemsAsync( uniqueAddresses, excludeStaleResults: false, fetchEdsmVisitsAndComments: false ).ConfigureAwait(false);
             var lookup = batchSystems.ToDictionary(s => s.systemAddress);
             var groupedLogs = flightLogBatch.GroupBy(f => f.systemId64);
 
