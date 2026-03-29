@@ -5,7 +5,6 @@ using EddiNavigationService;
 using System;
 using System.ComponentModel;
 using System.Globalization;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -20,7 +19,7 @@ namespace EddiNavigationMonitor
     {
         private string LastCarrierOriginArg;
 
-        private NavigationMonitor navigationMonitor ()
+        private static NavigationMonitor navigationMonitor ()
         {
             return (NavigationMonitor)EDDI.Instance.ObtainMonitor( "Navigation monitor" );
         }
@@ -75,7 +74,7 @@ namespace EddiNavigationMonitor
 
         private void OnCarrierPlottedRouteChanged ( object sender, PropertyChangedEventArgs e )
         {
-            if ( !( sender is NavWaypointCollection navWaypointCollection ) )
+            if ( sender is not NavWaypointCollection navWaypointCollection )
             {
                 return;
             }
@@ -228,10 +227,8 @@ namespace EddiNavigationMonitor
 
         private void EnsureValidInteger ( object sender, TextCompositionEventArgs e )
         {
-            // Match valid characters
-            Regex regex = new Regex(@"[0-9]");
-            // Swallow the character doesn't match the regex
-            e.Handled = !regex.IsMatch( e.Text );
+            // Swallow the character if it doesn't match the regex
+            e.Handled = !GeneratedRegex.IsIntegerRegex().IsMatch( e.Text );
         }
 
         private void DataGrid_LoadingRow ( object sender, DataGridRowEventArgs e )
@@ -250,34 +247,25 @@ namespace EddiNavigationMonitor
 
         private void addBookmark ( object sender, RoutedEventArgs e )
         {
-            if ( Parent is TabItem parentTab && parentTab.Parent is TabControl parentTabControl )
+            if ( Parent is TabItem item && item.Parent is TabControl control && control.Parent is DockPanel panel && panel.Parent is ConfigurationWindow configurationWindow )
             {
-                if ( parentTabControl.Parent is DockPanel dockPanel )
-                {
-                    if ( dockPanel.Parent is ConfigurationWindow configurationWindow )
-                    {
-                        configurationWindow.SwitchToTab( Properties.NavigationMonitor.tab_bookmarks );
-                        configurationWindow.addBookmark( sender, e );
-                    }
-                }
+                configurationWindow.SwitchToTab( Properties.NavigationMonitor.tab_bookmarks );
+                configurationWindow.addBookmark( sender, e );
             }
         }
 
         private void copySystemNameToClipboard ( object sender, RoutedEventArgs e )
         {
-            if ( sender is Button button )
+            if ( sender is Button button && button.DataContext is NavWaypoint navWaypoint )
             {
-                if ( button.DataContext is NavWaypoint navWaypoint )
+                try
                 {
-                    try
-                    {
-                        Clipboard.Clear();
-                        Clipboard.SetData( DataFormats.Text, navWaypoint.systemName );
-                    }
-                    catch ( Exception ex )
-                    {
-                        Logging.Warn( "Failed to set clipboard", ex );
-                    }
+                    Clipboard.Clear();
+                    Clipboard.SetData( DataFormats.Text, navWaypoint.systemName );
+                }
+                catch ( Exception ex )
+                {
+                    Logging.Warn( "Failed to set clipboard", ex );
                 }
             }
         }

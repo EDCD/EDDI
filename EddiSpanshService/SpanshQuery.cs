@@ -90,7 +90,7 @@ namespace EddiSpanshService
                     {
                         var response = await spanshHttpClient.PostAsync( $"{queryGroup}/search", requestContent, cancellationToken ).ConfigureAwait(false);
                         response.EnsureSuccessStatusCode();
-                        responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                        responseJson = await response.Content.ReadAsStringAsync( cancellationToken ).ConfigureAwait(false);
                     }
 
                     try

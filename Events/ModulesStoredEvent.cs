@@ -6,7 +6,14 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class ModulesStoredEvent : Event
+    public class ModulesStoredEvent (
+        DateTime timestamp,
+        string ship,
+        int shipid,
+        List<string> slots,
+        List<Module> modules,
+        long marketId )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Modules stored";
         public const string DESCRIPTION = "Triggered when you store multiple modules";
@@ -16,27 +23,18 @@ namespace EddiEvents
         public string ship => shipDefinition?.model;
 
         [PublicAPI("The ID of the ship from which the module were stored")]
-        public int shipid { get; private set; }
+        public int shipid { get; private set; } = shipid;
 
         [PublicAPI("The outfitting slots")]
-        public List<string> slots { get; private set; }
+        public List<string> slots { get; private set; } = slots;
 
         [PublicAPI("The stored modules (as objects)")]
-        public List<Module> modules { get; private set; }
+        public List<Module> modules { get; private set; } = modules;
 
         // Not intended to be user facing
 
-        public long marketId { get; private set; }
+        public long marketId { get; private set; } = marketId;
 
-        public Ship shipDefinition { get; private set; }
-
-        public ModulesStoredEvent(DateTime timestamp, string ship, int shipid, List<string> slots, List<Module> modules, long marketId) : base(timestamp, NAME)
-        {
-            this.shipDefinition = ShipDefinitions.FromEDModel(ship);
-            this.shipid = shipid;
-            this.slots = slots;
-            this.modules = modules;
-            this.marketId = marketId;
-        }
+        public Ship shipDefinition { get; private set; } = ShipDefinitions.FromEDModel(ship);
     }
 }

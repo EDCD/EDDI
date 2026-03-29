@@ -6,27 +6,19 @@ using Utilities;
 
 namespace EddiDataDefinitions
 {
-    public class CargoInfo
+    public class CargoInfo ( DateTime timestamp, string vessel, int count, List<CargoInfoItem> inventory )
     {
         [JsonProperty]
-        public DateTime timestamp { get; }
+        public DateTime timestamp { get; } = timestamp;
 
         [JsonProperty]
-        public string Vessel { get; }
+        public string Vessel { get; } = vessel;
 
         [JsonProperty]
-        public int Count { get; }
+        public int Count { get; } = count;
 
         [JsonProperty]
-        public List<CargoInfoItem> Inventory { get; }
-
-        public CargoInfo(DateTime timestamp, string vessel, int count, List<CargoInfoItem> inventory)
-        {
-            this.timestamp = timestamp;
-            Vessel = vessel;
-            Count = count;
-            Inventory = inventory ?? new List<CargoInfoItem>();
-        }
+        public List<CargoInfoItem> Inventory { get; } = inventory ?? [ ];
 
         [UsedImplicitly]
         public static bool TryFromFile (

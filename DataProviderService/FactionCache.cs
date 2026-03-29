@@ -1,13 +1,10 @@
 ﻿using EddiDataDefinitions;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace EddiDataProviderService
 {
-    public class FactionCache : SlidingExpirationCache<string, Faction>
+    public class FactionCache ( int expirationSeconds ) : SlidingExpirationCache<string, Faction>( expirationSeconds )
     {
-        public FactionCache ( int expirationSeconds ) : base( expirationSeconds ) { }
-
         /// <summary>
         /// Add or update a faction in the cache. Retain faction presence information
         /// </summary>
@@ -52,15 +49,15 @@ namespace EddiDataProviderService
                         {
                             presence.Happiness = oldPresence.Happiness;
                         }
-                        if ( !presence.ActiveStates.Any() && oldPresence.ActiveStates.Any() )
+                        if ( presence.ActiveStates.Count == 0 && oldPresence.ActiveStates.Count > 0 )
                         {
                             presence.ActiveStates = oldPresence.ActiveStates;
                         }
-                        if ( !presence.PendingStates.Any() && oldPresence.PendingStates.Any() )
+                        if ( presence.PendingStates.Count == 0 && oldPresence.PendingStates.Count > 0 )
                         {
                             presence.PendingStates = oldPresence.PendingStates;
                         }
-                        if ( !presence.RecoveringStates.Any() && oldPresence.RecoveringStates.Any() )
+                        if ( presence.RecoveringStates.Count == 0 && oldPresence.RecoveringStates.Count > 0 )
                         {
                             presence.RecoveringStates = oldPresence.RecoveringStates;
                         }

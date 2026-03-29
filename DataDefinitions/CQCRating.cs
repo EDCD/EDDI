@@ -58,7 +58,7 @@ namespace EddiDataDefinitions
 
         public static CQCRating FromRank(int from)
         {
-            CQCRating result = AllOfThem.FirstOrDefault(v => v.rank == from);
+            var result = AllOfThem.FirstOrDefault(v => v.rank == from);
             if (result == null)
             {
                 Logging.Info("Unknown CQC Rating rank " + from);

@@ -143,11 +143,34 @@ namespace System
         {
             if ( task == null )
             {
-                throw new ArgumentNullException( nameof(task) );
+                ArgumentNullException.ThrowIfNull( (Task)null, nameof(task) );
             }
 
             // If already completed successfully, nothing to do
-            if ( task.Status == TaskStatus.RanToCompletion || task.Status == TaskStatus.Canceled )
+            if ( task.Status is TaskStatus.RanToCompletion or TaskStatus.Canceled )
+            {
+                return;
+            }
+
+            // Otherwise, observe it asynchronously
+            _ = HandleAsync( task, onError );
+        }
+
+        /// <summary>
+        /// Safely fire-and-forget a Task.
+        /// Exceptions are observed and logged via the optional handler.
+        /// </summary>
+        /// <param name="task">The task to run in the background.</param>
+        /// <param name="onError">Optional exception handler (e.g., logging).</param>
+        public static void SafeFireAndForget<T> ( this Task<T> task, Action<Exception> onError = null )
+        {
+            if ( task == null )
+            {
+                ArgumentNullException.ThrowIfNull( (Task)null, nameof( task ) );
+            }
+
+            // If already completed successfully, nothing to do
+            if ( task.Status is TaskStatus.RanToCompletion or TaskStatus.Canceled )
             {
                 return;
             }

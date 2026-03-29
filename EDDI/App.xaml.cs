@@ -1,7 +1,10 @@
-﻿using EddiConfigService;
+using EddiCompanionAppService;
+using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiCore;
 using EddiCore.Upgrader;
+using EddiSpeechService;
+using EddiStatusService;
 using EddiUI;
 using System;
 using System.Diagnostics;
@@ -23,15 +26,23 @@ namespace Eddi
     {
         public static Mutex eddiMutex { get; internal set; }
 
-        // True if we have been started by VoiceAttack and the VaProxy object has been set
+        // VoiceAttack host application version (bootstrap from process args; authoritative value can be overwritten via IPC handshake)
         public static System.Version VoiceAttackVersion { get; set; }
-        public static bool FromVA => VoiceAttackVersion != null;
-        public static Action vaStartup;
 
         [ STAThread ]
-        public static void Main ()
+        public static void Main ( string[] args = null )
         {
-            if ( !FromVA && AlreadyRunning() )
+            // Parse command-line arguments
+            args ??= Environment.GetCommandLineArgs().Skip( 1 ).ToArray();
+            EDDI.Instance.FromVA = args.Any( arg => arg.Equals( "--voice-attack-plugin", StringComparison.OrdinalIgnoreCase ) );
+            VoiceAttackVersion = ParseVoiceAttackVersion( args );
+
+            if ( VoiceAttackVersion != null )
+            {
+                Logging.Info( $"Parsed VoiceAttack version from process args: {VoiceAttackVersion}" );
+            }
+
+            if ( AlreadyRunning() )
             {
                 var localisedMultipleInstanceAlertTitle = EddiCore.Properties.Resources.already_running_alert_title;
                 var localisedMultipleInstanceAlertText = EddiCore.Properties.Resources.already_running_alert_body_text;
@@ -44,12 +55,59 @@ namespace Eddi
             var app = new App();
             app.Exit += OnExit;
 
+            try
+            {
+                Initialize( app, VoiceAttackVersion );
+            }
+            catch ( Exception e )
+            {
+                CrashLogger( e );
+            }
+        }
+
+        /// <summary>
+        /// Parse VoiceAttack host version from process args, if provided.
+        /// Supports both '--voice-attack-version X.X.X' and '--voice-attack-version=X.X.X'.
+        /// </summary>
+        private static System.Version ParseVoiceAttackVersion( string[] args )
+        {
+            ArgumentNullException.ThrowIfNull( args );
+
+            for ( var i = 0; i < args.Length; i++ )
+            {
+                var arg = args[ i ];
+
+                if ( !arg.StartsWith( "--voice-attack-version", StringComparison.OrdinalIgnoreCase ) )
+                {
+                    continue;
+                }
+
+                if ( ( i + 1 ) < args.Length && System.Version.TryParse( args[ i + 1 ], out var versionFromNextArg ) )
+                {
+                    return versionFromNextArg;
+                }
+
+                var parts = arg.Split( '=', StringSplitOptions.RemoveEmptyEntries );
+                if ( parts.Length == 2 && System.Version.TryParse( parts[ 1 ], out var versionFromEquals ) )
+                {
+                    return versionFromEquals;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Initializes EDDI in standalone mode (not running under VoiceAttack).
+        /// </summary>
+        private static void Initialize( App app, System.Version vaVersion )
+        {
             // Prepare to start the application
             Logging.IncrementLogs(); // Increment to a new log file.
             var configuration = ConfigService.Instance.eddiConfiguration;
             if ( configuration != null && !configuration.DisableTelemetry )
             {
-                StartTelemetryService(); // do immediately to initialize error reporting
+                StartTelemetryService( vaVersion ); // do immediately to initialize error reporting
             }
 
             ApplyAnyOverrideCulture( configuration ); // this must be done before any UI is generated
@@ -58,38 +116,90 @@ namespace Eddi
             // This completes before showing any UI so that VoiceAttack can report the availability of the upgrade during its startup.
             EddiUpgrader.CheckUpgradeAsync().GetResultOrTimeout( TimeSpan.FromSeconds( 10 ) );
 
-            try
+            // Initialize CompanionAppService DDE on UI thread BEFORE async preload
+            // (must be done before MainWindow creation and Task.WaitAll to avoid deadlock)
+            if ( Current != null )
             {
-                if ( FromVA )
+                try
                 {
-                    // Start with the MainWindow hidden
-                    EDDI.FromVA = FromVA;
-                    app.MainWindow = new MainWindow();
-                    vaStartup?.Invoke();
-                    app.Run();
+                    var companionService = CompanionAppService.Instance;
+                    companionService.InitializeOAuthCallback();
+                    Logging.Debug( "CompanionAppService DDE initialized" );
                 }
-                else
+                catch ( Exception ex )
                 {
-                    // Start by displaying the MainWindow
-                    app.Run( new MainWindow() );
+                    Logging.Error( "Failed to initialize CompanionAppService DDE", ex );
                 }
             }
-            catch ( Exception e )
+
+            // Wait for preload to complete before MainWindow creation
+            var preloadTasks = PreloadCriticalServicesAsync();
+            Task.WaitAll( preloadTasks.ToArray() );
+
+            if ( EDDI.Instance.FromVA )
             {
-                // Catch exceptions from the main UI thread
-                CrashLogger( e );
+                // Create the MainWindow with visibility controlled by code-behind logic
+                // (hidden by default in VA mode, shown on demand via VA commands)
+                app.MainWindow = new MainWindow();
+                app.Run();
             }
+            else
+            {
+                // Start by displaying the MainWindow
+                app.Run( new MainWindow() );
+            }
+        }
+
+        // Parallel pre-load of service singletons
+        private static Task[] PreloadCriticalServicesAsync ()
+        {
+            return
+            [
+                // Pre-warm ConfigService (file I/O)
+                Task.Run(() => {
+                    try {
+                        _ = ConfigService.Instance;
+                        Logging.Debug("ConfigService preloaded");
+                    } catch (Exception ex) {
+                        Logging.Error("Failed to preload ConfigService", ex);
+                    }
+                }),
+
+                // Pre-load speech service asynchronously
+                Task.Run(() => {
+                    try
+                    {
+                        _ = SpeechService.Instance;
+                        Logging.Debug( "SpeechService preloaded" );
+                    }
+                    catch ( Exception ex )
+                    {
+                        Logging.Error( "Failed to preload SpeechService", ex );
+                    }
+                }),
+
+                // Pre-load status service asynchronously  
+                Task.Run(() => {
+                    try
+                    {
+                        _ = StatusService.Instance;
+                        Logging.Debug( "StatusService preloaded" );
+                    }
+                    catch ( Exception ex )
+                    {
+                        Logging.Error( "Failed to preload StatusService", ex );
+                    }
+                })
+            ];
         }
 
         private static void OnExit(object sender, ExitEventArgs e)
         {
-            if ( !FromVA )
-            {
-                EDDI.Instance.Stop();
-            }
+            // Always stop the EDDI instance so monitors and services are shut down
+            // cleanly before the process exits.  
+            EDDI.Instance.Stop();
 
-            Current.Dispatcher.InvokeAsync( () =>
-            {
+            Current?.Dispatcher?.InvokeAsync( () => {
                 eddiMutex.ReleaseMutex();
             } );
         }
@@ -99,34 +209,34 @@ namespace Eddi
         // For standalone, this will be handled here.
         public static bool AlreadyRunning()
         {
-            eddiMutex = new Mutex(true, Constants.EDDI_SYSTEM_MUTEX_NAME, out bool firstOwner);
+            eddiMutex = new Mutex(true, Constants.EDDI_SYSTEM_MUTEX_NAME, out var firstOwner);
             return !firstOwner;
         }
 
-        private static void StartTelemetryService()
+        private static void StartTelemetryService(System.Version voiceAttackVersion)
         {
             // Generate an id unique to this app run for bug tracking
             // and start the telemetry service
             var telemetryID = Convert.ToBase64String( Guid.NewGuid().ToByteArray() ).Replace("=", "");
-            Utilities.TelemetryService.Telemetry.Start( telemetryID, VoiceAttackVersion );
+            Utilities.TelemetryService.Telemetry.Start( telemetryID, voiceAttackVersion );
 
             // Catch and send unhandled exceptions
-            System.Windows.Forms.Application.ThreadException += (sender, args) =>
+            System.Windows.Forms.Application.ThreadException += (_, args) =>
             {
                 CrashLogger(args.Exception);
             };
             // Catch and send unhandled exceptions from non-UI threads
-            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+            AppDomain.CurrentDomain.UnhandledException += (_, args) =>
             {
                 CrashLogger(args.ExceptionObject as Exception);
             };
             // Catch and send unhandled exceptions from the task scheduler
-            TaskScheduler.UnobservedTaskException += (sender, args) =>
+            TaskScheduler.UnobservedTaskException += (_, args) =>
             {
                 CrashLogger(args.Exception);
             };
             // Catch and write managed exceptions to the local debug console (but do not send)
-            AppDomain.CurrentDomain.FirstChanceException += (sender, args) =>
+            AppDomain.CurrentDomain.FirstChanceException += (_, args) =>
             {
                 Debug.WriteLine(args.Exception.ToString());
             };
@@ -135,8 +245,9 @@ namespace Eddi
         private static void CrashLogger(Exception ex)
         {
             // Suppress uncaught Rollbar internal exceptions
-            if ( ex.InnerException?.Source == "Rollbar" || 
-                 ( ex is AggregateException aex && aex.InnerExceptions.Any(ie => ie.StackTrace.Contains("Rollbar")) ) )
+            if ( ex.InnerException?.Source == "Rollbar" ||
+                 ( ex is AggregateException aex &&
+                   aex.InnerExceptions.Any( ie => ie.StackTrace != null && ie.StackTrace.Contains( "Rollbar" ) ) ) )
             {
                 return;
             }
@@ -146,10 +257,7 @@ namespace Eddi
 
         public static void ApplyAnyOverrideCulture(EDDIConfiguration configuration = null)
         {
-            if ( configuration is null )
-            {
-                configuration = ConfigService.Instance.eddiConfiguration;
-            }
+            configuration ??= ConfigService.Instance.eddiConfiguration;
 
             try
             {
@@ -179,3 +287,4 @@ namespace Eddi
         }
     }
 }
+

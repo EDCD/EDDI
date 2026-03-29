@@ -5,7 +5,13 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class OutfittingEvent : Event
+    public class OutfittingEvent (
+        DateTime timestamp,
+        long marketId,
+        string station,
+        string system,
+        OutfittingInfo info )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Outfitting";
         public const string DESCRIPTION = "Triggered when the Outfitting.json file has been updated";
@@ -13,20 +19,12 @@ namespace EddiEvents
 
         // Not intended to be user facing
 
-        public long marketId { get; private set; }
+        public long marketId { get; private set; } = marketId;
 
-        public string station { get; private set; }
+        public string station { get; private set; } = station;
 
-        public string system { get; private set; }
+        public string system { get; private set; } = system;
 
-        public OutfittingInfo info { get; private set; }
-
-        public OutfittingEvent(DateTime timestamp, long marketId, string station, string system, OutfittingInfo info) : base(timestamp, NAME)
-        {
-            this.marketId = marketId;
-            this.station = station;
-            this.system = system;
-            this.info = info;
-        }
+        public OutfittingInfo info { get; private set; } = info;
     }
 }

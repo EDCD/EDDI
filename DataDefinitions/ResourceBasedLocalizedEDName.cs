@@ -73,12 +73,12 @@ namespace EddiDataDefinitions
             var otherProperties = jsonObject.Properties().Where(p => p.Name != "edname");
             foreach ( var prop in otherProperties )
             {
-                var propInfo = result.GetType().GetProperty(prop.Name);
+                var propInfo = result?.GetType().GetProperty(prop.Name);
                 if ( propInfo != null && propInfo.CanWrite )
                 {
                     propInfo.SetValue( result, prop.Value.ToObject( propInfo.PropertyType ) );
                 }
-                var fieldInfo = result.GetType().GetField(prop.Name, BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
+                var fieldInfo = result?.GetType().GetField(prop.Name, BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
                 fieldInfo?.SetValue( result, prop.Value.ToObject( fieldInfo.FieldType ) );
             }
             return result;
@@ -97,7 +97,7 @@ namespace EddiDataDefinitions
         {
             lock (resourceLock)
             {
-                AllOfThem = new List<T>();
+                AllOfThem = [];
             }
         }
 
@@ -114,7 +114,7 @@ namespace EddiDataDefinitions
         // This is as intended, with separate values for each derived type
         // rather than a single shared value across all types.
         protected static ResourceManager resourceManager;
-        public static readonly object resourceLock = new object();
+        public static readonly object resourceLock = new();
         // ReSharper restore StaticMemberInGenericType
 
         [JsonProperty]

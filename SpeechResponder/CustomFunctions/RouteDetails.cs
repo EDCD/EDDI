@@ -4,7 +4,6 @@ using EddiNavigationService;
 using EddiSpeechResponder.ScriptResolverService;
 using JetBrains.Annotations;
 using System;
-using System.Linq;
 using System.Reflection;
 using Utilities;
 
@@ -23,7 +22,7 @@ namespace EddiSpeechResponder.CustomFunctions
             {
                 Logging.Debug("RouteDetails() invoked, arguments: ", values);
 
-                var query = values?.FirstOrDefault().AsString;
+                var query = values?[0].AsString;
 
                 if (string.IsNullOrEmpty(query))
                 {

@@ -20,11 +20,13 @@
         <ProjectReference Include="..\EDDI\Eddi.csproj" />
         <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj" />
         <ProjectReference Include="..\Events\EddiEvents.csproj" />
+        <ProjectReference Include="..\IPC_Service\EddiIPC_Service.csproj" />
         <ProjectReference Include="..\NavigationService\EddiNavigationService.csproj" />
         <ProjectReference Include="..\SpeechResponder\EddiSpeechResponder.csproj" />
         <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj" />
         <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj" />
         <ProjectReference Include="..\Utilities\Utilities.csproj" />
+        <ProjectReference Include="..\VoiceAttackAdapter\EddiVoiceAttackAdapter.csproj" />
     </ItemGroup>
     <ItemGroup>
         <None Include="..\VoiceAttack-Integration.md">
@@ -38,8 +40,6 @@
         <PackageReference Include="JetBrains.Annotations" />
         <PackageReference Include="Microsoft.CSharp" />
         <PackageReference Include="System.Collections.Immutable" />
-        <PackageReference Include="System.Runtime" />
-        <PackageReference Include="System.Runtime.Extensions" />
     </ItemGroup>
     <ItemGroup>
         <Compile Update="Properties\VoiceAttack.Designer.cs">

@@ -149,7 +149,8 @@ namespace EddiDataDefinitions
         public const double maxHabitableTempKelvin = 315;
         public const double minHabitableTempKelvin = 223.15;
 
-        public class Chromaticity : ResourceBasedLocalizedEDName<StarClass.Chromaticity>
+        public class Chromaticity ( string edname )
+            : ResourceBasedLocalizedEDName<StarClass.Chromaticity>( edname, edname )
         {
             static Chromaticity()
             {
@@ -169,12 +170,9 @@ namespace EddiDataDefinitions
             // dummy used to ensure that the static constructor has run
             public Chromaticity() : this("")
             { }
-
-            public Chromaticity(string edname) : base(edname, edname)
-            { }
         }
 
-        private static readonly List<StarClass> CLASSES = new List<StarClass>();
+        private static readonly List<StarClass> CLASSES = [ ];
 
         [JsonRequired]
         public string edname { get; private set; }
@@ -273,10 +271,10 @@ namespace EddiDataDefinitions
         public static decimal DistanceFromStarForTemperature(double targetTempKelvin, double stellarRadiusKilometers, double stellarTemperatureKelvin)
         {
             // Derived from Jackie Silver's Habitable Zone Calculator (https://forums.frontier.co.uk/showthread.php?t=127522&highlight=), used with permission
-            double top = Math.Pow(stellarRadiusKilometers * 1000, 2.0) * Math.Pow(stellarTemperatureKelvin, 4.0);
-            double bottom = 4.0 * Math.Pow(targetTempKelvin, 4.0);
-            double distanceMeters = Math.Pow(top / bottom, 0.5);
-            double distancels = distanceMeters / Constants.lightSpeedMetersPerSecond;
+            var top = Math.Pow(stellarRadiusKilometers * 1000, 2.0) * Math.Pow(stellarTemperatureKelvin, 4.0);
+            var bottom = 4.0 * Math.Pow(targetTempKelvin, 4.0);
+            var distanceMeters = Math.Pow(top / bottom, 0.5);
+            var distancels = distanceMeters / Constants.lightSpeedMetersPerSecond;
             return Convert.ToDecimal(distancels);
         }
     }

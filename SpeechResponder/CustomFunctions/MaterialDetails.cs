@@ -24,7 +24,7 @@ namespace EddiSpeechResponder.CustomFunctions
             return result is null ? Value.EmptyMap : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
         }, 1, 2);
 
-        private Material GetMaterialDetails ( IReadOnlyList<Value> values )
+        private static Material GetMaterialDetails ( IReadOnlyList<Value> values )
         {
             // Attempt to find the material by name
             var material = Material.FromName(values[0].AsString);
@@ -68,7 +68,7 @@ namespace EddiSpeechResponder.CustomFunctions
 
             // Try to fetch by star system name
             return await EDDI.Instance.DataProvider
-                .GetOrFetchStarSystemAsync( systemInput.Trim(), true, false )
+                .GetOrFetchStarSystemAsync( systemInput?.Trim(), true, false )
                 .ConfigureAwait( false );
         }
     }

@@ -1,0 +1,143 @@
+﻿using System.Text.RegularExpressions;
+
+namespace Utilities
+{
+    public static partial class GeneratedRegex
+    {
+        [GeneratedRegex( @"[A-Z]\.", RegexOptions.Compiled )]
+        public static partial Regex ALPHA_DOT ();
+
+        [GeneratedRegex( @"[A-Za-z]+[0-9]+", RegexOptions.Compiled )]
+        public static partial Regex ALPHA_THEN_NUMERIC ();
+
+        [GeneratedRegex( @"(?=\().*", RegexOptions.Compiled )]
+        public static partial Regex CottleFunctionArgs ();
+
+        [GeneratedRegex( @"(?<={)[^:}]*?(\S+(?>\[\d\])?\.)+$", RegexOptions.Compiled )]
+        public static partial Regex CottleFunctionLine ();
+
+        [GeneratedRegex( @"{set (?<key>\w*) to (?<function>\w*(?=\(.*\).*}))", RegexOptions.Compiled )]
+        public static partial Regex CottleSetKeyToFunctionRegex ();
+
+        [GeneratedRegex( @"{set (?<key>\w*) to (?<value>[\w|\.]*)}", RegexOptions.Compiled )]
+        public static partial Regex CottleSetKeyToValueRegex ();
+
+        [GeneratedRegex( @"\d+(?:\s|$)", RegexOptions.Compiled )]
+        public static partial Regex DIGIT ();
+
+        [GeneratedRegex( @"\s\(\d\)$", RegexOptions.Compiled )] 
+        public static partial Regex EndingCountRegex (); // e.g. "Ancient Ruins (3)"
+
+        [GeneratedRegex( @"(?<=\S)+\[\d+\]", RegexOptions.Compiled )] 
+        public static partial Regex EnumIndexRegex (); // e.g. "bodies[3]"
+
+        [GeneratedRegex( @"(?>\s*<break time=""\d+[ms]+""\s*\/>)+\s*$", RegexOptions.Compiled )]
+        public static partial Regex EndingPauseRegex ();
+
+        [GeneratedRegex( @"\\", RegexOptions.Compiled )]
+        public static partial Regex EscapeCharacterRegex ();
+
+        [GeneratedRegex( @"[[a-zA-Z0-9]{3}-[[a-zA-Z0-9]{3}$", RegexOptions.Compiled )]
+        public static partial Regex FleetCarrierIdRegex ();
+
+        [GeneratedRegex( @"^(.+)(?> )([A-Za-z0-9]{3}-[A-Za-z0-9]{3})$", RegexOptions.Compiled )]
+        public static partial Regex FleetCarrierNameAndIdRegex ();
+
+        [GeneratedRegex( @"<[^>]*>", RegexOptions.Compiled )]
+        public static partial Regex HtmlRegex ();
+
+        [GeneratedRegex( @"[\x00-\x1F\x7f]", RegexOptions.Compiled )]
+        public static partial Regex HtmlControlCodesRegex ();
+
+        [GeneratedRegex( @"[0-9]", RegexOptions.Compiled )]
+        public static partial Regex IsIntegerRegex ();
+
+        [GeneratedRegex( @"^{.*}$", RegexOptions.Compiled | RegexOptions.Singleline )]
+        public static partial Regex JsonWrappedRegex ();
+        
+        [GeneratedRegex( @"^[a-z]$", RegexOptions.Compiled )]
+        public static partial Regex MOON ();
+
+        [GeneratedRegex( "\r?\n", RegexOptions.Compiled )]
+        public static partial Regex NewLineRegex ();
+
+        [GeneratedRegex( @"\S", RegexOptions.Compiled )]
+        public static partial Regex NonWordRegex ();
+
+        [GeneratedRegex( "<phoneme.*?>", RegexOptions.Compiled )]
+        public static partial Regex OpenPhonemeRegex ();
+
+        [GeneratedRegex( @"(?<=\s)((?>\d+.){1,3}(?>\d+)(?>\/\d+)?)$", RegexOptions.Compiled )]
+        public static partial Regex OsVersionRegex ();
+
+        [GeneratedRegex( @"^(?<SYSTEM>(?<SECTOR>[\w\s'.()-]+) (?<COORDINATES>(?<l1>[A-Za-z])(?<l2>[A-Za-z])-(?<l3>[A-Za-z]) (?<mcode>[A-Za-z])(?:(?<n1>\d+)-)?(?<n2>\d+))) ?(?<BODY>.*)$", RegexOptions.Compiled )]
+        public static partial Regex PROC_GEN_SYSTEM_BODY ();
+
+        [GeneratedRegex( @"(?=\S)(?<STARS>(?<=^|\s)[A-E]+)? ?(?<PLANET>(?<=^|\s)\d{1,2})? ?(?<MOON>(?<=^|\s)[a-z])? ?(?<SUBMOON>(?<=^|\s)[a-z])? ?(?>(?<=^|\s)(?<RINGORBELTGROUP>[A-Z]) (?<RINGORBELTTYPE>Belt|Ring))? ?(?>(?<=^|\s)(?<CLUSTER>Cluster) (?<CLUSTERNUMBER>\d*))?$", RegexOptions.Compiled )]
+        public static partial Regex SHORTBODY ();
+
+        [GeneratedRegex( @"Size([0-9]+)", RegexOptions.Compiled )]
+        public static partial Regex ShipSlotSizeRegex ();
+
+        [GeneratedRegex( @"(<.+?src="")(.:)(.*?\/>)", RegexOptions.Compiled )]
+        public static partial Regex SrcFixRegex ();
+
+        [GeneratedRegex( @"<.*?>", RegexOptions.Compiled )]
+        public static partial Regex SsmlTagRegex ();
+
+        [GeneratedRegex( @"/^(Stronghold Carrier|Porte-vaisseaux de forteresse|Transportadora da potência|Носитель-база|Hochburg-Carrier|Portanaves bastión|\$ShipName_StrongholdCarrier(.*?))$/i", RegexOptions.Compiled )]
+        public static partial Regex StrongholdCarrierRegex ();
+
+        [GeneratedRegex( @"^(.+)(?> \| )([A-Za-z0-9]{0,4})$", RegexOptions.Compiled )]
+        public static partial Regex SquadronCarrierRegex ();
+
+        [GeneratedRegex( @"(?<STARS>(?<=^|\s)[A-E]+)", RegexOptions.Compiled )]
+        public static partial Regex STARS ();
+
+        [GeneratedRegex( @"([A-Z])|(\d+)|([a-z])|(\S)", RegexOptions.Compiled )]
+        public static partial Regex StellarBodyRegex ();
+
+        [GeneratedRegex( @"^\bA[BCDE]?[CDE]?[DE]?[E]?\b|\bB[CDE]?[DE]?[E]?\b|\bC[DE]?[E]?\b|\bD[E]?\b$", RegexOptions.Compiled )]
+        public static partial Regex SUBSTARS ();
+
+        [GeneratedRegex( @"([A-Za-z]{1,3}(?:\s|$))", RegexOptions.Compiled )]
+        public static partial Regex TEXT ();
+
+        [GeneratedRegex( @"\d{3,}", RegexOptions.Compiled )]
+        public static partial Regex THREE_OR_MORE_DIGITS ();
+
+        [GeneratedRegex( @"\$.+;", RegexOptions.Compiled )]
+        public static partial Regex UnlocalizedEdNameRegex ();
+
+        [GeneratedRegex( @"([A-Z]{2,})|(?:([A-Z])(?:\s|$))", RegexOptions.Compiled )]
+        public static partial Regex UPPERCASE ();
+
+        // Matches recognized SSML tags <tag ...> or </tag>
+        // Cereproc uses some additional custom SSML tags (documented in https://www.cereproc.com/files/CereVoiceCloudGuide.pdf)
+        [GeneratedRegex( "<(audio.*?|break.*?|play.*?|phoneme.*?|/phoneme|prosody.*?|/prosody|emphasis.*?|/emphasis|transmit.*?|/transmit|voice.*?|/voice|say-as.*?|/say-as|usel.*?|/usel|spurt.*?|/spurt)>", RegexOptions.Compiled )]
+        public static partial Regex ValidTagRegex ();
+
+        [GeneratedRegex( @"\[[^\]]*\]|[^\[\]]+", RegexOptions.Compiled )]
+        public static partial Regex VoiceAttackCommandPermutationsRegex ();
+
+        [GeneratedRegex( @"(?<=<voice name="")([\w|\s]*)", RegexOptions.Compiled )]
+        public static partial Regex VoiceNameRegex ();
+
+        [GeneratedRegex( @"(?<=>)(.+)(?=<\/voice>)", RegexOptions.Compiled )]
+        public static partial Regex VoiceSpeechExtractionRegex ();
+        
+        [GeneratedRegex( @"\s{2,}", RegexOptions.Compiled )]
+        public static partial Regex WhiteSpaceRegex ();
+        
+        [GeneratedRegex( @"\w", RegexOptions.Compiled )]
+        public static partial Regex WordCharacterRegex ();
+
+        // Regexes we do not currently use but might at some point
+        /*
+        private static readonly Regex DECIMAL_DIGITS = new Regex(@"( point )(\d{2,})");
+        private static readonly Regex SECTOR = new Regex("(.*) ([A-Za-z][A-Za-z]-[A-Za-z] .*)");
+        private static readonly Regex SYSTEMBODY = new Regex(@"^(.*?) ([A-E]+ ){0,2}(Belt(?:\s|$)|Cluster(?:\s|$)|Ring|\d{1,2}(?:\s|$)|[A-Za-z](?:\s|$)){1,12}$");
+        private static readonly Regex PROC_GEN_SYSTEM = new Regex(@"^(?<SECTOR>[\w\s'.()-]+) (?<COORDINATES>(?<l1>[A-Za-z])(?<l2>[A-Za-z])-(?<l3>[A-Za-z]) (?<mcode>[A-Za-z])(?:(?<n1>\d+)-)?(?<n2>\d+))$");
+        */
+    }
+}

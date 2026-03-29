@@ -1,15 +1,9 @@
 ﻿namespace EddiDataDefinitions
 {
-    public class FrontierApiEconomyShare
+    public class FrontierApiEconomyShare ( string edName, decimal proportion )
     {
-        public string edName { get; }
-        public decimal proportion { get; }
-
-        public FrontierApiEconomyShare(string edName, decimal proportion)
-        {
-            this.edName = edName;
-            this.proportion = proportion;
-        }
+        public string edName { get; } = edName;
+        public decimal proportion { get; } = proportion;
 
         public EconomyShare ToEconomyShare()
         {

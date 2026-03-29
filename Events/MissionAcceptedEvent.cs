@@ -6,7 +6,7 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class MissionAcceptedEvent : Event
+    public class MissionAcceptedEvent ( DateTime timestamp, Mission mission ) : Event( timestamp, NAME )
     {
         public const string NAME = "Mission accepted";
         public const string DESCRIPTION = "Triggered when you accept a mission";
@@ -83,11 +83,6 @@ namespace EddiEvents
         public bool communal => Mission.communal;
 
         [PublicAPI("The mission object")]
-        public Mission Mission { get; }
-
-        public MissionAcceptedEvent(DateTime timestamp, Mission mission) : base(timestamp, NAME)
-        {
-            this.Mission = mission;
-        }
+        public Mission Mission { get; } = mission;
     }
 }

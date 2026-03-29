@@ -9,7 +9,7 @@ namespace EddiConfigService.Configurations
     [JsonObject(MemberSerialization.OptOut), RelativePath(@"\cargomonitor.json")]
     public class CargoMonitorConfiguration : Config
     {
-        private ObservableCollection<Cargo> _cargo = new ObservableCollection<Cargo>();
+        private ObservableCollection<Cargo> _cargo = [ ];
         private int _cargocarried;
         private DateTime _updatedat;
 

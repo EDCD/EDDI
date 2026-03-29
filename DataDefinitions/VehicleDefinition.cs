@@ -40,16 +40,17 @@ namespace EddiDataDefinitions
         {
             if (edName == null) { return null; }
 
-            return AllOfThem.FirstOrDefault(v => v.edname.ToLowerInvariant() == titiedEDName(edName));
+            return AllOfThem.FirstOrDefault(v =>
+                string.Equals( v.edname, tidiedEDName( edName ), StringComparison.OrdinalIgnoreCase ) );
         }
 
         public static bool EDNameExists(string edName)
         {
             if (edName == null) { return false; }
-            return AllOfThem.Any(v => string.Equals(v.edname, titiedEDName(edName), StringComparison.InvariantCultureIgnoreCase));
+            return AllOfThem.Any(v => string.Equals(v.edname, tidiedEDName(edName), StringComparison.OrdinalIgnoreCase ) );
         }
 
-        private static string titiedEDName(string edName)
+        private static string tidiedEDName(string edName)
         {
             return edName?.ToLowerInvariant().Replace("_fighter", "").Replace("_", "");
         }

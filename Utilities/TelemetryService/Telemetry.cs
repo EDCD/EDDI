@@ -39,10 +39,10 @@ namespace Utilities.TelemetryService
             Critical,
         }
 
-        private static readonly string[] scrubFields = new string[]
-        {
+        private static readonly string[] scrubFields =
+        [
             "Commander", "apiKey", "commanderName", "access_token", "refresh_token", "uploaderID"
-        };
+        ];
 
         protected static string anonymousTelemetryID => RollbarLocator.RollbarInstance.Config.RollbarPayloadAdditionOptions.Person?.Id;
 

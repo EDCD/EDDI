@@ -11,7 +11,7 @@ namespace EddiGalnetMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        private GalnetMonitor galnetMonitor()
+        private static GalnetMonitor galnetMonitor()
         {
             return (GalnetMonitor)EDDI.Instance.ObtainMonitor("Galnet monitor");
         }
@@ -21,7 +21,7 @@ namespace EddiGalnetMonitor
             InitializeComponent();
 
             var configuration = ConfigService.Instance.galnetConfiguration;
-            Dictionary<string, string> langs = galnetMonitor()?.GetGalnetLocales();
+            var langs = GalnetMonitor.GetGalnetLocales();
             languageComboBox.ItemsSource = langs?.Keys ?? new Dictionary<string, string>().Keys;
             languageComboBox.SelectedValue = configuration.language;
             galnetAlwaysOnCheckBox.IsChecked = configuration.galnetAlwaysOn;
@@ -29,7 +29,7 @@ namespace EddiGalnetMonitor
 
         private void onLanguageChanged(object sender, SelectionChangedEventArgs e)
         {
-            string language = (string)((ComboBox)e.Source).SelectedValue;
+            var language = (string)((ComboBox)e.Source).SelectedValue;
             var configuration = ConfigService.Instance.galnetConfiguration;
             if (language != null && language != configuration.language)
             {

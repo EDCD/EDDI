@@ -6,31 +6,27 @@ using Utilities;
 
 namespace EddiDataDefinitions
 {
-    public class MarketInfo
+    public class MarketInfo (
+        DateTime timestamp,
+        long marketId,
+        string stationName,
+        string starSystem,
+        List<MarketInfoItem> items )
     {
         [JsonProperty]
-        public DateTime timestamp { get; }
-        
-        [JsonProperty]
-        public long MarketID { get; }
-        
-        [JsonProperty]
-        public string StationName { get; }
-        
-        [JsonProperty]
-        public string StarSystem { get; }
+        public DateTime timestamp { get; } = timestamp;
 
         [JsonProperty]
-        public List<MarketInfoItem> Items { get; }
+        public long MarketID { get; } = marketId;
 
-        public MarketInfo(DateTime timestamp, long marketID, string stationName, string starSystem, List<MarketInfoItem> items)
-        {
-            this.timestamp = timestamp;
-            MarketID = marketID;
-            StationName = stationName;
-            StarSystem = starSystem;
-            Items = items ?? new List<MarketInfoItem>();
-        }
+        [JsonProperty]
+        public string StationName { get; } = stationName;
+
+        [JsonProperty]
+        public string StarSystem { get; } = starSystem;
+
+        [JsonProperty]
+        public List<MarketInfoItem> Items { get; } = items ?? [ ];
 
         [UsedImplicitly]
         public static bool TryFromFile (

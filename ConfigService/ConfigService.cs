@@ -120,7 +120,7 @@ namespace EddiConfigService
         private ImmutableDictionary<string, Config> _currentConfigs;
         private readonly Timer _saveTimer;
         private readonly HashSet<string> _dirtyConfigs;
-        private readonly object _dirtyLock = new object();
+        private readonly object _dirtyLock = new();
         private volatile bool _isDisposed;
         private const int SAVE_DELAY_MS = 1000; // Debounce saves to 1 second
 
@@ -130,7 +130,7 @@ namespace EddiConfigService
 
         private ConfigService ()
         {
-            _dirtyConfigs = new HashSet<string>();
+            _dirtyConfigs = [ ];
 
             // Initialize debounced save timer
             _saveTimer = new Timer(
@@ -372,6 +372,9 @@ namespace EddiConfigService
 
         private void CopyConfigurations ( string fromDirectory, string toDirectory )
         {
+            ArgumentNullException.ThrowIfNull( fromDirectory );
+            ArgumentNullException.ThrowIfNull( toDirectory );
+            
             try
             {
                 if ( !Directory.Exists( toDirectory ) )
@@ -484,16 +487,19 @@ namespace EddiConfigService
                 {
                     Logging.Error( $"Failed to load {configType.Name}", ex );
                     var config = (Config)Activator.CreateInstance( configType );
-                    config.PropertyChanged -= OnConfigPropertyChanged;
-                    config.PropertyChanged += OnConfigPropertyChanged;
-                    configs[ configType.Name ] = config;
+                    if ( config != null )
+                    {
+                        config.PropertyChanged -= OnConfigPropertyChanged;
+                        config.PropertyChanged += OnConfigPropertyChanged;
+                        configs[ configType.Name ] = config;
+                    }
                 }
             }
 
             return configs.ToImmutableDictionary();
         }
 
-        private Config LoadConfiguration ( Type configType, string filename )
+        private static Config LoadConfiguration ( Type configType, string filename )
         {
             if ( !File.Exists( filename ) && unitTesting )
             {
@@ -624,8 +630,8 @@ namespace EddiConfigService
                  commanderConfigVal is CommanderConfiguration commanderConfig )
             {
                 if ( configs.TryGetValue( nameof( EDDIConfiguration ), out var eddiConfigVal ) &&
-                    eddiConfigVal is EDDIConfiguration eddiConfig &&
-                    eddiConfig._additionalData is IDictionary<string, JToken> eddiConfigAdditionalData )
+                     eddiConfigVal is EDDIConfiguration configuration &&
+                     configuration._additionalData is IDictionary<string, JToken> eddiConfigAdditionalData )
                 {
                     if ( eddiConfigAdditionalData.TryGetValue( "CommanderName", out var commanderName ) )
                     {
@@ -701,7 +707,7 @@ namespace EddiConfigService
 
         #region Helper Methods
 
-        private IEnumerable<Type> GetConfigTypes ()
+        private static IEnumerable<Type> GetConfigTypes ()
         {
             return Assembly.GetExecutingAssembly()
                 .GetTypes()
@@ -712,7 +718,7 @@ namespace EddiConfigService
         }
 
         /// <summary>Gets the data directory for the specified commander FID</summary>
-        private string GetDataDirectory ( string commanderFID = null )
+        private static string GetDataDirectory ( string commanderFID = null )
         {
             return $@"{Constants.DATA_DIR}{( !string.IsNullOrEmpty( commanderFID ) ? @"\" + commanderFID : null )}";
         }
@@ -748,7 +754,7 @@ namespace EddiConfigService
                 _dirtyConfigs.Clear();
 
                 // capture keys to notify outside of lock
-                keysToNotify = _currentConfigs?.Keys.ToList() ?? new List<string>();
+                keysToNotify = _currentConfigs?.Keys.ToList() ?? [ ];
             }
 
             // Notify subscribers outside the lock to avoid re-entrancy/deadlocks
@@ -763,7 +769,7 @@ namespace EddiConfigService
         #region Singleton
 
         private static readonly Lazy<ConfigService> _instance =
-            new Lazy<ConfigService>(() =>
+            new(() =>
             {
                 Logging.Debug("Creating ConfigService instance");
                 return new ConfigService();

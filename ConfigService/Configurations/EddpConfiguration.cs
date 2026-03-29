@@ -8,7 +8,7 @@ namespace EddiConfigService.Configurations
     [JsonObject(MemberSerialization.OptOut), RelativePath(@"\eddpmonitor.json")]
     public class EddpConfiguration : Config
     {
-        private List<BgsWatch> _watches = new List<BgsWatch>();
+        private List<BgsWatch> _watches = [];
 
         public List<BgsWatch> watches
         {

@@ -3,23 +3,15 @@
     using NAudio.Wave;
     using System;
 
-    public class LimiterSampleProvider : EffectSampleProvider
+    public class LimiterSampleProvider ( ISampleProvider source, float thresholdDb = -0.5f, float releaseMs = 10f )
+        : EffectSampleProvider( source )
     {
-        private readonly float _threshold; // linear threshold (e.g. 0.95f)
-        private readonly float _release; // release factor for smoothing
-        private float _gain;
+        private readonly float _threshold = (float)Math.Pow( 10.0, thresholdDb / 20.0 ); // linear threshold (e.g. 0.95f)
+        private readonly float _release = (float)Math.Exp( -1.0 / ( source.WaveFormat.SampleRate * ( releaseMs / 1000.0 ) ) ); // release factor for smoothing
+        private float _gain = 1.0f;
 
-        public LimiterSampleProvider ( ISampleProvider source, float thresholdDb = -0.5f, float releaseMs = 10f )
-            : base( source )
-        {
-            // Convert dB threshold to linear
-            _threshold = (float)Math.Pow( 10.0, thresholdDb / 20.0 );
-
-            // Release smoothing coefficient
-            _release = (float)Math.Exp( -1.0 / ( source.WaveFormat.SampleRate * ( releaseMs / 1000.0 ) ) );
-
-            _gain = 1.0f;
-        }
+        // Convert dB threshold to linear
+        // Release smoothing coefficient
 
         protected override float ProcessSample ( float input )
         {

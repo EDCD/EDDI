@@ -23,7 +23,7 @@ namespace EddiSpanshService
                 var requestUri = $"station/{marketId}";
                 var clientResponse = await spanshHttpClient.GetAsync( requestUri, cancellationToken ).ConfigureAwait(false);
                 clientResponse.EnsureSuccessStatusCode();
-                var responseJson = await clientResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var responseJson = await clientResponse.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
                 if ( string.IsNullOrEmpty( responseJson ) )
                 {
@@ -68,7 +68,7 @@ namespace EddiSpanshService
             return stations.RemoveNulls();
         }
 
-        public NavWaypoint ParseQuickStationWaypoint ( JToken stationData )
+        public static NavWaypoint ParseQuickStationWaypoint ( JToken stationData )
         {
             try
             {

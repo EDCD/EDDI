@@ -18,21 +18,16 @@ using Utilities;
 [assembly: InternalsVisibleTo( "Tests" )]
 namespace EddiSpeechResponder.ScriptResolverService
 {
-    public class ScriptResolver
+    public class ScriptResolver ( Dictionary<string, Script> scripts = null )
     {
-        public readonly Dictionary<string, Script> Scripts;
-        public static readonly DocumentConfiguration documentConfiguration = new DocumentConfiguration
+        public readonly Dictionary<string, Script> Scripts = scripts ?? new Dictionary<string, Script>();
+        public static readonly DocumentConfiguration documentConfiguration = new()
         {
             Trimmer = DocumentConfiguration.TrimRepeatedWhitespaces, NbCycleMax = 100000
         };
 
         // The file to log speech
         [UsedImplicitly] public static readonly string LogFile = Constants.DATA_DIR + @"\speechresponder.out";
-
-        public ScriptResolver(Dictionary<string, Script> scripts = null)
-        {
-            this.Scripts = scripts ?? new Dictionary<string, Script>();
-        }
 
         public int priority(string name)
         {
@@ -108,7 +103,7 @@ namespace EddiSpeechResponder.ScriptResolverService
                 //If this is not a top level script then we need to preserve escape sequence characters (\).
                 if ( !isTopLevelScript )
                 {
-                    script = Regex.Replace( script, @"\\", @"\\\\" );
+                    script = GeneratedRegex.EscapeCharacterRegex().Replace( script, @"\\\\" );
                 }
 
                 var documentResult = Document.CreateDefault( script, documentConfiguration );
@@ -136,7 +131,9 @@ namespace EddiSpeechResponder.ScriptResolverService
                 // Tidy up the output script
                 if ( isTopLevelScript )
                 {
-                    result = Regex.Replace( result, " +", " " ).Replace( " ,", "," ).Replace( " .", "." ).Trim();
+                    result = GeneratedRegex.WhiteSpaceRegex().Replace( result, " " )
+                        .Replace( " ,", "," )
+                        .Replace( " .", "." ).Trim();
                     result = result.Trim() == "" ? null : result.Trim();
                 }
 
@@ -144,13 +141,13 @@ namespace EddiSpeechResponder.ScriptResolverService
 
                 if ( isTopLevelScript && result != null )
                 {
-                    string stored = result;
+                    var stored = result;
                     // Remove any leading pause
                     if ( stored.StartsWith( "<break" ) )
                     {
-                        string pattern = "^<break[^>]*>";
-                        string replacement = "";
-                        Regex rgx = new Regex( pattern );
+                        var pattern = "^<break[^>]*>";
+                        var replacement = "";
+                        var rgx = new Regex( pattern );
                         stored = rgx.Replace( stored, replacement );
                     }
 
@@ -233,21 +230,21 @@ namespace EddiSpeechResponder.ScriptResolverService
                 var dict = new Dictionary<string, Tuple<Type, Value>>
                 {
                     // Boolean constants
-                    [ "true" ] = new Tuple<Type, Value>( typeof(bool), true ),
-                    [ "false" ] = new Tuple<Type, Value>( typeof(bool), false ),
+                    [ "true" ] = new( typeof(bool), true ),
+                    [ "false" ] = new( typeof(bool), false ),
 
                     // Standard simple variables
-                    [ "capi_active" ] = new Tuple<Type, Value>( typeof(bool), CompanionAppService.Instance?.active ?? false ),
-                    [ "destinationdistance" ] = new Tuple<Type, Value>( typeof(decimal), EDDI.Instance.DestinationDistanceLy ),
-                    [ "searchdistance" ] = new Tuple<Type, Value>( typeof(decimal), NavigationService.Instance.SearchDistanceLy ),
-                    [ "environment" ] = new Tuple<Type, Value>( typeof(string), EDDI.Instance.Environment ),
-                    [ "horizons" ] = new Tuple<Type, Value>( typeof(bool), EDDI.Instance.inHorizons ),
-                    [ "odyssey" ] = new Tuple<Type, Value>( typeof(bool), EDDI.Instance.inOdyssey ),
-                    [ "va_active" ] = new Tuple<Type, Value>( typeof(bool), EDDI.FromVA ),
-                    [ "vehicle" ] = new Tuple<Type, Value>( typeof(string), EDDI.Instance.Vehicle ),
-                    [ "icao_active" ] = new Tuple<Type, Value>( typeof(bool), ConfigService.Instance.speechServiceConfiguration.EnableIcao ),
-                    [ "ipa_active" ] = new Tuple<Type, Value>( typeof(bool), !ConfigService.Instance.speechServiceConfiguration.DisableIpa ),
-                    [ "version" ] = new Tuple<Type, Value>( typeof(string), Constants.EDDI_VERSION.ShortString )
+                    [ "capi_active" ] = new( typeof(bool), CompanionAppService.Instance?.active ?? false ),
+                    [ "destinationdistance" ] = new( typeof(decimal), EDDI.Instance.DestinationDistanceLy ),
+                    [ "searchdistance" ] = new( typeof(decimal), NavigationService.Instance.SearchDistanceLy ),
+                    [ "environment" ] = new( typeof(string), EDDI.Instance.Environment ),
+                    [ "horizons" ] = new( typeof(bool), EDDI.Instance.inHorizons ),
+                    [ "odyssey" ] = new( typeof(bool), EDDI.Instance.inOdyssey ),
+                    [ "va_active" ] = new( typeof(bool), EDDI.Instance.FromVA ),
+                    [ "vehicle" ] = new( typeof(string), EDDI.Instance.Vehicle ),
+                    [ "icao_active" ] = new( typeof(bool), ConfigService.Instance.speechServiceConfiguration.EnableIcao ),
+                    [ "ipa_active" ] = new( typeof(bool), !ConfigService.Instance.speechServiceConfiguration.DisableIpa ),
+                    [ "version" ] = new( typeof(string), Constants.EDDI_VERSION.ShortString )
                 };
 
                 // Standard objects
@@ -391,7 +388,7 @@ namespace EddiSpeechResponder.ScriptResolverService
             }
 
             var state = new Dictionary<Value, Value>();
-            foreach (string key in EDDI.Instance.State.Keys)
+            foreach (var key in EDDI.Instance.State.Keys)
             {
                 var value = EDDI.Instance.State[key];
                 if (value == null)

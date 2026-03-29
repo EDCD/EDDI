@@ -17,12 +17,12 @@ namespace Tests
             MakeSafe();
         }
 
-        private string ResolveScript(string script, Dictionary<string, Tuple<Type, Value>> vars = null)
+        private static string ResolveScript(string script, Dictionary<string, Tuple<Type, Value>> vars = null)
         {
             return ScriptResolver.resolveFromValue(script, ScriptResolver.buildContext(vars), true);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("", "", "")] // Manufacturer: Empty, ID with greater than 3 characters
         [DataRow("BelugaLiner", "", "")] // Manufacturer: Saud Kruger, empty ID
         [DataRow("Adder", "J", @"Zorgon Peterson <phoneme alphabet=""ipa"" ph=""ˈdʒuːliˑˈet"">juliet</phoneme> <phoneme alphabet=""ipa"" ph=""ˈzɪərəʊ"">zero</phoneme> <phoneme alphabet=""ipa"" ph=""ˈzɪərəʊ"">zero</phoneme>")] // Manufacturer: Zorgon Peterson, alphanumeric ID with less than 3 characters
@@ -38,7 +38,7 @@ namespace Tests
             Assert.AreEqual( expected, ShipCallsign.phoneticCallsign( ship, id ) );
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("{Occasionally(1, 'A')}{Occasionally(1, 'B')}C", "ABC")]
         [DataRow("{Occasionally(1, 'A')} {Occasionally(1, 'B')} C", "A B C")]
         [DataRow("{Occasionally(1, '  A    ')}{Occasionally(1, '  B    ')} C", "A B C")]

@@ -32,7 +32,7 @@ namespace EddiStatusMonitor
         private Status _currentStatus;
         private Status lastStatus;
 
-        private static readonly object statusLock = new object();
+        private static readonly object statusLock = new();
 
         [ExcludeFromCodeCoverage]
         public StatusMonitor ()
@@ -87,7 +87,7 @@ namespace EddiStatusMonitor
 
         internal void _handleStatus ( Status status, out List<Event> events )
         {
-            events = new List<Event>();
+            events = [ ];
             if ( status is null ) { return; }
 
             lock ( statusLock )
@@ -257,7 +257,7 @@ namespace EddiStatusMonitor
                         ? SignalSource.GenericSignalSource
                         : EDDI.Instance.CurrentStarSystem.signalSources.FirstOrDefault( s =>
                             s.edname == status.destination_name ) ?? SignalSource.FromEDName(
-                            ( status.destination_localized_name?.StartsWith( "$" ) ?? false )
+                            ( status.destination_localized_name?.StartsWith( '$' ) ?? false )
                                 ? status.destination_localized_name
                                 : status.destination_name );
 
@@ -287,7 +287,7 @@ namespace EddiStatusMonitor
                     // Might be a non-station signal source
                     else if ( signalSource != null )
                     {
-                        if ( !status.destination_localized_name?.StartsWith( "$" ) ?? false )
+                        if ( !status.destination_localized_name?.StartsWith( '$' ) ?? false )
                         {
                             signalSource.fallbackLocalizedName = status.destination_localized_name;
                         }
@@ -384,7 +384,7 @@ namespace EddiStatusMonitor
                 // Retrieve the last `SupercruiseDestinationDrop` event and verify that, if it exists, it does not match the settlement we may be approaching.
                 if ( !EDDI.Instance.lastEventOfType.TryGetValue( "SupercruiseDestinationDrop",
                          out var supercruiseDestinationDrop ) ||
-                     !( supercruiseDestinationDrop is DestinationArrivedEvent destinationArrivedEvent ) ||
+                     supercruiseDestinationDrop is not DestinationArrivedEvent destinationArrivedEvent ||
                      destinationArrivedEvent.name != @event.name )
                 {
                     destinationArrivedEvent = new DestinationArrivedEvent( currentStatus.timestamp, @event.name );
@@ -393,13 +393,13 @@ namespace EddiStatusMonitor
             }
         }
 
-        internal void handleEnteredNormalSpaceEvent( EnteredNormalSpaceEvent @event )
+        private void handleEnteredNormalSpaceEvent( EnteredNormalSpaceEvent @event )
         {
             // We can derive a "Glide" event from the context in our status
             StatusService.Instance.lastEnteredNormalSpaceEvent = @event;
         }
 
-        internal void handleMusicEvent ( MusicEvent @event )
+        private void handleMusicEvent ( MusicEvent @event )
         {
             // Derive a "Station mailslot" event from changes to music tracks
             Status status = null;

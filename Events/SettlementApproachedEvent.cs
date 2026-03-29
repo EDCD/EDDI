@@ -12,11 +12,11 @@ namespace EddiEvents
         public const string NAME = "Settlement approached";
         public const string DESCRIPTION = "Triggered when you approach a settlement";
         public static readonly string[] SAMPLES =
-            {
-                @"{ ""timestamp"":""2020-10-12T08:55:27Z"", ""event"":""ApproachSettlement"", ""Name"":""Tusi Beacon ++"", ""MarketID"":3511645696, ""SystemAddress"":1458309141194, ""BodyID"":6, ""BodyName"":""Makalu"", ""Latitude"":5.172286, ""Longitude"":-166.500275 }",
+        [
+            @"{ ""timestamp"":""2020-10-12T08:55:27Z"", ""event"":""ApproachSettlement"", ""Name"":""Tusi Beacon ++"", ""MarketID"":3511645696, ""SystemAddress"":1458309141194, ""BodyID"":6, ""BodyName"":""Makalu"", ""Latitude"":5.172286, ""Longitude"":-166.500275 }",
                 @"{ ""timestamp"":""2024-04-11T06:28:35Z"", ""event"":""ApproachSettlement"", ""Name"":""Cunningham Depot"", ""MarketID"":3789728256, ""StationFaction"":{ ""Name"":""Brazilian League of Pilots"" }, ""StationGovernment"":""$government_Confederacy;"", ""StationGovernment_Localised"":""Confederacy"", ""StationServices"":[ ""dock"", ""autodock"", ""blackmarket"", ""commodities"", ""contacts"", ""exploration"", ""missions"", ""outfitting"", ""rearm"", ""refuel"", ""repair"", ""tuning"", ""engineer"", ""missionsgenerated"", ""flightcontroller"", ""stationoperations"", ""powerplay"", ""searchrescue"", ""stationMenu"", ""livery"", ""socialspace"", ""bartender"", ""vistagenomics"", ""pioneersupplies"", ""apexinterstellar"", ""frontlinesolutions"" ], ""StationEconomy"":""$economy_Military;"", ""StationEconomy_Localised"":""Military"", ""StationEconomies"":[ { ""Name"":""$economy_Military;"", ""Name_Localised"":""Military"", ""Proportion"":1.000000 } ], ""SystemAddress"":147949865307, ""BodyID"":52, ""BodyName"":""HIP 25679 11 g"", ""Latitude"":-38.485172, ""Longitude"":106.608040 }",
                 @"{ ""timestamp"":""2019-09-26T05:43:00Z"", ""event"":""ApproachSettlement"", ""Name"":""$Ancient:#index=1;"", ""Name_Localised"":""Ancient Ruins (1)"", ""SystemAddress"":3755873388891, ""BodyID"":75, ""BodyName"":""Synuefe ZL-J d10-109 E 3"", ""Latitude"":39.921276, ""Longitude"":-109.192154 }"
-            };
+        ];
 
         [ PublicAPI( "The name of the settlement" ) ]
         public string name { get; private set; }
@@ -70,7 +70,7 @@ namespace EddiEvents
         public SettlementApproachedEvent(DateTime timestamp, string settlementName, string localizedName, long? marketId, Faction controllingFaction, List<StationService> stationServices, List<EconomyShare> economyShares, ulong systemAddress, string bodyName, long? bodyId, decimal? latitude, decimal? longitude) : base(timestamp, NAME)
         {
             // Prefer our own localization of generic settlement names when available
-            if ( settlementName.Contains("$") && !string.IsNullOrEmpty( localizedName ) )
+            if ( settlementName.Contains( '$' ) && !string.IsNullOrEmpty( localizedName ) )
             {
                 var signalName = SignalSource.FromEDName( settlementName );
                 if ( signalName != null )

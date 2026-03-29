@@ -9,9 +9,9 @@ namespace EddiEddnResponder.Schemas
     [UsedImplicitly]
     public class FSSDiscoveryScanSchema : ISchema
     {
-        public List<string> edTypes => new List<string> { "FSSDiscoveryScan" };
+        public List<string> edTypes => [ "FSSDiscoveryScan" ];
 
-        public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
+        public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState, EDDNSender eddnSender )
         {
             try
             {
@@ -28,7 +28,7 @@ namespace EddiEddnResponder.Schemas
                 data = eddnState.Location.AugmentStarPos(data);
                 data = eddnState.GameVersion.AugmentVersion(data);
 
-                EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/fssdiscoveryscan/1", data, eddnState);
+                eddnSender.SendToEDDN("https://eddn.edcd.io/schemas/fssdiscoveryscan/1", data, eddnState);
                 return true;
             }
             catch (Exception e)

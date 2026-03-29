@@ -2,32 +2,27 @@
 
 namespace EddiSpeechService
 {
-    public class EddiSpeech
+    public class EddiSpeech (
+        string message,
+        string voice = null,
+        int priority = 3,
+        string eventType = null,
+        LandingPadSize shipSize = null,
+        decimal? shipHealth = 100M,
+        bool radio = false,
+        bool distortOnDamage = false )
     {
-        public string message { get; private set; }
-        public int priority { get; private set; }
-        public string voice { get; private set; }
-        public bool radio { get; private set; }
-        public string eventType { get; private set; }
+        public string message { get; private set; } = message;
+        public int priority { get; private set; } = priority;
+        public string voice { get; private set; } = voice;
+        public bool radio { get; private set; } = radio;
+        public string eventType { get; private set; } = eventType;
 
         // Calculated SpeechFX data
-        public int echoDelay { get; }
-        public int distortionLevel { get; }
+        public int echoDelay { get; } = GetEchoDelay( shipSize );
+        public int distortionLevel { get; } = GetDistortionLevel( distortOnDamage, shipHealth );
 
-        public EddiSpeech ( string message, string voice = null, int priority = 3,
-            string eventType = null, LandingPadSize shipSize = null,
-            decimal? shipHealth = 100M, bool radio = false, bool distortOnDamage = false )
-        {
-            this.message = message;
-            this.priority = priority;
-            this.voice = voice;
-            this.radio = radio;
-            this.eventType = eventType;
-
-            // Resolve the SpeechFX settings
-            echoDelay = GetEchoDelay( shipSize );
-            distortionLevel = GetDistortionLevel( distortOnDamage, shipHealth );
-        }
+        // Resolve the SpeechFX settings
 
         private static int GetDistortionLevel ( bool distortOnDamage, decimal? shipHealth )
         {

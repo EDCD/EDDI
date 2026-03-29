@@ -5,7 +5,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Utilities;
 
@@ -14,7 +13,7 @@ namespace EddiShipMonitor
     // Handle the Frontier API definition for ships
     public static class FrontierApi
     {
-        private static readonly List<string> HARDPOINT_SIZES = new List<string>() { "Huge", "Large", "Medium", "Small", "Tiny" };
+        private static readonly List<string> HARDPOINT_SIZES = [ "Huge", "Large", "Medium", "Small", "Tiny" ];
 
         public static async Task<List<Ship>> ShipyardFromJsonAsync(Ship activeShip, dynamic json)
         {
@@ -61,8 +60,8 @@ namespace EddiShipMonitor
                 return null;
             }
 
-            string edName = (string)json["name"];
-            Ship Ship = ShipDefinitions.FromEDModel(edName, false);
+            var edName = (string)json["name"];
+            var Ship = ShipDefinitions.FromEDModel(edName, false);
             if (Ship == null)
             {
                 // Unknown ship; report the full object so that we can update the definitions 
@@ -82,10 +81,10 @@ namespace EddiShipMonitor
 
                 Ship.value = (long)(json["value"]?["hull"] ?? 0) + (long)(json["value"]?["modules"] ?? 0);
 
-                decimal? healthOutOf1e6 = (decimal?)json["health"]?["hull"];
+                var healthOutOf1e6 = (decimal?)json["health"]?["hull"];
                 if (healthOutOf1e6 != null)
                 {
-                    decimal healthPercent = (decimal)healthOutOf1e6 / 10_000M;
+                    var healthPercent = (decimal)healthOutOf1e6 / 10_000M;
                     Ship.health = healthPercent;
                 }
 
@@ -103,7 +102,7 @@ namespace EddiShipMonitor
                     Ship.paintjob = (string)json["modules"]?["PaintJob"]?["name"];
 
                     // Obtain the hardpoints.  Hardpoints can come in any order so first parse them then second put them in the correct order
-                    Dictionary<string, Hardpoint> hardpoints = new Dictionary<string, Hardpoint>();
+                    var hardpoints = new Dictionary<string, Hardpoint>();
                     foreach (var module in json["modules"].Cast<JProperty>())
                     {
                         if (module.Name.Contains("Hardpoint"))
@@ -111,11 +110,11 @@ namespace EddiShipMonitor
                             hardpoints.Add(module.Name, HardpointFromJson(module));
                         }
                     }
-                    foreach (string size in HARDPOINT_SIZES)
+                    foreach (var size in HARDPOINT_SIZES)
                     {
-                        for (int i = 1; i < 12; i++)
+                        for (var i = 1; i < 12; i++)
                         {
-                            hardpoints.TryGetValue(size + "Hardpoint" + i, out Hardpoint hardpoint);
+                            hardpoints.TryGetValue(size + "Hardpoint" + i, out var hardpoint);
                             if (hardpoint != null)
                             {
                                 Ship.hardpoints.Add(hardpoint);
@@ -157,7 +156,7 @@ namespace EddiShipMonitor
 
         private static Hardpoint HardpointFromJson(dynamic json)
         {
-            Hardpoint Hardpoint = new Hardpoint() { name = json.Name };
+            var Hardpoint = new Hardpoint() { name = json.Name };
 
             string name = json.Name;
             if (name.StartsWith("Huge"))
@@ -194,10 +193,10 @@ namespace EddiShipMonitor
 
         private static Compartment CompartmentFromJson(dynamic json)
         {
-            Compartment Compartment = new Compartment() { name = json.Name };
+            var Compartment = new Compartment() { name = json.Name };
 
             // Compartments have name of form "Slotnn_Sizenn"
-            Match matches = Regex.Match((string)json.Name, @"Size([0-9]+)");
+            var matches = GeneratedRegex.ShipSlotSizeRegex().Match((string)json.Name);
             if (matches.Success)
             {
                 Compartment.size = Int32.Parse(matches.Groups[1].Value);
@@ -215,9 +214,9 @@ namespace EddiShipMonitor
 
         private static Module ModuleFromJson(JObject json)
         {
-            string edName = (string)json["module"]["name"];
+            var edName = (string)json["module"]["name"];
 
-            Module module = new Module(Module.FromEDName(edName, json["module"]) ?? new Module());
+            var module = new Module(Module.FromEDName(edName, json["module"]) ?? new Module());
             if (module.invariantName == null)
             {
                 // Unknown module; report the full object so that we can update the definitions
@@ -291,9 +290,9 @@ namespace EddiShipMonitor
 
         private static LaunchBay LaunchBayFromJson(dynamic json, Ship ship)
         {
-            LaunchBay launchbay = new LaunchBay() { name = json.Name };
+            var launchbay = new LaunchBay() { name = json.Name };
 
-            foreach (Compartment cpt in ship.compartments)
+            foreach (var cpt in ship.compartments)
             {
                 if (cpt.name == launchbay.name)
                 {
@@ -310,14 +309,14 @@ namespace EddiShipMonitor
             }
 
             // Launchbays have name of form "Slotnn_Sizenn", like compartments
-            Match matches = Regex.Match((string)json.Name, @"Size([0-9]+)");
-            if (matches.Success)
+            var matches = GeneratedRegex.ShipSlotSizeRegex().Match((string)json.Name);
+            if ( matches.Success)
             {
                 launchbay.size = Int32.Parse(matches.Groups[1].Value);
 
                 if (json.Value is JObject)
                 {
-                    for (int subslot = 0; subslot <= 5; subslot++)
+                    for (var subslot = 0; subslot <= 5; subslot++)
                     {
                         if (json.Value.TryGetValue("SubSlot" + subslot, out JToken value))
                         {

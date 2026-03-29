@@ -2,7 +2,6 @@
 using EddiEvents;
 using EddiVoiceAttackResponder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +25,7 @@ namespace Tests
             var vars = new MetaVariables(entry.Value, null).Results;
 
             var cottleVars = vars.AsCottleVariables();
-            Assert.AreEqual(7, cottleVars.Count);
+            Assert.HasCount( 7, cottleVars);
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == @"items"));
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == @"items[\<index\>].category"));
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == @"items[\<index\>].content"));
@@ -37,7 +36,7 @@ namespace Tests
             Assert.IsNotNull(cottleVars.TrueForAll(v => v.value == null));
 
             var vaVars = VoiceAttackVariables.Convert(vars,"EDDI", entry.Key);
-            Assert.AreEqual(7, vaVars.Count);
+            Assert.HasCount( 7, vaVars );
             var category = vaVars.FirstOrDefault( k => k.key == @"EDDI galnet news published items \<index\> category" );
             Assert.IsNotNull( category );
             Assert.AreEqual(typeof(string), category.variableType);
@@ -69,12 +68,12 @@ namespace Tests
             var vars = new MetaVariables(entry.Value, null).Results;
 
             var cottleVars = vars.AsCottleVariables();
-            Assert.AreEqual(1, cottleVars.Count);
+            Assert.HasCount( 1, cottleVars );
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == @"deployable")?.key);
             Assert.IsTrue(cottleVars.TrueForAll(v => v.value == null));
 
             var vaVars = VoiceAttackVariables.Convert(vars,"EDDI", entry.Key);
-            Assert.AreEqual(1, vaVars.Count);
+            Assert.HasCount( 1, vaVars );
             var var = vaVars.FirstOrDefault( k => k.key == @"EDDI srv turret deployable" );
             Assert.IsNotNull(var);
             Assert.AreEqual(typeof(bool), var.variableType);
@@ -88,7 +87,7 @@ namespace Tests
             var vars = new MetaVariables(entry.Value, null).Results;
 
             var cottleVars = vars.AsCottleVariables();
-            Assert.AreEqual(5, cottleVars.Count);
+            Assert.HasCount( 5, cottleVars );
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == @"systems"));
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == @"systems[\<index\>]"));
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == "reward"));
@@ -96,7 +95,7 @@ namespace Tests
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == "total"));
 
             var vaVars = VoiceAttackVariables.Convert(vars,"EDDI", entry.Key);
-            Assert.AreEqual(5, vaVars.Count);
+            Assert.HasCount( 5, vaVars );
             var index = vaVars.FirstOrDefault( k => k.key == "EDDI exploration data sold systems \\<index\\>" );
             Assert.IsNotNull( index );
             Assert.AreEqual(typeof(string), index.variableType);
@@ -121,14 +120,14 @@ namespace Tests
             var vars = new MetaVariables(entry.Value, null).Results;
 
             var cottleVars = vars.AsCottleVariables();
-            Assert.AreEqual(2, cottleVars.Count);
+            Assert.HasCount( 2, cottleVars );
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == "totalbodies"));
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == "nonbodies"));
             Assert.IsNull(cottleVars.FirstOrDefault(k => k.key == "progress"));
             Assert.IsTrue(cottleVars.TrueForAll(v => v.value == null));
 
             var vaVars = VoiceAttackVariables.Convert(vars,"EDDI", entry.Key);
-            Assert.AreEqual(2, vaVars.Count);
+            Assert.HasCount( 2, vaVars );
             var totalbodies = vaVars.FirstOrDefault( k => k.key == "EDDI discovery scan totalbodies" );
             Assert.IsNotNull( totalbodies );
             Assert.AreEqual(typeof(int), totalbodies.variableType);
@@ -145,7 +144,7 @@ namespace Tests
             var vars = new MetaVariables(entry.Value, null).Results;
 
             var cottleVars = vars.AsCottleVariables();
-            Assert.AreEqual(6, cottleVars.Count);
+            Assert.HasCount( 6, cottleVars );
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == "commodities"));
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == "commodities[\\<index\\>].commodity"));
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == "commodities[\\<index\\>].percentage"));
@@ -154,7 +153,7 @@ namespace Tests
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == "motherlode"));
 
             var vaVars = VoiceAttackVariables.Convert(vars,"EDDI", entry.Key);
-            Assert.AreEqual(6, vaVars.Count);
+            Assert.HasCount( 6, vaVars );
             var commodity = vaVars.FirstOrDefault( k => k.key == "EDDI asteroid prospected commodities \\<index\\> commodity" );
             Assert.IsNotNull( commodity );
             Assert.AreEqual(typeof(string), commodity.variableType);
@@ -181,14 +180,14 @@ namespace Tests
             var entry = new KeyValuePair<string, Type>("Commodity ejected", typeof(CommodityEjectedEvent));
             var vars = new MetaVariables(entry.Value, null).Results;
 
-            Assert.AreEqual(4, vars.Count);
+            Assert.HasCount( 4, vars );
             Assert.IsNotNull(vars.FirstOrDefault(k => k.keysPath.Last() == "commodity")?.description);
             Assert.IsNotNull(vars.FirstOrDefault(k => k.keysPath.Last() == "amount")?.description);
             Assert.IsNotNull(vars.FirstOrDefault(k => k.keysPath.Last() == "missionid")?.description);
             Assert.IsNotNull(vars.FirstOrDefault(k => k.keysPath.Last() == "abandoned")?.description);
 
             var cottleVars = vars.AsCottleVariables();
-            Assert.AreEqual(4, cottleVars.Count);
+            Assert.HasCount( 4, cottleVars );
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == "commodity"));
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == "amount"));
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == "missionid"));
@@ -200,7 +199,7 @@ namespace Tests
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == "abandoned")?.description);
 
             var vaVars =VoiceAttackVariables.Convert(vars,"EDDI", entry.Key);
-            Assert.AreEqual(4, vaVars.Count);
+            Assert.HasCount( 4, vaVars );
             var commodity = vaVars.FirstOrDefault( k => k.key == "EDDI commodity ejected commodity" );
             Assert.IsNotNull( commodity );
             Assert.AreEqual(typeof(string), commodity.variableType);
@@ -234,15 +233,7 @@ namespace Tests
             var entry = new KeyValuePair<string, Type>( "Route details", typeof(RouteDetailsEvent) );
             var vars = new MetaVariables( entry.Value, new RouteDetailsEvent(DateTime.MinValue, "set", "Shinrarta Dezhra", 3932277478106U, "Jameson Memorial", 128666762, new NavWaypointCollection(), 0, null ) ).Results;
             var vaVars = VoiceAttackVariables.Convert(vars,string.Empty, entry.Key );
-            try
-            {
-                vaVars.ForEach( v => v.Set() );
-            }
-            catch ( Exception e )
-            {
-                Assert.Fail($"{e.Message}: {JsonConvert.SerializeObject(e)}");
-                throw;
-            }
+            vaVars.ForEach( v => v.Set() ); // This test is primarily to check that no exceptions are thrown when setting variables.
         }
     }
 }

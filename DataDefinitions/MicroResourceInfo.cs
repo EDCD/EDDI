@@ -26,10 +26,10 @@ namespace EddiDataDefinitions
         public MicroResourceInfo(DateTime timestamp, List<MicroResourceAmount> items, List<MicroResourceAmount> components, List<MicroResourceAmount> consumables, List<MicroResourceAmount> data)
         {
             this.timestamp = timestamp;
-            Items = items ?? new List<MicroResourceAmount>();
-            Components = components ?? new List<MicroResourceAmount>();
-            Consumables = consumables ?? new List<MicroResourceAmount>();
-            Data = data ?? new List<MicroResourceAmount>();
+            Items = items ?? [ ];
+            Components = components ?? [ ];
+            Consumables = consumables ?? [ ];
+            Data = data ?? [ ];
 
             Items.ForEach(i =>
                 i.microResource.Category = i.microResource.Category ?? MicroResourceCategory.Items);
@@ -59,10 +59,7 @@ namespace EddiDataDefinitions
                 compareTo: journalTimeStamp
             ).GetResultOrTimeout( TimeSpan.FromSeconds( 5 ) );
 
-            if ( parsed?.Items != null &&
-                 parsed.Components != null &&
-                 parsed.Consumables != null &&
-                 parsed.Data != null )
+            if ( parsed != null && parsed.Items != null && parsed.Components != null && parsed.Consumables != null && parsed.Data != null )
             {
                 info = parsed;
                 rawMicroResources = raw;
@@ -76,7 +73,7 @@ namespace EddiDataDefinitions
         public static List<MicroResourceAmount> ReadMicroResources(string key, IDictionary<string, object> data)
         {
             var result = new List<MicroResourceAmount>();
-            if (data.TryGetValue(key, out object val))
+            if (data.TryGetValue(key, out var val))
             {
                 if (val is List<object> listVal)
                 {

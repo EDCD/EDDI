@@ -15,7 +15,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Schema;
@@ -25,12 +24,11 @@ namespace EddiSpeechService
 {
     public class SpeechManager : IDisposable, INotifyPropertyChanged
     {
-        private readonly SoundManager SoundManager;
         public readonly AudioManager AudioManager;
 
         private const float ActiveSpeechFadeOutMilliseconds = 250;
-        private static readonly object activeSpeechLock = new object();
-        private readonly ConcurrentDictionary<IWavePlayer, CancellationTokenSource> activeSpeechTS = new ConcurrentDictionary<IWavePlayer, CancellationTokenSource>();
+        private static readonly object activeSpeechLock = new();
+        private readonly ConcurrentDictionary<IWavePlayer, CancellationTokenSource> activeSpeechTS = new();
         private static bool discardPendingSegments;
         public List<VoiceDetails> allVoices { get; }
 
@@ -50,12 +48,11 @@ namespace EddiSpeechService
             }
         }
 
-        public readonly SpeechQueue speechQueue = new SpeechQueue();
+        public readonly SpeechQueue speechQueue = new();
 
         public SpeechManager ()
         {
-            SoundManager = new SoundManager();
-            AudioManager = new AudioManager( SoundManager );
+            AudioManager = new AudioManager();
             
             var voiceStore = new HashSet<VoiceDetails>(); // Use a Hashset to ensure no duplicates
 
@@ -119,7 +116,7 @@ namespace EddiSpeechService
                    osVersion >= new System.Version( 10, 0, 17763, 0 );
         }
 
-        private void FetchLexiconSchemas ()
+        private static void FetchLexiconSchemas ()
         {
             // Try to obtain and load lexicon related schemas for lexicon schema validation
             try
@@ -135,7 +132,10 @@ namespace EddiSpeechService
                             try
                             {
                                 var schema = XmlSchema.Read( resourceStream, null );
-                                SpeechFormatter.lexiconSchemas.Add( schema );
+                                if ( schema != null )
+                                {
+                                    SpeechFormatter.lexiconSchemas.Add( schema );
+                                }
                             }
                             catch ( Exception e )
                             {
@@ -264,7 +264,7 @@ namespace EddiSpeechService
                     keysToRemove = activeSpeechTS.Keys;
                 }
 
-                if ( keysToRemove.Any() )
+                if ( keysToRemove.Count > 0 )
                 {
                     keysToRemove.AsParallel().ForAll( key =>
                     {
@@ -327,7 +327,7 @@ namespace EddiSpeechService
         }
 
         private int speechQueueRunning;
-        private CancellationTokenSource speechQueueCts = new CancellationTokenSource();
+        private CancellationTokenSource speechQueueCts = new();
         private void EnsureSpeechQueueRunning ()
         {
             if ( speechQueueCts.IsCancellationRequested )
@@ -478,7 +478,7 @@ namespace EddiSpeechService
                     SpeechFormatter.UnpackVoiceTags( statement, out voice, out statement );
                 }
 
-                using ( var stream = getSpeechStream( voice ?? defaultVoice, statement ) )
+                await using ( var stream = getSpeechStream( voice ?? defaultVoice, statement ) )
                 {
                     if ( stream == null )
                     {
@@ -512,7 +512,7 @@ namespace EddiSpeechService
                 if ( stream is null || stream.Length == 0 )
                 {
                     // Try again, with speech devoid of SSML
-                    stream = speak( requestedVoice, Regex.Replace( speech, "<.*?>", string.Empty ) );
+                    stream = speak( requestedVoice, GeneratedRegex.SsmlTagRegex().Replace( speech, string.Empty ) );
                 }
                 return stream;
             }

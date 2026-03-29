@@ -6,7 +6,7 @@ namespace EddiSpeechResponder.ScriptResolverService
 {
     internal class TemplateBuilder
 	{
-        private List<TemplateItem> templates = new List<TemplateItem>();
+        private List<TemplateItem> templates = [ ];
 
 		public void Append ( string scriptName, string scriptValue, bool addPrependSeparator )
         {
@@ -45,7 +45,7 @@ namespace EddiSpeechResponder.ScriptResolverService
             scriptName = null;
             scriptLine = 0;
 
-			var lines = script.Split(new[] { "\r\n" }, StringSplitOptions.None);
+			var lines = script.Split( [ "\r\n" ], StringSplitOptions.None);
             var cumulativeLength = 0;
 
             var lineNumber = 1; 
@@ -67,7 +67,7 @@ namespace EddiSpeechResponder.ScriptResolverService
             protected internal string itemValue { get; }
 
             protected internal int itemLines =>
-                ( itemValue ?? string.Empty ).Split( new[] { "\r\n" }, StringSplitOptions.None ).Length;
+                ( itemValue ?? string.Empty ).Split( [ "\r\n" ], StringSplitOptions.None ).Length;
 
             protected internal TemplateItem ( string itemName, string itemValue )
             {

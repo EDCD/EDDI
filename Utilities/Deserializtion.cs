@@ -60,11 +60,11 @@ namespace Utilities
             }
         }
 
-        private static IList<object> DeserializeData(JArray data)
+        private static List<object> DeserializeData(JArray data)
         {
-            var list = data.ToObject<List<object>>() ?? new List<object>();
+            var list = data.ToObject<List<object>>() ?? [ ];
 
-            for (int i = 0; i < list.Count; i++)
+            for (var i = 0; i < list.Count; i++)
             {
                 var value = list[i];
 

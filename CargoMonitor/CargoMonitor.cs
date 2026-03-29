@@ -26,11 +26,11 @@ namespace EddiCargoMonitor
     public class CargoMonitor : IEddiMonitor
     {
         // Observable collection for us to handle changes
-        public ObservableCollection<Cargo> inventory { get; private set; } = new ObservableCollection<Cargo>();
+        public ObservableCollection<Cargo> inventory { get; private set; } = [];
         public int cargoCarried => inventory.Sum(c => c.total);
         private DateTime updateDat;
 
-        private static readonly object inventoryLock = new object();
+        private static readonly object inventoryLock = new();
         [UsedImplicitly] public event EventHandler InventoryUpdatedEvent;
 
         public string MonitorName()
@@ -75,7 +75,7 @@ namespace EddiCargoMonitor
 
         private void ConfigChanged ( object sender, PropertyChangedEventArgs e )
         {
-            if ( e.PropertyName.Equals( nameof(ConfigService.Instance.missionMonitorConfiguration) ) )
+            if ( e.PropertyName?.Equals( nameof(ConfigService.Instance.missionMonitorConfiguration) ) ?? false )
             {
                 CalculateCargoNeeds();
             }
@@ -237,7 +237,7 @@ namespace EddiCargoMonitor
                     }
 
                     // Update existing cargo in the manifest
-                    while (infoList.Any())
+                    while ( infoList.Count > 0 )
                     {
                         var name = infoList.ToList().First().name;
                         var cargoInfo = infoList.Where(i => i.name.Equals(name, StringComparison.OrdinalIgnoreCase)).ToList();
@@ -536,8 +536,8 @@ namespace EddiCargoMonitor
             {
                 return new Dictionary<string, Tuple<Type, object>>
                 {
-                    ["inventory"] = new Tuple<Type, object>(typeof(List<Cargo>), inventory.ToList() ),
-                    ["cargoCarried"] = new Tuple<Type, object>(typeof(int), cargoCarried)
+                    ["inventory"] = new(typeof(List<Cargo>), inventory.ToList() ),
+                    ["cargoCarried"] = new(typeof(int), cargoCarried)
                 };                
             }
         }
@@ -564,7 +564,7 @@ namespace EddiCargoMonitor
             lock (inventoryLock)
             {
                 // Obtain current cargo inventory from configuration
-                configuration = configuration ?? ConfigService.Instance.cargoMonitorConfiguration;
+                configuration ??= ConfigService.Instance.cargoMonitorConfiguration;
                 updateDat = configuration.updatedat;
 
                 // Build a new inventory
@@ -573,10 +573,7 @@ namespace EddiCargoMonitor
                 // Start with the materials we have in the log
                 foreach (var cargo in configuration.cargo)
                 {
-                    if (cargo.commodityDef == null)
-                    {
-                        cargo.commodityDef = CommodityDefinition.FromEDName(cargo.edname);
-                    }
+                    cargo.commodityDef ??= CommodityDefinition.FromEDName(cargo.edname);
                     newInventory.Add(cargo);
                 }
 
@@ -632,10 +629,9 @@ namespace EddiCargoMonitor
             {
                 if (edname != null)
                 {
-                    edname = edname.ToLowerInvariant();
                     for (var i = 0; i < inventory.Count; i++)
                     {
-                        if (inventory[i].edname.ToLowerInvariant() == edname)
+                        if ( string.Equals( inventory[ i ].edname, edname, StringComparison.InvariantCultureIgnoreCase ) )
                         {
                             inventory.RemoveAt(i);
                             break;
@@ -652,8 +648,8 @@ namespace EddiCargoMonitor
             {
                 return null;
             }
-            edname = edname.ToLowerInvariant();
-            return inventory.FirstOrDefault(c => c.edname.ToLowerInvariant() == edname);
+            return inventory.FirstOrDefault(c =>
+                string.Equals( c.edname, edname, StringComparison.InvariantCultureIgnoreCase ) );
         }
 
         [CanBeNull]
@@ -663,7 +659,7 @@ namespace EddiCargoMonitor
             foreach ( var cargo in inventory.ToList() )
             {
                 var missionCargo = cargo.missionCargo.Where( c => c.Key == missionid ).ToList();
-                if ( missionCargo.Any() )
+                if ( missionCargo.Count > 0 )
                 {
                     amount = missionCargo.Sum( c => c.Value );
                     return cargo;
@@ -672,7 +668,7 @@ namespace EddiCargoMonitor
             return null;
         }
 
-        private void UpdateCargoFromInfo ( Cargo cargo, List<CargoInfoItem> infoList )
+        private static void UpdateCargoFromInfo ( Cargo cargo, List<CargoInfoItem> infoList )
         {
             cargo.missionCargo = infoList.Where( i => i.missionid != null ).ToDictionary( i => (ulong)i.missionid, i => i.count );
             cargo.stolen = infoList.Where( i => i.missionid == null ).Sum( i => i.stolen );
@@ -686,8 +682,9 @@ namespace EddiCargoMonitor
                 var missionsConfig = ConfigService.Instance.missionMonitorConfiguration;
                 var missions = missionsConfig.missions
                     .Where( m =>
-                        m?.CommodityDefinition != null &&
-                        m.amount != null &&
+                        m != null &&
+                        m.CommodityDefinition != null &&
+                        m.amount is not null &&
                         m.delivered < m.amount &&
                         !m.communal )
                     .ToList();

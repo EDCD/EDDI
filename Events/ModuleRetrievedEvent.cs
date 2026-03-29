@@ -5,7 +5,17 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class ModuleRetrievedEvent : Event
+    public class ModuleRetrievedEvent (
+        DateTime timestamp,
+        string ship,
+        int shipid,
+        string slot,
+        Module module,
+        long? cost,
+        string engineermodifications,
+        Module swapoutmodule,
+        long marketId )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Module retrieved";
         public const string DESCRIPTION = "Triggered when you fetch a previously stored module";
@@ -15,39 +25,27 @@ namespace EddiEvents
         public string ship => shipDefinition?.model;
 
         [PublicAPI("The ID of the ship for which the module was retrieved")]
-        public int shipid { get; private set; }
+        public int shipid { get; private set; } = shipid;
 
         [PublicAPI("The outfitting slot")]
-        public string slot { get; private set; }
+        public string slot { get; private set; } = slot;
 
         [PublicAPI("The module (object) retrieved from storage")]
-        public Module module { get; private set; }
+        public Module module { get; private set; } = module;
 
         [PublicAPI("The cost of retrieval")]
-        public long? cost { get; private set; }
+        public long? cost { get; private set; } = cost;
 
         [PublicAPI("The name of the modification blueprint")]
-        public string engineermodifications { get; private set; }
+        public string engineermodifications { get; private set; } = engineermodifications;
 
         [PublicAPI("The module (object) swapped out (if the slot was not empty)")]
-        public Module swapoutmodule { get; set; }
+        public Module swapoutmodule { get; set; } = swapoutmodule;
 
         // Not intended to be user facing
 
-        public long marketId { get; private set; }
+        public long marketId { get; private set; } = marketId;
 
-        public Ship shipDefinition { get; private set; }
-
-        public ModuleRetrievedEvent(DateTime timestamp, string ship, int shipid, string slot, Module module, long? cost, string engineermodifications, Module swapoutmodule, long marketId) : base(timestamp, NAME)
-        {
-            this.shipDefinition = ShipDefinitions.FromEDModel(ship);
-            this.shipid = shipid;
-            this.slot = slot;
-            this.module = module;
-            this.cost = cost;
-            this.engineermodifications = engineermodifications;
-            this.swapoutmodule = swapoutmodule;
-            this.marketId = marketId;
-        }
+        public Ship shipDefinition { get; private set; } = ShipDefinitions.FromEDModel(ship);
     }
 }

@@ -32,7 +32,7 @@ namespace EddiNavigationMonitor
 
         private ICollectionView _poiView;
 
-        private NavigationMonitor navigationMonitor()
+        private static NavigationMonitor navigationMonitor()
         {
             return (NavigationMonitor)EDDI.Instance.ObtainMonitor("Navigation monitor");
         }
@@ -57,7 +57,7 @@ namespace EddiNavigationMonitor
         {
             if (sender is ToggleButton toggleButton)
             {
-                DataGridRow selectedRow = DataGridRow.GetRowContainingElement(toggleButton);
+                var selectedRow = DataGridRow.GetRowContainingElement(toggleButton);
                 if (selectedRow != null)
                 {
                     if (toggleButton.IsChecked ?? false)
@@ -76,26 +76,17 @@ namespace EddiNavigationMonitor
 
         private void addBookmark(object sender, RoutedEventArgs e)
         {
-            if (sender is Button button)
+            if (sender is Button button && button.DataContext is NavBookmark poiBookmark )
             {
-                if (button.DataContext is NavBookmark poiBookmark)
+                if (Parent is TabItem item && item.Parent is TabControl control && control.Parent is DockPanel panel && panel.Parent is ConfigurationWindow configurationWindow )
                 {
-                    if (Parent is TabItem parentTab && parentTab.Parent is TabControl parentTabControl)
-                    {
-                        if (parentTabControl.Parent is DockPanel dockPanel)
-                        {
-                            if (dockPanel.Parent is ConfigurationWindow configurationWindow)
-                            {
-                                configurationWindow.SwitchToTab(Properties.NavigationMonitor.tab_bookmarks);
-                            }
-                        }
-                    }
-                    if (!navigationMonitor().Bookmarks.Contains(poiBookmark))
-                    {
-                        navigationMonitor().Bookmarks.Add(poiBookmark);
-                        navigationMonitor().WriteNavConfig();
-                        EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "add", poiBookmark));
-                    }
+                    configurationWindow.SwitchToTab(Properties.NavigationMonitor.tab_bookmarks);
+                }
+                if (!navigationMonitor().Bookmarks.Contains(poiBookmark))
+                {
+                    navigationMonitor().Bookmarks.Add(poiBookmark);
+                    navigationMonitor().WriteNavConfig();
+                    EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "add", poiBookmark));
                 }
             }
         }
@@ -112,7 +103,7 @@ namespace EddiNavigationMonitor
         {
             if (sender is WebBrowser wb && !string.IsNullOrEmpty(wb.Tag as string))
             {
-                string html = CommonMark.CommonMarkConverter.Convert(wb.Tag as string);
+                var html = CommonMark.CommonMarkConverter.Convert(wb.Tag as string);
                 html = "<head>  <meta charset=\"UTF-8\"> </head> " + html;
                 wb.NavigateToString(html);
             }
@@ -137,13 +128,13 @@ namespace EddiNavigationMonitor
 
         private bool poiData_Filter(object sender)
         {
-            if (!(sender is NavBookmark poiBookmark)) { return true; }
+            if (sender is not NavBookmark poiBookmark) { return true; }
             var filterTxt = searchFilterText.Text;
 
             // If filter applies, filter items.
-            if ((poiBookmark.systemname?.ToLowerInvariant().Contains(filterTxt.ToLowerInvariant()) ?? false)
-                || (poiBookmark.comment?.ToLowerInvariant().Contains(filterTxt.ToLowerInvariant()) ?? false)
-                || (poiBookmark.descriptionMarkdown?.ToLowerInvariant().Contains(filterTxt.ToLowerInvariant()) ?? false))
+            if ((poiBookmark.systemname?.Contains(filterTxt, StringComparison.InvariantCultureIgnoreCase) ?? false)
+                || (poiBookmark.comment?.Contains(filterTxt, StringComparison.InvariantCultureIgnoreCase ) ?? false)
+                || (poiBookmark.descriptionMarkdown?.Contains(filterTxt, StringComparison.InvariantCultureIgnoreCase ) ?? false))
             {
                 if ((HideVisitedCheckBox.IsChecked ?? false) && poiBookmark.visited)
                 {
@@ -178,7 +169,7 @@ namespace EddiNavigationMonitor
                     e.Cancel = true;
                     var startInfo = new ProcessStartInfo
                     {
-                        FileName = e.Uri.ToString()
+                        FileName = e.Uri.ToString(), UseShellExecute = true
                     };
                     // Launch the link in the default web browser
                     Process.Start(startInfo);
@@ -188,19 +179,16 @@ namespace EddiNavigationMonitor
 
         private void copySystemNameToClipboard(object sender, RoutedEventArgs e)
         {
-            if (sender is Button button)
+            if (sender is Button button && button.DataContext is NavBookmark navBookmark )
             {
-                if (button.DataContext is NavBookmark navBookmark)
+                try
                 {
-                    try
-                    {
-                        Clipboard.Clear();
-                        Clipboard.SetData( DataFormats.Text, navBookmark.systemname );
-                    }
-                    catch ( Exception ex )
-                    {
-                        Logging.Warn( "Failed to set clipboard", ex );
-                    }
+                    Clipboard.Clear();
+                    Clipboard.SetData( DataFormats.Text, navBookmark.systemname );
+                }
+                catch ( Exception ex )
+                {
+                    Logging.Warn( "Failed to set clipboard", ex );
                 }
             }
         }

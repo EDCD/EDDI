@@ -17,12 +17,12 @@ namespace EddiDataDefinitions
             missingEDNameHandler = ( edname ) => new CodexCivilizationGuardian( edname );
         }
 
-        public static readonly CodexCivilizationGuardian Guardian_Beacons = new CodexCivilizationGuardian( "Guardian_Beacons", 3200800 );
-        public static readonly CodexCivilizationGuardian Guardian_Data_Logs = new CodexCivilizationGuardian( "Guardian_Data_Logs", 3200200 );
-        public static readonly CodexCivilizationGuardian Guardian_Pylon = new CodexCivilizationGuardian( "Guardian_Pylon", 3200400 );
-        public static readonly CodexCivilizationGuardian Guardian_Sentinel = new CodexCivilizationGuardian( "Guardian_Sentinel", 3200600 );
-        public static readonly CodexCivilizationGuardian Guardian_Terminal = new CodexCivilizationGuardian( "Guardian_Terminal", 3200300 );
-        public static readonly CodexCivilizationGuardian Relic_Tower = new CodexCivilizationGuardian( "Relic_Tower", 3200500 );
+        public static readonly CodexCivilizationGuardian Guardian_Beacons = new( "Guardian_Beacons", 3200800 );
+        public static readonly CodexCivilizationGuardian Guardian_Data_Logs = new( "Guardian_Data_Logs", 3200200 );
+        public static readonly CodexCivilizationGuardian Guardian_Pylon = new( "Guardian_Pylon", 3200400 );
+        public static readonly CodexCivilizationGuardian Guardian_Sentinel = new( "Guardian_Sentinel", 3200600 );
+        public static readonly CodexCivilizationGuardian Guardian_Terminal = new( "Guardian_Terminal", 3200300 );
+        public static readonly CodexCivilizationGuardian Relic_Tower = new( "Relic_Tower", 3200500 );
 
         public long? entryID;
 

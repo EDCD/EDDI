@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using EddiStarMapService;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using Tests.Properties;
 
@@ -19,7 +20,7 @@ namespace Tests
             // Test pilot traffic data
             var response = DeserializeJsonResource<JObject>(Resources.edsmTraffic);
 
-            var traffic = fakeEdsmService.ParseStarMapTraffic(response);
+            var traffic = StarMapService.ParseStarMapTraffic(response);
 
             Assert.IsNotNull(traffic);
             Assert.AreEqual(9631, traffic.total);
@@ -33,7 +34,7 @@ namespace Tests
             // Test pilot mortality data
             var response = DeserializeJsonResource<JObject>(Resources.edsmDeaths);
 
-            var deaths = fakeEdsmService.ParseStarMapDeaths(response);
+            var deaths = StarMapService.ParseStarMapDeaths(response);
 
             Assert.IsNotNull(deaths);
             Assert.AreEqual(1068, deaths.total);
@@ -48,7 +49,7 @@ namespace Tests
             var response = new JObject();
 
             // Act
-            var traffic = fakeEdsmService.ParseStarMapTraffic(response);
+            var traffic = StarMapService.ParseStarMapTraffic(response);
 
             // Assert
             Assert.IsNotNull(traffic);

@@ -17,7 +17,7 @@ namespace EddiShipMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        private ShipMonitor shipMonitor()
+        private static ShipMonitor shipMonitor()
         {
             return (ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor");
         }
@@ -72,34 +72,22 @@ namespace EddiShipMonitor
             var ship = (Ship)((Button)e.Source).DataContext;
             var config = ConfigService.Instance.shipMonitorConfiguration;
 
-            string uri;
-            switch (config.exporttarget)
+            string uri = config.exporttarget switch
             {
-                case "EDShipyard":
-                case "EDSY":
-                    uri = ship.EDShipyardUri();
-                    break;
-
-                case "Coriolis":
-                    uri = ship.CoriolisUri();
-                    break;
-
-                case "Coriolis (Beta)":
-                    uri = ship.CoriolisUri(true);
-                    break;
-
-                default:
-                    throw new NotImplementedException($"Export target {config.exporttarget} not recognized.");
-            }
+                "EDShipyard" or "EDSY" => ship.EDShipyardUri(),
+                "Coriolis" => ship.CoriolisUri(),
+                "Coriolis (Beta)" => ship.CoriolisUri( true ),
+                _ => throw new NotImplementedException( $"Export target {config.exporttarget} not recognized." )
+            };
 
             Logging.Debug("Export target is " + config.exporttarget + ", URI is " + uri);
 
             // URI can be very long so we can't use a simple Process.Start(), as that fails
             try
             {
-                ProcessStartInfo proc = new ProcessStartInfo(Net.GetDefaultBrowserPath(), uri)
+                var proc = new ProcessStartInfo(Net.GetDefaultBrowserPath(), uri)
                 {
-                    UseShellExecute = false
+                    UseShellExecute = true
                 };
                 Process.Start(proc);
             }
@@ -111,7 +99,7 @@ namespace EddiShipMonitor
                     // Last-gasp attempt if we have a shorter URL
                     if (uri.Length < 2048)
                     {
-                        Process.Start(uri);
+                        Process.Start( new ProcessStartInfo( uri ) { UseShellExecute = true } );
                     }
                     else
                     {
@@ -150,15 +138,12 @@ namespace EddiShipMonitor
         // Fixup IPA text by replacing spaces
         private void PhoneticName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (sender is TextBox textBox)
+            if (sender is TextBox textBox && textBox.IsLoaded)
             {
-                if (textBox.IsLoaded)
-                {
-                    // Replace any spaces, maintaining the original caret position
-                    int caretIndex = textBox.CaretIndex;
-                    textBox.Text = textBox.Text.Replace(" ", "ˈ");
-                    textBox.CaretIndex = Math.Max(caretIndex, textBox.Text.Length);
-                }
+                // Replace any spaces, maintaining the original caret position
+                var caretIndex = textBox.CaretIndex;
+                textBox.Text = textBox.Text.Replace(" ", "ˈ");
+                textBox.CaretIndex = Math.Max(caretIndex, textBox.Text.Length);
             }
         }
     }

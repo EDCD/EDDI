@@ -24,7 +24,7 @@ namespace EddiSpanshService
                 var requestUri = $"dump/{systemAddress}";
                 clientResponse = await spanshHttpClient.GetAsync( requestUri, cancellationToken ).ConfigureAwait( false );
                 clientResponse.EnsureSuccessStatusCode();
-                var responseJson = await clientResponse.Content.ReadAsStringAsync().ConfigureAwait( false );
+                var responseJson = await clientResponse.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait( false );
 
                 if ( string.IsNullOrEmpty( responseJson ) )
                 {
@@ -103,19 +103,19 @@ namespace EddiSpanshService
                     starSystem.securityLevel = SecurityLevel.FromName( (string)data[ "security" ] ) ??
                                                SecurityLevel.None;
 
-                    starSystem.AddOrUpdateStations( data[ "stations" ]?.AsParallel().Select( stationToken => ParseStation( starSystem, stationToken, null, showMarketDetails ) ).RemoveNulls().ToList() ?? 
-                                                    new List<Station>() );
+                    starSystem.AddOrUpdateStations( data[ "stations" ]?.AsParallel().Select( stationToken => ParseStation( starSystem, stationToken, null, showMarketDetails ) ).RemoveNulls().ToList() ??
+                                                    [ ] );
 
                     starSystem.Power = Power.FromName( data[ "controllingPower" ]?.ToString() );
                     starSystem.powerState = PowerplayState.FromName( data[ "powerState" ]?.ToString() );
                     starSystem.NearbyPowers = ( data[ "powers" ]?
                         .Select( t => Power.FromName( t.ToString() ) )
                         .Where( p => p != starSystem.Power )
-                        .ToHashSet() ?? new HashSet<Power>() ).ToList();
+                        .ToHashSet() ?? [ ] ).ToList();
                     starSystem.powerAcquisitionProgress = data[ "powerConflictProgress" ]?
                         .Select( p => new PowerAcquisitionProgress( p[ "power" ]?.ToString(), p[ "progress" ].Value<decimal>() * 100 ) )
                         .OrderByDescending( p => p.progress )
-                        .ToList() ?? new List<PowerAcquisitionProgress>();
+                        .ToList() ?? [ ];
                     starSystem.powerControlProgress = data[ "powerStateControlProgress" ]?.Value<decimal?>() ?? 0;
                     starSystem.powerReinforcementControlPoints = data[ "powerStateReinforcement" ]?.Value<int?>() ?? 0;
                     starSystem.powerUnderminingControlPoints = data[ "powerStateUndermining" ]?.Value<int?>() ?? 0;
@@ -124,7 +124,7 @@ namespace EddiSpanshService
                 // Get bodies
                 starSystem.totalbodies = data[ "bodyCount" ]?.Value<int>() ?? 0;
                 starSystem.AddOrUpdateBodies( data[ "bodies" ]?.AsParallel()
-                    .Select( b => ParseBody( starSystem, b, showMarketDetails ) ).RemoveNulls().ToList() ?? new List<Body>() );
+                    .Select( b => ParseBody( starSystem, b, showMarketDetails ) ).RemoveNulls().ToList() ?? [ ] );
 
                 starSystem.lastupdated = DateTime.UtcNow;
                 return starSystem;
@@ -148,8 +148,8 @@ namespace EddiSpanshService
                     Government = Government.FromName( f[ "government" ]?.ToString() ) ??
                                  Government.None,
                     updatedAt = JsonParsing.getDateTime("date", data),
-                    presences = new List<FactionPresence>
-                    {
+                    presences =
+                    [
                         new FactionPresence()
                         {
                             systemName = starSystem.systemname,
@@ -158,9 +158,9 @@ namespace EddiSpanshService
                                 FactionState.FromName( f[ "state" ]?.ToString() ) ??
                                 FactionState.None,
                             influence = f[ "influence" ]?.Value<decimal?>() * 100,
-                            updatedAt = JsonParsing.getDateTime("date", data)
+                            updatedAt = JsonParsing.getDateTime( "date", data )
                         }
-                    }
+                    ]
                 }
             ) ?? new List<Faction>() );
 
@@ -188,7 +188,7 @@ namespace EddiSpanshService
                 var orbitalInclinationDegrees = bodyData[ "orbitalInclination" ]?.Value<decimal?>();
                 var orbitalPeriodDays = bodyData[ "orbitalPeriod" ]?.Value<decimal?>();
                 var parents = bodyData[ "parents" ]?.ToObject<List<IDictionary<string, int>>>() ??
-                          new List<IDictionary<string, int>>();
+                              [ ];
                 var periapsisDegrees = bodyData[ "argOfPeriapsis" ]?.Value<decimal?>();
                 var ringsData = bodyData["rings"] ?? bodyData["belts"];
                 var rings = ringsData?.Select( ringToken => new Ring(
@@ -197,7 +197,7 @@ namespace EddiSpanshService
                 ringToken[ "mass" ]?.Value<decimal?>() ?? 0,
                 ringToken[ "innerRadius" ]?.Value<decimal?>() ?? 0,
                 ringToken[ "outerRadius" ]?.Value<decimal?>() ?? 0
-            ) ).ToList() ?? new List<Ring>();
+            ) ).ToList() ?? [ ];
                 var rotationalPeriodDays = bodyData[ "rotationalPeriod" ]?.Value<decimal?>();
                 var semiMajorAxisLs = ConstantConverters.au2ls( bodyData[ "semiMajorAxis" ]?.Value<decimal?>() );
                 // TODO: Add `timestamps` property (for predicting orbital position)?
@@ -283,7 +283,7 @@ namespace EddiSpanshService
                 {
                     var atmosComp = a.ToObject<JProperty>();
                     return new AtmosphereComposition( atmosComp.Name, atmosComp.Value.Value<decimal>() );
-                } ).OrderByDescending( x => x.percent ).ToList() ?? new List<AtmosphereComposition>();
+                } ).OrderByDescending( x => x.percent ).ToList() ?? [ ];
 
                 var earthmass = planetData[ "earthMasses" ]?.Value<decimal?>();
                 var gravity = planetData[ "gravity" ]?.Value<decimal?>() ?? 0;
@@ -293,7 +293,7 @@ namespace EddiSpanshService
                 {
                     var mtrl = m.ToObject<JProperty>();
                     return new MaterialPresence( mtrl.Name, mtrl.Value.Value<decimal>() );
-                } ).OrderByDescending( o => o.percentage ).ToList() ?? new List<MaterialPresence>();
+                } ).OrderByDescending( o => o.percentage ).ToList() ?? [ ];
 
                 var planetClass = PlanetClass.FromName( planetData[ "subType" ]?.ToString() ) ?? PlanetClass.None;
                 var pressureAtm = planetData["surfacePressure"]?.Value<decimal?>();
@@ -307,11 +307,11 @@ namespace EddiSpanshService
                 {
                     var sldComp = c.ToObject<JProperty>();
                     return new SolidComposition( sldComp.Name, sldComp.Value.Value<decimal>() );
-                } ).OrderByDescending( x => x.percent ).ToList() ?? new List<SolidComposition>();
+                } ).OrderByDescending( x => x.percent ).ToList() ?? [ ];
 
                 starSystem.AddOrUpdateStations(
                     planetData[ "stations" ]?.AsParallel().Select( s => ParseStation( starSystem, s, planetData, showMarketDetails ) ).RemoveNulls().ToList() ??
-                    new List<Station>() );
+                    [ ] );
 
                 var terraformState = TerraformState.FromName( planetData[ "terraformingState" ]?.ToString() ) ??
                                  TerraformState.NotTerraformable;
@@ -350,48 +350,45 @@ namespace EddiSpanshService
                         ? StationModel.OnFootSettlement
                         : FromSpanshStationModel( stationData[ "type" ]?.ToString() ),
                     distancefromstar = stationData[ "distanceToArrival" ]?.Value<decimal?>() ??
-                                       bodyData?[ "distanceToArrival" ]?.Value<decimal?>() // Light seconds
+                                       bodyData?[ "distanceToArrival" ]?.Value<decimal?>(),
+                    // TODO: Add ground settlement body name, body ID, latitude / longitude?
+                    Faction = starSystem.factions.FirstOrDefault( f =>
+                                  f.name == stationData[ "controllingFaction" ]?.ToString() ) ??
+                              ( stationData[ "controllingFaction" ]?.ToString() is null
+                                  ? null
+                                  : new Faction
+                                  {
+                                      name = stationData[ "controllingFaction" ]?.ToString() ?? string.Empty,
+                                      Allegiance =
+                                          Superpower.FromName( stationData[ "allegiance" ]?.ToString() ) ?? Superpower.None,
+                                      Government = Government.FromName( stationData[ "government" ]?.ToString() ) ??
+                                                   Government.None,
+                                  } ),
+                    landingPads = new StationLandingPads(
+                        stationData[ "landingPads" ]?[ "small" ]?.Value<int>() ?? 0,
+                        stationData[ "landingPads" ]?[ "medium" ]?.Value<int>() ?? 0,
+                        stationData[ "landingPads" ]?[ "large" ]?.Value<int>() ?? 0 )
+                    // Light seconds
                 };
-
-                // TODO: Add ground settlement body name, body ID, latitude / longitude?
-
-                station.Faction =
-                    starSystem.factions.FirstOrDefault( f =>
-                        f.name == stationData[ "controllingFaction" ]?.ToString() ) ??
-                    ( stationData[ "controllingFaction" ]?.ToString() is null
-                        ? null
-                        : new Faction
-                        {
-                            name = stationData[ "controllingFaction" ]?.ToString() ?? string.Empty,
-                            Allegiance =
-                                Superpower.FromName( stationData[ "allegiance" ]?.ToString() ) ?? Superpower.None,
-                            Government = Government.FromName( stationData[ "government" ]?.ToString() ) ??
-                                         Government.None,
-                        } );
-
-                station.landingPads = new StationLandingPads(
-                    stationData[ "landingPads" ]?[ "small" ]?.Value<int>() ?? 0,
-                    stationData[ "landingPads" ]?[ "medium" ]?.Value<int>() ?? 0,
-                    stationData[ "landingPads" ]?[ "large" ]?.Value<int>() ?? 0 );
 
                 var economyShares = stationData[ "economies" ]?.Select( economyToken =>
                 {
                     var econShare = economyToken.ToObject<JProperty>();
                     return new EconomyShare( econShare.Name, econShare.Value.Value<decimal>() );
-                } ).OrderByDescending( e => e.proportion ).ToList() ?? new List<EconomyShare>();
+                } ).OrderByDescending( e => e.proportion ).ToList() ?? [ ];
                 var primaryEconomyIndex = economyShares.FindIndex( e =>
                     e.economy.invariantName == stationData[ "primaryEconomy" ]?.ToString() );
                 if ( primaryEconomyIndex > 0 )
                 {
                     var primaryEconomy = economyShares[ primaryEconomyIndex ];
-                    economyShares = economyShares.Except( new[] { primaryEconomy } ).Prepend( primaryEconomy ).ToList();
+                    economyShares = economyShares.Except( [ primaryEconomy ] ).Prepend( primaryEconomy ).ToList();
                 }
 
                 station.economyShares = economyShares;
 
                 station.stationServices = stationData[ "services" ]?
                     .Select( t => StationService.FromName( t.ToString() ) )
-                    .ToList() ?? new List<StationService>();
+                    .ToList() ?? [ ];
 
                 if ( showMarketDetails )
                 {
@@ -406,11 +403,11 @@ namespace EddiSpanshService
                                     sellprice = c[ "sellPrice" ]?.Value<decimal?>() ?? 0,
                                     stock = c[ "supply" ]?.Value<int?>() ?? 0
                                 }
-                            ).ToList() ?? new List<CommodityMarketQuote>();
+                            ).ToList() ?? [ ];
                         station.prohibited = stationData[ "market" ]?[ "prohibitedCommodities" ]
                                                  ?.Select( p => CommodityDefinition.FromName( p.ToString() ) )
                                                  .ToList() ??
-                                             new List<CommodityDefinition>();
+                                             [ ];
                         var marketUpdatedAt = JsonParsing.getDateTime( "updateTime", stationData[ "market" ] );
                         station.commoditiesupdatedat = marketUpdatedAt == DateTime.MinValue
                             ? null
@@ -422,7 +419,7 @@ namespace EddiSpanshService
                         station.outfitting = stationData[ "outfitting" ]?[ "modules" ]
                                                  ?.Select( m => Module.FromEDName( m[ "symbol" ]?.ToString() ) )
                                                  .ToList() ??
-                                             new List<Module>();
+                                             [ ];
                         var outfittingUpdatedAt = JsonParsing.getDateTime( "updateTime", stationData[ "outfitting" ] );
                         station.outfittingupdatedat = outfittingUpdatedAt == DateTime.MinValue
                             ? null
@@ -434,7 +431,7 @@ namespace EddiSpanshService
                         station.shipyard = stationData[ "shipyard" ]?[ "ships" ]
                                                ?.Select( s => ShipDefinitions.FromEDModel( s[ "symbol" ]?.ToString() ) )
                                                .ToList() ??
-                                           new List<Ship>();
+                                           [ ];
                         var shipyardUpdatedAt = JsonParsing.getDateTime( "updateTime", stationData[ "shipyard" ] );
                         station.shipyardupdatedat = shipyardUpdatedAt == DateTime.MinValue
                             ? null

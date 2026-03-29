@@ -5,7 +5,13 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class CommodityEjectedEvent : Event
+    public class CommodityEjectedEvent (
+        DateTime timestamp,
+        CommodityDefinition commodity,
+        int amount,
+        long? missionid,
+        bool abandoned )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Commodity ejected";
         public const string DESCRIPTION = "Triggered when you eject a commodity from your ship or SRV";
@@ -15,24 +21,16 @@ namespace EddiEvents
         public string commodity => commodityDefinition?.localizedName;
 
         [PublicAPI("The amount of commodity ejected")]
-        public int amount { get; }
+        public int amount { get; } = amount;
 
         [PublicAPI("True if the cargo has been abandoned")]
-        public bool abandoned { get; }
+        public bool abandoned { get; } = abandoned;
 
         [PublicAPI("ID of the mission-related commodity, if applicable")]
-        public long? missionid { get; }
+        public long? missionid { get; } = missionid;
 
         // Not intended to be user facing
 
-        public CommodityDefinition commodityDefinition { get; }
-
-        public CommodityEjectedEvent(DateTime timestamp, CommodityDefinition commodity, int amount, long? missionid, bool abandoned) : base(timestamp, NAME)
-        {
-            this.commodityDefinition = commodity;
-            this.amount = amount;
-            this.missionid = missionid;
-            this.abandoned = abandoned;
-        }
+        public CommodityDefinition commodityDefinition { get; } = commodity;
     }
 }

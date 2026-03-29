@@ -20,7 +20,7 @@ namespace EddiDataDefinitions
             get => vehicleDef?.edname;
             set
             {
-                VehicleDefinition vDef = VehicleDefinition.FromEDName(value);
+                var vDef = VehicleDefinition.FromEDName(value);
                 vehicleDef = vDef;
             }
         }
@@ -42,7 +42,7 @@ namespace EddiDataDefinitions
             get => descriptionDef?.edname;
             set
             {
-                LoadoutDescription dDef = LoadoutDescription.FromEDName(value);
+                var dDef = LoadoutDescription.FromEDName(value);
                 descriptionDef = dDef;
             }
         }
@@ -61,10 +61,10 @@ namespace EddiDataDefinitions
         {
             if (json is null) { return null; }
 
-            string edName = (string)json["name"];
-            string loadoutName = (string)json["loadoutName"];
+            var edName = (string)json["name"];
+            var loadoutName = (string)json["loadoutName"];
 
-            Vehicle vehicle = new Vehicle()
+            var vehicle = new Vehicle()
             {
                 loadout = (string)json["loadout"],
                 rebuilds = (int)json["rebuilds"],

@@ -7,6 +7,7 @@ using System.IO;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace Tests
@@ -14,6 +15,8 @@ namespace Tests
     [TestClass, TestCategory( "UnitTests" ), DoNotParallelize]
     public class AppTests : TestBase
     {
+        public TestContext TestContext { get; set; }
+
         [TestInitialize]
         public void Init ()
         {
@@ -54,7 +57,7 @@ namespace Tests
             try
             {
                 // Create an external (simulated other process) mutex and take ownership
-                external = new Mutex( true, Constants.EDDI_SYSTEM_MUTEX_NAME, out bool externalOwner );
+                external = new Mutex( true, Constants.EDDI_SYSTEM_MUTEX_NAME, out var externalOwner );
                 Assert.IsTrue( externalOwner, "Test setup failed to obtain external mutex ownership" );
 
                 // Now call AlreadyRunning which will create its own mutex; it should detect an existing owner
@@ -83,7 +86,7 @@ namespace Tests
         public void ApplyAnyOverrideCulture_AppliesValidCulture ()
         {
             // Start with a known default so we can observe the fallback behavior
-            CultureInfo backupDefault = CultureInfo.DefaultThreadCurrentCulture;
+            var backupDefault = CultureInfo.DefaultThreadCurrentCulture;
 
             // Apply override
             App.ApplyAnyOverrideCulture( new EDDIConfiguration { OverrideCulture = "fr-FR" } );
@@ -102,7 +105,7 @@ namespace Tests
         public void ApplyAnyOverrideCulture_InvalidCultureDoesNotThrow_AndSetsDefaultToNull ()
         {
             // Start with a known default so we can observe the fallback behavior
-            CultureInfo backupDefault = CultureInfo.DefaultThreadCurrentCulture;
+            var backupDefault = CultureInfo.DefaultThreadCurrentCulture;
 
             // Should not throw
             App.ApplyAnyOverrideCulture( new EDDIConfiguration { OverrideCulture = "this-is-not-a-culture" } );
@@ -138,11 +141,11 @@ namespace Tests
             Assert.IsNotNull( crashLogger, "CrashLogger method not found via reflection" );
 
             // Should not throw
-            crashLogger.Invoke( null, new object[] { agg } );
+            crashLogger.Invoke( null, [ agg ] );
         }
 
         [TestMethod, DoNotParallelize]
-        public void CrashLogger_LogsUnhandledException ()
+        public async Task CrashLogger_LogsUnhandledExceptionAsync ()
         {
             // Ensure we have a fresh log file to inspect
             var logFile = Path.Combine(Constants.DATA_DIR, "eddi.log");
@@ -157,36 +160,37 @@ namespace Tests
             var ex = new Exception("TestCrashLogger");
 
             // Invoke CrashLogger - it will call Logging.Error which writes asynchronously
-            crashLogger.Invoke( null, new object[] { ex } );
+            crashLogger.Invoke( null, [ ex ] );
 
             // Wait for the background logging task to complete and write to file (polling with timeout)
             var sw = System.Diagnostics.Stopwatch.StartNew();
-            bool found = false;
+            var found = false;
             while ( sw.Elapsed < TimeSpan.FromSeconds( 5 ) )
             {
                 if ( File.Exists( logFile ) )
                 {
-                    var contents = File.ReadAllText(logFile);
+                    var contents = await File.ReadAllTextAsync(logFile, TestContext.CancellationToken);
                     if ( contents.Contains( "Unhandled exception: TestCrashLogger." ) )
                     {
                         found = true;
                         break;
                     }
                 }
-                Thread.Sleep( 100 );
+
+                await Task.Delay( 100, TestContext.CancellationToken ).ConfigureAwait( false );
             }
 
             Assert.IsTrue( found, "CrashLogger did not write the expected message to the log file within the timeout" );
         }
 
         // Helper used to create an HttpRequestException whose stack trace contains the substring "Rollbar"
-        private void ThrowHttpRequestExceptionWithRollbarInStack ()
+        private static void ThrowHttpRequestExceptionWithRollbarInStack ()
         {
             // Method name intentionally contains "Rollbar" so that the resulting stack trace includes that token.
             RollbarMarker();
         }
 
-        private void RollbarMarker ()
+        private static void RollbarMarker ()
         {
             // Throw an HttpRequestException so its stack trace contains "RollbarMarker" (and thus "Rollbar")
             throw new HttpRequestException( "simulated http exception" );

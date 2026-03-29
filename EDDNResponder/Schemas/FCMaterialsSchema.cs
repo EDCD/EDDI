@@ -4,7 +4,6 @@ using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using Utilities;
 
 namespace EddiEddnResponder.Schemas
@@ -12,12 +11,12 @@ namespace EddiEddnResponder.Schemas
     [UsedImplicitly]
     public class FCMaterialsSchema : ISchema, ICapiSchema
     {
-        public List<string> edTypes => new List<string> { "FCMaterials" };
+        public List<string> edTypes => [ "FCMaterials" ];
 
         // Track this so that we do not send duplicate data from the journal and from CAPI.
         private long? lastSentMarketID;
 
-        public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
+        public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState, EDDNSender eddnSender )
         {
             try
             {
@@ -46,16 +45,15 @@ namespace EddiEddnResponder.Schemas
         }
 
         public IDictionary<string, object> Handle ( JObject profileJson, JObject marketJson, JObject shipyardJson,
-            JObject fleetCarrierJson, EDDNState eddnState )
+            JObject fleetCarrierJson, EDDNState eddnState, EDDNSender eddnSender )
         {
             try
             {
                 var carrierID = marketJson?["name"]?.ToString();
                 var marketID = marketJson?["id"]?.ToObject<long?>();
 
-                var carrierRegex = new Regex(@"^\w{3}-\w{3}$");
                 if (string.IsNullOrEmpty(carrierID) ||
-                    !carrierRegex.IsMatch(carrierID) ||
+                    !GeneratedRegex.FleetCarrierIdRegex().IsMatch(carrierID) ||
                     eddnState?.GameVersion is null)
                 { return null; }
 
@@ -82,7 +80,7 @@ namespace EddiEddnResponder.Schemas
                         // Apply data augments
                         data = eddnState.GameVersion.AugmentVersion(data);
 
-                        EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/fcmaterials_capi/1", data, eddnState, "CAPI-Live-market" );
+                        eddnSender.SendToEDDN("https://eddn.edcd.io/schemas/fcmaterials_capi/1", data, eddnState, "CAPI-Live-market" );
                         lastSentMarketID = marketID;
                         return data;
                     }

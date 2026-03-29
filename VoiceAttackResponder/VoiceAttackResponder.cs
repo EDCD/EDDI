@@ -1,7 +1,8 @@
-﻿using Eddi;
-using EddiCore;
+﻿using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
+using EddiIPC_Service.Server;
+using JetBrains.Annotations;
 using System;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -14,9 +15,12 @@ namespace EddiVoiceAttackResponder
     /// <summary>
     /// A responder for EDDI to provide information to VoiceAttack.  This is very simple, just adding events to the VoiceAttack plugin's event queue
     /// </summary>
-    class VoiceAttackResponder : IEddiResponder
+    [UsedImplicitly]
+    public class VoiceAttackResponder : IEddiResponder
     {
-        private static VoiceAttackEventHandler voiceAttackEventHandler;
+        private static readonly VoiceAttackEventHandling voiceAttackEventHandler = new();
+        [UsedImplicitly] private readonly IDisposable _commandDispatcherRegistration = CommandDispatcherRegistry.RegisterCommandDispatcher( new VoiceAttackCommandDispatcher() );
+        [UsedImplicitly] private readonly IDisposable _responderModeRegistration = ResponderModeRegistry.RegisterHandler( VoiceAttackResponderModeHandler.SetResponderModeAsync );
 
         public string ResponderName()
         {
@@ -35,7 +39,7 @@ namespace EddiVoiceAttackResponder
 
         public Task HandleAsync ( Event @event )
         {
-            if ( App.FromVA && !@event.fromLoad && !( @event is UnhandledEvent ) )
+            if ( EDDI.Instance.FromVA && !@event.fromLoad && @event is not UnhandledEvent )
             {
                 voiceAttackEventHandler.Handle( @event );
             }
@@ -45,17 +49,16 @@ namespace EddiVoiceAttackResponder
 
         public bool Start()
         {
-            if (App.FromVA)
+            if (EDDI.Instance.FromVA )
             {
-                // Set up our event responder.
-                voiceAttackEventHandler = new VoiceAttackEventHandler();
-                Logging.Info( "Started VoiceAttack responder" );
+                // Initialize responder mode: subscribe to EDDI events and set up VoiceAttack variable synchronization
+                VoiceAttackResponderMode.InitializeAsync().SafeFireAndForget( 
+                    ex => Logging.Error( "Failed to initialize VoiceAttack responder mode", ex ) );
+
                 return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
         public void Stop ()
@@ -74,7 +77,7 @@ namespace EddiVoiceAttackResponder
 
         public Task HandleStatusAsync ( Status status )
         {
-            if ( App.FromVA )
+            if ( EDDI.Instance.FromVA )
             {
                 VoiceAttackVariables.setStatusValues( status, "Status" );
             }

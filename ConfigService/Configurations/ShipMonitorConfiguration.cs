@@ -15,11 +15,11 @@ namespace EddiConfigService.Configurations
     public class ShipMonitorConfiguration : Config
     {
         private ImmutableList<Ship> _shipyard = ImmutableList.Create<Ship>();
-        private readonly object _shipyardLock = new object();
+        private readonly object _shipyardLock = new();
         private DateTime _updatedat = DateTime.MinValue;
         private decimal _insurance = 0.05M;
         private string _exporttarget = "Coriolis";
-        private List<StoredModule> _storedmodules = new List<StoredModule>();
+        private List<StoredModule> _storedmodules = [];
         private int? _currentshipid;
         
         public int? currentshipid
@@ -122,7 +122,7 @@ namespace EddiConfigService.Configurations
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
-            if (!shipyard.Any())
+            if (shipyard.IsEmpty)
             {
                 // Used to be in a separate 'ships' file so try that to allow migration
                 var oldFilename = Constants.DATA_DIR + @"\ships.json";
@@ -130,7 +130,7 @@ namespace EddiConfigService.Configurations
                 {
                     try
                     {
-                        string oldData = Files.Read(oldFilename);
+                        var oldData = Files.Read(oldFilename);
                         if (oldData != null)
                         {
                             var oldShipsConfiguration = JsonConvert.DeserializeObject<Dictionary<string, List<Ship>>>(oldData);

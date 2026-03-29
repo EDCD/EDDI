@@ -56,30 +56,22 @@ namespace EddiDataDefinitions
 
         #region Subclasses
 
-        public class Boxel
+        public class Boxel ( int x, int y, int z, int masscode )
         {
             [ Utilities.PublicAPI( "Boxel X coordinate." ), JsonIgnore ]
-            public int boxelX { get; set; }
+            public int boxelX { get; set; } = x;
 
             [ Utilities.PublicAPI( "Boxel Y coordinate." ), JsonIgnore ]
-            public int boxelY { get; set; }
+            public int boxelY { get; set; } = y;
 
             [ Utilities.PublicAPI( "Boxel Z coordinate." ), JsonIgnore ]
-            public int boxelZ { get; set; }
+            public int boxelZ { get; set; } = z;
 
             [ Utilities.PublicAPI( "Boxel width in light years." ), JsonIgnore ]
-            public int boxelWidthLy { get; set; }
+            public int boxelWidthLy { get; set; } = Convert.ToInt32( 1280 / Math.Pow( 2, masscode ) );
 
             [ Utilities.PublicAPI( "The numeric boxel ID." ), JsonIgnore ]
             public int boxelId => boxelX + ( boxelY << 7 ) + ( boxelZ << 14 );
-
-            public Boxel ( int x, int y, int z, int masscode )
-            {
-                boxelX = x;
-                boxelY = y;
-                boxelZ = z;
-                boxelWidthLy = Convert.ToInt32( 1280 / Math.Pow( 2, masscode ) );
-            }
         }
 
         #endregion

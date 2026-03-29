@@ -5,46 +5,44 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class CargoWingUpdateEvent : Event
+    public class CargoWingUpdateEvent (
+        DateTime timestamp,
+        ulong? missionid,
+        string updatetype,
+        CommodityDefinition commodity,
+        int? amount,
+        int collected,
+        int delivered,
+        int totaltodeliver )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Cargo wingupdate";
         public const string DESCRIPTION = "Triggered when a wing-mate collects or delivers cargo for a wing mission";
         public const string SAMPLE = null;
 
         [PublicAPI("The ID of the mission")]
-        public ulong? missionid { get; private set; }
+        public ulong? missionid { get; private set; } = missionid;
 
         [PublicAPI("The update type. 'Collect' or 'Deliver'")]
-        public string updatetype { get; private set; }
+        public string updatetype { get; private set; } = updatetype;
 
         [PublicAPI("The type of cargo (commodity)")]
         public string commodity => commodityDefinition?.localizedName ?? "Unknown commodity";
 
         [PublicAPI("The amount of cargo collected or delivered for this event")]
-        public int? amount { get; private set; }
+        public int? amount { get; private set; } = amount;
 
         [PublicAPI("The total amount of cargo collected")]
-        public int collected { get; private set; }
+        public int collected { get; private set; } = collected;
 
         [PublicAPI("The total amount of cargo delivered")]
-        public int delivered { get; private set; }
+        public int delivered { get; private set; } = delivered;
 
         [PublicAPI("The total amount of cargo to deliver to complete the mission")]
-        public int totaltodeliver { get; private set; }
+        public int totaltodeliver { get; private set; } = totaltodeliver;
 
         // Not intended to be user facing
 
-        public CommodityDefinition commodityDefinition { get; private set; }
-
-        public CargoWingUpdateEvent(DateTime timestamp, ulong? missionid, string updatetype, CommodityDefinition commodity, int? amount, int collected, int delivered, int totaltodeliver) : base(timestamp, NAME)
-        {
-            this.missionid = missionid;
-            this.updatetype = updatetype;
-            this.commodityDefinition = commodity;
-            this.amount = amount;
-            this.collected = collected;
-            this.delivered = delivered;
-            this.totaltodeliver = totaltodeliver;
-        }
+        public CommodityDefinition commodityDefinition { get; private set; } = commodity;
     }
 }

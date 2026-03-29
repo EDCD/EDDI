@@ -1,11 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using EddiIPC_Service.Messages;
+using EddiIPC_Service.Server;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Utilities;
 
-namespace EddiVoiceAttackResponder
+namespace EddiVoiceAttackAdapter
 {
     public class VoiceAttackVariable
     {
@@ -49,7 +51,7 @@ namespace EddiVoiceAttackResponder
                 this.value = null;
                 this.variableType = typeof(decimal);
             }
-            else if ( variableType == typeof( IEnumerable<> ))
+            else if ( variableType == typeof( IEnumerable<>  ))
             {
                 if ( value is null )
                 {
@@ -96,9 +98,9 @@ namespace EddiVoiceAttackResponder
                 return "";
             }
 
-            StringBuilder newText = new StringBuilder(text.Length * 2);
+            var newText = new StringBuilder(text.Length * 2);
             newText.Append(text[0]);
-            for (int i = 1; i < text.Length; i++)
+            for (var i = 1; i < text.Length; i++)
             {
                 if (char.IsUpper(text[i]) && text[i - 1] != ' ' && !char.IsUpper(text[i - 1]))
                 {
@@ -113,7 +115,7 @@ namespace EddiVoiceAttackResponder
         {
             // For a prefix of "AA BB CC" and a childKey of "BB CC DD", return "AA BB CC DD"
             var skip = 0;
-            if (!prefix.EndsWith(" ")) { prefix += " "; }
+            if (!prefix.EndsWith(' ')) { prefix += " "; }
             while (skip < childKey.Length
                    || (prefix.Skip(skip).Count() - 1) > childKey.Length
                    || (prefix.Skip(skip).Zip(childKey, (a, b) => a.Equals(b)).Any(x => !x) && skip < prefix.Length))
@@ -132,31 +134,31 @@ namespace EddiVoiceAttackResponder
                 if (variableType is null)
                 {
                     // No idea what it might have been so reset everything
-                    VoiceAttackPlugin.SetText(key, null);
-                    VoiceAttackPlugin.SetInt(key, null);
-                    VoiceAttackPlugin.SetDecimal(key, null);
-                    VoiceAttackPlugin.SetBoolean(key, null);
-                    VoiceAttackPlugin.SetDate(key, null);
+                    RuntimeSetText(key, null);
+                    RuntimeSetInt(key, null);
+                    RuntimeSetDecimal(key, null);
+                    RuntimeSetBoolean(key, null);
+                    RuntimeSetDate(key, null);
                 }
                 else if (variableType == typeof(string))
                 {
-                    VoiceAttackPlugin.SetText(key, (string)value);
+                    RuntimeSetText(key, value as string);
                 }
                 else if (variableType == typeof(int))
                 {
-                    VoiceAttackPlugin.SetInt(key, (int?)value);
+                    RuntimeSetInt(key, value as int?);
                 }
                 else if (variableType == typeof(bool))
                 {
-                    VoiceAttackPlugin.SetBoolean(key, (bool?)value);
+                    RuntimeSetBoolean(key, value as bool?);
                 }
                 else if (variableType == typeof(decimal))
                 {
-                    VoiceAttackPlugin.SetDecimal(key, (decimal?)value);
+                    RuntimeSetDecimal(key, value as decimal?);
                 }
                 else if (variableType == typeof(DateTime))
                 {
-                    VoiceAttackPlugin.SetDate(key, (DateTime?)value);
+                    RuntimeSetDate(key, value as DateTime?);
                 }
                 else
                 {
@@ -166,6 +168,49 @@ namespace EddiVoiceAttackResponder
             catch (Exception ex)
             {
                 Logging.Error($@"Failed to write VoiceAttack value for {(variableType is null ? "<null type>" : variableType.ToString())} key '{key}' with value {JsonConvert.SerializeObject(value)}", ex);
+            }
+        }
+
+        private static void RuntimeSetText(string key, string value)
+            => DispatchRuntimeAction("set_text", key, value);
+
+        private static void RuntimeSetInt(string key, int? value)
+            => DispatchRuntimeAction("set_int", key, value);
+
+        private static void RuntimeSetBoolean(string key, bool? value)
+            => DispatchRuntimeAction("set_boolean", key, value);
+
+        private static void RuntimeSetDecimal(string key, decimal? value)
+            => DispatchRuntimeAction("set_decimal", key, value);
+
+        private static void RuntimeSetDate(string key, DateTime? value)
+            => DispatchRuntimeAction("set_date", key, value?.ToString("O"));
+
+        private static void DispatchRuntimeAction(string action, string key, object value)
+        {
+            var payload = new Dictionary<string, object>
+            {
+                { "action", action },
+                { "key", key ?? string.Empty },
+                { "value", value ?? string.Empty }
+            };
+
+            try
+            {
+                var eventData = new EventData
+                {
+                    EventType = "va_runtime",
+                    EventName = "command_action",
+                    EventPayload = payload
+                };
+
+                RuntimeEventDispatcher.DispatchAsync(eventData)
+                    .GetAwaiter()
+                    .GetResult();
+            }
+            catch (Exception ex)
+            {
+                Logging.Warn("Failed to dispatch runtime variable set payload", ex);
             }
         }
     }

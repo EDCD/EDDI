@@ -49,7 +49,7 @@ namespace EddiInaraService
             }
             else
             {
-                foreach ( string cmdrName in cmdrNames )
+                foreach ( var cmdrName in cmdrNames )
                 {
                     if ( string.IsNullOrEmpty( cmdrName ) ) { continue; }
                     events.Add( new InaraAPIEvent( DateTime.UtcNow, "getCommanderProfile",

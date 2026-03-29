@@ -69,7 +69,7 @@ namespace EddiEvents
             return new { from, Channel, Source, locationID }.GetHashCode();
         }
 
-        private int getLocationID(StarSystem starSystem, Body body, Station station)
+        private static int getLocationID (StarSystem starSystem, Body body, Station station)
         {
             if (starSystem is null && body is null && station is null) { return 0; }
             return new { starSystem, body, station }.GetHashCode();

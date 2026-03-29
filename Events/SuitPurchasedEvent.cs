@@ -5,7 +5,7 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class SuitPurchasedEvent : Event
+    public class SuitPurchasedEvent ( DateTime timestamp, Suit suit, int? price ) : Event( timestamp, NAME )
     {
         public const string NAME = "Suit purchased";
         public const string DESCRIPTION = "Triggered when you buy a space suit";
@@ -18,15 +18,9 @@ namespace EddiEvents
         public string suit_invariant => Suit?.invariantName;
 
         [PublicAPI("The price paid for the space suit")]
-        public int? price { get; }
+        public int? price { get; } = price;
 
         // Not intended to be user facing
-        public Suit Suit { get; }
-
-        public SuitPurchasedEvent(DateTime timestamp, Suit suit, int? price) : base(timestamp, NAME)
-        {
-            this.Suit = suit;
-            this.price = price;
-        }
+        public Suit Suit { get; } = suit;
     }
 }

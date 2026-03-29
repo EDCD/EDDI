@@ -61,7 +61,7 @@ namespace EddiDataDefinitions
             // Economy names from the journal are prefixed with "$economy_" and sufficed with ";" while economy names from the Frontier API are not.
             // We occasionally see undefined economies appear in the journal. Treat these as null / not set.
             if (string.IsNullOrEmpty(edname)) { return None; }
-            string tidiedName = edname.Replace("$economy_", "").Replace(";", "");
+            var tidiedName = edname.Replace("$economy_", "").Replace(";", "");
             return tidiedName == "Undefined" ? null : ResourceBasedLocalizedEDName<Economy>.FromEDName(tidiedName);
         }
     }

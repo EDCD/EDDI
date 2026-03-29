@@ -96,7 +96,7 @@ namespace EddiDataDefinitions
                 NotifyPropertyChanged( nameof( haulage ) );
             }
         }
-        private Dictionary<ulong, int> _missionCargo = new Dictionary<ulong, int>();
+        private Dictionary<ulong, int> _missionCargo = [ ];
 
         [JsonProperty, PublicAPI] 
         public int need
@@ -146,7 +146,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        [PublicAPI, Obsolete]
+        [PublicAPI, Obsolete("Please use commodityDef instead")]
         public CommodityDefinition commodity => commodityDef;
         
         [JsonExtensionData]
@@ -222,13 +222,9 @@ namespace EddiDataDefinitions
         /// <param name="acquistionAmount">The amount of cargo to add</param>
         public void AddDetailedQty ( ulong missionID, int acquistionAmount )
         {
-            if ( missionCargo.ContainsKey( missionID ) )
+            if ( !missionCargo.TryAdd( missionID, acquistionAmount ) )
             {
                 missionCargo[ missionID ] += acquistionAmount;
-            }
-            else
-            {
-                missionCargo.Add( missionID, acquistionAmount );
             }
             haulage = missionCargo.Values.Sum();
         }
@@ -258,9 +254,8 @@ namespace EddiDataDefinitions
         /// <param name="removedAmount">The amount of cargo to remove</param>
         public void RemoveDetailedQty ( ulong missionID, int removedAmount )
         {
-            if ( missionCargo.ContainsKey( missionID ) )
+            if ( missionCargo.TryGetValue( missionID, out var cargoAmount ) )
             {
-                var cargoAmount = missionCargo[ missionID ];
                 missionCargo[ missionID ] -= Math.Min( removedAmount, cargoAmount );
 
                 if ( missionCargo[ missionID ] == 0 )

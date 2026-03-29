@@ -13,7 +13,7 @@ namespace Tests
 {
     internal class FakeEdsmHttpClient : IEdsmHttpClient
     {
-        private readonly Dictionary<string, string> CannedContent = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> CannedContent =  [ ];
 
         public Task<string> GetAsync ( string url, CancellationToken ct )
         {
@@ -38,7 +38,7 @@ namespace Tests
                     var parameters = JsonConvert.DeserializeObject<Dictionary<string, object>>( json );
                     foreach ( var parameter in parameters )
                     {
-                        resourceString += $"{(resourceString.Contains("?") ? "&" : "?")}{parameter.Key}={parameter.Value}";
+                        resourceString += $"{(resourceString.Contains('?') ? "&" : "?")}{parameter.Key}={parameter.Value}";
                     }
                 }
                 catch ( JsonException jex )

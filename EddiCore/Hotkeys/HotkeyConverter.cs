@@ -4,7 +4,7 @@ namespace EddiCore.Hotkeys
 {
     public static class HotkeyConverter
     {
-        private static readonly KeyGestureConverter keyGestureConverter = new KeyGestureConverter();
+        private static readonly KeyGestureConverter keyGestureConverter = new();
 
         public static KeyGesture FromString ( string keyGestureStr )
         {

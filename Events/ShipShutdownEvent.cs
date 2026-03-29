@@ -6,7 +6,7 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class ShipShutdownEvent : Event
+    public class ShipShutdownEvent ( DateTime timestamp ) : Event( timestamp, NAME )
     {
         public const string NAME = "Ship shutdown";
         public const string DESCRIPTION = "Triggered when your ship's system is forced to shutdown";
@@ -14,9 +14,6 @@ namespace EddiEvents
 
         [PublicAPI( "True if shutdown is momentary, with flickering power which does not fully disable the ship" )]
         public bool partialshutdown { get; set; }
-
-        public ShipShutdownEvent(DateTime timestamp) : base(timestamp, NAME)
-        { }
 
         public async Task ScheduleRebootAsync (
             Func<Event, Task> enqueueEvent,

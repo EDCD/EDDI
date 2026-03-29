@@ -19,8 +19,8 @@ namespace EddiSpeechResponder.CustomFunctions
         public Type ReturnType => typeof( string );
         public IFunction function => Function.CreateNativeMinMax( ( runtime, values, writer ) =>
         {
-            int? localId = (values.Count == 0 ? (int?) null : (int) values[0].AsNumber);
-            string model = (values.Count == 2 ? values[1].AsString : null);
+            var localId = (values.Count == 0 ? (int?) null : (int) values[0].AsNumber);
+            var model = (values.Count == 2 ? values[1].AsString : null);
 
             if (localId is null && model is null)
             {

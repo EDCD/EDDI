@@ -5,7 +5,24 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class CarrierStatsEvent : Event
+    public class CarrierStatsEvent (
+        DateTime timestamp,
+        long carrierId,
+        StationModel carrierType,
+        string carrierCallsign,
+        string carrierName,
+        string dockingAccess,
+        bool notoriousAccess,
+        int fuelLevel,
+        int usedSpace,
+        int freeSpace,
+        long bankBalance,
+        long bankBalanceReserved,
+        long bankAvailableBalance,
+        decimal jumpRangeCurr,
+        decimal jumpRangeMax,
+        bool pendingDecommission )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Carrier stats";
         public const string DESCRIPTION = "Triggered when you open the carrier management screen";
@@ -14,71 +31,50 @@ namespace EddiEvents
         // Carrier variables
 
         [PublicAPI("The callsign (alphanumeric designation) of the carrier")]
-        public string callsign { get; private set; }
+        public string callsign { get; private set; } = carrierCallsign;
 
         [PublicAPI("The name of the carrier")]
-        public string name { get; private set; }
+        public string name { get; private set; } = carrierName;
 
         [PublicAPI( "The carrier's numeric ID" )]
-        public long carrierID { get; private set; }
+        public long carrierID { get; private set; } = carrierId;
 
         [PublicAPI( "The carrier type (e.g. Fleet Carrier or Squadron Carrier), as an object with 'localizedName' and 'invariantName' properties" )]
-        public StationModel carrierType { get; private set; }
+        public StationModel carrierType { get; private set; } = carrierType;
 
         [PublicAPI("The carrier's current docking access (one of one of 'all', 'squadronfriends', 'friends', or 'none')")]
-        public string dockingAccess { get; private set; }
+        public string dockingAccess { get; private set; } = dockingAccess;
 
         [PublicAPI("True if the carrier currently provides docking access to notorious commanders")]
-        public bool notoriousAccess { get; private set; }
+        public bool notoriousAccess { get; private set; } = notoriousAccess;
 
         [PublicAPI( "True if the carrier is currently scheduled to be decommissioned" )]
-        public bool pendingDecommission { get; set; }
+        public bool pendingDecommission { get; set; } = pendingDecommission;
 
         [PublicAPI("The current tritium fuel level of the carrier")]
-        public int fuel { get; private set; }
+        public int fuel { get; private set; } = fuelLevel;
 
         [PublicAPI("The current single jump range of the carrier in light years")]
-        public decimal jumpRange { get; set; }
+        public decimal jumpRange { get; set; } = jumpRangeCurr;
 
         [PublicAPI( "The maximum single jump range of the carrier in light years" )]
-        public decimal jumpRangeMax { get; set; }
+        public decimal jumpRangeMax { get; set; } = jumpRangeMax;
 
         [PublicAPI("The current total used capacity of the carrier")]
-        public int usedCapacity { get; private set; }
+        public int usedCapacity { get; private set; } = usedSpace;
 
         [PublicAPI("The current free capacity of the carrier")]
-        public int freeCapacity { get; private set; }
+        public int freeCapacity { get; private set; } = freeSpace;
 
         [PublicAPI("The current bank balance of the carrier")]
-        public long bankBalance { get; private set; }
+        public long bankBalance { get; private set; } = bankBalance;
 
         [PublicAPI("The current reserved bank balance of the carrier")]
-        public long bankReservedBalance { get; private set; }
+        public long bankReservedBalance { get; private set; } = bankBalanceReserved;
 
         [PublicAPI("The current available bank balance of the carrier")]
-        public long bankAvailableBalance { get; private set; }
+        public long bankAvailableBalance { get; private set; } = bankAvailableBalance;
 
-        public CarrierStatsEvent ( DateTime timestamp, long carrierId, StationModel carrierType,
-            string carrierCallsign, string carrierName, string dockingAccess, bool notoriousAccess, int fuelLevel,
-            int usedSpace, int freeSpace, long bankBalance, long bankBalanceReserved, long bankAvailableBalance,
-            decimal jumpRangeCurr, decimal jumpRangeMax, bool pendingDecommission ) : base(timestamp, NAME)
-        {
-            // Carrier
-            this.carrierID = carrierId;
-            this.carrierType = carrierType;
-            this.callsign = carrierCallsign;
-            this.name = carrierName;
-            this.dockingAccess = dockingAccess;
-            this.notoriousAccess = notoriousAccess;
-            this.pendingDecommission = pendingDecommission;
-            this.fuel = fuelLevel;
-            this.jumpRange = jumpRangeCurr;
-            this.jumpRangeMax = jumpRangeMax;
-            this.usedCapacity = usedSpace;
-            this.freeCapacity = freeSpace;
-            this.bankBalance = bankBalance;
-            this.bankReservedBalance = bankBalanceReserved;
-            this.bankAvailableBalance = bankAvailableBalance;
-        }
+        // Carrier
     }
 }

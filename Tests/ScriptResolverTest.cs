@@ -20,7 +20,7 @@ namespace Tests
             MakeSafe();
         }
 
-        private string Render ( string template, Dictionary<Value, Value> vars )
+        private static string Render ( string template, Dictionary<Value, Value> vars )
         {
             var document = Document.CreateDefault( template ).DocumentOrThrow;
             var store = Context.CreateBuiltin( vars );
@@ -78,17 +78,17 @@ namespace Tests
             {
                 results.Add(Render(template, vars).Trim());
             }
-            Assert.IsTrue(results.Contains(@"The letter is a."));
+            Assert.Contains( @"The letter is a.", results );
             results.RemoveAll(result => result == @"The letter is a.");
-            Assert.IsTrue(results.Contains(@"The letter is b."));
+            Assert.Contains( @"The letter is b.", results );
             results.RemoveAll(result => result == @"The letter is b.");
-            Assert.IsTrue(results.Contains(@"The letter is c."));
+            Assert.Contains( @"The letter is c.", results );
             results.RemoveAll(result => result == @"The letter is c.");
-            Assert.IsTrue(results.Contains(@"The letter is d."));
+            Assert.Contains( @"The letter is d.", results );
             results.RemoveAll(result => result == @"The letter is d.");
-            Assert.IsTrue(results.Contains(@"The letter is ."));
+            Assert.Contains( @"The letter is .", results );
             results.RemoveAll(result => result == @"The letter is .");
-            Assert.AreEqual(0, results.Count);
+            Assert.IsEmpty(results);
         }
 
         [TestMethod]
@@ -99,7 +99,7 @@ namespace Tests
                 {"test", new Script("test", null, false, "Hello {name}")}
             };
             var resolver = new ScriptResolver(scripts);
-            var dict = new Dictionary<string, Tuple<Type, Value>> { ["name"] = new Tuple<Type, Value>(typeof(string), "world") };
+            var dict = new Dictionary<string, Tuple<Type, Value>> { ["name"] = new(typeof(string), "world") };
             var result = resolver.resolveFromName("test", dict, true);
             Assert.AreEqual("Hello world", result);
         }
@@ -113,7 +113,7 @@ namespace Tests
                 {"test", new Script("test", null, false, "Well {F(\"func\")}")}
             };
             var resolver = new ScriptResolver(scripts);
-            var dict = new Dictionary<string, Tuple<Type, Value>> { ["name"] = new Tuple<Type, Value>(typeof(string), "world") };
+            var dict = new Dictionary<string, Tuple<Type, Value>> { ["name"] = new(typeof(string), "world") };
             var result = resolver.resolveFromName("test", dict, true);
             Assert.AreEqual("Well Hello world", result);
         }
@@ -140,20 +140,20 @@ namespace Tests
                 {"func", new Script("func", null, false, "b")}
             };
             var resolver = new ScriptResolver(scripts);
-            var dict = new Dictionary<string, Tuple<Type, Value>> { ["c"] = new Tuple<Type, Value>(typeof(string), "c") };
+            var dict = new Dictionary<string, Tuple<Type, Value>> { ["c"] = new(typeof(string), "c") };
 
             var results = new List<string>();
             for (var i = 0; i < 1000; i++)
             {
                 results.Add(resolver.resolveFromName("test", dict, true));
             }
-            Assert.IsTrue(results.Contains(@"The letter is a."));
+            Assert.Contains( @"The letter is a.", results );
             results.RemoveAll(result => result == @"The letter is a.");
-            Assert.IsTrue(results.Contains(@"The letter is b."));
+            Assert.Contains( @"The letter is b.", results);
             results.RemoveAll(result => result == @"The letter is b.");
-            Assert.IsTrue(results.Contains(@"The letter is c."));
+            Assert.Contains( @"The letter is c.", results );
             results.RemoveAll(result => result == @"The letter is c.");
-            Assert.AreEqual(0, results.Count);
+            Assert.IsEmpty(results);
         }
 
         [TestMethod]
@@ -245,7 +245,7 @@ namespace Tests
             testThread.Join();
         }
 
-        [ DataTestMethod ]
+        [ TestMethod ]
         [DataRow( "{", "", 0, 1, "{{set i to i + 1}\r\n{set j to j + 2}\r\n{_ End of prepended script 0 }\r\n{set i to i + 1}" )]
         [DataRow( "", "}", 1, 1, "{set i to i + 1}\r\n{set j to j + 2}\r\n{_ End of prepended script 0 }\r\n{set i to i + 1}}\r\n{set j to j + 2}\r\n{_ End of prepended script 1 }\r\n{set i to i + 1}" )]
         [DataRow( "{", "", 2, 2, "{set i to i + 1}\r\n{set j to j + 2}\r\n{_ End of prepended script 0 }\r\n{set i to i + 1}\r\n{set j to j + 2}\r\n{_ End of prepended script 1 }\r\n{set i to i + 1}\r\n{{set j to j + 2}\r\n{_ End of prepended script 2 }\r\n{set i to i + 1}" )]
@@ -273,15 +273,12 @@ namespace Tests
             Assert.AreEqual(expectedOutout, combinedTemplates);
 
             // Verify that error locations are captured correctly
-            try
+            if ( flaw_start != "" || flaw_end != "" )
             {
-                Render( combinedTemplates, new Dictionary<Value, Value>() );
-            }
-            catch ( Cottle.Exceptions.ParseException e )
-            {
+                var e = Assert.ThrowsExactly<Cottle.Exceptions.ParseException>( () => Render( combinedTemplates, new Dictionary<Value, Value>() ) );
                 templateBuilder.FetchTemplateItemFromOffset( combinedTemplates, e.LocationStart, out var scriptName, out var scriptLine );
-                Assert.AreEqual(flawedTemplateNumber.ToString(), scriptName);
-                Assert.AreEqual(flawedTemplateLine, scriptLine);
+                Assert.AreEqual( flawedTemplateNumber.ToString(), scriptName );
+                Assert.AreEqual( flawedTemplateLine, scriptLine );
             }
         }
     }

@@ -2,7 +2,6 @@
 using EddiSpeechResponder.ScriptResolverService;
 using JetBrains.Annotations;
 using System;
-using System.Linq;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -29,7 +28,7 @@ namespace EddiSpeechResponder.CustomFunctions
                 }
                 else
                 {
-                    output = $"{output}{( values.Fields.Count() > 2 ? "," : "" )} {Properties.SpeechResponder.localizedAnd} {valueString}";
+                    output = $"{output}{( values.Fields.Count > 2 ? "," : "" )} {Properties.SpeechResponder.localizedAnd} {valueString}";
                 }
             }
             return output;

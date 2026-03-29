@@ -4,24 +4,24 @@ using Utilities;
 
 namespace EddiSpeechService
 {
-    [PublicAPI]
+    [Utilities.PublicAPI]
     public class VoiceDetails : IEquatable<VoiceDetails>
     {
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string name { get; }
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string gender { get; }
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string culturecode { get; }
 
         public string synthType { get; }
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string cultureinvariantname { get; }
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string culturename { get; }
 
         public bool hideVoice { get; set; }
@@ -55,14 +55,10 @@ namespace EddiSpeechService
         }
 
         // Implement IEquatable
-        public bool Equals(VoiceDetails other)
-        {
-            return name == other?.name;
-        }
+        public bool Equals ( VoiceDetails other ) => name == other?.name;
 
-        public override int GetHashCode()
-        {
-            return name.GetHashCode();
-        }
+        public override bool Equals ( object obj ) => obj is VoiceDetails other && name == other.name;
+
+        public override int GetHashCode() => name.GetHashCode();
     }
 }

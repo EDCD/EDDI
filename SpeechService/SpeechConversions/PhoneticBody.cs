@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Utilities;
 
 namespace EddiSpeechService.SpeechConversions
 {
@@ -11,7 +12,7 @@ namespace EddiSpeechService.SpeechConversions
             if (body == null) { return null; }
 
             // Use a regex to break apart the body from the system
-            var shortBody = SHORTBODY.Match(body);
+            var shortBody = GeneratedRegex.SHORTBODY().Match(body);
 
             if (!shortBody.Success)
             {
@@ -38,24 +39,24 @@ namespace EddiSpeechService.SpeechConversions
                     var nextPart = GetNextPart(shortBody, i, j);
 
                     if (string.IsNullOrEmpty(part)) { continue; }
-                    if (part == "Belt" || part == "Cluster" || part == "Ring")
+                    if (part is "Belt" or "Cluster" or "Ring")
                     {
                         // Pass as-is
                         results.Add(part);
                     }
-                    else if (DIGIT.IsMatch(part) || MOON.IsMatch(part) || nextPart == "Ring" || nextPart == "Belt" || lastPart == "Cluster")
+                    else if ( GeneratedRegex.DIGIT().IsMatch(part) || GeneratedRegex.MOON().IsMatch(part) || nextPart == "Ring" || nextPart == "Belt" || lastPart == "Cluster")
                     {
                         // The part represents a body, possibly part of the name of a moon, ring, (stellar) belt, or belt cluster; 
                         // e.g. "Pru Aescs NC-M d7-192 A A Belt", "Prai Flyou JQ-F b30-3 B Belt Cluster 9", "Oopailks NV-X c17-1 AB 6 A Ring"
                         results.Add(sayAsLettersOrNumbers(part, true, useICAO));
                     }
-                    else if (SUBSTARS.IsMatch(part))
+                    else if ( GeneratedRegex.SUBSTARS().IsMatch(part))
                     {
                         // The part is uppercase; turn it in to ICAO if required
                         results.Add(sayAsLettersOrNumbers(part, false, useICAO));
                     }
 
-                    else if (TEXT.IsMatch(part))
+                    else if ( GeneratedRegex.TEXT().IsMatch(part))
                     {
                         results.Add(sayAsLettersOrNumbers(part, true, useICAO));
                     }
@@ -67,7 +68,7 @@ namespace EddiSpeechService.SpeechConversions
                 }
             }
 
-            return Regex.Replace(string.Join(" ", results), @"\s+", " ");
+            return GeneratedRegex.WhiteSpaceRegex().Replace(string.Join(" ", results), " ");
         }
 
         private static string GetLastPart(Match match, int i, int j)

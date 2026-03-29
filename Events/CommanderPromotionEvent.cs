@@ -25,7 +25,7 @@ namespace EddiEvents
 
         public CommanderPromotionEvent(DateTime timestamp, object ratingObject, string gender = null) : base(timestamp, NAME)
         {
-            string getRankType (object ratingObj)
+            static string getRankType (object ratingObj)
             {
                 return ratingObj
                     .GetType()

@@ -5,7 +5,7 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class PowerLeftEvent : Event
+    public class PowerLeftEvent ( DateTime timestamp, Power power ) : Event( timestamp, NAME )
     {
         public const string NAME = "Power left";
         public const string DESCRIPTION = "Triggered when you leave a power";
@@ -16,11 +16,6 @@ namespace EddiEvents
 
         // Not intended to be user facing
 
-        public Power Power { get; private set; }
-
-        public PowerLeftEvent(DateTime timestamp, Power Power) : base(timestamp, NAME)
-        {
-            this.Power = Power;
-        }
+        public Power Power { get; private set; } = power;
     }
 }

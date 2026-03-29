@@ -14,20 +14,20 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = false;
         }
 
-        public static readonly ExobiologistRating Directionless = new ExobiologistRating("Directionless", 0);
-        public static readonly ExobiologistRating MostlyDirectionless = new ExobiologistRating("MostlyDirectionless", 1);
-        public static readonly ExobiologistRating Compiler = new ExobiologistRating("Compiler", 2);
-        public static readonly ExobiologistRating Collector = new ExobiologistRating("Collector", 3);
-        public static readonly ExobiologistRating Cataloguer = new ExobiologistRating("Cataloguer", 4);
-        public static readonly ExobiologistRating Taxonomist = new ExobiologistRating("Taxonomist", 5);
-        public static readonly ExobiologistRating Ecologist = new ExobiologistRating("Ecologist", 6);
-        public static readonly ExobiologistRating Geneticist = new ExobiologistRating("Geneticist", 7);
-        public static readonly ExobiologistRating Elite = new ExobiologistRating("Elite", 8);
-        public static readonly ExobiologistRating EliteI = new ExobiologistRating("EliteI", 9);
-        public static readonly ExobiologistRating EliteII = new ExobiologistRating("EliteII", 10);
-        public static readonly ExobiologistRating EliteIII = new ExobiologistRating("EliteIII", 11);
-        public static readonly ExobiologistRating EliteIV = new ExobiologistRating("EliteIV", 12);
-        public static readonly ExobiologistRating EliteV = new ExobiologistRating("EliteV", 13);
+        public static readonly ExobiologistRating Directionless = new("Directionless", 0);
+        public static readonly ExobiologistRating MostlyDirectionless = new("MostlyDirectionless", 1);
+        public static readonly ExobiologistRating Compiler = new("Compiler", 2);
+        public static readonly ExobiologistRating Collector = new("Collector", 3);
+        public static readonly ExobiologistRating Cataloguer = new("Cataloguer", 4);
+        public static readonly ExobiologistRating Taxonomist = new("Taxonomist", 5);
+        public static readonly ExobiologistRating Ecologist = new("Ecologist", 6);
+        public static readonly ExobiologistRating Geneticist = new("Geneticist", 7);
+        public static readonly ExobiologistRating Elite = new("Elite", 8);
+        public static readonly ExobiologistRating EliteI = new("EliteI", 9);
+        public static readonly ExobiologistRating EliteII = new("EliteII", 10);
+        public static readonly ExobiologistRating EliteIII = new("EliteIII", 11);
+        public static readonly ExobiologistRating EliteIV = new("EliteIV", 12);
+        public static readonly ExobiologistRating EliteV = new("EliteV", 13);
 
         [PublicAPI]
         public int rank { get; private set; }
@@ -43,7 +43,7 @@ namespace EddiDataDefinitions
 
         public static ExobiologistRating FromRank(int from)
         {
-            ExobiologistRating result = AllOfThem.FirstOrDefault(v => v.rank == from);
+            var result = AllOfThem.FirstOrDefault(v => v.rank == from);
             if (result == null)
             {
                 Logging.Info("Unknown Exobiologist Rating rank " + from);

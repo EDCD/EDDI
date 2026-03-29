@@ -5,7 +5,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Utilities;
 
 namespace EddiEvents
@@ -388,8 +387,7 @@ namespace EddiEvents
 
             var category = JsonParsing.getString(resourceData, "Category");
             var fallbackCategoryName = JsonParsing.getString(resourceData, "Category_Localised");
-            if ( microResource.Category is null )
-            { microResource.Category = MicroResourceCategory.FromEDName( category ); }
+            microResource.Category ??= MicroResourceCategory.FromEDName( category );
             if ( microResource.Category != null )
             {
                 microResource.Category.fallbackLocalizedName = fallbackCategoryName;
@@ -404,7 +402,7 @@ namespace EddiEvents
             controllingPower = Power.FromEDName( JsonParsing.getString( data, "ControllingPower" ) );
 
             // This is a list of all powers within range to acquire this star system
-            powersInAcquisitionRange = new List<Power>();
+            powersInAcquisitionRange = [ ];
             data.TryGetValue( "Powers", out var powersVal );
             if ( powersVal is List<object> powerNames )
             {
@@ -415,7 +413,7 @@ namespace EddiEvents
             }
 
             // While the system is not controlled by any power there is a `PowerplayConflictProgress` key which measures the progress of each power towards control of that star system
-            powerAcquisitionProgress = new List<PowerAcquisitionProgress>();
+            powerAcquisitionProgress = [ ];
             if ( data.TryGetValue( "PowerplayConflictProgress", out var conflictProgressData ) &&
                  conflictProgressData is Dictionary<string, decimal> conflictProgress )
             {
@@ -492,7 +490,7 @@ namespace EddiEvents
                 var signalSource = JsonParsing.getString(data, "USSType");
                 source = EddiDataDefinitions.SignalSource.FromEDName( signalSource ) ?? new SignalSource();
                 var localizedName = JsonParsing.getString(data, "USSType_Localised");
-                if ( !string.IsNullOrEmpty( localizedName ) && !localizedName.Contains( "$" ) )
+                if ( !string.IsNullOrEmpty( localizedName ) && !localizedName.Contains( '$' ) )
                 {
                     source.fallbackLocalizedName = localizedName;
                 }
@@ -509,7 +507,7 @@ namespace EddiEvents
                 {
                     source = EddiDataDefinitions.SignalSource.FromEDName( signalSource ) ?? new SignalSource();
                     var localizedName = JsonParsing.getString(data, "SignalName_Localised");
-                    if ( !string.IsNullOrEmpty( localizedName ) && !localizedName.Contains( "$" ) )
+                    if ( !string.IsNullOrEmpty( localizedName ) && !localizedName.Contains( '$' ) )
                     {
                         source.fallbackLocalizedName = localizedName;
                     }
@@ -539,7 +537,7 @@ namespace EddiEvents
             // Standard compartment slots are in the form of "Slotnn_Sizen" or "Militarynn"
             if ( slot.Contains( "Slot" ) )
             {
-                var matches = Regex.Match(compartment.name, @"Size([0-9]+)");
+                var matches = GeneratedRegex.ShipSlotSizeRegex().Match(compartment.name);
                 if ( matches.Success )
                 {
                     compartment.size = Int32.Parse( matches.Groups[ 1 ].Value );
@@ -550,8 +548,12 @@ namespace EddiEvents
                 var slotSize = ShipDefinitions.FromEDModel(shipEDName, false)?.militarysize;
                 if ( slotSize is null )
                 {
-                    // We didn't expect to have a military slot on this ship.
-                    var data = new Dictionary<string, object>() { { "ShipEDName", shipEDName }, { "Slot", slot }, { "Exception", new ArgumentException() } };
+                    var data = new Dictionary<string, object>
+                    {
+                        { "ShipEDName", shipEDName }, 
+                        { "Slot", slot }, 
+                        { "Exception", new ArgumentException( "We didn't expect to have a military slot on this ship." ) }
+                    };
                     Logging.Error( $"Unexpected military slot found in ship edName {shipEDName}.", data );
                     return compartment;
                 }
@@ -570,7 +572,7 @@ namespace EddiEvents
             if ( string.IsNullOrEmpty( stationName ) || string.IsNullOrEmpty( stationTypeEdName ) ) { return; }
             
             // Normalize Powerplay Stronghold Carrier names
-            stationName = Regex.Replace( stationName, @"/^(Stronghold Carrier|Porte-vaisseaux de forteresse|Transportadora da potência|Носитель-база|Hochburg-Carrier|Portanaves bastión|\$ShipName_StrongholdCarrier(.*?))$/i", "Stronghold Carrier" );
+            stationName = GeneratedRegex.StrongholdCarrierRegex().Replace( stationName, "Stronghold Carrier" );
 
             // Fix known incorrectly reported StationType values.
             if ( stationName == "Stronghold Carrier" || stationName.StartsWith( "$EXT_PANEL_ColonisationShip" ) )

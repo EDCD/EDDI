@@ -79,7 +79,7 @@ namespace EddiDataDefinitions
         // This allows properties to be deserialized to the class but not serialized to EDDN.
         [JsonProperty("id")]
         public long EliteID { get; set; }
-        public bool ShouldSerializeEliteID() { return false; }
+        public static bool ShouldSerializeEliteID () => false;
 
         // The EDDN schema does not currently permit category.
         [JsonProperty]
@@ -96,7 +96,7 @@ namespace EddiDataDefinitions
         // The Frontier API uses `categoryName` rather than `category`, we normalize that here.
         [JsonProperty] // As a private property, it can be deserialized but shall not be serialized to EDDN.
         private protected string categoryName { set => category = value; }
-        public bool ShouldSerializecategory() { return false; }
+        public static bool ShouldSerializecategory () => false;
 
         [JsonProperty]
         public bool rare
@@ -113,20 +113,21 @@ namespace EddiDataDefinitions
         }
         [JsonIgnore]
         private bool _rare;
-        public bool ShouldSerializerare() { return false; }
+        public static bool ShouldSerializerare() => false;
 
         [JsonProperty]
-        public HashSet<string> statusFlags { get; set; } = new HashSet<string>();
+        public HashSet<string> statusFlags { get; set; } = [ ];
         public bool ShouldSerializestatusFlags()
         {
             // Don't serialize status flags if they are empty as the schema requires that if present they contain at least 1 element
-            return (statusFlags != null && statusFlags.Count > 0);
+            return statusFlags != null && statusFlags.Count > 0;
         }
 
         public bool IsMarketable()
         {
             // Don't serialize non-marketable commodities such as drones / limpets
-            if (category.Replace("-","").ToLowerInvariant() == "nonmarketable" || edName.ToLowerInvariant() == "drones")
+            if ( string.Equals( category.Replace( "-", "" ), "nonmarketable", StringComparison.OrdinalIgnoreCase ) ||
+                 string.Equals( edName, "drones", StringComparison.OrdinalIgnoreCase ) )
             {
                 return false;
             }
@@ -158,15 +159,12 @@ namespace EddiDataDefinitions
             {
                 Logging.Debug($"Converting MarketInfoItem to CommodityMarketQuote: ", this);
                 var definition = CommodityDefinition.CommodityDefinitionFromEliteID(EliteID, edName) ?? CommodityDefinition.FromEDName(edName);
-                if (edName.ToLowerInvariant() != definition?.edname?.ToLowerInvariant())
+                if (!string.Equals( edName, definition?.edname, StringComparison.OrdinalIgnoreCase ) )
                 {
                     // Unknown or obsolete commodity definition; report the full object so that we can update the definitions 
                     Logging.Info("Commodity definition error: " + edName, JsonConvert.SerializeObject(this));
                 }
-                if (definition is null)
-                {
-                    definition = new CommodityDefinition(EliteID, edName, CommodityCategory.FromEDName(category), meanPrice);
-                }
+                definition ??= new CommodityDefinition(EliteID, edName, CommodityCategory.FromEDName(category), meanPrice);
                 var quote = new CommodityMarketQuote(definition)
                 {
                     avgprice = meanPrice,
@@ -230,8 +228,8 @@ namespace EddiDataDefinitions
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            JToken token = JToken.Load(reader);
-            if (token.Type == JTokenType.Float || token.Type == JTokenType.Integer)
+            var token = JToken.Load(reader);
+            if (token.Type is JTokenType.Float or JTokenType.Integer)
             {
                 return token.ToObject<int>();
             }

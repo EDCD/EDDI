@@ -7,23 +7,18 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class SynthesisedEvent : Event
+    public class SynthesisedEvent ( DateTime timestamp, string synthesis, List<MaterialAmount> materials )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Synthesised";
         public const string DESCRIPTION = "Triggered when you synthesise something from materials";
         public const string SAMPLE = "{ \"timestamp\":\"2016-09-21T14:17:32Z\", \"event\":\"Synthesis\", \"Name\":\"Ammo Basic\", \"Materials\":{ \"sulphur\":2, \"phosphorus\":1 } }";
 
         [PublicAPI("The thing that has been synthesised")]
-        public string synthesis { get; private set; }
+        public string synthesis { get; private set; } = synthesis;
 
         [PublicAPI("Materials used in the synthesis (as objects)")]
-        public List<MaterialAmount> materials { get; private set; }
-
-        public SynthesisedEvent(DateTime timestamp, string synthesis, List<MaterialAmount> materials) : base(timestamp, NAME)
-        {
-            this.synthesis = synthesis;
-            this.materials = materials;
-        }
+        public List<MaterialAmount> materials { get; private set; } = materials;
 
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {

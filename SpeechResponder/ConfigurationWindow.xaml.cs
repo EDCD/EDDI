@@ -15,7 +15,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Input;
 using Utilities;
 
 namespace EddiSpeechResponder
@@ -37,7 +36,7 @@ namespace EddiSpeechResponder
             }
         }
 
-        public IEnumerable<int?> Priorities => SpeechService.Instance.speechQueue.priorities;
+        public static IEnumerable<int?> Priorities => SpeechService.Instance.speechQueue.priorities;
 
         private SpeechResponder SpeechResponder { get; }
 
@@ -48,7 +47,7 @@ namespace EddiSpeechResponder
         private static IEnumerable<string> customFunctionNames { get; set; }
         private static IEnumerable<MetaVariable> standardMetaVariables { get; set; } = new List<MetaVariable>();
 
-        private IEnumerable<MetaVariable> GetMetaVariables ( string scriptName = null )
+        private static List<MetaVariable> GetMetaVariables ( string scriptName = null )
         {
             var vars = new List<MetaVariable>();
 
@@ -215,8 +214,8 @@ namespace EddiSpeechResponder
 
         private static Script getScriptFromContext(object sender)
         {
-            if (!(sender is FrameworkElement element)) { return null; }
-            if (!(element.DataContext is Script script)) { return null; }
+            if (sender is not FrameworkElement element) { return null; }
+            if (element.DataContext is not Script script) { return null; }
             return script;
         }
 
@@ -298,7 +297,7 @@ namespace EddiSpeechResponder
                 if (!SpeechService.Instance.eddiSpeaking)
                 {
                     var script = getScriptFromContext(sender);
-                    SpeechResponder responder = (SpeechResponder)EDDI.Instance.ObtainResponder("Speech Responder");
+                    var responder = (SpeechResponder)EDDI.Instance.ObtainResponder("Speech Responder");
                     responder?.TestScriptAsync( script.Name, SpeechResponder.CurrentPersonality.Scripts );
                 }
                 else
@@ -331,9 +330,9 @@ namespace EddiSpeechResponder
 
             EDDI.Instance.SpeechResponderModalWait = true;
             var script = getScriptFromContext(sender);
-            string messageBoxText = string.Format(Properties.SpeechResponder.delete_script_message, script.Name);
-            string caption = Properties.SpeechResponder.delete_script_caption;
-            MessageBoxResult result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            var messageBoxText = string.Format(Properties.SpeechResponder.delete_script_message, script.Name);
+            var caption = Properties.SpeechResponder.delete_script_caption;
+            var result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
             switch (result)
             {
                 case MessageBoxResult.Yes:
@@ -346,7 +345,7 @@ namespace EddiSpeechResponder
                             ? string.Empty
                             : string.Join( "; ",
                                 kv.Value.includes.Split( ';' ).Select( s => s.Trim() )
-                                    .Except( new[] { script.Name } ) ) );
+                                    .Except( [ script.Name ] ) ) );
 
                     SpeechResponder.SavePersonality();
                     scriptsView.Refresh();
@@ -362,9 +361,9 @@ namespace EddiSpeechResponder
             // Resetting the script resets it to its value in the default personality
             if (SpeechResponder.CurrentPersonality.Scripts.ContainsKey(script.Name))
             {
-                string messageBoxText = string.Format(Properties.SpeechResponder.reset_script_message, script.Name);
-                string caption = Properties.SpeechResponder.reset_script_button;
-                MessageBoxResult result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                var messageBoxText = string.Format(Properties.SpeechResponder.reset_script_message, script.Name);
+                var caption = Properties.SpeechResponder.reset_script_button;
+                var result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 switch (result)
                 {
                     case MessageBoxResult.Yes:
@@ -427,9 +426,9 @@ namespace EddiSpeechResponder
         {
             if (SpeechResponder?.Personalities is null) { return; }
             EDDI.Instance.SpeechResponderModalWait = true;
-            string messageBoxText = string.Format(Properties.SpeechResponder.delete_personality_message, SpeechResponder.CurrentPersonality.Name);
-            string caption = Properties.SpeechResponder.delete_personality_caption;
-            MessageBoxResult result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            var messageBoxText = string.Format(Properties.SpeechResponder.delete_personality_message, SpeechResponder.CurrentPersonality.Name);
+            var caption = Properties.SpeechResponder.delete_personality_caption;
+            var result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
             switch (result)
             {
                 case MessageBoxResult.Yes:
@@ -457,8 +456,8 @@ namespace EddiSpeechResponder
                     // Register the new hotkey configuration
                     foreach ( var actionKeyGesture in window.HotkeyActionCollection.HotkeyActions )
                     {
-                        string name = actionKeyGesture.Name;
-                        KeyGesture gesture = actionKeyGesture.KeyGesture;
+                        var name = actionKeyGesture.Name;
+                        var gesture = actionKeyGesture.KeyGesture;
 
                         // Unregister the old hotkey if it exists
                         hkm.UnregisterHotkey( name );
@@ -568,7 +567,7 @@ namespace EddiSpeechResponder
         private bool scriptsData_Filter(object sender)
         {
             if (string.IsNullOrEmpty(filterTxt)) { return true; }
-            if (!(sender is Script script)) { return true; }
+            if (sender is not Script script) { return true; }
 
             // If filter applies, filter items.
             var lowerFilterTxt = filterTxt.ToLowerInvariant();

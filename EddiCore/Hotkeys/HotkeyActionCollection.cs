@@ -17,7 +17,7 @@ namespace EddiCore.Hotkeys
         public readonly List<HotkeyAction> HotkeyActions;
 
         private readonly Dictionary<string, HotkeyAction> byName;
-        private readonly Dictionary<(Key key, ModifierKeys mods), HotkeyAction> byGesture = new Dictionary<(Key, ModifierKeys), HotkeyAction>();
+        private readonly Dictionary<(Key key, ModifierKeys mods), HotkeyAction> byGesture = [ ];
 
         private void RebuildGestureIndex ()
         {

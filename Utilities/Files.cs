@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -267,7 +268,7 @@ namespace Utilities
                 Logging.Debug($"IO write exception for {fileName}, {attempts} attempts left", ex);
                 return true; // We have failed to write the file and will need to make another attempt
             }
-            catch (IOException ex) when (ex.HResult == unchecked((int)0x80070027) || ex.HResult == unchecked((int)0x80070070)) // Not enough disk space
+            catch (IOException ex) when (ex.HResult is unchecked((int)0x80070027) or unchecked((int)0x80070070)) // Not enough disk space
             {
                 Logging.Warn($"IO write exception for {fileName}, {ex.Message}", ex);
             }
@@ -278,115 +279,16 @@ namespace Utilities
             // We have either successfully written to the file or encountered an exception that would not benefit from another attempt
             return false;
         }
-
-        public static string FromSavedGames(string filename)
-        {
-            string data = null;
-            var directory = GetSavedGamesDir();
-            if (directory == null || directory.Trim() == "")
-            {
-                return null;
-            }
-
-            FileInfo fileInfo = null;
-            try
-            {
-                fileInfo = FileInfo(directory, filename);
-            }
-            catch (NotSupportedException nsex)
-            {
-                Logging.Error($"Directory '{directory}' not supported: ", nsex);
-            }
-
-            if (fileInfo != null)
-            {
-                var maxTries = 6;
-                while (IsFileLocked(fileInfo))
-                {
-                    Thread.Sleep(100);
-                    maxTries--;
-                    if (maxTries == 0)
-                    {
-                        Logging.Info($"Unable to open Elite Dangerous '{filename}' file");
-                        return null;
-                    }
-                }
-
-                using (var fs = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                using (var reader = new StreamReader(fs, Encoding.UTF8))
-                {
-                    fs.Seek(0, SeekOrigin.Begin);
-                    data = reader.ReadToEnd();
-                }
-            }
-            return data;
-        }
-
-        public static async Task<string> FromSavedGamesAsync (
-            string filename,
-            int maxAttempts = 10,
-            int delayMs = 200 )
-        {
-            var directory = GetSavedGamesDir();
-            if ( string.IsNullOrWhiteSpace( directory ) )
-            {
-                return null;
-            }
-
-            FileInfo fileInfo;
-            try
-            {
-                fileInfo = FileInfo( directory, filename );
-            }
-            catch ( NotSupportedException ex )
-            {
-                Logging.Error( $"Directory '{directory}' not supported: ", ex );
-                return null;
-            }
-
-            if ( fileInfo is null )
-            {
-                return null;
-            }
-
-            while ( maxAttempts-- > 0 )
-            {
-                // Wait for file to unlock
-                if ( !IsFileLocked( fileInfo ) )
-                {
-                    try
-                    {
-                        using ( var fs = new FileStream(
-                                   fileInfo.FullName,
-                                   FileMode.Open,
-                                   FileAccess.Read,
-                                   FileShare.ReadWrite ) )
-                        using ( var reader = new StreamReader( fs, Encoding.UTF8 ) )
-                        {
-                            fs.Seek( 0, SeekOrigin.Begin );
-                            return await reader.ReadToEndAsync().ConfigureAwait( false );
-                        }
-                    }
-                    catch ( IOException )
-                    {
-                        // File became locked again — retry
-                    }
-                }
-
-                await Task.Delay( delayMs ).ConfigureAwait( false );
-            }
-
-            Logging.Info( $"Unable to open Elite Dangerous '{filename}' file after {maxAttempts} retries" );
-            return null;
-        }
-
+        
         public static async Task<(string raw, T parsed)> FromSavedGamesAsync<T> (
                 string filename, Func<string, (DateTime? ts, T parsed)> extract, DateTime compareTo, 
                 double maxAgeSeconds = 5, int maxAttempts = 10, int delayMs = 200 )
         {
-            var directory = GetSavedGamesDir();
+            var directory = GetEliteSavedGamesDir();
             if ( string.IsNullOrWhiteSpace( directory ) )
+            {
                 return (null, default);
+            }
 
             FileInfo fileInfo;
             try
@@ -400,15 +302,18 @@ namespace Utilities
             }
 
             if ( fileInfo is null )
+            {
                 return (null, default);
+            }
 
+            var exceptions = new List<Exception>();
             while ( maxAttempts-- > 0 )
             {
                 if ( !IsFileLocked( fileInfo ) )
                 {
                     try
                     {
-                        using ( var fs = new FileStream( fileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite ) )
+                        await using ( var fs = new FileStream( fileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite ) )
                         {
                             using ( var reader = new StreamReader( fs, Encoding.UTF8 ) )
                             {
@@ -426,8 +331,9 @@ namespace Utilities
                             }
                         }
                     }
-                    catch ( IOException )
+                    catch ( IOException ex )
                     {
+                        exceptions.Add( ex );
                         // retry
                     }
                 }
@@ -435,7 +341,7 @@ namespace Utilities
                 await Task.Delay( delayMs ).ConfigureAwait( false );
             }
 
-            Logging.Info( $"Unable to open Elite Dangerous '{filename}' file after retries" );
+            Logging.Warn( $"Unable to open Elite Dangerous '{filename}' file after {maxAttempts} retries", exceptions );
             return (null, default);
         }
 
@@ -461,23 +367,35 @@ namespace Utilities
             catch { return null; }
         }
 
-        private static string GetSavedGamesDir()
+        public static string GetEliteSavedGamesDir ()
         {
-            var result = NativeMethods.SHGetKnownFolderPath(new Guid("4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4"), 0, new IntPtr(0), out var path);
-            if (result >= 0)
+            if ( RuntimeInformation.IsOSPlatform( OSPlatform.Windows ) )
             {
-                return Marshal.PtrToStringUni(path) + @"\Frontier Developments\Elite Dangerous";
+                var result = NativeMethods.SHGetKnownFolderPath( new Guid( "4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4" ), 0,
+                    new IntPtr( 0 ), out var path );
+                if ( result >= 0 )
+                {
+                    return Marshal.PtrToStringUni( path ) + @"\Frontier Developments\Elite Dangerous";
+                }
+
+                throw new ExternalException( "Failed to find the saved games directory.", result );
             }
-            else
+
+            if ( RuntimeInformation.IsOSPlatform( OSPlatform.Linux ) ||
+                 RuntimeInformation.IsOSPlatform( OSPlatform.OSX ) )
             {
-                throw new ExternalException("Failed to find the saved games directory.", result);
+                throw new NotImplementedException();
             }
+
+            throw new PlatformNotSupportedException( "Unsupported operating system." );
         }
 
         private abstract class NativeMethods
         {
-            [DllImport("Shell32.dll")]
-            internal static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)] Guid rfid, uint dwFlags, IntPtr hToken, out IntPtr ppszPath);
+#pragma warning disable SYSLIB1054 // We need to use DLL Import for marshalling.
+            [DllImport( "Shell32.dll" )]
+            internal static extern int SHGetKnownFolderPath ( [MarshalAs( UnmanagedType.LPStruct )] Guid rfid, uint dwFlags, IntPtr hToken, out IntPtr ppszPath );
+#pragma warning restore SYSLIB1054
         }
 
         public static bool IsFileLocked(FileInfo file)

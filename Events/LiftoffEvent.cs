@@ -6,65 +6,63 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class LiftoffEvent : Event
+    public class LiftoffEvent (
+        DateTime timestamp,
+        decimal? longitude,
+        decimal? latitude,
+        string system,
+        ulong systemAddress,
+        string body,
+        int? bodyId,
+        bool? onStation,
+        bool? onPlanet,
+        bool? taxi,
+        bool? multicrew,
+        bool playercontrolled,
+        SignalSource nearestDestination )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Liftoff";
         public const string DESCRIPTION = "Triggered when your ship lifts off from a planet's surface";
         public const string SAMPLE = "{ \"timestamp\":\"2021-05-01T21:45:52Z\", \"event\":\"Liftoff\", \"PlayerControlled\":true, \"Taxi\":false, \"Multicrew\":false, \"StarSystem\":\"Nervi\", \"SystemAddress\":2518721481067, \"Body\":\"Nervi 2 a\", \"BodyID\":17, \"OnStation\":false, \"OnPlanet\":true, \"Latitude\":40.741573, \"Longitude\":65.081490 }";
 
         [PublicAPI("The name of the star system from where the ship has lifted off")]
-        public string systemname { get; private set; }
+        public string systemname { get; private set; } = system;
 
         [PublicAPI( "The numeric system address of the star system from where the ship has lifted off" )]
-        public ulong systemAddress { get; private set; }
+        public ulong systemAddress { get; private set; } = systemAddress;
 
         [PublicAPI("The name of the body from where the ship has lifted off")]
-        public string bodyname { get; private set; }
+        public string bodyname { get; private set; } = body;
 
         [PublicAPI( "The numeric ID of the body from where the ship has lifted off" )]
-        public int? bodyId { get; private set; }
+        public int? bodyId { get; private set; } = bodyId;
 
         [PublicAPI("The longitude from where the ship has lifted off")]
-        public decimal? longitude { get; private set; }
+        public decimal? longitude { get; private set; } = longitude;
 
         [PublicAPI("The latitude from where the ship has lifted off")]
-        public decimal? latitude { get; private set; }
+        public decimal? latitude { get; private set; } = latitude;
 
         [PublicAPI("True if the ship is a transport (e.g. taxi or dropship)")]
-        public bool? taxi { get; private set; }
+        public bool? taxi { get; private set; } = taxi;
 
         [PublicAPI("True if the ship is belongs to another player")]
-        public bool? multicrew { get; private set; }
+        public bool? multicrew { get; private set; } = multicrew;
 
         [PublicAPI("True if the ship is controlled by the player")]
-        public bool playercontrolled { get; private set; }
+        public bool playercontrolled { get; private set; } = playercontrolled;
 
         [PublicAPI("The nearest location from where the ship has lifted off")]
         public string nearestdestination => nearestDestination.localizedName;
 
         // Not intended to be user facing
 
-        public SignalSource nearestDestination { get; private set; }
+        public SignalSource nearestDestination { get; private set; } = nearestDestination;
 
-        public bool? onstation { get; private set; } // Always false, since `Liftoff` is currently only ever triggered when lifting off from a body
+        public bool? onstation { get; private set; } = onStation; // Always false, since `Liftoff` is currently only ever triggered when lifting off from a body
 
-        public bool? onplanet { get; private set; } // Always true, since `Liftoff` is currently only ever triggered when lifting off from a body
-
-        public LiftoffEvent(DateTime timestamp, decimal? longitude, decimal? latitude, string system, ulong systemAddress, string body, int? bodyId, bool? onStation, bool? onPlanet, bool? taxi, bool? multicrew, bool playercontrolled, SignalSource nearestDestination) : base(timestamp, NAME)
-        {
-            this.longitude = longitude;
-            this.latitude = latitude;
-            this.systemname = system;
-            this.systemAddress = systemAddress;
-            this.bodyname = body;
-            this.bodyId = bodyId;
-            this.onstation = onStation;
-            this.onplanet = onPlanet;
-            this.taxi = taxi;
-            this.multicrew = multicrew;
-            this.playercontrolled = playercontrolled;
-            this.nearestDestination = nearestDestination;
-        }
+        public bool? onplanet { get; private set; } = onPlanet; // Always true, since `Liftoff` is currently only ever triggered when lifting off from a body
 
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {
@@ -86,7 +84,7 @@ namespace EddiEvents
             var nearestdestination = JsonParsing.getString(data, "NearestDestination");
             var nearestDestination = SignalSource.FromEDName(nearestdestination) ?? new SignalSource();
             var localizedName = JsonParsing.getString(data, "SignalName_Localised");
-            if ( !string.IsNullOrEmpty( localizedName ) && !localizedName.Contains( "$" ) )
+            if ( !string.IsNullOrEmpty( localizedName ) && !localizedName.Contains( '$' ) )
             {
                 nearestDestination.fallbackLocalizedName = localizedName;
             }

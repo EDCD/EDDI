@@ -129,23 +129,34 @@ namespace EddiDataProviderService
 
         public static StarSystemSqLiteRepository Create ( bool isUnitTesting = false )
         {
-            var repository = new StarSystemSqLiteRepository(isUnitTesting);
-            repository.CreateOrUpdateDatabase();
-            return repository;
+            try
+            {
+                var repository = new StarSystemSqLiteRepository(isUnitTesting);
+                repository.CreateOrUpdateDatabase();
+                return repository;
+            }
+            catch (DllNotFoundException dllEx)
+            {
+                Logging.Error( "SQLite native library not found. The application will continue without database access for star systems.", dllEx );
+
+                // Return a repository instance that will handle database operations gracefully
+                // This allows the application to continue functioning with degraded functionality
+                var repository = new StarSystemSqLiteRepository(isUnitTesting);
+                return repository;
+            }
         }
 
         public async Task<DatabaseStarSystem> GetSqlStarSystemAsync ( ulong systemAddress, CancellationToken cancellationToken )
         {
             if ( systemAddress <= 0 ) { return null; }
 
-            return ( await GetSqlStarSystemsAsync( new[] { systemAddress }, cancellationToken ).ConfigureAwait(false) )?.FirstOrDefault();
+            return ( await GetSqlStarSystemsAsync( [ systemAddress ], cancellationToken ).ConfigureAwait(false) )?.FirstOrDefault();
         }
 
         public async Task<List<DatabaseStarSystem>> GetSqlStarSystemsAsync ( ulong[] systemAddresses, CancellationToken cancellationToken )
         {
             var results = new List<DatabaseStarSystem>();
-            if ( !File.Exists( DbFile ) ) { return results; }
-            if ( !systemAddresses.Any() ) { return results; }
+            if ( !File.Exists( DbFile ) || systemAddresses.Length == 0 ) { return results; }
             results = await ReadStarSystemsAsync( systemAddresses, cancellationToken ).ConfigureAwait(false);
             FixLegacyDbStarSystemData(results);
             return results;
@@ -154,8 +165,7 @@ namespace EddiDataProviderService
         public async Task<List<DatabaseStarSystem>> GetSqlStarSystemsAsync ( string[] systemNames, CancellationToken cancellationToken )
         {
             var results = new List<DatabaseStarSystem>();
-            if ( !File.Exists( DbFile ) ) { return results; }
-            if ( !systemNames.Any() ) { return results; }
+            if ( !File.Exists( DbFile ) || systemNames.Length == 0 ) { return results; }
             results = await ReadStarSystemsAsync( systemNames, cancellationToken ).ConfigureAwait(false);
             FixLegacyDbStarSystemData( results );
             return results;
@@ -188,17 +198,17 @@ namespace EddiDataProviderService
             var results = new HashSet<string>();
             try
             {
-                using ( var con = SimpleDbConnection() )
+                await using ( var con = SimpleDbConnection() )
                 {
                     await con.OpenAsync( cancellationToken ).ConfigureAwait( false );
-                    using ( var transaction = con.BeginTransaction() )
+                    await using ( var transaction = con.BeginTransaction() )
                     {
-                        using ( var cmd = con.CreateCommand() )
+                        await using ( var cmd = con.CreateCommand() )
                         {
                             cmd.Transaction = transaction;
                             cmd.CommandText = SELECT_NAME_SQL + WHERE_NAME_STARTSWITH;
                             cmd.Parameters.AddWithValue( "@name", $"{startingWith}%" );
-                            using ( var rdr = await cmd.ExecuteReaderAsync( cancellationToken ).ConfigureAwait( false ) )
+                            await using ( var rdr = await cmd.ExecuteReaderAsync( cancellationToken ).ConfigureAwait( false ) )
                             {
                                 while ( await rdr.ReadAsync( cancellationToken ).ConfigureAwait(false) )
                                 {
@@ -216,26 +226,30 @@ namespace EddiDataProviderService
             }
             catch ( SQLiteException sqle )
             {
-                Logging.Warn( $"An error occurred while fetching star system names starting with '{startingWith}': {sqle.Message}" );
+                Logging.Warn( $"An error occurred while fetching star system names starting with '{startingWith}': {sqle.Message}", sqle );
+            }
+            catch ( DllNotFoundException dllEx )
+            {
+                Logging.Warn( $"SQLite database unavailable: {dllEx.Message}", dllEx );
             }
 
             return results.ToList();
         }
 
         [ NotNull, ItemNotNull ]
-        private async Task<List<DatabaseStarSystem>> ReadStarSystemsAsync ( ulong[] systemAddresses, CancellationToken cancellationToken )
+        private static async Task<List<DatabaseStarSystem>> ReadStarSystemsAsync ( ulong[] systemAddresses, CancellationToken cancellationToken )
         {
             var results = new List<DatabaseStarSystem>();
-            if ( !systemAddresses.Any() ) { return results; }
+            if ( systemAddresses.Length == 0 ) { return results; }
 
-            using ( var con = SimpleDbConnection() )
+            await using ( var con = SimpleDbConnection() )
             {
                 try
                 {
                     await con.OpenAsync( cancellationToken ).ConfigureAwait( false );
-                    using ( var cmd = new SQLiteCommand( con ) )
+                    await using ( var cmd = new SQLiteCommand( con ) )
                     {
-                        using ( var transaction = con.BeginTransaction() )
+                        await using ( var transaction = con.BeginTransaction() )
                         {
                             foreach ( var systemAddress in systemAddresses.Where( systemAddress => systemAddress > 0 ) )
                             {
@@ -272,54 +286,65 @@ namespace EddiDataProviderService
                 {
                     // Task cancelled, nothing to do here.
                 }
+                catch ( DllNotFoundException dllEx )
+                {
+                    Logging.Warn( $"SQLite database unavailable when reading star systems: {dllEx.Message}" );
+                }
             }
 
             return results.RemoveNulls().ToList();
         }
 
         [NotNull, ItemNotNull]
-        private async Task<List<DatabaseStarSystem>> ReadStarSystemsAsync ( string[] systemNames, CancellationToken cancellationToken )
+        private static async Task<List<DatabaseStarSystem>> ReadStarSystemsAsync ( string[] systemNames, CancellationToken cancellationToken )
         {
             var results = new List<DatabaseStarSystem>();
-            if ( !systemNames.Any() ) { return results; }
+            if ( systemNames.Length == 0 ) { return results; }
 
-            using ( var con = SimpleDbConnection() )
+            try
             {
-                await con.OpenAsync( cancellationToken ).ConfigureAwait(false);
-                using ( var cmd = new SQLiteCommand( con ) )
+                await using ( var con = SimpleDbConnection() )
                 {
-                    using ( var transaction = con.BeginTransaction() )
+                    await con.OpenAsync( cancellationToken ).ConfigureAwait(false);
+                    await using ( var cmd = new SQLiteCommand( con ) )
                     {
-                        foreach ( var systemName in systemNames.Where( sName => !string.IsNullOrEmpty(sName) ) )
+                        await using ( var transaction = con.BeginTransaction() )
                         {
-                            try
+                            foreach ( var systemName in systemNames.Where( sName => !string.IsNullOrEmpty(sName) ) )
                             {
-                                cmd.Parameters.Clear();
-                                cmd.Parameters.AddWithValue( "@name", systemName );
-                                cmd.CommandText = SELECT_SQL + WHERE_NAME;
-                                var result = await ReadStarSystemEntryAsync( cmd, cancellationToken ).ConfigureAwait(false);
-                                if ( result != null )
+                                try
                                 {
-                                    results.Add( result );
+                                    cmd.Parameters.Clear();
+                                    cmd.Parameters.AddWithValue( "@name", systemName );
+                                    cmd.CommandText = SELECT_SQL + WHERE_NAME;
+                                    var result = await ReadStarSystemEntryAsync( cmd, cancellationToken ).ConfigureAwait(false);
+                                    if ( result != null )
+                                    {
+                                        results.Add( result );
+                                    }
+                                }
+                                catch (InvalidOperationException ioe )
+                                {
+                                    Logging.Warn( $"Problem reading data for star system '{systemName}' from database.", ioe );
+                                }
+                                catch ( SQLiteException sqle )
+                                {
+                                    Logging.Warn( $"Problem reading data for star system '{systemName}' from database.", sqle );
                                 }
                             }
-                            catch (InvalidOperationException ioe )
-                            {
-                                Logging.Warn( $"Problem reading data for star system '{systemName}' from database.", ioe );
-                            }
-                            catch ( SQLiteException sqle )
-                            {
-                                Logging.Warn( $"Problem reading data for star system '{systemName}' from database.", sqle );
-                            }
+                            transaction.Commit();
                         }
-                        transaction.Commit();
                     }
                 }
+            }
+            catch ( DllNotFoundException dllEx )
+            {
+                Logging.Warn( $"SQLite database unavailable when reading star systems by name: {dllEx.Message}" );
             }
             return results.RemoveNulls().ToList();
         }
 
-        private async Task<List<DatabaseStarSystem>> ReadStarSystemsAsync( IList<StarSystem> starSystems, CancellationToken cancellationToken )
+        private static async Task<List<DatabaseStarSystem>> ReadStarSystemsAsync( IList<StarSystem> starSystems, CancellationToken cancellationToken )
         {
             var results = new List<DatabaseStarSystem>();
             if ( starSystems is null || !starSystems.Any()) { return results; }
@@ -328,7 +353,7 @@ namespace EddiDataProviderService
             return await ReadStarSystemsAsync( systemAddresses, cancellationToken ).ConfigureAwait(false);
         }
 
-        private async Task<DatabaseStarSystem> ReadStarSystemEntryAsync ( SQLiteCommand cmd, CancellationToken cancellationToken )
+        private static async Task<DatabaseStarSystem> ReadStarSystemEntryAsync ( SQLiteCommand cmd, CancellationToken cancellationToken )
         {
             ulong? systemAddress = null;
             var systemName = string.Empty;
@@ -379,7 +404,7 @@ namespace EddiDataProviderService
                     : (long?)rdr.GetInt64(i) }
             };
 
-            using ( var rdr = await cmd.ExecuteReaderAsync( cancellationToken ).ConfigureAwait( false ) )
+            await using ( var rdr = await cmd.ExecuteReaderAsync( cancellationToken ).ConfigureAwait( false ) )
             {
                 if ( await rdr.ReadAsync( cancellationToken ).ConfigureAwait( false ) )
                 {
@@ -462,19 +487,19 @@ namespace EddiDataProviderService
             await updateStarSystemsAsync(update.ToImmutableList() ).ConfigureAwait(false);
         }
 
-        private async Task insertStarSystemsAsync(ImmutableList<StarSystem> systems)
+        private static async Task insertStarSystemsAsync(ImmutableList<StarSystem> systems)
         {
             if ( systems.Count == 0)
             {
                 return;
             }
 
-            using ( var con = SimpleDbConnection() )
+            await using ( var con = SimpleDbConnection() )
             {
                 await con.OpenAsync().ConfigureAwait( false );
-                using ( var cmd = new SQLiteCommand( con ) )
+                await using ( var cmd = new SQLiteCommand( con ) )
                 {
-                    using ( var transaction = con.BeginTransaction() )
+                    await using ( var transaction = con.BeginTransaction() )
                     {
                         try
                         {
@@ -503,24 +528,28 @@ namespace EddiDataProviderService
                         {
                             LogAndRollbackSqlLiteException( transaction, e );
                         }
+                        catch ( DllNotFoundException dllEx )
+                        {
+                            Logging.Warn( $"SQLite database unavailable. Unable to insert star systems: {dllEx.Message}" );
+                        }
                     }
                 }
             }
         }
 
-        private async Task updateStarSystemsAsync ( IImmutableList<StarSystem> systems )
+        private static async Task updateStarSystemsAsync ( ImmutableList<StarSystem> systems )
         {
             if ( systems.Count == 0 )
             {
                 return;
             }
 
-            using ( var con = SimpleDbConnection() )
+            await using ( var con = SimpleDbConnection() )
             {
                 await con.OpenAsync().ConfigureAwait( false );
-                using ( var cmd = new SQLiteCommand( con ) )
+                await using ( var cmd = new SQLiteCommand( con ) )
                 {
-                    using ( var transaction = con.BeginTransaction() )
+                    await using ( var transaction = con.BeginTransaction() )
                     {
                         try
                         {
@@ -559,24 +588,28 @@ namespace EddiDataProviderService
                         {
                             LogAndRollbackSqlLiteException( transaction, ex );
                         }
+                        catch ( DllNotFoundException dllEx )
+                        {
+                            Logging.Warn( $"SQLite database unavailable. Unable to update star systems: {dllEx.Message}" );
+                        }
                     }
                 }
             }
         }
 
-        private async Task deleteStarSystemsAsync ( ImmutableList<StarSystem> systems )
+        private static async Task deleteStarSystemsAsync ( ImmutableList<StarSystem> systems )
         {
             if ( systems.Count == 0 )
             {
                 return;
             }
 
-            using ( var con = SimpleDbConnection() )
+            await using ( var con = SimpleDbConnection() )
             {
                 await con.OpenAsync().ConfigureAwait( false );
-                using ( var cmd = new SQLiteCommand( con ) )
+                await using ( var cmd = new SQLiteCommand( con ) )
                 {
-                    using ( var transaction = con.BeginTransaction() )
+                    await using ( var transaction = con.BeginTransaction() )
                     {
                         try
                         {
@@ -606,6 +639,10 @@ namespace EddiDataProviderService
                         catch ( SQLiteException ex )
                         {
                             LogAndRollbackSqlLiteException( transaction, ex );
+                        }
+                        catch ( DllNotFoundException dllEx )
+                        {
+                            Logging.Warn( $"SQLite database unavailable. Unable to delete star systems: {dllEx.Message}" );
                         }
                     }
                 }
@@ -719,7 +756,7 @@ namespace EddiDataProviderService
         }
 
         /// <summary> Parameters like `DISTINCT` cannot be set on columns by this method, the table would need to be recreated instead. </summary>
-        private void AddColumnIfMissing(SQLiteConnection con, string columnName, string alterTableCmd )
+        private static void AddColumnIfMissing(SQLiteConnection con, string columnName, string alterTableCmd )
         {
             // 
             if ( !string.IsNullOrEmpty( alterTableCmd ) )
@@ -758,7 +795,7 @@ namespace EddiDataProviderService
             }
         }
 
-        private void LogAndRollbackSqlLiteException ( SQLiteTransaction transaction, SQLiteException ex )
+        private static void LogAndRollbackSqlLiteException ( SQLiteTransaction transaction, SQLiteException ex )
         {
             Logging.Warn( "SQLite error: ", ex.ToString() );
 

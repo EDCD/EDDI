@@ -31,31 +31,19 @@ namespace EddiDataDefinitions
         }
     }
 
-    public class MissionEffect
+    public class MissionEffect ( string edEffect, string localizedEffect )
     {
-        public string edEffect { get; }
+        public string edEffect { get; } = edEffect;
 
-        public string localizedEffect { get; set; }
-
-        public MissionEffect(string edEffect, string localizedEffect)
-        {
-            this.edEffect = edEffect;
-            this.localizedEffect = localizedEffect;
-        }
+        public string localizedEffect { get; set; } = localizedEffect;
     }
 
-    public class MissionInfluence
+    public class MissionInfluence ( ulong systemAddress, string influence )
     {
         [PublicAPI("The system address of the influenced system")]
-        public ulong systemAddress { get; }
+        public ulong systemAddress { get; } = systemAddress;
 
         [PublicAPI("The influence impact (in plusses)")]
-        public string influence { get; } // e.g. "++"
-
-        public MissionInfluence(ulong systemAddress, string influence)
-        {
-            this.systemAddress = systemAddress;
-            this.influence = influence;
-        }
+        public string influence { get; } = influence; // e.g. "++"
     }
 }

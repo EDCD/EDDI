@@ -5,24 +5,16 @@ namespace EddiDataDefinitions
 {
     public class OrganicSampling
     {
-        private class OrganicSample
+        private class OrganicSample ( ulong systemAddress, int bodyId, decimal latitude, decimal longitude )
         {
-            public readonly ulong systemAddress;
-            public readonly int bodyId;
-            public readonly decimal latitude;
-            public readonly decimal longitude;
-
-            public OrganicSample ( ulong systemAddress, int bodyId, decimal latitude, decimal longitude )
-            {
-                this.systemAddress = systemAddress;
-                this.bodyId = bodyId;
-                this.latitude = latitude;
-                this.longitude = longitude;
-            }
+            public readonly ulong systemAddress = systemAddress;
+            public readonly int bodyId = bodyId;
+            public readonly decimal latitude = latitude;
+            public readonly decimal longitude = longitude;
         }
 
         public Organic organic { get; set; }
-        private List<OrganicSample> _samples { get; } = new List<OrganicSample>();
+        private List<OrganicSample> _samples { get; } = [ ];
         public bool wasNearPriorSample { get; set; }
 
         public void LogSample ( Organic loggedOrganic, ulong systemAddress, int bodyId, decimal latitude, decimal longitude )

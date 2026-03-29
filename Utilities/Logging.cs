@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Utilities.TelemetryService;
@@ -18,8 +17,6 @@ namespace Utilities
 {
     public class Logging : Telemetry
     {
-        private static readonly Regex JsonRegex = new Regex(@"^{.*}$", RegexOptions.Singleline);
-
         private static readonly string LogFile = Constants.DATA_DIR + @"\eddi.log";
 
         public static bool Verbose { get; set; }
@@ -54,7 +51,7 @@ namespace Utilities
         {
             try
             {
-                var sourceThreadID = Thread.CurrentThread.ManagedThreadId;
+                var sourceThreadID = Environment.CurrentManagedThreadId;
                 Task.Run( () =>
                 {
                     Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
@@ -109,7 +106,7 @@ namespace Utilities
 
                 if ( data.Type == JTokenType.String )
                 {
-                    if ( JsonRegex.IsMatch( data.ToString() ) )
+                    if ( GeneratedRegex.JsonWrappedRegex().IsMatch( data.ToString() ) )
                     {
                         var jToken = JToken.Parse( data.ToString() );
                         data = jToken;
@@ -146,7 +143,7 @@ namespace Utilities
             return wrappedData;
         }
 
-        private static readonly object logLock = new object();
+        private static readonly object logLock = new();
 
         private static void WriteToLog ( string timestamp, int? threadID, ErrorLevel errorlevel, string message, object preppedData = null )
         {
@@ -161,7 +158,7 @@ namespace Utilities
                     Console.WriteLine( str );
 
                     // Log to file
-                    using ( StreamWriter file = new StreamWriter( LogFile, true ) )
+                    using ( var file = new StreamWriter( LogFile, true ) )
                     {
                         file.WriteLine( str );
                     }
@@ -210,7 +207,7 @@ namespace Utilities
         public static void IncrementLogs()
         {
             // Ensure dir exists
-            DirectoryInfo directoryInfo = new DirectoryInfo(Constants.DATA_DIR);
+            var directoryInfo = new DirectoryInfo(Constants.DATA_DIR);
             if (!directoryInfo.Exists)
             {
                 Directory.CreateDirectory(Constants.DATA_DIR);
@@ -224,20 +221,23 @@ namespace Utilities
 
                 try
                 {
-                    int.TryParse( filePath.Replace( Constants.DATA_DIR + @"\eddi", "" ).Replace( ".log", "" ),
-                        out int i );
-                    ++i; // Increment our index number
+                    var logName = filePath.Replace( Constants.DATA_DIR + @"\eddi", "" ).Replace( ".log", "" );
+                    var i = 0;
+                    if ( string.IsNullOrEmpty(logName) || int.TryParse( logName, out i ) )
+                    {
+                        ++i; // Increment our index number
 
-                    if ( i >= 10 )
-                    {
-                        File.Delete( filePath );
-                    }
-                    else
-                    {
-                        // This might be our primary log file, so we lock it prior to doing anything with it
-                        lock ( logLock )
+                        if ( i >= 10 )
                         {
-                            File.Move( filePath, Constants.DATA_DIR + @"\eddi" + i + ".log" );
+                            File.Delete( filePath );
+                        }
+                        else
+                        {
+                            // This might be our primary log file, so we lock it prior to doing anything with it
+                            lock ( logLock )
+                            {
+                                File.Move( filePath, Constants.DATA_DIR + @"\eddi" + i + ".log" );
+                            }
                         }
                     }
                 }

@@ -105,7 +105,7 @@ namespace EddiDataDefinitions
         public string engineerExperimentalEffectEDName { get; set; }
 
         [JsonProperty]
-        public List<EngineeringModifier> modifiers { get; set; } = new List<EngineeringModifier>();
+        public List<EngineeringModifier> modifiers { get; set; } = [ ];
 
         [JsonIgnore]
         public string localizedModification => engineermodification?.localizedName;
@@ -173,7 +173,7 @@ namespace EddiDataDefinitions
                 engineerExperimentalEffectEDName = frontierAPIModule.engineerExperimentalEffectEDName;
                 // Details of modifications are not presented the same in `Loadout` events and in the Frontier API,
                 // so we do not update engineered modifiers from the Frontier API data
-                modifiers = modified ? modifiers : new List<EngineeringModifier>();
+                modifiers = modified ? modifiers : [];
             }
         }
 

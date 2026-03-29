@@ -5,7 +5,12 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class PowerCommodityDeliveredEvent : Event
+    public class PowerCommodityDeliveredEvent (
+        DateTime timestamp,
+        Power power,
+        CommodityDefinition commodity,
+        int amount )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Power commodity delivered";
         public const string DESCRIPTION = "Triggered when a commander delivers a commodity to a power";
@@ -18,19 +23,12 @@ namespace EddiEvents
         public string commodity => commodityDefinition?.localizedName ?? "unknown commodity";
 
         [PublicAPI("The amount of the commodity the commander is delivering")]
-        public int amount { get; private set; }
+        public int amount { get; private set; } = amount;
 
         // Not intended to be user facing
 
-        public Power Power { get; private set; }
+        public Power Power { get; private set; } = power;
 
-        public CommodityDefinition commodityDefinition { get; private set; }
-
-        public PowerCommodityDeliveredEvent(DateTime timestamp, Power Power, CommodityDefinition commodity, int amount) : base(timestamp, NAME)
-        {
-            this.Power = Power;
-            this.amount = amount;
-            this.commodityDefinition = commodity;
-        }
+        public CommodityDefinition commodityDefinition { get; private set; } = commodity;
     }
 }

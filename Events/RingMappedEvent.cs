@@ -5,17 +5,25 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class RingMappedEvent : Event
+    public class RingMappedEvent (
+        DateTime timestamp,
+        string ringName,
+        Ring ring,
+        Body body,
+        ulong systemAddress,
+        int probesUsed,
+        int efficiencyTarget )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Ring mapped";
         public const string DESCRIPTION = "Triggered after mapping a ring with the Surface Area Analysis scanner";
         public const string SAMPLE = @"{ ""timestamp"":""2019-06-23T03:16:29Z"", ""event"":""SAAScanComplete"", ""BodyName"":""Kopernik A 3 A Ring"", ""BodyID"":16, ""SystemAddress"":42324886570137, ""ProbesUsed"":1, ""EfficiencyTarget"":0 }";
 
         [PublicAPI("The name of the ring that was mapped")]
-        public string ringname { get; private set; }
+        public string ringname { get; private set; } = ringName;
 
         [PublicAPI( "The numeric system address of the star system where the ring was mapped" )]
-        public ulong systemAddress { get; private set; }
+        public ulong systemAddress { get; private set; } = systemAddress;
 
         [PublicAPI("The reserve level of the ring that was mapped, if the parent body has already been scanned")]
         public string reserves => body?.reserveLevel?.localizedName;
@@ -33,25 +41,15 @@ namespace EddiEvents
         public decimal? outerradius => ring?.outerradius;
 
         [PublicAPI("The number of probes used to map the ring")]
-        public int probesused { get; private set; }
+        public int probesused { get; private set; } = probesUsed;
 
         [PublicAPI("Use less probes than indicated to achieve a mapping efficiency bonus")]
-        public int efficiencytarget { get; private set; }
+        public int efficiencytarget { get; private set; } = efficiencyTarget;
 
         // Not intended to be user facing
 
-        public Ring ring { get; private set; }
+        public Ring ring { get; private set; } = ring;
 
-        public Body body { get; private set; }
-
-        public RingMappedEvent(DateTime timestamp, string ringName, Ring ring, Body body, ulong systemAddress, int probesUsed, int efficiencyTarget) : base(timestamp, NAME)
-        {
-            this.ringname = ringName;
-            this.ring = ring;
-            this.body = body;
-            this.systemAddress = systemAddress;
-            this.probesused = probesUsed;
-            this.efficiencytarget = efficiencyTarget;
-        }
+        public Body body { get; private set; } = body;
     }
 }

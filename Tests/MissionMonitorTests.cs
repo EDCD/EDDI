@@ -17,7 +17,7 @@ namespace Tests
     [TestClass, TestCategory("UnitTests")]
     public class MissionMonitorTests : TestBase
     {
-        private readonly MissionMonitor missionMonitor = new MissionMonitor();
+        private readonly MissionMonitor missionMonitor = new();
 
         [TestInitialize]
         public void StartTestMissionMonitor()
@@ -129,12 +129,12 @@ namespace Tests
             var data = ConfigService.Instance.missionMonitorConfiguration;
 
             var config = ConfigService.FromJson<MissionMonitorConfiguration>(missionConfigJson);
-            Assert.AreEqual(config.missionsCount, config.missions.Count);
+            Assert.HasCount( config.missionsCount, config.missions);
 
             var mission = config.missions.ToList().FirstOrDefault(m => m.missionid == 413563499);
             Assert.IsNotNull(mission);
-            Assert.IsTrue(mission.edTags.Contains("Courier"));
-            Assert.IsTrue(mission.edTags.Contains("Election"));
+            Assert.Contains( "Courier", mission.edTags );
+            Assert.Contains( "Election", mission.edTags );
             Assert.AreEqual("Active", mission.statusEDName);
             Assert.IsFalse(mission.originreturn);
             Assert.IsTrue(mission.legal);
@@ -144,13 +144,13 @@ namespace Tests
 
             mission = config.missions.ToList().FirstOrDefault(m => m.missionid == 413563678);
             Assert.IsNotNull(mission);
-            Assert.IsTrue(mission.edTags.Contains("Delivery"));
+            Assert.Contains( "Delivery", mission.edTags );
             Assert.AreEqual(180, mission.amount);
 
             mission = config.missions.ToList().FirstOrDefault(m => m.missionid == 413563829);
             Assert.IsNotNull(mission);
-            Assert.IsTrue(mission.edTags.Contains("Salvage"));
-            Assert.IsTrue(mission.edTags.Contains("Planet"));
+            Assert.Contains( "Salvage", mission.edTags );
+            Assert.Contains( "Planet", mission.edTags );
             Assert.AreEqual("Active", mission.statusEDName);
             Assert.AreEqual(4, mission.amount);
             Assert.IsTrue(mission.originreturn);
@@ -179,21 +179,21 @@ namespace Tests
             //MissionsEvent
             var line = @"{""timestamp"":""2018-08-25T23:27:21Z"", ""event"":""Missions"", ""Active"":[ { ""MissionID"":413563499, ""Name"":""Mission_Courier_Elections_name"", ""PassengerMission"":false, ""Expires"":48916 }, { ""MissionID"":413563678, ""Name"":""Mission_Delivery_name"", ""PassengerMission"":false, ""Expires"":48917 }, { ""MissionID"":413563829, ""Name"":""Mission_Salvage_Planet_name"", ""PassengerMission"":false, ""Expires"":264552 } ], ""Failed"":[  ], ""Complete"":[  ] }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             missionMonitor._handleMissionsEvent((MissionsEvent)events[0]);
-            Assert.AreEqual(3, missionMonitor.missions.Count);
+            Assert.HasCount( 3, missionMonitor.missions );
             Assert.AreEqual(3, missionMonitor.missions.Count( m => m.statusEDName == "Active" ));
 
             //CargoDepotEvent - 'Shared'
             line = @"{ ""timestamp"":""2018-08-26T02:55:10Z"", ""event"":""CargoDepot"", ""MissionID"":413748365, ""UpdateType"":""WingUpdate"", ""CargoType"":""Gold"", ""Count"":20, ""StartMarketID"":0, ""EndMarketID"":3224777216, ""ItemsCollected"":0, ""ItemsDelivered"":20, ""TotalItemsToDeliver"":54, ""Progress"":0.000000 }";
             events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             missionMonitor._handleCargoDepotEvent((CargoDepotEvent)events[0]);
             var mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 413748365);
-            Assert.AreEqual(4, missionMonitor.missions.Count);
+            Assert.HasCount( 4, missionMonitor.missions );
             Assert.IsNotNull(mission);
-            Assert.IsTrue( mission.edTags.Contains( "Collect" ) );
-            Assert.IsTrue( mission.edTags.Contains( "Wing" ) );
+            Assert.Contains( "Collect", mission.edTags );
+            Assert.Contains( "Wing", mission.edTags );
             Assert.AreEqual("Active", mission.statusEDName);
             Assert.IsTrue(mission.originreturn);
             Assert.IsTrue(mission.wing);
@@ -210,7 +210,7 @@ namespace Tests
             mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 413748365);
             Assert.IsNotNull( mission );
             Assert.AreEqual(MissionStatus.Claim, mission.statusDef);
-            Assert.AreEqual( 4, missionMonitor.missions.Count );
+            Assert.HasCount( 4, missionMonitor.missions );
             Assert.AreEqual( "Gold", mission.CommodityDefinition.invariantName );
             Assert.AreEqual( 0, mission.collected );
             Assert.AreEqual( 54, mission.delivered );
@@ -220,38 +220,38 @@ namespace Tests
             line = @"{ ""timestamp"":""2018-08-27T02:56:36Z"", ""event"":""MissionCompleted"", ""Faction"":""Sanctuary Inc"", ""Name"":""Mission_Collect_CivilLiberty_name"", ""LocalisedName"":""Supplier needs 54 units of Gold"", ""MissionID"":413748365, ""Commodity"":""$Gold_Name;"", ""Commodity_Localised"":""Gold"", ""Count"":54, ""DestinationSystem"":""Xi Wangda"", ""DestinationStation"":""Cartier City"", ""Reward"":30448920, ""FactionEffects"":[ { ""Faction"":""Sanctuary Inc"", ""Effects"":[ { ""Effect"":""$MISSIONUTIL_Interaction_Summary_EP_up;"", ""Effect_Localised"":""The economic status of $#MinorFaction; has improved in the $#System; system."", ""Trend"":""UpGood"" } ], ""Influence"":[ { ""SystemAddress"":2869708727713, ""Trend"":""UpGood"", ""Influence"":""+++++"" } ], ""ReputationTrend"":""UpGood"", ""Reputation"":""++"" } ] }";
             events = JournalMonitor.ParseJournalEntry( line );
             missionMonitor._postHandleMissionCompletedEvent( (MissionCompletedEvent)events[ 0 ] );
-            Assert.AreEqual( 3, missionMonitor.missions.Count );
+            Assert.HasCount( 3, missionMonitor.missions );
 
             //MissionAbandonedEvent
             line = @"{ ""timestamp"":""2018-08-28T00:50:48Z"", ""event"":""MissionAbandoned"", ""Name"":""Mission_Courier_Elections_name"", ""Fine"":50000, ""MissionID"":413563499 }";
             events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             missionMonitor.handleMissionAbandonedEvent((MissionAbandonedEvent)events[0]);
             mission = missionMonitor.missions.SingleOrDefault( m => m.missionid == 413563499 );
             Assert.IsNotNull( mission );
             Assert.AreEqual("Failed", mission.statusEDName);
             missionMonitor._postHandleMissionAbandonedEvent((MissionAbandonedEvent)events[0]);
-            Assert.AreEqual(2, missionMonitor.missions.Count);
+            Assert.HasCount( 2, missionMonitor.missions );
 
             //MissionAcceptedEvent - 'AltruismCredits'
             line = "{ \"timestamp\":\"2018-09-17T02:54:16Z\", \"event\":\"MissionAccepted\", \"Faction\":\"Merope Expeditionary Fleet\", \"Name\":\"Mission_AltruismCredits\", \"LocalisedName\":\"Donate 450,000 Cr to the cause\", \"Donation\":\"450000\", \"Expiry\":\"2018-09-17T05:01:28Z\", \"Wing\":false, \"Influence\":\"Med\", \"Reputation\":\"Med\", \"MissionID\":419646649 }";
             events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             missionMonitor._handleMissionAcceptedEvent((MissionAcceptedEvent)events[0]);
             mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 419646649);
             Assert.IsNotNull( mission );
-            Assert.AreEqual(3, missionMonitor.missions.Count);
+            Assert.HasCount( 3, missionMonitor.missions );
             Assert.IsTrue(mission.originreturn);
 
             //MissionAcceptedEvent - 'Collect'
             line = @"{ ""timestamp"":""2018-09-18T00:50:48Z"", ""event"":""MissionAccepted"", ""Faction"":""Calennero State Industries"", ""Name"":""Mission_Collect_Industrial"", ""LocalisedName"":""Industry needs 54 units of Tantalum"", ""Commodity"":""$Tantalum_Name;"", ""Commodity_Localised"":""Tantalum"", ""Count"":54, ""DestinationSystem"":""HIP 20277"", ""DestinationStation"":""Fabian City"", ""Expiry"":""2018-08-27T00:48:38Z"", ""Wing"":false, ""Influence"":""Med"", ""Reputation"":""Med"", ""Reward"":1909532, ""MissionID"":413748324 }";
             events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             missionMonitor._handleMissionAcceptedEvent((MissionAcceptedEvent)events[0]);
             mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 413748324);
-            Assert.AreEqual(4, missionMonitor.missions.Count);
+            Assert.HasCount( 4, missionMonitor.missions );
             Assert.IsNotNull(mission);
-            Assert.IsTrue(mission.edTags.Contains("Collect"));
+            Assert.Contains( "Collect", mission.edTags );
             Assert.AreEqual("Active", mission.statusEDName);
             Assert.IsTrue(mission.originreturn);
             Assert.IsTrue(mission.legal);
@@ -259,15 +259,15 @@ namespace Tests
 
             // Verify duplication protection
             events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             missionMonitor._handleMissionAcceptedEvent((MissionAcceptedEvent)events[0]);
-            Assert.AreEqual(1, missionMonitor.missions.Count( m => m.missionid == 413748324 ));
-            Assert.AreEqual(4, missionMonitor.missions.Count);
+            Assert.ContainsSingle( m => m.missionid == 413748324, missionMonitor.missions );
+            Assert.HasCount( 4, missionMonitor.missions );
 
             //CargoDepotEvent - 'Collect'
             line = @"{ ""timestamp"":""2018-09-19T02:55:10Z"", ""event"":""CargoDepot"", ""MissionID"":413748324, ""UpdateType"":""Deliver"", ""CargoType"":""Tantalum"", ""Count"":54, ""StartMarketID"":0, ""EndMarketID"":3224777216, ""ItemsCollected"":0, ""ItemsDelivered"":54, ""TotalItemsToDeliver"":54, ""Progress"":0.000000 }";
             events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             missionMonitor._handleCargoDepotEvent((CargoDepotEvent)events[0]);
             mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 413748324);
             Assert.IsNotNull( mission );
@@ -276,30 +276,30 @@ namespace Tests
             //MissionAcceptedEvent - 'Smuggle'
             line = @"{ ""timestamp"":""2018-09-21T20:51:56Z"", ""event"":""MissionAccepted"", ""Faction"":""Gcirithang Crimson Mafia"", ""Name"":""Mission_Smuggle_Famine"", ""LocalisedName"":""Smuggle 36 units of Narcotics to combat famine"", ""Commodity"":""$BasicNarcotics_Name;"", ""Commodity_Localised"":""Narcotics"", ""Count"":36, ""DestinationSystem"":""Carcinus"", ""DestinationStation"":""Wye-Delta Station"", ""Expiry"":""2018-08-30T20:55:33Z"", ""Wing"":false, ""Influence"":""Med"", ""Reputation"":""Med"", ""Reward"":180818, ""MissionID"":414732731 }";
             events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             missionMonitor._handleMissionAcceptedEvent((MissionAcceptedEvent)events[0]);
             mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 414732731);
             Assert.IsNotNull( mission );
-            Assert.AreEqual(5, missionMonitor.missions.Count);
-            Assert.IsTrue(mission.edTags.Contains("Smuggle"));
+            Assert.HasCount( 5, missionMonitor.missions );
+            Assert.Contains( "Smuggle", mission.edTags );
             Assert.IsFalse(mission.originreturn);
             Assert.IsFalse(mission.legal);
 
             //MissionCompletedEvent
             line = @"{ ""timestamp"":""2018-09-22T00:40:14Z"", ""event"":""MissionCompleted"", ""Faction"":""HIP 20277 Inc"", ""Name"":""Mission_Salvage_Planet_name"", ""MissionID"":413563829, ""Commodity"":""$Landmines_Name;"", ""Commodity_Localised"":""Landmines"", ""Count"":4, ""DestinationSystem"":""Carthage"", ""Reward"":465824, ""FactionEffects"":[ { ""Faction"":""HIP 20277 Inc"", ""Effects"":[ { ""Effect"":""$MISSIONUTIL_Interaction_Summary_civilUnrest_down;"", ""Effect_Localised"":""$#MinorFaction; are happy to report improved civil contentment, making a period of civil unrest unlikely."", ""Trend"":""DownGood"" } ], ""Influence"":[ { ""SystemAddress"":84053791442, ""Trend"":""UpGood"" } ], ""Reputation"":""UpGood"" } ] }";
             events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             missionMonitor.handleMissionCompletedEvent((MissionCompletedEvent)events[0]);
             mission = missionMonitor.missions.SingleOrDefault( m => m.missionid == 413563829 );
             Assert.IsNotNull( mission );
             Assert.AreEqual("Complete", mission.statusEDName);
             missionMonitor._postHandleMissionCompletedEvent((MissionCompletedEvent)events[0]);
-            Assert.AreEqual(4, missionMonitor.missions.Count);
+            Assert.HasCount( 4, missionMonitor.missions );
 
             //MissionFailedEvent
             line = @"{ ""timestamp"":""2018-09-23T00:50:48Z"", ""event"":""MissionFailed"", ""Name"":""Mission_Collect_Industrial"", ""Fine"":5000, ""MissionID"":413748324 }";
             events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
 
             var crimeData = ConfigService.Instance.crimeMonitorConfiguration;
             var crimeMonitor = new CrimeMonitor();
@@ -319,12 +319,12 @@ namespace Tests
             Assert.IsNotNull( mission );
             Assert.AreEqual("Failed", mission.statusEDName); 
             missionMonitor._postHandleMissionFailedEvent((MissionFailedEvent)events[0]);
-            Assert.AreEqual(3, missionMonitor.missions.Count);
+            Assert.HasCount( 3, missionMonitor.missions );
 
             //MissionCompletedEvent - Donation
             line = @"{ ""timestamp"":""2018-12-18T19:14:32Z"", ""event"":""MissionCompleted"", ""Faction"":""Movement for Rabakshany Democrats"", ""Name"":""Mission_AltruismCredits_name"", ""MissionID"":442085549, ""Donation"":""1000000"", ""Donated"":1000000, ""FactionEffects"":[ { ""Faction"":""Movement for Rabakshany Democrats"", ""Effects"":[ { ""Effect"":""$MISSIONUTIL_Interaction_Summary_EP_up;"", ""Effect_Localised"":""The economic status of $#MinorFaction; has improved in the $#System; system."", ""Trend"":""UpGood"" } ], ""Influence"":[ { ""SystemAddress"":8605201797850, ""Trend"":""UpGood"", ""Influence"":""+++++"" } ], ""ReputationTrend"":""UpGood"", ""Reputation"":""++"" } ] }";
             events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var mcEvent = (MissionCompletedEvent)events[0];
             Assert.AreEqual(1000000, mcEvent.donation);
 
@@ -337,7 +337,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2019-01-27T06:14:02Z"", ""event"":""CommunityGoalReward"", ""CGID"":568, ""Name"":""Distant Worlds Mining Initiative"", ""System"":""Omega Sector VE-Q b5-15"", ""Reward"":23000000 }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var mcEvent = (MissionCompletedEvent)events[0];
             Assert.IsInstanceOfType(mcEvent, typeof(MissionCompletedEvent));
         }
@@ -353,16 +353,16 @@ namespace Tests
             // MissionsEvent
             var line = @"{ ""timestamp"":""2020-10-24T01:39:13Z"", ""event"":""Missions"", ""Active"":[  ], ""Failed"":[  ], ""Complete"":[  ] }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             missionMonitor._handleMissionsEvent((MissionsEvent)events[0]);
-            Assert.AreEqual(0, missionMonitor.missions.Count);
+            Assert.HasCount( 0, missionMonitor.missions );
 
             // CommunityGoalJoin
             line = @"{ ""timestamp"":""2020-10-24T05:05:25Z"", ""event"":""CommunityGoalJoin"", ""CGID"":619, ""Name"":""Federal Initiative to Deliver Supplies for Marlinist Refugees"", ""System"":""LFT 625"" }";
             events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             missionMonitor._handleMissionAcceptedEvent((MissionAcceptedEvent)events[0]);
-            Assert.AreEqual(1, missionMonitor.missions.Count);
+            Assert.HasCount( 1, missionMonitor.missions );
             Assert.AreEqual(619U, missionMonitor.missions[0].missionid);
             Assert.AreEqual("Federal Initiative to Deliver Supplies for Marlinist Refugees", missionMonitor.missions[0].localisedname);
             Assert.AreEqual("LFT 625", missionMonitor.missions[0].originsystem);
@@ -370,7 +370,7 @@ namespace Tests
             // CommunityGoal (active)
             line = @"{ ""timestamp"":""2020-10-25T05:05:51Z"", ""event"":""CommunityGoal"", ""CurrentGoals"":[ { ""CGID"":619, ""Title"":""Federal Initiative to Deliver Supplies for Marlinist Refugees"", ""SystemName"":""LFT 625"", ""MarketName"":""Fox Enterprise"", ""Expiry"":""2020-10-29T06:00:27Z"", ""IsComplete"":false, ""CurrentTotal"":14801430, ""PlayerContribution"":5516, ""NumContributors"":4560, ""TopTier"":{ ""Name"":""Tier 6"", ""Bonus"":""All systems supported"" }, ""TopRankSize"":10, ""PlayerInTopRank"":false, ""TierReached"":""Tier 1"", ""PlayerPercentileBand"":25, ""Bonus"":600000 }, { ""CGID"":620, ""Title"":""Federal Initiative to Protect Supplies for Marlinist Refugees"", ""SystemName"":""LFT 625"", ""MarketName"":""Fox Enterprise"", ""Expiry"":""2020-10-29T06:00:17Z"", ""IsComplete"":false, ""CurrentTotal"":6029526816, ""PlayerContribution"":281617, ""NumContributors"":2879, ""TopTier"":{ ""Name"":""Tier 6"", ""Bonus"":"""" }, ""TopRankSize"":10, ""PlayerInTopRank"":false, ""TierReached"":""Tier 2"", ""PlayerPercentileBand"":100, ""Bonus"":150000 } ] }";
             events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             missionMonitor._handleCommunityGoalsEvent((CommunityGoalsEvent)events[0]);
             Assert.AreEqual("Fox Enterprise", missionMonitor.missions[0].originstation);
             Assert.AreEqual("Active", missionMonitor.missions[0].statusEDName);
@@ -379,7 +379,7 @@ namespace Tests
             // CommunityGoal (completed)
             line = @"{ ""timestamp"":""2020-10-30T01:22:34Z"", ""event"":""CommunityGoal"", ""CurrentGoals"":[ { ""CGID"":619, ""Title"":""Federal Initiative to Deliver Supplies for Marlinist Refugees"", ""SystemName"":""LFT 625"", ""MarketName"":""Fox Enterprise"", ""Expiry"":""2020-10-29T06:00:27Z"", ""IsComplete"":true, ""CurrentTotal"":33417668, ""PlayerContribution"":6304, ""NumContributors"":0, ""TopTier"":{ ""Name"":""Tier 6"", ""Bonus"":""All systems supported"" }, ""TopRankSize"":10, ""PlayerInTopRank"":true, ""TierReached"":""Tier 3"", ""PlayerPercentileBand"":0, ""Bonus"":10000000 }, { ""CGID"":620, ""Title"":""Federal Initiative to Protect Supplies for Marlinist Refugees"", ""SystemName"":""LFT 625"", ""MarketName"":""Fox Enterprise"", ""Expiry"":""2020-10-29T06:00:17Z"", ""IsComplete"":true, ""CurrentTotal"":18046921733, ""PlayerContribution"":4899320, ""NumContributors"":0, ""TopTier"":{ ""Name"":""Tier 6"", ""Bonus"":"""" }, ""TopRankSize"":10, ""PlayerInTopRank"":true, ""TierReached"":""Tier 3"", ""PlayerPercentileBand"":0, ""Bonus"":10000000 } ] }";
             events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             missionMonitor._handleCommunityGoalsEvent((CommunityGoalsEvent)events[0]);
             Assert.AreEqual("Claim", missionMonitor.missions[0].statusEDName);
             Assert.AreEqual(10000000, missionMonitor.missions[0].reward);
@@ -387,16 +387,16 @@ namespace Tests
             // CommunityGoalReward
             line = @"{ ""timestamp"":""2020-10-30T01:24:27Z"", ""event"":""CommunityGoalReward"", ""CGID"":619, ""Name"":""Federal Initiative to Deliver Supplies for Marlinist Refugees"", ""System"":""LFT 625"", ""Reward"":10000000 }";
             events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             missionMonitor._postHandleMissionCompletedEvent((MissionCompletedEvent)events[0]);
-            Assert.AreEqual(1, missionMonitor.missions.Count);  // One of our two community goals is still active. The other (completed) has been removed.
+            Assert.HasCount( 1, missionMonitor.missions );  // One of our two community goals is still active. The other (completed) has been removed.
 
             // MissionsEvent
             line = @"{ ""timestamp"":""2020-10-30T01:30:27Z"", ""event"":""Missions"", ""Active"":[  ], ""Failed"":[  ], ""Complete"":[  ] }";
             events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             missionMonitor._handleMissionsEvent((MissionsEvent)events[0]);
-            Assert.AreEqual(0, missionMonitor.missions.Count); // Community goals temporarily removed by the `Missions` event (where community goals are absent) until they are confirmed active again
+            Assert.HasCount( 0, missionMonitor.missions ); // Community goals temporarily removed by the `Missions` event (where community goals are absent) until they are confirmed active again
 
             // Restore original data
             ConfigService.Instance.missionMonitorConfiguration = missionData;
@@ -407,7 +407,7 @@ namespace Tests
         {
             var line = @"{ ""timestamp"":""2023-01-03T22:14:24Z"", ""event"":""MissionAccepted"", ""Faction"":""Gabjaujavas Dominion"", ""Name"":""Mission_OnFoot_Collect_Contact_MB"", ""LocalisedName"":""Secure a package from Nariah Nieves"", ""Commodity"":""$PersonalDocuments_Name;"", ""Commodity_Localised"":""Personal Documents"", ""Count"":1, ""DestinationSystem"":""Iah Bulu"", ""DestinationSettlement"":""Clothier's Respite"", ""Target"":""Nariah Nieves"", ""Expiry"":""2023-01-04T04:17:30Z"", ""Wing"":false, ""Influence"":""+"", ""Reputation"":""+"", ""Reward"":54212, ""MissionID"":909166596 }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var @event = (MissionAcceptedEvent)events[0];
             Assert.IsInstanceOfType(@event, typeof(MissionAcceptedEvent));
             Assert.AreEqual("Clothier's Respite", @event.destinationstation);

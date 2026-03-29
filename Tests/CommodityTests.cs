@@ -92,7 +92,7 @@ namespace Tests
             Assert.AreEqual(CommodityBracket.Medium, edQuote.stockBracket);
             Assert.AreEqual(31881, edQuote.stock);
             Assert.AreEqual(1, edQuote.demand);
-            Assert.AreEqual(1, edQuote.statusFlags.Count);
+            Assert.HasCount( 1, edQuote.statusFlags);
             Assert.AreEqual("Producer", edQuote.statusFlags.First());
         }
 
@@ -110,7 +110,7 @@ namespace Tests
             Assert.AreEqual(CommodityBracket.Medium, quote.stockbracket);
             Assert.AreEqual(31881, quote.stock);
             Assert.AreEqual(1, quote.demand);
-            Assert.AreEqual(1, quote.StatusFlags.Count);
+            Assert.HasCount( 1, quote.StatusFlags);
             Assert.AreEqual("Producer", quote.StatusFlags.First());
         }
 
@@ -126,7 +126,7 @@ namespace Tests
             Assert.AreEqual(quote.stockbracket, edQuote.stockBracket);
             Assert.AreEqual(quote.stock, edQuote.stock);
             Assert.AreEqual(quote.demand, edQuote.demand);
-            Assert.AreEqual(quote.StatusFlags.Count, edQuote.statusFlags.Count);
+            Assert.HasCount( quote.StatusFlags.Count, edQuote.statusFlags);
             Assert.AreEqual(quote.StatusFlags.First(), edQuote.statusFlags.First());
             Assert.AreEqual("{\"name\":\"explosives\",\"buyPrice\":313,\"meanPrice\":294,\"sellPrice\":281,\"stock\":31881,\"stockBracket\":2,\"demand\":1,\"demandBracket\":\"\",\"statusFlags\":[\"Producer\"]}", JsonConvert.SerializeObject(edQuote, new JsonSerializerSettings { ContractResolver = new EDDNContractResolver() }));
         }
@@ -176,15 +176,15 @@ namespace Tests
 
             var expectedItems = new List<MarketInfoItem>()
             {
-                new MarketInfoItem(128668550, "painite", "minerals", 0, 500096, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 200),
-                new MarketInfoItem(128673846, "bromellite", "minerals", 0, 10009, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 100),
-                new MarketInfoItem(128673848, "lowtemperaturediamond", "minerals", 0, 500553, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 150),
-                new MarketInfoItem(128924330, "grandidierite", "minerals", 0, 424204, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 100),
-                new MarketInfoItem(128924331, "alexandrite", "minerals", 0, 348192, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 97),
-                new MarketInfoItem(128924332, "opal", "minerals", 0, 1014218, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 300)
+                new(128668550, "painite", "minerals", 0, 500096, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 200),
+                new(128673846, "bromellite", "minerals", 0, 10009, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 100),
+                new(128673848, "lowtemperaturediamond", "minerals", 0, 500553, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 150),
+                new(128924330, "grandidierite", "minerals", 0, 424204, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 100),
+                new(128924331, "alexandrite", "minerals", 0, 348192, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 97),
+                new(128924332, "opal", "minerals", 0, 1014218, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 300)
             };
 
-            Assert.AreEqual(expectedItems.Count, info.Items.Count);
+            Assert.HasCount( expectedItems.Count, info.Items);
             foreach (var actualItem in info.Items)
             {
                 foreach (var expectedItem in expectedItems)

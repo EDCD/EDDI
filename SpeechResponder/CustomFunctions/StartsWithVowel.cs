@@ -17,7 +17,8 @@ namespace EddiSpeechResponder.CustomFunctions
         {
             if (string.IsNullOrEmpty( input.AsString )) { return ""; }
 
-            char[] vowels = { 'a', 'à', 'â', 'ä', 'e', 'ê', 'é', 'è', 'ë', 'i', 'î', 'ï', 'o', 'ô', 'ö', 'u', 'ù', 'û', 'ü', 'œ' };
+            char[] vowels = [ 'a', 'à', 'â', 'ä', 'e', 'ê', 'é', 'è', 'ë', 'i', 'î', 'ï', 'o', 'ô', 'ö', 'u', 'ù', 'û', 'ü', 'œ'
+            ];
             var firstCharacter = input.AsString.ToLower().ToCharArray().ElementAt(0);
             return vowels.Contains( firstCharacter );
         });

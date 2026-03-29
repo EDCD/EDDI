@@ -6,17 +6,18 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class SignalDetectedEvent : Event
+    public class SignalDetectedEvent ( DateTime timestamp, ulong systemAddress, SignalSource source )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Signal detected";
         public const string DESCRIPTION = "Triggered when a signal source is detected";
 
         public static readonly string[] SAMPLES =
-        {
+        [
             @"{ ""timestamp"":""2018-11-22T06:21:00Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":58132919110424, ""SignalName"":""$USS;"", ""SignalName_Localised"":""Unidentified signal source"", ""USSType"":""$USS_Type_Salvage;"", ""USSType_Localised"":""Degraded emissions"", ""SpawningState"":""$FactionState_None;"", ""SpawningState_Localised"":""None"", ""SpawningFaction"":""$faction_none;"", ""SpawningFaction_Localised"":""None"", ""ThreatLevel"":0, ""TimeRemaining"":1519.981689 }",
             @"{ ""timestamp"":""2024-10-31T19:28:41Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":908620468962, ""SignalName"":""$USS_PowerEmissions;"", ""SignalName_Localised"":""Unidentified signal source"", ""SignalType"":""USS"", ""USSType"":""$USS_Type_PowerEmissions;"", ""USSType_Localised"":""Power Wreckage Signature"", ""SpawningPower"":""Nakato Kaine"", ""OpposingPower"":""Aisling Duval"", ""ThreatLevel"":3, ""TimeRemaining"":1278.169189}",
             @"{ ""timestamp"":""2024-11-10T00:40:22Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":9467047454121, ""SignalName"":""$USS_PowerConvoy;"", ""SignalName_Localised"":""Unidentified signal source"", ""SignalType"":""USS"", ""USSType"":""$USS_Type_PowerConvoy;"", ""USSType_Localised"":""Power Convoy"", ""SpawningPower"":""Yuri Grom"", ""ThreatLevel"":3, ""TimeRemaining"":124.816635 }"
-        };
+        ];
 
         [PublicAPI("The signal source")]
         public string source => signalSource.localizedName;
@@ -50,16 +51,9 @@ namespace EddiEvents
 
         // Not intended to be user facing
 
-        public SignalSource signalSource { get; private set; }
+        public SignalSource signalSource { get; private set; } = source;
 
-        public ulong systemAddress { get; private set; } // Caution: scan events from the destination system can register after StartJump and before we actually leave the originating system
-
-        public SignalDetectedEvent(DateTime timestamp, ulong systemAddress, SignalSource source) : base(timestamp, NAME)
-        {
-            this.systemAddress = systemAddress;
-            this.signalSource = source;
-            this.unique = unique;
-        }
+        public ulong systemAddress { get; private set; } = systemAddress; // Caution: scan events from the destination system can register after StartJump and before we actually leave the originating system
 
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {

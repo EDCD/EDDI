@@ -6,11 +6,13 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class CommunityGoalEvent : Event
+    public class CommunityGoalEvent ( DateTime timestamp, List<CGUpdate> cgupdates, CommunityGoal goal )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Community goal";
         public const string DESCRIPTION = "Triggered when the status of a community goal changes";
-        public static Event SAMPLE = new CommunityGoalEvent(DateTime.UtcNow, new List<CGUpdate> { new CGUpdate("Tier", "Increase", 4, 5), new CGUpdate("Percentile", "Increase", 25, 10) }, new CommunityGoal()
+        public static readonly Event SAMPLE = new CommunityGoalEvent(DateTime.UtcNow,
+            [ new CGUpdate( "Tier", "Increase", 4, 5 ), new CGUpdate( "Percentile", "Increase", 25, 10 ) ], new CommunityGoal()
         {
             cgid = 641,
             name = "Defence of the Galactic Summit",
@@ -30,7 +32,7 @@ namespace EddiEvents
         });
 
         [PublicAPI("The updates that triggered the event (as objects)")]
-        public List<CGUpdate> updates { get; private set; }
+        public List<CGUpdate> updates { get; private set; } = cgupdates;
 
         [PublicAPI("The unique id of the goal")]
         public ulong cgid => goal.cgid;
@@ -82,39 +84,24 @@ namespace EddiEvents
 
         // Not intended to be user facing
 
-        public CommunityGoal goal { get; private set; }
-
-        public CommunityGoalEvent(DateTime timestamp, List<CGUpdate> cgupdates, CommunityGoal goal) : base(timestamp, NAME)
-        {
-            this.updates = cgupdates;
-            this.goal = goal;
-        }
+        public CommunityGoal goal { get; private set; } = goal;
     }
 
-    public class CGUpdate
+    public class CGUpdate ( string updateType, string updateDirection, long oldVal, long newVal )
     {
         [PublicAPI("Update Type")]
-        public string type { get; private set; }
+        public string type { get; private set; } = updateType;
 
         [PublicAPI( "Update Direction" )]
-        public string direction { get; private set; }
+        public string direction { get; private set; } = updateDirection;
 
         [PublicAPI( "The old value" )]
-        public long? oldvalue { get; private set; }
+        public long? oldvalue { get; private set; } = oldVal;
 
         [PublicAPI( "The new value" )]
-        public long? newvalue { get; private set; }
+        public long? newvalue { get; private set; } = newVal;
 
         [PublicAPI( "The difference between the old and new values" )]
-        public long? change { get; private set; }
-
-        public CGUpdate ( string updateType, string updateDirection, long oldVal, long newVal )
-        {
-            type = updateType;
-            direction = updateDirection;
-            oldvalue = oldVal;
-            newvalue = newVal;
-            change = newVal - oldVal;
-        }
+        public long? change { get; private set; } = newVal - oldVal;
     }
 }

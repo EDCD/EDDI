@@ -20,10 +20,10 @@ namespace EddiEdsmResponder
     {
         private Task updateTask;
         private CancellationTokenSource updateThreadCancellationTokenSource;
-        private List<string> ignoredEvents = new List<string>();
+        private List<string> ignoredEvents = [ ];
 
         // This responder currently requires game version 4.0 or later.
-        private static readonly System.Version minGameVersion = new System.Version(4, 0);
+        private static readonly System.Version minGameVersion = new(4, 0);
 
         public string ResponderName()
         {
@@ -144,7 +144,8 @@ namespace EddiEdsmResponder
             {
                 try
                 {
-                    ignoredEvents = await EDDI.Instance.DataProvider.GetIgnoredEdsmEventsAsync().ConfigureAwait(false) ?? new List<string>();
+                    ignoredEvents = await EDDI.Instance.DataProvider.GetIgnoredEdsmEventsAsync().ConfigureAwait(false) ??
+                                    [ ];
                 }
                 catch ( TaskCanceledException )
                 {
@@ -179,7 +180,7 @@ namespace EddiEdsmResponder
                 case "ShipyardSwap":
                 case "Loadout":
                     {
-                        eventObject.TryGetValue("ShipID", out object shipIdVal);
+                        eventObject.TryGetValue("ShipID", out var shipIdVal);
                         if (shipIdVal != null)
                         {
                             eventObject.Add("_shipId", (int)(long)shipIdVal);
@@ -202,7 +203,7 @@ namespace EddiEdsmResponder
                         }
                         if (eventObject.ContainsKey("SystemAddress"))
                         {
-                            long? systemAddress = JsonParsing.getOptionalLong(eventObject, "SystemAddress");
+                            var systemAddress = JsonParsing.getOptionalLong(eventObject, "SystemAddress");
                             // Some events are bugged and return a SystemAddress of 1, regardles of the system we are in.
                             // We need to ignore data that matches this pattern.
                             systemAddress = systemAddress > 1 ? systemAddress : null;
@@ -213,7 +214,7 @@ namespace EddiEdsmResponder
                         }
                         if (eventObject.ContainsKey("StarPos"))
                         {
-                            eventObject.TryGetValue("StarPos", out object starpos);
+                            eventObject.TryGetValue("StarPos", out var starpos);
                             if (starpos != null)
                             {
                                 eventObject.Add("_systemCoordinates", starpos);

@@ -7,7 +7,7 @@ namespace Tests
     [TestClass, TestCategory("UnitTests")]
     public class RedactionTests : TestBase
     {
-        private void TestRoundTrip(string source)
+        private static void TestRoundTrip(string source)
         {
             var rawPath = source != null ? Environment.ExpandEnvironmentVariables(source) : null;
             var redacted = Redaction.RedactEnvironmentVariables(rawPath);
@@ -18,36 +18,31 @@ namespace Tests
         [TestMethod]
         public void TestNullRedaction()
         {
-            string source = null;
-            TestRoundTrip(source);
+            TestRoundTrip( null );
         }
 
         [TestMethod]
         public void TestEmptyRedaction()
         {
-            var source = "";
-            TestRoundTrip(source);
+            TestRoundTrip( "" );
         }
 
         [TestMethod]
         public void TestAppdataRedaction()
         {
-            var source = @"%APPDATA%\EDDI\eddi.json";
-            TestRoundTrip(source);
+            TestRoundTrip( @"%APPDATA%\EDDI\eddi.json" );
         }
 
         [TestMethod]
         public void TestLocalappdataRedaction()
         {
-            var source = @"%LOCALAPPDATA%\EDDI\eddi.json";
-            TestRoundTrip(source);
+            TestRoundTrip( @"%LOCALAPPDATA%\EDDI\eddi.json" );
         }
 
         [TestMethod]
         public void TestMedleyRedaction()
         {
-            var source = @"ice cream %USERNAME% foo %TMP% bar %TEMP% baz %APPDATA% quux %USERNAME% womble";
-            TestRoundTrip(source);
+            TestRoundTrip( @"ice cream %USERNAME% foo %TMP% bar %TEMP% baz %APPDATA% quux %USERNAME% womble" );
         }
 
         [TestMethod]

@@ -17,21 +17,21 @@ using Utilities;
 
 namespace EddiCompanionAppService
 {
-    public class CompanionAppService : IDisposable, INotifyPropertyChanged
+    public class CompanionAppService : IDisposable, INotifyPropertyChanged, ICompanionAppServiceInitializer
     {
         // Implementation instructions from Frontier: https://hosting.zaonce.net/docs/oauth2/instructions.html
-        private static readonly string LIVE_SERVER = "https://companion.orerve.net";
-        private static readonly string BETA_SERVER = "https://pts-companion.orerve.net";
-        private static readonly string AUTH_SERVER = "https://auth.frontierstore.net";
+        private const string LIVE_SERVER = "https://companion.orerve.net";
+        private const string BETA_SERVER = "https://pts-companion.orerve.net";
+        private const string AUTH_SERVER = "https://auth.frontierstore.net";
         private static readonly string CALLBACK_URL = $"{Constants.EDDI_URL_PROTOCOL}://auth/";
-        private static readonly string AUTH_URL = "/auth";
-        private static readonly string DECODE_URL = "/decode";
-        private static readonly string TOKEN_URL = "/token";
-        private static readonly string AUDIENCE = "audience=all";
-        private static readonly string SCOPE = "scope=capi auth";
+        private const string AUTH_URL = "/auth";
+        private const string DECODE_URL = "/decode";
+        private const string TOKEN_URL = "/token";
+        private const string AUDIENCE = "audience=all";
+        private const string SCOPE = "scope=capi auth";
 
         private readonly HttpClient httpClient;
-        private readonly CustomURLResponder URLResponder;
+        private CustomURLResponder URLResponder;
         private string verifier;
         private string authSessionID;
         private CompanionAppCredentials Credentials;
@@ -75,7 +75,7 @@ namespace EddiCompanionAppService
         private static CompanionAppService instance;
         private readonly string clientID; // we are not allowed to check the client ID into version control or publish it to 3rd parties
 
-        private static readonly object instanceLock = new object();
+        private static readonly object instanceLock = new();
         public static CompanionAppService Instance
         {
             get
@@ -99,24 +99,21 @@ namespace EddiCompanionAppService
 
         #region Endpoints
 
-        public readonly Endpoints.FleetCarrierEndpoint FleetCarrierEndpoint = new Endpoints.FleetCarrierEndpoint();
-        public readonly Endpoints.ProfileEndpoint ProfileEndpoint = new Endpoints.ProfileEndpoint();
-        public readonly Endpoints.CombinedStationEndpoints CombinedStationEndpoints = new Endpoints.CombinedStationEndpoints();
-        public readonly Endpoints.SquadronEndpoint SquadronEndpoint = new Endpoints.SquadronEndpoint();
+        public readonly Endpoints.FleetCarrierEndpoint FleetCarrierEndpoint = new();
+        public readonly Endpoints.ProfileEndpoint ProfileEndpoint = new();
+        public readonly Endpoints.CombinedStationEndpoints CombinedStationEndpoints = new();
+        public readonly Endpoints.SquadronEndpoint SquadronEndpoint = new();
 
         #endregion
 
         private CompanionAppService ()
         {
             Credentials = CompanionAppCredentials.Load();
-            var appPath = System.Reflection.Assembly.GetEntryAssembly()?.Location;
-            void logger(string message) => Logging.Error(message);
-            
+
             httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.UserAgent.ParseAdd( $"{Constants.EDDI_NAME}/{Constants.EDDI_VERSION}" );
             httpClient.DefaultRequestHeaders.Accept.Add( new MediaTypeWithQualityHeaderValue( "application/json" ) );
 
-            URLResponder = new CustomURLResponder(Constants.EDDI_URL_PROTOCOL, handleCallbackUrlAsync, logger, appPath);
             clientID = ClientId.ID;
             if (clientID == null)
             {
@@ -139,6 +136,15 @@ namespace EddiCompanionAppService
 
                 CurrentState = State.LoggedOut;
             } );
+            return;
+        }
+
+        /// <summary>Initialize a custom URL responder for OAuth callbacks. This responder uses DDE and should only be called if the UI dispatcher is available.</summary>
+        public void InitializeOAuthCallback()
+        {
+            static void logger ( string message ) => Logging.Error( message );
+            var appPath = System.Reflection.Assembly.GetEntryAssembly()?.Location;
+            URLResponder = new CustomURLResponder(Constants.EDDI_URL_PROTOCOL, handleCallbackUrlAsync, logger, appPath);
         }
 
         public void Dispose()
@@ -152,7 +158,7 @@ namespace EddiCompanionAppService
             if (disposing)
             {
                 // dispose managed resources
-                URLResponder.Dispose();
+                URLResponder?.Dispose();
             }
             // dispose unmanaged resources
         }
@@ -184,7 +190,12 @@ namespace EddiCompanionAppService
             var webURL = $"{AUTH_SERVER}{AUTH_URL}" + $"?response_type=code&{AUDIENCE}&{SCOPE}&client_id={clientID}&code_challenge={codeChallenge}&code_challenge_method=S256&state={authSessionID}&redirect_uri={Uri.EscapeDataString(CALLBACK_URL)}";
             try
             {
-                Process.Start( webURL );
+                var psi = new ProcessStartInfo
+                {
+                    FileName = webURL,
+                    UseShellExecute = true
+                };
+                Process.Start( psi );
                 Logging.Debug( "Awaiting callback" );
             }
             catch ( Win32Exception win32Exception )
@@ -209,12 +220,12 @@ namespace EddiCompanionAppService
             }
 
             var byteVerifier = Encoding.ASCII.GetBytes(verifier);
-            var hash = SHA256.Create().ComputeHash(byteVerifier);
+            var hash = SHA256.HashData(byteVerifier);
             var codeChallenge = base64UrlEncode(hash);
             return codeChallenge;
         }
 
-        private string base64UrlEncode(byte[] blob)
+        private static string base64UrlEncode(byte[] blob)
         {
             var base64 = Convert.ToBase64String(blob, Base64FormattingOptions.None);
             return base64.Replace('+', '-').Replace('/', '_').Replace("=", "");
@@ -273,13 +284,13 @@ namespace EddiCompanionAppService
 
         private string codeFromCallback(string url)
         {
-            if (!(url.StartsWith(CALLBACK_URL) && url.Contains("?")))
+            if (!(url.StartsWith(CALLBACK_URL) && url.Contains('?')))
             {
                 throw new EliteDangerousCompanionAppAuthenticationException("Malformed callback URL from Frontier");
             }
 
             var paramsDict = ParseQueryString(url);
-            if (authSessionID == null || !paramsDict.ContainsKey("state") || paramsDict["state"] != authSessionID)
+            if (authSessionID == null || !paramsDict.TryGetValue("state", out var state ) || state != authSessionID)
             {
                 throw new EliteDangerousCompanionAppAuthenticationException("Unexpected callback URL from Frontier");
             }
@@ -290,20 +301,20 @@ namespace EddiCompanionAppService
                 {
                     paramsDict.TryGetValue("error", out desc);
                 }
-                desc = desc ?? "no error description";
+                desc ??= "no error description";
                 throw new EliteDangerousCompanionAppAuthenticationException($"Negative response from Frontier: {desc}");
             }
             return callback;
         }
 
-        private Dictionary<string, string> ParseQueryString(string url)
+        private static Dictionary<string, string> ParseQueryString(string url)
         {
             // Sadly System.Web.HttpUtility.ParseQueryString() is not available to us
             // https://stackoverflow.com/questions/659887/get-url-parameters-from-a-string-in-net
             var myUri = new Uri(url);
             var query = myUri.Query.TrimStart('?');
-            var queryParams = query.Split(new[] { '&' }, StringSplitOptions.RemoveEmptyEntries);
-            var paramValuePairs = queryParams.Select(parameter => parameter.Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries));
+            var queryParams = query.Split( [ '&' ], StringSplitOptions.RemoveEmptyEntries);
+            var paramValuePairs = queryParams.Select(parameter => parameter.Split( [ '=' ], StringSplitOptions.RemoveEmptyEntries));
             var sanitizedValuePairs = paramValuePairs.GroupBy(
                 parts => parts[0],
                 parts => parts.Length > 2 ? string.Join("=", parts, 1, parts.Length - 1) : parts.Length > 1 ? parts[1] : "");
@@ -325,12 +336,6 @@ namespace EddiCompanionAppService
 
             using (var response = await httpClient.SendAsync( request ).ConfigureAwait(false) )
             {
-                if (response == null)
-                {
-                    Logging.Debug("Failed to contact API server");
-                    throw new EliteDangerousCompanionAppException("Failed to contact API server");
-                }
-
                 if (response.StatusCode == HttpStatusCode.Found)
                 {
                     return null;
@@ -465,12 +470,6 @@ namespace EddiCompanionAppService
 
                     using ( var response = await httpClient.SendAsync( request ).ConfigureAwait(false) )
                     {
-                        if ( response == null )
-                        {
-                            Logging.Debug( "Failed to contact API server" );
-                            throw new EliteDangerousCompanionAppException( "Failed to contact API server" );
-                        }
-
                         if ( response.StatusCode == HttpStatusCode.OK )
                         {
                             var timestamp = DateTime

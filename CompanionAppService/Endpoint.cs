@@ -10,7 +10,7 @@ namespace EddiCompanionAppService
     {
         public delegate void EndpointEventHandler(object sender, CompanionApiEndpointEventArgs e);
 
-        protected async Task<JObject> GetEndpointAsync(string endpointURL)
+        protected static async Task<JObject> GetEndpointAsync(string endpointURL)
         {
             if ( CompanionAppService.unitTesting ) { return null; }
 
@@ -22,7 +22,7 @@ namespace EddiCompanionAppService
             var data = result.Item1;
             var timestamp = result.Item2;
 
-            if ( data == null || !data.StartsWith( "{" ) )
+            if ( data == null || !data.StartsWith( '{' ) )
             {
                 Logging.Debug( $"{endpointURL} endpoint returned no data" );
                 return null;
@@ -44,22 +44,19 @@ namespace EddiCompanionAppService
         }
     }
 
-    public class CompanionApiEndpointEventArgs : EventArgs
+    public class CompanionApiEndpointEventArgs (
+        JObject profileJson,
+        JObject marketJson,
+        JObject shipyardJson,
+        JObject fleetCarrierJson )
+        : EventArgs
     {
-        public readonly JObject profileJson;
+        public readonly JObject profileJson = profileJson;
 
-        public readonly JObject marketJson;
+        public readonly JObject marketJson = marketJson;
 
-        public readonly JObject shipyardJson;
+        public readonly JObject shipyardJson = shipyardJson;
 
-        public readonly JObject fleetCarrierJson;
-
-        public CompanionApiEndpointEventArgs(JObject profileJson, JObject marketJson, JObject shipyardJson, JObject fleetCarrierJson)
-        {
-            this.profileJson = profileJson;
-            this.marketJson = marketJson;
-            this.shipyardJson = shipyardJson;
-            this.fleetCarrierJson = fleetCarrierJson;
-        }
+        public readonly JObject fleetCarrierJson = fleetCarrierJson;
     }
 }

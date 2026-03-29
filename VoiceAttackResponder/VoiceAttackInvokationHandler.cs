@@ -1,17 +1,21 @@
-﻿using Eddi;
+using Eddi;
 using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
+using EddiIPC_Service.Messages;
+using EddiIPC_Service.Server;
 using EddiNavigationService;
 using EddiSpeechResponder;
 using EddiSpeechService;
 using EddiStarMapService;
 using EddiUI;
+using EddiVoiceAttackAdapter;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,9 +25,10 @@ namespace EddiVoiceAttackResponder
 {
     internal static class VoiceAttackInvokationHandler
     {
-        private static readonly Random random = new Random();
+        private static readonly Random random = new();
+        private static readonly AsyncLocal<Dictionary<string, object>> invocationPayload = new();
 
-        public static void HandleInvokedCommand(string context)
+        public static void HandleInvokedCommand ( string context, IReadOnlyDictionary<string, object> parameters = null )
         {
             // This thread is invoked from VoiceAttack and may by invoked with the system default culture
             // so make sure that we're using our assigned culture.
@@ -31,9 +36,13 @@ namespace EddiVoiceAttackResponder
 
             Logging.Debug( $"Invoked with context '{context}'" );
 
+            invocationPayload.Value = parameters == null
+                ? new Dictionary<string, object>( StringComparer.OrdinalIgnoreCase )
+                : new Dictionary<string, object>( parameters, StringComparer.OrdinalIgnoreCase );
+
             try
             {
-                switch (context?.ToLowerInvariant())
+                switch ( context?.ToLowerInvariant() )
                 {
                     case "coriolis":
                         InvokeCoriolis();
@@ -71,30 +80,15 @@ namespace EddiVoiceAttackResponder
                         InvokeStarMapSystemCommentAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                         break;
                     case "initialize eddi":
-                        if (App.FromVA && Application.Current != null)
-                        {
-                            VoiceAttackPlugin.WriteToLog("The EDDI plugin is fully operational.", "green");
-                        }
-                        else
-                        {
-                            VoiceAttackPlugin.VA_Init1(null);  // Attempt initialization again to see if it works this time...
-                        }
+                        InvokeInitializeEddiAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                         break;
                     case "configuration":
                     case "configurationminimize":
                     case "configurationmaximize":
                     case "configurationrestore":
                     case "configurationclose":
-                        // Ignore any attempt to access the EDDI UI if VA
-                        // doesn't own the EDDI instance.
-                        if (App.FromVA && Application.Current != null)
-                        {
-                            InvokeConfiguration(context);
-                        }
-                        else
-                        {
-                            VoiceAttackPlugin.WriteToLog("The EDDI plugin is not fully initialized.", "red");
-                        }
+                        // UI commands always execute here (only runs in EDDI.exe when FromVA=true)
+                        InvokeConfiguration( context );
                         break;
                     case "shutup":
                         InvokeShutUp();
@@ -122,66 +116,117 @@ namespace EddiVoiceAttackResponder
                         InvokeRouteDetailsAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                         break;
                     case "inara":
-                        InvokeInaraProfileDetailsAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) ); 
+                        InvokeInaraProfileDetailsAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                         break;
                     case "volume":
                         InvokeVolume();
                         break;
                 }
             }
-            catch (Exception e)
+            catch ( Exception e )
             {
-                Logging.Error( $"Failed to invoke context '{context}'", e);
-                VoiceAttackPlugin.WriteToLog( $"Failed to invoke context '{context}'", "red");
+                Logging.Error( $"Failed to invoke context '{context}'", e );
+                RuntimeWriteToLog( $"Failed to invoke context '{context}'", "red" );
+            }
+            finally
+            {
+                invocationPayload.Value = null;
+            }
+        }
+
+        private static async Task InvokeInitializeEddiAsync ()
+        {
+            try
+            {
+                if ( EDDI.Instance.FromVA )
+                {
+                    RuntimeWriteToLog( "The EDDI plugin is fully operational.", "green" );
+                    return;
+                }
+
+                var launchSuccess = await EddiProcessLauncher
+                    .LaunchEddiIfNeededAsync( true, App.VoiceAttackVersion )
+                    .ConfigureAwait( false );
+
+                if ( launchSuccess )
+                {
+                    RuntimeWriteToLog( "EDDI initialization completed.", "green" );
+                }
+                else
+                {
+                    RuntimeWriteToLog( "Unable to initialize EDDI. Please try again.", "red" );
+                }
+            }
+            catch ( Exception ex )
+            {
+                Logging.Warn( "Initialize EDDI command failed", ex );
+                RuntimeWriteToLog( "EDDI initialization failed. See logs for details.", "red" );
             }
         }
 
         private static void InvokeVolume ()
         {
-            int? volumeInt = VoiceAttackPlugin.GetInt("Volume");
+            var volumeInt = RuntimeGetInt( "Volume" );
             var config = ConfigService.Instance.speechServiceConfiguration;
-            
+
             if ( config is null ) { return; }
 
             // Fix any inputs outside of the expected range
             if ( volumeInt == null )
-            { volumeInt = new SpeechServiceConfiguration().Volume; } // Default volume
+            {
+                volumeInt = new SpeechServiceConfiguration().Volume;
+            } // Default volume
             else if ( volumeInt < 0 )
-            { volumeInt = 0; } // Must be zero or greater
+            {
+                volumeInt = 0;
+            } // Must be zero or greater
             else if ( volumeInt > 100 )
-            { volumeInt = 100; } // Must be 100 or less
+            {
+                volumeInt = 100;
+            } // Must be 100 or less
 
             // Update our speech configuration settings
             config.Volume = (int)volumeInt;
             ConfigService.Instance.speechServiceConfiguration = config;
 
-            // Refresh the UI with the new volume
-            Application.Current.Dispatcher.InvokeAsync( () =>
+            // Refresh the UI with the new volume (only in standalone mode)
+            // In plugin mode, the UI is running in a separate process and will refresh on its own
+            if ( !EDDI.Instance.FromVA )
             {
-                var mainWindow = (MainWindow)Application.Current.MainWindow;
-                if ( mainWindow == null )
-                { return; }
-                foreach ( var tab in mainWindow.MainTabControl.Items )
+                if ( Application.Current?.Dispatcher != null )
                 {
-                    if ( tab is System.Windows.Controls.TabItem tabItem && tabItem.Content is TextToSpeechTab tts )
+                    Application.Current?.Dispatcher?.InvokeAsync( () =>
                     {
-                        tts.ConfigureTTS();
-                    }
+                        var mainWindow = (MainWindow)Application.Current?.MainWindow;
+                        if ( mainWindow == null )
+                        {
+                            return;
+                        }
+
+                        foreach ( var tab in mainWindow.MainTabControl.Items )
+                        {
+                            if ( tab is System.Windows.Controls.TabItem item && item.Content is TextToSpeechTab tts )
+                            {
+                                tts.ConfigureTTS();
+                            }
+                        }
+                    } ).Task.SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                 }
-            } );
+            }
         }
 
         private static async Task InvokeInaraProfileDetailsAsync ()
         {
-            string commanderName = VoiceAttackPlugin.GetText("Name");
+            var commanderName = RuntimeGetText( "Name" );
             if ( commanderName == null )
             {
                 return;
             }
+
             try
             {
-                EddiInaraService.IInaraService inaraService = new EddiInaraService.InaraService();
-                var result = await inaraService.GetCommanderProfileAsync(commanderName).ConfigureAwait(false);
+                var inaraService = new EddiInaraService.InaraService();
+                var result = await inaraService.GetCommanderProfileAsync( commanderName ).ConfigureAwait( false );
                 if ( result != null )
                 {
                     OpenOrStoreURI( result.url );
@@ -199,12 +244,15 @@ namespace EddiVoiceAttackResponder
 
         private static void InvokeConfiguration ( string context )
         {
-            if ( Application.Current?.Dispatcher != null
-                && ( Application.Current?.Dispatcher?.Invoke( () => Application.Current.MainWindow == null ) ?? false )
-                && context != "configuration" )
+            if ( Application.Current?.Dispatcher != null )
             {
-                VoiceAttackPlugin.WriteToLog( "The EDDI configuration window is not open.", "orange" );
-                return;
+                var windowIsNull =
+                    Application.Current?.Dispatcher?.Invoke( () => Application.Current?.MainWindow == null );
+                if ( windowIsNull == true && context != "configuration" )
+                {
+                    RuntimeWriteToLog( "The EDDI configuration window is not open.", "orange" );
+                    return;
+                }
             }
 
             switch ( context )
@@ -212,12 +260,11 @@ namespace EddiVoiceAttackResponder
                 case "configuration":
                     if ( Application.Current?.Dispatcher != null )
                     {
-                        Application.Current.Dispatcher.InvokeAsync( () =>
+                        Application.Current?.Dispatcher?.InvokeAsync( () =>
                         {
                             try
                             {
-                                if ( Application.Current?.MainWindow?.Visibility == Visibility.Collapsed
-                                    || Application.Current?.MainWindow?.Visibility == Visibility.Hidden )
+                                if ( Application.Current?.MainWindow?.Visibility is Visibility.Collapsed or Visibility.Hidden )
                                 {
                                     Application.Current.MainWindow?.Show();
                                 }
@@ -225,15 +272,17 @@ namespace EddiVoiceAttackResponder
                                 {
                                     // Tell the configuration UI to restore its window if minimized
                                     setWindowState( WindowState.Minimized, true, false );
-                                    VoiceAttackPlugin.WriteToLog( "The EDDI configuration window is already open.", "orange" );
+                                    RuntimeWriteToLog( "The EDDI configuration window is already open.",
+                                        "orange" );
                                 }
                             }
                             catch ( Exception ex )
                             {
                                 Logging.Warn( "Show configuration window failed", ex );
                             }
-                        } );
+                        } ).Task.SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                     }
+
                     break;
                 case "configurationminimize":
                     setWindowState( WindowState.Minimized );
@@ -245,10 +294,18 @@ namespace EddiVoiceAttackResponder
                     setWindowState( WindowState.Normal );
                     break;
                 case "configurationclose":
-                    Application.Current?.Dispatcher?.InvokeAsync( () => Application.Current?.MainWindow?.Hide() );
+                    if ( Application.Current?.Dispatcher != null )
+                    {
+                        Application.Current?.Dispatcher?.InvokeAsync( async () =>
+                            {
+                                Application.Current?.MainWindow?.Hide();
+                            } )
+                            .Task.SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
+                    }
+
                     break;
                 default:
-                    VoiceAttackPlugin.WriteToLog( $"Plugin context '{context}' not recognized.", "orange" );
+                    RuntimeWriteToLog( $"Plugin context '{context}' not recognized.", "orange" );
                     break;
             }
         }
@@ -260,15 +317,20 @@ namespace EddiVoiceAttackResponder
             if ( EDDI.Instance.SpeechResponderModalWait && warn )
             {
                 System.Media.SystemSounds.Beep.Play();
-                VoiceAttackPlugin.WriteToLog( "The EDDI window state cannot be changed at this time.", "orange" );
+                RuntimeWriteToLog( "The EDDI window state cannot be changed at this time.", "orange" );
             }
             else
             {
-                Application.Current?.Dispatcher?.InvokeAsync( () =>
+                if ( Application.Current?.Dispatcher != null )
                 {
-                    MainWindow mainwindow = (MainWindow)Application.Current?.MainWindow;
-                    mainwindow?.Dispatcher?.Invoke( mainwindow.VaWindowStateChange, newState, minimizeCheck );
-                } );
+                    Application.Current?.Dispatcher?.InvokeAsync( () =>
+                    {
+                        var mainwindow = (MainWindow)Application.Current?.MainWindow;
+                        if ( mainwindow == null ) { return; }
+                        var handler = mainwindow.VaWindowStateChange ?? mainwindow.OnVaWindowStateChange;
+                        handler( newState, minimizeCheck );
+                    } ).Task.SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
+                }
             }
         }
 
@@ -280,13 +342,14 @@ namespace EddiVoiceAttackResponder
 
         private static void OpenOrStoreURI ( string systemUri )
         {
-            if ( VoiceAttackPlugin.GetBoolean( "EDDI open uri in browser" ) != false )
+            if ( RuntimeGetBoolean( "EDDI open uri in browser" ) != false )
             {
                 Logging.Debug( "Starting process with uri " + systemUri );
                 HandleUri( systemUri );
             }
+
             Logging.Debug( "Writing URI to `{TXT:EDDI uri}`: " + systemUri );
-            VoiceAttackPlugin.SetText( "EDDI uri", systemUri );
+            RuntimeSetText( "EDDI uri", systemUri );
         }
 
         private static void InvokeInaraSystem ()
@@ -299,7 +362,9 @@ namespace EddiVoiceAttackResponder
                     Logging.Debug( "No information on current system" );
                     return;
                 }
-                string systemUri = $"https://inara.cz/elite/starsystem/?search={EDDI.Instance.CurrentStarSystem.systemAddress}";
+
+                var systemUri =
+                    $"https://inara.cz/elite/starsystem/?search={EDDI.Instance.CurrentStarSystem.systemAddress}";
                 OpenOrStoreURI( systemUri );
                 VoiceAttackVariables.setStatus( "Operational" );
             }
@@ -307,6 +372,7 @@ namespace EddiVoiceAttackResponder
             {
                 VoiceAttackVariables.setStatus( "Failed to send system data to Inara", e );
             }
+
             Logging.Debug( "Leaving" );
         }
 
@@ -320,13 +386,15 @@ namespace EddiVoiceAttackResponder
                     Logging.Debug( "No information on current station" );
                     return;
                 }
+
                 if ( EDDI.Instance.CurrentStation == null )
                 {
                     // Missing current star system information
                     Logging.Debug( "No information on current station" );
                     return;
                 }
-                string stationUri = $"https://inara.cz/elite/station/?search={EDDI.Instance.CurrentStation.marketId}";
+
+                var stationUri = $"https://inara.cz/elite/station/?search={EDDI.Instance.CurrentStation.marketId}";
                 OpenOrStoreURI( stationUri );
                 VoiceAttackVariables.setStatus( "Operational" );
             }
@@ -334,6 +402,7 @@ namespace EddiVoiceAttackResponder
             {
                 VoiceAttackVariables.setStatus( "Failed to send station data to Inara", e );
             }
+
             Logging.Debug( "Leaving" );
         }
 
@@ -347,7 +416,9 @@ namespace EddiVoiceAttackResponder
                     Logging.Debug( "No information on fleet carrier" );
                     return;
                 }
-                string carrierUri = $"https://inara.cz/elite/cmdr-fleetcarrier/?search={EDDI.Instance.FleetCarrier.callsign}";
+
+                var carrierUri =
+                    $"https://inara.cz/elite/cmdr-fleetcarrier/?search={EDDI.Instance.FleetCarrier.callsign}";
                 OpenOrStoreURI( carrierUri );
                 VoiceAttackVariables.setStatus( "Operational" );
             }
@@ -355,6 +426,7 @@ namespace EddiVoiceAttackResponder
             {
                 VoiceAttackVariables.setStatus( "Failed to send fleet carrier data to Inara", e );
             }
+
             Logging.Debug( "Leaving" );
         }
 
@@ -369,7 +441,8 @@ namespace EddiVoiceAttackResponder
                     Logging.Debug( "No information on Inara commander" );
                     return;
                 }
-                string cmdrUri = $"https://inara.cz/elite/cmdr/{inaraID}/";
+
+                var cmdrUri = $"https://inara.cz/elite/cmdr/{inaraID}/";
                 OpenOrStoreURI( cmdrUri );
                 VoiceAttackVariables.setStatus( "Operational" );
             }
@@ -377,6 +450,7 @@ namespace EddiVoiceAttackResponder
             {
                 VoiceAttackVariables.setStatus( "Failed to send Inara commander data to Inara", e );
             }
+
             Logging.Debug( "Leaving" );
         }
 
@@ -391,7 +465,7 @@ namespace EddiVoiceAttackResponder
                     return;
                 }
 
-                var shipUri = EDDI.Instance.CurrentShip.CoriolisUri(beta);
+                var shipUri = EDDI.Instance.CurrentShip.CoriolisUri( beta );
                 OpenOrStoreURI( shipUri );
                 VoiceAttackVariables.setStatus( "Operational" );
             }
@@ -399,6 +473,7 @@ namespace EddiVoiceAttackResponder
             {
                 VoiceAttackVariables.setStatus( "Failed to send ship data to coriolis", e );
             }
+
             Logging.Debug( "Leaving" );
         }
 
@@ -413,7 +488,7 @@ namespace EddiVoiceAttackResponder
                     return;
                 }
 
-                string shipUri = EDDI.Instance.CurrentShip.EDShipyardUri();
+                var shipUri = EDDI.Instance.CurrentShip.EDShipyardUri();
                 OpenOrStoreURI( shipUri );
                 VoiceAttackVariables.setStatus( "Operational" );
             }
@@ -421,6 +496,7 @@ namespace EddiVoiceAttackResponder
             {
                 VoiceAttackVariables.setStatus( "Failed to send ship data to coriolis", e );
             }
+
             Logging.Debug( "Leaving" );
         }
 
@@ -429,10 +505,10 @@ namespace EddiVoiceAttackResponder
         /// </summary>
         private static void HandleUri ( string uri )
         {
-            bool? useClipboard = VoiceAttackPlugin.GetBoolean("EDDI use clipboard");
-            if ( useClipboard != null && useClipboard == true )
+            var useClipboard = RuntimeGetBoolean( "EDDI use clipboard" );
+            if ( useClipboard is true )
             {
-                Thread thread = new Thread(() =>
+                var thread = new Thread( () =>
                 {
                     try
                     {
@@ -450,9 +526,9 @@ namespace EddiVoiceAttackResponder
             }
             else
             {
-                ProcessStartInfo proc = new ProcessStartInfo(Net.GetDefaultBrowserPath(), "\"" + uri + "\"")
+                var proc = new ProcessStartInfo( Net.GetDefaultBrowserPath(), "\"" + uri + "\"" )
                 {
-                    UseShellExecute = false
+                    UseShellExecute = true
                 };
                 Process.Start( proc );
             }
@@ -463,17 +539,17 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                string script = VoiceAttackPlugin.GetText("Script");
+                var script = RuntimeGetText( "Script" );
                 if ( script == null )
                 {
                     return;
                 }
 
-                int? priority = VoiceAttackPlugin.GetInt("Priority") ?? 3;
+                int? priority = RuntimeGetInt( "Priority" ) ?? 3;
 
-                string voice = VoiceAttackPlugin.GetText("Voice");
+                var voice = RuntimeGetText( "Voice" );
 
-                string speech = SpeechFromScript(script);
+                var speech = SpeechFromScript( script );
 
                 Ship ship = null;
                 if ( EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP )
@@ -481,7 +557,8 @@ namespace EddiVoiceAttackResponder
                     ship = EDDI.Instance.CurrentShip;
                 }
 
-                await SpeechService.Instance.SayAsync( ship, speech, (int)priority, voice, false, null ).ConfigureAwait( false );
+                await SpeechService.Instance.SayAsync( ship, speech, (int)priority, voice, false, null )
+                    .ConfigureAwait( false );
             }
             catch ( Exception e )
             {
@@ -494,17 +571,17 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                string script = VoiceAttackPlugin.GetText("Script");
+                var script = RuntimeGetText( "Script" );
                 if ( script == null )
                 {
                     return;
                 }
 
-                int? priority = VoiceAttackPlugin.GetInt("Priority") ?? 3;
+                int? priority = RuntimeGetInt( "Priority" ) ?? 3;
 
-                string voice = VoiceAttackPlugin.GetText("Voice");
+                var voice = RuntimeGetText( "Voice" );
 
-                string speech = SpeechFromScript(script);
+                var speech = SpeechFromScript( script );
 
                 Ship ship = null;
                 if ( EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP )
@@ -512,7 +589,8 @@ namespace EddiVoiceAttackResponder
                     ship = EDDI.Instance.CurrentShip;
                 }
 
-                await SpeechService.Instance.SayAsync( ship, speech, (int)priority, voice, true, null ).ConfigureAwait(false);
+                await SpeechService.Instance.SayAsync( ship, speech, (int)priority, voice, true, null )
+                    .ConfigureAwait( false );
             }
             catch ( Exception e )
             {
@@ -541,17 +619,17 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                string script = VoiceAttackPlugin.GetText("Script");
+                var script = RuntimeGetText( "Script" );
                 if ( script == null )
                 {
                     return;
                 }
 
-                int? priority = VoiceAttackPlugin.GetInt("Priority");
+                var priority = RuntimeGetInt( "Priority" );
 
-                string voice = VoiceAttackPlugin.GetText("Voice");
+                var voice = RuntimeGetText( "Voice" );
 
-                var speechResponder = (SpeechResponder)EDDI.Instance.ObtainResponder("Speech responder");
+                var speechResponder = (SpeechResponder)EDDI.Instance.ObtainResponder( "Speech responder" );
                 if ( speechResponder == null )
                 {
                     Logging.Warn( "Unable to find speech responder" );
@@ -601,10 +679,10 @@ namespace EddiVoiceAttackResponder
 
         private static void InvokeSetSpeechResponderPersonality ()
         {
-            string personality = VoiceAttackPlugin.GetText("Personality");
+            var personality = RuntimeGetText( "Personality" );
             try
             {
-                var speechResponder = (SpeechResponder)EDDI.Instance.ObtainResponder("Speech responder");
+                var speechResponder = (SpeechResponder)EDDI.Instance.ObtainResponder( "Speech responder" );
                 speechResponder?.TrySetPersonality( personality );
             }
             catch ( Exception e )
@@ -617,7 +695,7 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                string name = VoiceAttackPlugin.GetText("State variable");
+                var name = RuntimeGetText( "State variable" );
                 if ( string.IsNullOrEmpty( name ) )
                 {
                     Logging.Info( "No value in the VoiceAttack text variable 'State variable'; nothing to set" );
@@ -625,30 +703,30 @@ namespace EddiVoiceAttackResponder
                 }
 
                 // State variable names are lower-case
-                string stateVariableName = name.ToLowerInvariant().Replace(" ", "_");
+                var stateVariableName = name.ToLowerInvariant().Replace( " ", "_" );
 
-                string strValue = VoiceAttackPlugin.GetText(name);
-                if ( strValue != null )
+                var strValue = RuntimeGetText( "State variable text value" );
+                if ( !string.IsNullOrEmpty( strValue ) )
                 {
                     EDDI.Instance.State[ stateVariableName ] = strValue;
                     return;
                 }
 
-                int? intValue = VoiceAttackPlugin.GetInt(name);
+                var intValue = RuntimeGetInt( "State variable int value" );
                 if ( intValue != null )
                 {
                     EDDI.Instance.State[ stateVariableName ] = intValue;
                     return;
                 }
 
-                bool? boolValue = VoiceAttackPlugin.GetBoolean(name);
+                var boolValue = RuntimeGetBoolean( "State variable bool value" );
                 if ( boolValue != null )
                 {
                     EDDI.Instance.State[ stateVariableName ] = boolValue;
                     return;
                 }
 
-                decimal? decValue = VoiceAttackPlugin.GetDecimal(name);
+                var decValue = RuntimeGetDecimal( "State variable decimal value" );
                 if ( decValue != null )
                 {
                     EDDI.Instance.State[ stateVariableName ] = decValue;
@@ -664,35 +742,179 @@ namespace EddiVoiceAttackResponder
             }
         }
 
+        private static string RuntimeGetText( string key )
+        {
+            if ( string.IsNullOrWhiteSpace( key ) )
+            {
+                return null;
+            }
+
+            if ( !TryGetPayloadValue( key, out var value ) )
+            {
+                return null;
+            }
+
+            return value?.ToString();
+        }
+
+        private static int? RuntimeGetInt( string key )
+        {
+            if ( string.IsNullOrWhiteSpace( key ) )
+            {
+                return null;
+            }
+
+            if ( !TryGetPayloadValue( key, out var value ) || value == null )
+            {
+                return null;
+            }
+
+            return int.TryParse( value.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var parsed )
+                ? parsed
+                : null;
+        }
+
+        private static bool? RuntimeGetBoolean( string key )
+        {
+            if ( string.IsNullOrWhiteSpace( key ) )
+            {
+                return null;
+            }
+
+            if ( !TryGetPayloadValue( key, out var value ) || value == null )
+            {
+                return null;
+            }
+
+            return bool.TryParse( value.ToString(), out var parsed )
+                ? parsed
+                : null;
+        }
+
+        private static decimal? RuntimeGetDecimal( string key )
+        {
+            if ( string.IsNullOrWhiteSpace( key ) )
+            {
+                return null;
+            }
+
+            if ( !TryGetPayloadValue( key, out var value ) || value == null )
+            {
+                return null;
+            }
+
+            return decimal.TryParse( value.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var parsed )
+                ? parsed
+                : null;
+        }
+
+        private static void RuntimeSetText( string key, string value )
+            => DispatchRuntimeAction( "set_text", key, value );
+
+        private static void RuntimeSetInt( string key, int? value )
+            => DispatchRuntimeAction( "set_int", key, value );
+
+        private static void RuntimeSetDecimal( string key, decimal? value )
+            => DispatchRuntimeAction( "set_decimal", key, value );
+
+        private static void RuntimeSetBoolean( string key, bool? value )
+            => DispatchRuntimeAction( "set_boolean", key, value );
+
+        private static void RuntimeWriteToLog( string message, string color )
+        {
+            var payload = new Dictionary<string, object>
+            {
+                { "action", "write_log" },
+                { "message", message ?? string.Empty },
+                { "color", color ?? "white" }
+            };
+
+            DispatchRuntimeEventPayload( payload );
+        }
+
+        private static bool TryGetPayloadValue( string key, out object value )
+        {
+            value = null;
+
+            var payload = invocationPayload.Value;
+            if ( payload == null )
+            {
+                return false;
+            }
+
+            if ( payload.TryGetValue( key, out var directValue ) )
+            {
+                value = directValue;
+                return true;
+            }
+
+            return false;
+        }
+
+        private static void DispatchRuntimeAction( string action, string key, object value )
+        {
+            var payload = new Dictionary<string, object>
+            {
+                { "action", action },
+                { "key", key ?? string.Empty },
+                { "value", value ?? string.Empty }
+            };
+
+            DispatchRuntimeEventPayload( payload );
+        }
+
+        private static void DispatchRuntimeEventPayload( Dictionary<string, object> payload )
+        {
+            try
+            {
+                var eventData = new EventData
+                {
+                    EventType = "va_runtime",
+                    EventName = "command_action",
+                    EventPayload = payload
+                };
+
+                RuntimeEventDispatcher.DispatchAsync( eventData )
+                    .GetAwaiter()
+                    .GetResult();
+            }
+            catch ( Exception ex )
+            {
+                Logging.Warn( "Failed to dispatch runtime action payload", ex );
+            }
+        }
+
         public static string SpeechFromScript ( string script )
         {
             if ( script == null )
-            { return null; }
+            {
+                return null;
+            }
 
             // Variable replacement
-            Ship ship = EDDI.Instance.CurrentShip;
+            var ship = EDDI.Instance.CurrentShip;
             if ( ship != null )
             {
                 script = script.Replace( "$=", ship.phoneticname );
             }
 
-            var cmdrScript = string.IsNullOrEmpty( ConfigService.Instance.commanderConfiguration.commanderName ) 
-                ? EddiCore.Properties.Resources.Commander 
+            var cmdrScript = string.IsNullOrEmpty( ConfigService.Instance.commanderConfiguration.commanderName )
+                ? EddiCore.Properties.Resources.Commander
                 : ConfigService.Instance.commanderConfiguration.phoneticName;
             script = script.Replace( "$-", cmdrScript );
 
             // Multiple choice selection
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             // Step 1 - resolve any options in square brackets
-            Match matchResult = Regex.Match(script, @"\[[^\]]*\]|[^\[\]]+");
+            var matchResult = GeneratedRegex.VoiceAttackCommandPermutationsRegex().Match( script );
             while ( matchResult.Success )
             {
-                if ( matchResult.Value.StartsWith( "[" ) )
+                if ( matchResult.Value.StartsWith( '[' ) )
                 {
                     // Remove the brackets and pick one of the options
-                    string result = matchResult.Value.Substring(1, matchResult.Value.Length - 2);
-                    string[] options = result.Split(';');
+                    var result = matchResult.Value.Substring( 1, matchResult.Value.Length - 2 );
+                    var options = result.Split( ';' );
                     sb.Append( options[ random.Next( 0, options.Length ) ] );
                 }
                 else
@@ -700,15 +922,17 @@ namespace EddiVoiceAttackResponder
                     // Pass it right along
                     sb.Append( matchResult.Groups[ 0 ].Value );
                 }
+
                 matchResult = matchResult.NextMatch();
             }
-            string res = sb.ToString();
+
+            var res = sb.ToString();
 
             // Step 2 - resolve phrases separated by semicolons
-            if ( res.Contains( ";" ) )
+            if ( res.Contains( ';' ) )
             {
                 // Pick one of the options
-                string[] options = res.Split(';');
+                var options = res.Split( ';' );
                 res = options[ random.Next( 0, options.Length ) ];
             }
 
@@ -725,7 +949,7 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                string comment = VoiceAttackPlugin.GetText( "EDDI system comment" );
+                var comment = RuntimeGetText( "EDDI system comment" );
                 if ( comment == null )
                 {
                     return;
@@ -735,13 +959,14 @@ namespace EddiVoiceAttackResponder
                 {
                     // Store locally
                     var systemAddress = EDDI.Instance.CurrentStarSystem.systemAddress;
-                    var currentSystem = await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( systemAddress ).ConfigureAwait(false);
+                    var currentSystem = await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( systemAddress )
+                        .ConfigureAwait( false );
                     currentSystem.comment = comment == "" ? null : comment;
-                    await EDDI.Instance.DataProvider.SaveStarSystemAsync( currentSystem ).ConfigureAwait(false);
+                    await EDDI.Instance.DataProvider.SaveStarSystemAsync( currentSystem ).ConfigureAwait( false );
 
                     // Store in EDSM
                     var edsmService = new StarMapService( null, true );
-                    await edsmService.sendStarMapCommentAsync( systemAddress, comment ).ConfigureAwait(false);
+                    await edsmService.sendStarMapCommentAsync( systemAddress, comment ).ConfigureAwait( false );
                 }
             }
             catch ( Exception e )
@@ -754,13 +979,13 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                string type = VoiceAttackPlugin.GetText("Type variable");
+                var type = RuntimeGetText( "Type variable" );
                 if ( !string.IsNullOrEmpty( type ) )
                 {
-                    var detail = EDDI.Instance.CurrentShip?.JumpDetails(type);
-                    VoiceAttackPlugin.SetDecimal( "Ship jump detail distance", detail?.distance );
-                    VoiceAttackPlugin.SetInt( "Ship jump detail jumps", detail?.jumps );
-                    VoiceAttackPlugin.SetText( "Type variable", null );
+                    var detail = EDDI.Instance.CurrentShip?.JumpDetails( type );
+                    RuntimeSetDecimal( "Ship jump detail distance", detail?.distance );
+                    RuntimeSetInt( "Ship jump detail jumps", detail?.jumps );
+                    RuntimeSetText( "Type variable", null );
                 }
             }
             catch ( Exception e )
@@ -773,22 +998,24 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                string type = VoiceAttackPlugin.GetText("Type variable");
-                string string0 = VoiceAttackPlugin.GetText("System variable");
-                string string1 = VoiceAttackPlugin.GetText("System variable 2") ?? VoiceAttackPlugin.GetText("Station variable");
-                decimal? numeric = VoiceAttackPlugin.GetDecimal("Numeric variable");
-                bool? boolean = VoiceAttackPlugin.GetBoolean ("Boolean variable");
+                var type = RuntimeGetText( "Type variable" );
+                var string0 = RuntimeGetText( "System variable" );
+                var string1 = RuntimeGetText( "System variable 2" ) ??
+                              RuntimeGetText( "Station variable" );
+                var numeric = RuntimeGetDecimal( "Numeric variable" );
+                var boolean = RuntimeGetBoolean( "Boolean variable" );
 
-                VoiceAttackPlugin.SetText( "Type variable", null );
-                VoiceAttackPlugin.SetText( "System variable", null );
-                VoiceAttackPlugin.SetText( "System variable 2", null );
-                VoiceAttackPlugin.SetText( "Station variable", null );
-                VoiceAttackPlugin.SetDecimal( "Numeric variable", null );
-                VoiceAttackPlugin.SetBoolean( "Boolean variable", null );
+                RuntimeSetText( "Type variable", null );
+                RuntimeSetText( "System variable", null );
+                RuntimeSetText( "System variable 2", null );
+                RuntimeSetText( "Station variable", null );
+                RuntimeSetDecimal( "Numeric variable", null );
+                RuntimeSetBoolean( "Boolean variable" , null );
 
                 if ( Enum.TryParse( type, true, out QueryType result ) )
                 {
-                    var @event = await NavigationService.Instance.NavQueryAsync(result, string0, string1, numeric, boolean).ConfigureAwait(false);
+                    var @event = await NavigationService.Instance
+                        .NavQueryAsync( result, string0, string1, numeric, boolean ).ConfigureAwait( false );
                     if ( @event != null )
                     {
                         EDDI.Instance?.enqueueEvent( @event );
@@ -806,3 +1033,4 @@ namespace EddiVoiceAttackResponder
         }
     }
 }
+

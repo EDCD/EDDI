@@ -10,30 +10,23 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using Utilities;
 
-[assembly: InternalsVisibleTo("Tests")]
+[assembly: InternalsVisibleTo( "Tests" )]
 namespace EddiJournalMonitor
 {
     [UsedImplicitly]
-    public class JournalMonitor : LogMonitor, IEddiMonitor
+    public class JournalMonitor () : LogMonitor( Files.GetEliteSavedGamesDir(), @"^Journal.*\.[0-9\.]+\.log$",
+        ( result, isLogLoadEvent ) =>
+            ForwardJournalEntries( result.ToList(), EDDI.Instance.enqueueEvent, isLogLoadEvent ) ), IEddiMonitor
     {
-        public JournalMonitor () : base( GetSavedGamesDir(), @"^Journal.*\.[0-9\.]+\.log$",
-            ( result, isLogLoadEvent ) =>
-                ForwardJournalEntries( result.ToList(), EDDI.Instance.enqueueEvent, isLogLoadEvent ) )
-        { }
-
-        private static readonly Regex JsonRegex = new Regex( @"^{.*}$", RegexOptions.Singleline );
-
         /// <summary>
         /// Holds a delayed event until we see an event of the type specified
         /// </summary>
-        private static readonly ConcurrentDictionary<string, ConcurrentBag<Event>> DelayedEventHolder = new ConcurrentDictionary<string, ConcurrentBag<Event>>();
+        private static readonly ConcurrentDictionary<string, ConcurrentBag<Event>> DelayedEventHolder = new();
 
         internal static CancellationTokenSource ShipShutdownCancellationTokenSource;
 
@@ -101,7 +94,7 @@ namespace EddiJournalMonitor
             {
                 if ( events[ i ] is ShipShutdownEvent shipShutdownEvent )
                 {
-                    if ( ( i + 1 ) <= ( events.Count - 1 ) && events[ i + 1 ] is MaterialCollectedEvent mce && mce.edname is "tg_shutdowndata" )
+                    if ( ( i + 1 ) <= ( events.Count - 1 ) && events[ i + 1 ] is MaterialCollectedEvent @event && @event.edname == "tg_shutdowndata" )
                     {
                         // If a ShipShutdown event is followed by a material collection event for Massive Energy Surge Analytics
                         // (available from Thargoid Titan energy pulses), ship systems are only momentarily impacted /
@@ -135,7 +128,7 @@ namespace EddiJournalMonitor
             var events = new List<Event>();
             try
             {
-                var match = JsonRegex.Match(line);
+                var match = GeneratedRegex.JsonWrappedRegex().Match(line);
                 if (match.Success)
                 {
                     Logging.Debug($"Received event: {line}");
@@ -397,9 +390,9 @@ namespace EddiJournalMonitor
                                     {
                                         // Prepare updated map details to update the body in our star system
                                         body = system?.BodyWithID(bodyId);
-                                        if (!(body is null))
+                                        if (body is not null)
                                         {
-                                            body.scannedDateTime = body.scannedDateTime ?? timestamp;
+                                            body.scannedDateTime ??= timestamp;
                                             body.mappedDateTime = timestamp;
                                             body.mappedEfficiently = probesUsed <= efficiencyTarget;
                                             events.Add(new BodyMappedEvent(timestamp, bodyName, body, systemAddress, probesUsed, efficiencyTarget) { raw = line, fromLoad = fromLogLoad });
@@ -535,46 +528,40 @@ namespace EddiJournalMonitor
 
                                         data.TryGetValue("AtmosphereComposition", out val);
                                         var atmosphereCompositions = new List<AtmosphereComposition>();
-                                        if (val != null)
+                                        if (val is List<object> atmosJson )
                                         {
-                                            if (val is List<object> atmosJson)
+                                            foreach (var atmoJson in atmosJson.Cast<IDictionary<string, object>>() )
                                             {
-                                                foreach (var atmoJson in atmosJson.Cast<IDictionary<string, object>>() )
+                                                var edComposition = JsonParsing.getString(atmoJson, "Name");
+                                                var percent = JsonParsing.getOptionalDecimal(atmoJson, "Percent");
+                                                if (edComposition != null && percent != null)
                                                 {
-                                                    var edComposition = JsonParsing.getString(atmoJson, "Name");
-                                                    var percent = JsonParsing.getOptionalDecimal(atmoJson, "Percent");
-                                                    if (edComposition != null && percent != null)
-                                                    {
-                                                        atmosphereCompositions.Add(new AtmosphereComposition(edComposition, (decimal)percent));
-                                                    }
+                                                    atmosphereCompositions.Add(new AtmosphereComposition(edComposition, (decimal)percent));
                                                 }
-                                                if (atmosphereCompositions.Count > 0)
-                                                {
-                                                    atmosphereCompositions = atmosphereCompositions.OrderByDescending(x => x.percent).ToList();
-                                                }
+                                            }
+                                            if (atmosphereCompositions.Count > 0)
+                                            {
+                                                atmosphereCompositions = atmosphereCompositions.OrderByDescending(x => x.percent).ToList();
                                             }
                                         }
 
                                         data.TryGetValue("Composition", out val);
                                         var solidCompositions = new List<SolidComposition>();
-                                        if (val != null)
+                                        if (val is Dictionary<string, object> bodyCompsJson )
                                         {
-                                            if (val is Dictionary<string, object> bodyCompsJson)
+                                            foreach (var kv in bodyCompsJson )
                                             {
-                                                foreach (var kv in bodyCompsJson )
+                                                var edComposition = kv.Key;
+                                                // The journal gives solid composition as a fraction of 1. Multiply by 100 to convert to a true percentage.
+                                                var percent = (decimal)(double)kv.Value * 100;
+                                                if (edComposition != null)
                                                 {
-                                                    var edComposition = kv.Key;
-                                                    // The journal gives solid composition as a fraction of 1. Multiply by 100 to convert to a true percentage.
-                                                    var percent = (decimal)(double)kv.Value * 100;
-                                                    if (edComposition != null)
-                                                    {
-                                                        solidCompositions.Add(new SolidComposition(edComposition, percent));
-                                                    }
+                                                    solidCompositions.Add(new SolidComposition(edComposition, percent));
                                                 }
-                                                if (solidCompositions.Count > 0)
-                                                {
-                                                    solidCompositions = solidCompositions.OrderByDescending(x => x.percent).ToList();
-                                                }
+                                            }
+                                            if (solidCompositions.Count > 0)
+                                            {
+                                                solidCompositions = solidCompositions.OrderByDescending(x => x.percent).ToList();
                                             }
                                         }
 
@@ -1129,7 +1116,8 @@ namespace EddiJournalMonitor
                                     var localisedname = JsonParsing.getString(data, "LocalisedName");
                                     if (!string.IsNullOrEmpty(localisedname))
                                     {
-                                        localisedname = Regex.Replace(localisedname, @"<.*?>", ""); // Mission localized names may have embedded HTML tags. If so then remove them.
+                                        // Mission localized names may have embedded HTML tags. If so then remove them.
+                                        localisedname = GeneratedRegex.HtmlRegex().Replace(localisedname, string.Empty); 
                                     }
                                     var faction = EventParsing.FactionName(data, "Faction");
                                     var reward = JsonParsing.getOptionalInt(data, "Reward");
@@ -1243,9 +1231,9 @@ namespace EddiJournalMonitor
                                             foreach ( var dest in starSystems )
                                             {
                                                 if ( !string.IsNullOrEmpty( dest.systemName ) &&
-                                                     dest.x is decimal sx &&
-                                                     dest.y is decimal sy &&
-                                                     dest.z is decimal sz )
+                                                     dest.x is var sx &&
+                                                     dest.y is var sy &&
+                                                     dest.z is var sz )
                                                 {
                                                     dest.missionids.Add( mission.missionid );
                                                     mission.destinationsystems.Add( dest );
@@ -1659,7 +1647,7 @@ namespace EddiJournalMonitor
                                     {
                                         events.Add(new TradeVoucherRedeemedEvent(timestamp, rewards, amount, brokerpercentage) { raw = line, fromLoad = fromLogLoad });
                                     }
-                                    else if (type == "codex" || type == "settlement" || type == "scannable")
+                                    else if (type is "codex" or "settlement" or "scannable")
                                     {
                                         events.Add(new DataVoucherRedeemedEvent(timestamp, rewards, amount, brokerpercentage) { raw = line, fromLoad = fromLogLoad });
                                     }
@@ -2428,7 +2416,7 @@ namespace EddiJournalMonitor
                                     data.TryGetValue( "StationServices", out var stationserviceVal );
                                     var stationservices =
                                         ( stationserviceVal as List<object> )?.Cast<string>()?.ToList() ??
-                                        new List<string>();
+                                        [ ];
                                     foreach ( var service in stationservices )
                                     {
                                         stationServices.Add( StationService.FromEDName( service ) );
@@ -2436,7 +2424,7 @@ namespace EddiJournalMonitor
 
                                     // Get carrier economies and their shares (may not be present when on-foot at a fleet carrier but not docked)
                                     data.TryGetValue( "StationEconomies", out var economiesVal );
-                                    var economies = economiesVal as List<object> ?? new List<object>();
+                                    var economies = economiesVal as List<object> ?? [ ];
                                     var stationEconomies = new List<EconomyShare>();
                                     foreach ( var economyShareVal in economies )
                                     {
@@ -2692,7 +2680,7 @@ namespace EddiJournalMonitor
                                         var microResource = EventParsing.MicroResource( data );
                                         var amount = JsonParsing.getInt( data, "Count" );
                                         var price = JsonParsing.getInt(data, "Price"); // Total price
-                                        var resourceAmounts = new List<MicroResourceAmount> { new MicroResourceAmount( microResource, amount ) };
+                                        var resourceAmounts = new List<MicroResourceAmount> { new( microResource, amount ) };
                                         events.Add( new MicroResourcesPurchasedEvent( timestamp, resourceAmounts, price, marketId ) { raw = line, fromLoad = fromLogLoad } );
                                     }
                                     handled = true;
@@ -2784,16 +2772,21 @@ namespace EddiJournalMonitor
                                     var carrierName = JsonParsing.getString(data, "CarrierName");
                                     var callsign = JsonParsing.getString(data, "CarrierID");
 
-                                    var raw = Files.FromSavedGames("FCMaterials.json");
-                                    if (raw != null)
-                                    {
-                                        var info = JsonConvert.DeserializeObject<FCMaterialsInfo>(raw);
-                                        if (info != null && info.CarrierID == carrierID
-                                                         && info.CarrierName == carrierName
-                                                         && info.callsign == callsign)
+                                    var (raw, parsed) = Files.FromSavedGamesAsync(
+                                        "FCMaterials.json",
+                                        extract: json =>
                                         {
-                                            events.Add(new FleetCarrierMaterialsEvent(timestamp, carrierID, carrierName, callsign, info) { raw = raw, fromLoad = fromLogLoad });
-                                        }
+                                            var o = JsonConvert.DeserializeObject<FCMaterialsInfo>( json );
+                                            return (o?.timestamp, o);
+                                        },
+                                        compareTo: timestamp
+                                    ).GetResultOrTimeout( TimeSpan.FromSeconds( 5 ) );
+
+                                    if ( parsed != null && parsed.CarrierID == carrierID
+                                                     && parsed.CarrierName == carrierName
+                                                     && parsed.callsign == callsign )
+                                    {
+                                        events.Add( new FleetCarrierMaterialsEvent( timestamp, carrierID, carrierName, callsign, parsed ) { raw = raw, fromLoad = fromLogLoad } );
                                     }
                                 }
                                 handled = true;
@@ -2855,7 +2848,7 @@ namespace EddiJournalMonitor
                                     var localizedName = JsonParsing.getString(data, "Name_Localised");
                                     if ( !string.IsNullOrEmpty(localizedName) )
                                     {
-                                        localizedName = Regex.Replace( localizedName, @"\s\(\d\)", "" ).Trim();
+                                        localizedName = GeneratedRegex.EndingCountRegex().Replace( localizedName, string.Empty ).Trim();
                                     }
 
                                     var marketId = JsonParsing.getOptionalLong(data, "MarketID"); // Tourist beacons and guardian structures are reported as settlements without MarketID
@@ -2945,7 +2938,9 @@ namespace EddiJournalMonitor
                                     }
                                     else
                                     {
-                                        if ( !DelayedEventHolder.TryAdd( CargoEvent.NAME, new ConcurrentBag<Event>( new[] { cargoTransferEvent } ) ) )
+                                        if ( !DelayedEventHolder.TryAdd( CargoEvent.NAME, new ConcurrentBag<Event>( [
+                                                cargoTransferEvent
+                                            ] ) ) )
                                         {
                                             DelayedEventHolder[ CargoEvent.NAME ].Add( cargoTransferEvent );
                                         }
@@ -3126,7 +3121,8 @@ namespace EddiJournalMonitor
                                     // Friends events can be written before the commander is loaded and need to be delayed until we have seen a "Commander" event
                                     if ( EDDI.Instance.lastEventOfType.TryGetValue( CommanderLoadingEvent.NAME, out _ ) )
                                     {
-                                        if ( !DelayedEventHolder.TryAdd( CommanderLoadingEvent.NAME, new ConcurrentBag<Event>( new[] { @event } ) ) )
+                                        if ( !DelayedEventHolder.TryAdd( CommanderLoadingEvent.NAME, new ConcurrentBag<Event>(
+                                                [ @event ] ) ) )
                                         {
                                             DelayedEventHolder[ CommanderLoadingEvent.NAME ].Add( @event );
                                         }
@@ -3419,14 +3415,7 @@ namespace EddiJournalMonitor
                                     }
 
                                     if (
-                                        channel == "player" ||
-                                        channel == "wing" ||
-                                        channel == "friend" ||
-                                        channel == "voicechat" ||
-                                        channel == "local" ||
-                                        channel == "squadron" ||
-                                        channel == "starsystem" ||
-                                        channel == null
+                                        channel is "player" or "wing" or "friend" or "voicechat" or "local" or "squadron" or "starsystem" or null
                                     )
                                     {
                                         // Give priority to player messages
@@ -3734,25 +3723,6 @@ namespace EddiJournalMonitor
         public UserControl ConfigurationTabItem()
         {
             return null;
-        }
-
-        private static string GetSavedGamesDir()
-        {
-            var result = NativeMethods.SHGetKnownFolderPath(new Guid("4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4"), 0, new IntPtr(0), out IntPtr path);
-            if (result >= 0)
-            {
-                return Marshal.PtrToStringUni(path) + @"\Frontier Developments\Elite Dangerous";
-            }
-            else
-            {
-                throw new ExternalException("Failed to find the saved games directory.", result);
-            }
-        }
-
-        private static class NativeMethods
-        {
-            [DllImport("Shell32.dll")]
-            internal static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)] Guid rfid, uint dwFlags, IntPtr hToken, out IntPtr ppszPath);
         }
 
         public Task PreHandleAsync ( Event @event )

@@ -12,7 +12,7 @@ namespace EddiSpeechResponder
     /// </summary>
     public partial class CopyPersonalityWindow : Window, INotifyPropertyChanged, IDataErrorInfo
     {
-        private readonly HashSet<string> existingNames = new HashSet<string>();
+        private readonly HashSet<string> existingNames = [ ];
 
         private string personalityName;
         public string PersonalityName
@@ -88,29 +88,20 @@ namespace EddiSpeechResponder
         {
             get
             {
-                string result = this[nameof(PersonalityName)];
+                var result = this[nameof(PersonalityName)];
                 return result;
             }
         }
 
-        public string this[string fieldName]
-        {
-            get
+        public string this[string fieldName] => fieldName switch
             {
-                switch (fieldName)
-                {
-                    case nameof(PersonalityName):
-                        return ValidatePersonalityName();
-
-                    default:
-                        return string.Empty;
-                }
-            }
-        }
+                nameof(PersonalityName) => ValidatePersonalityName(),
+                _ => string.Empty
+            };
 
         string ValidatePersonalityName()
         {
-            string trimmedName = personalityName?.Trim().ToLower();
+            var trimmedName = personalityName?.Trim().ToLower();
 
             if (string.IsNullOrEmpty(trimmedName))
             {

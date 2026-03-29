@@ -1,9 +1,10 @@
-using EddiCompanionAppService;
+ï»¿using EddiCompanionAppService;
 using EddiConfigService;
 using EddiCore.Hotkeys;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
+using EddiIPC_Service.Server;
 using EddiSpeechService;
 using EddiStatusService;
 using JetBrains.Annotations;
@@ -39,7 +40,7 @@ namespace EddiCore
         public bool SpeechResponderModalWait { get; set; }
 
         private static bool started;
-        public static bool running = true;
+        public bool running;
 
         public bool inTelepresence { get; internal set; }
 
@@ -78,12 +79,12 @@ namespace EddiCore
         }
         private string _gameVersion;
 
-        private readonly StarSystemSignalSourceManager signalSourceManager = new StarSystemSignalSourceManager();
+        private readonly StarSystemSignalSourceManager signalSourceManager = new();
 
         public System.Version GameVersion { get; internal set; }
 
         // EDDI uses APIs which only return data for the "live" galaxy, game version 4.0 or later.
-        private readonly System.Version minGameVersion = new System.Version(4, 0);
+        private readonly System.Version minGameVersion = new(4, 0);
 
         private void SetGameVersion(string v)
         {
@@ -96,7 +97,7 @@ namespace EddiCore
                     // or may be missing a Semantic Version altogether (e.g. "Fleet Carriers Update - Patch 11")
                     var versionRegex = new Regex(@"^(?<engine>0|[1-9]\d*)\.(?<major>0|[1-9]\d*)(?:\.(?<minor>\d*))?(?:\.(?<patch>\d*))?");
                     GameVersion = !string.IsNullOrEmpty(v) &&
-                                  System.Version.TryParse(versionRegex.Match(v).Value, out System.Version versionResult)
+                                  System.Version.TryParse(versionRegex.Match(v).Value, out var versionResult)
                         ? versionResult
                         : null;
 
@@ -131,7 +132,7 @@ namespace EddiCore
         }
 
         // True if we have been started by VoiceAttack
-        public static bool FromVA;
+        public bool FromVA;
 
         private static void Init()
         {
@@ -158,19 +159,23 @@ namespace EddiCore
             }
         }
         private static EDDI instance;
-        private static readonly object instanceLock = new object();
+        private static readonly object instanceLock = new();
 
-        public List<IEddiMonitor> monitors = new List<IEddiMonitor>();
-        internal ConcurrentBag<IEddiMonitor> activeMonitors = new ConcurrentBag<IEddiMonitor>();
-        private static readonly object monitorLock = new object();
+        public List<IEddiMonitor> monitors = [ ];
+        internal ConcurrentBag<IEddiMonitor> activeMonitors = [ ];
+        private static readonly object monitorLock = new();
+        private readonly Dictionary<string, CancellationTokenSource> _monitorCancellationTokens = [ ];
         private bool IsMonitorActive ( string name ) => activeMonitors.Any( m => m.MonitorName().Equals(name, StringComparison.OrdinalIgnoreCase) );
 
-        public List<IEddiResponder> responders = new List<IEddiResponder>();
-        private ConcurrentBag<IEddiResponder> activeResponders = new ConcurrentBag<IEddiResponder>();
-        private static readonly object responderLock = new object();
+        public List<IEddiResponder> responders = [ ];
+        private ConcurrentBag<IEddiResponder> activeResponders = [ ];
+        private static readonly object responderLock = new();
+
+        // IPC Server infrastructure (VoiceAttack plugin mode only)
+        private IPCServer _ipcServer;
 
         public DataProviderService DataProvider { get; internal set; }
-        public HotkeyManager HotkeyManager { get; } = new HotkeyManager();
+        public HotkeyManager HotkeyManager { get; } = new();
 
         // Information obtained from the configuration
 
@@ -243,7 +248,7 @@ namespace EddiCore
         public StarSystem LastStarSystem
         {
             get => lastStarSystem;
-            private set
+            internal set
             {
                 setSystemDistanceFromHome(value);
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
@@ -379,7 +384,7 @@ namespace EddiCore
         }
 
         // Information from the last events of each type that we've received (for reference)
-        public ConcurrentDictionary<string, Event> lastEventOfType { get; } = new ConcurrentDictionary<string, Event>();
+        public ConcurrentDictionary<string, Event> lastEventOfType { get; } = [ ];
 
         // Current vehicle of player
         public string Vehicle
@@ -393,11 +398,11 @@ namespace EddiCore
         }
         private string vehicle = Constants.VEHICLE_SHIP;
 
-        public readonly ObservableConcurrentDictionary<string, object> State = new ObservableConcurrentDictionary<string, object>();
+        public readonly ObservableConcurrentDictionary<string, object> State = [ ];
 
         // The event queue
-        private BlockingCollection<Event> eventQueue { get; } = new BlockingCollection<Event>();
-        private readonly CancellationTokenSource eventHandlerTS = new CancellationTokenSource();
+        private BlockingCollection<Event> eventQueue { get; } = [ ];
+        private readonly CancellationTokenSource eventHandlerTS = new();
         private Task eventConsumerThread;
 
         private string multicrewVehicleHolder;
@@ -409,10 +414,6 @@ namespace EddiCore
             {
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " starting");
                 DataProvider = DataProviderService.Create();
-                
-                // CAUTION: CompanionAppService.Instance must be invoked by the main application thread, before any other threads are generated, 
-                // to correctly configure the CompanionAppService to receive DDE messages from its custom URL Protocol.
-                CompanionAppService.Instance.gameIsBeta = false;
 
                 var configuration = ConfigService.Instance.eddiConfiguration;
                 Logging.Verbose = configuration.VerboseLogging;
@@ -424,27 +425,55 @@ namespace EddiCore
                 if (running)
                 {
                     // Tasks we can start asynchronously but need to complete before other dependent code is called
-                    essentialAsyncTasks.AddRange(new List<Task>()
+                    var discoveryTasks = new List<Task>
                     {
-                        Task.Run(() => responders = findResponders(), eventHandlerTS.Token), // Set up responders
-                        Task.Run(() => monitors = findMonitors(), eventHandlerTS.Token), // Set up monitors 
-                    });
+                        Task.Run( () => {
+                            try
+                            {
+                                responders = findResponders();
+                                Logging.Debug( $"Discovered {responders.Count} responders" );
+                            }
+                            catch ( Exception ex )
+                            {
+                                Logging.Error( "Failed to discover responders", ex );
+                                responders = [ ];
+                            }
+                        }, eventHandlerTS.Token ),
+                        Task.Run( () => {
+                            try
+                            {
+                                monitors = findMonitors();
+                                Logging.Debug( $"Discovered {monitors.Count} monitors" );
+                            }
+                            catch ( Exception ex )
+                            {
+                                Logging.Error( "Failed to discover monitors", ex );
+                                monitors = [ ];
+                            }
+                        }, eventHandlerTS.Token )
+                    };
+
+                    essentialAsyncTasks.AddRange( discoveryTasks );
                 }
                 else
                 {
-                    Logging.Info("Mandatory upgrade required! EDDI initializing in safe mode until upgrade is completed.");
+                    Logging.Warn("Mandatory upgrade required! EDDI initializing in safe mode until upgrade is completed.");
                 }
 
                 // Make sure that our essential tasks have completed before we start
-                Task.WaitAll(essentialAsyncTasks.ToArray(), eventHandlerTS.Token );
-
+                const int discoveryTimeoutMs = 5000;
+                if ( !Task.WaitAll( essentialAsyncTasks.ToArray(), discoveryTimeoutMs, eventHandlerTS.Token ) )
+                {
+                    Logging.Warn( $"Responder/Monitor discovery timed out after {discoveryTimeoutMs}ms" );
+                }
+                
                 // Tasks we can start asynchronously and don't need to wait for
                 updateDestinationSystemAsync( configuration.DestinationSystemAddress, configuration.DestinationSystem )
                     .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                 InitializeFrontierApiServiceAsync()
                     .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
 
-                StatusService.Instance.StatusChanged += ( s, e ) =>
+                StatusService.Instance.StatusChanged += ( s, _ ) =>
                     OnStatusChangedAsync( s ).SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
 
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " initialised");
@@ -528,9 +557,9 @@ namespace EddiCore
             }
         }
 
-        public bool EddiIsBeta() => Constants.EDDI_VERSION.phase < Utilities.Version.TestPhase.rc;
+        public static bool EddiIsBeta() => Constants.EDDI_VERSION.phase < Utilities.Version.TestPhase.rc;
 
-        public bool ShouldUseTestEndpoints()
+        public static bool ShouldUseTestEndpoints()
         {
 #if DEBUG
             return true;
@@ -547,7 +576,7 @@ namespace EddiCore
                 var configuration = ConfigService.Instance.eddiConfiguration;
                 foreach (var monitor in monitors)
                 {
-                    if (!configuration.Plugins.TryGetValue(monitor.MonitorName(), out bool enabled))
+                    if (!configuration.Plugins.TryGetValue(monitor.MonitorName(), out var enabled))
                     {
                         // No information; default to enabled
                         enabled = true;
@@ -565,13 +594,7 @@ namespace EddiCore
 
                 foreach (var responder in responders)
                 {
-                    if ( !FromVA && responder.ResponderName() == "VoiceAttack responder" )
-                    {
-                        // When we are not running from VoiceAttack then we skip starting the VoiceAttack responder.
-                        continue;
-                    }
-
-                    if (!configuration.Plugins.TryGetValue(responder.ResponderName(), out bool enabled))
+                    if (!configuration.Plugins.TryGetValue(responder.ResponderName(), out var enabled))
                     {
                         // No information; default to enabled
                         enabled = true;
@@ -607,6 +630,19 @@ namespace EddiCore
                     }
                 }
 
+                // Initialize IPC server (the VoiceAttack plugin can connect to this server as an IPC client)
+                try
+                {
+                    _ipcServer = new IPCServer();
+                    _ipcServer.InitializeIpcServer();
+                    Logging.Info( "IPC server initialized for standalone mode; listening for plugin connections" );
+                }
+                catch ( Exception ex )
+                {
+                    Logging.Error( "Failed to initialize IPC server", ex );
+                    // Don't throw - allow EDDI to continue even if IPC fails
+                }
+
                 started = true;
             }
         }
@@ -616,6 +652,20 @@ namespace EddiCore
             if ( running )
             {
                 running = false; // Otherwise keepalive restarts them
+
+                // Shutdown IPC server
+                if (_ipcServer?.IsRunning ?? false)
+                {
+                    try
+                    {
+                        _ipcServer.StopAsync().GetResultOrTimeout( TimeSpan.FromSeconds( 2 ) );
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Error("Error stopping IPC server", ex);
+                    }
+                }
+
                 signalSourceManager.Dispose();
                 DataProvider.cts.Cancel();
                 Utilities.TelemetryService.Telemetry.Stop();
@@ -638,11 +688,11 @@ namespace EddiCore
         /// </summary>
         public void Reload()
         {
-            foreach (IEddiResponder responder in responders)
+            foreach (var responder in responders)
             {
                 responder.Reload();
             }
-            foreach (IEddiMonitor monitor in monitors)
+            foreach (var monitor in monitors)
             {
                 monitor.Reload();
             }
@@ -653,11 +703,11 @@ namespace EddiCore
         /// <summary>
         /// Obtain a named monitor
         /// </summary>
-        public IEddiMonitor ObtainMonitor(string invariantName)
+        public IEddiMonitor ObtainMonitor(string invariantName, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase )
         {
-            foreach (IEddiMonitor monitor in monitors)
+            foreach (var monitor in monitors)
             {
-                if (monitor.MonitorName().Equals(invariantName, StringComparison.InvariantCultureIgnoreCase))
+                if (monitor.MonitorName().Equals(invariantName, stringComparison))
                 {
                     return monitor;
                 }
@@ -666,11 +716,11 @@ namespace EddiCore
         }
 
         /// <summary> Obtain a named responder </summary>
-        public IEddiResponder ObtainResponder(string invariantName)
+        public IEddiResponder ObtainResponder(string invariantName, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase)
         {
-            foreach (IEddiResponder responder in responders)
+            foreach (var responder in responders)
             {
-                if (responder.ResponderName().Equals(invariantName, StringComparison.InvariantCultureIgnoreCase))
+                if (responder.ResponderName().Equals(invariantName, stringComparison ) )
                 {
                     return responder;
                 }
@@ -679,9 +729,9 @@ namespace EddiCore
         }
 
         /// <summary> Disable a named responder for this session.  This does not update the on-disk status of the responder </summary>
-        public void DisableResponder(string invariantName)
+        public void DisableResponder(string invariantName, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase )
         {
-            var responder = ObtainResponder(invariantName);
+            var responder = ObtainResponder(invariantName, stringComparison);
             DisableResponder(responder);
         }
 
@@ -693,7 +743,7 @@ namespace EddiCore
                 {
                     // Remove the responder from the active list.
                     var newResponders = new ConcurrentBag<IEddiResponder>();
-                    while (activeResponders.TryTake(out IEddiResponder item))
+                    while (activeResponders.TryTake(out var item))
                     {
                         if (item != responder) { newResponders.Add(item); }
                     }
@@ -706,9 +756,9 @@ namespace EddiCore
         }
 
         /// <summary> Enable a named responder for this session.  This does not update the on-disk status of the responder </summary>
-        public void EnableResponder(string invariantName)
+        public void EnableResponder(string invariantName, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase )
         {
-            var responder = ObtainResponder(invariantName);
+            var responder = ObtainResponder(invariantName, stringComparison);
             EnableResponder(responder);
         }
 
@@ -725,36 +775,52 @@ namespace EddiCore
         }
 
         /// <summary> Disable a named monitor for this session.  This does not update the on-disk status of the responder </summary>
-        public void DisableMonitor(string invariantName)
+        public void DisableMonitor(string invariantName, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase )
         {
-            var monitor = ObtainMonitor(invariantName);
+            var monitor = ObtainMonitor(invariantName, stringComparison);
             DisableMonitor(monitor);
         }
 
-        public void DisableMonitor(IEddiMonitor monitor)
+        public void DisableMonitor ( IEddiMonitor monitor )
         {
-            if (monitor != null)
+            if ( monitor != null )
             {
-                lock (monitorLock)
+                lock ( monitorLock )
                 {
+                    var monitorName = monitor.MonitorName();
+
+                    // Signal cancellation for this monitor's keepalive loop
+                    if ( _monitorCancellationTokens.TryGetValue( monitorName, out var cts ) )
+                    {
+                        cts.Cancel();
+                        cts.Dispose();
+                        _monitorCancellationTokens.Remove( monitorName );
+                    }
+
                     // Remove the monitor from the active list.
                     var newMonitors = new ConcurrentBag<IEddiMonitor>();
-                    while (activeMonitors.TryTake(out IEddiMonitor item))
+                    while ( activeMonitors.TryTake( out var item ) )
                     {
-                        if (item != monitor) { newMonitors.Add(item); }
+                        if ( item != monitor )
+                        {
+                            newMonitors.Add( item );
+                        }
                     }
+
                     activeMonitors = newMonitors;
 
                     // Stop the monitor only after it's been removed from the active list.
                     monitor.Stop();
+
+                    Logging.Info( $"{monitorName} disabled." );
                 }
             }
         }
 
         /// <summary> Enable a named monitor for this session.  This does not update the on-disk status of the responder </summary>
-        public void EnableMonitor(string invariantName)
+        public void EnableMonitor(string invariantName, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase )
         {
-            var monitor = ObtainMonitor(invariantName);
+            var monitor = ObtainMonitor(invariantName, stringComparison);
             EnableMonitor(monitor);
         }
 
@@ -767,13 +833,14 @@ namespace EddiCore
                     activeMonitors.Add( monitor );
                     if ( monitor.NeedsStart() )
                     {
-                        var monitorThread = new Thread(() => keepAlive(monitor.MonitorName(), monitor.Start))
-                        {
-                            IsBackground = true
-                        };
-                        Logging.Info( "Starting keepalive for " + monitor.MonitorName() );
-                        monitorThread.Name = monitor.MonitorName();
-                        monitorThread.Start();
+                        var monitorName = monitor.MonitorName();
+                        var cts = new CancellationTokenSource();
+                        _monitorCancellationTokens[ monitorName ] = cts;
+
+                        // Queue to thread pool instead of creating new thread
+                        ThreadPool.QueueUserWorkItem( _ => keepAlive( monitorName, monitor.Start, cts.Token ), null );
+
+                        Logging.Debug( "Queued keepalive for " + monitorName + " to thread pool" );
                     }
                 }
                 else
@@ -784,11 +851,11 @@ namespace EddiCore
         }
 
         /// <summary> Reload a specific monitor or responder </summary>
-        public void Reload(string name)
+        public void Reload(string name, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase )
         {
             foreach (var responder in responders)
             {
-                if (responder.ResponderName().Contains( name, StringComparison.OrdinalIgnoreCase ) )
+                if (responder.ResponderName().Contains( name, stringComparison ) )
                 {
                     responder.Reload();
                     return;
@@ -796,7 +863,7 @@ namespace EddiCore
             }
             foreach (var monitor in monitors)
             {
-                if (monitor.MonitorName().Contains( name, StringComparison.OrdinalIgnoreCase ) )
+                if (monitor.MonitorName().Contains( name, stringComparison ) )
                 {
                     monitor.Reload();
                 }
@@ -806,13 +873,15 @@ namespace EddiCore
         }
 
         /// <summary> Keep a monitor thread alive, restarting it as required </summary>
-        private void keepAlive(string name, Action start)
+        private void keepAlive ( string name, Action start, CancellationToken monitorCancellationToken = default )
         {
-            var token = eventHandlerTS.Token;
+            var token = monitorCancellationToken != CancellationToken.None 
+                ? monitorCancellationToken 
+                : eventHandlerTS.Token;
             const int maxConsecutiveFailures = 5;
             var stableRunResetsFailures = TimeSpan.FromMinutes(5);
             var consecutiveFailures = 0;
-            var rng = new Random( unchecked(( System.Environment.TickCount * 31 ) + Thread.CurrentThread.ManagedThreadId) );
+            var rng = new Random( unchecked(( System.Environment.TickCount * 31 ) + System.Environment.CurrentManagedThreadId) );
 
             try
             {
@@ -863,11 +932,11 @@ namespace EddiCore
                         break;
                     }
 
-                    // Exponential backoff (max 30s) + small jitter (0–500ms), except when unit testing
+                    // Exponential backoff (max 30s) + small jitter, except when unit testing
                     var exponent = Math.Min(Math.Max(0, consecutiveFailures - 1), 5);
                     var backoffSeconds = Math.Min(30, 1 << exponent);
                     var jitterMs = rng.Next(0, 500);
-                    var delay = DataProviderService.unitTesting 
+                    var delay = DataProvider.unitTesting 
                         ? TimeSpan.Zero 
                         : TimeSpan.FromSeconds(backoffSeconds) + TimeSpan.FromMilliseconds(jitterMs);
 
@@ -890,7 +959,7 @@ namespace EddiCore
 
             return;
 
-            TimeSpan ElapsedSince ( long startTimestamp )
+            static TimeSpan ElapsedSince ( long startTimestamp )
             {
                 var delta = Stopwatch.GetTimestamp() - startTimestamp;
                 var seconds = (double)delta / Stopwatch.Frequency;
@@ -910,7 +979,7 @@ namespace EddiCore
             // Start (or restart) our event handler thread (as long as we are not unit testing)
             if ( !eventHandlerTS.Token.IsCancellationRequested && 
                  ( eventConsumerThread is null || eventConsumerThread?.Status >= TaskStatus.RanToCompletion ) && 
-                 !DataProviderService.unitTesting )
+                 !DataProvider.unitTesting )
             {
                 eventConsumerThread?.Dispose();
                 eventConsumerThread = Task.Run(dequeueEventsAsync, eventHandlerTS.Token);
@@ -939,7 +1008,7 @@ namespace EddiCore
             if ( @event != null )
             {
                 // Event handling is disabled when running a legacy game version.
-                if ( GameVersion != null && GameVersion < minGameVersion && !( @event is FileHeaderEvent ) ) { return; }
+                if ( GameVersion != null && GameVersion < minGameVersion && @event is not FileHeaderEvent ) { return; }
 
                 try
                 {
@@ -1130,7 +1199,7 @@ namespace EddiCore
         private async Task<bool> eventRingHotspotsAsync ( RingHotspotsEvent @event )
         {
             var ring = CurrentStarSystem?.bodies?
-                .Where(b => b.rings?.Any() ?? false)
+                .Where(b => b.rings is { } list && list.Count > 0 )
                 .SelectMany(b => b.rings)
                 .FirstOrDefault(r => r.name == @event.bodyname);
             if ( ring != null )
@@ -1159,7 +1228,7 @@ namespace EddiCore
                 else
                 {
                     @event.unique = true;
-                    newSignalSources = new List<SignalSource> { @event.signalSource };
+                    newSignalSources = [ @event.signalSource ];
                     StarSystemSignalSourceManager.newSignalSources.Add( @event.systemAddress, newSignalSources );
                 }
 
@@ -1358,10 +1427,7 @@ namespace EddiCore
 
                 // If the carrier is not found in the current or last star system but a fleet carrier object is present,
                 // we can generate current station information from the FleetCarrier object
-                if ( CurrentStation == null )
-                {
-                    CurrentStation = FleetCarrier?.Market?.UpdateStation( @event.timestamp, new Station() );
-                }
+                CurrentStation ??= FleetCarrier?.Market?.UpdateStation( @event.timestamp, new Station() );
 
                 // Update current station properties
                 if ( CurrentStation != null )
@@ -1399,7 +1465,7 @@ namespace EddiCore
                 if ( @event.population != null )
                 {
                     CurrentStarSystem.population = @event.population;
-                    CurrentStarSystem.Economies = new List<Economy> { @event.systemEconomy, @event.systemEconomy2 };
+                    CurrentStarSystem.Economies = [ @event.systemEconomy, @event.systemEconomy2 ];
                     CurrentStarSystem.securityLevel = @event.securityLevel;
                     CurrentStarSystem.Faction = @event.controllingsystemfaction;
                 }
@@ -1476,7 +1542,7 @@ namespace EddiCore
                     body.scannedDateTime = @event.timestamp;
                     bodiesToUpdate.Add(body);
                 }
-                if (bodiesToUpdate.Any()) { CurrentStarSystem.AddOrUpdateBodies(bodiesToUpdate); }
+                if ( bodiesToUpdate.Count > 0 ) { CurrentStarSystem.AddOrUpdateBodies(bodiesToUpdate); }
                 // Save the updated star system data
                 await DataProvider.SaveStarSystemAsync(CurrentStarSystem).ConfigureAwait(false);
             }
@@ -1498,7 +1564,7 @@ namespace EddiCore
                         body.scannedDateTime = @event.timestamp;
                         bodiesToUpdate.Add(body);
                     }
-                    if (bodiesToUpdate.Any()) { CurrentStarSystem.AddOrUpdateBodies(bodiesToUpdate); }
+                    if ( bodiesToUpdate.Count > 0 ) { CurrentStarSystem.AddOrUpdateBodies(bodiesToUpdate); }
                 }
 
                 await DataProvider.SaveStarSystemAsync(CurrentStarSystem).ConfigureAwait(false);
@@ -1688,7 +1754,7 @@ namespace EddiCore
             if ( theEvent.population != null )
             {
                 CurrentStarSystem.population = theEvent.population;
-                CurrentStarSystem.Economies = new List<Economy> { theEvent.Economy, theEvent.Economy2 };
+                CurrentStarSystem.Economies = [ theEvent.Economy, theEvent.Economy2 ];
                 CurrentStarSystem.securityLevel = theEvent.securityLevel;
                 CurrentStarSystem.Faction = theEvent.controllingsystemfaction;
             }
@@ -1886,11 +1952,11 @@ namespace EddiCore
         {
             await updateCurrentStellarBodyAsync( @event.bodyname, @event.bodyId, @event.systemname, @event.systemAddress ).ConfigureAwait(false);
 
-            if (@event.taxi != null && @event.taxi == true)
+            if (@event.taxi is true)
             {
                 Vehicle = Constants.VEHICLE_TAXI;
             }
-            else if (@event.multicrew != null && @event.multicrew == true)
+            else if (@event.multicrew is true)
             {
                 Vehicle = Constants.VEHICLE_MULTICREW;
             }
@@ -1900,11 +1966,11 @@ namespace EddiCore
             if (@event.latitude != null && @event.longitude != null)
             {
                 Environment = Constants.ENVIRONMENT_LANDED;
-                if (@event.taxi != null && @event.taxi == true)
+                if (@event.taxi is true)
                 {
                     Vehicle = Constants.VEHICLE_TAXI;
                 }
-                else if (@event.multicrew != null && @event.multicrew == true)
+                else if (@event.multicrew is true)
                 {
                     Vehicle = Constants.VEHICLE_MULTICREW;
                 }
@@ -1937,11 +2003,11 @@ namespace EddiCore
 
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
 
-            if (theEvent.taxi != null && theEvent.taxi == true)
+            if (theEvent.taxi is true)
             {
                 Vehicle = Constants.VEHICLE_TAXI;
             }
-            else if (theEvent.multicrew != null && theEvent.multicrew == true)
+            else if (theEvent.multicrew is true)
             {
                 Vehicle = Constants.VEHICLE_MULTICREW;
             }
@@ -1987,7 +2053,7 @@ namespace EddiCore
                     {
                         currentStation.marketUpdatedThisVisit = true;
                         enqueueEvent( new MarketInformationUpdatedEvent( theEvent.timestamp, theEvent.marketId,
-                            theEvent.station, theEvent.system, new HashSet<string> { "market" } ) { raw = theEvent.raw } );
+                            theEvent.station, theEvent.system, [ "market" ] ) { raw = theEvent.raw } );
                     }
 
                     return true;
@@ -2037,7 +2103,7 @@ namespace EddiCore
                     {
                         currentStation.outfittingUpdatedThisVisit = true;
                         enqueueEvent( new MarketInformationUpdatedEvent( theEvent.timestamp, theEvent.marketId,
-                            theEvent.station, theEvent.system, new HashSet<string> { "outfitting" } )
+                            theEvent.station, theEvent.system, [ "outfitting" ] )
                         {
                             raw = theEvent.raw
                         } );
@@ -2089,7 +2155,7 @@ namespace EddiCore
                     {
                         currentStation.shipyardUpdatedThisVisit = true;
                         enqueueEvent( new MarketInformationUpdatedEvent( theEvent.timestamp, theEvent.marketId,
-                            theEvent.station, theEvent.system, new HashSet<string> { "shipyard" } )
+                            theEvent.station, theEvent.system, [ "shipyard" ] )
                         {
                             raw = theEvent.raw
                         } );
@@ -2320,7 +2386,7 @@ namespace EddiCore
                 }
             }
 
-            CurrentStarSystem.Economies = new List<Economy> { theEvent.Economy, theEvent.Economy2 };
+            CurrentStarSystem.Economies = [ theEvent.Economy, theEvent.Economy2 ];
             CurrentStarSystem.securityLevel = theEvent.securityLevel;
             if ( theEvent.population != null )
             {
@@ -2540,7 +2606,7 @@ namespace EddiCore
 
             // We use an un-named temporary star at distance 0M during the FSD Target event.
             // Try to match and replace that temporary star if it exists. Otherwise, match by body name.
-            Body star = CurrentStarSystem.bodies?
+            var star = CurrentStarSystem.bodies?
                 .Where(s => s.bodyType == BodyType.Star).ToList()
                 .Find(s => 
                     (string.IsNullOrEmpty(s.bodyname) && s.distance == 0M && s.distance == theEvent.distance) || 
@@ -2609,7 +2675,7 @@ namespace EddiCore
                         CurrentStarSystem?.stations != null)
                     {
                         // Only set the current station if it is not present, otherwise we leave it to events
-                        CurrentStation = CurrentStation ?? CurrentStarSystem.stations.FirstOrDefault(s => s.marketId == profile.LastStationMarketID)
+                        CurrentStation ??= CurrentStarSystem.stations.FirstOrDefault(s => s.marketId == profile.LastStationMarketID)
                             ?? CurrentStarSystem.stations.FirstOrDefault(s => s.name == profile.LastStationName);
                         if (CurrentStation != null)
                         {
@@ -2670,7 +2736,7 @@ namespace EddiCore
             return success;
         }
 
-        private void setSystemDistanceFromHome(StarSystem system)
+        private static void setSystemDistanceFromHome(StarSystem system)
         {
             var commanderConfig = ConfigService.Instance.commanderConfiguration;
             var homeX = commanderConfig.homeSystemX;
@@ -2693,7 +2759,7 @@ namespace EddiCore
         /// <summary>
         /// Find all monitors
         /// </summary>
-        public List<IEddiMonitor> findMonitors()
+        public static List<IEddiMonitor> findMonitors()
         {
             var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             if (string.IsNullOrEmpty(path))
@@ -2702,15 +2768,15 @@ namespace EddiCore
                 return null;
             }
 
-            DirectoryInfo dir = new DirectoryInfo(path);
-            List<IEddiMonitor> foundMonitors = new List<IEddiMonitor>();
-            Type pluginType = typeof(IEddiMonitor);
-            foreach (FileInfo file in dir.GetFiles("*Monitor.dll", SearchOption.AllDirectories))
+            var dir = new DirectoryInfo(path);
+            List<IEddiMonitor> foundMonitors = [ ];
+            var pluginType = typeof(IEddiMonitor);
+            foreach (var file in dir.GetFiles("*Monitor.dll", SearchOption.AllDirectories))
             {
                 try
                 {
-                    Assembly assembly = Assembly.LoadFrom(file.FullName);
-                    foreach (Type type in assembly.GetTypes())
+                    var assembly = Assembly.LoadFrom(file.FullName);
+                    foreach (var type in assembly.GetTypes())
                     {
                         if ( !type.IsInterface && !type.IsAbstract )
                         {
@@ -2719,7 +2785,7 @@ namespace EddiCore
                                 try
                                 {
                                     Logging.Debug( "Instantiating monitor plugin at " + file.FullName );
-                                    IEddiMonitor monitor = type.InvokeMember( null,
+                                    var monitor = type.InvokeMember( null,
                                         BindingFlags.CreateInstance,
                                         null, null, null ) as IEddiMonitor;
                                     foundMonitors.Add( monitor );
@@ -2739,8 +2805,8 @@ namespace EddiCore
                 }
                 catch (ReflectionTypeLoadException ex)
                 {
-                    StringBuilder sb = new StringBuilder();
-                    foreach (Exception exSub in ex.LoaderExceptions)
+                    var sb = new StringBuilder();
+                    foreach (var exSub in ex.LoaderExceptions)
                     {
                         sb.AppendLine(exSub.Message);
                         if (exSub is FileNotFoundException exFileNotFound)
@@ -2774,7 +2840,7 @@ namespace EddiCore
         /// <summary>
         /// Find all responders
         /// </summary>
-        public List<IEddiResponder> findResponders()
+        public static List<IEddiResponder> findResponders()
         {
             var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             if (string.IsNullOrEmpty(path))
@@ -2782,22 +2848,22 @@ namespace EddiCore
                 Logging.Warn("Unable to start EDDI Responders, application directory path not found.");
                 return null;
             }
-            DirectoryInfo dir = new DirectoryInfo(path);
-            List<IEddiResponder> foundResponders = new List<IEddiResponder>();
-            Type pluginType = typeof(IEddiResponder);
-            foreach (FileInfo file in dir.GetFiles("*Responder.dll", SearchOption.AllDirectories))
+            var dir = new DirectoryInfo(path);
+            List<IEddiResponder> foundResponders = [ ];
+            var pluginType = typeof(IEddiResponder);
+            foreach (var file in dir.GetFiles("*Responder.dll", SearchOption.AllDirectories))
             {
                 try
                 {
-                    Assembly assembly = Assembly.LoadFrom(file.FullName);
-                    foreach (Type type in assembly.GetTypes())
+                    var assembly = Assembly.LoadFrom(file.FullName);
+                    foreach (var type in assembly.GetTypes())
                     {
-                        if ( !type.IsInterface && !type.IsAbstract && !( pluginType.FullName is null ) )
+                        if ( !type.IsInterface && !type.IsAbstract && pluginType.FullName is not null )
                         {
                             if ( type.GetInterface( pluginType.FullName ) != null )
                             {
                                 Logging.Debug( "Instantiating responder plugin at " + file.FullName );
-                                IEddiResponder responder = type.InvokeMember( type.Name,
+                                var responder = type.InvokeMember( type.Name,
                                     BindingFlags.CreateInstance,
                                     null, null, null ) as IEddiResponder;
                                 foundResponders.Add( responder );
@@ -2811,8 +2877,8 @@ namespace EddiCore
                 }
                 catch (ReflectionTypeLoadException ex)
                 {
-                    StringBuilder sb = new StringBuilder();
-                    foreach (Exception exSub in ex.LoaderExceptions)
+                    var sb = new StringBuilder();
+                    foreach (var exSub in ex.LoaderExceptions)
                     {
                         if ( exSub is null ) { continue; }
                         sb.AppendLine(exSub.Message);
@@ -2936,3 +3002,4 @@ namespace EddiCore
         }
     }
 }
+

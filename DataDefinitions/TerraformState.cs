@@ -51,7 +51,7 @@ namespace EddiDataDefinitions
             return ResourceBasedLocalizedEDName<TerraformState>.FromEDName( from );
         }  
         
-        private static Dictionary<string, TerraformState> equivalencyMap => new Dictionary<string, TerraformState>( StringComparer.OrdinalIgnoreCase )
+        private static Dictionary<string, TerraformState> equivalencyMap => new( StringComparer.OrdinalIgnoreCase )
         {
             { "not terraformable", NotTerraformable },
             { "terraformable", Terraformable }

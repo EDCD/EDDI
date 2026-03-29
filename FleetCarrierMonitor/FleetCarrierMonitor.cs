@@ -47,9 +47,9 @@ namespace EddiFleetCarrierMonitor
         }
         private FleetCarrier _squadronCarrier;
 
-        private readonly object carrierLock = new object();
+        private readonly object carrierLock = new();
 
-        private static readonly ConcurrentDictionary<long, CancellationTokenSource> _carrierJumpCts  = new ConcurrentDictionary<long, CancellationTokenSource>();
+        private static readonly ConcurrentDictionary<long, CancellationTokenSource> _carrierJumpCts  = new();
 
         public string MonitorName () => "Fleet Carrier Monitor";
 
@@ -154,7 +154,7 @@ namespace EddiFleetCarrierMonitor
             return Task.CompletedTask;
         }
 
-        private bool CarrierIsDecommissioned ( DateTime timestamp, FleetCarrier carrier )
+        private static bool CarrierIsDecommissioned ( DateTime timestamp, FleetCarrier carrier )
         {
             if ( timestamp > carrier?.DecomissionDateTime )
             {
@@ -173,7 +173,7 @@ namespace EddiFleetCarrierMonitor
             return false;
         }
 
-        private bool CarrierTimestampIsCurrent( DateTime timestamp, FleetCarrier carrier )
+        private static bool CarrierTimestampIsCurrent( DateTime timestamp, FleetCarrier carrier )
         {
             // We only want to update the carrier objects with new events
             return timestamp >= carrier?.timestamp;
@@ -503,7 +503,7 @@ namespace EddiFleetCarrierMonitor
             }
         }
 
-        private void handleFileHeaderEvent ()
+        private static void handleFileHeaderEvent ()
         {
             EDDI.Instance.FleetCarrier = ConfigService.Instance.fleetCarrierConfiguration.fleetCarrier;
             EDDI.Instance.SquadronCarrier = ConfigService.Instance.fleetCarrierConfiguration.squadronCarrier;
@@ -575,7 +575,7 @@ namespace EddiFleetCarrierMonitor
             return Task.CompletedTask;
         }
 
-        private async Task HandleCarrierJumpCancelledAsync ( CarrierJumpCancelledEvent cjc )
+        private static async Task HandleCarrierJumpCancelledAsync ( CarrierJumpCancelledEvent cjc )
         {
             var cts = ResetCarrierSchedule(cjc.carrierID);
             var token = cts.Token;
@@ -585,7 +585,7 @@ namespace EddiFleetCarrierMonitor
 
             try
             {
-                await DelayThenAsync( cooldownDelay, token, () =>
+                await DelayThenAsync( cooldownDelay, () =>
                 {
                     var carrier = StationModel.SquadronCarrier.edname.Equals( cjc.carrierType.edname )
                         ? EDDI.Instance.SquadronCarrier
@@ -602,7 +602,7 @@ namespace EddiFleetCarrierMonitor
                             null,
                             carrier?.currentBodyID,
                             null ) );
-                } ).ConfigureAwait( false );
+                }, token ).ConfigureAwait( false );
             }
             catch ( OperationCanceledException )
             {
@@ -614,7 +614,7 @@ namespace EddiFleetCarrierMonitor
             }
         }
 
-        private async Task HandleCarrierJumpRequestAsync ( CarrierJumpRequestEvent cjr )
+        private static async Task HandleCarrierJumpRequestAsync ( CarrierJumpRequestEvent cjr )
         {
             var cts = ResetCarrierSchedule(cjr.carrierID);
             var token = cts.Token;
@@ -630,12 +630,12 @@ namespace EddiFleetCarrierMonitor
 
             try
             {
-                var carrierPadsLockedEvent = DelayThenAsync(padLockDelay, token, () =>
+                var carrierPadsLockedEvent = DelayThenAsync(padLockDelay, () =>
                 {
                     EDDI.Instance.enqueueEvent( new CarrierPadsLockedEvent(cjr.timestamp.Add(padLockDelay), cjr.carrierID, cjr.carrierType));
-                });
+                }, token );
 
-                var carrierJumpEngagedEvent = DelayThenAsync( departureDelay, token, () =>
+                var carrierJumpEngagedEvent = DelayThenAsync( departureDelay, () =>
                 {
                     if ( EDDI.Instance.CurrentStarSystem != null )
                     {
@@ -650,9 +650,9 @@ namespace EddiFleetCarrierMonitor
                                 cjr.bodyname, cjr.bodyId,
                                 cjr.carrierID, cjr.carrierType ) );
                     }
-                } );
+                }, token );
 
-                var carrierCooldownEvent = DelayThenAsync( cooldownDelay, token, () =>
+                var carrierCooldownEvent = DelayThenAsync( cooldownDelay, () =>
                 {
                     EDDI.Instance.enqueueEvent(
                         new CarrierCooldownEvent(
@@ -665,7 +665,7 @@ namespace EddiFleetCarrierMonitor
                             cjr.bodyname,
                             cjr.bodyId,
                             null ) );
-                } );
+                }, token );
 
                 await Task.WhenAll( carrierPadsLockedEvent, carrierJumpEngagedEvent, carrierCooldownEvent ).ConfigureAwait( false );
             }
@@ -679,7 +679,7 @@ namespace EddiFleetCarrierMonitor
             }
         }
 
-        private async Task HandleCarrierJumpedAsync ( CarrierJumpedEvent cj )
+        private static async Task HandleCarrierJumpedAsync ( CarrierJumpedEvent cj )
         {
             if ( cj.carrierID == null ) { return; }
 
@@ -698,7 +698,7 @@ namespace EddiFleetCarrierMonitor
 
             try
             {
-                await DelayThenAsync( cooldownDelay, token, () =>
+                await DelayThenAsync( cooldownDelay, () =>
                 {
                     EDDI.Instance.enqueueEvent(
                         new CarrierCooldownEvent(
@@ -711,7 +711,7 @@ namespace EddiFleetCarrierMonitor
                             cj.bodyname,
                             cj.bodyId,
                             cj.bodyType ) );
-                } ).ConfigureAwait( false );
+                }, token ).ConfigureAwait( false );
             }
             catch ( OperationCanceledException )
             {
@@ -740,8 +740,8 @@ namespace EddiFleetCarrierMonitor
             {
                 return new Dictionary<string, Tuple<Type, object>>
                 {
-                    [ "carrier" ] = new Tuple<Type, object>( typeof( FleetCarrier ), FleetCarrier ),
-                    [ "squadronCarrier" ] = new Tuple<Type, object>( typeof( FleetCarrier ), SquadronCarrier ),
+                    [ "carrier" ] = new( typeof( FleetCarrier ), FleetCarrier ),
+                    [ "squadronCarrier" ] = new( typeof( FleetCarrier ), SquadronCarrier ),
                 };
             }
         }
@@ -878,7 +878,7 @@ namespace EddiFleetCarrierMonitor
             }
         }
         
-        private void CleanupCarrierSchedule ( long carrierId, CancellationTokenSource cts )
+        private static void CleanupCarrierSchedule ( long carrierId, CancellationTokenSource cts )
         {
             // Remove only if the dictionary still points to THIS cts (prevents removing a newer one).
             if ( _carrierJumpCts.TryGetValue( carrierId, out var current ) && ReferenceEquals( current, cts ) )
@@ -889,7 +889,7 @@ namespace EddiFleetCarrierMonitor
             cts.Dispose();
         }
 
-        private static async Task DelayThenAsync ( TimeSpan delay, CancellationToken token, Action action )
+        private static async Task DelayThenAsync ( TimeSpan delay, Action action, CancellationToken token = default )
         {
             if ( delay <= TimeSpan.Zero )
             {
@@ -913,7 +913,7 @@ namespace EddiFleetCarrierMonitor
             }
         }
 
-        private CancellationTokenSource ResetCarrierSchedule ( long carrierId )
+        private static CancellationTokenSource ResetCarrierSchedule ( long carrierId )
         {
             var newCts = new CancellationTokenSource();
 

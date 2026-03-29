@@ -129,7 +129,7 @@ namespace Tests
             Assert.IsFalse(starSystem.isgold, "empty system should not be gold");
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow( "Tionisla", "85.25", "48.75", "68.15625", false )]
         [DataRow( "Peregrina", "-24.9375", "-80.59375", "-184.34375", true )]
         [DataRow( "Regor Sector", "1099.23828", "-146.67188", "-133.58008", true )]
@@ -200,7 +200,7 @@ namespace Tests
 
             starSystem.AddOrUpdateBody(body);
 
-            Assert.AreEqual(1, starSystem.bodies.Count);
+            Assert.HasCount( 1, starSystem.bodies);
         }
 
         [TestMethod]
@@ -213,7 +213,7 @@ namespace Tests
 
             starSystem.AddOrUpdateBody(updatedBody);
 
-            Assert.AreEqual(1, starSystem.bodies.Count);
+            Assert.HasCount( 1, starSystem.bodies );
             var actualBody = starSystem.bodies[0];
             Assert.AreEqual("testSystem 1", actualBody.bodyname);
             Assert.AreEqual(BodyType.Moon, actualBody.bodyType);
@@ -229,7 +229,7 @@ namespace Tests
             Assert.AreEqual(grade, blueprint.grade);
             Assert.IsNotNull( blueprint.blueprintTemplate );
             Assert.AreEqual("SensorFastScan", blueprint.blueprintTemplate.edname);
-            Assert.AreEqual(3, blueprint.materials.Count);
+            Assert.HasCount( 3, blueprint.materials );
             Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("phosphorus"));
             Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("uncutfocuscrystals"));
             Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("symmetrickeys"));
@@ -245,7 +245,7 @@ namespace Tests
             Assert.IsNotNull(blueprintFromTemplate);
             Assert.AreEqual(grade, blueprintFromTemplate.grade);
             Assert.AreEqual("SensorFastScan", blueprintFromTemplate.blueprintTemplate.edname);
-            Assert.AreEqual(3, blueprintFromTemplate.materials.Count);
+            Assert.HasCount( 3, blueprintFromTemplate.materials );
             var materials = blueprintFromTemplate.materials.Select(m => m.edname).ToArray();
             Assert.IsTrue(materials.Contains("phosphorus"));
             Assert.IsTrue(materials.Contains("uncutfocuscrystals"));
@@ -263,7 +263,7 @@ namespace Tests
             Assert.AreEqual(grade, blueprint.grade);
             Assert.IsNotNull( blueprint.blueprintTemplate );
             Assert.AreEqual("EngineDirty", blueprint.blueprintTemplate.edname);
-            Assert.AreEqual(3, blueprint.materials.Count);
+            Assert.HasCount( 3, blueprint.materials );
             Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("industrialfirmware"));
             Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("cadmium"));
             Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("pharmaceuticalisolators"));
@@ -286,7 +286,7 @@ namespace Tests
             Assert.IsNotNull(blueprint);
             Assert.AreEqual(3, blueprint.grade);
             Assert.IsNotNull(blueprint.blueprintTemplate);
-            Assert.AreEqual(3, blueprint.materials.Count);
+            Assert.HasCount( 3, blueprint.materials );
             Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("phosphorus"));
             Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("uncutfocuscrystals"));
             Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("symmetrickeys"));
@@ -511,18 +511,18 @@ namespace Tests
             var info = DeserializeJsonResource<MarketInfo>(Resources.market);
             var expectedMarketInfoItems = new List<MarketInfoItem>()
             { 
-                new MarketInfoItem(128668550, "$painite_name;", "$MARKET_category_minerals;", 0, 500096, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 200),
-                new MarketInfoItem(128673846, "$bromellite_name;", "$MARKET_category_minerals;", 0, 10009, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 100 ),
-                new MarketInfoItem(128673848, "$lowtemperaturediamond_name;", "$MARKET_category_minerals;", 0, 500553, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 150 ),
-                new MarketInfoItem(128924330, "$grandidierite_name;", "$MARKET_category_minerals;", 0, 424204, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 100),
-                new MarketInfoItem(128924331, "$alexandrite_name;", "$MARKET_category_minerals;", 0, 348192, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 97),
-                new MarketInfoItem(128924332, "$opal_name;", "$MARKET_category_minerals;", 0, 1014218, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 300)
+                new(128668550, "$painite_name;", "$MARKET_category_minerals;", 0, 500096, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 200),
+                new(128673846, "$bromellite_name;", "$MARKET_category_minerals;", 0, 10009, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 100 ),
+                new(128673848, "$lowtemperaturediamond_name;", "$MARKET_category_minerals;", 0, 500553, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 150 ),
+                new(128924330, "$grandidierite_name;", "$MARKET_category_minerals;", 0, 424204, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 100),
+                new(128924331, "$alexandrite_name;", "$MARKET_category_minerals;", 0, 348192, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 97),
+                new(128924332, "$opal_name;", "$MARKET_category_minerals;", 0, 1014218, 0, CommodityBracket.None, CommodityBracket.Medium, 0, 300)
             };
 
             Assert.AreEqual(3702012928, info.MarketID);
             Assert.AreEqual("X9K-WTW", info.StationName);
             Assert.AreEqual("Gateway", info.StarSystem);
-            Assert.AreEqual(expectedMarketInfoItems.Count, info.Items.Count);
+            Assert.HasCount( expectedMarketInfoItems.Count, info.Items);
 
             foreach (var item in info.Items)
             {
@@ -550,7 +550,7 @@ namespace Tests
             Assert.AreEqual("Consumer", quote.StatusFlags.First());
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("$Datascan_DataPoint;", "Data Point")]
         [DataRow("$Datascan_Unknown_Uplink;", "Thargoid Uplink")]
         public void TestDataScanFromEDName(string edName, string invariantName)
@@ -570,27 +570,27 @@ namespace Tests
                 Allegiance = Superpower.Alliance,
                 Government = Government.Democracy,
                 myreputation = 100,
-                presences = new List<FactionPresence> 
-                { 
-                    new FactionPresence 
-                    { 
-                        systemName = "HIP 19072", 
+                presences =
+                [
+                    new FactionPresence
+                    {
+                        systemName = "HIP 19072",
                         systemAddress = 525873416523U,
-                        FactionState = FactionState.Boom, 
-                        ActiveStates = new List<FactionState>( new [] { FactionState.Boom } ),
+                        FactionState = FactionState.Boom,
+                        ActiveStates = [ ..new[] { FactionState.Boom } ],
                         Happiness = Happiness.HappinessBand2,
                         influence = 70.600M
-                    } 
-                },
+                    }
+                ],
             };
 
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var @event = (JumpedEvent)events[0];
             Assert.IsTrue(@event.controllingfaction.DeepEquals(expectedSystemFaction));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("citizensuitai_admin", "Administrator", 1)]
         [DataRow("citizensuitai_industrial", "Technician", 1)]
         [DataRow("citizensuitai_scientific", "Researcher", 1)]
@@ -606,7 +606,7 @@ namespace Tests
             Assert.AreEqual(expectedGrade, result.grade);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("ExplorationSuit_Class1", "Artemis Suit", 1)]
         [DataRow("FlightSuit", "Flight Suit", 1)]
         [DataRow("TacticalSuit_Class2", "Dominator Suit", 2)]
@@ -618,7 +618,7 @@ namespace Tests
             Assert.AreEqual(expectedGrade, result.grade);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("ChemicalInventory", "Chemical Inventory", "Data")]
         [DataRow("$CompactLibrary_Name;", "Compact Library", "Goods")]
         [DataRow("$healthpack_name;", "Medkit", "Consumables")]
@@ -654,7 +654,7 @@ namespace Tests
         public void TestEngineerFromName ()
         {
             // Arrange
-            string name = "Didi Vatermann";
+            var name = "Didi Vatermann";
 
             // Act
             var engineer = Engineer.FromName(name);
@@ -682,7 +682,7 @@ namespace Tests
         public void TestEngineerFromNameOrId ()
         {
             // Arrange
-            string name = "Didi Vatermann";
+            var name = "Didi Vatermann";
             long id = 300000;
 
             // Act
@@ -719,7 +719,7 @@ namespace Tests
             var json = DeserializeJsonResource<string>( Resources.shipLocker );
             var info = JsonConvert.DeserializeObject<MicroResourceInfo>( json );
 
-            Assert.AreEqual( 38, info.Items.Count );
+            Assert.HasCount( 38, info.Items );
             Assert.AreEqual( "WeaponSchematic", info.Items[ 0 ].edname );
             Assert.AreEqual( 1, info.Items[ 0 ].amount );
             Assert.AreEqual( "Item", info.Items[ 0 ].microResource.Category.edname );
@@ -727,7 +727,7 @@ namespace Tests
             Assert.AreEqual( 0, info.Items[ 0 ].ownerId );
             Assert.IsNull( info.Items[ 0 ].price );
 
-            Assert.AreEqual( 33, info.Components.Count );
+            Assert.HasCount( 33, info.Components );
             Assert.AreEqual( "Graphene", info.Components[ 1 ].edname );
             Assert.AreEqual( 55, info.Components[ 1 ].amount );
             Assert.AreEqual( "Component", info.Components[ 1 ].microResource.Category.edname );
@@ -735,7 +735,7 @@ namespace Tests
             Assert.AreEqual( 0, info.Components[ 1 ].ownerId );
             Assert.IsNull( info.Components[ 1 ].price );
 
-            Assert.AreEqual( 6, info.Consumables.Count );
+            Assert.HasCount( 6, info.Consumables );
             Assert.AreEqual( "HealthPack", info.Consumables[ 0 ].edname );
             Assert.AreEqual( 56, info.Consumables[ 0 ].amount );
             Assert.AreEqual( "Consumable", info.Consumables[ 0 ].microResource.Category.edname );
@@ -743,7 +743,7 @@ namespace Tests
             Assert.AreEqual( 0, info.Consumables[ 0 ].ownerId );
             Assert.IsNull( info.Consumables[ 0 ].price );
 
-            Assert.AreEqual( 70, info.Data.Count );
+            Assert.HasCount( 70, info.Data );
             Assert.AreEqual( "InternalCorrespondence", info.Data[ 0 ].edname );
             Assert.AreEqual( 5, info.Data[ 0 ].amount );
             Assert.AreEqual( "Data", info.Data[ 0 ].microResource.Category.edname );
@@ -752,7 +752,7 @@ namespace Tests
             Assert.IsNull( info.Data[ 0 ].price );
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("Metal-rich body", "Metal-rich body")]
         [DataRow("High metal content world", "High metal content world")]
         [DataRow("Rocky body", "Rocky body")]
@@ -779,7 +779,7 @@ namespace Tests
             Assert.AreEqual(expectedInvariantName, planetClass.invariantName);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         // From `FSSSignalDiscovered` events
         [DataRow("$Aftermath_Large:#index=1;", "Distress Call", 1, 0)]
         [DataRow("$AttackAftermath;", "Distress Call", 0, 0)]
@@ -893,7 +893,7 @@ namespace Tests
             var starsystem = new StarSystem() { systemname = "Test System", systemAddress = 999999999 };
             var body = new Body();
             starsystem.AddOrUpdateBody(body);
-            Assert.AreEqual(1, starsystem.bodies.Count);
+            Assert.HasCount( 1, starsystem.bodies );
             try
             {
                 _ = JsonConvert.SerializeObject(starsystem);
@@ -905,25 +905,11 @@ namespace Tests
             }
 
             starsystem.bodies[0].bodyname = "Test body";
-            try
-            {
-                _ = JsonConvert.SerializeObject(starsystem);
-            }
-            catch (Exception)
-            {
-                Assert.Fail("Serialization should not fail - body has `bodyname` property set.");
-            }
+            _ = JsonConvert.SerializeObject( starsystem ); // Serialization should not throw - body has `bodyname` property set.
 
             starsystem.bodies[0].bodyname = null;
             starsystem.bodies[0].distance = 0M;
-            try
-            {
-                _ = JsonConvert.SerializeObject(starsystem);
-            }
-            catch (Exception)
-            {
-                Assert.Fail("Serialization should not fail - body has `distance` property set.");
-            }
+            _ = JsonConvert.SerializeObject( starsystem ); // Serialization should not throw - body has `distance` property set.
         }
 
         [TestMethod]
@@ -942,7 +928,7 @@ namespace Tests
             Assert.AreEqual( "your ship", spokenName );
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow( null, "your Anaconda" )]
         [DataRow( "Testy", "Testy" )]
         public void TestShipSpokenName3 ( string testName, string result )

@@ -52,7 +52,7 @@ namespace EddiStarMapService
             return null;
         }
 
-        public Traffic ParseStarMapTraffic(JObject response)
+        public static Traffic ParseStarMapTraffic(JObject response)
         {
             if ( response.IsNullOrEmpty() || !response.TryGetValue( "traffic", out var trafficToken ) )
             {
@@ -86,7 +86,7 @@ namespace EddiStarMapService
             return null;
         }
 
-        public Traffic ParseStarMapDeaths ( JObject response )
+        public static Traffic ParseStarMapDeaths ( JObject response )
         {
             if ( response.IsNullOrEmpty() || !response.TryGetValue( "deaths", out var deathsToken ) )
             {

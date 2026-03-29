@@ -24,7 +24,7 @@ namespace Tests
 
         public async Task<HttpResponseMessage> PostAsync ( string requestUri, HttpContent requestContent, CancellationToken cancellationToken )
         {
-            var json = await requestContent.ReadAsStringAsync().ConfigureAwait(false);
+            var json = await requestContent.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
             requestUri += $"?={json}";
             var responseContent = FetchContentFromUri(requestUri);
             return await Task.FromResult( new HttpResponseMessage()
@@ -36,7 +36,7 @@ namespace Tests
 
         #endregion
 
-        private readonly Dictionary<string, string> CannedContent = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> CannedContent = [ ];
 
         private string FetchContentFromUri(string requestUri)
         {

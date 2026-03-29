@@ -71,7 +71,7 @@ namespace EddiSpanshService
             return null;
         }
 
-        private string CarrierRouteRequest ( string currentSystem, string[] targetSystems, long usedCarrierCapacity,
+        private static string CarrierRouteRequest ( string currentSystem, string[] targetSystems, long usedCarrierCapacity,
             bool calculateTotalFuelRequired, string[] refuel_destinations )
         {
             var relativePath = "fleetcarrier/route";
@@ -98,13 +98,13 @@ namespace EddiSpanshService
             return $"{relativePath}?{string.Join( "&", queryParams )}";
         }
 
-        private NavWaypointCollection ParseCarrierRoute(JToken routeResult)
+        private static NavWaypointCollection ParseCarrierRoute(JToken routeResult)
         {
             if (routeResult is null) { return null; }
 
             var results = new List<NavWaypoint>();
 
-            foreach (var jump in routeResult["jumps"]?.ToObject<JArray>() ?? new JArray())
+            foreach (var jump in routeResult["jumps"]?.ToObject<JArray>() ?? [ ] )
             {
                 if ( jump[ "id64" ] != null && jump["x"] != null && jump["y"] != null && jump["z"] != null)
                 {

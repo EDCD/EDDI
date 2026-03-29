@@ -20,19 +20,19 @@ namespace EddiSpanshService
         /// <returns>A list of basic system waypoints (with just system name, system address, and coordinates) ordered by match with the provided system name</returns>
         public async Task<List<NavWaypoint>> GetWaypointsBySystemNameAsync (string partialSystemName, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(partialSystemName)) { return new List<NavWaypoint>(); }
+            if (string.IsNullOrEmpty(partialSystemName)) { return [ ]; }
 
             try
             {
                 var requestUri = PrepareRequest( partialSystemName );
                 var clientResponse = await spanshHttpClient.GetAsync( requestUri, cancellationToken ).ConfigureAwait(false);
                 clientResponse.EnsureSuccessStatusCode();
-                var responseJson = await clientResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var responseJson = await clientResponse.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
                 if ( string.IsNullOrEmpty( responseJson ) )
                 {
                     Logging.Warn( "Unable to handle server response." );
-                    return new List<NavWaypoint>();
+                    return [ ];
                 }
 
                 Logging.Debug( "Spansh responded with " + responseJson );
@@ -55,10 +55,10 @@ namespace EddiSpanshService
                 Logging.Warn( he.Message, he );
             }
 
-            return new List<NavWaypoint>();
+            return [ ];
         }
 
-        private string PrepareRequest(string partialSystemName)
+        private static string PrepareRequest (string partialSystemName)
         {
             var requestUri = $"systems/field_values/system_names?q={partialSystemName}";
             return requestUri;

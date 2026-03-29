@@ -5,7 +5,8 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class ShipRenamedEvent : Event
+    public class ShipRenamedEvent ( DateTime timestamp, string ship, int shipid, string name, string ident )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Ship renamed";
         public const string DESCRIPTION = "Triggered when you rename a ship";
@@ -15,26 +16,18 @@ namespace EddiEvents
         public string ship => shipDefinition?.model;
 
         [PublicAPI("The ID of the ship that was renamed")]
-        public int? shipid { get; private set; }
+        public int? shipid { get; private set; } = shipid;
 
         [PublicAPI("The new name of the ship")]
-        public string name { get; private set; }
+        public string name { get; private set; } = name;
 
         [PublicAPI("The new ident of the ship")]
-        public string ident { get; private set; }
+        public string ident { get; private set; } = ident;
 
         // Not intended to be user facing
 
         public Ship shipDefinition => ShipDefinitions.FromEDModel(edModel);
 
-        public string edModel { get; private set; }
-
-        public ShipRenamedEvent(DateTime timestamp, string ship, int shipid, string name, string ident) : base(timestamp, NAME)
-        {
-            this.edModel = ship;
-            this.shipid = shipid;
-            this.name = name;
-            this.ident = ident;
-        }
+        public string edModel { get; private set; } = ship;
     }
 }

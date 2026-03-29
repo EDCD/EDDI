@@ -5,7 +5,8 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class PowerMeritsEvent : Event
+    public class PowerMeritsEvent ( DateTime timestamp, Power power, int meritsGained, int meritsTotal )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Power merits";
         public const string DESCRIPTION = "Triggered when you are awarded merits by your pledged Powerplay power";
@@ -15,20 +16,13 @@ namespace EddiEvents
         public string power => (Power ?? Power.None).localizedName;
 
         [PublicAPI("The merits awarded for completing a powerplay objective")]
-        public int gained { get; set; }
+        public int gained { get; set; } = meritsGained;
 
         [PublicAPI( "Your total accumulated merits" )]
-        public int total { get; set; }
+        public int total { get; set; } = meritsTotal;
 
         // Not intended to be user facing
 
-        public Power Power { get; private set; }
-
-        public PowerMeritsEvent ( DateTime timestamp, Power Power, int meritsGained, int meritsTotal) : base(timestamp, NAME)
-        {
-            this.Power = Power;
-            this.gained = meritsGained;
-            this.total = meritsTotal;
-        }
+        public Power Power { get; private set; } = power;
     }
 }

@@ -13,23 +13,23 @@ namespace EddiDataDefinitions
             missingEDNameHandler = ( edname ) => new CodexCivilizationThargoid( edname );
         }
 
-        public static readonly CodexCivilizationThargoid Basilisk = new CodexCivilizationThargoid( "Basilisk", 3100402 );
-        public static readonly CodexCivilizationThargoid Berserker = new CodexCivilizationThargoid( "Berserker", 3100802 );
-        public static readonly CodexCivilizationThargoid Caustic_Generator = new CodexCivilizationThargoid( "Caustic_Generator", 3101300 );
-        public static readonly CodexCivilizationThargoid Cyclops = new CodexCivilizationThargoid( "Cyclops", 3100401 );
-        public static readonly CodexCivilizationThargoid Glaive = new CodexCivilizationThargoid( "Glaive", 3100501 );
-        public static readonly CodexCivilizationThargoid Hydra = new CodexCivilizationThargoid( "Hydra", 3100404 );
-        public static readonly CodexCivilizationThargoid Inciter = new CodexCivilizationThargoid( "Inciter", 3100803 );
-        public static readonly CodexCivilizationThargoid Marauder = new CodexCivilizationThargoid( "Marauder", 3100801 );
-        public static readonly CodexCivilizationThargoid Medusa = new CodexCivilizationThargoid( "Medusa", 3100403 );
-        public static readonly CodexCivilizationThargoid Orthrus = new CodexCivilizationThargoid( "Orthrus", 3100406 );
-        public static readonly CodexCivilizationThargoid Regenerator = new CodexCivilizationThargoid( "Regenerator", 3100804 );
-        public static readonly CodexCivilizationThargoid Scavengers = new CodexCivilizationThargoid( "Scavengers", 3100700 );
-        public static readonly CodexCivilizationThargoid TG_DataScan = new CodexCivilizationThargoid( "TG_DataScan", 3101000 );
-        public static readonly CodexCivilizationThargoid TG_Pod = new CodexCivilizationThargoid( "TG_Pod", 3101100 );
-        public static readonly CodexCivilizationThargoid TG_Transmitter = new CodexCivilizationThargoid( "TG_Transmitter", 3101200 );
-        public static readonly CodexCivilizationThargoid Wrecked_Interceptor = new CodexCivilizationThargoid( "Wrecked_Interceptor", 3100405 );
-        public static readonly CodexCivilizationThargoid Wrecked_Scout = new CodexCivilizationThargoid( "Wrecked_Scout", 3100805 );
+        public static readonly CodexCivilizationThargoid Basilisk = new( "Basilisk", 3100402 );
+        public static readonly CodexCivilizationThargoid Berserker = new( "Berserker", 3100802 );
+        public static readonly CodexCivilizationThargoid Caustic_Generator = new( "Caustic_Generator", 3101300 );
+        public static readonly CodexCivilizationThargoid Cyclops = new( "Cyclops", 3100401 );
+        public static readonly CodexCivilizationThargoid Glaive = new( "Glaive", 3100501 );
+        public static readonly CodexCivilizationThargoid Hydra = new( "Hydra", 3100404 );
+        public static readonly CodexCivilizationThargoid Inciter = new( "Inciter", 3100803 );
+        public static readonly CodexCivilizationThargoid Marauder = new( "Marauder", 3100801 );
+        public static readonly CodexCivilizationThargoid Medusa = new( "Medusa", 3100403 );
+        public static readonly CodexCivilizationThargoid Orthrus = new( "Orthrus", 3100406 );
+        public static readonly CodexCivilizationThargoid Regenerator = new( "Regenerator", 3100804 );
+        public static readonly CodexCivilizationThargoid Scavengers = new( "Scavengers", 3100700 );
+        public static readonly CodexCivilizationThargoid TG_DataScan = new( "TG_DataScan", 3101000 );
+        public static readonly CodexCivilizationThargoid TG_Pod = new( "TG_Pod", 3101100 );
+        public static readonly CodexCivilizationThargoid TG_Transmitter = new( "TG_Transmitter", 3101200 );
+        public static readonly CodexCivilizationThargoid Wrecked_Interceptor = new( "Wrecked_Interceptor", 3100405 );
+        public static readonly CodexCivilizationThargoid Wrecked_Scout = new( "Wrecked_Scout", 3100805 );
         //missing Thargoid Scythe Hunter
 
         public long? entryID;

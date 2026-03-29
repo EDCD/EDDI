@@ -18,7 +18,7 @@ namespace EddiInaraResponder
     {
         // Set up a timer... wait 3 seconds before reconfiguring the InaraService for any change in the API key
         private const int delayMilliseconds = 3000;
-        private readonly Timer inputTimer = new Timer(delayMilliseconds);
+        private readonly Timer inputTimer = new(delayMilliseconds);
 
         public string apiKey
         {
@@ -46,14 +46,11 @@ namespace EddiInaraResponder
 
         private void InaraApiKeyChanged(object sender, TextChangedEventArgs e)
         {
-            if (sender is TextBox textBox)
+            if (sender is TextBox box && box.Name == "inaraApiKeyTextBox" )
             {
-                if (textBox.Name == "inaraApiKeyTextBox")
-                {
-                    SetAPIKeyValidity(true);
-                    inputTimer.Stop();
-                    inputTimer.Start();
-                }
+                SetAPIKeyValidity(true);
+                inputTimer.Stop();
+                inputTimer.Start();
             }
         }
 
@@ -96,21 +93,29 @@ namespace EddiInaraResponder
 
         #region Implement INotifyDataErrorInfo for validation
 
-        private readonly Dictionary<string, List<string>> Errors = new Dictionary<string, List<string>>();
+        private readonly Dictionary<string, List<string>> Errors = [ ];
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
         public bool HasErrors => Errors.Count > 0;
         
         private void ReportError(string propertyName, string errorMessage)
         {
             if (string.IsNullOrEmpty(propertyName)) { return; }
-            if (!Errors.ContainsKey(propertyName)) { Errors.Add(propertyName, new List<string>()); }
-            Errors[propertyName].Add(errorMessage);
+            if ( !Errors.TryGetValue( propertyName, out var list ) )
+            {
+                list = [];
+                Errors.Add( propertyName, list );
+            }
+            list.Add( errorMessage );
             ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
         }
         
         public IEnumerable GetErrors ( string propertyName )
         {
-            return Errors.TryGetValue(propertyName, out var propertyErrors) ? propertyErrors : null;
+            ArgumentNullException.ThrowIfNull(propertyName);
+            
+            return Errors.TryGetValue( propertyName, out var propertyErrors ) 
+                ? propertyErrors 
+                : [ ];
         }
 
         private void ClearErrors(string propertyName)
@@ -133,7 +138,7 @@ namespace EddiInaraResponder
 
         private void CmdrSettings_RequestNavigate ( object sender, RequestNavigateEventArgs e )
         {
-            Process.Start( e.Uri.ToString() );
+            Process.Start( new ProcessStartInfo( e.Uri.ToString() ) { UseShellExecute = true } );
         }
         
         #endregion

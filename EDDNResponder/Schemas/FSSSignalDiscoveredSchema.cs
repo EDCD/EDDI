@@ -10,17 +10,17 @@ namespace EddiEddnResponder.Schemas
     [UsedImplicitly]
     public class FSSSignalDiscoveredSchema : ISchema
     {
-        public List<string> edTypes => new List<string> { "FSSSignalDiscovered" };
+        public List<string> edTypes => [ "FSSSignalDiscovered" ];
 
         private readonly List<IDictionary<string, object>> signals =
-            new List<IDictionary<string, object>>();
+            [ ];
 
-        private readonly List<EDDNState> eddnStates = new List<EDDNState>();
+        private readonly List<EDDNState> eddnStates = [ ];
 
-        private static readonly object signalsLock = new object();
-        private static readonly object stateLock = new object();
+        private static readonly object signalsLock = new();
+        private static readonly object stateLock = new();
 
-        public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
+        public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState, EDDNSender eddnSender )
         {
             if (eddnState?.Location is null || eddnState.GameVersion is null) { return false; }
 
@@ -39,7 +39,7 @@ namespace EddiEddnResponder.Schemas
                     // Send any signals with a systemAddress matching a saved good eddnState
                     lock ( signalsLock )
                     {
-                        if ( signals.Any() )
+                        if ( signals.Count > 0 )
                         {
                             foreach ( var state in eddnStates.Where(s => s.Location.StarSystemLocationIsSet() ) )
                             {
@@ -49,11 +49,11 @@ namespace EddiEddnResponder.Schemas
                                         .Where( s =>
                                             JsonParsing.getULong( s, "SystemAddress" ) == state.Location.systemAddress )
                                         .ToList();
-                                    if ( !retrievedSignals.Any() ) { continue; }
+                                    if ( retrievedSignals.Count == 0 ) { continue; }
 
                                     var handledData = PrepareSignalsData( retrievedSignals, state );
                                     handledData = state.GameVersion.AugmentVersion( handledData );
-                                    EDDNSender.SendToEDDN( "https://eddn.edcd.io/schemas/fsssignaldiscovered/1",
+                                    eddnSender.SendToEDDN( "https://eddn.edcd.io/schemas/fsssignaldiscovered/1",
                                         handledData, state );
                                     signals.RemoveAll( s => retrievedSignals.Contains( s ) );
                                 }
@@ -91,7 +91,7 @@ namespace EddiEddnResponder.Schemas
             return true;
         }
 
-        private IDictionary<string, object> PrepareSignalsData(List<IDictionary<string, object>> retrievedSignals, EDDNState eddnState)
+        private static IDictionary<string, object> PrepareSignalsData(List<IDictionary<string, object>> retrievedSignals, EDDNState eddnState)
         {
             var handledSignals = new List<IDictionary<string, object>>();
 

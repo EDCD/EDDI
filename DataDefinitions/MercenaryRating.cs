@@ -14,20 +14,20 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = false;
         }
 
-        public static readonly MercenaryRating Defenceless = new MercenaryRating("Defenceless", 0);
-        public static readonly MercenaryRating MostlyDefenceless = new MercenaryRating("MostlyDefenceless", 1);
-        public static readonly MercenaryRating Rookie = new MercenaryRating("Rookie", 2);
-        public static readonly MercenaryRating Mercenary = new MercenaryRating("Soldier", 3);
-        public static readonly MercenaryRating Gunslinger = new MercenaryRating("Gunslinger", 4);
-        public static readonly MercenaryRating Warrior = new MercenaryRating("Warrior", 5);
-        public static readonly MercenaryRating Gladiator = new MercenaryRating("Gladiator", 6);
-        public static readonly MercenaryRating Deadeye = new MercenaryRating("Deadeye", 7);
-        public static readonly MercenaryRating Elite = new MercenaryRating("Elite", 8);
-        public static readonly MercenaryRating EliteI = new MercenaryRating("EliteI", 9);
-        public static readonly MercenaryRating EliteII = new MercenaryRating("EliteII", 10);
-        public static readonly MercenaryRating EliteIII = new MercenaryRating("EliteIII", 11);
-        public static readonly MercenaryRating EliteIV = new MercenaryRating("EliteIV", 12);
-        public static readonly MercenaryRating EliteV = new MercenaryRating("EliteV", 13);
+        public static readonly MercenaryRating Defenceless = new("Defenceless", 0);
+        public static readonly MercenaryRating MostlyDefenceless = new("MostlyDefenceless", 1);
+        public static readonly MercenaryRating Rookie = new("Rookie", 2);
+        public static readonly MercenaryRating Mercenary = new("Soldier", 3);
+        public static readonly MercenaryRating Gunslinger = new("Gunslinger", 4);
+        public static readonly MercenaryRating Warrior = new("Warrior", 5);
+        public static readonly MercenaryRating Gladiator = new("Gladiator", 6);
+        public static readonly MercenaryRating Deadeye = new("Deadeye", 7);
+        public static readonly MercenaryRating Elite = new("Elite", 8);
+        public static readonly MercenaryRating EliteI = new("EliteI", 9);
+        public static readonly MercenaryRating EliteII = new("EliteII", 10);
+        public static readonly MercenaryRating EliteIII = new("EliteIII", 11);
+        public static readonly MercenaryRating EliteIV = new("EliteIV", 12);
+        public static readonly MercenaryRating EliteV = new("EliteV", 13);
 
         [PublicAPI]
         public int rank { get; private set; }
@@ -43,7 +43,7 @@ namespace EddiDataDefinitions
 
         public static MercenaryRating FromRank(int from)
         {
-            MercenaryRating result = AllOfThem.FirstOrDefault(v => v.rank == from);
+            var result = AllOfThem.FirstOrDefault(v => v.rank == from);
             if (result == null)
             {
                 Logging.Info("Unknown Mercenary Rating rank " + from);

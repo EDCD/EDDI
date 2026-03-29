@@ -17,13 +17,13 @@ namespace EddiJournalMonitor
         private readonly string Directory;
         private readonly Regex Filter;
         private readonly Action<IEnumerable<string>, bool> Callback;
-        protected static string journalFileName;
+        private protected static string journalFileName;
 
         private const int pollingIntervalActiveMs = 100;
         private const int pollingIntervalRelaxedMs = 5000;
 
-        private BlockingCollection<JournalChunk> journalQueue = new BlockingCollection<JournalChunk>();
-        private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        private BlockingCollection<JournalChunk> journalQueue = [ ];
+        private CancellationTokenSource cancellationTokenSource = new();
 
         // Keep track of status
         private bool running;
@@ -37,16 +37,10 @@ namespace EddiJournalMonitor
             Callback = callback;
         }
 
-        private class JournalChunk
+        private class JournalChunk ( IEnumerable<string> lines, bool isLoadEvent )
         {
-            internal readonly IEnumerable<string> lines;
-            internal readonly bool isLoadEvent;
-
-            public JournalChunk( IEnumerable<string> lines, bool isLoadEvent )
-            {
-                this.lines = lines;
-                this.isLoadEvent = isLoadEvent;
-            }
+            internal readonly IEnumerable<string> lines = lines;
+            internal readonly bool isLoadEvent = isLoadEvent;
         }
 
         private void ProcessQueue ( CancellationToken cancellationToken )
@@ -186,7 +180,7 @@ namespace EddiJournalMonitor
                 }
                 // Convert bytes to string
                 var s = Encoding.UTF8.GetString(bytes);
-                var lines = Regex.Split(s, "\r?\n").Where(l => !string.IsNullOrEmpty(l));
+                var lines = GeneratedRegex.NewLineRegex().Split(s).Where(l => !string.IsNullOrEmpty(l));
 
                 // Enqueue lines into the blocking collection
                 journalQueue.Add( new JournalChunk( lines, isLoadEvent ) );
@@ -209,7 +203,7 @@ namespace EddiJournalMonitor
                 }
                 // Convert bytes to strings
                 var s = Encoding.UTF8.GetString(bytes);
-                var lines = Regex.Split(s, "\r?\n")
+                var lines = GeneratedRegex.NewLineRegex().Split(s)
                     .Where(l => !string.IsNullOrEmpty(l))
                     .ToList();
 
@@ -218,7 +212,7 @@ namespace EddiJournalMonitor
                 if ( !string.IsNullOrEmpty( firstLine ) && firstLine.Contains( "Fileheader" ) )
                 {
                     // Enqueue the header line
-                    journalQueue.Add( new JournalChunk( new [] { firstLine }, isLoadEvent) );
+                    journalQueue.Add( new JournalChunk( [ firstLine ], isLoadEvent) );
                 }
 
                 // Find the latest "Commander" event, written at the start of the Load Game process
@@ -265,7 +259,7 @@ namespace EddiJournalMonitor
             {
                 try
                 {
-                    FileInfo info = directory.GetFiles().Where(f => filter == null || filter.IsMatch(f.Name))
+                    var info = directory.GetFiles().Where(f => filter == null || filter.IsMatch(f.Name))
                         .OrderByDescending(f => f.LastWriteTime).FirstOrDefault();
                     // This info can be cached so force a refresh
                     info?.Refresh();

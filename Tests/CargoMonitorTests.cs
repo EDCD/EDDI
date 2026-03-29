@@ -12,7 +12,7 @@ namespace Tests
     [TestClass, TestCategory( "UnitTests" )]
     public class CargoMonitorTests : TestBase
     {
-        readonly CargoMonitor cargoMonitor = new CargoMonitor(new CargoMonitorConfiguration());
+        readonly CargoMonitor cargoMonitor = new(new CargoMonitorConfiguration());
 
         private const string cargoConfigJson = @"{
                     ""cargo"": [{
@@ -70,7 +70,7 @@ namespace Tests
         {
             var config = ConfigService.FromJson<CargoMonitorConfiguration>(cargoConfigJson);
 
-            Assert.AreEqual(3, config.cargo.Count);
+            Assert.HasCount( 3, config.cargo );
             var cargo = config.cargo.FirstOrDefault(c => c.edname.Equals("DamagedEscapePod", StringComparison.InvariantCultureIgnoreCase));
             Assert.IsNotNull(cargo);
             Assert.AreEqual("Damaged Escape Pod", cargo.commodityDef.invariantName);
@@ -88,7 +88,7 @@ namespace Tests
             var line = "{ \"timestamp\":\"2018-10-31T03:39:10Z\", \"event\":\"Cargo\", \"Vessel\":\"Ship\", \"Count\":52, \"Inventory\":[ { \"Name\":\"hydrogenfuel\", \"Name_Localised\":\"Hydrogen Fuel\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"biowaste\", \"MissionID\":426282789, \"Count\":30, \"Stolen\":0 }, { \"Name\":\"animalmeat\", \"Name_Localised\":\"Animal Meat\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"drones\", \"Name_Localised\":\"Limpet\", \"Count\":20, \"Stolen\":0 } ] }";
             var events = JournalMonitor.ParseJournalEntry(line);
             cargoMonitor._handleCargoEvent( (CargoEvent)events[0] );
-            Assert.AreEqual(4, cargoMonitor.inventory.Count);
+            Assert.HasCount( 4, cargoMonitor.inventory );
             Assert.AreEqual(52, cargoMonitor.cargoCarried);
 
             var cargo = cargoMonitor.inventory.FirstOrDefault(c => c.edname.Equals("Drones", StringComparison.InvariantCultureIgnoreCase));
@@ -102,7 +102,7 @@ namespace Tests
             line = "{ \"timestamp\":\"2018-10-31T03:39:10Z\", \"event\":\"Cargo\", \"Vessel\":\"Ship\", \"Count\":42, \"Inventory\":[ { \"Name\":\"hydrogenfuel\", \"Name_Localised\":\"Hydrogen Fuel\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"biowaste\", \"MissionID\":426282789, \"Count\":30, \"Stolen\":0 }, { \"Name\":\"animalmeat\", \"Name_Localised\":\"Animal Meat\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"drones\", \"Name_Localised\":\"Limpet\", \"Count\":10, \"Stolen\":0 } ] }";
             events = JournalMonitor.ParseJournalEntry(line);
             cargoMonitor._handleCargoEvent( (CargoEvent)events[ 0 ] );
-            Assert.AreEqual(4, cargoMonitor.inventory.Count);
+            Assert.HasCount( 4, cargoMonitor.inventory );
             Assert.AreEqual(42, cargoMonitor.cargoCarried);
             cargo = cargoMonitor.inventory.FirstOrDefault(c => c.edname.Equals("Drones", StringComparison.InvariantCultureIgnoreCase));
             Assert.IsNotNull(cargo);
@@ -112,7 +112,7 @@ namespace Tests
             line = "{ \"timestamp\":\"2018-10-31T03:39:10Z\", \"event\":\"Cargo\", \"Vessel\":\"Ship\", \"Count\":32, \"Inventory\":[ { \"Name\":\"hydrogenfuel\", \"Name_Localised\":\"Hydrogen Fuel\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"biowaste\", \"MissionID\":426282789, \"Count\":30, \"Stolen\":0 }, { \"Name\":\"animalmeat\", \"Name_Localised\":\"Animal Meat\", \"Count\":1, \"Stolen\":0 } ] }";
             events = JournalMonitor.ParseJournalEntry(line);
             cargoMonitor._handleCargoEvent( (CargoEvent)events[ 0 ] );
-            Assert.AreEqual(3, cargoMonitor.inventory.Count);
+            Assert.HasCount( 3, cargoMonitor.inventory );
             Assert.AreEqual(32, cargoMonitor.cargoCarried);
             cargo = cargoMonitor.inventory.FirstOrDefault( c => c.edname.Equals( "Drones", StringComparison.InvariantCultureIgnoreCase ) );
             Assert.IsNull(cargo);
@@ -124,7 +124,7 @@ namespace Tests
             var line = "{ \"timestamp\":\"2018-10-31T03:39:10Z\", \"event\":\"Cargo\", \"Vessel\":\"Ship\", \"Count\":52, \"Inventory\":[ { \"Name\":\"hydrogenfuel\", \"Name_Localised\":\"Hydrogen Fuel\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"biowaste\", \"MissionID\":426282789, \"Count\":30, \"Stolen\":0 }, { \"Name\":\"animalmeat\", \"Name_Localised\":\"Animal Meat\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"drones\", \"Name_Localised\":\"Limpet\", \"Count\":20, \"Stolen\":0 } ] }";
             var events = JournalMonitor.ParseJournalEntry( line );
             cargoMonitor._handleCargoEvent( (CargoEvent)events[ 0 ] );
-            Assert.AreEqual( 4, cargoMonitor.inventory.Count );
+            Assert.HasCount( 4, cargoMonitor.inventory );
             Assert.AreEqual( 52, cargoMonitor.cargoCarried );
 
             var cargo = cargoMonitor.inventory.FirstOrDefault( c => c.edname.Equals("AnimalMeat", StringComparison.InvariantCultureIgnoreCase) );
@@ -150,7 +150,7 @@ namespace Tests
             var line = "{ \"timestamp\":\"2018-10-31T03:39:10Z\", \"event\":\"Cargo\", \"Vessel\":\"Ship\", \"Count\":52, \"Inventory\":[ { \"Name\":\"hydrogenfuel\", \"Name_Localised\":\"Hydrogen Fuel\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"biowaste\", \"MissionID\":426282789, \"Count\":30, \"Stolen\":0 }, { \"Name\":\"animalmeat\", \"Name_Localised\":\"Animal Meat\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"drones\", \"Name_Localised\":\"Limpet\", \"Count\":20, \"Stolen\":0 } ] }";
             var events = JournalMonitor.ParseJournalEntry( line );
             cargoMonitor._handleCargoEvent( (CargoEvent)events[ 0 ] );
-            Assert.AreEqual( 4, cargoMonitor.inventory.Count );
+            Assert.HasCount( 4, cargoMonitor.inventory );
             Assert.AreEqual( 52, cargoMonitor.cargoCarried );
 
             var cargo = cargoMonitor.inventory.FirstOrDefault( c => c.edname.Equals("Biowaste", StringComparison.InvariantCultureIgnoreCase) );
@@ -174,7 +174,7 @@ namespace Tests
             var line = "{ \"timestamp\":\"2018-10-31T03:39:10Z\", \"event\":\"Cargo\", \"Vessel\":\"Ship\", \"Count\":52, \"Inventory\":[ { \"Name\":\"hydrogenfuel\", \"Name_Localised\":\"Hydrogen Fuel\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"biowaste\", \"MissionID\":426282789, \"Count\":30, \"Stolen\":0 }, { \"Name\":\"animalmeat\", \"Name_Localised\":\"Animal Meat\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"drones\", \"Name_Localised\":\"Limpet\", \"Count\":20, \"Stolen\":0 } ] }";
             var events = JournalMonitor.ParseJournalEntry( line );
             cargoMonitor._handleCargoEvent( (CargoEvent)events[ 0 ] );
-            Assert.AreEqual( 4, cargoMonitor.inventory.Count );
+            Assert.HasCount( 4, cargoMonitor.inventory );
             Assert.AreEqual( 52, cargoMonitor.cargoCarried );
 
             var cargo = cargoMonitor.inventory.FirstOrDefault( c => c.edname.Equals( "HydrogenFuel", StringComparison.InvariantCultureIgnoreCase ) );

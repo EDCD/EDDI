@@ -19,8 +19,8 @@ namespace EddiUI
             string markdown;
             try
             {
-                DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? throw new InvalidOperationException());
-                FileInfo fileInfo = new FileInfo( dir + @"\ChangeLog.md" );
+                var dir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? throw new InvalidOperationException());
+                var fileInfo = new FileInfo( dir + @"\ChangeLog.md" );
                 if ( !fileInfo.Exists ) { throw new FileNotFoundException(); }
                 markdown = Files.Read( dir + @"\ChangeLog.md" );
             }
@@ -29,7 +29,7 @@ namespace EddiUI
                 Logging.Error("Failed to find ChangeLog.md", ex);
                 markdown = "";
             }
-            string html = CommonMark.CommonMarkConverter.Convert(markdown);
+            var html = CommonMark.CommonMarkConverter.Convert(markdown);
             html = "<head>  <meta charset=\"UTF-8\"> </head> " + html;
 
             // Insert the HTML

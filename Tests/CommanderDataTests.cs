@@ -50,7 +50,7 @@ namespace Tests
 
             Assert.AreEqual(7, ship.powerplant.@class);
             Assert.AreEqual("C", ship.powerplant.grade);
-            Assert.AreEqual(9, ship.hardpoints.Count);
+            Assert.HasCount( 9, ship.hardpoints);
 
             var hardpoint1 = ship.hardpoints[0];
             Assert.AreEqual(3, hardpoint1.size);
@@ -62,14 +62,14 @@ namespace Tests
             Assert.AreEqual(140600, hardpoint1.module.value);
 
             Assert.AreEqual("7C", ship.powerplant.@class + ship.powerplant.grade);
-            Assert.AreEqual(9, ship.compartments.Count);
+            Assert.HasCount( 9, ship.compartments);
             Assert.AreEqual(2, ship.compartments[8].size);
             Assert.IsNull(ship.compartments[8].module);
 
             Assert.AreEqual(10, ship.cargocapacity);
 
             // 7 stored ships plus active ship
-            Assert.AreEqual(8, shipyard.Count);
+            Assert.HasCount( 8, shipyard );
 
             // First stored ship is a Vulture at Snyder Enterprise
             var storedShip1 = shipyard[0];

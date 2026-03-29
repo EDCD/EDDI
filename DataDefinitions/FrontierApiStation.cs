@@ -16,22 +16,22 @@ namespace EddiDataDefinitions
         public string name { get; set; }
 
         /// <summary>A list of the services offered by this station</summary>
-        public List<KeyValuePair<string, string>> stationServices { get; set; } = new List<KeyValuePair<string, string>>();
+        public List<KeyValuePair<string, string>> stationServices { get; set; } = [ ];
 
         /// <summary>What are the economies at the station, with proportions for each</summary>
-        public List<FrontierApiEconomyShare> economyShares { get; set; } = new List<FrontierApiEconomyShare>();
+        public List<FrontierApiEconomyShare> economyShares { get; set; } = [ ];
 
         /// <summary>Commodity market quotes as-received from the profile</summary>
-        public List<MarketInfoItem> eddnCommodityMarketQuotes { get; set; } = new List<MarketInfoItem>();
+        public List<MarketInfoItem> eddnCommodityMarketQuotes { get; set; } = [ ];
 
         /// <summary>Prohibited commodities as-received from the profile</summary>
-        public List<KeyValuePair<long, string>> prohibitedCommodities { get; set; } = new List<KeyValuePair<long, string>>();
+        public List<KeyValuePair<long, string>> prohibitedCommodities { get; set; } = [ ];
 
         /// <summary>Outfitting modules as-received from the profile</summary>
-        public List<OutfittingInfoItem> outfitting { get; set; } = new List<OutfittingInfoItem>();
+        public List<OutfittingInfoItem> outfitting { get; set; } = [ ];
 
         /// <summary>Ship models as-received from the profile</summary>
-        public List<ShipyardInfoItem> ships { get; set; } = new List<ShipyardInfoItem>();
+        public List<ShipyardInfoItem> ships { get; set; } = [ ];
 
         /// <summary>The market JSON object</summary>
         public JObject marketJson { get; set; }
@@ -64,9 +64,9 @@ namespace EddiDataDefinitions
                 {
                     foreach (dynamic economyJson in json["economies"])
                     {
-                        dynamic economy = economyJson.Value;
-                        string name = ((string)economy["name"]).Replace("Agri", "Agriculture");
-                        decimal proportion = (decimal)economy["proportion"];
+                        var economy = economyJson.Value;
+                        var name = ((string)economy["name"]).Replace("Agri", "Agriculture");
+                        var proportion = (decimal)economy["proportion"];
                         economyShares.Add(new FrontierApiEconomyShare(name, proportion));
                     }
                 }
@@ -114,9 +114,9 @@ namespace EddiDataDefinitions
                     foreach (var jToken in json["modules"])
                     {
                         var moduleJsonProperty = (JProperty)jToken;
-                        JObject moduleJson = (JObject)moduleJsonProperty.Value;
+                        var moduleJson = (JObject)moduleJsonProperty.Value;
                         // Not interested in paintjobs, decals, ...
-                        string moduleCategory =
+                        var moduleCategory =
                             (string)moduleJson[
                                 "category"]; // need to convert from LINQ to string
                         switch (moduleCategory)
@@ -139,17 +139,17 @@ namespace EddiDataDefinitions
             // Obtain the list of ships available at the station from the profile
             List<ShipyardInfoItem> ShipyardFromProfile(JObject json)
             {
-                List<ShipyardInfoItem> edShipyardShips = new List<ShipyardInfoItem>();
-                if (json?["ships"] != null)
+                List<ShipyardInfoItem> edShipyardShips = [ ];
+                if (json?[nameof(ships)] != null)
                 {
-                    edShipyardShips = json["ships"]?["shipyard_list"]?.Children().Values()
+                    edShipyardShips = json[nameof(ships)]?["shipyard_list"]?.Children().Values()
                         .Select(s => JsonConvert.DeserializeObject<ShipyardInfoItem>(s.ToString()))
-                        .ToList() ?? new List<ShipyardInfoItem>();
+                        .ToList() ?? [ ];
 
-                    if (json["ships"]["unavailable_list"] != null)
+                    if (json[nameof( ships ) ]["unavailable_list"] != null)
                     {
-                        edShipyardShips.AddRange(json["ships"]["unavailable_list"]
-                            .Select(s => JsonConvert.DeserializeObject<ShipyardInfoItem>(s.ToString())).ToList());
+                        edShipyardShips.AddRange( ( json[ nameof(ships) ][ "unavailable_list" ] ?? new JArray() )
+                            .Select( s => JsonConvert.DeserializeObject<ShipyardInfoItem>( s.ToString() ) ).ToList() );
                     }
                 }
                 return edShipyardShips;
@@ -158,8 +158,8 @@ namespace EddiDataDefinitions
             FrontierApiStation lastStation = null;
             try
             {
-                string lastStarport = ((string)marketJson?["name"])?.ReplaceEnd('+') ?? ((string)shipyardJson?["name"])?.ReplaceEnd('+');
-                long? marketId = (long?)marketJson?["id"] ?? (long?)shipyardJson?["id"];
+                var lastStarport = ((string)marketJson?[nameof(name)])?.ReplaceEnd('+') ?? ((string)shipyardJson?[nameof(name)])?.ReplaceEnd('+');
+                var marketId = (long?)marketJson?["id"] ?? (long?)shipyardJson?["id"];
                 lastStation = new FrontierApiStation
                 {
                     name = lastStarport,
@@ -173,7 +173,7 @@ namespace EddiDataDefinitions
                     lastStation.commoditiesupdatedat = marketJson["timestamp"]?.ToObject<DateTime?>() ?? DateTime.MinValue;
                     lastStation.marketJson = marketJson;
 
-                    List<KeyValuePair<string, string>> stationServices = new List<KeyValuePair<string, string>>();
+                    var stationServices = new List<KeyValuePair<string, string>>();
                     foreach (var jToken in marketJson["services"])
                     {
                         // These are key value pairs. The Key is the name of the service, the Value is its state.

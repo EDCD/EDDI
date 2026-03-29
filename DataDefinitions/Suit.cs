@@ -5,7 +5,7 @@ using Utilities;
 namespace EddiDataDefinitions
 {
     // Player suits
-    public class Suit : ResourceBasedLocalizedEDName<Suit>
+    public class Suit ( string edname ) : ResourceBasedLocalizedEDName<Suit>( edname, edname )
     {
         static Suit()
         {
@@ -17,13 +17,10 @@ namespace EddiDataDefinitions
         public Suit() : this("")
         { }
 
-        public Suit(string edname) : base(edname, edname)
-        { }
-
-        public static readonly Suit ExplorationSuit = new Suit("ExplorationSuit");
-        public static readonly Suit FlightSuit = new Suit("FlightSuit");
-        public static readonly Suit TacticalSuit = new Suit("TacticalSuit");
-        public static readonly Suit UtilitySuit = new Suit("UtilitySuit");
+        public static readonly Suit ExplorationSuit = new("ExplorationSuit");
+        public static readonly Suit FlightSuit = new("FlightSuit");
+        public static readonly Suit TacticalSuit = new("TacticalSuit");
+        public static readonly Suit UtilitySuit = new("UtilitySuit");
 
         [PublicAPI]
         public int grade { get; private set; }

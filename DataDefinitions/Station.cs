@@ -32,7 +32,7 @@ namespace EddiDataDefinitions
             get => _faction;
             set { _faction = value; OnPropertyChanged();}
         }
-        private Faction _faction = new Faction();
+        private Faction _faction = new();
 
         /// <summary>The controlling faction's name</summary>
         [PublicAPI, JsonIgnore, Obsolete("Please use Faction instead")]
@@ -84,7 +84,7 @@ namespace EddiDataDefinitions
         /// <summary>A list of the services offered by this station</summary>
         public List<StationService> stationServices
         {
-            get => _stationServices ?? new List<StationService>();
+            get => _stationServices ?? [ ];
             set { _stationServices = value; OnPropertyChanged();}
         }
         private List<StationService> _stationServices;
@@ -95,8 +95,8 @@ namespace EddiDataDefinitions
         {
             get
             {
-                List<string> services = new List<string>();
-                foreach (StationService service in stationServices)
+                var services = new List<string>();
+                foreach (var service in stationServices)
                 {
                     if (service != null) { services.Add(service.localizedName); }
                 }
@@ -192,13 +192,13 @@ namespace EddiDataDefinitions
         [PublicAPI, JsonIgnore, Obsolete("Please use LargestPad instead")]
         public string largestpad => landingPads.LargestPad().localizedName;
 
-        public StationLandingPads landingPads { get; set; } = new StationLandingPads();
+        public StationLandingPads landingPads { get; set; } = new();
 
         /// <summary>What are the economies at the station, with proportions for each</summary>
         [JsonIgnore, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<EconomyShare> economyShares
         {
-            get => _economyShares ?? ( _economyShares = new List<EconomyShare>( 2 ) );
+            get =>  _economyShares ??= new List<EconomyShare>( 2 ) ;
             set
             {
                 if (value.Count != value.Select(v => v.economy).Distinct().Count())
@@ -228,8 +228,8 @@ namespace EddiDataDefinitions
         {
             get
             {
-                List<string> localizedEconomiesFromShares = new List<string>(2);
-                foreach (EconomyShare economyShare in economyShares)
+                var localizedEconomiesFromShares = new List<string>(2);
+                foreach (var economyShare in economyShares)
                 {
                     localizedEconomiesFromShares.Add(economyShare.economy.localizedName);
                 }
@@ -241,7 +241,7 @@ namespace EddiDataDefinitions
         [PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<CommodityMarketQuote> commodities
         {
-            get => _commodities ?? ( _commodities = new List<CommodityMarketQuote>() );
+            get =>  _commodities ??= [ ] ;
             set { _commodities = value; OnPropertyChanged();}
         }
         private List<CommodityMarketQuote> _commodities;
@@ -264,7 +264,7 @@ namespace EddiDataDefinitions
         [PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<CommodityDefinition> prohibited
         {
-            get => _prohibited ?? ( _prohibited = new List<CommodityDefinition>() );
+            get =>  _prohibited ??= [ ] ;
             set { _prohibited = value; OnPropertyChanged();}
         }
         private List<CommodityDefinition> _prohibited;
@@ -273,7 +273,7 @@ namespace EddiDataDefinitions
         [PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<Module> outfitting
         {
-            get => _outfitting ?? ( _outfitting = new List<Module>() );
+            get =>  _outfitting ??= [ ] ;
             set { _outfitting = value; OnPropertyChanged();}
         }
 
@@ -283,7 +283,7 @@ namespace EddiDataDefinitions
         [PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<Ship> shipyard
         {
-            get => _shipyard ?? ( _shipyard = new List<Ship>() );
+            get =>  _shipyard ??= [ ] ;
             set { _shipyard = value; OnPropertyChanged();}
         }
         private List<Ship> _shipyard;

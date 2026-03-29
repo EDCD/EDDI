@@ -46,14 +46,14 @@ namespace Utilities
             // https://docs.microsoft.com/en-us/dotnet/standard/base-types/best-practices?view=netframework-4.7.2 
             // I have concluded that an interpreted rather than compiled regex is the better choice here,
             // as version strings are parsed infrequently.
-            string pattern = @"^(?<major>\d+).(?<minor>\d+).(?<patch>\d+)(-(?<phase>[a-z]+)(?<iteration>\d+))?$";
-            Match match = Regex.Match(input, pattern);
-            GroupCollection matchGroups = match.Groups;
+            var pattern = @"^(?<major>\d+).(?<minor>\d+).(?<patch>\d+)(-(?<phase>[a-z]+)(?<iteration>\d+))?$";
+            var match = Regex.Match(input, pattern);
+            var matchGroups = match.Groups;
 
             major = int.Parse(matchGroups["major"].Value);
             minor = int.Parse(matchGroups["minor"].Value);
             patch = int.Parse(matchGroups["patch"].Value);
-            string phaseStr = matchGroups["phase"].Value;
+            var phaseStr = matchGroups["phase"].Value;
 
             // special handling for final version strings
             if (String.IsNullOrEmpty(phaseStr))
@@ -79,13 +79,7 @@ namespace Utilities
 
         public override bool Equals(object obj)
         {
-            if (!(obj is Version))
-            {
-                return false;
-            }
-
-            Version version = (Version)obj;
-            return this.Equals(version);
+            return obj is Version version && Equals(version);
         }
 
         public bool Equals(Version version)
@@ -99,14 +93,8 @@ namespace Utilities
 
         public override int GetHashCode()
         {
-            // this is not critical as we don't use collections of Versions, so just do something fast that mixes in all fields, multiplying by a prime number
-            int hashCode = 17;
-            hashCode = (hashCode * 23) + major;
-            hashCode = (hashCode * 23) + minor;
-            hashCode = (hashCode * 23) + patch;
-            hashCode = (hashCode * 23) + (int)phase;
-            hashCode = (hashCode * 23) + iteration;
-            return hashCode;
+            // this is not critical as we don't use collections of Versions, so just do something fast that mixes in all fields
+            return HashCode.Combine( major, minor, patch, (int)phase, iteration );
         }
 
         public int CompareTo(Version other)
@@ -192,8 +180,8 @@ namespace Utilities
         // >0 if the first version is greater than the second version, 0 if they are the same, <0 if first version is less than the second version
         public static int CompareStrings(string Version1, string Version2)
         {
-            Version v1 = new Version(Version1);
-            Version v2 = new Version(Version2);
+            var v1 = new Version(Version1);
+            var v2 = new Version(Version2);
             return v1.CompareTo(v2);
         }
     }

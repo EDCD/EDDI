@@ -6,7 +6,14 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class BodyMappedEvent : Event
+    public class BodyMappedEvent (
+        DateTime timestamp,
+        string bodyName,
+        Body body,
+        ulong systemAddress,
+        int probesUsed,
+        int efficiencyTarget )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Body mapped";
         public const string DESCRIPTION = "Triggered after mapping a body with the Surface Area Analysis scanner";
@@ -24,7 +31,7 @@ namespace EddiEvents
         public string systemname => body?.systemname;
 
         [PublicAPI( "The numeric system address of the system containing the mapped body" )]
-        public ulong systemAddress { get; private set; }
+        public ulong systemAddress { get; private set; } = systemAddress;
 
         [PublicAPI("The short name of the body, less the system name")]
         public string shortname => body?.shortname;
@@ -156,10 +163,10 @@ namespace EddiEvents
         public bool? alreadymapped => body?.alreadymapped;
 
         [PublicAPI("The number of probes used to map the body")]
-        public int probesused { get; private set; }
+        public int probesused { get; private set; } = probesUsed;
 
         [PublicAPI("The efficiency target for the number of probes used to map the body")]
-        public int efficiencytarget { get; private set; }
+        public int efficiencytarget { get; private set; } = efficiencyTarget;
 
         // Not intended to be user facing
 
@@ -170,17 +177,8 @@ namespace EddiEvents
         [Obsolete("Use 'bodyname' instead")]
         public string name => body?.bodyname;
 
-        public string bodyName { get; private set; }
+        public string bodyName { get; private set; } = bodyName;
 
-        public Body body { get; private set; }
-        
-        public BodyMappedEvent(DateTime timestamp, string bodyName, Body body, ulong systemAddress, int probesUsed, int efficiencyTarget) : base(timestamp, NAME)
-        {
-            this.bodyName = bodyName;
-            this.body = body;
-            this.systemAddress = systemAddress;
-            this.probesused = probesUsed;
-            this.efficiencytarget = efficiencyTarget;
-        }
+        public Body body { get; private set; } = body;
     }
 }

@@ -13,12 +13,12 @@ using Utilities;
 
 namespace EddiCore.Upgrader
 {
-    public abstract class EddiUpgrader
+    public static class EddiUpgrader
     {
 
         // Upgrade information
         public static bool UpgradeAvailable => !string.IsNullOrEmpty(UpgradeLocation);
-        public static string UpgradeVersion;
+        public static string UpgradeVersion { get; private set; }
         private static string UpgradeLocation;
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace EddiCore.Upgrader
                     else
                     {
                         // Inno setup will attempt to restart this application so register it
-                        EDDI.NativeMethods.RegisterApplicationRestart(null, EDDI.RestartFlags.NONE);
+                        _ = EDDI.NativeMethods.RegisterApplicationRestart(null, EDDI.RestartFlags.NONE);
 
                         Logging.Info( $"Downloaded update to {updateFile}" );
                         Logging.Info( $"Path is {Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location )}" );

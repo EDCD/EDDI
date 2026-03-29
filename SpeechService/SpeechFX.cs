@@ -14,15 +14,15 @@ namespace EddiSpeechService
         private const float LimiterThreshholdDb = -0.5f;
         private const float LimiterReleaseMs = 75f;
         private static readonly float[] NormalizedDbSplineX =
-        {
+        [
             0f, 10f, 20f, 25f, 28f, 30f, 32f, 35f, 37f, 40f, 42f, 45f, 50f, 60f, 70f, 80f, 90f, 100f
-        };
+        ];
 
         private static readonly float[] NormalizedDbSplineY =
-        {
+        [
             0f, 0.183f, 0.447f, -0.13f, 0.043f, -1.379f, -1.042f, -0.382f, -0.529f, -0.422f,
             0.009f, -0.442f, -1.639f, -1.044f, -0.657f, -0.986f, -0.993f, -1.018f
-        };
+        ];
 
         // Optional debugging outputs
         private static bool TapsEnabled => Environment.GetEnvironmentVariable( "EnableSpeechFxTaps" ) != null;

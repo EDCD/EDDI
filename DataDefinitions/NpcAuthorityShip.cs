@@ -11,18 +11,18 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = true;
         }
 
-        public static readonly NpcAuthorityShip MilitaryAlliance = new NpcAuthorityShip("Military_Alliance");
-        public static readonly NpcAuthorityShip MilitaryEmpire = new NpcAuthorityShip("Military_Empire");
-        public static readonly NpcAuthorityShip MilitaryFederation = new NpcAuthorityShip("Military_Federation");
-        public static readonly NpcAuthorityShip MilitaryIndependent = new NpcAuthorityShip("Military_Independent");
+        public static readonly NpcAuthorityShip MilitaryAlliance = new("Military_Alliance");
+        public static readonly NpcAuthorityShip MilitaryEmpire = new("Military_Empire");
+        public static readonly NpcAuthorityShip MilitaryFederation = new("Military_Federation");
+        public static readonly NpcAuthorityShip MilitaryIndependent = new("Military_Independent");
 
-        public static readonly NpcAuthorityShip PoliceAlliance = new NpcAuthorityShip("Police_Alliance");
-        public static readonly NpcAuthorityShip PoliceEmpire = new NpcAuthorityShip("Police_Empire");
-        public static readonly NpcAuthorityShip PoliceFederation = new NpcAuthorityShip("Police_Federation");
-        public static readonly NpcAuthorityShip PoliceIndependent = new NpcAuthorityShip("Police_Independent");
+        public static readonly NpcAuthorityShip PoliceAlliance = new("Police_Alliance");
+        public static readonly NpcAuthorityShip PoliceEmpire = new("Police_Empire");
+        public static readonly NpcAuthorityShip PoliceFederation = new("Police_Federation");
+        public static readonly NpcAuthorityShip PoliceIndependent = new("Police_Independent");
 
-        public static readonly NpcAuthorityShip Thargoid = new NpcAuthorityShip( "Thargoid" );
-        public static readonly NpcAuthorityShip UNKNOWN = new NpcAuthorityShip("UNKNOWN"); // Thargoid?
+        public static readonly NpcAuthorityShip Thargoid = new( "Thargoid" );
+        public static readonly NpcAuthorityShip UNKNOWN = new("UNKNOWN"); // Thargoid?
 
         // dummy used to ensure that the static constructor has run
         public NpcAuthorityShip() : this("")

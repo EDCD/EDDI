@@ -7,7 +7,7 @@ namespace EddiDataDefinitions
     /// <summary>
     /// Details about the current game status
     /// </summary>
-    public class Status
+    public class Status ( Status.Flags flags = Status.Flags.None, Status.Flags2 flags2 = Status.Flags2.None )
     {
         [Flags]
         public enum Flags : uint
@@ -102,7 +102,7 @@ namespace EddiDataDefinitions
         [PublicAPI( @"a boolean value indicating whether the commander has less than 25% fuel remaining" )]
         public bool low_fuel => (flags & Flags.LowFuel) != 0;
 
-        [Obsolete, PublicAPI( @"(OBSOLETE) the current status of the ship's frame shift drive. Can be one of ""ready"", ""cooldown"", ""charging"", ""masslock"", ""hyperspace"", or ""supercruise""" )]
+        [PublicAPI( @"The current status of the ship's frame shift drive as a string. Can be one of ""ready"", ""cooldown"", ""charging"", ""masslock"", ""hyperspace"", or ""supercruise""" )]
         public string fsd_status =>
             fsd_cooldown ? "cooldown" :
             ( flags & Flags.FsdCharging ) != 0 ? "charging" :
@@ -337,20 +337,14 @@ namespace EddiDataDefinitions
         public int? fuel_percentile => fuel_percent is null
             ? null
             : (int?)decimal.Ceiling( (decimal)fuel_percent / 5 );
-        public Flags flags;
-        public Flags2 flags2;
+        public Flags flags = flags;
+        public Flags2 flags2 = flags2;
         public DateTime timestamp = DateTime.UtcNow;
         public LegalStatus legalStatus;
         public string raw;
 
         public ulong? destinationSystemAddress;
         public int? destinationBodyId; // Multiple destinations either on or orbiting the same body may share a single bodyId
-
-        public Status(Flags flags = Flags.None, Flags2 flags2 = Flags2.None)
-        {
-            this.flags = flags;
-            this.flags2 = flags2;
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

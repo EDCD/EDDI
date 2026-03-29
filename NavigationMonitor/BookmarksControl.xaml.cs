@@ -10,7 +10,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -25,7 +24,7 @@ namespace EddiNavigationMonitor
     /// </summary>
     public partial class BookmarksControl : UserControl
     {
-        private NavigationMonitor navigationMonitor()
+        private static NavigationMonitor navigationMonitor()
         {
             return (NavigationMonitor)EDDI.Instance.ObtainMonitor("Navigation monitor");
         }
@@ -175,8 +174,8 @@ namespace EddiNavigationMonitor
 
             if (EDDI.Instance.CurrentStarSystem != null)
             {
-                StarSystem currentSystem = EDDI.Instance.CurrentStarSystem;
-                Station currentStation = EDDI.Instance.CurrentStation;
+                var currentSystem = EDDI.Instance.CurrentStarSystem;
+                var currentStation = EDDI.Instance.CurrentStation;
 
                 if (EDDI.Instance.Environment == Constants.ENVIRONMENT_LANDED || EDDI.Instance.Environment == Constants.ENVIRONMENT_DOCKED)
                 {
@@ -200,7 +199,7 @@ namespace EddiNavigationMonitor
                             if (navConfig.tdPOI != null)
                             {
                                 // Get current distance from `Touchdown` POI
-                                decimal? distanceKm = SurfaceDistanceKm(navigationMonitor().currentStatus, navConfig?.tdLat, navConfig?.tdLong);
+                                var distanceKm = SurfaceDistanceKm(navigationMonitor().currentStatus, navConfig?.tdLat, navConfig?.tdLong);
                                 if (distanceKm < 5)
                                 {
                                     poi = navConfig.tdPOI;
@@ -247,7 +246,7 @@ namespace EddiNavigationMonitor
                             if (navConfig.tdPOI != null)
                             {
                                 // Get current distance from `Touchdown` POI
-                                decimal? distanceKm =
+                                var distanceKm =
                                     SurfaceDistanceKm(navigationMonitor().currentStatus, navConfig?.tdLat, navConfig?.tdLong);
                                 if (distanceKm < 5)
                                 {
@@ -265,7 +264,7 @@ namespace EddiNavigationMonitor
                     }
                 }
 
-                NavBookmark navBookmark = new NavBookmark(currentSystem.systemname, currentSystem.systemAddress, currentSystem.x, currentSystem.y, currentSystem.z,
+                var navBookmark = new NavBookmark(currentSystem.systemname, currentSystem.systemAddress, currentSystem.x, currentSystem.y, currentSystem.z,
                     navigationMonitor().currentStatus?.bodyname, poi, isStation, latitude, longitude, nearby)
                 {
                     visitLog = currentSystem.visitLog
@@ -282,9 +281,9 @@ namespace EddiNavigationMonitor
             {
                 var bookmark = button.DataContext as NavBookmark;
                 var index = navigationMonitor().Bookmarks.IndexOf(bookmark);
-                string messageBoxText = Properties.NavigationMonitor.remove_message;
-                string caption = Properties.NavigationMonitor.remove_caption;
-                MessageBoxResult result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                var messageBoxText = Properties.NavigationMonitor.remove_message;
+                var caption = Properties.NavigationMonitor.remove_caption;
+                var result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 switch (result)
                 {
                     case MessageBoxResult.Yes:
@@ -324,10 +323,7 @@ namespace EddiNavigationMonitor
                                 {
                                     navBookmark.latitude = (decimal)Math.Round((double)navConfig.tdLat, 4);
                                     navBookmark.longitude = (decimal)Math.Round((double)navConfig.tdLong, 4);
-                                    if (navBookmark.poi is null)
-                                    {
-                                        navBookmark.poi = navConfig.tdPOI;
-                                    }
+                                    navBookmark.poi ??= navConfig.tdPOI;
                                 }
                             }
                             else if (EDDI.Instance.Vehicle == Constants.VEHICLE_SRV || EDDI.Instance.Vehicle == Constants.VEHICLE_LEGS || EDDI.Instance.Vehicle == Constants.VEHICLE_FIGHTER)
@@ -338,7 +334,7 @@ namespace EddiNavigationMonitor
                                 if (navConfig.tdPOI != null)
                                 {
                                     // Get current distance from `Touchdown` POI
-                                    decimal? distanceKm = SurfaceDistanceKm(navigationMonitor().currentStatus, navConfig?.tdLat, navConfig?.tdLong);
+                                    var distanceKm = SurfaceDistanceKm(navigationMonitor().currentStatus, navConfig?.tdLat, navConfig?.tdLong);
                                     if (distanceKm < 5)
                                     {
                                         navBookmark.poi = navConfig.tdPOI;
@@ -351,7 +347,7 @@ namespace EddiNavigationMonitor
                         {
                             if (navigationMonitor().currentStatus.near_surface)
                             {
-                                GetSurfaceCoordinates(navigationMonitor().currentStatus, out decimal? latitude, out decimal? longitude);
+                                GetSurfaceCoordinates(navigationMonitor().currentStatus, out var latitude, out var longitude);
                                 navBookmark.latitude = latitude;
                                 navBookmark.longitude = longitude;
                                 navBookmark.bodyname = navigationMonitor().currentStatus.bodyname;
@@ -378,19 +374,16 @@ namespace EddiNavigationMonitor
 
         private void copySystemNameToClipboard(object sender, RoutedEventArgs e)
         {
-            if (sender is Button button)
+            if (sender is Button button && button.DataContext is NavBookmark navBookmark )
             {
-                if (button.DataContext is NavBookmark navBookmark)
+                try
                 {
-                    try
-                    {
-                        Clipboard.Clear();
-                        Clipboard.SetData( DataFormats.Text, navBookmark.systemname );
-                    }
-                    catch ( Exception ex )
-                    {
-                        Logging.Warn( "Failed to set clipboard", ex );
-                    }
+                    Clipboard.Clear();
+                    Clipboard.SetData( DataFormats.Text, navBookmark.systemname );
+                }
+                catch ( Exception ex )
+                {
+                    Logging.Warn( "Failed to set clipboard", ex );
                 }
             }
         }
@@ -424,17 +417,15 @@ namespace EddiNavigationMonitor
 
         private void EnsureValidInteger(object sender, TextCompositionEventArgs e)
         {
-            // Match valid characters
-            Regex regex = new Regex(@"[0-9]");
-            // Swallow the character doesn't match the regex
-            e.Handled = !regex.IsMatch(e.Text);
+            // Swallow the character if it doesn't match the regex
+            e.Handled = !GeneratedRegex.IsIntegerRegex().IsMatch(e.Text);
         }
 
         private void RowDetailsButtonClick(object sender, RoutedEventArgs e)
         {
             if (sender is ToggleButton toggleButton)
             {
-                DataGridRow selectedRow = DataGridRow.GetRowContainingElement(toggleButton);
+                var selectedRow = DataGridRow.GetRowContainingElement(toggleButton);
                 if (selectedRow != null)
                 {
                     if (toggleButton.IsChecked ?? false)
@@ -473,7 +464,7 @@ namespace EddiNavigationMonitor
         {
             if (sender is WebBrowser wb && !string.IsNullOrEmpty(wb.Tag as string))
             {
-                string html = CommonMark.CommonMarkConverter.Convert(wb.Tag as string);
+                var html = CommonMark.CommonMarkConverter.Convert(wb.Tag as string);
                 html = "<head>  <meta charset=\"UTF-8\"> </head> " + html;
                 wb.NavigateToString(html);
             }

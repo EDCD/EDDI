@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:resx="clr-namespace:EddiNavigationMonitor.Properties"
              xmlns:eddiDataDefinitions="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
-             xmlns:sysglb="clr-namespace:System.Globalization;assembly=mscorlib"
+             xmlns:sysglb="clr-namespace:System.Globalization;assembly=System.Runtime"
              xmlns:eddiNavigationService="clr-namespace:EddiNavigationService;assembly=EddiNavigationService"
              xmlns:eddi="clr-namespace:EddiCore;assembly=EddiCore"
              mc:Ignorable="d" 

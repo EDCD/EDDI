@@ -16,7 +16,7 @@ namespace Tests
 
             var diffItems = DiffTexts(a, b);
 
-            Assert.AreEqual(3, diffItems.Count);
+            Assert.HasCount( 3, diffItems);
             Assert.AreEqual(DiffItem.DiffType.Unmodified, diffItems[0].type);
             Assert.AreEqual("Line 1", diffItems[0].data);
             Assert.AreEqual(DiffItem.DiffType.Deleted, diffItems[1].type);
@@ -33,7 +33,7 @@ namespace Tests
 
             var diffItems = DiffTexts(a, b);
 
-            Assert.AreEqual(2, diffItems.Count);
+            Assert.HasCount( 2, diffItems);
             Assert.AreEqual(DiffItem.DiffType.Deleted, diffItems[0].type);
             Assert.AreEqual("The quick brown fox jumped over the lazy dog", diffItems[0].data);
             Assert.AreEqual(DiffItem.DiffType.Inserted, diffItems[1].type);
@@ -47,7 +47,7 @@ namespace Tests
 
             var diffItems = DiffTexts(a, a);
 
-            Assert.AreEqual(3, diffItems.Count);
+            Assert.HasCount( 3, diffItems );
             Assert.AreEqual(DiffItem.DiffType.Unmodified, diffItems[0].type);
             Assert.AreEqual("Line 1", diffItems[0].data);
             Assert.AreEqual(DiffItem.DiffType.Unmodified, diffItems[1].type);
@@ -64,7 +64,7 @@ namespace Tests
 
             var diffItems = DiffTexts(a, b);
 
-            Assert.AreEqual(6, diffItems.Count);
+            Assert.HasCount( 6, diffItems );
             Assert.AreEqual(DiffItem.DiffType.Deleted, diffItems[0].type);
             Assert.AreEqual("Line 1", diffItems[0].data);
             Assert.AreEqual(DiffItem.DiffType.Deleted, diffItems[1].type);
@@ -87,7 +87,7 @@ namespace Tests
 
             var diffItems = DiffTexts(a, b);
 
-            Assert.AreEqual(3, diffItems.Count);
+            Assert.HasCount( 3, diffItems );
             Assert.AreEqual(DiffItem.DiffType.Inserted, diffItems[0].type);
             Assert.AreEqual("Line 1", diffItems[0].data);
             Assert.AreEqual(DiffItem.DiffType.Inserted, diffItems[1].type);

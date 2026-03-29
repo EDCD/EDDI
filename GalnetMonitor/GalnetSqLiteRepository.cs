@@ -91,7 +91,7 @@ namespace EddiGalnetMonitor
             CreateDatabase();
         }
 
-        private static readonly object instanceLock = new object();
+        private static readonly object instanceLock = new();
         public static GalnetSqLiteRepository Instance
         {
             get
@@ -111,7 +111,7 @@ namespace EddiGalnetMonitor
             }
         }
 
-        private static readonly object insertLock = new object();
+        private static readonly object insertLock = new();
 
         public News GetArticle(string uuid)
         {
@@ -127,7 +127,7 @@ namespace EddiGalnetMonitor
                         cmd.CommandText = SELECT_BY_UUID_SQL;
                         cmd.Prepare();
                         cmd.Parameters.AddWithValue("@uuid", uuid);
-                        using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                        using (var rdr = cmd.ExecuteReader())
                         {
                             if (rdr.Read())
                             {
@@ -180,11 +180,11 @@ namespace EddiGalnetMonitor
                         }
                         cmd.Prepare();
                         cmd.Parameters.AddWithValue("@category", category);
-                        using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                        using (var rdr = cmd.ExecuteReader())
                         {
                             while (rdr.Read())
                             {
-                                if (result == null) result = new List<News>();
+                                result ??= [ ];
                                 result.Add(new News(Convert.ToString(rdr["uuid"]), Convert.ToString(rdr["category"]), Convert.ToString(rdr["title"]), Convert.ToString(rdr["content"]), Convert.ToDateTime(rdr["published"]), Convert.ToBoolean(rdr["read"])));
                             }
                         }
@@ -211,7 +211,7 @@ namespace EddiGalnetMonitor
             lock (insertLock)
             {
                 // Before we insert we attempt to fetch to ensure that we don't have it present
-                News existingNews = GetArticle(news.id);
+                var existingNews = GetArticle(news.id);
                 if (existingNews == null)
                 {
                     Logging.Debug("Creating new news" + news.title);

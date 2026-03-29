@@ -8,7 +8,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
-using System.Text.RegularExpressions;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -29,7 +28,7 @@ namespace EddiDataDefinitions
         public ulong systemAddress { get; set; }
 
         [ Utilities.PublicAPI( "Metadata encoded into the unique 64 bit ID for the star system." ), JsonIgnore ]
-        public StarSystemId64 id64 => new StarSystemId64( systemAddress );
+        public StarSystemId64 id64 => new( systemAddress );
 
         [Utilities.PublicAPI( "The 'X' coordinates of the star system" )]
         public decimal? x { get; set; }
@@ -98,7 +97,7 @@ namespace EddiDataDefinitions
             .Where( m => m != null )
             .Distinct()
             .OrderByDescending( m => m.Rarity.level )
-            .ToHashSet() ?? new HashSet<Material>();
+            .ToHashSet() ?? [ ];
 
         // Not intended to be user facing - materials available from system bodies
         [Utilities.PublicAPI, JsonIgnore]
@@ -127,7 +126,7 @@ namespace EddiDataDefinitions
             get => _economies;
             set { _economies = value; OnPropertyChanged(); }
         }
-        private List<Economy> _economies = new List<Economy>();
+        private List<Economy> _economies = [ ];
 
         [Utilities.PublicAPI( "The security level in the star system, as an object" )]
         public SecurityLevel securityLevel { get; set; } = SecurityLevel.None;
@@ -153,7 +152,7 @@ namespace EddiDataDefinitions
         public string powerstate => powerState.localizedName;
 
         [Utilities.PublicAPI( "Powerplay powers having star systems with acquisition radii which overlap the star system, less the controlling power, if any, as objects" )]
-        public List<Power> NearbyPowers { get; set; } = new List<Power>();
+        public List<Power> NearbyPowers { get; set; } = [ ];
 
         [Utilities.PublicAPI( "The localized names of powerplay powers having star systems with acquisition radii which overlap the star system, less the controlling power, if any" ), JsonIgnore]
         public List<string> nearbypowers => NearbyPowers?
@@ -164,7 +163,7 @@ namespace EddiDataDefinitions
         public List<Power> ContestingPowers => powerAcquisitionProgress?
             .Where( kvp => kvp.progress >= 30 )
             .Select( kvp => kvp.Power )
-            .ToList() ?? new List<Power>();
+            .ToList() ?? [ ];
 
         [Utilities.PublicAPI( "The localized names of powerplay powers with at least 30% progress towards acquiring control of an uncontrolled star system, if any, in descending order" ), JsonIgnore]
         public List<string> contestingpowers => ContestingPowers?
@@ -190,7 +189,7 @@ namespace EddiDataDefinitions
             get => _faction;
             set { _faction = value; OnPropertyChanged(); }
         }
-        private Faction _faction = new Faction();
+        private Faction _faction = new();
 
         [Utilities.PublicAPI( "The star system's factions, if any, as objects" )]
         public List<Faction> factions
@@ -266,8 +265,7 @@ namespace EddiDataDefinitions
         // Filtered by carrier callsign
         [Utilities.PublicAPI( "(For the current star system only) A list of fleet carrier signals detected within the star system" ), JsonIgnore]
         public List<string> carriersignalsources => signalSources
-            .Where( s => new Regex( "[[a-zA-Z0-9]{3}-[[a-zA-Z0-9]{3}$" ).IsMatch( s.invariantName )
-                && s.isStation )
+            .Where( s => GeneratedRegex.FleetCarrierIdRegex().IsMatch( s.invariantName ) && s.isStation )
             .Select( s => s.localizedName )
             .ToList();
 
@@ -276,13 +274,13 @@ namespace EddiDataDefinitions
         #region Visits
 
         [Utilities.PublicAPI( "The number of visits that the commander has made to this star system" )]
-        public int visits => visitLog.Count();
+        public int visits => visitLog.Count;
 
         /// <summary>Time of last visit</summary>
         public DateTime? lastvisit => visitLog.LastOrDefault();
 
         /// <summary>Visit log</summary>
-        public readonly SortedSet<DateTime> visitLog = new SortedSet<DateTime>();
+        public readonly SortedSet<DateTime> visitLog = [ ];
 
         [Utilities.PublicAPI( "The time that the commander last visited this star system, expressed as a Unix timestamp in seconds" ), JsonIgnore]
         public long? lastVisitSeconds => lastvisit > DateTime.MinValue ? (long?)Dates.fromDateTimeToSeconds( (DateTime)lastvisit ) : null;
@@ -314,7 +312,7 @@ namespace EddiDataDefinitions
         public StarSystem ()
         {
             bodies = ImmutableList.Create<Body>();
-            factions = new List<Faction>();
+            factions = [ ];
             stations = ImmutableList.Create<Station>();
         }
 
@@ -332,15 +330,14 @@ namespace EddiDataDefinitions
 
         private void OnFactionDeserialized ()
         {
-            if ( Faction == null )
-            { Faction = new Faction(); }
+            Faction ??= new Faction();
             var factionPresence = Faction.presences.FirstOrDefault(p => p.systemAddress == systemAddress) ?? new FactionPresence();
             if ( factionPresence.FactionState == null )
             {
                 // Convert legacy data
                 if ( additionalJsonData.TryGetValue( "state", out var fState ) )
                 {
-                    string factionState = (string)fState;
+                    var factionState = (string)fState;
                     if ( factionState != null )
                     {
                         factionPresence.FactionState = FactionState.FromEDName( factionState );
@@ -370,14 +367,14 @@ namespace EddiDataDefinitions
 
         #region Methods
 
-        private readonly object _bodiesLock = new object();
-        private readonly object _stationsLock = new object();
+        private readonly object _bodiesLock = new();
+        private readonly object _stationsLock = new();
 
         public Body BodyWithID ( long? bodyID )
         {
             if ( bodyID is null )
             { return null; }
-            Body result = bodies.Find(b => b.bodyId == bodyID);
+            var result = bodies.Find(b => b.bodyId == bodyID);
             return result;
         }
 
@@ -410,7 +407,7 @@ namespace EddiDataDefinitions
         {
             if ( newOrUpdatedBody is null ) { return; }
 
-            int index = builder.FindIndex(b =>
+            var index = builder.FindIndex(b =>
                 (b.bodyId != null && newOrUpdatedBody.bodyId != null && b.bodyId == newOrUpdatedBody.bodyId) || // Matching bodyId
                 (!string.IsNullOrEmpty(b.bodyname) && !string.IsNullOrEmpty(newOrUpdatedBody.bodyname) && b.bodyname == newOrUpdatedBody.bodyname) || // Matching bodyName
                 (b.distance == 0M && b.distance == newOrUpdatedBody.distance)); // Matching distance (for the main entry star only)
@@ -520,12 +517,9 @@ namespace EddiDataDefinitions
                 updatedBody.alreadyfootfalled = oldBody.alreadyfootfalled;
             }
 
-            if ( oldBody.rings?.Any() ?? false )
+            if ( oldBody.rings?.Count > 0 )
             {
-                if ( updatedBody.rings is null )
-                {
-                    updatedBody.rings = new List<Ring>();
-                }
+                updatedBody.rings ??= [ ];
 
                 foreach ( var oldRing in oldBody.rings )
                 {
@@ -571,7 +565,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        private void internalAddOrUpdateStation ( Station newOrUpdatedStation, ImmutableList<Station>.Builder builder )
+        private static void internalAddOrUpdateStation ( Station newOrUpdatedStation, ImmutableList<Station>.Builder builder )
         {
             if ( newOrUpdatedStation is null ) { return; }
 
@@ -603,7 +597,7 @@ namespace EddiDataDefinitions
         {
             // Add or update stations present in the signal sources
             var stationSignals = newSignalSources.Where( s => s.isStation ).ToList();
-            if ( stationSignals.Any() )
+            if ( stationSignals.Count > 0 )
             {
                 var newStations = new List<Station>();
                 foreach ( var signalSource in stationSignals )
@@ -686,7 +680,7 @@ namespace EddiDataDefinitions
             long value = 0;
 
             // Add the estimated value for each body
-            foreach ( Body body in bodies )
+            foreach ( var body in bodies )
             {
                 value += body.estimatedvalue;
             }
@@ -697,7 +691,7 @@ namespace EddiDataDefinitions
                 value += totalbodies * 1000;
 
                 // Bonus for fully mapping a system
-                int mappableBodies = bodies.Count(b => b.bodyType.invariantName != "Star");
+                var mappableBodies = bodies.Count(b => b.bodyType.invariantName != "Star");
                 if ( mappableBodies == bodies.Count( b => b.mappedDateTime != null ) )
                 {
                     value += mappableBodies * 10000;

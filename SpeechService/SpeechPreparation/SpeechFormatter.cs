@@ -13,15 +13,15 @@ namespace EddiSpeechService.SpeechPreparation
 {
     public static class SpeechFormatter
     {
-        internal static readonly XmlSchemaSet lexiconSchemas = new XmlSchemaSet();
+        internal static readonly XmlSchemaSet lexiconSchemas = new();
 
         // Identify any statements that need to be separated into their own speech streams (e.g. audio or special voice effects)
         private static readonly string[] separatorsList =
-        {
+        [
             @"(<audio.*?\/>)",
             @"(<transmit.*?>[\s\S]*?<\/transmit>)",
-            @"(<voice.*?>[\s\S]*?<\/voice>)",
-        };
+            @"(<voice.*?>[\s\S]*?<\/voice>)"
+        ];
 
         /// <summary>
         /// Removes excess whitespace and SSML &lt;break/&gt; tags.
@@ -35,7 +35,7 @@ namespace EddiSpeechService.SpeechPreparation
             s = s?.Trim();
             if (!string.IsNullOrEmpty(s))
             {
-                s = Regex.Replace(s, @"(?>\s*<break time=""\d+[ms]+""\s*\/>)+\s*$", "");
+                s = GeneratedRegex.EndingPauseRegex().Replace(s, "");
                 return s;
             }
             return string.Empty;
@@ -44,7 +44,7 @@ namespace EddiSpeechService.SpeechPreparation
         internal static void PrepareSpeech(VoiceDetails voice, ref string speech, out bool useSSML)
         {
             var lexicons = GetLexicons(voice);
-            if (speech.Contains("<") || lexicons.Any())
+            if (speech.Contains('<') || lexicons.Count > 0 )
             {
                 // Keep XML version at 1.0. Version 1.1 is not recommended for general use. https://en.wikipedia.org/wiki/XML#Versions
                 var xmlHeader = @"<?xml version=""1.0"" encoding=""UTF-8""?>";
@@ -54,7 +54,7 @@ namespace EddiSpeechService.SpeechPreparation
                 var speakFooter = @"</speak>";
 
                 // Lexicons are applied as a child element to the `speak` element. For Amazon Polly voices, the lexicon must be managed via the AWS Management Console.
-                var lexiconString = lexicons.Any() && !voice.name.StartsWith("Amazon Polly ") 
+                var lexiconString = lexicons.Count > 0 && !voice.name.StartsWith("Amazon Polly ") 
                     ? lexicons.Aggregate(string.Empty, (current, lexiconFile) => current + $"<lexicon uri=\"{lexiconFile}\" type=\"application/pls+xml\"/>") 
                     : string.Empty;
 
@@ -92,50 +92,27 @@ namespace EddiSpeechService.SpeechPreparation
             var result = text;
 
             // We need to make sure file names for the play function include a "/" (e.g. C:/)
-            result = Regex.Replace(result, "(<.+?src=\")(.:)(.*?" + @"\/>)", "$1" + "$2%SSS%" + "$3");
+            result = GeneratedRegex.SrcFixRegex().Replace(result, "$1$2%SSS%$3");
 
-            // Our valid SSML elements are audio, break, emphasis, play, phoneme, & prosody so encode these differently for now
-            // Also escape any double quotes or single quotes inside the elements
-            result = Regex.Replace(result, "(<[^>]*)\"", "$1%ZZZ%");
-            result = Regex.Replace(result, "(<[^>]*)\"", "$1%ZZZ%");
-            result = Regex.Replace(result, "(<[^>]*)\"", "$1%ZZZ%");
-            result = Regex.Replace(result, "(<[^>]*)\"", "$1%ZZZ%");
-            result = Regex.Replace(result, "(<[^>]*)\'", "$1%WWW%");
-            result = Regex.Replace(result, "(<[^>]*)\'", "$1%WWW%");
-            result = Regex.Replace(result, "(<[^>]*)\'", "$1%WWW%");
-            result = Regex.Replace(result, "(<[^>]*)\'", "$1%WWW%");
-            result = Regex.Replace(result, "<(audio.*?)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(break.*?)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(play.*?)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(phoneme.*?)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(/phoneme)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(prosody.*?)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(/prosody)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(emphasis.*?)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(/emphasis)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(transmit.*?)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(/transmit)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(voice.*?)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(/voice)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(say-as.*?)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(/say-as)>", "%XXX%$1%YYY%");
+            // Escape any double quotes or single quotes inside the elements
+            result = GeneratedRegex.SsmlTagRegex().Replace( result, m => m.Value
+                .Replace( "\"", "%ZZZ%" )
+                .Replace( "\'", "%WWW%" ) );
 
-            // Cereproc uses some additional custom SSML tags (documented in https://www.cereproc.com/files/CereVoiceCloudGuide.pdf)
-            result = Regex.Replace(result, "<(usel.*?)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(/usel)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(spurt.*?)>", "%XXX%$1%YYY%");
-            result = Regex.Replace(result, "<(/spurt)>", "%XXX%$1%YYY%");
+            // Hide valid SSML tags
+            result = GeneratedRegex.ValidTagRegex().Replace( result, "%XXX%$1%YYY%" );
 
-            // Now escape anything that is still present
-            result = SecurityElement.Escape(result);
-            if ( string.IsNullOrEmpty( result ) ) { return result; }
-            
-            // Put back the characters we hid
-            result = Regex.Replace(result, "%XXX%", "<");
-            result = Regex.Replace(result, "%YYY%", ">");
-            result = Regex.Replace(result, "%ZZZ%", "\"");
-            result = Regex.Replace(result, "%WWW%", "\'");
-            result = Regex.Replace(result, "%SSS%", @"\");
+            // Escape everything else
+            result = SecurityElement.Escape( result );
+
+            // Restore placeholders
+            result = result
+                .Replace( "%XXX%", "<" )
+                .Replace( "%YYY%", ">" )
+                .Replace( "%ZZZ%", "\"" )
+                .Replace( "%WWW%", "'" )
+                .Replace( "%SSS%", @"\" );
+
             return result;
         }
 
@@ -151,7 +128,7 @@ namespace EddiSpeechService.SpeechPreparation
                 var splitSpeech = new Regex(separators).Split(speech);
                 foreach (var split in splitSpeech)
                 {
-                    if (Regex.Match(split, @"\S").Success) // Trim out non-word statements; match only words
+                    if ( GeneratedRegex.NonWordRegex().Match(split).Success) // Trim out non-word statements; match only words
                     {
                         statements.Add(split);
                     }
@@ -173,7 +150,7 @@ namespace EddiSpeechService.SpeechPreparation
 
         public static string StripSSML ( string speech )
         {
-            speech = Regex.Replace( speech, @"<.*?>", string.Empty );
+            speech = GeneratedRegex.SsmlTagRegex().Replace( speech, string.Empty );
             return speech;
         }
 
@@ -212,16 +189,16 @@ namespace EddiSpeechService.SpeechPreparation
 
         public static void UnpackVoiceTags(string inputStatement, out string voice, out string outputStatement)
         {
-            voice = Regex.Match( inputStatement, @"(?<=<voice name="")([\w|\s]*)" ).Value;
-            outputStatement = Regex.Match( inputStatement, @"(?<=>)(.+)(?=<\/voice>)" ).Value;
+            voice = GeneratedRegex.VoiceNameRegex().Match( inputStatement ).Value;
+            outputStatement = GeneratedRegex.VoiceSpeechExtractionRegex().Match( inputStatement ).Value;
         }
 
         public static string DisableIPA(string speech)
         {
             // User has disabled IPA so remove all IPA phoneme tags
             Logging.Debug("Phonetic speech is disabled, removing.");
-            speech = Regex.Replace(speech, @"<phoneme.*?>", string.Empty);
-            speech = Regex.Replace(speech, @"<\/phoneme>", string.Empty);
+            speech = GeneratedRegex.OpenPhonemeRegex().Replace( speech, string.Empty )
+                .Replace( "</phoneme>", string.Empty );
             return speech;
         }
 
@@ -299,7 +276,7 @@ namespace EddiSpeechService.SpeechPreparation
                 // Validate the lexicon xml against the schema
                 xml.Validate( lexiconSchemas, ( o, e ) =>
                 {
-                    if ( e.Severity == XmlSeverityType.Warning || e.Severity == XmlSeverityType.Error )
+                    if ( e.Severity is XmlSeverityType.Warning or XmlSeverityType.Error )
                     {
                         throw new XmlSchemaValidationException( e.Message, e.Exception );
                     }

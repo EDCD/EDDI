@@ -10,7 +10,7 @@ namespace Tests
     [TestClass, TestCategory("UnitTests")]
     public class InaraTests : TestBase
     {
-        private IInaraService inaraService;
+        private InaraService inaraService;
 
         [TestInitialize]
         public void start()
@@ -24,12 +24,12 @@ namespace Tests
         {
             var inaraAPIEvents = new List<InaraAPIEvent>
             {
-                new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object> { { "searchName", "No such name" } }),
-                new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object> { { "searchName", "Artie" } }),
-                new InaraAPIEvent(DateTime.UtcNow, "addCommanderCombatDeath", new Dictionary<string, object> { { "starsystemName", "LP 932-12" }, { "opponentName", "Vincent Van Stoi" } })
+                new(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object> { { "searchName", "No such name" } }),
+                new(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object> { { "searchName", "Artie" } }),
+                new(DateTime.UtcNow, "addCommanderCombatDeath", new Dictionary<string, object> { { "starsystemName", "LP 932-12" }, { "opponentName", "Vincent Van Stoi" } })
             };
             
-            var results = ((InaraService)inaraService).IndexAndFilterAPIEvents( inaraAPIEvents, new InaraConfiguration() );
+            var results = inaraService.IndexAndFilterAPIEvents( inaraAPIEvents, new InaraConfiguration() );
             if (results?.Count == 2)
             {
                 // Check that appropriate response IDs were assigned to each API event
@@ -61,47 +61,40 @@ namespace Tests
         [TestMethod]
         public void TestCmdrProfiles()
         {
-            try
+            var expectedCmdrs = new List<InaraCmdr>
             {
-                var expectedCmdrs = new List<InaraCmdr>
+                new()
                 {
-                    new InaraCmdr
+                    id = 1,
+                    username = "Artie",
+                    commandername = "Artie",
+                    commanderranks =
+                    [
+                        new InaraCmdrRanks { rank = "combat", rankvalue = 7, progress = 0.31 },
+                        new InaraCmdrRanks { rank = "trade", rankvalue = 8, progress = 1.0 },
+                        new InaraCmdrRanks { rank = "exploration", rankvalue = 6, progress = 0.65 },
+                        new InaraCmdrRanks { rank = "cqc", rankvalue = 3, progress = 0.11 },
+                        new InaraCmdrRanks { rank = "empire", rankvalue = 12, progress = 0.34 },
+                        new InaraCmdrRanks { rank = "federation", rankvalue = 12, progress = 0.94 }
+                    ],
+                    preferredallegiance = "Independent",
+                    preferredpower = null,
+                    squadron = new InaraCmdrSquadron
                     {
-                        id = 1,
-                        username = "Artie",
-                        commandername = "Artie",
-                        commanderranks = new List<InaraCmdrRanks>
-                        {
-                            new InaraCmdrRanks { rank = "combat", rankvalue = 7, progress = 0.31 },
-                            new InaraCmdrRanks { rank = "trade", rankvalue = 8, progress = 1.0 },
-                            new InaraCmdrRanks { rank = "exploration", rankvalue = 6, progress = 0.65 },
-                            new InaraCmdrRanks { rank = "cqc", rankvalue = 3, progress = 0.11 },
-                            new InaraCmdrRanks { rank = "empire", rankvalue = 12, progress = 0.34 },
-                            new InaraCmdrRanks { rank = "federation", rankvalue = 12, progress = 0.94 }
-                        },
-                        preferredallegiance = "Independent",
-                        preferredpower = null,
-                        squadron = new InaraCmdrSquadron
-                        {
-                            id = 5,
-                            name = "Inara Dojo",
-                            memberscount = 9,
-                            squadronrank = "Squadron commander",
-                            url = "https://inara.cz/squadron/5/"
-                        },
-                        preferredrole = "Freelancer",
-                        imageurl = "https://inara.cz/data/users/0/1x1673.jpg",
-                        url = "https://inara.cz/cmdr/1/"
-                    }
-                };
+                        id = 5,
+                        name = "Inara Dojo",
+                        memberscount = 9,
+                        squadronrank = "Squadron commander",
+                        url = "https://inara.cz/squadron/5/"
+                    },
+                    preferredrole = "Freelancer",
+                    imageurl = "https://inara.cz/data/users/0/1x1673.jpg",
+                    url = "https://inara.cz/cmdr/1/"
+                }
+            };
 
-                var inaraCmdrs = DeserializeJsonResource<List<InaraCmdr>>(Resources.inaraCmdrs);
-                Assert.IsTrue(expectedCmdrs.DeepEquals(inaraCmdrs));
-            }
-            catch (Exception e)
-            {
-                Assert.Fail(e.Message);
-            }
+            var inaraCmdrs = DeserializeJsonResource<List<InaraCmdr>>(Resources.inaraCmdrs);
+            Assert.IsTrue( expectedCmdrs.DeepEquals( inaraCmdrs ) );
         }
     }
 }

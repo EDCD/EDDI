@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Utilities;
 
@@ -9,7 +10,7 @@ namespace EddiDataDefinitions
     /// </summary>
     public class EmpireRating
     {
-        public class MaleRank : ResourceBasedLocalizedEDName<EmpireRating.MaleRank>
+        public class MaleRank ( string edname ) : ResourceBasedLocalizedEDName<EmpireRating.MaleRank>( edname, edname )
         {
             static MaleRank()
             {
@@ -20,12 +21,10 @@ namespace EddiDataDefinitions
             // dummy used to ensure that the static constructor has run
             public MaleRank() : this("")
             { }
-
-            public MaleRank(string edname) : base(edname, edname)
-            { }
         }
 
-        public class FemaleRank : ResourceBasedLocalizedEDName<EmpireRating.FemaleRank>
+        public class FemaleRank ( string edname )
+            : ResourceBasedLocalizedEDName<EmpireRating.FemaleRank>( edname, edname )
         {
             static FemaleRank()
             {
@@ -36,12 +35,9 @@ namespace EddiDataDefinitions
             // dummy used to ensure that the static constructor has run
             public FemaleRank() : this("")
             { }
-
-            public FemaleRank(string edname) : base(edname, edname)
-            { }
         }
 
-        public static List<EmpireRating> AllOfThem = new List<EmpireRating>();
+        private static readonly List<EmpireRating> AllOfThem = [ ];
         public string edname { get; }
         public int rank { get; }
 
@@ -72,21 +68,21 @@ namespace EddiDataDefinitions
             AllOfThem.Add(this);
         }
 
-        public static readonly EmpireRating None = new EmpireRating("None", 0);
-        public static readonly EmpireRating Outsider = new EmpireRating("Outsider", 1);
-        public static readonly EmpireRating Serf = new EmpireRating("Serf", 2);
-        public static readonly EmpireRating Master = new EmpireRating("Master", 3);
-        public static readonly EmpireRating Squire = new EmpireRating("Squire", 4);
-        public static readonly EmpireRating Knight = new EmpireRating("Knight", 5);
-        public static readonly EmpireRating Lord = new EmpireRating("Lord", 6);
-        public static readonly EmpireRating Baron = new EmpireRating("Baron", 7);
-        public static readonly EmpireRating Viscount = new EmpireRating("Viscount", 8);
-        public static readonly EmpireRating Count = new EmpireRating("Count", 9);
-        public static readonly EmpireRating Earl = new EmpireRating("Earl", 10); // normally Countess, but we need to distinguish from rank 9
-        public static readonly EmpireRating Marquis = new EmpireRating("Marquis", 11); // or Marchioness <https://en.wikipedia.org/wiki/Marquess>
-        public static readonly EmpireRating Duke = new EmpireRating("Duke", 12);
-        public static readonly EmpireRating Prince = new EmpireRating("Prince", 13);
-        public static readonly EmpireRating King = new EmpireRating("King", 14);
+        public static readonly EmpireRating None = new("None", 0);
+        public static readonly EmpireRating Outsider = new("Outsider", 1);
+        public static readonly EmpireRating Serf = new("Serf", 2);
+        public static readonly EmpireRating Master = new("Master", 3);
+        public static readonly EmpireRating Squire = new("Squire", 4);
+        public static readonly EmpireRating Knight = new("Knight", 5);
+        public static readonly EmpireRating Lord = new("Lord", 6);
+        public static readonly EmpireRating Baron = new("Baron", 7);
+        public static readonly EmpireRating Viscount = new("Viscount", 8);
+        public static readonly EmpireRating Count = new("Count", 9);
+        public static readonly EmpireRating Earl = new("Earl", 10); // normally Countess, but we need to distinguish from rank 9
+        public static readonly EmpireRating Marquis = new("Marquis", 11); // or Marchioness <https://en.wikipedia.org/wiki/Marquess>
+        public static readonly EmpireRating Duke = new("Duke", 12);
+        public static readonly EmpireRating Prince = new("Prince", 13);
+        public static readonly EmpireRating King = new("King", 14);
 
         public static EmpireRating FromName(string from)
         {
@@ -95,7 +91,7 @@ namespace EddiDataDefinitions
                 return null;
             }
 
-            EmpireRating result = AllOfThem.FirstOrDefault(v =>
+            var result = AllOfThem.FirstOrDefault(v =>
                 v.maleRank.invariantName == from
                 || v.maleRank.localizedName == from
                 );
@@ -113,8 +109,7 @@ namespace EddiDataDefinitions
                 return null;
             }
 
-            string tidiedFrom = from.ToLowerInvariant();
-            EmpireRating result = AllOfThem.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
+            var result = AllOfThem.FirstOrDefault(v => string.Equals( v.edname, from, StringComparison.OrdinalIgnoreCase ) );
             if (result == null)
             {
                 Logging.Info("Unknown Empire Rating ED name " + from);
@@ -124,7 +119,7 @@ namespace EddiDataDefinitions
 
         public static EmpireRating FromRank(int from)
         {
-            EmpireRating result = AllOfThem.FirstOrDefault(v => v.rank == from);
+            var result = AllOfThem.FirstOrDefault(v => v.rank == from);
             if (result == null)
             {
                 Logging.Info("Unknown Empire Rating rank " + from);

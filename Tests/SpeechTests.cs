@@ -20,7 +20,7 @@ namespace Tests
             MakeSafe();
         }
 
-        [DataTestMethod, DoNotParallelize]
+        [TestMethod, DoNotParallelize]
         [DataRow( "This is your <phoneme alphabet=\"ipa\" ph=\"leɪkɒn\">Lakon</phoneme>." )]
         [DataRow( "You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ˈdɛltə\">delta</phoneme> system." )]
         [DataRow( "You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ˈlaʊ.təns\">Luyten's</phoneme> <phoneme alphabet=\"ipa\" ph=\"stɑː\">Star</phoneme> system." )]
@@ -42,7 +42,7 @@ namespace Tests
             await SpeechService.Instance.SayAsync( ShipDefinitions.FromEDModel( "Vulture" ), translated ).ConfigureAwait(false);
         }
 
-        [DataTestMethod, DoNotParallelize]
+        [TestMethod, DoNotParallelize]
         [DataRow( "Vulture", @"<break time=""100ms""/>Fred's ship." )]
         [DataRow( "Vulture", @"<break time=""100ms""/>7 < 10." )]
         [DataRow( "Vulture", @"<break time=""100ms""/>He said ""Foo""." )]
@@ -66,7 +66,7 @@ namespace Tests
         [TestMethod, DoNotParallelize]
         public void TestAudio ()
         {
-            EventWaitHandle waitHandle = new AutoResetEvent(false);
+            var waitHandle = new AutoResetEvent(false);
 
             using ( var stream = new MemoryStream() )
             using ( var synth = new SpeechSynthesizer() )
@@ -101,7 +101,8 @@ namespace Tests
         {
             var ship = ShipDefinitions.FromEDModel( "Anaconda" );
             var speaker = SpeechService.Instance;
-            string[] powerNames = {
+            string[] powerNames =
+            [
                 "Aisling Duval",
                 "Archon Delaine",
                 "Arissa Lavigny-Duval",
@@ -112,14 +113,14 @@ namespace Tests
                 "Zachary Hudson",
                 "Zemina Torval",
                 "Li Yong-Rui"
-            };
+            ];
             foreach ( var powerName in powerNames )
             {
                 await speaker.SayAsync( ship, SpeechConversions.getPhoneticPower( powerName ) + "." ).ConfigureAwait( false );
             }
         }
 
-        [DataTestMethod, DoNotParallelize]
+        [TestMethod, DoNotParallelize]
         [DataRow( 0 )]
         [DataRow( 20 )]
         [DataRow( 40 )]
@@ -132,7 +133,7 @@ namespace Tests
             await SpeechService.Instance.SpeakAsync( speech ).ConfigureAwait(false);
         }
 
-        [DataTestMethod, DoNotParallelize]
+        [TestMethod, DoNotParallelize]
         [DataRow( 0 )]
         [DataRow( 20 )]
         [DataRow( 40 )]
@@ -144,7 +145,7 @@ namespace Tests
             await SpeechService.Instance.SpeakAsync( $"Effects level {fxLevel}", null, fxLevel ).ConfigureAwait(false);
         }
 
-        [DataTestMethod, DoNotParallelize]
+        [TestMethod, DoNotParallelize]
         [DataRow( "Your python has touched down." )]
         [DataRow( "Anaconda golf foxtrot lima one niner six eight returning from orbit." )]
         public async Task TestRadioAsync (string msg)
@@ -152,7 +153,7 @@ namespace Tests
             await SpeechService.Instance.SpeakAsync(new EddiSpeech(msg, radio: true)).ConfigureAwait(false);
         }
 
-        [DataTestMethod, DoNotParallelize]
+        [TestMethod, DoNotParallelize]
         [DataRow( 1 )]
         [DataRow( 2 )]
         [DataRow( 3 )]

@@ -2,8 +2,8 @@
 {
     public sealed class TwoPoleHighPassFilter
     {
-        private readonly OnePoleHighPassFilter _hp1 = new OnePoleHighPassFilter();
-        private readonly OnePoleHighPassFilter _hp2 = new OnePoleHighPassFilter();
+        private readonly OnePoleHighPassFilter _hp1 = new();
+        private readonly OnePoleHighPassFilter _hp2 = new();
 
         public void Set ( float fc, float fs )
         {

@@ -29,12 +29,12 @@ namespace EddiMissionMonitor
 
         // Observable collection for us to handle changes
         public ObservableCollection<Mission> missions { get; private set; }
-        private readonly List<Mission> communityGoalHolder = new List<Mission>();
+        private readonly List<Mission> communityGoalHolder = [ ];
 
         private DateTime updateDat;
         public int? missionWarning;
 
-        private static readonly object missionsLock = new object();
+        private static readonly object missionsLock = new();
         [UsedImplicitly] public event EventHandler MissionUpdatedEvent;
 
         public string MonitorName()
@@ -59,7 +59,7 @@ namespace EddiMissionMonitor
 
         public MissionMonitor()
         {
-            missions = new ObservableCollection<Mission>();
+            missions = [ ];
             BindingOperations.CollectionRegistering += Missions_CollectionRegistering;
             initializeMissionMonitor();
         }
@@ -312,7 +312,7 @@ namespace EddiMissionMonitor
                 mission.sourcesystem = EDDI.Instance.CurrentStarSystem?.systemname;
                 mission.sourcebody = EDDI.Instance.CurrentStation?.name;
             }
-            return collectMissions.Any();
+            return collectMissions.Count > 0;
         }
 
         private void handleCommodityRefinedEvent ( CommodityRefinedEvent @event )
@@ -335,7 +335,7 @@ namespace EddiMissionMonitor
                 mission.sourcesystem = EDDI.Instance.CurrentStarSystem?.systemname;
                 mission.sourcebody = EDDI.Instance.CurrentStation?.name;
             }
-            return miningMissions.Any();
+            return miningMissions.Count > 0;
         }
 
         private void handleDataScannedEvent(DataScannedEvent @event)
@@ -354,7 +354,7 @@ namespace EddiMissionMonitor
         {
             if ( DataScan.FromName( @event.datalinktype ).edname == "TouristBeacon")
             {
-                foreach (Mission mission in missions.ToList())
+                foreach (var mission in missions.ToList())
                 {
                     // A `MissionRedirected` journal event isn't written for each waypoint in multi-destination passenger missions, so we handle those here.
                     if ( mission.tagsList.Contains(MissionType.SightSeeing) )
@@ -395,7 +395,7 @@ namespace EddiMissionMonitor
 
         public bool _handleMissionsEvent(MissionsEvent @event)
         {
-            bool update = false;
+            var update = false;
             foreach (var mission in @event.missions)
             {
                 var missionEntry = missions.FirstOrDefault(m => m.missionid == mission.missionid);
@@ -477,7 +477,7 @@ namespace EddiMissionMonitor
             }
 
             // Remove strays from the mission log
-            foreach (Mission missionEntry in missions.ToList())
+            foreach (var missionEntry in missions.ToList())
             {
                 // Community goals aren't written by the `Missions` event. We'll keep them until they expire, then once they expire we'll
                 // move them to a holder until we see another CommunityGoal event. If there is none, the entry is automatically removed.
@@ -494,7 +494,7 @@ namespace EddiMissionMonitor
                     }
                 }
                 
-                Mission mission = @event.missions.FirstOrDefault(m => m.missionid == missionEntry.missionid);
+                var mission = @event.missions.FirstOrDefault(m => m.missionid == missionEntry.missionid);
                 if (mission == null || mission.name.Contains("StartZone"))
                 {
                     // Strip out stray and 'StartZone' missions from the log
@@ -517,7 +517,7 @@ namespace EddiMissionMonitor
 
         public void _handlePassengersEvent(PassengersEvent @event)
         {
-            foreach (Passenger passenger in @event.passengers)
+            foreach (var passenger in @event.passengers)
             {
                 var mission = missions.FirstOrDefault(m => m.missionid == passenger.missionid);
                 if (mission != null)
@@ -531,7 +531,7 @@ namespace EddiMissionMonitor
                 {
                     // Dummy mission to populate 'Passengers' parameters
                     // 'Missions' event will populate 'name', 'status', 'type' & 'expiry'
-                    MissionStatus status = MissionStatus.Active;
+                    var status = MissionStatus.Active;
                     mission = new Mission(passenger.missionid, "Mission_None", DateTime.UtcNow.AddDays(1), status)
                     {
                         passengertypeEDName = passenger.type,
@@ -619,7 +619,7 @@ namespace EddiMissionMonitor
                         }
                     }
 
-                    if ( cgUpdates.Any() )
+                    if ( cgUpdates.Count > 0 )
                     {
                         EDDI.Instance.enqueueEvent( new CommunityGoalEvent( DateTime.UtcNow, cgUpdates, goal ) );
                     }
@@ -810,11 +810,11 @@ namespace EddiMissionMonitor
 
         public bool _handleMissionAcceptedEvent(MissionAcceptedEvent @event)
         {
-            bool update = false;
+            var update = false;
 
             // Protect against duplicates and empty strings
-            bool exists = missions?.Any(m => m.missionid == @event.missionid) ?? false;
-            bool valid = !string.IsNullOrEmpty(@event.name) && !@event.name.Contains("StartZone");
+            var exists = missions?.Any(m => m.missionid == @event.missionid) ?? false;
+            var valid = !string.IsNullOrEmpty(@event.name) && !@event.name.Contains("StartZone");
             if (!exists && valid)
             {
                 AddMission(@event.Mission);
@@ -828,7 +828,7 @@ namespace EddiMissionMonitor
             if ( @event.timestamp >= updateDat )
             {
                 updateDat = @event.timestamp;
-                Mission mission = missions.FirstOrDefault( m => m.missionid == @event.missionid );
+                var mission = missions.FirstOrDefault( m => m.missionid == @event.missionid );
                 if ( mission != null )
                 {
                     mission.statusDef = MissionStatus.Complete;
@@ -846,7 +846,7 @@ namespace EddiMissionMonitor
 
         public bool _postHandleMissionCompletedEvent ( MissionCompletedEvent @event )
         {
-            bool update = false;
+            var update = false;
 
             try
             {
@@ -909,7 +909,7 @@ namespace EddiMissionMonitor
             if ( @event.timestamp >= updateDat )
             {
                 updateDat = @event.timestamp;
-                Mission mission = missions.FirstOrDefault( m => m.missionid == @event.missionid );
+                var mission = missions.FirstOrDefault( m => m.missionid == @event.missionid );
                 if ( mission != null )
                 {
                     mission.statusDef = MissionStatus.Failed;
@@ -968,10 +968,10 @@ namespace EddiMissionMonitor
             {
                 return new Dictionary<string, Tuple<Type, object>>
                 {
-                    ["goalsCount"] = new Tuple<Type, object>(typeof(int), missions.Count(m => m.communal)),
-                    ["missions"] = new Tuple<Type, object>(typeof(List<Mission>), missions.ToList()),
-                    ["missionsCount"] = new Tuple<Type, object>(typeof(int), missions.Count(m => !m.shared && !m.communal)),
-                    ["missionWarning"] = new Tuple<Type, object>(typeof(int), missionWarning)
+                    ["goalsCount"] = new(typeof(int), missions.Count(m => m.communal)),
+                    ["missions"] = new(typeof(List<Mission>), missions.ToList()),
+                    ["missionsCount"] = new(typeof(int), missions.Count(m => !m.shared && !m.communal)),
+                    ["missionWarning"] = new(typeof(int), missionWarning)
                 };
             }
         }
@@ -1045,7 +1045,7 @@ namespace EddiMissionMonitor
         {
             lock (missionsLock)
             {
-                for (int i = 0; i < missions.Count; i++)
+                for (var i = 0; i < missions.Count; i++)
                 {
                     if (missions[i].missionid == missionid)
                     {
@@ -1056,7 +1056,7 @@ namespace EddiMissionMonitor
             }
         }
 
-        public bool UpdateRedirectStatus(Mission mission)
+        private static bool UpdateRedirectStatus(Mission mission)
         {
             if ( mission.originreturn && mission.originsystem == mission.destinationsystem
                 && mission.originstation == mission.destinationstation)
@@ -1083,7 +1083,7 @@ namespace EddiMissionMonitor
         {
             if (handler != null)
             {
-                SynchronizationContext uiSyncContext = SynchronizationContext.Current ?? new SynchronizationContext();
+                var uiSyncContext = SynchronizationContext.Current ?? new SynchronizationContext();
                 if (uiSyncContext == null)
                 {
                     handler(sender, EventArgs.Empty);

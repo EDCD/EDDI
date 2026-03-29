@@ -88,8 +88,8 @@ namespace EddiSpeechResponder
         [ JsonIgnore ] 
         private static Personality _defaultPersonality;
 
-        private static readonly string[] obsoleteScriptKeys = 
-        {
+        private static readonly string[] obsoleteScriptKeys =
+        [
             "Entered signal source", // Replaced by "Destination arrived" script
             "Jumping", // Replaced by "FSD engaged" script
             "Crew member role change", // This name is mismatched to the key (should be "changed"), so EDDI couldn't match the script name to the .json key correctly. The default script has been corrected.
@@ -106,11 +106,11 @@ namespace EddiSpeechResponder
             "Power defected", // Made obsolete in Powerplay 2.0 which no longer includes a defection mechanic.
             "Power expansion vote cast", // Made obsolete in Powerplay 2.0 which no longer includes a voting system
             "Power preparation vote cast", // Made obsolete in Powerplay 2.0 which no longer includes a voting system
-            "Power salary claimed", // Made obsolete in Powerplay 2.0 which no longer includes a weekly salary
-        };
+            "Power salary claimed" // Made obsolete in Powerplay 2.0 which no longer includes a weekly salary
+        ];
 
         private static readonly string[] ignoredEventKeys =
-        {
+        [
             // Shares updates with monitors / responders but are not intended to be user facing
             CargoEvent.NAME,
             FleetCarrierMaterialsEvent.NAME,
@@ -121,19 +121,19 @@ namespace EddiSpeechResponder
             StoredShipsEvent.NAME,
             StoredModulesEvent.NAME,
             UnhandledEvent.NAME
-        };
+        ];
 
         private static readonly string DIRECTORYPATH = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         private static readonly string DEFAULT_PATH = new DirectoryInfo(DIRECTORYPATH).FullName + @"\" + Properties.SpeechResponder.default_personality_script_filename;
         private static readonly string DEFAULT_USER_PATH = Constants.DATA_DIR + @"\personalities\" + Properties.SpeechResponder.default_personality_script_filename;
 
-        private static readonly List<string> upgradedPersonalities = new List<string>();
+        private static readonly List<string> upgradedPersonalities = [ ];
 
         public Personality(string name, string description, Dictionary<string, Script> scripts)
         {
             // Ensure that the name doesn't have any illegal characters
-            string regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
-            Regex r = new Regex($"[{Regex.Escape(regexSearch)}]");
+            var regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+            var r = new Regex($"[{Regex.Escape(regexSearch)}]");
             Name = r.Replace(name, "");
 
             Name = name;
@@ -147,15 +147,15 @@ namespace EddiSpeechResponder
         /// </summary>
         public static List<Personality> AllFromDirectory(string directory = null)
         {
-            List<Personality> personalities = new List<Personality>();
+            List<Personality> personalities = [ ];
             if (directory == null)
             {
                 directory = Constants.DATA_DIR + @"\personalities";
                 Directory.CreateDirectory(directory);
             }
-            foreach (FileInfo file in new DirectoryInfo(directory).GetFiles("*.json", SearchOption.AllDirectories))
+            foreach (var file in new DirectoryInfo(directory).GetFiles("*.json", SearchOption.AllDirectories))
             {
-                Personality personality = FromFile(file.FullName);
+                var personality = FromFile(file.FullName);
                 if (personality != null)
                 {
                     personalities.Add(personality);
@@ -182,7 +182,7 @@ namespace EddiSpeechResponder
         /// </summary>
         public static Personality Default()
         {
-            return _defaultPersonality ?? ( _defaultPersonality = FromFile( DEFAULT_PATH, true ) );
+            return  _defaultPersonality ??= FromFile( DEFAULT_PATH, true ) ;
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace EddiSpeechResponder
             }
 
             Personality personality = null;
-            string data = Files.Read(filename);
+            var data = Files.Read(filename);
             if (data != null)
             {
                 try
@@ -209,7 +209,7 @@ namespace EddiSpeechResponder
                     if (!isDefault)
                     {
                         // malformed JSON for some reason: rename so that the user can examine and fix it.
-                        string newFileName = filename + ".malformed";
+                        var newFileName = filename + ".malformed";
                         if (File.Exists(newFileName))
                         {
                             // no point keeping a history: only the latest is likely to be useful. Pro users will be using version control anyway.
@@ -251,18 +251,12 @@ namespace EddiSpeechResponder
         /// </summary>
         public void ToFile(string filename = null)
         {
-            if (filename == null)
-            {
-                filename = dataPath;
-            }
-            if (filename == null)
-            {
-                filename = DEFAULT_USER_PATH;
-            }
+            filename ??= dataPath;
+            filename ??= DEFAULT_USER_PATH;
 
             if (filename != DEFAULT_PATH)
             {
-                string json = JsonConvert.SerializeObject(this, Formatting.Indented);
+                var json = JsonConvert.SerializeObject(this, Formatting.Indented);
                 Files.Write(filename, json);
             }
         }
@@ -277,26 +271,30 @@ namespace EddiSpeechResponder
             // Obtain files, sorting by last write time to ensure that older files are incremented prior to newer files
             var personalityDirInfo = new FileInfo(personality.dataPath).Directory;
             if (personalityDirInfo is null) { return; }
-            foreach (FileInfo file in personalityDirInfo.GetFiles()
+            foreach (var file in personalityDirInfo.GetFiles()
                 .Where(f =>
                     f.Name.StartsWith(personality.Name, StringComparison.InvariantCultureIgnoreCase) &&
                     f.Name.EndsWith(".bak", StringComparison.InvariantCultureIgnoreCase))
                 .OrderBy(f => f.LastWriteTimeUtc)
                 .ToList())
             {
-                bool parsed = int.TryParse(file.FullName
-                    .Replace($@"{personality.dataPath}", "")
-                    .Replace(".bak", "")
-                    .Replace(".", ""), out int i);
-                ++i; // Increment our index number
+                var personalityName = file.FullName
+                    .Replace( $@"{personality.dataPath}", "" )
+                    .Replace( ".bak", "" )
+                    .Replace( ".", "" );
+                var i = 0;
+                if ( string.IsNullOrEmpty( personalityName ) || int.TryParse( personalityName, out i ) )
+                {
+                    ++i; // Increment our index number
 
-                if (i >= 10)
-                {
-                    filesToDelete.Add(file.FullName);
-                }
-                else
-                {
-                    filesToMove.Add(file.FullName, $@"{personality.dataPath}.{i}.bak");
+                    if ( i >= 10 )
+                    {
+                        filesToDelete.Add( file.FullName );
+                    }
+                    else
+                    {
+                        filesToMove.Add( file.FullName, $@"{personality.dataPath}.{i}.bak" );
+                    }
                 }
             }
             try
@@ -328,20 +326,20 @@ namespace EddiSpeechResponder
         public Personality Copy(string name, string description)
         {
             // Tidy the name up to avoid bad characters
-            string regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
-            Regex r = new Regex(string.Format("[{0}]", Regex.Escape(regexSearch)));
+            var regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+            var r = new Regex(string.Format("[{0}]", Regex.Escape(regexSearch)));
             name = r.Replace(name, "");
 
             // Save a copy of this personality
-            string iname = name.ToLowerInvariant();
-            string copyPath = Constants.DATA_DIR + @"\personalities\" + iname + ".json";
+            var iname = name.ToLowerInvariant();
+            var copyPath = Constants.DATA_DIR + @"\personalities\" + iname + ".json";
             // Ensure it doesn't exist
             if (!File.Exists(copyPath))
             {
                 ToFile(copyPath);
             }
             // Load the personality back in
-            Personality newPersonality = FromFile(copyPath);
+            var newPersonality = FromFile(copyPath);
             // Change its name and description and save it back out again
             newPersonality.Name = name;
             newPersonality.Description = description;
@@ -448,7 +446,7 @@ namespace EddiSpeechResponder
 
         public static Script UpgradeScript(Script personalityScript, Script defaultScript)
         {
-            Script script = personalityScript ?? defaultScript;
+            var script = personalityScript ?? defaultScript;
             if (script != null)
             {
                 if (defaultScript != null)

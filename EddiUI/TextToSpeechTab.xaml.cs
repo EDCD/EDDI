@@ -5,7 +5,6 @@ using EddiSpeechService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using Utilities;
@@ -46,7 +45,7 @@ namespace EddiUI
             }
             catch (Exception e)
             {
-                Logging.Warn("" + Thread.CurrentThread.ManagedThreadId + ": Caught exception " + e);
+                Logging.Warn("" + Environment.CurrentManagedThreadId + ": Caught exception " + e);
             }
             ttsVolumeSlider.Value = speechServiceConfiguration.Volume;
             ttsRateSlider.Value = speechServiceConfiguration.Rate;
@@ -61,7 +60,7 @@ namespace EddiUI
 
         private void ttsVoiceDropDownUpdated(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is FrameworkElement frameworkElement && frameworkElement.IsLoaded)
+            if (sender is FrameworkElement element && element.IsLoaded )
             {
                 ttsUpdated();
             }
@@ -69,7 +68,7 @@ namespace EddiUI
 
         private void ttsEffectsLevelUpdated(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (sender is FrameworkElement frameworkElement && frameworkElement.IsLoaded)
+            if (sender is FrameworkElement element && element.IsLoaded )
             {
                 ttsUpdated();
             }
@@ -77,7 +76,7 @@ namespace EddiUI
 
         private void ttsDistortionLevelUpdated(object sender, RoutedEventArgs e)
         {
-            if (sender is FrameworkElement frameworkElement && frameworkElement.IsLoaded)
+            if (sender is FrameworkElement element && element.IsLoaded )
             {
                 ttsUpdated();
             }
@@ -85,7 +84,7 @@ namespace EddiUI
 
         private void ttsRateUpdated(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (sender is FrameworkElement frameworkElement && frameworkElement.IsLoaded)
+            if (sender is FrameworkElement element && element.IsLoaded )
             {
                 ttsUpdated();
             }
@@ -93,7 +92,7 @@ namespace EddiUI
 
         private void ttsVolumeUpdated(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (sender is FrameworkElement frameworkElement && frameworkElement.IsLoaded)
+            if (sender is FrameworkElement element && element.IsLoaded )
             {
                 ttsUpdated();
             }

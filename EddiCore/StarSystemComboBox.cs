@@ -14,10 +14,10 @@ namespace EddiCore
     /// <summary>A subclass of ComboBox for selecting star systems</summary>
     public class StarSystemComboBox : ComboBox
     {
-        private ObservableCollection<string> SourceItems { get; } = new ObservableCollection<string>();
-        private readonly ConcurrentDictionary<string, List<string>> ItemCache = new ConcurrentDictionary<string, List<string>>();
+        private ObservableCollection<string> SourceItems { get; } = [];
+        private readonly ConcurrentDictionary<string, List<string>> ItemCache = [];
         private CancellationTokenSource cancellationTokenSource;
-        private readonly object ItemLock = new object();
+        private readonly object ItemLock = new();
 
         public StarSystemComboBox ()
         {
@@ -87,13 +87,16 @@ namespace EddiCore
             try
             {
                 // We'll need to request a new list if our cache does not already contain the input value
-                if ( !ItemCache.ContainsKey( input ) )
+                if ( !ItemCache.TryGetValue( input, out var systems ) )
                 {
                     // Request a new list
-                    ItemCache[ input ] = await EDDI.Instance.DataProvider.GetTypeAheadSystemsAsync( input, cancellationToken ).ConfigureAwait( true );
+                    systems = await EDDI.Instance.DataProvider
+                        .GetTypeAheadSystemsAsync( input, cancellationToken )
+                        .ConfigureAwait( true );
+                    ItemCache[ input ] = systems;
                 }
-                
-                var fetchedSystems = ItemCache[ input ].ToHashSet();
+
+                var fetchedSystems = systems.ToHashSet();
 
                 if ( GetTemplateChild( "PART_EditableTextBox" ) is TextBox textBox )
                 {
@@ -127,7 +130,7 @@ namespace EddiCore
                     }
                 }
             }
-            catch ( Exception ex ) when ( !( ex is TaskCanceledException ) )
+            catch ( Exception ex ) when ( ex is not TaskCanceledException )
             {
                 Logging.Warn( ex.Message, ex );
             }

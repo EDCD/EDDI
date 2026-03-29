@@ -24,7 +24,7 @@
             <FlowDocument Background="#FFE5E5E5">
                 <Paragraph>
                     <Run Text="{x:Static resx:VoiceAttack.p5}" />
-                    <Hyperlink Click="VAVariablesClicked">
+                    <Hyperlink Click="VAEventsClicked">
                         <Run Text="{x:Static resx:VoiceAttack.p5_link}" />
                     </Hyperlink>.
                 </Paragraph>

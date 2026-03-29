@@ -2,18 +2,11 @@
 
 namespace EddiSpeechService.Filters
 {
-    public class AllPassFilter
+    public class AllPassFilter ( int samples, float g = 0.5f )
     {
-        private readonly float[] _buf;
-        private int _idx;
-        private float _g;
-
-        public AllPassFilter ( int samples, float g = 0.5f )
-        {
-            _buf = new float[ Math.Max( 2, samples ) ];
-            _idx = 0;
-            _g = Clamp( g, -0.7f, 0.7f );
-        }
+        private readonly float[] _buf = new float[ Math.Max( 2, samples ) ];
+        private int _idx = 0;
+        private float _g = Clamp( g, -0.7f, 0.7f );
 
         public void SetGain ( float g ) => _g = Clamp( g, -0.7f, 0.7f );
 

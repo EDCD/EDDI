@@ -123,7 +123,7 @@ namespace EddiSpeechResponder
                 additionalJsonData.TryGetValue("default", out var defaultVal);
                 if (defaultVal != null)
                 {
-                    bool defaultScript = (bool?)defaultVal ?? false;
+                    var defaultScript = (bool?)defaultVal ?? false;
                     if (defaultScript)
                     {
                         defaultValue = Value;

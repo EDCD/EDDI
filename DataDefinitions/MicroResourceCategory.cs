@@ -9,11 +9,11 @@
             missingEDNameHandler = (edname) => new MicroResourceCategory(edname);
         }
 
-        public static readonly MicroResourceCategory Components = new MicroResourceCategory("Component");
-        public static readonly MicroResourceCategory Consumables = new MicroResourceCategory("Consumable");
-        public static readonly MicroResourceCategory Data = new MicroResourceCategory("Data");
-        public static readonly MicroResourceCategory Items = new MicroResourceCategory("Item");
-        public static readonly MicroResourceCategory Unknown = new MicroResourceCategory("Unknown");
+        public static readonly MicroResourceCategory Components = new("Component");
+        public static readonly MicroResourceCategory Consumables = new("Consumable");
+        public static readonly MicroResourceCategory Data = new("Data");
+        public static readonly MicroResourceCategory Items = new("Item");
+        public static readonly MicroResourceCategory Unknown = new("Unknown");
 
         // dummy used to ensure that the static constructor has run
         public MicroResourceCategory() : this("")

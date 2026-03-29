@@ -23,7 +23,7 @@ namespace EddiDataDefinitions
             {
                 if (_material != value)
                 {
-                    Material My_material = Material.FromName(value) ?? Material.FromEDName(value);
+                    var My_material = Material.FromName(value) ?? Material.FromEDName(value);
                     _material = My_material?.localizedName ?? value;
                     edname = My_material?.edname ?? value;
                     category = My_material?.Category.localizedName;
@@ -135,14 +135,14 @@ namespace EddiDataDefinitions
         }
 
         [JsonExtensionData]
-        private IDictionary<string, JToken> _additionalData = new Dictionary<string, JToken>();
+        private Dictionary<string, JToken> _additionalData = [];
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
             if (material == null)
             {
-                string materialName = (string)_additionalData["material"];
+                var materialName = (string)_additionalData["material"];
                 material = materialName;
             }
 
@@ -160,7 +160,7 @@ namespace EddiDataDefinitions
         [JsonConstructor]
         public MaterialAmount(string edname, int amount, int? minimum, int? desired, int? maximum)
         {
-            Material My_material = Material.FromEDName(edname);
+            var My_material = Material.FromEDName(edname);
             this.material = My_material?.localizedName;
             this.edname = My_material?.edname;
             this.amount = amount;

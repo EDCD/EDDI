@@ -22,15 +22,15 @@ namespace Tests
 {
     public class TestBase
     {
-        internal static readonly FakeSpanshHttpClient FakeSpanshHttpClient = new FakeSpanshHttpClient();
-        internal static readonly SpanshService fakeSpanshService = new SpanshService( FakeSpanshHttpClient );
+        internal static readonly FakeSpanshHttpClient FakeSpanshHttpClient = new();
+        internal static readonly SpanshService fakeSpanshService = new( FakeSpanshHttpClient );
 
-        internal static readonly FakeEdsmHttpClient FakeEdsmHttpClient = new FakeEdsmHttpClient();
-        internal static readonly StarMapService fakeEdsmService = new StarMapService( FakeEdsmHttpClient );
+        internal static readonly FakeEdsmHttpClient FakeEdsmHttpClient = new();
+        internal static readonly StarMapService fakeEdsmService = new( FakeEdsmHttpClient );
 
-        private static readonly StarSystemSqLiteRepository starSystemRepository = StarSystemSqLiteRepository.Create( true );
+        private static readonly StarSystemSqLiteRepository fakeStarSystemRepository = StarSystemSqLiteRepository.Create( true );
 
-        internal void MakeSafe()
+        internal static void MakeSafe()
         {
             // Prevent telemetry data from being reported based on test results
             Utilities.TelemetryService.Telemetry.TelemetryEnabled = false;
@@ -39,18 +39,18 @@ namespace Tests
             Utilities.Files.unitTesting = true;
             ConfigService.unitTesting = true;
             CompanionAppService.unitTesting = true;
-            DataProviderService.unitTesting = true;
 
             // Set ourselves as in a beta game session to stop automatic sending of data to remote systems
             EDDI.Instance.gameIsBeta = true;
         }
 
-        internal DataProviderService CreateTestDataProvider ()
+        internal static DataProviderService CreateTestDataProvider ()
         {
             return DataProviderService.Create( 
                 fakeEdsmService, 
                 fakeSpanshService,
-                starSystemRepository
+                fakeStarSystemRepository, 
+                true
                 );
         }
 

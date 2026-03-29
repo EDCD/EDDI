@@ -7,7 +7,8 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class DockedEvent : Event
+    public class DockedEvent ( DateTime timestamp, Station station, bool cockpitBreach, bool wanted, bool activeFine )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Docked";
         public const string DESCRIPTION = "Triggered when your ship docks at a station or outpost";
@@ -44,13 +45,13 @@ namespace EddiEvents
         public List<string> stationservices => Station?.stationServices.Select( s => s.localizedName ).ToList();
 
         [PublicAPI("True if landing with a breached cockpit")]
-        public bool cockpitbreach { get; private set; }
+        public bool cockpitbreach { get; private set; } = cockpitBreach;
 
         [PublicAPI("True if landing at a station where you are wanted")]
-        public bool wanted { get; private set; }
+        public bool wanted { get; private set; } = wanted;
 
         [PublicAPI("True if landing at a station where you have active fines")]
-        public bool activefine { get; private set; }
+        public bool activefine { get; private set; } = activeFine;
 
         // Faction properties
 
@@ -78,15 +79,7 @@ namespace EddiEvents
 
         public StationLandingPads landingPads => Station?.landingPads;
 
-        public Station Station { get; private set; }
-
-        public DockedEvent (DateTime timestamp, Station Station, bool cockpitBreach, bool wanted, bool activeFine ) : base( timestamp, NAME )
-        {
-            this.Station = Station;
-            this.cockpitbreach = cockpitBreach;
-            this.wanted = wanted;
-            this.activefine = activeFine;
-        }
+        public Station Station { get; private set; } = station;
 
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, List<Faction> factions, ref List<Event> events, bool fromLogLoad )
         {
@@ -103,7 +96,7 @@ namespace EddiEvents
 
             // Get station services data
             data.TryGetValue( "StationServices", out var val );
-            var stationservices = (val as List<object>)?.Cast<string>()?.ToList() ?? new List<string>();
+            var stationservices = (val as List<object>)?.Cast<string>()?.ToList() ?? [ ];
             var stationServices = new List<StationService>();
             foreach ( var service in stationservices )
             {
@@ -112,7 +105,7 @@ namespace EddiEvents
 
             // Get station economies and their shares
             data.TryGetValue( "StationEconomies", out var val2 );
-            var economies = val2 as List<object> ?? new List<object>();
+            var economies = val2 as List<object> ?? [ ];
             var Economies = new List<EconomyShare>();
             foreach ( var economyshare in economies.Cast<IDictionary<string, object>>() )
             {

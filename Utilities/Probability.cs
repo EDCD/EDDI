@@ -20,15 +20,15 @@ namespace Utilities
             }
 
             // Trim decimal places appropriately
-            if (cp < .00001M || cp > .9999M)
+            if (cp is < .00001M or > .9999M)
             {
                 return Math.Round((decimal)cp * 100, 4);
             }
-            else if (cp < .0001M || cp > .999M)
+            else if (cp is < .0001M or > .999M)
             {
                 return Math.Round((decimal)cp * 100, 3);
             }
-            else if (cp < .001M || cp > .99M)
+            else if (cp is < .001M or > .99M)
             {
                 return Math.Round((decimal)cp * 100, 2);
             }

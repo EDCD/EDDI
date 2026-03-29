@@ -9,25 +9,25 @@
             missingEDNameHandler = edname => new SignalType( edname);
         }
 
-        public static readonly SignalType Unidentified = new SignalType( "USS" );
-        public static readonly SignalType Generic = new SignalType( "Generic" );
+        public static readonly SignalType Unidentified = new( "USS" );
+        public static readonly SignalType Generic = new( "Generic" );
 
-        public static readonly SignalType Combat = new SignalType( "Combat" );
-        public static readonly SignalType FleetCarrier = new SignalType( "FleetCarrier" );
-        public static readonly SignalType Installation = new SignalType( "Installation" );
-        public static readonly SignalType Megaship = new SignalType( "Megaship" );
-        public static readonly SignalType NavBeacon = new SignalType( "NavBeacon" );
-        public static readonly SignalType Outpost = new SignalType( "Outpost" );
-        public static readonly SignalType ResourceExtraction = new SignalType( "ResourceExtraction" );
-        public static readonly SignalType SquadronCarrier = new SignalType( "SquadronCarrier" );
-        public static readonly SignalType StationAsteroid = new SignalType( "StationAsteroid" );
-        public static readonly SignalType StationBernalSphere = new SignalType( "StationBernalSphere" );
-        public static readonly SignalType StationCoriolis = new SignalType( "StationCoriolis" );
-        public static readonly SignalType StationMegaShip = new SignalType( "StationMegaShip" );
-        public static readonly SignalType StationONeilCylinder = new SignalType( "StationONeilCylinder" );
-        public static readonly SignalType StationONeilOrbis = new SignalType( "StationONeilOrbis" );
-        public static readonly SignalType Titan = new SignalType( "Titan" );
-        public static readonly SignalType TouristBeacon = new SignalType( "TouristBeacon" );
+        public static readonly SignalType Combat = new( "Combat" );
+        public static readonly SignalType FleetCarrier = new( "FleetCarrier" );
+        public static readonly SignalType Installation = new( "Installation" );
+        public static readonly SignalType Megaship = new( "Megaship" );
+        public static readonly SignalType NavBeacon = new( "NavBeacon" );
+        public static readonly SignalType Outpost = new( "Outpost" );
+        public static readonly SignalType ResourceExtraction = new( "ResourceExtraction" );
+        public static readonly SignalType SquadronCarrier = new( "SquadronCarrier" );
+        public static readonly SignalType StationAsteroid = new( "StationAsteroid" );
+        public static readonly SignalType StationBernalSphere = new( "StationBernalSphere" );
+        public static readonly SignalType StationCoriolis = new( "StationCoriolis" );
+        public static readonly SignalType StationMegaShip = new( "StationMegaShip" );
+        public static readonly SignalType StationONeilCylinder = new( "StationONeilCylinder" );
+        public static readonly SignalType StationONeilOrbis = new( "StationONeilOrbis" );
+        public static readonly SignalType Titan = new( "Titan" );
+        public static readonly SignalType TouristBeacon = new( "TouristBeacon" );
 
         // dummy used to ensure that the static constructor has run
         public SignalType () : this("")

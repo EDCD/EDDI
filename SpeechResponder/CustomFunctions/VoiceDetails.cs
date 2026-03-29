@@ -44,7 +44,7 @@ namespace EddiSpeechResponder.CustomFunctions
                 {
                     foreach (var result in SpeechService.Instance.allVoices)
                     {
-                        if (result.name.ToLowerInvariant().Contains(values[0].AsString.ToLowerInvariant()))
+                        if (result.name.Contains(values[0].AsString, StringComparison.InvariantCultureIgnoreCase))
                         {
                             return Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
                         }

@@ -129,9 +129,9 @@ namespace Utilities
 
         public static List<DiffItem> DiffTexts(string a, string b)
         {
-            List<DiffItem> diffItems = new List<DiffItem>();
-            string[] aLines = a?.Replace("\r", "")?.Split('\n');
-            string[] bLines = b?.Replace("\r", "")?.Split('\n');
+            List<DiffItem> diffItems = [ ];
+            var aLines = a?.Replace("\r", "")?.Split('\n');
+            var bLines = b?.Replace("\r", "")?.Split('\n');
 
             // Handle simple cases first
 
@@ -144,7 +144,7 @@ namespace Utilities
             // One NULL
             if (string.IsNullOrEmpty(a) && bLines != null)
             {
-                for (int i = 0; i < bLines.Length; i++)
+                for (var i = 0; i < bLines.Length; i++)
                 {
                     diffItems.Add(new DiffItem()
                     {
@@ -156,7 +156,7 @@ namespace Utilities
             }
             if (string.IsNullOrEmpty(b))
             {
-                for (int i = 0; i < aLines.Length; i++)
+                for (var i = 0; i < aLines.Length; i++)
                 {
                     diffItems.Add(new DiffItem()
                     {
@@ -170,7 +170,7 @@ namespace Utilities
             // Equal
             if (a == b)
             {
-                for (int i = 0; i < aLines.Length; i++)
+                for (var i = 0; i < aLines.Length; i++)
                 {
                     diffItems.Add(new DiffItem()
                     {
@@ -181,13 +181,13 @@ namespace Utilities
                 return diffItems;
             }
 
-            Item[] items = DiffText(a, b, false, false, false);
+            var items = DiffText(a, b, false, false, false);
 
-            int line = 0;
-            for (int i = 0; i < items.Length; i++)
+            var line = 0;
+            for (var i = 0; i < items.Length; i++)
             {
-                Item item = items[i];
-                while ((line < item.StartB) && (line < bLines.Length))
+                var item = items[i];
+                while (line < item.StartB && line < bLines.Length)
                 {
                     diffItems.Add(new DiffItem()
                     {
@@ -199,7 +199,7 @@ namespace Utilities
 
                 if (item.deletedA > 0)
                 {
-                    for (int m = 0; m < item.deletedA; m++)
+                    for (var m = 0; m < item.deletedA; m++)
                     {
                         diffItems.Add(new DiffItem()
                         {
@@ -241,9 +241,9 @@ namespace Utilities
         /// <param name="TextA">A-version of the text (usualy the old one)</param>
         /// <param name="TextB">B-version of the text (usualy the new one)</param>
         /// <returns>Returns a array of Items that describe the differences.</returns>
-        public Item[] DiffText(string TextA, string TextB)
+        public static Item[] DiffText(string TextA, string TextB)
         {
-            return (DiffText(TextA, TextB, false, false, false));
+            return DiffText(TextA, TextB, false, false, false);
         }
 
         /// <summary>
@@ -262,19 +262,19 @@ namespace Utilities
         public static Item[] DiffText(string TextA, string TextB, bool trimSpace, bool ignoreSpace, bool ignoreCase)
         {
             // prepare the input-text and convert to comparable numbers.
-            Hashtable h = new Hashtable(TextA.Length + TextB.Length);
+            var h = new Hashtable(TextA.Length + TextB.Length);
 
             // The A-Version of the data (original data) to be compared.
-            DiffData DataA = new DiffData(DiffCodes(TextA, h, trimSpace, ignoreSpace, ignoreCase));
+            var DataA = new DiffData(DiffCodes(TextA, h, trimSpace, ignoreSpace, ignoreCase));
 
             // The B-Version of the data (modified data) to be compared.
-            DiffData DataB = new DiffData(DiffCodes(TextB, h, trimSpace, ignoreSpace, ignoreCase));
+            var DataB = new DiffData(DiffCodes(TextB, h, trimSpace, ignoreSpace, ignoreCase));
 
-            int MAX = DataA.Length + DataB.Length + 1;
+            var MAX = DataA.Length + DataB.Length + 1;
             // vector for the (0,0) to (x,y) search
-            int[] DownVector = new int[(2 * MAX) + 2];
+            var DownVector = new int[(2 * MAX) + 2];
             // vector for the (u,v) to (N,M) search
-            int[] UpVector = new int[(2 * MAX) + 2];
+            var UpVector = new int[(2 * MAX) + 2];
 
             LCS(DataA, 0, DataA.Length, DataB, 0, DataB.Length, DownVector, UpVector);
 
@@ -297,7 +297,7 @@ namespace Utilities
             StartPos = 0;
             while (StartPos < Data.Length)
             {
-                while ((StartPos < Data.Length) && !Data.modified[StartPos])
+                while (StartPos < Data.Length && !Data.modified[StartPos])
                 {
                     StartPos++;
                 }
@@ -309,7 +309,7 @@ namespace Utilities
                     EndPos++;
                 }
 
-                if ((EndPos < Data.Length) && (Data.data[StartPos] == Data.data[EndPos]))
+                if (EndPos < Data.Length && Data.data[StartPos] == Data.data[EndPos])
                 {
                     Data.modified[StartPos] = false;
                     Data.modified[EndPos] = true;
@@ -330,16 +330,16 @@ namespace Utilities
         public static Item[] DiffInt(int[] ArrayA, int[] ArrayB)
         {
             // The A-Version of the data (original data) to be compared.
-            DiffData DataA = new DiffData(ArrayA);
+            var DataA = new DiffData(ArrayA);
 
             // The B-Version of the data (modified data) to be compared.
-            DiffData DataB = new DiffData(ArrayB);
+            var DataB = new DiffData(ArrayB);
 
-            int MAX = DataA.Length + DataB.Length + 1;
+            var MAX = DataA.Length + DataB.Length + 1;
             // vector for the (0,0) to (x,y) search
-            int[] DownVector = new int[(2 * MAX) + 2];
+            var DownVector = new int[(2 * MAX) + 2];
             // vector for the (u,v) to (N,M) search
-            int[] UpVector = new int[(2 * MAX) + 2];
+            var UpVector = new int[(2 * MAX) + 2];
 
             LCS(DataA, 0, DataA.Length, DataB, 0, DataB.Length, DownVector, UpVector);
             return CreateDiffs(DataA, DataB);
@@ -358,7 +358,7 @@ namespace Utilities
             // get all codes of the text
             string[] Lines;
             int[] Codes;
-            int lastUsedCode = h.Count;
+            var lastUsedCode = h.Count;
             object aCode;
             string s;
 
@@ -368,7 +368,7 @@ namespace Utilities
 
             Codes = new int[Lines.Length];
 
-            for (int i = 0; i < Lines.Length; ++i)
+            for (var i = 0; i < Lines.Length; ++i)
             {
                 s = Lines[i];
                 if (trimSpace)
@@ -398,7 +398,7 @@ namespace Utilities
                     Codes[i] = (int)aCode;
                 }
             }
-            return (Codes);
+            return Codes;
         }
 
         /// <summary>
@@ -417,20 +417,20 @@ namespace Utilities
           int[] DownVector, int[] UpVector)
         {
             SMSRD ret;
-            int MAX = DataA.Length + DataB.Length + 1;
+            var MAX = DataA.Length + DataB.Length + 1;
 
-            int DownK = LowerA - LowerB; // the k-line to start the forward search
-            int UpK = UpperA - UpperB; // the k-line to start the reverse search
+            var DownK = LowerA - LowerB; // the k-line to start the forward search
+            var UpK = UpperA - UpperB; // the k-line to start the reverse search
 
-            int Delta = UpperA - LowerA - (UpperB - LowerB);
-            bool oddDelta = (Delta & 1) != 0;
+            var Delta = UpperA - LowerA - (UpperB - LowerB);
+            var oddDelta = (Delta & 1) != 0;
 
             // The vectors in the publication accepts negative indexes. the vectors implemented here are 0-based
             // and are access using a specific offset: UpOffset UpVector and DownOffset for DownVektor
-            int DownOffset = MAX - DownK;
-            int UpOffset = MAX - UpK;
+            var DownOffset = MAX - DownK;
+            var UpOffset = MAX - UpK;
 
-            int MaxD = ((UpperA - LowerA + UpperB - LowerB) / 2) + 1;
+            var MaxD = ((UpperA - LowerA + UpperB - LowerB) / 2) + 1;
 
             // Debug.Write(2, "SMS", String.Format("Search the box: A[{0}-{1}] to B[{2}-{3}]", LowerA, UpperA, LowerB, UpperB));
 
@@ -438,10 +438,10 @@ namespace Utilities
             DownVector[DownOffset + DownK + 1] = LowerA;
             UpVector[UpOffset + UpK - 1] = UpperA;
 
-            for (int D = 0; D <= MaxD; D++)
+            for (var D = 0; D <= MaxD; D++)
             {
                 // Extend the forward path.
-                for (int k = DownK - D; k <= DownK + D; k += 2)
+                for (var k = DownK - D; k <= DownK + D; k += 2)
                 {
                     // Debug.Write(0, "SMS", "extend forward path " + k.ToString());
 
@@ -454,7 +454,7 @@ namespace Utilities
                     else
                     {
                         x = DownVector[DownOffset + k - 1] + 1; // a step to the right
-                        if ((k < DownK + D) && (DownVector[DownOffset + k + 1] >= x))
+                        if (k < DownK + D && DownVector[DownOffset + k + 1] >= x)
                         {
                             x = DownVector[DownOffset + k + 1]; // down
                         }
@@ -462,14 +462,14 @@ namespace Utilities
                     y = x - k;
 
                     // find the end of the furthest reaching forward D-path in diagonal k.
-                    while ((x < UpperA) && (y < UpperB) && (DataA.data[x] == DataB.data[y]))
+                    while (x < UpperA && y < UpperB && DataA.data[x] == DataB.data[y])
                     {
                         x++; y++;
                     }
                     DownVector[DownOffset + k] = x;
 
                     // overlap ?
-                    if (oddDelta && (UpK - D < k) && (k < UpK + D))
+                    if (oddDelta && UpK - D < k && k < UpK + D)
                     {
                         if (UpVector[UpOffset + k] <= DownVector[DownOffset + k])
                         {
@@ -477,14 +477,14 @@ namespace Utilities
                             ret.y = DownVector[DownOffset + k] - k;
                             // ret.u = UpVector[UpOffset + k];      // 2002.09.20: no need for 2 points 
                             // ret.v = UpVector[UpOffset + k] - k;
-                            return (ret);
+                            return ret;
                         }
                     }
 
                 }
 
                 // Extend the reverse path.
-                for (int k = UpK - D; k <= UpK + D; k += 2)
+                for (var k = UpK - D; k <= UpK + D; k += 2)
                 {
                     // Debug.Write(0, "SMS", "extend reverse path " + k.ToString());
 
@@ -497,21 +497,21 @@ namespace Utilities
                     else
                     {
                         x = UpVector[UpOffset + k + 1] - 1; // left
-                        if ((k > UpK - D) && (UpVector[UpOffset + k - 1] < x))
+                        if (k > UpK - D && UpVector[UpOffset + k - 1] < x)
                         {
                             x = UpVector[UpOffset + k - 1]; // up
                         }
                     }
                     y = x - k;
 
-                    while ((x > LowerA) && (y > LowerB) && (DataA.data[x - 1] == DataB.data[y - 1]))
+                    while (x > LowerA && y > LowerB && DataA.data[x - 1] == DataB.data[y - 1])
                     {
                         x--; y--; // diagonal
                     }
                     UpVector[UpOffset + k] = x;
 
                     // overlap ?
-                    if (!oddDelta && (DownK - D <= k) && (k <= DownK + D))
+                    if (!oddDelta && DownK - D <= k && k <= DownK + D)
                     {
                         if (UpVector[UpOffset + k] <= DownVector[DownOffset + k])
                         {
@@ -519,7 +519,7 @@ namespace Utilities
                             ret.y = DownVector[DownOffset + k] - k;
                             // ret.u = UpVector[UpOffset + k];     // 2002.09.20: no need for 2 points 
                             // ret.v = UpVector[UpOffset + k] - k;
-                            return (ret);
+                            return ret;
                         }
                     }
                 }
@@ -576,7 +576,7 @@ namespace Utilities
             else
             {
                 // Find the middle snakea and length of an optimal path for A and B
-                SMSRD smsrd = SMS(DataA, LowerA, UpperA, DataB, LowerB, UpperB, DownVector, UpVector);
+                var smsrd = SMS(DataA, LowerA, UpperA, DataB, LowerB, UpperB, DownVector, UpVector);
                 // Debug.Write(2, "MiddleSnakeData", String.Format("{0},{1}", smsrd.x, smsrd.y));
 
                 // The path is from LowerX to (x,y) and (x,y) to UpperX
@@ -591,19 +591,14 @@ namespace Utilities
         /// dynamic array
         private static Item[] CreateDiffs(DiffData DataA, DiffData DataB)
         {
-            ArrayList a = new ArrayList();
-            Item aItem;
-            Item[] result;
+            var a = new ArrayList();
 
-            int StartA, StartB;
-            int LineA, LineB;
-
-            LineA = 0;
-            LineB = 0;
+            var LineA = 0;
+            var LineB = 0;
             while (LineA < DataA.Length || LineB < DataB.Length)
             {
-                if ((LineA < DataA.Length) && (!DataA.modified[LineA])
-                  && (LineB < DataB.Length) && (!DataB.modified[LineB]))
+                if (LineA < DataA.Length && !DataA.modified[LineA] && 
+                    LineB < DataB.Length && !DataB.modified[LineB])
                 {
                     // equal lines
                     LineA++;
@@ -612,8 +607,8 @@ namespace Utilities
                 else
                 {
                     // maybe deleted and/or inserted lines
-                    StartA = LineA;
-                    StartB = LineB;
+                    var StartA = LineA;
+                    var StartB = LineB;
 
                     while (LineA < DataA.Length && (LineB >= DataB.Length || DataA.modified[LineA]))
                     {
@@ -625,10 +620,10 @@ namespace Utilities
                         LineB++;
                     }
 
-                    if ((StartA < LineA) || (StartB < LineB))
+                    if (StartA < LineA || StartB < LineB)
                     {
                         // store a new difference-item
-                        aItem = new Item
+                        var aItem = new Item
                         {
                             StartA = StartA,
                             StartB = StartB,
@@ -640,10 +635,10 @@ namespace Utilities
                 }
             }
 
-            result = new Item[a.Count];
+            var result = new Item[a.Count];
             a.CopyTo(result);
 
-            return (result);
+            return result;
         }
 
     } // class Diff

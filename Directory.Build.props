@@ -3,7 +3,7 @@
     <PropertyGroup>
 
         <!-- Targeting and Output -->
-        <TargetFramework>net48</TargetFramework>
+        <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
         <Platforms>x64</Platforms>
 
         <!-- Auto-generate AssemblyInfo.cs -->

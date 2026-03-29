@@ -19,11 +19,6 @@ namespace EddiDataDefinitions
 
         /// <summary>The vehicles residing in the launchbay (can be null)</summary>
         [PublicAPI]
-        public List<Vehicle> vehicles { get; set; }
-
-        public LaunchBay()
-        {
-            vehicles = new List<Vehicle>();
-        }
+        public List<Vehicle> vehicles { get; set; } = [ ];
     }
 }

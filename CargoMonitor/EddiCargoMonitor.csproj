@@ -22,8 +22,6 @@
         <PackageReference Include="JetBrains.Annotations" />
         <PackageReference Include="Microsoft.CSharp" />
         <PackageReference Include="Newtonsoft.Json" />
-        <PackageReference Include="System.Runtime" />
-        <PackageReference Include="System.Runtime.Extensions" />
     </ItemGroup>
     <ItemGroup>
         <Compile Update="Properties\CargoMonitor.Designer.cs">

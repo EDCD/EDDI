@@ -7,7 +7,13 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class CargoEvent : Event
+    public class CargoEvent (
+        DateTime timestamp,
+        bool update,
+        string vessel,
+        List<CargoInfoItem> inventory,
+        int cargocarried )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Cargo";
         public const string DESCRIPTION = "Triggered when a vehicle cargo inventory is updated";
@@ -15,21 +21,13 @@ namespace EddiEvents
 
         // Not intended to be user facing
 
-        public bool update { get; private set; }
+        public bool update { get; private set; } = update;
 
-        public string vessel { get; private set; }
+        public string vessel { get; private set; } = vessel;
 
-        public List<CargoInfoItem> inventory { get; private set; }
+        public List<CargoInfoItem> inventory { get; private set; } = inventory;
 
-        public int cargocarried { get; private set; }
-
-        public CargoEvent(DateTime timestamp, bool update, string vessel, List<CargoInfoItem> inventory, int cargocarried) : base(timestamp, NAME)
-        {
-            this.update = update;
-            this.vessel = vessel;
-            this.inventory = inventory;
-            this.cargocarried = cargocarried;
-        }
+        public int cargocarried { get; private set; } = cargocarried;
 
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, string vehicle, ref List<Event> events, bool fromLogLoad )
         {

@@ -7,7 +7,9 @@ using System.Collections.Generic;
 namespace EddiSpeechResponder.CustomFunctions
 {
     [UsedImplicitly]
-    public class Occasionally : RecursiveFunction, ICustomFunction
+    [ method: UsedImplicitly]
+    public class Occasionally ( IContext context, Dictionary<string, Script> scripts )
+        : RecursiveFunction( context, scripts ), ICustomFunction
     {
         public string name => "Occasionally";
         public FunctionCategory Category => FunctionCategory.Dynamic;
@@ -15,7 +17,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public Type ReturnType => typeof( string );
 
         private static readonly Random random =
-            new Random( new { n = nameof(Occasionally), dt = DateTime.UtcNow }.GetHashCode() );
+            new( new { n = nameof(Occasionally), dt = DateTime.UtcNow }.GetHashCode() );
 
         public IFunction function => Function.CreateNative2( ( runtime, n, input, writer ) =>
         {
@@ -30,9 +32,5 @@ namespace EddiSpeechResponder.CustomFunctions
             }
             return ScriptResolver.resolveFromValue( result.AsString, GetContext( runtime.Globals ), false );
         });
-
-        [UsedImplicitly]
-        public Occasionally ( IContext context, Dictionary<string, Script> scripts ) : base( context, scripts )
-        { }
     }
 }

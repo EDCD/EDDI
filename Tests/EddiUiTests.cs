@@ -27,8 +27,8 @@ namespace Tests
 
             // Assert
             Assert.IsNotNull(languageDef.displayName);
-            Assert.IsTrue(languageDef.displayName.Contains(culture.NativeName));
-            Assert.IsTrue(languageDef.displayName.Contains(culture.DisplayName));
+            Assert.Contains( culture.NativeName, languageDef.displayName );
+            Assert.Contains( culture.DisplayName, languageDef.displayName );
             Assert.AreEqual(culture, languageDef.ci);
         }
 
@@ -91,7 +91,7 @@ namespace Tests
             var result = langA.CompareTo(langZ);
 
             // Assert
-            Assert.IsTrue(result < 0);
+            Assert.IsLessThan( 0, result );
         }
 
         [TestMethod]
@@ -105,7 +105,7 @@ namespace Tests
             var result = langZ.CompareTo(langA);
 
             // Assert
-            Assert.IsTrue(result > 0);
+            Assert.IsGreaterThan(0, result );
         }
     }
 
@@ -150,7 +150,7 @@ namespace Tests
             var result = comparer.Compare(tab2, tab1);
 
             // Assert
-            Assert.IsTrue(result < 0); // APPLE comes before zebra
+            Assert.IsLessThan(0, result ); // APPLE comes before zebra
         }
 
         [TestMethod]
@@ -178,7 +178,7 @@ namespace Tests
             tabs.Sort(comparer);
 
             // Assert
-            Assert.AreEqual(1, tabs.Count);
+            Assert.HasCount(1, tabs);
             Assert.AreEqual("OnlyOne", (string)tabs[0].Header);
         }
     }

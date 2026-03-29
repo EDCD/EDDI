@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -166,7 +165,7 @@ namespace EddiDataDefinitions
         {
             if (from == null) return null;
 
-            if (!from.Contains("$"))
+            if (!from.Contains('$'))
             {
                 // Appears to be a simple proper name
                 return new SignalSource(from) { fallbackInvariantName = from, fallbackLocalizedName = from };
@@ -174,12 +173,11 @@ namespace EddiDataDefinitions
 
             SignalSource result;
             int? threatLvl = null;
-            int indexResult = 0;
+            var indexResult = 0;
 
             // Signal names can mix symbolic and proper names, e.g. "INV Audacious Dream $Warzone_TG_Med;",
             // so use regex to separate any symbolic names from proper names.
-            var regex = new Regex(@"\$.*;");
-            var match = regex.Match(from);
+            var match = GeneratedRegex.UnlocalizedEdNameRegex().Match(from);
             
             if (match.Success && from.Length > match.Value.Length)
             {
@@ -195,7 +193,7 @@ namespace EddiDataDefinitions
             }
             else
             {
-                string tidiedFrom = from
+                var tidiedFrom = from
                     .Replace("$", "")
                     .Replace(";", "")
                     .Replace("_name", "");
@@ -216,14 +214,14 @@ namespace EddiDataDefinitions
                 // Extract any sub-type from the name (e.g. $SAA_Unknown_Signal:#type=$SAA_SignalType_Geological;:#index=3; )
                 if (tidiedFrom.Contains(":#type="))
                 {
-                    string[] fromArray = tidiedFrom.Split(new[] { ":#type=" }, System.StringSplitOptions.None);
+                    var fromArray = tidiedFrom.Split( [ ":#type=" ], System.StringSplitOptions.None);
                     tidiedFrom = fromArray[1];
                 }
 
                 // Extract any threat value which might be present and then strip the index value
                 if (tidiedFrom.Contains("USS_ThreatLevel:#threatLevel="))
                 {
-                    string[] fromArray = tidiedFrom.Split(new[] { "USS_ThreatLevel:#threatLevel=" }, System.StringSplitOptions.None);
+                    var fromArray = tidiedFrom.Split( [ "USS_ThreatLevel:#threatLevel=" ], System.StringSplitOptions.None);
                     if (int.TryParse(fromArray[1], out var threat)) { threatLvl = threat; }
                     tidiedFrom = fromArray[0]
                         .Replace("_Easy", "")
@@ -255,14 +253,14 @@ namespace EddiDataDefinitions
                 // Extract any index value which might be present and then strip the index value
                 if (tidiedFrom.Contains(":#index="))
                 {
-                    string[] fromArray = tidiedFrom.Split(new[] { ":#index=" }, System.StringSplitOptions.None);
+                    var fromArray = tidiedFrom.Split( [ ":#index=" ], System.StringSplitOptions.None);
                     if (int.TryParse(fromArray[1], out indexResult)) { }
                     tidiedFrom = fromArray[0];
                 }
 
                 // Extract any pure number parts (e.g. '_01_')
                 var parts = new List<string>();
-                foreach (var part in tidiedFrom.Split(new[] { "_" }, StringSplitOptions.None))
+                foreach (var part in tidiedFrom.Split( [ "_" ], StringSplitOptions.None))
                 {
                     if (int.TryParse(part, out _)) { }
                     else { parts.Add(part); }
@@ -307,7 +305,7 @@ namespace EddiDataDefinitions
             {
                 // Signal might be a fleet carrier with name and carrier id in a single string. If so, we break them apart
                 // This regex matches strings like `PBSF SPACE ODDITY XBH-64Y` and breaks them up into `PBSF SPACE ODDITY` and `XBH-64Y`
-                var fleetCarrierRegex = new Regex("^(.+)(?> )([A-Za-z0-9]{3}-[A-Za-z0-9]{3})$");
+                var fleetCarrierRegex = GeneratedRegex.FleetCarrierNameAndIdRegex();
                 if ( fleetCarrierRegex.IsMatch( from ) )
                 {
                     // Fleet carrier names include both the carrier name and carrier ID, we need to separate them
@@ -325,11 +323,11 @@ namespace EddiDataDefinitions
             {
                 // Signal might be a squadron carrier with name and carrier id in a single string. If so, we break them apart
                 // This regex matches strings like `EL BURDEL 2.0 | JK40` and breaks them up into `EL BURDEL 2.0` and `JK40`
-                var sqadronCarrierRegex = new Regex("^(.+)(?> \\| )([A-Za-z0-9]{0,4})$");
-                if ( sqadronCarrierRegex.IsMatch( from ) )
+                var squadronCarrierRegex = GeneratedRegex.SquadronCarrierRegex();
+                if ( squadronCarrierRegex.IsMatch( from ) )
                 {
                     // Fleet carrier names include both the carrier name and carrier ID, we need to separate them
-                    var squadronCarrierParts = sqadronCarrierRegex.Matches(from)[0].Groups;
+                    var squadronCarrierParts = squadronCarrierRegex.Matches(from)[0].Groups;
                     if ( squadronCarrierParts.Count == 3 )
                     {
                         var squadronCarrierName = squadronCarrierParts[2].Value;
@@ -342,7 +340,7 @@ namespace EddiDataDefinitions
             else if ( signalTypeEdName == SignalType.StationMegaShip.edname )
             {
                 // Normalize Powerplay Stronghold Carrier names
-                var invariantName = Regex.Replace( from, @"/^(Stronghold Carrier|Porte-vaisseaux de forteresse|Transportadora da potência|Носитель-база|Hochburg-Carrier|Portanaves bastión|\$ShipName_StrongholdCarrier(.*?))$/i", "Stronghold Carrier" );
+                var invariantName = GeneratedRegex.StrongholdCarrierRegex().Replace( from, "Stronghold Carrier" );
                 return new SignalSource( invariantName ) { isStation = true };
             }
 

@@ -10,9 +10,9 @@ namespace EddiEddnResponder.Schemas
     [UsedImplicitly]
     public class CodexEntrySchema : ISchema
     {
-        public List<string> edTypes => new List<string> { "CodexEntry" };
+        public List<string> edTypes => [ "CodexEntry" ];
 
-        public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState)
+        public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState, EDDNSender eddnSender )
         {
             try
             {
@@ -28,7 +28,7 @@ namespace EddiEddnResponder.Schemas
                 data = eddnState.Location.AugmentBody(data);
                 data = eddnState.GameVersion.AugmentVersion(data);
 
-                EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/codexentry/1", data, eddnState);
+                eddnSender.SendToEDDN("https://eddn.edcd.io/schemas/codexentry/1", data, eddnState);
                 return true;
             }
             catch (Exception e)

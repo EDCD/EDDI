@@ -35,7 +35,7 @@ namespace EddiSpeechResponder.AvalonEdit
             Definition = HighlightingLoader.Load( xshd, HighlightingManager.Instance );
 
             // Register our definition against the file extension
-            HighlightingManager.Instance.RegisterHighlighting("Cottle", new string[] { ".cottle" }, Definition);
+            HighlightingManager.Instance.RegisterHighlighting("Cottle", [ ".cottle" ], Definition);
         }
 
         private static void AddHighlightWords ( XshdSyntaxDefinition xshd, string ruleSetName, IEnumerable<string> words )

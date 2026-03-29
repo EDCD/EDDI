@@ -7,7 +7,7 @@ namespace Tests
     // this class is pure and doesn't need TestBase.MakeSafe()
     public class TranslationTests
     {
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("", "")]
         [DataRow("a", @"<phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme>")]
         [DataRow("ab", @"<phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> <phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme>")]
@@ -24,7 +24,7 @@ namespace Tests
             Assert.AreEqual("<phoneme alphabet=\"ipa\" ph=\"ɡɒlf\">golf</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈælfə\">alpha</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈeksˈrei\">x-ray</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈwʌn\">one</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈzɪərəʊ\">zero</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈnaɪnər\">niner</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈfoʊ.ər\">fawer</phoneme>", SpeechConversions.ICAO("GAX-1094"));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("Shinrarta Dezhra A 1", 
             @"<phoneme alphabet=""ipa"" ph=""ʃɪnˈrɑːrtə"">Shinrarta</phoneme> <phoneme alphabet=""ipa"" ph=""ˈdezɦrə"">Dezhra</phoneme> <say-as interpret-as=""characters"">A</say-as> 1", 
             @"<phoneme alphabet=""ipa"" ph=""ʃɪnˈrɑːrtə"">Shinrarta</phoneme> <phoneme alphabet=""ipa"" ph=""ˈdezɦrə"">Dezhra</phoneme> <phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> <phoneme alphabet=""ipa"" ph=""ˈwʌn"">one</phoneme>"
@@ -59,7 +59,7 @@ namespace Tests
             Assert.AreEqual(expectedICAO, SpeechConversions.GetTranslation(source, true));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("A 1", 
             @"<say-as interpret-as=""characters"">A</say-as> 1", 
             @"<phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> <phoneme alphabet=""ipa"" ph=""ˈwʌn"">one</phoneme>"
@@ -106,7 +106,7 @@ namespace Tests
             Assert.AreEqual(expectedICAO, SpeechConversions.GetTranslation(source, true));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("Shinrarta Dezhra",
             @"<phoneme alphabet=""ipa"" ph=""ʃɪnˈrɑːrtə"">Shinrarta</phoneme> <phoneme alphabet=""ipa"" ph=""ˈdezɦrə"">Dezhra</phoneme>",
             @"<phoneme alphabet=""ipa"" ph=""ʃɪnˈrɑːrtə"">Shinrarta</phoneme> <phoneme alphabet=""ipa"" ph=""ˈdezɦrə"">Dezhra</phoneme>"
@@ -157,7 +157,7 @@ namespace Tests
             Assert.AreEqual(expectedICAO, SpeechConversions.GetTranslation(source, true));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("", "")]
         [DataRow("LHS 12345", "<say-as interpret-as=\"characters\">L</say-as> <say-as interpret-as=\"characters\">H</say-as> <say-as interpret-as=\"characters\">S</say-as> 1 2 3 4 5")]
         [DataRow("HR 12345", @"<say-as interpret-as=""characters"">H</say-as> <say-as interpret-as=""characters"">R</say-as> 1 2 3 4 5")]

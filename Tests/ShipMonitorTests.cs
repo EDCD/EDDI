@@ -29,12 +29,12 @@ namespace Tests
             var data = DeserializeJsonResource<string>(Resources.loadout_empire_trader);
 
             var events = JournalMonitor.ParseJournalEntry(data);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var loadoutEvent = events[0] as ShipLoadoutEvent;
             Assert.IsNotNull(loadoutEvent);
             Assert.AreEqual("Peppermint", loadoutEvent.shipname);
-            Assert.AreEqual(18, loadoutEvent.compartments.Count);
-            Assert.AreEqual(7, loadoutEvent.hardpoints.Count);
+            Assert.HasCount( 18, loadoutEvent.compartments );
+            Assert.HasCount( 7, loadoutEvent.hardpoints );
 
             var shipMonitor = new ShipMonitor { updatedAt = DateTime.MinValue };
             var ship = shipMonitor.ParseShipLoadoutEvent( loadoutEvent );
@@ -55,7 +55,7 @@ namespace Tests
             Assert.AreEqual( "Empire_Trader_Armour_Grade1", ship.bulkheads.edname );
             Assert.AreEqual( 4478720, ship.powerplant.price );
             Assert.AreEqual( 100, ship.powerplant.health );
-            Assert.AreEqual( 5, ship.thrusters.modifiers.Count );
+            Assert.HasCount( 5, ship.thrusters.modifiers );
             Assert.AreEqual( 3, ship.thrusters.engineerlevel );
             Assert.AreEqual( 0, ship.thrusters.engineerquality );
             Assert.AreEqual( "Int_FuelScoop_Size7_Class5", ship.compartments[ 0 ].module.edname );
@@ -87,12 +87,12 @@ namespace Tests
             var data = DeserializeJsonResource<string>( Resources.loadout_python_nx );
 
             var events = JournalMonitor.ParseJournalEntry( data );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             var loadoutEvent = events[ 0 ] as ShipLoadoutEvent;
             Assert.IsNotNull( loadoutEvent );
             Assert.AreEqual( "", loadoutEvent.shipname );
-            Assert.AreEqual( 16, loadoutEvent.compartments.Count );
-            Assert.AreEqual( 12, loadoutEvent.hardpoints.Count );
+            Assert.HasCount( 16, loadoutEvent.compartments );
+            Assert.HasCount( 12, loadoutEvent.hardpoints );
 
             var shipMonitor = new ShipMonitor { updatedAt = DateTime.MinValue };
             var ship = shipMonitor.ParseShipLoadoutEvent( loadoutEvent );
@@ -113,7 +113,7 @@ namespace Tests
             Assert.AreEqual( "python_nx_armour_grade1", ship.bulkheads.edname );
             Assert.AreEqual( 0, ship.powerplant.price );
             Assert.AreEqual( 100, ship.powerplant.health );
-            Assert.AreEqual( 0, ship.thrusters.modifiers.Count );
+            Assert.HasCount( 0, ship.thrusters.modifiers );
             Assert.AreEqual( 0, ship.thrusters.engineerlevel );
             Assert.AreEqual( 0, ship.thrusters.engineerquality );
             Assert.AreEqual( "Int_ShieldGenerator_Size6_Class3_Fast", ship.compartments[ 0 ].module.edname );
@@ -145,12 +145,12 @@ namespace Tests
             var data = DeserializeJsonResource<string>( Resources.loadout_panther_clipper_mk_ii );
 
             var events = JournalMonitor.ParseJournalEntry( data );
-            Assert.AreEqual( 1, events.Count );
+            Assert.HasCount( 1, events );
             var loadoutEvent = events[ 0 ] as ShipLoadoutEvent;
             Assert.IsNotNull( loadoutEvent );
             Assert.AreEqual( "", loadoutEvent.shipname );
-            Assert.AreEqual( 22, loadoutEvent.compartments.Count );
-            Assert.AreEqual( 16, loadoutEvent.hardpoints.Count );
+            Assert.HasCount( 22, loadoutEvent.compartments );
+            Assert.HasCount( 16, loadoutEvent.hardpoints );
 
             var shipMonitor = new ShipMonitor { updatedAt = DateTime.MinValue };
             var ship = shipMonitor.ParseShipLoadoutEvent( loadoutEvent );
@@ -171,7 +171,7 @@ namespace Tests
             Assert.AreEqual( "panthermkii_armour_grade1", ship.bulkheads.edname );
             Assert.AreEqual( 0, ship.powerplant.price );
             Assert.AreEqual( 100, ship.powerplant.health );
-            Assert.AreEqual( 0, ship.thrusters.modifiers.Count );
+            Assert.HasCount( 0, ship.thrusters.modifiers );
             Assert.AreEqual( 0, ship.thrusters.engineerlevel );
             Assert.AreEqual( 0, ship.thrusters.engineerquality );
             Assert.AreEqual( "int_largecargorack_size8_class1", ship.compartments[ 0 ].module.edname );
@@ -299,7 +299,7 @@ namespace Tests
                 @"{ ""timestamp"":""2017-04-24T08:27:52Z"", ""event"":""ShipyardSell"", ""ShipType"":""Empire_Courier"", ""SellShipID"":902, ""ShipPrice"":2008281, ""MarketID"":128666762 }",
                 shipMonitor ).ConfigureAwait( false );
 
-            async Task SendEventsAsync( string line, ShipMonitor monitor )
+            static async Task SendEventsAsync( string line, ShipMonitor monitor )
             {
                 var events = JournalMonitor.ParseJournalEntry( line );
                 foreach ( var @event in events )
@@ -352,16 +352,7 @@ namespace Tests
         public void TestShipMonitorDeserialization()
         {
             // Read from our test item "shipMonitor.json"
-            var configuration = new ShipMonitorConfiguration();
-            try
-            {
-                configuration = DeserializeJsonResource<ShipMonitorConfiguration>(Resources.shipMonitor);
-            }
-            catch (Exception ex)
-            {
-                Logging.Warn( "Failed to read ship configuration", ex );
-                Assert.Fail();
-            }
+            var configuration = DeserializeJsonResource<ShipMonitorConfiguration>( Resources.shipMonitor );
 
             // Build a new shipyard
             var newShiplist = configuration.shipyard.OrderBy(s => s.model).ToList();
@@ -392,14 +383,14 @@ namespace Tests
             Assert.AreEqual(81, ship2.LocalId);
             Assert.AreEqual("The Impact Kraiter", ship2.name);
             Assert.AreEqual(16, ship2.cargocapacity);
-            Assert.AreEqual(8, ship2.compartments.Count);
+            Assert.HasCount( 8, ship2.compartments );
             Assert.AreEqual("Slot01_Size6", ship2.compartments[0].name);
             Assert.AreEqual(6, ship2.compartments[0].size);
             Assert.IsNotNull(ship2.compartments[0].module);
             Assert.AreEqual("Int_ShieldGenerator_Size6_Class3_Fast", ship2.compartments[0].module.edname);
             Assert.AreEqual("Bi-Weave Shield Generator", ship2.compartments[0].module.invariantName);
             Assert.AreEqual("SRV", ship2.launchbays[0].type);
-            Assert.AreEqual(2, ship2.launchbays[0].vehicles.Count);
+            Assert.HasCount( 2, ship2.launchbays[ 0 ].vehicles );
             Assert.AreEqual("TestBuggy", ship2.launchbays[0].vehicles[0].vehicleDefinition);
             Assert.AreEqual("Starter", ship2.launchbays[0].vehicles[0].loadoutDescription);
             Assert.AreEqual("dual plasma repeaters", ship2.launchbays[0].vehicles[0].localizedDescription);
@@ -409,16 +400,7 @@ namespace Tests
         public void TestShipMonitorDeserializationDoesntMutateStatics()
         {
             // Read from our test item "shipMonitor.json"
-            try
-            {
-                DeserializeJsonResource<ShipMonitorConfiguration>(Resources.shipMonitor);
-            }
-            catch (Exception ex)
-            {
-                Logging.Warn( "Failed to read ship configuration", ex );
-                Assert.Fail();
-            }
-
+            DeserializeJsonResource<ShipMonitorConfiguration>( Resources.shipMonitor );
             Assert.AreEqual("Multipurpose", Role.MultiPurpose.edname);
         }
 
@@ -487,7 +469,7 @@ namespace Tests
         {
             var line = "{ \"timestamp\":\"2018-12-25T22:55:11Z\", \"event\":\"ModuleBuy\", \"Slot\":\"Military01\", \"BuyItem\":\"$int_guardianshieldreinforcement_size5_class2_name;\", \"BuyItem_Localised\":\"Guardian Shield Reinforcement\", \"MarketID\":128666762, \"BuyPrice\":873402, \"Ship\":\"federation_corvette\", \"ShipID\":119 }";
             var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events );
             var @event = (ModulePurchasedEvent)events[0];
             Assert.IsNotNull(@event);
             Assert.IsInstanceOfType(@event, typeof(ModulePurchasedEvent));
@@ -499,8 +481,7 @@ namespace Tests
             var ship = ShipDefinitions.FromModel(@event.ship);
             ship.LocalId = @event.shipid;
 
-            var shipMonitor = new ShipMonitor { updatedAt = DateTime.MinValue };
-            shipMonitor.AddModule( ship, @event.slot, @event.buymodule );
+            ShipMonitor.AddModule( ship, @event.slot, @event.buymodule );
             
             foreach ( var compartment in ship.compartments)
             {
@@ -523,12 +504,10 @@ namespace Tests
             ship.LocalId = @event.shipid;
             var slot = @event.slot;
             var module = @event.buymodule;
-
-            var shipMonitor = new ShipMonitor { updatedAt = DateTime.MinValue };
-            shipMonitor.AddModule( ship, slot, module );
+            ShipMonitor.AddModule( ship, slot, module );
 
             // now sell the module
-            shipMonitor.RemoveModule( ship, slot, null );
+            ShipMonitor.RemoveModule( ship, slot, null );
             foreach (var compartment in ship.compartments)
             {
                 if (compartment.name == "Military01")
@@ -632,12 +611,12 @@ namespace Tests
             Assert.IsInstanceOfType<ShipRebootedEvent>( shipRebootedEvent );
             await shipMonitor.PreHandleAsync( shipRebootedEvent ).ConfigureAwait( false );
 
-            Assert.AreEqual( 5, shipRebootedEvent.compartments.Count );
-            Assert.IsTrue( shipRebootedEvent.compartments.Contains( "MainEngines" ) );
-            Assert.IsTrue( shipRebootedEvent.compartments.Contains( "MediumHardpoint1" ) );
-            Assert.IsTrue( shipRebootedEvent.compartments.Contains( "MediumHardpoint2" ) );
-            Assert.IsTrue( shipRebootedEvent.compartments.Contains( "TinyHardpoint1" ) );
-            Assert.IsTrue( shipRebootedEvent.compartments.Contains( "Slot04_Size2" ) );
+            Assert.HasCount( 5, shipRebootedEvent.compartments );
+            Assert.Contains( "MainEngines", shipRebootedEvent.compartments );
+            Assert.Contains( "MediumHardpoint1", shipRebootedEvent.compartments );
+            Assert.Contains( "MediumHardpoint2", shipRebootedEvent.compartments );
+            Assert.Contains( "TinyHardpoint1", shipRebootedEvent.compartments );
+            Assert.Contains( "Slot04_Size2", shipRebootedEvent.compartments );
 
             ship = shipMonitor.GetCurrentShip();
             Assert.AreEqual( 949, ship.LocalId );

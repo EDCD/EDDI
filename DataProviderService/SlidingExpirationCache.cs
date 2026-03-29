@@ -13,7 +13,7 @@ namespace EddiDataProviderService
             public DateTime LastAccess;
         }
 
-        private readonly ConcurrentDictionary<TKey, CacheItem> cache = new ConcurrentDictionary<TKey, CacheItem>();
+        private readonly ConcurrentDictionary<TKey, CacheItem> cache = new();
         private readonly TimeSpan slidingExpiration;
         private readonly Timer cleanupTimer;
 
@@ -74,6 +74,7 @@ namespace EddiDataProviderService
         public void Dispose ()
         {
             cleanupTimer?.Dispose();
+            GC.SuppressFinalize( this );
         }
     }
 }

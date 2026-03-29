@@ -2,12 +2,12 @@
 using EddiCore;
 using System;
 using System.Globalization;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
+using Utilities;
 
 namespace EddiMissionMonitor
 {
@@ -16,7 +16,7 @@ namespace EddiMissionMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        private MissionMonitor missionMonitor()
+        private static MissionMonitor missionMonitor()
         {
             return (MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor");
         }
@@ -38,7 +38,7 @@ namespace EddiMissionMonitor
 
         private void warningChanged(object sender, TextChangedEventArgs e)
         {
-            if ( sender is TextBox textBox && !textBox.IsLoaded ) { return; }
+            if ( sender is TextBox box && !box.IsLoaded ) { return; }
             try
             {
                 var missionsConfig = ConfigService.Instance.missionMonitorConfiguration;
@@ -56,17 +56,15 @@ namespace EddiMissionMonitor
 
         private void EnsureValidInteger(object sender, TextCompositionEventArgs e)
         {
-            // Match valid characters
-            Regex regex = new Regex(@"[0-9]");
-            // Swallow the character doesn't match the regex
-            e.Handled = !regex.IsMatch(e.Text);
+            // Swallow the character if it doesn't match the regex
+            e.Handled = !GeneratedRegex.IsIntegerRegex().IsMatch( e.Text );
         }
 
         private void RowDetailsButtonClick(object sender, RoutedEventArgs e)
         {
             if (sender is ToggleButton toggleButton)
             {
-                DataGridRow selectedRow = DataGridRow.GetRowContainingElement(toggleButton);
+                var selectedRow = DataGridRow.GetRowContainingElement(toggleButton);
                 if (selectedRow != null)
                 {
                     if (toggleButton.IsChecked ?? false)

@@ -23,8 +23,8 @@ namespace EddiCommanderMonitor
     [UsedImplicitly]
     public class CommanderMonitor : IEddiMonitor, INotifyPropertyChanged
     {
-        private static readonly object commanderLock = new object();
-        private readonly CancellationTokenSource cts = new CancellationTokenSource();
+        private static readonly object commanderLock = new();
+        private readonly CancellationTokenSource cts = new();
         
         #region Monitored Variables
 
@@ -84,12 +84,12 @@ namespace EddiCommanderMonitor
         }
 
         [UsedImplicitly]
-        public static ObservableCollection<GenderOption> GenderOptions { get; set; } = new ObservableCollection<GenderOption>
-        {
-            new GenderOption { Gender = Gender.Male, DisplayName = Properties.Resources.tab_commander_gender_m },
-            new GenderOption { Gender = Gender.Female, DisplayName = Properties.Resources.tab_commander_gender_f },
-            new GenderOption { Gender = Gender.Neither, DisplayName = Properties.Resources.tab_commander_gender_n }
-        };
+        public static ObservableCollection<GenderOption> GenderOptions { get; set; } =
+        [
+            new() { Gender = Gender.Male, DisplayName = Properties.Resources.tab_commander_gender_m },
+            new() { Gender = Gender.Female, DisplayName = Properties.Resources.tab_commander_gender_f },
+            new() { Gender = Gender.Neither, DisplayName = Properties.Resources.tab_commander_gender_n }
+        ];
 
         [CanBeNull]
         public StarSystem HomeStarSystem // May be null when the commander hasn't set a home star system
@@ -155,7 +155,7 @@ namespace EddiCommanderMonitor
 
         private static bool _isFetchingHomeSystem;
 
-        public ObservableCollection<Station> HomeStationOptions { get; } = new ObservableCollection<Station>();
+        public ObservableCollection<Station> HomeStationOptions { get; } = [ ];
 
         private void UpdateHomeStationOptions ()
         {
@@ -245,7 +245,8 @@ namespace EddiCommanderMonitor
                 // Ensure collection modifications happen on the UI thread
                 if ( System.Windows.Application.Current?.Dispatcher?.CheckAccess() == false )
                 {
-                    await System.Windows.Application.Current.Dispatcher.InvokeAsync( () => FetchSquadronSystemAsync(systemName) );
+                    await System.Windows.Application.Current.Dispatcher.InvokeAsync( async () =>
+                        await FetchSquadronSystemAsync( systemName ) );
                     return;
                 }
                 
@@ -273,7 +274,7 @@ namespace EddiCommanderMonitor
 
         private static bool _isFetchingSquadronSystem;
 
-        public ObservableCollection<Faction> SquadronFactions { get; } = new ObservableCollection<Faction>();
+        public ObservableCollection<Faction> SquadronFactions { get; } = [ ];
 
         private void UpdateSquadronFactions ()
         {
@@ -311,8 +312,8 @@ namespace EddiCommanderMonitor
         }
         private Faction _selectedSquadronFaction;
 
-        public ObservableCollection<Power> SquadronPowers => new ObservableCollection<Power>( Power.AllOfThem
-            .Except( new [] { Power.None } )
+        public static ObservableCollection<Power> SquadronPowers => new( Power.AllOfThem
+            .Except( [ Power.None ] )
             .OrderBy( p => p.localizedName )
             .Prepend( Power.None )
             .ToHashSet() );
@@ -487,7 +488,7 @@ namespace EddiCommanderMonitor
             {
                 SetCommanderTitle( @event.controllingsystemfaction.Allegiance );
             }
-            if ( ( @event.docked || @event.onFoot ) && @event.factions.Any() && EDDI.Instance.CurrentStarSystem != null )
+            if ( ( @event.docked || @event.onFoot ) && @event.factions.Count > 0 && EDDI.Instance.CurrentStarSystem != null )
             {
                 if ( @event.timestamp >= updatedAt && 
                      TryUpdateSquadronHomeSystem( @event.systemAddress, @event.factions ) )
@@ -603,7 +604,7 @@ namespace EddiCommanderMonitor
             {
                 SetCommanderTitle( @event.controllingfaction?.Allegiance );
             }
-            if ( @event.factions.Any() && EDDI.Instance.CurrentStarSystem != null )
+            if ( @event.factions.Count > 0 && EDDI.Instance.CurrentStarSystem != null )
             {
                 if ( @event.timestamp >= updatedAt &&
                      TryUpdateSquadronHomeSystem( @event.systemAddress, @event.factions ) )
@@ -619,7 +620,7 @@ namespace EddiCommanderMonitor
             {
                 SetCommanderTitle( @event.controllingsystemfaction.Allegiance );
             }
-            if ( @event.factions.Any() && EDDI.Instance.CurrentStarSystem != null )
+            if ( @event.factions.Count > 0 && EDDI.Instance.CurrentStarSystem != null )
             {
                 if ( @event.timestamp >= updatedAt &&
                      TryUpdateSquadronHomeSystem( @event.systemAddress, @event.factions ) )
@@ -786,7 +787,7 @@ namespace EddiCommanderMonitor
         
         private bool TryUpdateSquadronHomeSystem ( ulong currentSystemAddress, List<Faction> systemFactions )
         {
-            bool update = false;
+            var update = false;
 
             // Check if current system is inhabited by or HQ for squadron faction
             var squadronFaction = systemFactions.FirstOrDefault( f =>
@@ -875,12 +876,14 @@ namespace EddiCommanderMonitor
                 if ( controllingFactionAllegiance != null )
                 {
                     if ( controllingFactionAllegiance.invariantName == Superpower.Federation.invariantName &&
-                         Cmdr.federationrating != null && Cmdr.federationrating.rank > minFederationRankForTitle )
+                         Cmdr.federationrating is { } rating &&
+                         rating.rank > minFederationRankForTitle )
                     {
                         Cmdr.title = Cmdr.federationrating.localizedName;
                     }
                     else if ( controllingFactionAllegiance.invariantName == Superpower.Empire.invariantName &&
-                              Cmdr.empirerating != null && Cmdr.empirerating.rank > minEmpireRankForTitle )
+                              Cmdr.empirerating is { } empireRating &&
+                              empireRating.rank > minEmpireRankForTitle )
                     {
                         Cmdr.title = Cmdr.empirerating.maleRank.localizedName;
                     }
@@ -891,7 +894,7 @@ namespace EddiCommanderMonitor
         private Commander ReadCommander ( CommanderConfiguration configuration = null )
         {
             // Obtain current commander from our configuration
-            configuration = configuration ?? ConfigService.Instance.commanderConfiguration;
+            configuration ??= ConfigService.Instance.commanderConfiguration;
             var commander = new Commander
             {
                 name = configuration.commanderName,

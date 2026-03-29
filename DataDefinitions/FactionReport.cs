@@ -16,7 +16,7 @@ namespace EddiDataDefinitions
             get => crimeDef.edname;
             set
             {
-                Crime cDef = Crime.FromEDName(value);
+                var cDef = Crime.FromEDName(value);
                 this.crimeDef = cDef;
             }
         }

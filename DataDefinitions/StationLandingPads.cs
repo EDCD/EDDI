@@ -1,17 +1,10 @@
 ﻿namespace EddiDataDefinitions
 {
-    public class StationLandingPads
+    public class StationLandingPads ( int small = 0, int medium = 0, int large = 0 )
     {
-        public int Small { get; set; }
-        public int Medium { get; set; }
-        public int Large { get; set; }
-
-        public StationLandingPads ( int small = 0, int medium = 0, int large = 0 )
-        {
-            Small = small;
-            Medium = medium;
-            Large = large;
-        }
+        public int Small { get; set; } = small;
+        public int Medium { get; set; } = medium;
+        public int Large { get; set; } = large;
 
         public LandingPadSize LargestPad ()
         {

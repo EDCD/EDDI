@@ -23,18 +23,18 @@ namespace EddiSpeechResponder.CustomFunctions
             {
                 body = EDDI.Instance.CurrentStellarBody;
             }
-            else if (values.Count == 1 && values[0].AsNumber >= 0)
+            else if (values is [ var value ] && value.AsNumber >= 0)
             {
                 currentAltitudeMeters = Convert.ToDecimal(values[0].AsNumber);
                 body = EDDI.Instance.CurrentStellarBody;
             }
-            else if (values.Count == 2 && values[0].AsNumber >= 0 && !string.IsNullOrEmpty(values[1].AsString))
+            else if (values is [ var value1, _] && value1.AsNumber >= 0 && !string.IsNullOrEmpty(values[1].AsString))
             {
                 currentAltitudeMeters = Convert.ToDecimal(values[0].AsNumber);
                 body = EDDI.Instance.CurrentStarSystem?.bodies?
                     .FirstOrDefault(b => b.bodyname == values[1].AsString);
             }
-            else if (values.Count == 3 && values[0].AsNumber >= 0 && !string.IsNullOrEmpty(values[1].AsString) && !string.IsNullOrEmpty(values[2].AsString))
+            else if (values is [ var b1, _, _] && b1.AsNumber >= 0 && !string.IsNullOrEmpty(values[1].AsString) && !string.IsNullOrEmpty(values[2].AsString))
             {
                 currentAltitudeMeters = Convert.ToDecimal(values[0].AsNumber);
                 body = EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync(values[2].AsString, true, false).GetAwaiter().GetResult()?.bodies?

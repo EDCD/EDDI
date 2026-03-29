@@ -45,9 +45,9 @@ namespace EddiSpeechResponder
         private readonly FoldingStrategy foldingStrategy;
         private FoldingMargin foldingMargin;
 
-        private readonly List<MetaVariable> metaVars = new List<MetaVariable>();
+        private readonly List<MetaVariable> metaVars = [ ];
         private readonly List<ICustomFunction> customFunctions;
-        private static readonly object metaVarLock = new object();
+        private static readonly object metaVarLock = new();
         private readonly SpeechResponder speechResponder;
         private static Rect windowPosition;
 
@@ -180,7 +180,7 @@ namespace EddiSpeechResponder
                 // Check whether the rectangle is completely visible on-screen
                 var testUpperLeft = false;
                 var testLowerRight = false;
-                foreach ( Screen screen in Screen.AllScreens )
+                foreach ( var screen in Screen.AllScreens )
                 {
                     if ( rect.X >= applyDpiScale( screen.Bounds.X, dpi.DpiScaleX ) &&
                          rect.Y >= applyDpiScale( screen.Bounds.Y,
@@ -227,7 +227,7 @@ namespace EddiSpeechResponder
             // open code completion after the user has pressed dot:
             if ( e.Text == "." )
             {
-                if ( !( sender is TextArea textArea ) ) { return; }
+                if ( sender is not TextArea textArea ) { return; }
 
                 // Select the specific data we need to obtain
                 var line = textArea.Document.GetLineByOffset(textArea.Caret.Offset);
@@ -237,7 +237,7 @@ namespace EddiSpeechResponder
                 var textCompletionItems = GetCompletionItems(lookupItem, priorText);
 
                 // Send the result to the text completion window
-                if ( textCompletionItems.Any() )
+                if ( textCompletionItems.Count > 0 )
                 {
                     completionWindow = new TextCompletionWindow( scriptView.TextArea, textCompletionItems );
                     completionWindow.Closed += delegate { completionWindow = null; };
@@ -248,14 +248,14 @@ namespace EddiSpeechResponder
         public static string GetTextCompletionLookupItem(string lineTxt)
         {
             var lookupItem = string.Empty;
-            var lineMatch = Regex.Match(lineTxt, @"(?<={)[^:}]*?(\S+(?>\[\d\])?\.)+$");
+            var lineMatch = GeneratedRegex.CottleFunctionLine().Match(lineTxt);
             if (lineMatch.Success)
             {
                 lookupItem = lineMatch.Groups[lineMatch.Groups.Count - 1].Value.TrimEnd('.');
                 if (!string.IsNullOrEmpty(lookupItem))
                 {
                     // Replace any enumeration value for enumerable values (e.g. 'bodies[5]') with a standard index marker
-                    lookupItem = Regex.Replace( lookupItem, @"(?<=\S)+\[\d+\]", $".{MetaVariables.indexMarker}" );
+                    lookupItem = GeneratedRegex.EnumIndexRegex().Replace( lookupItem, $".{MetaVariables.indexMarker}" );
                 }
             }
             return lookupItem;
@@ -271,13 +271,13 @@ namespace EddiSpeechResponder
 
             // Remove any leading "!" and split our lookup item into its constituent parts / objects
             var lookupKeys = lookupItem.Replace("!", "").Split('.').ToList();
-            if (!lookupKeys.Any())
+            if (lookupKeys.Count == 0)
             {
                 return textCompletionItems;
             }
 
             // Resolve any simple text aliases (e.g. {set a to b.c}).
-            var simpleAliases = Regex.Matches( priorText, @"{set (?<key>\w*) to (?<value>[\w|\.]*)}" );
+            var simpleAliases = GeneratedRegex.CottleSetKeyToValueRegex().Matches( priorText );
             foreach ( var obj in simpleAliases )
             {
                 if ( obj is Match match )
@@ -313,11 +313,11 @@ namespace EddiSpeechResponder
             }
 
             // Resolve any direct function invocations (e.g. `{function(x).`)
-            if ( !filteredMetaVars.Any() )
+            if ( filteredMetaVars.Count == 0 )
             {
-                if ( lookupKeys[ 0 ].Contains( "(" ) )
+                if ( lookupKeys[ 0 ].Contains( '(' ) )
                 {
-                    var functionKey = Regex.Replace( lookupKeys[ 0 ], @"(?=\().*", "" );
+                    var functionKey = GeneratedRegex.CottleFunctionArgs().Replace( lookupKeys[ 0 ], string.Empty );
                     // If a match is found then we won't need to search our metavariables for a match.
                     var customFunction = customFunctions.FirstOrDefault( f => f.name == functionKey );
                     if ( customFunction != null )
@@ -331,9 +331,9 @@ namespace EddiSpeechResponder
             }
 
             // Resolve any function aliases (e.g. `{set a to function()} {a.`).
-            if ( !filteredMetaVars.Any() )
+            if ( filteredMetaVars.Count == 0 )
             {
-                var functionAliases = Regex.Matches( priorText, @"{set (?<key>\w*) to (?<function>\w*(?=\(.*\).*}))" );
+                var functionAliases = GeneratedRegex.CottleSetKeyToFunctionRegex().Matches( priorText );
 
                 foreach ( var obj in functionAliases )
                 {
@@ -357,7 +357,7 @@ namespace EddiSpeechResponder
             }
 
             // Search our compiled metavariables list for a matching key.
-            if ( !filteredMetaVars.Any() )
+            if ( filteredMetaVars.Count == 0 )
             {
                 lock ( metaVarLock )
                 {
@@ -454,7 +454,7 @@ namespace EddiSpeechResponder
                 MessageBox.Show( Properties.SpeechResponder.messagebox_script_name_may_not_contain + @"';'.", Properties.SpeechResponder.messagebox_unable_to_save_script, MessageBoxButtons.OK, MessageBoxIcon.Error );
                 return;
             }
-            if ( _scripts.Keys.Except( new[] { originalScript?.Name } ).Contains( revisedScript.Name ) )
+            if ( _scripts.Keys.Except( [ originalScript?.Name ] ).Contains( revisedScript.Name ) )
             {
                 MessageBox.Show( Properties.SpeechResponder.messagebox_script_name_already_in_use, Properties.SpeechResponder.messagebox_unable_to_save_script, MessageBoxButtons.OK, MessageBoxIcon.Error );
                 return;
@@ -493,7 +493,7 @@ namespace EddiSpeechResponder
 
         private void helpButtonClick ( object sender, RoutedEventArgs e )
         {
-            MarkdownWindow helpWindow = new MarkdownWindow("Help.md");
+            var helpWindow = new MarkdownWindow("Help.md");
             helpWindow.Show();
         }
 
@@ -565,10 +565,7 @@ namespace EddiSpeechResponder
         {
             if ( Folding.IsChecked ?? false )
             {
-                if ( foldingMargin is null )
-                {
-                    foldingMargin = new FoldingMargin { FoldingManager = FoldingManager.Install( scriptView.TextArea ) };
-                }
+                foldingMargin ??= new FoldingMargin { FoldingManager = FoldingManager.Install( scriptView.TextArea ) };
                 foldingStrategy.UpdateFoldings( foldingMargin.FoldingManager, scriptView.Document );
             }
             else
@@ -592,7 +589,7 @@ namespace EddiSpeechResponder
             if ( sender is TextBox textBox && textBox.IsLoaded )
             {
                 var separatedIncludes = textBox.Text
-                    .Split( new[] { ';' }, StringSplitOptions.RemoveEmptyEntries )
+                    .Split( [ ';' ], StringSplitOptions.RemoveEmptyEntries )
                     .Select( t => t.Trim() ).ToList();
                 var scriptsExceptCurrent = _scripts
                     .Where(s => s.Key != revisedScript.Name )

@@ -5,14 +5,15 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class NPCCargoScanCommencedEvent : Event
+    public class NPCCargoScanCommencedEvent ( DateTime timestamp, string from, MessageSource source )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "NPC cargo scan commenced";
         public const string DESCRIPTION = "Triggered when a cargo scan on your ship by an NPC is detected";
-        public static readonly NPCCargoScanCommencedEvent SAMPLE = new NPCCargoScanCommencedEvent(DateTime.UtcNow, "Nobatu", MessageSource.Pirate);
+        public static readonly NPCCargoScanCommencedEvent SAMPLE = new(DateTime.UtcNow, "Nobatu", MessageSource.Pirate);
 
         [PublicAPI( "The name of the source attempting the cargo scan" )]
-        public string from { get; private set; }
+        public string from { get; private set; } = from;
 
         [PublicAPI("The localized source of the cargo scan (Pirate, Military, Bounty hunter, Cargo hunter, etc)")]
         public string by => Source.localizedName;
@@ -22,12 +23,6 @@ namespace EddiEvents
 
         // Not intended to be user facing
 
-        public MessageSource Source { get; }
-
-        public NPCCargoScanCommencedEvent(DateTime timestamp, string from, MessageSource source) : base(timestamp, NAME)
-        {
-            this.from = from;
-            Source = source;
-        }
+        public MessageSource Source { get; } = source;
     }
 }

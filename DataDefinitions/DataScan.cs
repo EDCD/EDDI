@@ -34,8 +34,8 @@ namespace EddiDataDefinitions
 
         public new static DataScan FromEDName(string edname)
         {
-            string normalizedEDName = normalizeEDName(edname);
-            DataScan result = ResourceBasedLocalizedEDName<DataScan>.FromEDName(normalizedEDName);
+            var normalizedEDName = normalizeEDName(edname);
+            var result = ResourceBasedLocalizedEDName<DataScan>.FromEDName(normalizedEDName);
             return result;
         }
 

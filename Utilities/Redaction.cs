@@ -11,7 +11,7 @@ namespace Utilities
         // Strip commodity data that is not useful to report for more consistent matching
         // Strip sensitive or personal data like "apiKey" or "frontierID"
         private static readonly string[] PersonalProperties =
-        {
+        [
             "on",
             "priority",
             "health",
@@ -42,19 +42,19 @@ namespace Utilities
             "refresh_token",
             "uploaderID",
             "commanderName"
-        };
+        ];
 
         // The order here is important: we should redact the most specific strings first
         private static readonly string[] envVarsToRedact =
-        {
+        [
             "TEMP",
             "TMP",
             "APPDATA",
             "LOCALAPPDATA",
             "USERPROFILE",
             "HOMEPATH",
-            "USERNAME",
-        };
+            "USERNAME"
+        ];
 
         public static JToken RedactPersonalProperties ( JToken data )
         {

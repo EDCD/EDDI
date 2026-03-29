@@ -24,7 +24,7 @@ namespace EddiNavigationService.QueryResolvers
         /// <param name="currentSystem"> The current star system </param>
         /// <param name="fromSystemName"> (Optional) If set, calculate relative to the named starting system rather than the current system </param>
         /// <returns> The query result </returns>
-        private async Task<RouteDetailsEvent> GetMissionCargoSourceRouteAsync ( [NotNull] StarSystem currentSystem, string fromSystemName = null )
+        private static async Task<RouteDetailsEvent> GetMissionCargoSourceRouteAsync ( [NotNull] StarSystem currentSystem, string fromSystemName = null )
         {
             var missions = ConfigService.Instance.missionMonitorConfiguration.missions.ToList();
             if ( missions.All( m => m.sourcesystem == null ) ) { return null; }
@@ -76,7 +76,7 @@ namespace EddiNavigationService.QueryResolvers
 
         /// <summary> Route to the star system where missions shall expire first </summary>
         /// <returns> The query result </returns>
-        private async Task<RouteDetailsEvent> GetExpiringMissionRouteAsync ( [NotNull] StarSystem startSystem )
+        private static async Task<RouteDetailsEvent> GetExpiringMissionRouteAsync ( [NotNull] StarSystem startSystem )
         {
             var missions = ConfigService.Instance.missionMonitorConfiguration.missions.ToList();
             if ( missions.Count == 0 ) { return null; }
@@ -115,7 +115,7 @@ namespace EddiNavigationService.QueryResolvers
 
         /// <summary> Route to the star system furthest from the current star system with active missions </summary>
         /// <returns> The query result </returns>
-        private async Task<RouteDetailsEvent> GetFarthestMissionRouteAsync ( [ NotNull ] StarSystem startSystem )
+        private static async Task<RouteDetailsEvent> GetFarthestMissionRouteAsync ( [ NotNull ] StarSystem startSystem )
         {
             var missions = ConfigService.Instance.missionMonitorConfiguration.missions.ToList();
             if ( missions.Count == 0 ) { return null; }
@@ -126,7 +126,7 @@ namespace EddiNavigationService.QueryResolvers
             var farthestList = new SortedList<decimal, NavWaypoint>();
             foreach ( var mission in missions.Where( m => m.statusDef == MissionStatus.Active ).ToList() )
             {
-                if ( mission.destinationsystems != null && mission.destinationsystems.Any() )
+                if ( mission.destinationsystems is { } list && list.Count > 0 )
                 {
                     foreach ( var dest in mission.destinationsystems )
                     {
@@ -178,7 +178,7 @@ namespace EddiNavigationService.QueryResolvers
 
         /// <summary> Route to the star system that provides the most active missions </summary>
         /// <returns> The query result </returns>
-        private async Task<RouteDetailsEvent> GetMostMissionRouteAsync ( [ NotNull ] string targetSystemName, [ NotNull ] StarSystem startSystem )
+        private static async Task<RouteDetailsEvent> GetMostMissionRouteAsync ( [ NotNull ] string targetSystemName, [ NotNull ] StarSystem startSystem )
         {
             var missions = ConfigService.Instance.missionMonitorConfiguration.missions.ToList();
             if ( missions.Count == 0 ) { return null; }
@@ -189,7 +189,7 @@ namespace EddiNavigationService.QueryResolvers
 
             foreach ( var mission in missions.Where ( m => m.statusDef == MissionStatus.Active ) )
             {
-                if ( mission.destinationsystems?.Any () ?? false )
+                if ( mission.destinationsystems is { } list && list.Count > 0 )
                 {
                     foreach ( var system in mission.destinationsystems )
                     {
@@ -245,7 +245,7 @@ namespace EddiNavigationService.QueryResolvers
 
         /// <summary> Route to the nearest star system with active missions </summary>
         /// <returns> The query result </returns>
-        private async Task<RouteDetailsEvent> GetNearestMissionRouteAsync ( [ NotNull ] StarSystem startSystem )
+        private static async Task<RouteDetailsEvent> GetNearestMissionRouteAsync ( [ NotNull ] StarSystem startSystem )
         {
             var missions = ConfigService.Instance.missionMonitorConfiguration.missions.ToList();
             if ( missions.Count == 0 ) { return null; }
@@ -256,7 +256,7 @@ namespace EddiNavigationService.QueryResolvers
             var nearestList = new SortedList<decimal, NavWaypoint>();
             foreach ( var mission in missions.Where ( m => m.statusDef == MissionStatus.Active ) )
             {
-                if ( mission.destinationsystems != null && mission.destinationsystems.Any () )
+                if ( mission.destinationsystems is { } list && list.Count > 0 )
                 {
                     foreach ( var dest in mission.destinationsystems )
                     {
@@ -306,7 +306,7 @@ namespace EddiNavigationService.QueryResolvers
         /// <param name="currentSystem"> The current star system </param>
         /// <param name="homeSystem"> (Optional) If set, calculate relative to the named starting system rather than the current system </param>
         /// <returns> The query result </returns>
-        private async Task<RouteDetailsEvent> GetRepetiveNearestNeighborMissionRouteAsync ( [ NotNull ] StarSystem currentSystem, string homeSystem = null )
+        private static async Task<RouteDetailsEvent> GetRepetiveNearestNeighborMissionRouteAsync ( [ NotNull ] StarSystem currentSystem, string homeSystem = null )
         {
             var missions = ConfigService.Instance.missionMonitorConfiguration.missions.ToList();
             if ( missions.Count == 0 ) { return null; }
@@ -332,7 +332,7 @@ namespace EddiNavigationService.QueryResolvers
             {
                 if ( mission.tagsList.Any ( t => t.IncludeInMissionRouting ) )
                 {
-                    if ( !( mission.destinationsystems?.Any () ?? false ) )
+                    if ( !( mission.destinationsystems is null || mission.destinationsystems.Count == 0 ) )
                     {
                         if ( !string.IsNullOrEmpty ( mission.destinationsystem ) && !systems.Contains ( mission.destinationsystem ) )
                         {
@@ -341,11 +341,14 @@ namespace EddiNavigationService.QueryResolvers
                     }
                     else
                     {
-                        foreach ( var system in mission.destinationsystems )
+                        if ( mission.destinationsystems != null )
                         {
-                            if ( !systems.Contains ( system.systemName ) )
+                            foreach ( var system in mission.destinationsystems )
                             {
-                                systems.Add ( system.systemName );
+                                if ( !systems.Contains( system.systemName ) )
+                                {
+                                    systems.Add( system.systemName );
+                                }
                             }
                         }
                     }
@@ -380,10 +383,10 @@ namespace EddiNavigationService.QueryResolvers
             return null;
         }
 
-        private bool CalculateRepetiveNearestNeighbor ( List<NavWaypoint> inputSystems, List<Mission> missions, out List<NavWaypoint> outputRoute, NavWaypoint homeSystem = null )
+        private static bool CalculateRepetiveNearestNeighbor ( List<NavWaypoint> inputSystems, List<Mission> missions, out List<NavWaypoint> outputRoute, NavWaypoint homeSystem = null )
         {
             var found = false;
-            outputRoute = new List<NavWaypoint> ();
+            outputRoute = [ ];
 
             var numSystems = inputSystems.Count;
             if ( numSystems > 1 )
@@ -397,14 +400,14 @@ namespace EddiNavigationService.QueryResolvers
                     inputSystems.Add ( homeSystem );
                 }
                 var distMatrix = new decimal[inputSystems.Count][];
-                for ( int i = 0; i < inputSystems.Count; i++ )
+                for ( var i = 0; i < inputSystems.Count; i++ )
                 {
                     distMatrix[ i ] = new decimal[ inputSystems.Count ];
                 }
-                for ( int i = 0; i < ( inputSystems.Count - 1 ); i++ )
+                for ( var i = 0; i < ( inputSystems.Count - 1 ); i++ )
                 {
                     var curr = inputSystems.Find(s => s.systemName == inputSystems[i].systemName);
-                    for ( int j = i + 1; j < inputSystems.Count; j++ )
+                    for ( var j = i + 1; j < inputSystems.Count; j++ )
                     {
                         var dest = inputSystems.Find(s => s.systemName == inputSystems[j].systemName);
                         var distance = dest.DistanceFromStarSystem( curr ) ?? 0;
@@ -415,7 +418,7 @@ namespace EddiNavigationService.QueryResolvers
 
                 // Repetitive Nearest Neighbor Algorithm (RNNA)
                 // Iterate through all possible routes by changing the starting system
-                for ( int i = 0; i < numSystems; i++ )
+                for ( var i = 0; i < numSystems; i++ )
                 {
                     // If starting system is a destination for a 'return to origin' mission, then not a viable route
                     if ( DestinationOriginReturn ( inputSystems[ i ].systemName, missions ) )
@@ -423,7 +426,7 @@ namespace EddiNavigationService.QueryResolvers
 
                     var route = new List<NavWaypoint>();
                     var totalDistance = 0M;
-                    int currIndex = i;
+                    var currIndex = i;
 
                     // Repeat until all systems (except starting system) are in the route
                     while ( route.Count < ( numSystems - 1 ) )
@@ -431,17 +434,17 @@ namespace EddiNavigationService.QueryResolvers
                         var nearestList = new SortedList<decimal, int>();
 
                         // Iterate through the remaining systems to find nearest neighbor
-                        for ( int j = 1; j < numSystems; j++ )
+                        for ( var j = 1; j < numSystems; j++ )
                         {
                             // Wrap around the list
-                            int destIndex = (i + j) < numSystems ? i + j : i + j - numSystems;
+                            var destIndex = (i + j) < numSystems ? i + j : i + j - numSystems;
                             if ( homeSystem != null && destIndex == 0 )
                             { destIndex = numSystems; }
 
                             // Check if destination system previously added to the route
                             if ( route.IndexOf ( inputSystems[ destIndex ] ) == -1 )
                             {
-                                decimal distance = distMatrix[currIndex][destIndex];
+                                var distance = distMatrix[currIndex][destIndex];
                                 if ( !nearestList.ContainsKey ( distance ) )
                                 {
                                     nearestList.Add ( distance, destIndex );
@@ -457,7 +460,7 @@ namespace EddiNavigationService.QueryResolvers
                     }
 
                     // Add 'starting system' to complete the route & add its distance to total distance traveled
-                    int startIndex = homeSystem != null && i == 0 ? numSystems : i;
+                    var startIndex = homeSystem != null && i == 0 ? numSystems : i;
                     route.Add ( inputSystems[ startIndex ] );
                     if ( currIndex == numSystems ) { currIndex = 0; }
                     totalDistance += distMatrix[ currIndex ][ startIndex ];
@@ -467,7 +470,7 @@ namespace EddiNavigationService.QueryResolvers
                     if ( bestDistance == 0 || totalDistance < bestDistance )
                     {
                         bestRoute.Clear ();
-                        int homeIndex = route.IndexOf(inputSystems[homeSystem != null ? numSystems : 0]);
+                        var homeIndex = route.IndexOf(inputSystems[homeSystem != null ? numSystems : 0]);
                         if ( homeIndex < ( route.Count - 1 ) )
                         {
                             // Rotate list to place homesystem at the end
@@ -495,9 +498,9 @@ namespace EddiNavigationService.QueryResolvers
             return found;
         }
 
-        private bool DestinationOriginReturn ( string destination, List<Mission> missions )
+        private static bool DestinationOriginReturn ( string destination, List<Mission> missions )
         {
-            foreach ( Mission mission in missions.Where ( m => m.originreturn ).ToList () )
+            foreach ( var mission in missions.Where ( m => m.originreturn ).ToList () )
             {
                 if ( mission.destinationsystems == null )
                 {

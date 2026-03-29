@@ -17,18 +17,18 @@ namespace EddiSpanshService
         /// <returns>A list of basic system waypoints (with just system name, system address, and coordinates) ordered by match with the provided system name</returns>
         public async Task<List<string>> GetTypeAheadSystemNamesAsync ( string partialSystemName, CancellationToken cancellationToken )
         {
-            if (string.IsNullOrEmpty(partialSystemName)) { return new List<string>(); }
+            if (string.IsNullOrEmpty(partialSystemName)) { return [ ]; }
 
             try
             {
                 var requestUri = $"systems?q={partialSystemName}";
                 var clientResponse = await spanshHttpClient.GetAsync( requestUri, cancellationToken ).ConfigureAwait(false);
                 clientResponse.EnsureSuccessStatusCode();
-                var responseJson = await clientResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var responseJson = await clientResponse.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
                 if ( string.IsNullOrEmpty( responseJson ) )
                 {
                     Logging.Warn( "Unable to handle server response." );
-                    return new List<string>();
+                    return [ ];
                 }
                 return JsonConvert.DeserializeObject<List<string>>(responseJson);
             }

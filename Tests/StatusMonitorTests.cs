@@ -13,8 +13,8 @@ namespace Tests
     [TestClass, TestCategory("UnitTests")]
     public class StatusMonitorTests : TestBase
     {
-        readonly StatusService statusService = new StatusService();
-        readonly StatusMonitor statusMonitor = new StatusMonitor();
+        readonly StatusService statusService = new();
+        readonly StatusMonitor statusMonitor = new();
 
         [TestInitialize]
         public void start()
@@ -38,9 +38,7 @@ namespace Tests
             Assert.IsFalse( status.near_surface );
             Assert.IsFalse( status.overheating );
             Assert.IsFalse( status.low_fuel );
-#pragma warning disable CS0612 // Type or member is obsolete
             Assert.AreEqual( "masslock", status.fsd_status );
-#pragma warning restore CS0612 // Type or member is obsolete
             Assert.IsFalse( status.fsd_cooldown );
             Assert.IsFalse( status.fsd_hyperdrive_charging );
             Assert.IsTrue( status.fsd_mass_locked );
@@ -83,9 +81,8 @@ namespace Tests
             Assert.IsFalse( status.near_surface );
             Assert.IsFalse( status.overheating );
             Assert.IsFalse( status.low_fuel );
-#pragma warning disable CS0612 // Type or member is obsolete
             Assert.AreEqual( "masslock", status.fsd_status );
-#pragma warning restore CS0612 // Type or member is obsolete            Assert.IsFalse( status.fsd_cooldown );
+            Assert.IsFalse( status.fsd_cooldown );
             Assert.IsFalse( status.fsd_hyperdrive_charging );
             Assert.IsTrue( status.fsd_mass_locked );
             Assert.IsFalse( status.fsd_supercruise_assist );
@@ -155,9 +152,7 @@ namespace Tests
             Assert.IsFalse( status.near_surface );
             Assert.IsFalse( status.overheating );
             Assert.IsFalse( status.low_fuel );
-#pragma warning disable CS0612 // Type or member is obsolete
             Assert.AreEqual( "masslock", status.fsd_status );
-#pragma warning restore CS0612 // Type or member is obsolete
             Assert.IsFalse( status.fsd_cooldown );
             Assert.IsFalse( status.fsd_hyperdrive_charging );
             Assert.IsTrue( status.fsd_mass_locked );
@@ -228,9 +223,7 @@ namespace Tests
             Assert.IsFalse( status.near_surface );
             Assert.IsFalse( status.overheating );
             Assert.IsFalse( status.low_fuel );
-#pragma warning disable CS0612 // Type or member is obsolete
             Assert.AreEqual( "supercruise", status.fsd_status );
-#pragma warning restore CS0612 // Type or member is obsolete
             Assert.IsFalse( status.fsd_cooldown );
             Assert.IsFalse( status.fsd_hyperdrive_charging );
             Assert.IsFalse( status.fsd_mass_locked );
@@ -301,9 +294,7 @@ namespace Tests
             Assert.IsFalse( status.near_surface );
             Assert.IsFalse( status.overheating );
             Assert.IsTrue( status.low_fuel ); // Always true in a fighter since the fighter has no main fuel tank
-#pragma warning disable CS0612 // Type or member is obsolete
             Assert.AreEqual( "ready", status.fsd_status );
-#pragma warning restore CS0612 // Type or member is obsolete
             Assert.IsFalse( status.fsd_cooldown );
             Assert.IsFalse( status.fsd_hyperdrive_charging );
             Assert.IsFalse( status.fsd_mass_locked );
@@ -374,9 +365,7 @@ namespace Tests
             Assert.IsTrue( status.near_surface );
             Assert.IsFalse( status.overheating );
             Assert.IsFalse( status.low_fuel );
-#pragma warning disable CS0612 // Type or member is obsolete
             Assert.AreEqual( "masslock", status.fsd_status );
-#pragma warning restore CS0612 // Type or member is obsolete
             Assert.IsFalse( status.fsd_cooldown );
             Assert.IsFalse( status.fsd_hyperdrive_charging );
             Assert.IsTrue( status.fsd_mass_locked );
@@ -447,9 +436,7 @@ namespace Tests
             Assert.IsTrue( status.near_surface );
             Assert.IsFalse( status.overheating );
             Assert.IsFalse( status.low_fuel );
-#pragma warning disable CS0612 // Type or member is obsolete
             Assert.AreEqual( "ready", status.fsd_status );
-#pragma warning restore CS0612 // Type or member is obsolete
             Assert.IsFalse( status.fsd_cooldown );
             Assert.IsFalse( status.fsd_hyperdrive_charging );
             Assert.IsFalse( status.fsd_mass_locked );
@@ -520,9 +507,7 @@ namespace Tests
             Assert.IsTrue( status.near_surface );
             Assert.IsFalse( status.overheating );
             Assert.IsFalse( status.low_fuel );
-#pragma warning disable CS0612 // Type or member is obsolete
             Assert.AreEqual( "ready", status.fsd_status );
-#pragma warning restore CS0612 // Type or member is obsolete
             Assert.IsFalse( status.fsd_cooldown );
             Assert.IsFalse( status.fsd_hyperdrive_charging );
             Assert.IsFalse( status.fsd_mass_locked );
@@ -598,9 +583,7 @@ namespace Tests
             Assert.IsFalse( status.near_surface );
             Assert.IsFalse( status.overheating );
             Assert.IsFalse( status.low_fuel );
-#pragma warning disable CS0612 // Type or member is obsolete
             Assert.AreEqual( "ready", status.fsd_status );
-#pragma warning restore CS0612 // Type or member is obsolete
             Assert.IsFalse( status.fsd_cooldown );
             Assert.IsFalse( status.fsd_hyperdrive_charging );
             Assert.IsFalse( status.fsd_mass_locked );
@@ -672,9 +655,7 @@ namespace Tests
             Assert.IsFalse( status.near_surface );
             Assert.IsFalse( status.overheating );
             Assert.IsFalse( status.low_fuel );
-#pragma warning disable CS0612 // Type or member is obsolete
             Assert.AreEqual( "ready", status.fsd_status );
-#pragma warning restore CS0612 // Type or member is obsolete
             Assert.IsFalse( status.fsd_cooldown );
             Assert.IsFalse( status.fsd_hyperdrive_charging );
             Assert.IsFalse( status.fsd_mass_locked );
@@ -713,9 +694,7 @@ namespace Tests
             Assert.IsTrue( status.near_surface );
             Assert.IsFalse( status.overheating );
             Assert.IsFalse( status.low_fuel );
-#pragma warning disable CS0612 // Type or member is obsolete
             Assert.AreEqual( "ready", status.fsd_status );
-#pragma warning restore CS0612 // Type or member is obsolete
             Assert.IsFalse( status.fsd_cooldown );
             Assert.IsFalse( status.fsd_hyperdrive_charging );
             Assert.IsFalse( status.fsd_mass_locked );
@@ -853,7 +832,7 @@ namespace Tests
             Assert.IsTrue( statusMonitor.NeedsStart() );
         }
 
-        [ DataTestMethod ]
+        [ TestMethod ]
         [ DataRow ( "{ \"timestamp\":\"2021-05-01T21:00:10Z\", \"event\":\"Status\", \"Flags\":0, \"Flags2\":9, \"Oxygen\":1.000000, \"Health\":1.000000, \"Temperature\":293.000000, \"SelectedWeapon\":\"\", \"LegalState\":\"Clean\", \"BodyName\":\"Savitskaya Vision\" }" ) ]
         [ DataRow ( "{ \"timestamp\":\"2018-03-25T00:39:48Z\", \"event\":\"Status\", \"Flags\":69255432, \"Pips\":[2,8,2], \"FireGroup\":0, \"GuiFocus\":0, \"Latitude\":-5.683115, \"Longitude\":-10.957623, \"Heading\":249, \"Altitude\":0}" ) ]
         [ DataRow ( "{ \"timestamp\":\"2018-11-15T04:41:06Z\", \"event\":\"Status\", \"Flags\":151519320, \"Pips\":[4,4,4], \"FireGroup\":2, \"GuiFocus\":9, \"Fuel\":{ \"FuelMain\":15.260000, \"FuelReservoir\":0.444812 }, \"Cargo\":39.000000 }" ) ]
@@ -898,14 +877,14 @@ namespace Tests
 
             statusMonitor._handleStatus( beforeRefuelStatus, out _ );
             statusMonitor._handleStatus( duringRefuelStatus, out var events );
-            Assert.AreEqual(1, events.Count);
+            Assert.HasCount( 1, events);
             var @event1 = events.FirstOrDefault();
             statusMonitor._handleStatus( afterRefuelStatus, out events );
-            Assert.AreEqual( 2, events.Count );
+            Assert.HasCount( 2, events );
             var @event2 = events.FirstOrDefault();
             var @event3 = events.LastOrDefault();
             statusMonitor._handleStatus( afterScoopDeactivated, out events );
-            Assert.AreEqual( 0, events.Count );
+            Assert.HasCount( 0, events );
 
             if ( @event1 is ShipFuelScoopEvent ShipFuelScoopEvent1 && @event2 is ShipRefuelledEvent shipRefuelledEvent && @event3 is ShipFuelScoopEvent ShipFuelScoopEvent2 )
             {

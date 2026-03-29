@@ -15,7 +15,7 @@ namespace Utilities
 
         public static DateTime getDateTime(string key, IDictionary<string, object> data)
         {
-            if ( data.TryGetValue( key, out object val ) )
+            if ( data.TryGetValue( key, out var val ) )
             {
                 return getDateTime( val );
             }
@@ -62,7 +62,7 @@ namespace Utilities
 
         public static decimal getDecimal(IDictionary<string, object> data, string key)
         {
-            data.TryGetValue(key, out object val);
+            data.TryGetValue(key, out var val);
             return getDecimal(key, val);
         }
 
@@ -85,7 +85,7 @@ namespace Utilities
 
         public static decimal? getOptionalDecimal(IDictionary<string, object> data, string key)
         {
-            data.TryGetValue(key, out object val);
+            data.TryGetValue(key, out var val);
             return getOptionalDecimal(key, val);
         }
 
@@ -112,7 +112,7 @@ namespace Utilities
 
         public static int getInt(IDictionary<string, object> data, string key)
         {
-            data.TryGetValue(key, out object val);
+            data.TryGetValue(key, out var val);
             return getInt(key, val);
         }
 
@@ -131,7 +131,7 @@ namespace Utilities
 
         public static int? getOptionalInt(IDictionary<string, object> data, string key)
         {
-            data.TryGetValue(key, out object val);
+            data.TryGetValue(key, out var val);
             return getOptionalInt(key, val);
         }
 
@@ -154,7 +154,7 @@ namespace Utilities
 
         public static long getLong(IDictionary<string, object> data, string key)
         {
-            data.TryGetValue(key, out object val);
+            data.TryGetValue(key, out var val);
             return getLong(key, val);
         }
 
@@ -179,7 +179,7 @@ namespace Utilities
 
         public static long? getOptionalLong(IDictionary<string, object> data, string key)
         {
-            data.TryGetValue(key, out object val);
+            data.TryGetValue(key, out var val);
             if (val == null)
             {
                 return null;
@@ -203,7 +203,7 @@ namespace Utilities
         
         public static ulong getULong(IDictionary<string, object> data, string key)
         {
-            data.TryGetValue(key, out object val);
+            data.TryGetValue(key, out var val);
             return getULong(key, val);
         }
 
@@ -228,7 +228,7 @@ namespace Utilities
 
         public static ulong? getOptionalULong(IDictionary<string, object> data, string key)
         {
-            data.TryGetValue(key, out object val);
+            data.TryGetValue(key, out var val);
             if (val == null)
             {
                 return null;
@@ -252,7 +252,7 @@ namespace Utilities
         
         public static bool getBool(IDictionary<string, object> data, string key)
         {
-            data.TryGetValue(key, out object val);
+            data.TryGetValue(key, out var val);
             return getBool(key, val);
         }
 
@@ -267,7 +267,7 @@ namespace Utilities
 
         public static bool? getOptionalBool(IDictionary<string, object> data, string key)
         {
-            if (data.TryGetValue(key, out object val))
+            if (data.TryGetValue(key, out var val))
             {
                 return val as bool?;
             }
@@ -279,7 +279,7 @@ namespace Utilities
 
         public static string getString(IDictionary<string, object> data, string key)
         {
-            data.TryGetValue(key, out object val);
+            data.TryGetValue(key, out var val);
             return (string)val;
         }
 
@@ -288,9 +288,9 @@ namespace Utilities
             mutatedPropertyName = string.Empty;
             if (self != null && to != null)
             {
-                Type type = typeof(T);
-                List<string> ignoreList = new List<string>(ignore);
-                foreach (System.Reflection.PropertyInfo pi in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
+                var type = typeof(T);
+                var ignoreList = new List<string>(ignore);
+                foreach (var pi in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
                 {
                     if (jsonIgnore)
                     {
@@ -306,12 +306,12 @@ namespace Utilities
 
                     if (!ignoreList.Contains(pi.Name))
                     {
-                        object selfValue = type.GetProperty(pi.Name)?.GetValue(self, null);
-                        object toValue = type.GetProperty(pi.Name)?.GetValue(to, null);
+                        var selfValue = type.GetProperty(pi.Name)?.GetValue(self, null);
+                        var toValue = type.GetProperty(pi.Name)?.GetValue(to, null);
 
                         if (selfValue != toValue && (selfValue == null || !selfValue.Equals(toValue)))
                         {
-                            if ( selfValue is object )
+                            if ( selfValue != null )
                             {
                                 if (compareJsonEquality(selfValue, toValue, jsonIgnore, out mutatedPropertyName, ignore))
                                 {

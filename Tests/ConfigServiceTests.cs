@@ -77,7 +77,7 @@ namespace Tests
                 // Invoke private ConvertLegacyConfigData method via reflection
                 var method = typeof(ConfigService).GetMethod("ConvertLegacyConfigData", BindingFlags.NonPublic | BindingFlags.Instance);
                 Assert.IsNotNull( method, "ConvertLegacyConfigData method not found via reflection" );
-                method.Invoke( svc, new object[] { dict } );
+                method.Invoke( svc, [ dict ] );
 
                 // Verify that migration copied values into the commander configuration
                 Assert.AreEqual( "LegacyCmdr", commanderConfig.commanderName );

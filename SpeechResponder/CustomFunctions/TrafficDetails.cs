@@ -37,10 +37,7 @@ namespace EddiSpeechResponder.CustomFunctions
                         result = EDDI.Instance.DataProvider.GetSystemHostilityAsync(systemName)?.GetAwaiter().GetResult();
                     }
                 }
-                if (result == null)
-                {
-                    result = EDDI.Instance.DataProvider.GetSystemTrafficAsync(systemName)?.GetAwaiter().GetResult();
-                }
+                result ??= EDDI.Instance.DataProvider.GetSystemTrafficAsync(systemName)?.GetAwaiter().GetResult();
             }
             return result is null ? Value.EmptyMap : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
         }, 1, 2);

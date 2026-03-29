@@ -47,8 +47,8 @@ namespace Utilities
                 {
                     collectionHandler?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
                     propertyHandler?.Invoke(this, new PropertyChangedEventArgs("Count"));
-                    propertyHandler?.Invoke(this, new PropertyChangedEventArgs("Keys"));
-                    propertyHandler?.Invoke(this, new PropertyChangedEventArgs("Values"));
+                    propertyHandler?.Invoke(this, new PropertyChangedEventArgs(nameof(Keys)));
+                    propertyHandler?.Invoke(this, new PropertyChangedEventArgs(nameof(Values)));
                 }, null);
             }
         }
@@ -67,7 +67,7 @@ namespace Utilities
         /// <returns>Whether the add was successful.</returns>
         private bool TryAddWithNotification(TKey key, TValue value)
         {
-            bool result = _dictionary.TryAdd(key, value);
+            var result = _dictionary.TryAdd(key, value);
             if (result) NotifyObserversOfChange();
             return result;
         }
@@ -78,7 +78,7 @@ namespace Utilities
         /// <returns>Whether the removal was successful.</returns>
         private bool TryRemoveWithNotification(TKey key, out TValue value)
         {
-            bool result = _dictionary.TryRemove(key, out value);
+            var result = _dictionary.TryRemove(key, out value);
             if (result) NotifyObserversOfChange();
             return result;
         }

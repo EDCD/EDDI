@@ -32,14 +32,14 @@ namespace EddiSpanshService
             {
                 var maxResultsPerPage = 500;
                 int? count = null;
-                int page = 0;
+                var page = 0;
                 do
                 {
                     var systemQueryResult = await QueryAsync(QueryGroup.systems, searchFilters, cancellationToken, maxResultsPerPage, page).ConfigureAwait(false);
                     if ( systemQueryResult != null )
                     {
-                        count = count ?? systemQueryResult[ "count" ]?.Value<int?>();
-                        systemsQueryResults.AddRange( systemQueryResult[ "results" ]?.ToObject<List<JToken>>() ?? new List<JToken>() );
+                        count ??= systemQueryResult[ "count" ]?.Value<int?>();
+                        systemsQueryResults.AddRange( systemQueryResult[ "results" ]?.ToObject<List<JToken>>() ?? [ ] );
                         page++;
                     }
 
@@ -51,7 +51,7 @@ namespace EddiSpanshService
             }
 
             Faction faction = null;
-            if ( systemsQueryResults.Any() )
+            if ( systemsQueryResults.Count > 0 )
             {
                 faction = await GetFactionBaseDataAsync( factionName, presenceSystemName, systemsQueryResults, cancellationToken ).ConfigureAwait(false);
 

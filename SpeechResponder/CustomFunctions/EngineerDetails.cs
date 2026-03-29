@@ -22,7 +22,7 @@ namespace EddiSpeechResponder.CustomFunctions
                 : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
         });
 
-        private Engineer GetEngineerDetails ( string input )
+        private static Engineer GetEngineerDetails ( string input )
         {
             // Attempt to find the engineer by name
             var engineer = Engineer.FromName(input);

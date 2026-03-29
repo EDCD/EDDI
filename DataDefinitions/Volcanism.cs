@@ -11,7 +11,7 @@ namespace EddiDataDefinitions
     /// Volcanism
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    public class Volcanism
+    public class Volcanism ( string type, string composition, string amountEdName )
     {
         static Volcanism()
         {
@@ -43,42 +43,35 @@ namespace EddiDataDefinitions
         public static readonly ResourceManager resourceManager;
 
         [JsonProperty("type")]
-        public string edType { get; set; } // Geysers/Magma
+        public string edType { get; set; } = type; // Geysers/Magma
         public string invariantType => GetInvariantString(edType);
         public string localizedType => GetLocalizedString(edType);
 
         [JsonProperty("composition")]
-        public string edComposition { get; set; } // Iron, Silicate, etc.
+        public string edComposition { get; set; } = composition; // Iron, Silicate, etc.
         public string invariantComposition => GetInvariantString(edComposition);
         public string localizedComposition => GetLocalizedString(edComposition);
 
         [JsonProperty("amount")]
-        public string edAmount { get; set; } // Minor, Major, null (for normal)
+        public string edAmount { get; set; } = amountEdName; // Minor, Major, null (for normal)
         public string invariantAmount => GetInvariantString(edAmount);
         public string localizedAmount => GetLocalizedString(edAmount);
 
         // Translation of composition of volcanism 
-        private static readonly IDictionary<string, string> COMPOSITIONS = new Dictionary<string, string>();
+        private static readonly Dictionary<string, string> COMPOSITIONS = [];
 
-        private string GetInvariantString(string name)
+        private static string GetInvariantString (string name)
         {
             if (name == null) { return null; }
             name = name.Replace(" ", "_");
             return resourceManager.GetString(name, CultureInfo.InvariantCulture);
         }
 
-        private string GetLocalizedString(string name)
+        private static string GetLocalizedString (string name)
         {
             if (name == null) { return null; }
             name = name.Replace(" ", "_");
             return resourceManager.GetString(name);
-        }
-
-        public Volcanism(string type, string composition, string amountEDName)
-        {
-            this.edType = type;
-            this.edComposition = composition;
-            this.edAmount = amountEDName;
         }
 
         /// <summary>
@@ -88,7 +81,7 @@ namespace EddiDataDefinitions
         {
             from = from?.ToLowerInvariant();
 
-            if (from == null || from == "" || from == "no volcanism")
+            if (from is null or "" or "no volcanism")
             {
                 return null;
             }
@@ -126,7 +119,7 @@ namespace EddiDataDefinitions
             }
 
             // Remaining is composition
-            string composition = from;
+            var composition = from;
             if (COMPOSITIONS.TryGetValue(composition, out var value))
             {
                 composition = value;

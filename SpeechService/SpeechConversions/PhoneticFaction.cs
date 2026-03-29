@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using Utilities;
 
 namespace EddiSpeechService.SpeechConversions
 {
     public static partial class SpeechConversions
     {
         // Fixes to avoid issues with some of the more strangely-named factions
-        private static readonly Dictionary<string, string> FACTION_FIXES = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> FACTION_FIXES = new()
         {
             { "SCORPIONS ORDER", "Scorpions Order" }, // Stop it being treated as a sector
             { "Federation Unite!", "Federation Unite"}, // Stop pausing at the end of Unite!
@@ -49,21 +50,21 @@ namespace EddiSpeechService.SpeechConversions
             var pieces = faction.Split(' ');
             for (var i = 0; i < pieces.Length; i++)
             {
-                if (CONSTELLATION_PRONUNCIATIONS.ContainsKey(pieces[i]))
+                if (CONSTELLATION_PRONUNCIATIONS.TryGetValue(pieces[i], out var pronunciations))
                 {
-                    pieces[i] = replaceWithPronunciation(pieces[i], CONSTELLATION_PRONUNCIATIONS[pieces[i]]);
+                    pieces[i] = replaceWithPronunciation(pieces[i], pronunciations );
                 }
-                else if (ALPHA_THEN_NUMERIC.IsMatch(pieces[i]))
+                else if ( GeneratedRegex.ALPHA_THEN_NUMERIC().IsMatch(pieces[i]))
                 {
                     pieces[i] = sayAsLettersOrNumbers(pieces[i], false, useICAO);
                 }
-                else if (ALPHA_DOT.IsMatch(pieces[i]))
+                else if ( GeneratedRegex.ALPHA_DOT().IsMatch(pieces[i]))
                 {
                     pieces[i] = sayAsLettersOrNumbers(pieces[i].Replace(".", ""), false, useICAO);
                 }
-                else if (DIGIT.IsMatch(pieces[i]))
+                else if ( GeneratedRegex.DIGIT().IsMatch(pieces[i]))
                 {
-                    pieces[i] = sayAsLettersOrNumbers(pieces[i], !THREE_OR_MORE_DIGITS.IsMatch(pieces[i]), useICAO);
+                    pieces[i] = sayAsLettersOrNumbers(pieces[i], !GeneratedRegex.THREE_OR_MORE_DIGITS().IsMatch(pieces[i]), useICAO);
                 }
             }
             return string.Join(" ", pieces);

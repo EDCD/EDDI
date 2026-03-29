@@ -4,7 +4,7 @@ using EddiSpeechResponder.ScriptResolverService;
 using JetBrains.Annotations;
 using System;
 using System.Reflection;
-using System.Text.RegularExpressions;
+using Utilities;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -19,8 +19,8 @@ namespace EddiSpeechResponder.CustomFunctions
         {
             // The inputs to this function might include phonetic SSML tags
             // (to improve phonetic pronunciations). We'll need to strip those.
-            var tidiedModel = Regex.Replace(shipModel.AsString, @"<phoneme.*?>", string.Empty);
-            tidiedModel = Regex.Replace(tidiedModel, @"<\/phoneme>", string.Empty);
+            var tidiedModel = GeneratedRegex.OpenPhonemeRegex().Replace(shipModel.AsString, string.Empty)
+                .Replace("</phoneme>",string.Empty);
             tidiedModel = tidiedModel // Ship models with mark numbers need to be reverted to abbreviated forms
                 .Replace(" Mark 1", " Mk. I")
                 .Replace(" Mark 2", " Mk. II")

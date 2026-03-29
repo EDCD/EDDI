@@ -6,17 +6,26 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class EnteredNormalSpaceEvent : Event
+    public class EnteredNormalSpaceEvent (
+        DateTime timestamp,
+        string systemName,
+        ulong systemAddress,
+        string bodyName,
+        int? bodyId,
+        BodyType bodyType,
+        bool? taxi,
+        bool? multicrew )
+        : Event( timestamp, NAME )
     {
         public const string NAME = "Entered normal space";
         public const string DESCRIPTION = "Triggered when your ship enters normal space";
         public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"SupercruiseExit\",\"StarSystem\":\"Shinrarta Dezhra\",\"SystemAddress\": 3932277478106,\"Body\":\"Jameson Memorial\",\"BodyType\":\"Station\"}";
 
         [PublicAPI("The system at which the commander has entered normal space")]
-        public string systemname { get; private set; }
+        public string systemname { get; private set; } = systemName;
 
         [PublicAPI( "The numeric system address of the star system at which the commander has entered normal space" )]
-        public ulong systemAddress { get; private set; }
+        public ulong systemAddress { get; private set; } = systemAddress;
 
         [PublicAPI("The localized type of the nearest body to the commander when entering normal space")]
         public string bodytype => (bodyType ?? BodyType.None).localizedName;
@@ -25,16 +34,16 @@ namespace EddiEvents
         public string bodytype_invariant => (bodyType ?? BodyType.None).invariantName;
 
         [PublicAPI("The nearest body to the commander when entering normal space (if any)")]
-        public string bodyname { get; private set; }
+        public string bodyname { get; private set; } = bodyName;
 
         [PublicAPI( "The numeric ID of the nearest body to the commander when entering normal space (if any)" )]
-        public int? bodyId { get; private set; }
+        public int? bodyId { get; private set; } = bodyId;
 
         [PublicAPI("True if the ship is an transport (e.g. taxi or dropship)")]
-        public bool? taxi { get; private set; }
+        public bool? taxi { get; private set; } = taxi;
 
         [PublicAPI("True if the ship is belongs to another player")]
-        public bool? multicrew { get; private set; }
+        public bool? multicrew { get; private set; } = multicrew;
 
         // Deprecated, maintained for compatibility with user scripts
 
@@ -46,18 +55,7 @@ namespace EddiEvents
 
         // Variables below are not intended to be user facing
 
-        public BodyType bodyType { get; set; }
-
-        public EnteredNormalSpaceEvent(DateTime timestamp, string systemName, ulong systemAddress, string bodyName, int? bodyId, BodyType bodyType, bool? taxi, bool? multicrew) : base(timestamp, NAME)
-        {
-            this.systemname = systemName;
-            this.systemAddress = systemAddress;
-            this.bodyType = bodyType;
-            this.bodyname = bodyName;
-            this.bodyId = bodyId;
-            this.taxi = taxi;
-            this.multicrew = multicrew;
-        }
+        public BodyType bodyType { get; set; } = bodyType;
 
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {

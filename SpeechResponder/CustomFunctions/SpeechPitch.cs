@@ -14,14 +14,14 @@ namespace EddiSpeechResponder.CustomFunctions
         public Type ReturnType => typeof( string );
         public IFunction function => Function.CreateNativeMinMax( ( runtime, values, writer ) =>
         {
-            string text = values[0].AsString;
+            var text = values[0].AsString;
             if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString))
             {
                 return text;
             }
             if (values.Count == 2)
             {
-                string pitch = values[1].AsString;
+                var pitch = values[1].AsString;
                 return @"<prosody pitch=""" + pitch + @""">" + text + "</prosody>";
             }
             return "The SpeechPitch function is used improperly. Please review the documentation for correct usage.";

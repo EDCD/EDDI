@@ -58,7 +58,7 @@ namespace EddiDataDefinitions
 
         public static TradeRating FromRank(int from)
         {
-            TradeRating result = AllOfThem.FirstOrDefault(v => v.rank == from);
+            var result = AllOfThem.FirstOrDefault(v => v.rank == from);
             if (result == null)
             {
                 Logging.Info("Unknown Trade Rating rank " + from);
