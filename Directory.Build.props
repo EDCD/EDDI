@@ -22,6 +22,7 @@
     <!-- Ensure projects which use WPF or Windows Forms import Windows Desktop targets -->
     <PropertyGroup Condition="'$(UseWPF)' == 'true' or '$(UseWindowsForms)' == 'true'">
         <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+        <EnableWindowsTargeting>true</EnableWindowsTargeting>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
