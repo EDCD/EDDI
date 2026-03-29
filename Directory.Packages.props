@@ -22,7 +22,7 @@
     <PackageVersion Include="Rollbar" Version="5.2.2" />
     <PackageVersion Include="System.Collections" Version="4.3.0" />
     <PackageVersion Include="System.Collections.Concurrent" Version="4.3.0" />
-    <PackageVersion Include="System.Collections.Immutable" Version="9.0.5" />
+    <PackageVersion Include="System.Collections.Immutable" Version="10.0.5" />
     <PackageVersion Include="System.Data.SQLite.Core" Version="1.0.119" />
     <PackageVersion Include="System.Diagnostics.Debug" Version="4.3.0" />
     <PackageVersion Include="System.Diagnostics.Tools" Version="4.3.0" />
@@ -36,13 +36,13 @@
     <PackageVersion Include="System.Reflection.Extensions" Version="4.3.0" />
     <PackageVersion Include="System.Reflection.Primitives" Version="4.3.0" />
     <PackageVersion Include="System.Resources.ResourceManager" Version="4.3.0" />
-    <PackageVersion Include="System.Runtime.Caching" Version="9.0.5" />
+    <PackageVersion Include="System.Runtime.Caching" Version="10.0.5" />
     <PackageVersion Include="System.Runtime.InteropServices" Version="4.3.0" />
     <PackageVersion Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
     <PackageVersion Include="System.Runtime.Numerics" Version="4.3.0" />
     <PackageVersion Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
     <PackageVersion Include="System.Security.Cryptography.X509Certificates" Version="4.3.2" />
-    <PackageVersion Include="System.ServiceModel.Syndication" Version="9.0.8" />
+    <PackageVersion Include="System.ServiceModel.Syndication" Version="10.0.5" />
     <PackageVersion Include="System.Speech" Version="10.0.5" />
     <PackageVersion Include="System.Text.Encoding" Version="4.3.0" />
     <PackageVersion Include="System.Text.Encoding.Extensions" Version="4.3.0" />
