@@ -6,7 +6,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * Target framework updated to .Net 8.
   * VoiceAttack Responder 
-    * Updated to target VoiceAttack 2.0.0+. VoiceAttack 1.X is no longer supported. 
+    * (**BREAKING CHANGE**) Updated to target VoiceAttack 2.0.0+. VoiceAttack 1.X is no longer supported. 
+    * Under the hood, EDDI now runs as a separate process from VoiceAttack. Only the plugin component of EDDI runs within the VoiceAttack process. This should improve stability and performance for both EDDI and VoiceAttack.
   
 ## 4.1.9
   * Core
