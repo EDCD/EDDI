@@ -1,8 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Library</OutputType>
         <UseWPF>true</UseWPF>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <UserSecretsId>bbc0edf6-4284-46b2-9993-f59e2097c3b1</UserSecretsId>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
         <OutputPath>..\bin\Debug\</OutputPath>
@@ -14,6 +15,7 @@
         <PackageReference Include="JetBrains.Annotations" />
         <PackageReference Include="MathNet.Numerics" />
         <PackageReference Include="Microsoft.CSharp" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
         <PackageReference Include="Newtonsoft.Json" />
         <PackageReference Include="Rollbar" />
         <PackageReference Include="System.Collections" />

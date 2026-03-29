@@ -2,6 +2,7 @@
     <PropertyGroup>
         <OutputType>Library</OutputType>
         <UseWPF>true</UseWPF>
+        <UserSecretsId>f4a50135-32d4-48e3-9c98-bdd23c70368c</UserSecretsId>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
         <OutputPath>..\bin\Debug\</OutputPath>
@@ -15,6 +16,7 @@
     <ItemGroup>
         <PackageReference Include="JetBrains.Annotations" />
         <PackageReference Include="Microsoft.CSharp" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
         <PackageReference Include="Newtonsoft.Json" />
     </ItemGroup>
     <ItemGroup>

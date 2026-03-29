@@ -1,5 +1,6 @@
 ﻿using EddiCompanionAppService.Exceptions;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -114,8 +115,10 @@ namespace EddiCompanionAppService
             httpClient.DefaultRequestHeaders.UserAgent.ParseAdd( $"{Constants.EDDI_NAME}/{Constants.EDDI_VERSION}" );
             httpClient.DefaultRequestHeaders.Accept.Add( new MediaTypeWithQualityHeaderValue( "application/json" ) );
 
-            clientID = ClientId.ID;
-            if (clientID == null)
+            var secrets = new ConfigurationBuilder().AddUserSecrets<CompanionAppService>().Build();
+            clientID = secrets[ "CompanionAppService:ClientId" ]; // We don't need the Client Secret for PKCE authentication
+
+            if ( clientID == null)
             {
                 CurrentState = State.NoClientIDConfigured;
                 return;
@@ -127,7 +130,7 @@ namespace EddiCompanionAppService
             }
 
             // Our access token may have expired. Use our refresh token to obtain a new access token.
-            RefreshTokenAsync().SafeFireAndForget( ex =>
+            RefreshTokenAsync().SafeFireAndForget( _ =>
             {
                 if ( Credentials.refreshToken != null )
                 {
@@ -136,7 +139,6 @@ namespace EddiCompanionAppService
 
                 CurrentState = State.LoggedOut;
             } );
-            return;
         }
 
         /// <summary>Initialize a custom URL responder for OAuth callbacks. This responder uses DDE and should only be called if the UI dispatcher is available.</summary>
