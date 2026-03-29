@@ -99,7 +99,6 @@ namespace EddiShipMonitor
                     Ship.powerdistributor = ModuleFromJson( (JObject)json["modules"]["PowerDistributor"]);
                     Ship.sensors = ModuleFromJson( (JObject)json["modules"]["Radar"]);
                     Ship.fueltank = ModuleFromJson( (JObject)json["modules"]["FuelTank"]);
-                    Ship.paintjob = (string)json["modules"]?["PaintJob"]?["name"];
 
                     // Obtain the hardpoints.  Hardpoints can come in any order so first parse them then second put them in the correct order
                     var hardpoints = new Dictionary<string, Hardpoint>();

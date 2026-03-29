@@ -519,7 +519,6 @@ namespace EddiShipMonitor
                 ship.model = @event.shipDefinition.model ?? @event.ship ?? @event.edModel;
                 setShipName(ship, @event.shipname);
                 setShipIdent(ship, @event.shipident);
-                ship.paintjob = @event.paintjob;
                 ship.hot = @event.hot;
 
                 // Augment with template values
@@ -1639,20 +1638,14 @@ namespace EddiShipMonitor
                                 ship.sensors = module;
                                 break;
                             case "FuelTank":
-                                {
-                                    ship.fueltank = module;
-                                }
+                                ship.fueltank = module;
                                 break;
                             case "CargoHatch":
                                 ship.cargohatch = module;
                                 break;
                         }
 
-                        if ( slot.Contains( "PaintJob" ) )
-                        {
-                            ship.paintjob = module.edname;
-                        }
-                        else if ( slot.Contains( "Hardpoint" ) )
+                        if ( slot.Contains( "Hardpoint" ) )
                         {
                             // This is a hardpoint
                             var hardpoint = ship.hardpoints.FirstOrDefault( h => h.name == slot );
@@ -1923,11 +1916,7 @@ namespace EddiShipMonitor
                         }
                         else
                         {
-                            if ( slot.Contains( "PaintJob" ) )
-                            {
-                                ship.paintjob = null;
-                            }
-                            else if ( slot.Contains( "Hardpoint" ) )
+                            if ( slot.Contains( "Hardpoint" ) )
                             {
                                 // Build new list of ship hardpoints, excepting sold/stored hardpoint
                                 var hardpoints = new List<Hardpoint>();

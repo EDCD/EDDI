@@ -308,7 +308,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        private bool _hot = false;
+        private bool _hot;
 
         public Location StoredLocation
         {
@@ -473,8 +473,6 @@ namespace EddiDataDefinitions
         }
         private List<LaunchBay> _launchbays = [ ];
 
-        public string paintjob { get; set; }
-
         [Utilities.PublicAPI, JsonIgnore] // Core capacity
         public decimal? fueltankcapacity => fueltank?.@class > 0 ? 1 << fueltank?.@class : 0; // Shift operator, equiv to 2^(fueltank.@class), calculated as an integer
 
@@ -497,14 +495,7 @@ namespace EddiDataDefinitions
             get => _maxjumprange;
             set
             {
-                if (value > 0)
-                {
-                    _maxjumprange = value;
-                }
-                else
-                {
-                    _maxjumprange = JumpRange(fuelInTanks ?? 0, 0);
-                }
+                _maxjumprange = value > 0 ? value : JumpRange(fuelInTanks ?? 0, 0);
 
                 OnPropertyChanged(nameof(maxjumprange));
             }
@@ -679,7 +670,7 @@ namespace EddiDataDefinitions
 
         public JumpDetail JumpDetails(string type, decimal? fuelInTanksOverride = null, int? cargoCarriedOverride = null)
         {
-            var currentFuel = (fuelInTanksOverride ?? fuelInTanks ?? 0);
+            var currentFuel = fuelInTanksOverride ?? fuelInTanks ?? 0;
             var cargoTonnage = cargoCarriedOverride ?? cargoCarried;
 
             if (!string.IsNullOrEmpty(type))
@@ -760,11 +751,11 @@ namespace EddiDataDefinitions
             try
             {
                 // Calculate our base max range
-                var baseMaxRange = optimalMass / mass * Math.Pow( ( fuel * 1000 / linearConstant ), ( 1 / powerConstant ) );
+                var baseMaxRange = optimalMass / mass * Math.Pow( fuel * 1000 / linearConstant, 1 / powerConstant );
                 if ( baseMaxRange == 0 ) { return 0; }
 
                 // Return the maximum range with the specified fuel and cargo levels, with a boost modifier if using synthesis or a jet cone boost
-                var guardianBoostedMaxRange = ( baseMaxRange + guardianFsdBoosterRange ) / baseMaxRange * optimalMass / mass * Math.Pow( ( fuel * 1000 / linearConstant ), ( 1 / powerConstant ) );
+                var guardianBoostedMaxRange = ( baseMaxRange + guardianFsdBoosterRange ) / baseMaxRange * optimalMass / mass * Math.Pow( fuel * 1000 / linearConstant, 1 / powerConstant );
 
                 var result = Convert.ToDecimal( guardianBoostedMaxRange * boostModifier );
                 return result;
@@ -794,7 +785,7 @@ namespace EddiDataDefinitions
         {
             try
             {
-                Logging.Debug($"Converting ShipyardInfoItem to Ship: ", item);
+                Logging.Debug("Converting ShipyardInfoItem to Ship: ", item);
                 var ship = ShipDefinitions.FromEDModel(item.edModel, false);
                 if (ship == null)
                 {
@@ -812,7 +803,7 @@ namespace EddiDataDefinitions
             }
             catch (Exception ex)
             {
-                Logging.Error($"Failed to parse ShipyardInfoItem.", ex);
+                Logging.Error("Failed to parse ShipyardInfoItem.", ex);
                 return null;
             }
         }
@@ -847,12 +838,12 @@ namespace EddiDataDefinitions
             long? marketId )
         {
             public string systemName { get; set; } = systemName;
-            public ulong systemAddress { get; set; } = systemAddress;
-            public decimal? x { get; set; } = x;
-            public decimal? y { get; set; } = y;
-            public decimal? z { get; set; } = z;
+            public ulong systemAddress { get; } = systemAddress;
+            public decimal? x { get; } = x;
+            public decimal? y { get; } = y;
+            public decimal? z { get; } = z;
             public string stationName { get; set; } = stationName;
-            public long? marketId { get; set; } = marketId;
+            public long? marketId { get; } = marketId;
 
             // Default constructor
 
