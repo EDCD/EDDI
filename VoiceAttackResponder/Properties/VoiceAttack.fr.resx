@@ -123,12 +123,6 @@
   <data name="name" xml:space="preserve">
     <value>Répondeur VoiceAttack</value>
   </data>
-  <data name="p1" xml:space="preserve">
-    <value>Pour intégrer EDDI avec VoiceAttack EDDI nécessite d'être installer dans le répertoire 'Apps' de 'VoiceAttack'. Le chemin par défaut de ce dossier est 'C:\Program Files (x86)\VoiceAttack\Apps', et est l'endroit ou EDDI seras installé par défaut.</value>
-  </data>
-  <data name="p2" xml:space="preserve">
-    <value>EDDI ne fonctionnera qu'avec les versions de VoiceAttack 1.5.12.22 et ultérieur. Attention : ceci est une release beta.</value>
-  </data>
   <data name="p3" xml:space="preserve">
     <value>Une fois VoiceAttack installé, vous devrez activer le support des plugins. Pour ce faire, vous devez cliquer sur l'icône Paramètres (clé à molette) dans le coin inférieur droit de la fenêtre VoiceAttack, cocher l'option «Activer la prise en charge du plug-in» et redémarrer VoiceAttack. Vous devriez voir un message dans la fenêtre VoiceAttack sur la ligne de "Plugin EDDI 2.0.0 initialized".</value>
   </data>
