@@ -65,6 +65,7 @@ namespace Tests
         public void TestKeepAlive ()
         {
             MakeSafe();
+            EDDI.Instance.DataProvider = CreateTestDataProvider();
 
             var name = "Test monitor " + Guid.NewGuid().ToString("N");
             var monitor = new TestMonitor(name);
