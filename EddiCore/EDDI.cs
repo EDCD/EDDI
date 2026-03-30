@@ -1289,7 +1289,7 @@ namespace EddiCore
             var body = CurrentStarSystem?.BodyWithID( @event.bodyId );
             if ( body != null )
             {
-                if (body.alreadyfirstfootfalled == false)
+                if ( body.alreadyfirstfootfalled == false && body.footfalledDateTime is null )
                 {
                     // This is a first footfall event
                     @event.firstfootfall = true;
