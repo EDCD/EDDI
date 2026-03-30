@@ -561,12 +561,9 @@ namespace EddiCore
 
         public static bool ShouldUseTestEndpoints()
         {
-#if DEBUG
-            return true;
-#else
-            // use test endpoints if the game is in beta
-            return Instance.gameIsBeta;
-#endif
+            // use test endpoints if the game is in beta or EDDI is in a test phase
+            return Instance.gameIsBeta || 
+                   Constants.EDDI_VERSION.phase < Utilities.Version.TestPhase.rc ;
         }
 
         public void Start()
