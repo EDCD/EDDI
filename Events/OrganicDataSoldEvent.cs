@@ -64,7 +64,7 @@ namespace EddiEvents
                 if ( organic == null ) { continue; }
 
                 organic.valueOverride = value;
-                organic.bonus = bonus;
+                organic.bonusOverride = bonus;
                 bios.Add( organic );
             }
 

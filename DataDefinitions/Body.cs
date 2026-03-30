@@ -15,46 +15,39 @@ namespace EddiDataDefinitions
     /// </summary>
     public class Body : INotifyPropertyChanged
     {
-        /// <summary>The ID of this body in the star system</summary>
+        [PublicAPI( "The numeric ID of this body in the star system" )]
         public long? bodyId { get; set; }
 
         /// <summary>The localized type of the body </summary>
-        [PublicAPI, JsonIgnore, Obsolete("For use with Cottle. Please use bodyType instead.")]
+        [PublicAPI( "The body type of the body (e.g. Star or Planet)" ), JsonIgnore, Obsolete("For use with Cottle. Please use bodyType instead.")]
         public string bodytype => (bodyType ?? BodyType.None).localizedName;
 
         /// <summary>The body type of the body (e.g. Star or Planet)</summary>
         [JsonProperty("Type")]
         public BodyType bodyType { get; set; } = BodyType.None;
 
-        /// <summary>The name of the body</summary>
-        [PublicAPI, JsonProperty("name")]
+        [PublicAPI( "The name of the body" ), JsonProperty("name")]
         public string bodyname { get; set; }
 
-        /// <summary>The short name of the body</summary>
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "The short name of the body" ), JsonIgnore]
         public string shortname => GetShortName(bodyname, systemname, bodyType);
 
-        /// <summary>The name of the system in which the body resides</summary>
-        [PublicAPI]
+        [PublicAPI( "The name of the star system where the body resides" )]
         public string systemname { get; set; }
 
-        /// <summary>Unique 64 bit id value for system</summary>
+        [PublicAPI( "The unique numeric ID value for the star system" )]
         public ulong? systemAddress { get; set; }
 
-        /// <summary>The distance of the body from the arrival star, in light seconds </summary>
-        [PublicAPI]
+        [PublicAPI( "The distance of the body from the arrival star, in light seconds" )]
         public decimal? distance { get; set; }
 
-        /// <summary>The surface temperature of the body, in Kelvin</summary>
-        [PublicAPI]
+        [PublicAPI( "The surface temperature of the body, in Kelvin" )]
         public decimal? temperature { get; set; }
 
-        /// <summary>The radius of the body, in km</summary>
-        [PublicAPI]
+        [PublicAPI( "The radius of the body, in km" )]
         public decimal? radius { get; set; }
 
-        /// <summary>The body's rings</summary>
-        [PublicAPI]
+        [PublicAPI( "The body's rings" )]
         public List<Ring> rings
         {
             get => _rings ?? [ ];
@@ -64,12 +57,10 @@ namespace EddiDataDefinitions
         
         // Scan data
 
-        /// <summary>Whether we're the first commander to discover this body</summary>
-        [PublicAPI]
+        [PublicAPI( "Whether you are the first commander to discover this body" )]
         public bool? alreadydiscovered { get; set; }
 
-        /// <summary>When we scanned this object, if we have</summary>
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "When you scanned this object, if you have, as a unix timestamp" ), JsonIgnore]
         public long? scanned => scannedDateTime is null 
             ? null 
             : (long?)Dates.fromDateTimeToSeconds((DateTime)scannedDateTime);
@@ -82,12 +73,10 @@ namespace EddiDataDefinitions
         }
         [JsonIgnore] private DateTime? _scannedDateTime;
 
-        /// <summary>Whether we're the first commander to map this body</summary>
-        [PublicAPI]
+        [PublicAPI( "Whether you are the first commander to map this body" )]
         public bool? alreadymapped { get; set; }
 
-        /// <summary>When we mapped this object, if we have</summary>
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "When you mapped this object, if you have, as a unix timestamp" ), JsonIgnore]
         public long? mapped => mappedDateTime is null
             ? null
             : (long?)Dates.fromDateTimeToSeconds((DateTime)mappedDateTime);
@@ -100,7 +89,7 @@ namespace EddiDataDefinitions
         }
         [JsonIgnore] private DateTime? _mappedDateTime;
 
-        /// <summary>Whether we received an efficiency bonus when mapping this body</summary>
+        [PublicAPI( "Whether you received an efficiency bonus when mapping this body" ), JsonIgnore]
         public bool mappedEfficiently
         {
             get => _mappedEfficiently;
@@ -109,10 +98,10 @@ namespace EddiDataDefinitions
         [JsonIgnore] private bool _mappedEfficiently;
 
         /// <summary>Whether we're the first commander to step foot on this body</summary>
-        [PublicAPI("Whether a commander has already claimed the first footfall for this body")]
-        public bool? alreadyfootfalled { get; set; }
+        [PublicAPI("Whether you are the first commander to set foot on this body")]
+        public bool? alreadyfirstfootfalled { get; set; }
 
-        [PublicAPI( "When you claimed the first footfall for this body, if you have" ), JsonIgnore]
+        [PublicAPI( "When you first set foot on this body, if you have, as a unix timestamp" ), JsonIgnore]
         public long? footfalled => _footfalledDateTime is null
             ? null
             : (long?)Dates.fromDateTimeToSeconds( (DateTime)_footfalledDateTime );
@@ -125,16 +114,14 @@ namespace EddiDataDefinitions
         }
         [JsonIgnore] private DateTime? _footfalledDateTime;
 
-        /// <summary>The estimated value of the body</summary>
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "The estimated current value of the body to Universal Cartographics" ), JsonIgnore]
         public long estimatedvalue => scannedDateTime == null 
             ? 0 
             : solarmass == null 
                 ? estimateBodyValue(mappedDateTime != null, mappedEfficiently) 
                 : estimateStarValue();
 
-        /// <summary>The estimated maximum value of the body</summary>
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "The estimated maximum value of the body to Universal Cartographics (after scanning and mapping efficiently)" ), JsonIgnore]
         public long maxestimatedvalue => scannedDateTime == null 
             ? 0 
             : solarmass == null
@@ -143,32 +130,25 @@ namespace EddiDataDefinitions
 
         // Orbital characteristics
 
-        /// <summary>The argument of periapsis, in degrees</summary>
-        [PublicAPI]
+        [PublicAPI( "The argument of periapsis, in degrees" )]
         public decimal? periapsis { get; set; }
 
-        /// <summary>The axial tilt, in degrees</summary>
-        [PublicAPI]
+        [PublicAPI( "The axial tilt, in degrees" )]
         public decimal? tilt { get; set; }
 
-        /// <summary>The orbital eccentricity of the planet</summary>
-        [PublicAPI]
+        [PublicAPI( "The orbital eccentricity of the planet" )]
         public decimal? eccentricity { get; set; }
 
-        /// <summary>The orbital inclination of the body, in degrees</summary>
-        [PublicAPI]
+        [PublicAPI( "The orbital inclination of the body, in degrees" )]
         public decimal? inclination { get; set; }
 
-        /// <summary>The orbital period of the body, in days</summary>
-        [PublicAPI]
+        [PublicAPI( "The orbital period of the body, in days" )]
         public decimal? orbitalperiod { get; set; }
 
-        /// <summary>The rotational period of the body, in days</summary>
-        [PublicAPI]
+        [PublicAPI( "The rotational period of the body, in days" )]
         public decimal? rotationalperiod { get; set; }
 
-        /// <summary>The semi-major axis of the body, in light seconds</summary>
-        [PublicAPI]
+        [PublicAPI( "The semi-major axis of the body, in light seconds" )]
         public decimal? semimajoraxis { get; set; }
 
         /// <summary>The parent bodies to this body, if any</summary>
@@ -201,8 +181,7 @@ namespace EddiDataDefinitions
         }
         [JsonIgnore] private List<IDictionary<string, int>> _parents;
 
-        /// <summary> Density in Kg per cubic meter </summary>
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "Density in Kg per cubic meter" ), JsonIgnore]
         public decimal? density => GetDensity();
 
         public Body()
@@ -245,31 +224,25 @@ namespace EddiDataDefinitions
 
         // Star-specific items
 
-        /// <summary>The age of the body, in millions of years</summary>
-        [PublicAPI]
+        [PublicAPI( "The age of the star, in millions of years" )]
         public long? age { get; set; }
 
-        /// <summary>If this body is the main star</summary>
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "True if this star is the primary star for the star system" ), JsonIgnore]
         public bool? mainstar => distance == 0;
 
-        /// <summary>The stellar class of the star</summary>
-        [PublicAPI]
+        [PublicAPI( "The stellar class of the star" )]
         public string stellarclass { get; set; }
 
-        /// <summary>The stellar subclass of the star (0-9)</summary>
-        [PublicAPI]
+        [PublicAPI( "The stellar subclass of the star (0-9)" )]
         public int? stellarsubclass { get; set; }
 
         /// <summary>The Luminosity Class of the Star (since 2.4)</summary>
         public string luminosityclass { get; set; }
 
-        /// <summary>The solar mass of the star</summary>
-        [PublicAPI]
+        [PublicAPI( "The mass of the star expressed relative to the mass of Sol" )]
         public decimal? solarmass { get; set; }
 
-        /// <summary>The absolute magnitude of the star</summary> 
-        [PublicAPI]
+        [PublicAPI( "The absolute magnitude of the star" )]
         public decimal? absolutemagnitude { get; set; }
 
         /// <summary>Class information about the star</summary> 
@@ -277,27 +250,25 @@ namespace EddiDataDefinitions
 
         // Additional calculated star information
 
-        [PublicAPI, JsonIgnore]
+        [PublicAPI("True if you can scoop fuel from this star"), JsonIgnore]
         public bool scoopable => !string.IsNullOrEmpty(stellarclass) 
                                  && "KGBFOAM".Contains(stellarclass.Split('_')[0]);
 
-        [PublicAPI, JsonIgnore]
+        [PublicAPI ("The localized color of the star"), JsonIgnore]
         public string chromaticity => starClass?.chromaticity?.localizedName; // For use with Cottle
 
-        [PublicAPI, JsonIgnore]
+        [PublicAPI ("The luminosity of the star"), JsonIgnore]
         public decimal? luminosity => StarClass.luminosity(absolutemagnitude);
 
         /// <summary>The solar radius of the star, compared to Sol</summary>
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "The radius of the star expressed relative to the radius of Sol" ), JsonIgnore]
         public decimal? solarradius => StarClass.solarradius(radius);
 
-        /// <summary>Minimum estimated single-star habitable zone (target black body temperature of 315°K / 42°C / 107°F or less, radius in km)</summary>
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "Minimum estimated single-star habitable zone (target black body temperature of 315°K / 42°C / 107°F or less, radius in km)" ), JsonIgnore]
         public decimal? estimatedhabzoneinner => solarmass > 0 && radius > 0 && temperature > 0 ?
             (decimal?)StarClass.DistanceFromStarForTemperature(StarClass.maxHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature)) : null;
 
-        /// <summary>Maximum estimated single-star habitable zone (target black body temperature of 223.15°K / -50°C / -58°F or more, radius in km)</summary>
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "Maximum estimated single-star habitable zone (target black body temperature of 223.15°K / -50°C / -58°F or more, radius in km)" ), JsonIgnore]
         public decimal? estimatedhabzoneouter => solarmass > 0 && radius > 0 && temperature > 0 ?
             (decimal?)StarClass.DistanceFromStarForTemperature(StarClass.minHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature)) : null;
 
@@ -390,69 +361,56 @@ namespace EddiDataDefinitions
         /// <summary>The atmosphere class</summary>
         public AtmosphereClass atmosphereclass { get; set; } = AtmosphereClass.None;
 
-        /// <summary>The atmosphere</summary>
-        [PublicAPI, JsonIgnore, Obsolete("Please use AtmosphereClass instead")]
+        [PublicAPI( "The localized atmosphere of the planet or moon" ), JsonIgnore, Obsolete("Please use AtmosphereClass instead")]
         public string atmosphere => (atmosphereclass ?? AtmosphereClass.None).localizedName;
 
-        /// <summary>The atmosphere's composition</summary>
-        [PublicAPI]
+        [PublicAPI( "A list of the major elemental components of the atmosphere of the planet or moon" )]
         public List<AtmosphereComposition> atmospherecompositions { get; set; } = [ ];
 
-        /// <summary>If this body can be landed upon</summary>
-        [PublicAPI]
+        [PublicAPI( "True if this planet or moon can be landed upon" )]
         public bool? landable { get; set; }
 
-        /// <summary>If this body is tidally locked</summary>
-        [PublicAPI]
+        [PublicAPI( "True if this planet or moon is tidally locked" )]
         public bool? tidallylocked { get; set; }
 
-        /// <summary>The earth mass of the planet</summary>
-        [PublicAPI]
+        [PublicAPI( "The mass of the planet or moon expressed relative to the mass of Earth" )]
         public decimal? earthmass { get; set; }
 
-        /// <summary>The gravity of the planet, in G's</summary>
-        [PublicAPI]
+        [PublicAPI( "The gravity of the planet or moon, in G's" )]
         public decimal? gravity { get; set; }
 
-        /// <summary>The pressure at the surface of the planet, in Earth atmospheres</summary>
-        [PublicAPI]
+        [PublicAPI( "The pressure at the surface of the planet or moon, in Earth atmospheres" )]
         public decimal? pressure { get; set; }
 
-        /// <summary>The terraform state (localized name)</summary>
-        [PublicAPI, JsonIgnore, Obsolete("Please use TerraformState instead")]
+        [PublicAPI("The localized terraform state of the planet or moon"), JsonIgnore, Obsolete("Please use TerraformState instead")]
         public string terraformstate => (terraformState ?? TerraformState.NotTerraformable).localizedName;
 
         /// <summary>The terraform state</summary>
         public TerraformState terraformState { get; set; } = TerraformState.NotTerraformable;
 
-        /// <summary>The planet type (localized name)</summary>
-        [PublicAPI, JsonIgnore, Obsolete("Please use PlanetClass instead")]
+        [PublicAPI("The localized type of the planet or moon"), JsonIgnore, Obsolete("Please use PlanetClass instead")]
         public string planettype => (planetClass ?? PlanetClass.None).localizedName;
 
         /// <summary>The planet type</summary>
         public PlanetClass planetClass { get; set; } = PlanetClass.None;
 
-        /// <summary>The volcanism</summary>
-        [PublicAPI, JsonConverter(typeof(VolcanismConverter))]
+        [PublicAPI("The volcanism of the planet or moon, as an object"), JsonConverter(typeof(VolcanismConverter))]
         public Volcanism volcanism { get; set; }
 
-        /// <summary>The solid body composition of the body</summary>
-        [PublicAPI]
+        [PublicAPI( "A list of the major elemental components of the solid features of the planet or moon" )]
         public List<SolidComposition> solidcompositions { get; set; } = [ ];
 
-        /// <summary>The materials present at the surface of the body</summary>
-        [PublicAPI]
+        [PublicAPI( "The materials present at the surface of the planet or moon" )]
         public List<MaterialPresence> materials { get; set; } = [ ];
 
-        /// <summary>The reserve level (localized name)</summary>
-        [PublicAPI, JsonIgnore, Obsolete("Please use reserveLevel instead")]
+        [PublicAPI ("The localized mining mineral reserve level"), JsonIgnore, Obsolete("Please use reserveLevel instead")]
         public string reserves => (reserveLevel ?? ReserveLevel.None).localizedName;
 
         /// <summary>The reserve level</summary>
         public ReserveLevel reserveLevel { get; set; } = ReserveLevel.None;
 
         /// <summary> Planet or Moon definition </summary>
-        public Body(string bodyName, long? bodyId, string systemName, ulong systemAddress, List<IDictionary<string, int>> parents, decimal? distanceLs, bool? tidallylocked, TerraformState terraformstate, PlanetClass planetClass, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereCompositions, Volcanism volcanism, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? landable, List<MaterialPresence> materials, List<SolidComposition> solidCompositions, decimal? semimajoraxisLs, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays, decimal? rotationPeriodDays, decimal? axialtiltDegrees, List<Ring> rings, ReserveLevel reserveLevel, bool? alreadydiscovered, bool? alreadymapped, bool? alreadyfootfalled)
+        public Body(string bodyName, long? bodyId, string systemName, ulong systemAddress, List<IDictionary<string, int>> parents, decimal? distanceLs, bool? tidallylocked, TerraformState terraformstate, PlanetClass planetClass, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereCompositions, Volcanism volcanism, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? landable, List<MaterialPresence> materials, List<SolidComposition> solidCompositions, decimal? semimajoraxisLs, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays, decimal? rotationPeriodDays, decimal? axialtiltDegrees, List<Ring> rings, ReserveLevel reserveLevel, bool? alreadydiscovered, bool? alreadymapped, bool? alreadyfirstfootfalled)
         {
             this.bodyname = bodyName;
             this.bodyType = (bool)parents?.Exists(p => p.ContainsKey("Planet"))
@@ -495,7 +453,7 @@ namespace EddiDataDefinitions
             // Scan details
             this.alreadydiscovered = alreadydiscovered;
             this.alreadymapped = alreadymapped;
-            this.alreadyfootfalled = alreadyfootfalled;
+            this.alreadyfirstfootfalled = alreadyfirstfootfalled;
         }
 
         // Additional calculated planet and moon statistics
@@ -505,10 +463,10 @@ namespace EddiDataDefinitions
         [PublicAPI, JsonIgnore]
         public decimal? pressureprobability => Probability.CumulativeP(starClass == null ? planetClass.pressuredistribution : null, pressure);
 
-        [PublicAPI, JsonIgnore] // The duration of a solar day on the body, in Earth days
+        [PublicAPI( "The duration of a solar day on the body, in Earth days" ), JsonIgnore]
         public decimal? solarday => (orbitalperiod - rotationalperiod) == 0 ? null : orbitalperiod * rotationalperiod / (orbitalperiod - rotationalperiod);
 
-        [PublicAPI, JsonIgnore] // The ground speed of the parent body's shadow on the surface of the body in meters per second
+        [PublicAPI( "The ground speed of the parent body's shadow on the surface of the body in meters per second" ), JsonIgnore]
         public decimal? solarsurfacevelocity => solarday > 0 ? 2 * (decimal)Math.PI * radius * 1000 / (solarday * 86400) : null;
 
         private long estimateBodyValue ( bool isMapped, bool isMappedEfficiently )
@@ -708,6 +666,15 @@ namespace EddiDataDefinitions
                 {
                     var absoluteMagnitude = val.ToObject<decimal?>();
                     absolutemagnitude = absoluteMagnitude;
+                }
+            }
+            if ( alreadyfirstfootfalled == null )
+            {
+                _additionalData.TryGetValue( "alreadyfootfalled", out var val );
+                if ( val != null )
+                {
+                    var alreadyFirstFootfalled = val.ToObject<bool?>();
+                    alreadyfirstfootfalled = alreadyFirstFootfalled;
                 }
             }
 

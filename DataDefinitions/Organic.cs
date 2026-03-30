@@ -6,10 +6,10 @@ namespace EddiDataDefinitions
 {
     public class Organic
     {
-        [ Utilities.PublicAPI ]
+        [ Utilities.PublicAPI ("Genus details" ) ]
         public OrganicGenus genus { get; set; }
 
-        [Utilities.PublicAPI ]
+        [Utilities.PublicAPI ("Species details" ) ]
         public OrganicSpecies species
         {
             get => _species;
@@ -21,7 +21,7 @@ namespace EddiDataDefinitions
         }
         private OrganicSpecies _species;
 
-        [ Utilities.PublicAPI ]
+        [ Utilities.PublicAPI ("Variant details" ) ]
         public OrganicVariant variant
         {
             get => _variant;
@@ -34,39 +34,35 @@ namespace EddiDataDefinitions
         }
         private OrganicVariant _variant;
 
-        [ Utilities.PublicAPI] 
+        [ Utilities.PublicAPI("The invariant name of the organic")] 
         public string invariantName => ConsolidatedName( _variant?.invariantName, _species?.invariantName, genus?.invariantName );
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI("The localized name of the organic")]
         public string localizedName => ConsolidatedName( _variant?.localizedName, _species?.localizedName, genus?.localizedName );
 
-        [JsonIgnore, Utilities.PublicAPI( "The minimum value from all predictions of this genus." )]
-        public long predictedMinimumValue => valueOverride ?? genusPredictedMinimumValue ?? 0;
-
-        [JsonIgnore, Utilities.PublicAPI( "The maximum value from all predictions of this genus." )]
-        public long predictedMaximumValue => valueOverride ?? genusPredictedMaximumValue ?? 0;
-
-        [JsonProperty]
-        internal long? genusPredictedMinimumValue = null;
-
-        [JsonProperty]
-        internal long? genusPredictedMaximumValue = null;
-
-        [JsonIgnore, Utilities.PublicAPI( "The minimum distance that you must travel before you can collect a fresh sample of this genus (if known)" )]
+        [Utilities.PublicAPI( "The minimum distance that you must travel before you can collect a fresh sample of this genus (if known)" ), JsonIgnore]
         public int? minimumDistanceMeters => genus?.minimumDistanceMeters;
+
+        [Utilities.PublicAPI( "The base credit value, as awarded when selling organic data" )]
+        public long? value => valueOverride ?? species?.value;
+
+        /// <summary>
+        /// If true, apply a predicted bonus to the value of this organic (as presumably no other commander has sold this organic before).
+        /// </summary>
+        public bool firstFootfallRegistered { get; set; }
 
         /// <summary>
         /// Overrides the credit values from definitions when an actual value is indicated (as by the `OrganicDataSold` event)
         /// </summary>
         public long? valueOverride { get; set; } = null;
 
-        /// <summary>
-        /// Sets the value from predictions, this could be the minimum value from several predicted species of the same genus.
-        /// </summary>
-        //public long? valuePredicted { get; set; }
+        [Utilities.PublicAPI( "The bonus credit value, as awarded when selling organic data. The bonus value is assumed to apply when a first footfall has been registered." )]
+        public long? bonus => bonusOverride ?? (firstFootfallRegistered ? value * 4 : 0); 
 
-        [Utilities.PublicAPI( "The bonus credit value, as awarded when selling organic data" )]
-        public decimal bonus { get; set; }
+        /// <summary>
+        /// Overrides the bonus credit values from definitions when an actual value is indicated (as by the `OrganicDataSold` event)
+        /// </summary>
+        public long? bonusOverride { get; set; } = null;
 
         /// <summary>
         /// Populate the organic from variant data. Most preferred.
@@ -104,16 +100,6 @@ namespace EddiDataDefinitions
                         _species != null && variantName.Contains( speciesName ) ? null : speciesName
                     }
                     .Where( n => n != null ) );
-        }
-
-        public void SetPredictedMinimumValue ( long? minimum )
-        {
-            genusPredictedMinimumValue = minimum;
-        }
-
-        public void SetPredictedMaximumValue ( long? maximum )
-        {
-            genusPredictedMaximumValue = maximum;
         }
 
         /// <summary> Get all the biological data, this should be done at the first sample </summary>

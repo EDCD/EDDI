@@ -462,7 +462,7 @@ namespace EddiJournalMonitor
                                     // Scan status
                                     var alreadydiscovered = scantype == "NavBeaconDetail" ? true : JsonParsing.getOptionalBool(data, "WasDiscovered");
                                     var alreadymapped = JsonParsing.getOptionalBool(data, "WasMapped");
-                                    var alreadyfootfalled = JsonParsing.getOptionalBool(data, "WasFootfalled");
+                                    var alreadyfirstfootfalled = JsonParsing.getOptionalBool(data, "WasFootfalled");
 
                                     // Rings
                                     data.TryGetValue("Rings", out var val);
@@ -595,7 +595,7 @@ namespace EddiJournalMonitor
                                         var terraformState = TerraformState.FromEDName(JsonParsing.getString(data, "TerraformState")) ?? TerraformState.NotTerraformable;
                                         var volcanism = Volcanism.FromName(JsonParsing.getString(data, "Volcanism"));
 
-                                        var body = new Body(name, bodyId, systemName, systemAddress, parents, distanceLs, tidallyLocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthMass, radiusKm, gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, alreadydiscovered, alreadymapped, alreadyfootfalled)
+                                        var body = new Body(name, bodyId, systemName, systemAddress, parents, distanceLs, tidallyLocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthMass, radiusKm, gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, alreadydiscovered, alreadymapped, alreadyfirstfootfalled)
                                         {
                                             scannedDateTime = timestamp
                                         };

@@ -1287,12 +1287,14 @@ namespace EddiCore
             await updateCurrentStellarBodyAsync( @event.bodyname, @event.bodyId, @event.systemname, @event.systemAddress )
                 .ConfigureAwait( false );
             var body = CurrentStarSystem?.BodyWithID( @event.bodyId );
-            if ( body != null && body.alreadyfootfalled == false )
+            if ( body != null )
             {
-                // This is a first footfall event
-                @event.firstfootfall = true;
-                body.alreadyfootfalled = true;
-                body.footfalledDateTime = @event.timestamp;
+                if (body.alreadyfirstfootfalled == false)
+                {
+                    // This is a first footfall event
+                    @event.firstfootfall = true;
+                }
+                body.footfalledDateTime ??= @event.timestamp;
                 await DataProvider.SaveStarSystemAsync( CurrentStarSystem ).ConfigureAwait( false );
             }
 
@@ -1981,7 +1983,7 @@ namespace EddiCore
                 }
 
                 var body = CurrentStarSystem?.BodyWithID( @event.bodyId );
-                if ( body != null && body.alreadyfootfalled == false )
+                if ( body != null && ( !body.alreadyfirstfootfalled ?? false ) )
                 {
                     // We can be the first to set foot on this world
                     @event.canfirstfootfall = true;

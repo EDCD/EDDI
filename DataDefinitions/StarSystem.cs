@@ -511,10 +511,10 @@ namespace EddiDataDefinitions
                 updatedBody.footfalledDateTime = oldBody.footfalledDateTime;
             }
 
-            if ( oldBody.alreadyfootfalled is true &&
-                 oldBody.alreadyfootfalled != updatedBody.alreadyfootfalled )
+            if ( oldBody.alreadyfirstfootfalled is true &&
+                 oldBody.alreadyfirstfootfalled != updatedBody.alreadyfirstfootfalled )
             {
-                updatedBody.alreadyfootfalled = oldBody.alreadyfootfalled;
+                updatedBody.alreadyfirstfootfalled = oldBody.alreadyfirstfootfalled;
             }
 
             if ( oldBody.rings?.Count > 0 )

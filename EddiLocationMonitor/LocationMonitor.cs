@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using Utilities;
 
 [assembly: InternalsVisibleTo( "Tests" )]
 namespace EddiLocationMonitor
@@ -61,7 +62,8 @@ namespace EddiLocationMonitor
             }
             else if ( @event is ScanOrganicEvent scanOrganicEvent )
             {
-                handleScanOrganicEvent(scanOrganicEvent);
+                handleScanOrganicEventAsync(scanOrganicEvent)
+                    .SafeFireAndForget(e => Logging.Error(e.Message, e));
             }
             return Task.CompletedTask;
         }
@@ -96,12 +98,16 @@ namespace EddiLocationMonitor
             bodyId = @event.bodyId;
         }
 
-        private void handleScanOrganicEvent ( ScanOrganicEvent @event )
+        private async Task handleScanOrganicEventAsync ( ScanOrganicEvent @event )
         {
             if ( @event.fromLoad ) { return; }
 
             if ( @event.scanStage < 4 && latitude != null && longitude != null )
             {
+                var system = await EDDI.Instance.DataProvider
+                    .GetOrFetchStarSystemAsync( @event.systemAddress ).ConfigureAwait( false );
+                var body = system?.bodies?.Find( b => b.bodyId == @event.bodyId );
+                @event.organic.firstFootfallRegistered = body?.alreadyfirstfootfalled == false;
                 exobiology.LogSample( @event.organic, @event.systemAddress, @event.bodyId, (decimal)latitude, (decimal)longitude );
             }
             else if ( @event.scanStage == 4 )

@@ -165,7 +165,7 @@ namespace EddiEvents
         public bool? alreadymapped => body?.alreadymapped;
 
         [PublicAPI( "Whether Universal Cartographics has registered a first footfall for this body" )]
-        public bool? alreadyfootfalled => body?.alreadyfootfalled;
+        public bool? alreadyfirstfootfalled => body?.alreadyfirstfootfalled;
 
         // Variables below are not intended to be user facing
 
