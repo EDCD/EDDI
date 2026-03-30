@@ -169,7 +169,7 @@ namespace EddiDataDefinitions
         public static readonly OrganicSpecies ChryseumVoidHeart = new( "SPOI_SeedWeed01", OrganicGenus.VoidHeart, 50000,null, null, null, "","","","" );
         public static readonly OrganicSpecies CalcitePlates = new( "L_Org_PltFun_V1", OrganicGenus.CalcitePlates, 50000,null, null, null, "","","","" );
         public static readonly OrganicSpecies ThargoidBarnacle = new( "Thargoid_Barnacle", OrganicGenus.ThargoidBarnacle, 50000,null, null, null, "","","","" );
-        public static readonly OrganicSpecies IngensradicesUnicus = new( "Ingensradices_Unicus", OrganicGenus.Ingensradices, 50000,null, null, null, "","","","" ); // Appears to be unique to HIP 87621.
+        public static readonly OrganicSpecies IngensradicesUnicus = new( "Ingensradices_Unicus", OrganicGenus.Ingensradices, 952296,null, null, null, "","","","" ); // Appears to be unique to HIP 87621.
 
         [PublicAPI( "The genus for this species" )]
         public OrganicGenus genus;
