@@ -1,68 +1,15 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace EddiDataDefinitions
 {
-    public class StarSystemRegion
+    public static class GalacticRegionMap
     {
-        [Utilities.PublicAPI( "The stellar numeric region ID." ), JsonIgnore]
-        public int regionId { get; set; }
-
-        [Utilities.PublicAPI( "The stellar region name." ), JsonIgnore]
-        public string regionName { get; set; }
-
-        internal static StarSystemRegion FromXZCoordinates ( decimal x, decimal z )
-        {
-            var px = (int)( ( x - x0 ) * 83 / 4096 );
-            var pz = (int)( ( z - z0 ) * 83 / 4096 );
-
-            if ( px < 0 || pz < 0 || pz >= RegionMapLines.Length )
-            {
-                return null;
-            }
-
-            var row = RegionMapLines[ pz ];
-            var rx = 0;
-            var pv = 0;
-
-            foreach ( var (rl, rv) in row )
-            {
-                if ( px < ( rx + rl ) )
-                {
-                    pv = rv;
-                    break;
-                }
-
-                rx += rl;
-            }
-
-            return pv == 0
-                ? null
-                : new StarSystemRegion { regionId = pv, regionName = RegionNames[ pv ] };
-        }
-
-        public static string FromRegionId ( int regionId )
-        {
-            return RegionNames[ regionId ];
-        }
-
         internal const int x0 = -49985;
         internal const int y0 = -40985;
         internal const int z0 = -24105;
 
-        // Order is important - it matches the region ID.
-        internal static readonly string[] RegionNames =
-        [
-            null, "Galactic Centre", "Empyrean Straits", "Ryker's Hope", "Odin's Hold", "Norma Arm",
-            "Arcadian Stream", "Izanami", "Inner Orion-Perseus Conflux", "Inner Scutum-Centaurus Arm",
-            "Norma Expanse", "Trojan Belt", "The Veils", "Newton's Vault", "The Conduit",
-            "Outer Orion-Perseus Conflux", "Orion-Cygnus Arm", "Temple", "Inner Orion Spur", "Hawking's Gap",
-            "Dryman's Point", "Sagittarius-Carina Arm", "Mare Somnia", "Acheron", "Formorian Frontier",
-            "Hieronymus Delta", "Outer Scutum-Centaurus Arm", "Outer Arm", "Aquila's Halo", "Errant Marches",
-            "Perseus Arm", "Formidine Rift", "Vulcan Gate", "Elysian Shore", "Sanguineous Rim", "Outer Orion Spur",
-            "Achilles's Altar", "Xibalba", "Lyra's Song", "Tenebrae", "The Abyss", "Kepler's Crest", "The Void"
-        ];
-
-        private static readonly (int, int)[][] RegionMapLines =
+        internal static readonly (int, int)[][] MapLines =
         [
             [ ( 2048, 0 ) ], [ ( 2048, 0 ) ], [ ( 2048, 0 ) ], [ ( 2048, 0 ) ],
             [ ( 2048, 0 ) ], [ ( 2048, 0 ) ], [ ( 2048, 0 ) ], [ ( 2048, 0 ) ],

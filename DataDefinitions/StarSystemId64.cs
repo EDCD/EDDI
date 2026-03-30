@@ -1,32 +1,33 @@
 ﻿/*
-   Derived from: 
-   https://web.archive.org/web/20230127225616/http://disc.thargoid.space/ID64, 
-   https://github.com/klightspeed/EliteDangerousRegionMap/, 
+   Derived from:
+   https://web.archive.org/web/20230127225616/http://disc.thargoid.space/ID64,
+   https://github.com/klightspeed/EliteDangerousRegionMap/,
    https://bitbucket.org/Esvandiary/edts/src/develop/edtslib/
 
    MIT License
-   
+
    Copyright (c) 2020 Ben Peddell
-   
+
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
    in the Software without restriction, including without limitation the rights
    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
    copies of the Software, and to permit persons to whom the Software is
    furnished to do so, subject to the following conditions:
-   
+
    The above copyright notice and this permission notice shall be included in all
    copies or substantial portions of the Software.
-   
+
    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-   SOFTWARE. 
+   SOFTWARE.
  */
 
+#nullable enable
 using Newtonsoft.Json;
 using System;
 
@@ -44,7 +45,7 @@ namespace EddiDataDefinitions
         public string massCode => "HGFEDCBA"[ sizeClass ].ToString();
 
         [ Utilities.PublicAPI( "Region data, as an object." ), JsonIgnore ]
-        public StarSystemRegion region { get; set; }
+        public GalacticRegion? region { get; set; }
 
         // The size class is stored in the lowest 3 bits of the ID64.
         [ Utilities.PublicAPI(
@@ -52,7 +53,7 @@ namespace EddiDataDefinitions
           JsonIgnore ]
         public int sizeClass => (int)( _systemAddress & 7 );
 
-        private ulong _systemAddress { get; set; }
+        private ulong _systemAddress { get; }
 
         #region Subclasses
 
@@ -80,14 +81,12 @@ namespace EddiDataDefinitions
         {
             _systemAddress = systemAddress;
             var id64 = Convert.ToInt64( systemAddress );
-            var x = (int)( ( ( ( id64 >> ( 30 - ( sizeClass * 2 ) ) ) & ( (int)0x3FFF >> sizeClass ) ) << sizeClass ) *
-                           10 ) + StarSystemRegion.x0;
-            var y = (int)( ( ( ( id64 >> ( 17 - sizeClass ) ) & ( (int)0x1FFF >> sizeClass ) ) << sizeClass ) * 10 ) +
-                    StarSystemRegion.y0;
-            var z = (int)( ( ( ( id64 >> 3 ) & ( (int)0x3FFF >> sizeClass ) ) << sizeClass ) * 10 ) + StarSystemRegion.z0;
+            var x = (int)( ( ( ( id64 >> ( 30 - ( sizeClass * 2 ) ) ) & ( 0x3FFF >> sizeClass ) ) << sizeClass ) * 10 ) + GalacticRegionMap.x0;
+            var y = (int)( ( ( ( id64 >> ( 17 - sizeClass ) ) & ( 0x1FFF >> sizeClass ) ) << sizeClass ) * 10 ) + GalacticRegionMap.y0;
+            var z = (int)( ( ( ( id64 >> 3 ) & ( 0x3FFF >> sizeClass ) ) << sizeClass ) * 10 ) + GalacticRegionMap.z0;
 
             boxel = new Boxel( x, y, z, sizeClass );
-            region = StarSystemRegion.FromXZCoordinates( x, z );
+            region = GalacticRegion.FromXZCoordinates( x, z );
         }
     }
 }

@@ -126,7 +126,7 @@ namespace EddiEvents
             var subCategoryEDName = JsonParsing.getString( data, "SubCategory" );
             var categoryEDName = JsonParsing.getString( data, "Category" );
             var obtainedRegion = int.TryParse( JsonParsing.getString( data, "Region" )?.Replace( "$Codex_RegionName_", "" ).Replace( ";", "" ), out var regionIndex );
-            var region = obtainedRegion ? StarSystemRegion.FromRegionId( regionIndex ) : null;
+            var region = obtainedRegion ? GalacticRegion.FromID( regionIndex )?.regionName : null;
             var systemName = JsonParsing.getString(data, "System");
             var systemAddress = JsonParsing.getULong(data, "SystemAddress");
             var newEntry = JsonParsing.getOptionalBool( data, "IsNewEntry" ) ?? false;
