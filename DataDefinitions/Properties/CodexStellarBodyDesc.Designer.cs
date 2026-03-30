@@ -358,7 +358,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A gas giant with a primarily hydrogen and helium atmosphere and bioluminescent life, based in the water-cloud layer just below the atmospheric surface. An excess of oxygen and many carbon-based compounds produces vivid colors. There are vast quantities of free-floating radioplankton. Tiny carbon-based algae..
+        ///   Looks up a localized string similar to A gas giant with a primarily hydrogen and helium atmosphere and bioluminescent life, based in the water-cloud layer just below the atmospheric surface. An excess of oxygen and many carbon-based compounds produces vivid colors. There are vast quantities of free-floating radioplankton - tiny carbon-based algae..
         /// </summary>
         public static string Green_Giant_With_Water_Life {
             get {
@@ -367,7 +367,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A gas giant with a primarily hydrogen and helium atmosphere with clouds of ammonia, water vapor, hydrogen sulfide, phosphine and sulfur. Upper cloud layer temperatures are typically less than 150 Kelvin. Vivid cloud layer coloration suggests bioluminescent organisms. There are vast quantities of free-floating radioplankton. Tiny carbon-based algae..
+        ///   Looks up a localized string similar to A gas giant with a primarily hydrogen and helium atmosphere with clouds of ammonia, water vapor, hydrogen sulfide, phosphine and sulfur. Upper cloud layer temperatures are typically less than 150 Kelvin. Vivid cloud layer coloration suggests bioluminescent organisms. There are vast quantities of free-floating radioplankton - tiny carbon-based algae..
         /// </summary>
         public static string Green_Sudarsky_Class_I {
             get {
@@ -556,7 +556,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A gas giant with a hydrogen and helium-based atmosphere. Vivid colors are produced by oxygen and carbon-based compounds. This planet contains life forms in the ammonia-cloud layer, with vast quantities of free-floating radioplankton. Tiny carbon-based algae..
+        ///   Looks up a localized string similar to A gas giant with a hydrogen and helium-based atmosphere. Vivid colors are produced by oxygen and carbon-based compounds. This planet contains life forms in the ammonia-cloud layer, with vast quantities of free-floating radioplankton - tiny carbon-based algae..
         /// </summary>
         public static string Standard_Giant_With_Ammonia_Life {
             get {
@@ -565,7 +565,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A gas giant with hydrogen and helium-based atmosphere. Vivid colors are produced by oxygen and carbon-based compounds. This planet contains life forms in a hot layer of high-pressure water, with vast quantities of free-floating radioplankton. Tiny carbon-based algae..
+        ///   Looks up a localized string similar to A gas giant with hydrogen and helium-based atmosphere. Vivid colors are produced by oxygen and carbon-based compounds. This planet contains life forms in a hot layer of high-pressure water, with vast quantities of free-floating radioplankton - tiny carbon-based algae..
         /// </summary>
         public static string Standard_Giant_With_Water_Life {
             get {

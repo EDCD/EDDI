@@ -53,6 +53,7 @@
     value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
+
     mimetype: application/x-microsoft.net.object.bytearray.base64
     value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
@@ -207,10 +208,10 @@
     <value>Gas giants such as this one are primarily hydrogen and helium based, with life just below the surface-cloud layer. This particular gas giant exhibits vivid coloration due to the presence of free-floating radioplankton - carbon-based algae that extract energy from the planet's intense radiation flux.</value>
   </data>
   <data name="Green_Giant_With_Water_Life" xml:space="preserve">
-    <value>A gas giant with a primarily hydrogen and helium atmosphere and bioluminescent life, based in the water-cloud layer just below the atmospheric surface. An excess of oxygen and many carbon-based compounds produces vivid colors. There are vast quantities of free-floating radioplankton. Tiny carbon-based algae.</value>
+    <value>A gas giant with a primarily hydrogen and helium atmosphere and bioluminescent life, based in the water-cloud layer just below the atmospheric surface. An excess of oxygen and many carbon-based compounds produces vivid colors. There are vast quantities of free-floating radioplankton - tiny carbon-based algae.</value>
   </data>
   <data name="Green_Sudarsky_Class_I" xml:space="preserve">
-    <value>A gas giant with a primarily hydrogen and helium atmosphere with clouds of ammonia, water vapor, hydrogen sulfide, phosphine and sulfur. Upper cloud layer temperatures are typically less than 150 Kelvin. Vivid cloud layer coloration suggests bioluminescent organisms. There are vast quantities of free-floating radioplankton. Tiny carbon-based algae.</value>
+    <value>A gas giant with a primarily hydrogen and helium atmosphere with clouds of ammonia, water vapor, hydrogen sulfide, phosphine and sulfur. Upper cloud layer temperatures are typically less than 150 Kelvin. Vivid cloud layer coloration suggests bioluminescent organisms. There are vast quantities of free-floating radioplankton - tiny carbon-based algae.</value>
   </data>
   <data name="Green_Sudarsky_Class_II" xml:space="preserve">
     <value>An entity I have no information about.</value>
@@ -276,10 +277,10 @@
     <value>A terrestrial ammonia planet with an active ammonia-based chemistry and carbon-ammonia-based life.</value>
   </data>
   <data name="Standard_Giant_With_Ammonia_Life" xml:space="preserve">
-    <value>A gas giant with a hydrogen and helium-based atmosphere. Vivid colors are produced by oxygen and carbon-based compounds. This planet contains life forms in the ammonia-cloud layer, with vast quantities of free-floating radioplankton. Tiny carbon-based algae.</value>
+    <value>A gas giant with a hydrogen and helium-based atmosphere. Vivid colors are produced by oxygen and carbon-based compounds. This planet contains life forms in the ammonia-cloud layer, with vast quantities of free-floating radioplankton - tiny carbon-based algae.</value>
   </data>
   <data name="Standard_Giant_With_Water_Life" xml:space="preserve">
-    <value>A gas giant with hydrogen and helium-based atmosphere. Vivid colors are produced by oxygen and carbon-based compounds. This planet contains life forms in a hot layer of high-pressure water, with vast quantities of free-floating radioplankton. Tiny carbon-based algae.</value>
+    <value>A gas giant with hydrogen and helium-based atmosphere. Vivid colors are produced by oxygen and carbon-based compounds. This planet contains life forms in a hot layer of high-pressure water, with vast quantities of free-floating radioplankton - tiny carbon-based algae.</value>
   </data>
   <data name="Standard_Helium" xml:space="preserve">
     <value>A gas giant with more helium in its atmosphere compared to hydrogen. Most or all hydrogen has been lost due to insufficient mass to hold on to it. Past temperatures may have been much higher, driving off the hydrogen at a greater rate.</value>
