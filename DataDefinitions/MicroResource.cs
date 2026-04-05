@@ -230,6 +230,7 @@ namespace EddiDataDefinitions
         public static readonly MicroResource UniversalTranslator = new("UniversalTranslator", MicroResourceCategory.Items, 128962612);
         public static readonly MicroResource VehicleSchematic = new("VehicleSchematic", MicroResourceCategory.Items, 128962613);
         public static readonly MicroResource WeaponSchematic = new("WeaponSchematic", MicroResourceCategory.Items, 128962614);
+        public static readonly MicroResource UnicaSeed = new ("nm_seed", MicroResourceCategory.Items, null);
 
         // PowerPlay 2.0 Items
         public static readonly MicroResource PowerAgriculture = new( "PowerAgriculture", MicroResourceCategory.Items, null, true ); // Agricultural Sample

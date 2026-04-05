@@ -989,4 +989,7 @@
     <value>Contaminated Spire Compound</value>
     <comment>Odyssey good found at Thargoid Spire sites</comment>
   </data>
+  <data name="nm_seed" xml:space="preserve">
+    <value>Unica Seed</value>
+  </data>
 </root>
