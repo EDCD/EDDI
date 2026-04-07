@@ -125,9 +125,6 @@
     <value>Rapports de Qualité de l'Air</value>
     <comment>Chemical analyses of atmospheric recycling systems in surface settlements.</comment>
   </data>
-  
-  
-  
   <data name="AtmosphericData" xml:space="preserve">
     <value>Données Atmosphériques</value>
     <comment>Scientific observations and measurements of a planet's atmosphere.</comment>
@@ -196,7 +193,6 @@
     <value>Régulateur de Puissance Endommagé</value>
     <comment>A non-functional fuel regulator used in power plants.</comment>
   </data>
-  
   <data name="EmployeeDirectory" xml:space="preserve">
     <value>Registre des Employés</value>
     <comment>A complete list of staff members with their relevant personal details.</comment>
@@ -233,7 +229,6 @@
     <value>Projections Financières</value>
     <comment>Forecasts of a company's future income, expenditure and profit margins.</comment>
   </data>
-  
   <data name="HealthPack" xml:space="preserve">
     <value>Kit Médical</value>
     <comment>A portable medical kit used to treat wounds.</comment>
@@ -688,7 +683,6 @@
     <value>Dossiers Médicaux</value>
     <comment>A collection of medical data related to a specific group or population.</comment>
   </data>
-  
   <data name="MiningAnalytics" xml:space="preserve">
     <value>Analyses Minières</value>
     <comment>Scientific data used to increase the safety and efficiency of a specific mining operation.</comment>
@@ -876,28 +870,4 @@
   <data name="GeneticSample" xml:space="preserve">
     <value>Échantillons Biologiques</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 </root>
