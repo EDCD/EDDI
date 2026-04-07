@@ -538,7 +538,7 @@ namespace EddiDataDefinitions
         public Ship()
         { }
 
-        public Ship( string EDName, ShipManufacturer Manufacturer, string Model, string possessiveYour, List<Translation> PhoneticModel, LandingPadSize Size, int? MilitarySize, decimal reservoirFuelTankSize )
+        public Ship( string EDName, Manufacturer Manufacturer, string Model, string possessiveYour, List<Translation> PhoneticModel, LandingPadSize Size, int? MilitarySize, decimal reservoirFuelTankSize )
         {
             this.EDName = EDName;
             manufacturer = Manufacturer.name;
@@ -592,7 +592,7 @@ namespace EddiDataDefinitions
             return result;
         }
 
-        public string SpokenManufacturer() => ShipManufacturer.SpokenManufacturer(manufacturer) ?? manufacturer;
+        public string SpokenManufacturer() => Manufacturer.SpokenManufacturer(manufacturer) ?? manufacturer;
         
         public string CoriolisUri(bool beta = false)
         {

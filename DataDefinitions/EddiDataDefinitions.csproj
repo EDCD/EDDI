@@ -9,6 +9,21 @@
         <OutputPath>..\bin\Release\</OutputPath>
     </PropertyGroup>
     <ItemGroup>
+        <Compile Update="Properties\SuitMod.Designer.cs">
+          <DependentUpon>SuitMod.resx</DependentUpon>
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+        </Compile>
+        <Compile Update="Properties\HandWeaponType.Designer.cs">
+          <DependentUpon>HandWeaponType.resx</DependentUpon>
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+        </Compile>
+        <Compile Update="Properties\HandWeaponMod.Designer.cs">
+          <DependentUpon>HandWeaponMod.resx</DependentUpon>
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+        </Compile>
         <Compile Update="Properties\CodexStellarBodyType.Designer.cs">
             <DesignTime>True</DesignTime>
             <AutoGen>True</AutoGen>
@@ -128,6 +143,11 @@
             <DesignTime>True</DesignTime>
             <AutoGen>True</AutoGen>
             <DependentUpon>StationState.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\HandWeapon.Designer.cs">
+          <DependentUpon>HandWeapon.resx</DependentUpon>
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
         </Compile>
         <Compile Update="Properties\Suit.Designer.cs">
             <DependentUpon>Suit.resx</DependentUpon>
@@ -424,6 +444,18 @@
         <ProjectReference Include="..\Utilities\Utilities.csproj" />
     </ItemGroup>
     <ItemGroup>
+        <EmbeddedResource Update="Properties\SuitMod.resx">
+          <LastGenOutput>SuitMod.Designer.cs</LastGenOutput>
+          <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\HandWeaponType.resx">
+          <LastGenOutput>HandWeaponType.Designer.cs</LastGenOutput>
+          <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\HandWeaponMod.resx">
+          <LastGenOutput>HandWeaponMod.Designer.cs</LastGenOutput>
+          <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
         <EmbeddedResource Update="Properties\CodexStellarBodyType.resx">
             <Generator>PublicResXFileCodeGenerator</Generator>
             <LastGenOutput>CodexStellarBodyType.Designer.cs</LastGenOutput>
@@ -548,6 +580,10 @@
         <EmbeddedResource Update="Properties\StationState.resx">
             <Generator>PublicResXFileCodeGenerator</Generator>
             <LastGenOutput>StationState.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\HandWeapon.resx">
+          <LastGenOutput>HandWeapon.Designer.cs</LastGenOutput>
+          <Generator>PublicResXFileCodeGenerator</Generator>
         </EmbeddedResource>
         <EmbeddedResource Update="Properties\Suit.resx">
             <Generator>PublicResXFileCodeGenerator</Generator>

@@ -1203,6 +1203,33 @@
       "name": "Glide",
       "description": "Triggered when your ship enters or exits glide"
     },
+    "Hand weapon purchased": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{Pause(3000)}\r\nYou have purchased a grade {event.grade} {event.weapon.manufacturer.phoneticname} {event.weapon.name} \r\n{if event.mods:\r\n    {set modNames to []}\r\n    {for modifier in event.mods:\r\n        {set modNames to cat(modNames, [modifier.localizedName])}\r\n    }\r\n    with {List(modNames)}\r\n}\r\n{if event.price > cmdr.credits / 100:\r\n    for {Humanise(event.price)} credits\r\n}.",
+      "default": true,
+      "name": "Hand weapon purchased",
+      "description": "Triggered when purchasing a new hand weapon"
+    },
+    "Hand weapon sold": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "You have sold a grade {event.grade} {event.weapon.manufacturer.phoneticname} {event.weapon.name} \r\n{if event.mods:\r\n    {set modNames to []}\r\n    {for modifier in event.mods:\r\n        {set modNames to cat(modNames, [modifier.localizedName])}\r\n    }\r\n    with {List(modNames)}\r\n}\r\n{if event.price > cmdr.credits / 100:\r\n    for {Humanise(event.price)} credits\r\n}.",
+      "default": true,
+      "name": "Hand weapon sold",
+      "description": "Triggered when selling a hand weapon"
+    },
+    "Hand weapon upgraded": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{Pause(3000)}\r\nYou have upgraded your {event.weapon.manufacturer.phoneticname} {event.weapon.name} to grade {event.grade}\r\n{if event.price > cmdr.credits / 100:\r\n    for {Humanise(event.cost)} credits\r\n}.",
+      "default": true,
+      "name": "Hand weapon upgraded",
+      "description": "Triggered when upgrading a hand weapon to a new grade"
+    },
     "Hardpoints": {
       "enabled": true,
       "priority": 3,
@@ -2503,10 +2530,28 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{Pause(8000)}\r\nYou have purchased a grade {event.grade} {event.suit.manufacturer.phoneticname} {event.suit.name} \r\n{if event.mods:\r\n    {set modNames to []}\r\n    {for modifier in event.mods:\r\n        {set modNames to cat(modNames, [modifier.localizedName])}\r\n    }\r\n    with {List(modNames)}\r\n}\r\n{if event.price > cmdr.credits / 100:\r\n    for {Humanise(event.price)} credits\r\n}.",
       "default": true,
       "name": "Suit purchased",
       "description": "Triggered when you buy a space suit"
+    },
+    "Suit sold": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "You have sold a grade {event.grade} {event.suit.manufacturer.phoneticname} {event.suit.name} \r\n{if event.mods:\r\n    {set modNames to []}\r\n    {for modifier in event.mods:\r\n        {set modNames to cat(modNames, [modifier.localizedName])}\r\n    }\r\n    with {List(modNames)}\r\n}\r\n{if event.price > cmdr.credits / 100:\r\n    for {Humanise(event.price)} credits\r\n}.",
+      "default": true,
+      "name": "Suit sold",
+      "description": "Triggered when you sell a space suit"
+    },
+    "Suit upgraded": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{Pause(3000)}\r\nYou have upgraded your {event.suit.manufacturer.phoneticname} {event.suit.name} to grade {event.grade} \r\n{if event.price > cmdr.credits / 100:\r\n    for {Humanise(event.price)} credits\r\n}.",
+      "default": true,
+      "name": "Suit upgraded",
+      "description": "Triggered when upgrading a space suit to a new grade"
     },
     "Surface signals detected": {
       "enabled": true,

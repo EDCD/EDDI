@@ -1474,6 +1474,33 @@
       "default": true,
       "includes": ".Preferencias; .Runtime"
     },
+    "Hand weapon purchased": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Hand weapon purchased",
+      "description": "Triggered when purchasing a new hand weapon"
+    },
+    "Hand weapon sold": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Hand weapon sold",
+      "description": "Triggered when selling a hand weapon"
+    },
+    "Hand weapon upgraded": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Hand weapon upgraded",
+      "description": "Triggered when upgrading a hand weapon to a new grade"
+    },
     "Hardpoints": {
       "name": "Hardpoints",
       "description": "Triggered when you deploy or retract your hardpoints",
@@ -3094,6 +3121,24 @@
       "script": null,
       "default": true,
       "includes": null
+    },
+    "Suit sold": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Suit sold",
+      "description": "Triggered when you sell a space suit"
+    },
+    "Suit upgraded": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Suit upgraded",
+      "description": "Triggered when upgrading a space suit to a new grade"
     },
     "Surface signals detected": {
       "name": "Surface signals detected",

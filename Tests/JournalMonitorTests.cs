@@ -2024,17 +2024,17 @@ namespace Tests
         }
 
         [TestMethod]
-        [DataRow(@"{ ""timestamp"":""2021-04-30T21:37:58Z"", ""event"":""BuySuit"", ""Name"":""UtilitySuit_Class1"", ""Name_Localised"":""Maverick Suit"", ""Price"":150000, ""SuitID"":1698502991022131 }", "Maverick Suit", 1, 1698502991022131, 150000)]
-        [DataRow(@"{ ""timestamp"":""2021-04-30T21:38:18Z"", ""event"":""BuySuit"", ""Name"":""ExplorationSuit_Class1"", ""Name_Localised"":""Artemis Suit"", ""Price"":150000, ""SuitID"":1698503011784221 }", "Artemis Suit", 1, 1698503011784221, 150000)]
-        [DataRow(@"{ ""timestamp"":""2021-04-30T21:38:39Z"", ""event"":""BuySuit"", ""Name"":""TacticalSuit_Class2"", ""Name_Localised"":""Dominator Suit"", ""Price"":150000, ""SuitID"":1698503033928536 }", "Dominator Suit", 2, 1698503033928536, 150000)]
-        public void TestBuySuitEvent(string line, string expectedInvariantName, int expectedGrade, long? expectedSuitId, int? expectedPrice)
+        [DataRow(@"{ ""timestamp"":""2021-04-30T21:37:58Z"", ""event"":""BuySuit"", ""Name"":""UtilitySuit_Class1"", ""Name_Localised"":""Maverick Suit"", ""Price"":150000, ""SuitID"":1698502991022131 }", "Maverick Suit", 1, 1698502991022131UL, 150000)]
+        [DataRow(@"{ ""timestamp"":""2021-04-30T21:38:18Z"", ""event"":""BuySuit"", ""Name"":""ExplorationSuit_Class1"", ""Name_Localised"":""Artemis Suit"", ""Price"":150000, ""SuitID"":1698503011784221 }", "Artemis Suit", 1, 1698503011784221UL, 150000)]
+        [DataRow(@"{ ""timestamp"":""2021-04-30T21:38:39Z"", ""event"":""BuySuit"", ""Name"":""TacticalSuit_Class2"", ""Name_Localised"":""Dominator Suit"", ""Price"":150000, ""SuitID"":1698503033928536 }", "Dominator Suit", 2, 1698503033928536UL, 150000)]
+        public void TestBuySuitEvent(string line, string expectedInvariantName, int expectedGrade, ulong? expectedSuitId, int? expectedPrice)
         {
             var events = JournalMonitor.ParseJournalEntry(line);
             Assert.HasCount( 1, events );
             var @event = (SuitPurchasedEvent)events[0];
-            Assert.AreEqual(expectedInvariantName, @event.suit_invariant);
-            Assert.AreEqual(expectedGrade, @event.Suit.grade);
-            Assert.AreEqual(expectedSuitId, @event.Suit.suitId);
+            Assert.AreEqual(expectedInvariantName, @event.suit.invariantName);
+            Assert.AreEqual(expectedGrade, @event.suit.grade);
+            Assert.AreEqual(expectedSuitId, @event.suit.suitId);
             Assert.AreEqual(expectedPrice, @event.price);
         }
 

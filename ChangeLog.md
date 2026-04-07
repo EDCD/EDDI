@@ -10,7 +10,19 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * The `Organic` object has been revised to include a credit `value` property (set whenever the species is identified and when organic data is sold). 
     * The `Organic` object has been revised to include a credit `bonus` property (set when you have registered a first footfall on the body and when organic data is sold). 
   * Events
-    * 
+    * `Hand weapon purchased` added.
+    * `Hand weapon sold` added.
+    * `Hand weapon upgraded` added.
+    * `Suit purchased` updated with revised properties.
+    * `Suit sold` added.
+    * `Suit upgraded` added.
+  * Speech Responder
+    * `Hand weapon purchased` added.
+    * `Hand weapon sold` added.
+    * `Hand weapon upgraded` added.
+    * `Suit purchased` updated.
+    * `Suit sold` added.
+    * `Suit upgraded` added.
   * VoiceAttack Responder 
     * (**BREAKING CHANGE**) Updated to target VoiceAttack 2.0.0+. VoiceAttack 1.X is no longer supported. 
     * Under the hood, EDDI now runs as a separate process from VoiceAttack. Only the plugin component of EDDI runs within the VoiceAttack process. This should improve stability and performance for both EDDI and VoiceAttack.

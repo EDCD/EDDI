@@ -2687,16 +2687,10 @@ namespace EddiJournalMonitor
                                 }
                                 break;
                             case "BuySuit":
-                                {
-                                    var edname = JsonParsing.getString(data, "Name");
-                                    var fallbackName = JsonParsing.getString(data, "Name_Localised");
-                                    var suitId = JsonParsing.getOptionalLong(data, "SuitID");
-                                    var price = JsonParsing.getOptionalInt(data, "Price");
-                                    var suit = Suit.FromEDName(edname, suitId);
-                                    suit.fallbackLocalizedName = fallbackName;
-                                    events.Add(new SuitPurchasedEvent(timestamp, suit, price) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                                handled = SuitPurchasedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
+                                break;
+                            case "BuyWeapon":
+                                handled = HandWeaponPurchasedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "CancelDropship":
                             case "CancelTaxi":
@@ -2790,6 +2784,18 @@ namespace EddiJournalMonitor
                                     }
                                 }
                                 handled = true;
+                                break;
+                            case "SellSuit":
+                                handled = SuitSoldEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
+                                break;
+                            case "SellWeapon":
+                                handled = HandWeaponSoldEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
+                                break;
+                            case "UpgradeWeapon":
+                                handled = HandWeaponUpgraded.Handle( timestamp, line, data, ref events, fromLogLoad );
+                                break;
+                            case "UpgradeSuit":
+                                handled = SuitUpgradedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
 
                             #endregion
@@ -3588,7 +3594,6 @@ namespace EddiJournalMonitor
                             // we silently ignore these, but forward them to the responders
 
                             // Low priority (for now)
-                            case "BuyWeapon":
                             case "CarrierTradeOrder": // Implement when we are ready to handle fleet carrier cargo.
                             case "CarrierModulePack": 
                             case "CarrierShipPack":
@@ -3601,13 +3606,9 @@ namespace EddiJournalMonitor
                             case "ReservoirReplenished":
                             case "RestockVehicle":
                             case "SellMicroResources":
-                            case "SellSuit":  
-                            case "SellWeapon":
                             case "ShipyardBankDeposit": // Written when depositing a ship into a squadron carrier. Sample: { "timestamp": "2025-08-20T02:09:05Z", "event": "ShipyardBankDeposit", "ShipType": "Type9", "ShipType_Localised": "Type-9 Heavy", "MarketID": 3713125120 }
                             case "SuitLoadout":
                             case "SwitchSuitLoadout":
-                            case "UpgradeSuit":
-                            case "UpgradeWeapon":
                             case "WingAdd":
                             case "WingInvite":
                             case "WingJoin":

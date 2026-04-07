@@ -1,9 +1,6 @@
 ﻿
 namespace EddiDataDefinitions
 {
-    /// <summary>
-    /// Economy types
-    /// </summary>
     public class Happiness : ResourceBasedLocalizedEDName<Happiness>
     {
         static Happiness()

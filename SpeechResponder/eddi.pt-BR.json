@@ -1312,6 +1312,33 @@
 			"description": "Triggered when your ship enters or exits glide",
 			"default": true
 		},
+		"Hand weapon purchased": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": null,
+			"default": true,
+			"name": "Hand weapon purchased",
+			"description": "Triggered when purchasing a new hand weapon"
+		},
+		"Hand weapon sold": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": null,
+			"default": true,
+			"name": "Hand weapon sold",
+			"description": "Triggered when selling a hand weapon"
+		},
+		"Hand weapon upgraded": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": null,
+			"default": true,
+			"name": "Hand weapon upgraded",
+			"description": "Triggered when upgrading a hand weapon to a new grade"
+		},
 		"Hardpoints": {
 			"enabled": true,
 			"priority": 3,
@@ -2708,13 +2735,32 @@
 			"default": true
 		},
 		"Suit purchased": {
+			"name": "Suit purchased",
+			"description": "Triggered when you buy a space suit",
 			"enabled": true,
 			"priority": 3,
 			"responder": true,
 			"script": null,
 			"default": true,
-			"name": "Suit purchased",
-			"description": "Triggered when you buy a space suit"
+			"includes": null
+		},
+		"Suit sold": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": null,
+			"default": true,
+			"name": "Suit sold",
+			"description": "Triggered when you sell a space suit"
+		},
+		"Suit upgraded": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": null,
+			"default": true,
+			"name": "Suit upgraded",
+			"description": "Triggered when upgrading a space suit to a new grade"
 		},
 		"Surface signals detected": {
 			"enabled": true,

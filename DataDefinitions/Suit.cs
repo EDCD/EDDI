@@ -5,7 +5,7 @@ using Utilities;
 namespace EddiDataDefinitions
 {
     // Player suits
-    public class Suit ( string edname ) : ResourceBasedLocalizedEDName<Suit>( edname, edname )
+    public class Suit ( string edname, Manufacturer manufacturer, uint price ) : ResourceBasedLocalizedEDName<Suit>( edname, edname )
     {
         static Suit()
         {
@@ -14,23 +14,29 @@ namespace EddiDataDefinitions
         }
 
         // dummy used to ensure that the static constructor has run
-        public Suit() : this("")
+        public Suit() : this( "", null, 0 )
         { }
 
-        public static readonly Suit ExplorationSuit = new("ExplorationSuit");
-        public static readonly Suit FlightSuit = new("FlightSuit");
-        public static readonly Suit TacticalSuit = new("TacticalSuit");
-        public static readonly Suit UtilitySuit = new("UtilitySuit");
+        public static readonly Suit ExplorationSuit = new( "ExplorationSuit", Manufacturer.Supratech, 150000 );
+        public static readonly Suit FlightSuit = new( "FlightSuit", Manufacturer.Remlok, 0 );
+        public static readonly Suit TacticalSuit = new( "TacticalSuit", Manufacturer.Manticore, 150000 );
+        public static readonly Suit UtilitySuit = new( "UtilitySuit", Manufacturer.Remlok, 150000 );
 
-        [PublicAPI]
-        public int grade { get; private set; }
+        [PublicAPI( "The space suit's grade" )]
+        public int grade { get; set; }
 
-        public long? suitId { get; private set; }
+        [PublicAPI( "The space suit's manufacturer, as an object" )]
+        public Manufacturer manufacturer { get; private set; } = manufacturer;
 
-        public static Suit FromEDName(string edname, long? suitId = null)
+        [PublicAPI( "The space suit's standard grade 1 price" )]
+        public uint price { get; } = price;
+
+        public ulong? suitId { get; private set; }
+
+        public static Suit FromEDName(string edname, ulong? suitId = null)
         {
             if (string.IsNullOrEmpty(edname)) { return null; }
-            var (tidiedName, grade) = titiedEDName(edname);
+            var (tidiedName, grade) = tidiedEDName(edname);
             var result = ResourceBasedLocalizedEDName<Suit>.FromEDName(tidiedName);
             if (result != null) { result.grade = grade; result.suitId = suitId; }
             return result;
@@ -39,10 +45,10 @@ namespace EddiDataDefinitions
         public static bool EDNameExists(string edName)
         {
             if (edName == null) { return false; }
-            return AllOfThem.Any(v => string.Equals(v.edname, titiedEDName(edName).Item1, StringComparison.InvariantCultureIgnoreCase));
+            return AllOfThem.Any(v => string.Equals(v.edname, tidiedEDName(edName).Item1, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        private static (string, int) titiedEDName(string edName)
+        private static (string, int) tidiedEDName(string edName)
         {
             var tidiedName = edName?.ToLowerInvariant().Replace("$", "").Replace(";", "").Replace("_name", "");
             if (int.TryParse(tidiedName?.Last().ToString(), out var grade))
