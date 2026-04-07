@@ -252,7 +252,6 @@
     <value>Botiquín</value>
     <comment>A portable medical kit used to treat wounds.</comment>
   </data>
-  
   <data name="Infinity" xml:space="preserve">
     <value>Infinity</value>
     <comment>A brand of exotic cologne that chemically adapts to please the olfactory system.</comment>
@@ -348,7 +347,6 @@
     <value>Solicitudes de Compra</value>
     <comment>Requisition orders for specific items or materials submitted for authorisation.</comment>
   </data>
-  
   <data name="RadioactivityData" xml:space="preserve">
     <value>Datos de Radioactividad</value>
     <comment>Measurements of the output from natural or artificial sources of radiation.</comment>
@@ -887,28 +885,4 @@
   <data name="GeneticSample" xml:space="preserve">
     <value>Muestra Biológica</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 </root>
