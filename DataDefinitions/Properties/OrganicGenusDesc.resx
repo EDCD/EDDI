@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Aleoids" xml:space="preserve">
-    <value>These are extremely hardy photosynthetic organisms that thrive in arid environments. Thick, waxy leaf structures protect them from extreme surroundings. When gaseous exchange becomes unfavorable. the leaves can completely shut off the organism from the atmosphere causing a state of hibernation. The pointed leaves create precipitation slopes, which draw liquids to the heart of the organism. Here they are absorbed through a series of specialized cells, and stored in the root structure until needed.</value>
+    <value>These are extremely hardy photosynthetic organisms that thrive in arid environments. Thick, waxy leaf structures protect them from extreme surroundings. When gaseous exchange becomes unfavorable, the leaves can completely shut off the organism from the atmosphere causing a state of hibernation. The pointed leaves create precipitation slopes, which draw liquids to the heart of the organism. Here they are absorbed through a series of specialized cells, and stored in the root structure until needed.</value>
   </data>
   <data name="AsterPod" xml:space="preserve">
     <value>These pods contain the seeds of the aster tree, a space-based organism with some of the qualities of a terrestrial plant.</value>
@@ -127,13 +127,13 @@
     <value>These organic structures are so called because of their star-like shape.</value>
   </data>
   <data name="Bacterial" xml:space="preserve">
-    <value>These are true unicellular extremophiles capable of living in the full spectrum of temperatures, chemical soups and atmospheres. They form a kaleidoscopic range of patterns and colors based on their method of metabolism. They derive energy from photosynthetic chemosynthetic or thermosynthetic processes. These are believed to be the precursors for many life forms, and are often found in conjunction with other species. Links between the biochemistry of bacterial colonies and neighboring organisms are likely but as yet unproven.</value>
+    <value>These are true unicellular extremophiles capable of living in the full spectrum of temperatures, chemical soups, and atmospheres. They form a kaleidoscopic range of patterns and colors based on their method of metabolism. They derive energy from photosynthetic, chemosynthetic, or thermosynthetic processes. These are believed to be the precursors for many life forms, and are often found in conjunction with other species. Links between the biochemistry of bacterial colonies and neighboring organisms are likely but as yet unproven.</value>
   </data>
   <data name="Brancae" xml:space="preserve">
     <value>These organic structures are so called because of the vaguely brain-like growths on the ends of their branches. These resilient organic structures absorb minerals via their subsurface roots and energy via their outer skin.</value>
   </data>
   <data name="Cactoid" xml:space="preserve">
-    <value>These are photosynthetic organisms that have adapted to extreme conditions by reducing their surface area to volume ratio, thereby protecting more sensitive tissues from exposure. The outer layer is formed from specialized light-transmitting cells. These are filled with an insulating hydrophobic layer, which helps to maintain core temperature and liquid retention. Deep, extensive root structures hold the organisms in place, and facilitate the extraction of trace minerals. Some cactoida species feature explosive seed distribution as a method of reproduction.</value>
+    <value>These are photosynthetic organisms that have adapted to extreme conditions by reducing their surface area to volume ratio, thereby protecting more sensitive tissues from exposure. The outer layer is formed from specialized light-transmitting cells. These are filled with an insulating hydrophobic layer, which helps to maintain core temperature and liquid retention. Deep, extensive root structures hold the organisms in place and facilitate the extraction of trace minerals. Some cactoida species feature explosive seed distribution as a method of reproduction.</value>
   </data>
   <data name="CalcitePlates" xml:space="preserve">
     <value>These calcium-carbonate structures are created by vast numbers of tiny polyp-like creatures.</value>
@@ -142,7 +142,7 @@
     <value>These seed pods are so called because of their distinctive cup-like shape.</value>
   </data>
   <data name="Clypeus" xml:space="preserve">
-    <value>These are extremophile organisms that have evolved to create hard shield structures, primarily to protect against stellar radiation. They also collect and condense traces of liquid material in the atmosphere, allowing the organisms to flourish in extremely arid environments. The shields are typically synthesized from surrounding inorganic material. which will frequently define their shape and coloration.</value>
+    <value>These are extremophile organisms that have evolved to create hard shield structures, primarily to protect against stellar radiation. They also collect and condense traces of liquid material in the atmosphere, allowing the organisms to flourish in extremely arid environments. The shields are typically synthesized from surrounding inorganic material, which will frequently define their shape and coloration.</value>
   </data>
   <data name="CollaredPod" xml:space="preserve">
     <value>These organisms are so called because of their distinctive collar.</value>
@@ -154,7 +154,7 @@
     <value>These organic structures survive by absorbing elements from nova and supernova, with the dense outer layer protecting them from the severest radiation.</value>
   </data>
   <data name="Electricae" xml:space="preserve">
-    <value>These are organisms found exclusively on extremely cold ice worlds in the vicinity of frozen lakes. The visible tips can be observed protruding from the ice, often near fissures where it is thinnest. The bulk of the organisms extend down through the ice into subsurface melt potentially for several kilometers. Electricae are superconductive in nature. utilizing the thermal circulation of the surrounding fluid to drive an electrochemical process. This is probably why they are limited to planets with atmospheres dominated by noble gases. The surface structure exists to provide a connection to the atmosphere, which in turn creates a point of electrical potential difference. A by-product of this is the bioluminescent display that runs through the organism. Although never witnessed, reproduction presumably occurs below the surface by some unidentified process.</value>
+    <value>These are organisms found exclusively on extremely cold ice worlds in the vicinity of frozen lakes. The visible tips can be observed protruding from the ice, often near fissures where it is thinnest. The bulk of the organisms extend down through the ice into subsurface melt, potentially for several kilometers. Electricae are superconductive in nature, utilizing the thermal circulation of the surrounding fluid to drive an electrochemical process. This is probably why they are limited to planets with atmospheres dominated by noble gases. The surface structure exists to provide a connection to the atmosphere, which in turn creates a point of electrical potential difference. A by-product of this is the bioluminescent display that runs through the organism. Although never witnessed, reproduction presumably occurs below the surface by some unidentified process.</value>
   </data>
   <data name="Fonticulus" xml:space="preserve">
     <value>These are photosynthetic colony organisms found exclusively on ice worlds, where they have embraced the surrounding frozen material as a form of protection. As the fonticulus develop they melt ice from around them, absorbing the liquid through tiny cellular pores and passing it to the colony’s reproductive edge. Here the liquid is excreted and immediately refreezes, creating hard translucent exoskeletons that provide protection for the organisms. Frond structures create a wide flat space that expose internal photosynthetic cells to as much light as possible. Reproduction appears to occur by colony division, most likely when a shard of the structure collapses under its own weight and the smaller shard creates a new colony.</value>
@@ -178,7 +178,7 @@
     <value>These crystalline structures are so called because of their resemblance to icicles.</value>
   </data>
   <data name="Ingensradices" xml:space="preserve">
-    <value>These are huge, incredibly resilient organisms that establish massive underground root systems. These roots extend several hundred meters underground, securing the host organism in place and accessing underground aquifers and nutrient sources in a wide variety of soils. The type of soil, climate, and atmosphere is believed to influence certain characteristics of organisms but key traits appear consistent. While they may share several attributes with fungi - deep roots, bioluminescence, spores, broad upper growths - they are technically a type of woody plant. </value>
+    <value>These are huge, incredibly resilient organisms that establish massive underground root systems. These roots extend several hundred meters underground, securing the host organism in place and accessing underground aquifers and nutrient sources in a wide variety of soils. The type of soil, climate, and atmosphere is believed to influence certain characteristics of the organisms, but key traits appear consistent. While they may share several attributes with fungi - deep roots, bioluminescence, spores, broad upper growths - they are technically a type of woody plant.</value>
     <comment>Radicoida</comment>
   </data>
   <data name="MetallicCrystals" xml:space="preserve">
@@ -222,7 +222,7 @@
     <value>This organism is protected by a umbrella-shaped husk, allowing it to survive for millennia in the vacuum of space.</value>
   </data>
   <data name="Osseus" xml:space="preserve">
-    <value>These are slow-growing organisms that can be found exclusively on rocky areas of planets. They are defined by a symbiotic relationship that has evolved between two unicellular organisms. which are now inseparable. One cell type is solely responsible for energy production by either photosynthetic. chemosynthetic or thermosynthetic processes. The symbiotic cells harvest some of this energy, and in turn deposit a hard rock-like substance extracted from the local geology to create a rigid endoskeleton. This structure provides a solid base for the organism to exist. It features complex folds that help increase available surface area for metabolic interactions. Osseus have been observed to create callus-like cell coverings, and withdraw themselves into the endoskeleton for protection.</value>
+    <value>These are slow-growing organisms that can be found exclusively on rocky areas of planets. They are defined by a symbiotic relationship that has evolved between two unicellular organisms, which are now inseparable. One cell type is solely responsible for energy production by either photosynthetic, chemosynthetic, or thermosynthetic processes. The symbiotic cells harvest some of this energy, and in turn deposit a hard rock-like substance extracted from the local geology to create a rigid endoskeleton. This structure provides a solid base for the organism to exist. It features complex folds that help increase available surface area for metabolic interactions. Osseus have been observed to create callus-like cell coverings, and withdraw themselves into the endoskeleton for protection.</value>
   </data>
   <data name="PedunclePod" xml:space="preserve">
     <value>These pods contain the seeds of the peduncle tree, a space-based organism with some of the qualities of a terrestrial plant.</value>
@@ -240,7 +240,7 @@
     <value>These seed pods are so called because of their resemblance to the roots of certain terrestrial plants.</value>
   </data>
   <data name="Shrubs" xml:space="preserve">
-    <value>These are robust woody plants with deep rooting structures to gather liquids and hold themselves in place where the ground may be unstable. They are photosynthetic organisms with specialized photoreceptors that work even in low light conditions. As such they are highly successful, and are widespread and diverse in nature. Their small leaf structures protect them against extremely low temperatures and liquid loss in higher temperatures.</value>
+    <value>These are robust woody plants with deep rooting structures to gather liquids and hold themselves in place where the ground may be unstable. They are photosynthetic organisms with specialized photoreceptors that work even in low light conditions. As such they are highly successful, and are widespread and diverse in nature. Their small leaf structures protect them against extremely low temperatures, and liquid loss in higher temperatures.</value>
   </data>
   <data name="SilicateCrystals" xml:space="preserve">
     <value>These crystalline structures consist mainly of silicate minerals.</value>
@@ -258,13 +258,13 @@
     <value>These are low-lying photosynthetic organisms that bond tightly to the surface of rocks. The body of the organism may be embedded in the rock subsurface to provide protection from the elements, leaving the tough photosynthetic proto-leaves exposed. Their simple proto-evolutionary nature means that they are a common sight on rocky worlds. Colouration is driven by a mixture of the mineral content of the attached rock and the absorption spectral of the nearby stellar body.</value>
   </data>
   <data name="ThargoidBarnacle" xml:space="preserve">
-    <value>These are Biological resource extractors created by the Thargoids.</value>
+    <value>These are biological resource extractors created by the Thargoids.</value>
   </data>
   <data name="Tubers" xml:space="preserve">
     <value>These organic structures are distinguished by their tubular shape and vivid coloration. These organic structures are merely the above-ground portion of a much larger subterranean organism.</value>
   </data>
   <data name="Tubus" xml:space="preserve">
-    <value>These are highly specialized organisms that can grow to extreme heights, which peak when in a mature state. The organisms’ height and ability to survive is largely constrained by gravity. The lack of any real atmospheric weather has not put evolutionally pressure on the towers to be strong, so they form tall but thin structures which cannot be supported in high-gravity environments. The tower is formed from wrapped leaf-like structures, which create a regulated chimney void. This is used by the organism to create and maintain an artificial internal atmosphere, where discrete chemical processes can be undertaken along the length of the tower. Waste gases and other material may he released from the top of the tower. Some species feature external rings that can be used to gauge an organism’s age.</value>
+    <value>These are highly specialized organisms that can grow to extreme heights, which peak when in a mature state. The organism's height and ability to survive is largely constrained by gravity. The lack of any real atmospheric weather has not put evolutionary pressure on the towers to be strong, so they form tall but thin structures which cannot be supported in high-gravity environments. The tower is formed from wrapped leaf-like structures, which create a regulated chimney void. This is used by the organism to create and maintain an artificial internal atmosphere, where discrete chemical processes can be undertaken along the length of the tower. Waste gases and other material may be released from the top of the tower. Some species feature external rings that can be used to gauge an organism's age.</value>
   </data>
   <data name="Tussocks" xml:space="preserve">
     <value>These are robust photosynthetic plants similar in appearance to clump grasses. They have a shallow but complex root structure, which requires a solid surface to produce structural stability. Clumps may form through tillering or wider dispersal through a variety of seeding mechanisms. Some species have adapted cellular structures containing high sugar concentrations to protect against freezing damage.</value>
