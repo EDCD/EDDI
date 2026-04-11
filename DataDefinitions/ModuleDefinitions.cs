@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Utilities;
 
@@ -1271,6 +1272,11 @@ namespace EddiDataDefinitions
 
         private static string NormalizedEDName ( string rawEDName )
         {
+            if ( rawEDName.Contains("cockpit", StringComparison.OrdinalIgnoreCase) )
+            {
+                return "cockpit";
+            }
+            
             return rawEDName.ToLowerInvariant()
                 .Replace( "$", "" ) // Header for types from repair events
                 .Replace( "_name;", "" ) // Trailer for types from repair events
