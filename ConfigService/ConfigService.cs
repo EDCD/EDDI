@@ -261,11 +261,6 @@ namespace EddiConfigService
         /// <summary>Compares two configuration objects for equality using reflection</summary>
         private static bool ConfigEquals ( Config current, Config proposed )
         {
-            if ( ReferenceEquals( current, proposed ) )
-            {
-                return true;
-            }
-
             if ( current.GetType() != proposed.GetType() )
             {
                 return false;
