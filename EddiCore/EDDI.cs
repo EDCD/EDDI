@@ -1983,7 +1983,7 @@ namespace EddiCore
                 }
 
                 var body = CurrentStarSystem?.BodyWithID( @event.bodyId );
-                if ( body != null && ( !body.alreadyfirstfootfalled ?? false ) )
+                if ( body != null && ( !body.alreadyfirstfootfalled ?? false ) && body.footfalledDateTime is null )
                 {
                     // We can be the first to set foot on this world
                     @event.canfirstfootfall = true;
