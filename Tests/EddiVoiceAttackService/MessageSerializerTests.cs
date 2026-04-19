@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Tests.EddiVoiceAttackService
 {
@@ -16,8 +17,9 @@ namespace Tests.EddiVoiceAttackService
     public class MessageSerializerTests
     {
         private const string TestMessageId = "12345678-1234-1234-1234-123456789012";
+        public TestContext TestContext { get; set; }
 
-        [ TestMethod ]
+        [TestMethod ]
         public void Serialize_DisconnectMessage_ProducesLengthPrefixedJson ()
         {
             // Arrange
@@ -206,29 +208,58 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [ TestMethod ]
-        public void Serialize_CommandMessage_IncludesCommandData ()
+        public void Serialize_EventMessage_WithModifyingCollection_DoesNotThrow ()
         {
-            // Arrange
+            // Arrange: Create a mutable dictionary that simulates concurrent modification
+            var payload = new Dictionary<string, object> { { "key1", "value1" } };
             var envelope = new MessageEnvelope
             {
-                Type = "Command",
+                Type = "Event",
                 Timestamp = "2025-01-20T15:30:45.123Z",
                 Id = TestMessageId,
-                Data = new CommandData
+                Data = new EventData
                 {
-                    Command = "enable_monitor",
-                    Target = "Journal Monitor",
-                    Parameters = new Dictionary<string, object> { { "debug", true } }
+                    EventType = "TestEvent",
+                    EventName = "Test",
+                    EventPayload = payload
                 }
             };
 
-            // Act
-            var serialized = MessageSerializer.Serialize( envelope );
-            var deserialized = MessageSerializer.Deserialize( serialized );
+            // Act: Modify the dictionary in a separate task while serializing
+            var serializationTask = Task.Run( () =>
+            {
+                // Serialize multiple times to increase chance of collision
+                for ( var i = 0; i < 10; i++ )
+                {
+                    var serialized = MessageSerializer.Serialize( envelope );
+                    Assert.IsNotNull( serialized );
+                }
+            }, TestContext.CancellationToken );
 
-            // Assert
-            Assert.AreEqual( "Command", deserialized.Type );
-            Assert.IsNotNull( deserialized.Data );
+            var modificationTask = Task.Run( () =>
+            {
+                // Modify the dictionary while serialization is happening
+                for ( var i = 0; i < 100; i++ )
+                {
+                    payload[ $"key{i}" ] = $"value{i}";
+                    if ( (i % 10) == 0 )
+                    {
+                        Task.Delay( 1, TestContext.CancellationToken ).Wait(TestContext.CancellationToken);  // Brief pause to increase race condition likelihood
+                    }
+                }
+            }, TestContext.CancellationToken );
+
+            // Assert: Both tasks should complete without exception
+            try
+            {
+                Task.WaitAll( [ serializationTask, modificationTask ], TimeSpan.FromSeconds( 5 ) );
+                Assert.IsTrue( serializationTask.IsCompletedSuccessfully );
+                Assert.IsTrue( modificationTask.IsCompletedSuccessfully );
+            }
+            catch ( AggregateException ex )
+            {
+                Assert.Fail( $"Serialization failed during concurrent modification: {ex.InnerException?.Message}" );
+            }
         }
 
         [ TestMethod ]

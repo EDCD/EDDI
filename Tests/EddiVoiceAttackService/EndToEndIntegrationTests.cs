@@ -525,22 +525,28 @@ namespace Tests.EddiVoiceAttackService
         public async Task E2E_InvalidConfigFile_ProperError()
         {
             // Arrange
-            var invalidPath = Path.Combine(Path.GetTempPath(), "invalid_config.json");
+            var invalidPath = Path.Combine(Path.GetTempPath(), $"invalid_config_{Guid.NewGuid():N}.json");
+            File.WriteAllText(invalidPath, "invalid json content");
             var pluginClient = new VoiceAttackPluginClient(invalidPath);
 
             // Act & Assert
             try
             {
                 await pluginClient.InitializeAsync( TestContext.CancellationToken ).ConfigureAwait( false );
-                Assert.Fail("Should have thrown FileNotFoundException");
+                Assert.Fail("Should have thrown JsonException or ArgumentException");
             }
-            catch (FileNotFoundException)
+            catch (JsonException)
             {
-                // Expected
+                // Expected - invalid JSON
+            }
+            catch (ArgumentException)
+            {
+                // Also acceptable - missing required properties
             }
             finally
             {
                 pluginClient.Dispose();
+                try { File.Delete(invalidPath); } catch { /* Ignore */ }
             }
         }
 

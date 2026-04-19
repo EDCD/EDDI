@@ -1,3 +1,5 @@
+﻿#nullable enable
+
 using EddiIPC_Service.Messages;
 using Newtonsoft.Json;
 using System;
@@ -42,7 +44,10 @@ public static class MessageSerializer
 
         try
         {
-            var json = JsonConvert.SerializeObject( message, new JsonSerializerSettings
+            // Create a snapshot of the message to avoid collection modification during serialization
+            var messageCopy = CreateMessageSnapshot( message );
+
+            var json = JsonConvert.SerializeObject( messageCopy, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore,
                 DateFormatString = "O",
@@ -57,6 +62,56 @@ public static class MessageSerializer
             Logging.Error( $"Failed to serialize message of type {message.Type}: {ex.Message}" );
             throw new ArgumentException( $"Message serialization failed: {ex.Message}", ex );
         }
+        catch ( InvalidOperationException ex )
+        {
+            Logging.Error( $"Failed to create stable snapshot for message type {message.Type}: {ex.Message}" );
+            throw new ArgumentException( $"Message serialization failed due to concurrent collection modification: {ex.Message}", ex );
+        }
+    }
+
+    /// <summary>
+    /// Creates a snapshot of the message with complete deep copy of all data.
+    /// Uses reflection-based deep copy to ensure thread-safety and fidelity.
+    /// NOTE: This is a second line of defense. A shallow snapshot is created at the source
+    /// (in VoiceAttackVariables.DispatchRuntimeEventPayload). This deep snapshot here provides
+    /// defense-in-depth using the robust Copy() extension from ObjectExtensions.
+    /// </summary>
+    private static MessageEnvelope CreateMessageSnapshot( MessageEnvelope message )
+    {
+        if ( message.Data is EventData eventData )
+        {
+            Dictionary<string, object>? payloadSnapshot = null;
+            if ( eventData.EventPayload != null )
+            {
+                try
+                {
+                    // The Copy() extension handles all collection types, circular references,
+                    // and nested structures automatically via reflection-based deep cloning
+                    payloadSnapshot = eventData.EventPayload.Copy();
+                }
+                catch ( Exception ex )
+                {
+                    Logging.Error( $"Failed to deep copy event payload: {ex.Message}" );
+                    throw new ArgumentException( "Message serialization failed: Cannot create stable snapshot", ex );
+                }
+            }
+
+            return new MessageEnvelope
+            {
+                Type = message.Type,
+                Id = message.Id,
+                Timestamp = message.Timestamp,
+                Data = new EventData
+                {
+                    EventType = eventData.EventType,
+                    EventName = eventData.EventName,
+                    EventPayload = payloadSnapshot
+                }
+            };
+        }
+
+        // For other data types, return the message as-is
+        return message;
     }
 
     /// <summary>

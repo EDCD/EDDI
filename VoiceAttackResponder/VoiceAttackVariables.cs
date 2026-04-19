@@ -855,11 +855,16 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
+                // Create a snapshot of the payload to ensure it's not modified during serialization/transmission
+                // This prevents "Collection was modified" exceptions that can occur when background threads
+                // update the variable dictionary while we're serializing the message
+                var payloadSnapshot = new Dictionary<string, object>( payload );
+
                 var eventData = new EventData
                 {
                     EventType = RuntimeEventType,
                     EventName = CommandActionEventName,
-                    EventPayload = payload
+                    EventPayload = payloadSnapshot
                 };
 
                 RuntimeEventDispatcher.DispatchAsync( eventData )
