@@ -5,8 +5,8 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
@@ -261,67 +261,95 @@ namespace EddiInaraService
             return indexedEvents;
         }
 
-        private bool validateResponse(InaraResponse inaraResponse, List<InaraAPIEvent> indexedEvents, bool header = false)
+        private bool validateResponse ( InaraResponse inaraResponse, List<InaraAPIEvent> indexedEvents,
+            bool header = false )
         {
-            // 200 - Ok
-            if (inaraResponse.eventStatus == 200) { return true; }
+            // Guard against null parameters
+            ArgumentNullException.ThrowIfNull( inaraResponse );
+            ArgumentNullException.ThrowIfNull( indexedEvents );
 
-            // Anything else - something is wrong.
-            var data = new Dictionary<string, object>()
+            // 200 - Success
+            if ( inaraResponse.eventStatus == HttpStatusCode.OK ) { return true; }
+
+            var debugData = new Dictionary<string, object>()
             {
-                { "InaraAPIEvent", indexedEvents.Find(e => e.eventCustomID == inaraResponse.eventCustomID) },
-                { "InaraResponse", inaraResponse },
-                { "Stacktrace", new StackTrace() }
+                { "InaraAPIEvent", indexedEvents.Find( e => e.eventCustomID == inaraResponse.eventCustomID ) },
+                { "InaraResponse", inaraResponse }
             };
+
+            // 202 and 204 - Success with warnings
+            if ( inaraResponse.eventStatus is HttpStatusCode.Accepted or HttpStatusCode.NoContent )
+            {
+                Logging.Warn(
+                    $"Inara warning/soft error reported (status {inaraResponse.eventStatus}): " +
+                    ( inaraResponse.eventStatusText ?? "(No response)" ), JsonConvert.SerializeObject( debugData ) );
+                return true;
+            }
+
+            // Other status codes - log and handle based on context
             try
             {
-                // 202 - Warning (everything is OK, but there may be multiple results for the input properties, etc.)
-                // 204 - 'Soft' error (everything was formally OK, but there are no results for the properties set, etc.)
-                if (inaraResponse.eventStatus is 202 or 204)
+                if ( !string.IsNullOrEmpty( inaraResponse.eventStatusText ) )
                 {
-                    Logging.Warn("Inara warning or soft error reported: " + (inaraResponse.eventStatusText ?? "(No response)"), JsonConvert.SerializeObject(data));
-                }
-                // Other errors
-                else if (!string.IsNullOrEmpty(inaraResponse.eventStatusText))
-                {
-                    if (header)
+                    if ( header )
                     {
-                        Logging.Warn("Inara sending error: " + (inaraResponse.eventStatusText ?? "(No response)"), JsonConvert.SerializeObject(data));
-                        if (inaraResponse.eventStatusText.Contains("Invalid API key"))
-                        {
-                            ReEnqueueAPIEvents(indexedEvents);
-                            // The Inara API key has been rejected. We'll note and remember that.
-                            var inaraConfiguration = ConfigService.Instance.inaraConfiguration;
-                            inaraConfiguration.isAPIkeyValid = false;
-                            ConfigService.Instance.inaraConfiguration = inaraConfiguration;
-                            // Send internal events to the Inara Responder and the UI to handle the invalid API key appropriately
-                            invalidAPIkey?.Invoke(inaraConfiguration, EventArgs.Empty);
-                        }
-                        else if (inaraResponse.eventStatusText.Contains("access to API was temporarily revoked"))
-                        {
-                            // Note: This can be thrown by over-use of the readonly API key.
-                            ReEnqueueAPIEvents(indexedEvents);
-                            tooManyRequests = true;
-                        }
+                        HandleHeaderError( inaraResponse, indexedEvents, debugData );
                     }
                     else
                     {
-                        // There may be an issue with a specific API event.
-                        // We'll add that API event to a list and omit sending that event again in this instance.
-                        Logging.Error("Inara event error: " + inaraResponse.eventStatusText, data);
-                        var eventName = indexedEvents.Find(e => e.eventCustomID == inaraResponse.eventCustomID)?.eventName;
-                        if ( !string.IsNullOrEmpty( eventName ) )
-                        {
-                            invalidAPIEvents.Add( eventName );
-                        }
+                        HandleEventError( inaraResponse, indexedEvents, debugData );
                     }
                 }
+
                 return false;
             }
-            catch (Exception e)
+            catch ( ArgumentException e )
             {
-                Logging.Error("Failed to handle Inara server response", e);
+                Logging.Error( "Failed to handle Inara server response", e );
                 return false;
+            }
+        }
+
+        private void HandleHeaderError ( InaraResponse response, List<InaraAPIEvent> indexedEvents,
+            Dictionary<string, object> debugData )
+        {
+            Logging.Warn(
+                $"Inara sending error (status {response.eventStatus}): " +
+                ( response.eventStatusText ?? "(No response)" ),
+                JsonConvert.SerializeObject( debugData ) );
+
+            if ( response.eventStatusText.Contains( "Invalid API key", StringComparison.OrdinalIgnoreCase ) )
+            {
+                ReEnqueueAPIEvents( indexedEvents );
+                // The Inara API key has been rejected. We'll note and remember that.
+                var inaraConfiguration = ConfigService.Instance.inaraConfiguration;
+                inaraConfiguration.isAPIkeyValid = false;
+                ConfigService.Instance.inaraConfiguration = inaraConfiguration;
+                // Send internal events to the Inara Responder and the UI to handle the invalid API key appropriately
+                invalidAPIkey?.Invoke( inaraConfiguration, EventArgs.Empty );
+            }
+            else if ( response.eventStatusText.Contains( "access to API was temporarily revoked",
+                         StringComparison.OrdinalIgnoreCase ) )
+            {
+                // Note: This can be thrown by over-use of the readonly API key.
+                ReEnqueueAPIEvents( indexedEvents );
+                tooManyRequests = true;
+            }
+        }
+
+        private void HandleEventError ( InaraResponse response, List<InaraAPIEvent> indexedEvents,
+            Dictionary<string, object> debugData )
+        {
+            // There may be an issue with a specific API event.
+            // We'll add that API event to a list and omit sending that event again in this instance.
+            Logging.Error(
+                $"Inara event error (status {response.eventStatus}): " + response.eventStatusText,
+                JsonConvert.SerializeObject( debugData ) );
+
+            var eventName = indexedEvents.Find( e => e.eventCustomID == response.eventCustomID )?.eventName;
+            if ( !string.IsNullOrEmpty( eventName ) )
+            {
+                invalidAPIEvents.Add( eventName );
             }
         }
 
@@ -395,7 +423,7 @@ namespace EddiInaraService
 
     public class InaraResponse
     {
-        [UsedImplicitly] public int eventStatus { get; set; }
+        [UsedImplicitly] public HttpStatusCode eventStatus { get; set; }
 
         [UsedImplicitly] public string eventStatusText { get; set; } // Optional status text. Typically not set unless there was a problem.
 
