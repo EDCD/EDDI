@@ -89,7 +89,7 @@ namespace EddiDataDefinitions
         }
         [JsonIgnore] private DateTime? _mappedDateTime;
 
-        [PublicAPI( "Whether you received an efficiency bonus when mapping this body" ), JsonIgnore]
+        [PublicAPI( "Whether you received an efficiency bonus when mapping this body" ), JsonProperty(nameof( mappedEfficiently ) )]
         public bool mappedEfficiently
         {
             get => _mappedEfficiently;

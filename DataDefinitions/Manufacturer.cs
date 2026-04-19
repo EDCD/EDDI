@@ -8,7 +8,7 @@ namespace EddiDataDefinitions
     public class Manufacturer
     {
         public static readonly Manufacturer CoreDynamics = new( "Core Dynamics", [ new Translation( "Core", "kɔɹ" ), new Translation( "Dynamics", "dəˈnamɪks" ) ] );
-        public static readonly Manufacturer FaulconDeLacy = new( "Faulcon DeLacy", [ new Translation( "Falcon", "ˈfælkən" ), new Translation( "Delacy", "dᵻlˈæ.si" ) ] );
+        public static readonly Manufacturer FaulconDeLacy = new( "Faulcon DeLacy", [ new Translation( "Falcon", "ˈfælkən" ), new Translation( "DeLacy", "dᵻlˈæ.si" ) ] );
         public static readonly Manufacturer Gutamaya = new( "Gutamaya", [ new Translation( "Gutamaya", "guːtəˈmaɪə" ) ] );
         public static readonly Manufacturer KinematicArmaments = new( "Kinematic Armaments" );
         public static readonly Manufacturer LakonSpaceways = new( "Lakon Spaceways", [ new Translation( "Lakon", "leɪkɒn" ), new Translation( "Spaceways", "speɪsweɪz" ) ] );
