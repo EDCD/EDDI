@@ -1,4 +1,5 @@
-﻿using EddiDataDefinitions;
+﻿using EddiConfigService;
+using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -10,6 +11,7 @@ namespace EddiEvents
     {
         public const string NAME = "Codex entry obtained";
         public const string DESCRIPTION = "Triggered when a codex entry is obtained";
+
         public static readonly string[] SAMPLES =
         [
             @"{ ""timestamp"":""2023-07-22T04:10:26Z"", ""event"":""CodexEntry"", ""EntryID"":2440503, ""Name"":""$Codex_Ent_Shrubs_05_F_Name;"", ""Name_Localised"":""Frutexa Fera - Green"", ""SubCategory"":""$Codex_SubCategory_Organic_Structures;"", ""SubCategory_Localised"":""Organic structures"", ""Category"":""$Codex_Category_Biology;"", ""Category_Localised"":""Biological and Geological"", ""Region"":""$Codex_RegionName_5;"", ""Region_Localised"":""Norma Arm"", ""System"":""Greae Phio FO-G d11-1005"", ""SystemAddress"":34542299533283, ""BodyID"":42, ""Latitude"":-45.382187, ""Longitude"":173.182938, ""IsNewEntry"":true }",
@@ -54,11 +56,14 @@ namespace EddiEvents
         [PublicAPI( "The stellar region where the discovery was found." ) ]
         public string region { get; }
 
-        [PublicAPI( "True if this is a new discovery." )]
-        public bool newEntry { get; private set; }
+        [PublicAPI( "True if this is a new personal discovery within the current stellar region." )]
+        public bool newRegionEntry { get; private set; }
 
         [PublicAPI( "True if one or more new traits were discovered." )]
         public bool newTrait { get; private set; }
+
+        [PublicAPI( "True if this is a new personal discovery galaxy-wide." )]
+        public bool newEntry { get; private set; }
 
         [PublicAPI( "The credit voucher amount awarded for the discovery, if any" )]
         public int voucherAmount { get; private set; }
@@ -85,7 +90,7 @@ namespace EddiEvents
         public string subCategoryEdName { get; }
 
         public CodexEntryEvent ( DateTime timestamp, string systemName, ulong systemAddress, string region, long entryId,
-            string edname, string subCategoryEdName, string categoryEdName, bool newEntry,
+            string edname, string subCategoryEdName, string categoryEdName, bool newRegionEntry,
             bool newTrait, int voucherAmount ) : base( timestamp, NAME )
         {
             this.entryId = entryId;
@@ -95,9 +100,22 @@ namespace EddiEvents
             this.systemName = systemName;
             this.systemAddress = systemAddress;
             this.region = region;
-            this.newEntry = newEntry;
+            this.newRegionEntry = newRegionEntry;
             this.newTrait = newTrait;
             this.voucherAmount = voucherAmount;
+
+            // Check if this entry was discovered before by querying ConfigService directly
+            var discoveredIds = ConfigService.Instance.codexDiscoveryConfiguration?.discoveredEntryIds ?? [];
+            newEntry = newRegionEntry && !discoveredIds.Contains( entryId );
+
+            // Track this entry as discovered and persist it
+            var config = ConfigService.Instance.codexDiscoveryConfiguration;
+            if ( config != null )
+            {
+                var updatedIds = new HashSet<long>( config.discoveredEntryIds ) { entryId };
+                config.discoveredEntryIds = updatedIds;
+                ConfigService.Instance.codexDiscoveryConfiguration = config;
+            }
 
             switch ( categoryEdName )
             {

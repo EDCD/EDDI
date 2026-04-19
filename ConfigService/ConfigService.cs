@@ -33,6 +33,12 @@ namespace EddiConfigService
             set => SetConfig( nameof( CommanderConfiguration ), value );
         }
 
+        public CodexDiscoveryConfiguration codexDiscoveryConfiguration
+        {
+            get => GetConfig<CodexDiscoveryConfiguration>( nameof( CodexDiscoveryConfiguration ) );
+            set => SetConfig( nameof( CodexDiscoveryConfiguration ), value );
+        }
+
         public CrimeMonitorConfiguration crimeMonitorConfiguration
         {
             get => GetConfig<CrimeMonitorConfiguration>( nameof( CrimeMonitorConfiguration ) );

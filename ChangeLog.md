@@ -10,6 +10,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * The `Organic` object has been revised to include a credit `value` property (set whenever the species is identified and when organic data is sold). 
     * The `Organic` object has been revised to include a credit `bonus` property (set when you have registered a first footfall on the body and when organic data is sold). 
   * Events
+    * `Codex entry` event revised to include a `newRegionEntry` property which identifies a new personal discovery for the current region. The `newEntry` now indicates whether this is a new personal discovery galaxy-wide (since the start of tracking, i.e. the installation of this release)
     * `Hand weapon purchased` added.
     * `Hand weapon sold` added.
     * `Hand weapon upgraded` added.
