@@ -34,13 +34,15 @@ When you start EDDI it will bring up a window with a number of tabs.  Each tab e
 
 ## Using EDDI with VoiceAttack
 
+___EDDI version 4.1.9 and below support VoiceAttack 1 rather than VoiceAttack 2.___
+
 Initial EDDI integration with VoiceAttack is automatic, but there is a lot that you can do to integrate EDDI with your own VoiceAttack scripts.  Full details of what you can do with EDDI and VoiceAttack are on the [VoiceAttack EDDI page](https://github.com/EDCD/EDDI/wiki/VoiceAttack-Integration).
 
 ## Upgrading EDDI
 
-If you are upgrading from EDDI 1 EDDI it is recommended that you uninstall your existing version of EDDI and remove your %APPDATA%\EDDI directory prior to upgrading to the new one.  This ensures that there is a clean installation and reduces the chances of problems occurring.
+If you are upgrading from EDDI version 1.X then it is recommended that you uninstall your existing version of EDDI and remove your %APPDATA%\EDDI directory prior to upgrading to the new one.  This ensures that there is a clean installation and reduces the chances of problems occurring.
 
-If you are upgrading from another version of EDDI 2 the installer will take care of changes so you just need to run it.
+If you are upgrading from EDDI version 2+ then the installer will take care of changes so you just need to run it.
 
 ## EDDI Voices
 

@@ -2,7 +2,7 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-## 5.0.0
+## 5.0.0-b1
   * Core
     * Target framework updated to .Net 8.
     * The `Body` object boolean property `alreadyfootfalled` has been renamed to `alreadyfirstfootfalled` for clarity.
