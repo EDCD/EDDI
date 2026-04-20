@@ -10,6 +10,7 @@ using EddiSpeechService;
 using EddiSpeechService.SpeechConversions;
 using EddiVoiceAttackAdapter;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -33,6 +34,10 @@ namespace EddiVoiceAttackResponder
 
         private static readonly AsyncLocal<RuntimeActionBatchState> runtimeActionBatch = new();
 
+        // Cache for tracking last-dispatched values to prevent redundant IPC updates
+        // Key format: ""'{action}:{key}'"" (e.g., ""'set_text:Ship name'"") â†’ value
+        private static readonly ConcurrentDictionary<string, object> lastDispatchedValues = new();
+        
         // The following variables notify changes via `PropertyChanged`
         private static readonly Dictionary<string, Action> StandardValues = new()
         {
@@ -50,22 +55,42 @@ namespace EddiVoiceAttackResponder
             { nameof(EDDI.Instance.inOdyssey), () => RuntimeSetBoolean("odyssey", EDDI.Instance.inOdyssey) },
         };
 
+        // Cache property names extracted from fully-qualified keys for lookups during PropertyChanged events
+        private static readonly Dictionary<string, Action> StandardValuesByPropertyName = BuildPropertyNameLookup();
+
+        /// <summary>Build a lookup dictionary mapping property names to their actions </summary>
+        private static Dictionary<string, Action> BuildPropertyNameLookup()
+        {
+            var lookup = new Dictionary<string, Action>();
+            foreach (var kvp in StandardValues)
+            {
+                var lastDotIndex = kvp.Key.LastIndexOf('.');
+                var propertyName = lastDotIndex >= 0 
+                    ? kvp.Key.Substring(lastDotIndex + 1) 
+                    : kvp.Key;
+                lookup[propertyName] = kvp.Value;
+            }
+            return lookup;
+        }
+
         protected internal static void updateStandardValues(PropertyChangedEventArgs eventArgs)
         {
             RunWithRuntimeActionBatch( () =>
             {
                 // Update select values when triggered by a `PropertyChanged` event
-                foreach (var standardValue in StandardValues)
+                // Use pre-built lookup dictionary property name resolution
+                if (eventArgs.PropertyName != null && StandardValuesByPropertyName.TryGetValue(eventArgs.PropertyName, out var action))
                 {
-                    if (eventArgs.PropertyName == standardValue.Key.Split('.').Last())
+                    var fullKey = StandardValues.FirstOrDefault(kvp => kvp.Value == action).Key;
+                    if (fullKey != null)
                     {
                         try
                         {
-                            LockManager.GetLock(standardValue.Key, standardValue.Value);
+                            LockManager.GetLock(fullKey, action);
                         }
                         catch (Exception ex)
                         {
-                            Logging.Error($"Failed to set {standardValue.Key}", ex);
+                            Logging.Error($"Failed to set {fullKey}", ex);
                         }
                     }
                 }
@@ -177,18 +202,23 @@ namespace EddiVoiceAttackResponder
             {
                 foreach ( var key in dict.Keys )
                 {
-                    var varname = "EDDI " + prefix + " " + key;
-
-                    RuntimeSetText( varname, null );
-                    RuntimeSetInt( varname, null );
-                    RuntimeSetDecimal( varname, null );
-                    RuntimeSetBoolean( varname, null );
-
+                    var varname = $"EDDI {prefix} {key}";
                     var value = dict[ key ];
-                    if ( value is null ) { continue; }
+
+                    // If value is null, clear all type variants
+                    if ( value is null ) 
+                    { 
+                        RuntimeSetText( varname, null );
+                        RuntimeSetInt( varname, null );
+                        RuntimeSetDecimal( varname, null );
+                        RuntimeSetBoolean( varname, null );
+                        continue;
+                    }
 
                     var s = value.ToString();
                     RuntimeSetText( varname, s );
+
+                    // Try parsing as decimal (covers numeric types and booleans)
                     if ( value is decimal d || decimal.TryParse( s, out d ) )
                     {
                         RuntimeSetDecimal( varname, d );
@@ -203,11 +233,13 @@ namespace EddiVoiceAttackResponder
                         RuntimeSetDecimal( varname, null );
                     }
 
+                    // Try parsing as int
                     if ( value is int i || int.TryParse( s, out i ) )
                     {
                         RuntimeSetInt( varname, i );
                     }
 
+                    // Try parsing as bool
                     if ( value is bool b || bool.TryParse( s, out b ) )
                     {
                         RuntimeSetBoolean( varname, b );
@@ -232,23 +264,23 @@ namespace EddiVoiceAttackResponder
             {
                 Logging.Debug("Setting station information");
 
-                RuntimeSetText(prefix + " name", station?.name);
-                RuntimeSetDecimal(prefix + " distance from star", station?.distancefromstar);
-                RuntimeSetText(prefix + " government", (station?.Faction?.Government ?? Government.None).localizedName);
-                RuntimeSetText(prefix + " allegiance", (station?.Faction?.Allegiance ?? Superpower.None).localizedName);
-                RuntimeSetText(prefix + " faction", station?.Faction?.name);
-                RuntimeSetText(prefix + " state", (station?.Faction?.presences
+                RuntimeSetText( $"{prefix} name", station?.name);
+                RuntimeSetDecimal( $"{prefix} distance from star", station?.distancefromstar);
+                RuntimeSetText( $"{prefix} government", (station?.Faction?.Government ?? Government.None).localizedName);
+                RuntimeSetText( $"{prefix} allegiance", (station?.Faction?.Allegiance ?? Superpower.None).localizedName);
+                RuntimeSetText( $"{prefix} faction", station?.Faction?.name);
+                RuntimeSetText( $"{prefix} state", (station?.Faction?.presences
                     .FirstOrDefault(p => p.systemAddress == station.systemAddress)?.FactionState ?? FactionState.None).localizedName);
-                RuntimeSetText(prefix + " primary economy", station?.primaryeconomy);
-                RuntimeSetText(prefix + " secondary economy", station?.secondaryeconomy);
+                RuntimeSetText( $"{prefix} primary economy", station?.primaryeconomy);
+                RuntimeSetText( $"{prefix} secondary economy", station?.secondaryeconomy);
                 // Services
-                RuntimeSetBoolean(prefix + " has refuel", station?.hasrefuel);
-                RuntimeSetBoolean(prefix + " has repair", station?.hasrepair);
-                RuntimeSetBoolean(prefix + " has rearm", station?.hasrearm);
-                RuntimeSetBoolean(prefix + " has market", station?.hasmarket);
-                RuntimeSetBoolean(prefix + " has black market", station?.hasblackmarket);
-                RuntimeSetBoolean(prefix + " has outfitting", station?.hasoutfitting);
-                RuntimeSetBoolean(prefix + " has shipyard", station?.hasshipyard);
+                RuntimeSetBoolean( $"{prefix} has refuel", station?.hasrefuel);
+                RuntimeSetBoolean( $"{prefix} has repair", station?.hasrepair);
+                RuntimeSetBoolean( $"{prefix} has rearm", station?.hasrearm);
+                RuntimeSetBoolean( $"{prefix} has market", station?.hasmarket);
+                RuntimeSetBoolean( $"{prefix} has black market", station?.hasblackmarket);
+                RuntimeSetBoolean( $"{prefix} has outfitting", station?.hasoutfitting);
+                RuntimeSetBoolean( $"{prefix} has shipyard", station?.hasshipyard);
 
                 // Backwards-compatibility with 1.x documented variables
                 RuntimeSetText( prefix, station?.name );
@@ -311,68 +343,71 @@ namespace EddiVoiceAttackResponder
         {
             RunWithRuntimeActionBatch( () =>
             {
-                Logging.Debug("Setting ship information (" + prefix + ")");
+                Logging.Debug( $"Setting ship information ({prefix})" );
                 try
                 {
-                    RuntimeSetText(prefix + " manufacturer", ship?.manufacturer);
-                    RuntimeSetText(prefix + " model", ship?.model);
-                    RuntimeSetText(prefix + " model (spoken)", ship?.SpokenModel());
+                    RuntimeSetText( $"{prefix} manufacturer", ship?.manufacturer);
+                    RuntimeSetText( $"{prefix} model", ship?.model);
+                    RuntimeSetText( $"{prefix} model (spoken)", ship?.SpokenModel());
 
                     var cmdrName = ConfigService.Instance.commanderConfiguration.commanderName;
                     if ( cmdrName != null )
                     {
                         var cmdrNamePrefix = cmdrName.Length >= 3 ? cmdrName.Substring( 0, 3 ).ToUpperInvariant() : cmdrName.ToUpperInvariant();
-                        RuntimeSetText( prefix + " callsign", ship?.manufacturer + " " + cmdrNamePrefix );
-                        RuntimeSetText( prefix + " callsign (spoken)", ship?.SpokenManufacturer() + " " + SpeechConversions.ICAO( cmdrNamePrefix ) );
+                        RuntimeSetText( $"{prefix} callsign", $"{ship?.manufacturer} {cmdrNamePrefix}" );
+                        RuntimeSetText( $"{prefix} callsign (spoken)",
+                            $"{ship?.SpokenManufacturer()} {SpeechConversions.ICAO( cmdrNamePrefix )}" );
                     }
 
-                    RuntimeSetText(prefix + " name", ship?.name);
-                    RuntimeSetText(prefix + " name (spoken)", ship?.phoneticName);
-                    RuntimeSetText(prefix + " ident", ship?.ident);
-                    RuntimeSetText(prefix + " ident (spoken)", SpeechConversions.ICAO(ship?.ident, false));
-                    RuntimeSetText(prefix + " role", ship?.Role?.localizedName);
-                    RuntimeSetText(prefix + " size", ship?.Size?.localizedName);
-                    RuntimeSetDecimal(prefix + " value", ship?.value);
-                    RuntimeSetText(prefix + " value (spoken)", SpeechConversions.Humanize(ship?.value));
-                    RuntimeSetDecimal(prefix + " hull value", ship?.hullvalue);
-                    RuntimeSetText(prefix + " hull value (spoken)", SpeechConversions.Humanize(ship?.hullvalue));
-                    RuntimeSetDecimal(prefix + " modules value", ship?.modulesvalue);
-                    RuntimeSetText(prefix + " modules value (spoken)", SpeechConversions.Humanize(ship?.modulesvalue));
-                    RuntimeSetDecimal(prefix + " rebuy", ship?.rebuy);
-                    RuntimeSetText(prefix + " rebuy (spoken)", SpeechConversions.Humanize(ship?.rebuy));
-                    RuntimeSetDecimal(prefix + " health", ship?.health);
-                    RuntimeSetInt(prefix + " cargo capacity", ship?.cargocapacity);
-                    RuntimeSetBoolean(prefix + " hot", ship?.hot);
+                    RuntimeSetText( $"{prefix} name", ship?.name);
+                    RuntimeSetText( $"{prefix} name (spoken)", ship?.phoneticName);
+                    RuntimeSetText( $"{prefix} ident", ship?.ident);
+                    RuntimeSetText( $"{prefix} ident (spoken)", SpeechConversions.ICAO(ship?.ident, false));
+                    RuntimeSetText( $"{prefix} role", ship?.Role?.localizedName);
+                    RuntimeSetText( $"{prefix} size", ship?.Size?.localizedName);
+                    RuntimeSetDecimal( $"{prefix} value", ship?.value);
+                    RuntimeSetText( $"{prefix} value (spoken)", SpeechConversions.Humanize(ship?.value));
+                    RuntimeSetDecimal( $"{prefix} hull value", ship?.hullvalue);
+                    RuntimeSetText( $"{prefix} hull value (spoken)", SpeechConversions.Humanize(ship?.hullvalue));
+                    RuntimeSetDecimal( $"{prefix} modules value", ship?.modulesvalue);
+                    RuntimeSetText( $"{prefix} modules value (spoken)", SpeechConversions.Humanize(ship?.modulesvalue));
+                    RuntimeSetDecimal( $"{prefix} rebuy", ship?.rebuy);
+                    RuntimeSetText( $"{prefix} rebuy (spoken)", SpeechConversions.Humanize(ship?.rebuy));
+                    RuntimeSetDecimal( $"{prefix} health", ship?.health);
+                    RuntimeSetInt( $"{prefix} cargo capacity", ship?.cargocapacity);
+                    RuntimeSetBoolean( $"{prefix} hot", ship?.hot);
 
-                    setShipModuleValues(ship?.bulkheads, prefix + " bulkheads" );
-                    setShipModuleValues(ship?.powerplant, prefix + " power plant" );
-                    setShipModuleValues(ship?.thrusters, prefix + " thrusters" );
-                    setShipModuleValues(ship?.frameshiftdrive, prefix + " frame shift drive" );
-                    setShipModuleValues(ship?.powerdistributor, prefix + " power distributor" );
-                    setShipModuleValues(ship?.sensors, prefix + " sensors" );
-                    setShipModuleValues(ship?.fueltank, prefix + " fuel tank" );
+                    setShipModuleValues(ship?.bulkheads, $"{prefix} bulkheads" );
+                    setShipModuleValues(ship?.powerplant, $"{prefix} power plant" );
+                    setShipModuleValues(ship?.thrusters, $"{prefix} thrusters" );
+                    setShipModuleValues(ship?.frameshiftdrive, $"{prefix} frame shift drive" );
+                    setShipModuleValues(ship?.powerdistributor, $"{prefix} power distributor" );
+                    setShipModuleValues(ship?.sensors, $"{prefix} sensors" );
+                    setShipModuleValues(ship?.fueltank, $"{prefix} fuel tank" );
 
                     if ( EDDI.Instance.CurrentStation is not null && EDDI.Instance.CurrentStation.outfitting.Count > 0 )
                     {
                         var stationOutfitting = EDDI.Instance.CurrentStation?.outfitting.ToList();
-                        setShipModuleOutfittingValues(ship?.lifesupport, stationOutfitting, prefix + " life support" );
-                        setShipModuleOutfittingValues(ship?.bulkheads, stationOutfitting, prefix + " bulkheads" );
-                        setShipModuleOutfittingValues(ship?.powerplant, stationOutfitting, prefix + " power plant" );
-                        setShipModuleOutfittingValues(ship?.thrusters, stationOutfitting, prefix + " thrusters" );
-                        setShipModuleOutfittingValues(ship?.frameshiftdrive, stationOutfitting, prefix + " frame shift drive" );
-                        setShipModuleOutfittingValues(ship?.lifesupport, stationOutfitting, prefix + " life support" );
-                        setShipModuleOutfittingValues(ship?.powerdistributor, stationOutfitting, prefix + " power distributor" );
-                        setShipModuleOutfittingValues(ship?.sensors, stationOutfitting, prefix + " sensors" );
-                        setShipModuleOutfittingValues(ship?.fueltank, stationOutfitting, prefix + " fuel tank" );
+                        setShipModuleOutfittingValues(ship?.lifesupport, stationOutfitting, $"{prefix} life support" );
+                        setShipModuleOutfittingValues(ship?.bulkheads, stationOutfitting, $"{prefix} bulkheads" );
+                        setShipModuleOutfittingValues(ship?.powerplant, stationOutfitting, $"{prefix} power plant" );
+                        setShipModuleOutfittingValues(ship?.thrusters, stationOutfitting, $"{prefix} thrusters" );
+                        setShipModuleOutfittingValues(ship?.frameshiftdrive, stationOutfitting,
+                            $"{prefix} frame shift drive" );
+                        setShipModuleOutfittingValues(ship?.lifesupport, stationOutfitting, $"{prefix} life support" );
+                        setShipModuleOutfittingValues(ship?.powerdistributor, stationOutfitting,
+                            $"{prefix} power distributor" );
+                        setShipModuleOutfittingValues(ship?.sensors, stationOutfitting, $"{prefix} sensors" );
+                        setShipModuleOutfittingValues(ship?.fueltank, stationOutfitting, $"{prefix} fuel tank" );
                     }
 
                     // Special for fuel tank - capacity and total capacity
-                    RuntimeSetDecimal(prefix + " fuel tank capacity", ship?.fueltankcapacity);
-                    RuntimeSetDecimal(prefix + " total fuel tank capacity", ship?.fueltanktotalcapacity);
+                    RuntimeSetDecimal( $"{prefix} fuel tank capacity", ship?.fueltankcapacity);
+                    RuntimeSetDecimal( $"{prefix} total fuel tank capacity", ship?.fueltanktotalcapacity);
 
                     // Special for max jump range and max fuel per jump
-                    RuntimeSetDecimal(prefix + " max jump range", ship?.maxjumprange);
-                    RuntimeSetDecimal(prefix + " max fuel per jump", ship?.maxfuelperjump);
+                    RuntimeSetDecimal( $"{prefix} max jump range", ship?.maxjumprange);
+                    RuntimeSetDecimal( $"{prefix} max fuel per jump", ship?.maxfuelperjump);
 
                     // Hardpoints
                     SetShipHardpoints( ship, prefix );
@@ -383,9 +418,9 @@ namespace EddiVoiceAttackResponder
                     // Fetch the star system in which the ship is stored
                     if ( ship?.starsystem != null)
                     {
-                        RuntimeSetText(prefix + " system", ship.starsystem);
-                        RuntimeSetText(prefix + " station", ship.station);
-                        RuntimeSetDecimal(prefix + " distance", ship.distance);
+                        RuntimeSetText( $"{prefix} system", ship.starsystem);
+                        RuntimeSetText( $"{prefix} station", ship.station);
+                        RuntimeSetDecimal( $"{prefix} distance", ship.distance);
                     }
 
                     setStatus( "Operational");
@@ -408,13 +443,13 @@ namespace EddiVoiceAttackResponder
             {
                 var Compartment = i <= (filledCompartments - 1) ? ship?.compartments[i] : null;
                 var baseCompartmentName = $"{prefix} compartment {i}";
-                RuntimeSetInt( baseCompartmentName + " size", Compartment?.size );
-                RuntimeSetBoolean( baseCompartmentName + " occupied", Compartment?.module != null );
-                setShipModuleValues( Compartment?.module, baseCompartmentName + " module" );
+                RuntimeSetInt( $"{baseCompartmentName} size", Compartment?.size );
+                RuntimeSetBoolean( $"{baseCompartmentName} occupied", Compartment?.module != null );
+                setShipModuleValues( Compartment?.module, $"{baseCompartmentName} module" );
                 setShipModuleOutfittingValues( Compartment?.module, EDDI.Instance.CurrentStation?.outfitting,
-                    baseCompartmentName + " module" );
+                    $"{baseCompartmentName} module" );
             }
-            RuntimeSetInt( prefix + " compartments", filledCompartments );
+            RuntimeSetInt( $"{prefix} compartments", filledCompartments );
         }
 
         private static void SetShipHardpoints ( Ship ship, string prefix )
@@ -423,41 +458,41 @@ namespace EddiVoiceAttackResponder
             var totalHardpointsCount = 0;
             for ( var i = 0; i < (invariantSizeNames.Count - 1); i++ ) // Hardpoint Size
             {
-                var hardpointsAtSize = ship?.hardpoints.Where( h => h.size == i ).ToList() ?? new List<Hardpoint>();
+                var hardpointsAtSize = ship?.hardpoints?.Where( h => h.size == i )?.ToList() ?? new List<Hardpoint>();
                 for ( var j = 0; j < 12; j++ ) // Hardpoint Slots at Size
                     // We want to overshoot the maximum number of hardpoints for each hardpoint size
                     // and overwrite any previously written values with null values
                 {
                     var baseHardpointName = $"{prefix} {invariantSizeNames[i]} hardpoint {j}";
                     var Hardpoint = j <= (hardpointsAtSize.Count - 1) ? hardpointsAtSize[j] : null;
-                    RuntimeSetBoolean( baseHardpointName + " occupied", Hardpoint?.module != null );
-                    setShipModuleValues( Hardpoint?.module, baseHardpointName + " module" );
+                    RuntimeSetBoolean( $"{baseHardpointName} occupied", Hardpoint?.module != null );
+                    setShipModuleValues( Hardpoint?.module, $"{baseHardpointName} module" );
                     setShipModuleOutfittingValues( Hardpoint?.module, EDDI.Instance.CurrentStation?.outfitting,
-                        baseHardpointName + " module" );
+                        $"{baseHardpointName} module" );
                 }
                 RuntimeSetInt( $"{prefix} {invariantSizeNames[ i ]} hardpoints", hardpointsAtSize.Count );
                 totalHardpointsCount += hardpointsAtSize.Count;
             }
-            RuntimeSetInt( prefix + " hardpoints", totalHardpointsCount );
+            RuntimeSetInt( $"{prefix} hardpoints", totalHardpointsCount );
         }
 
         /// <summary>Find a module in outfitting that matches our existing module and provide its price</summary>
         private static void setShipModuleValues(Module module, string name )
         {
             RuntimeSetText(name, module?.localizedName);
-            RuntimeSetInt(name + " class", module?.@class);
-            RuntimeSetText(name + " grade", module?.grade);
-            RuntimeSetDecimal(name + " health", module?.health);
-            RuntimeSetDecimal(name + " cost", module?.price);
-            RuntimeSetDecimal(name + " value", module?.value);
+            RuntimeSetInt( $"{name} class", module?.@class);
+            RuntimeSetText( $"{name} grade", module?.grade);
+            RuntimeSetDecimal( $"{name} health", module?.health);
+            RuntimeSetDecimal( $"{name} cost", module?.price);
+            RuntimeSetDecimal( $"{name} value", module?.value);
             if (module != null && module.price < module.value)
             {
                 var discount = Math.Round((1 - (module.price / (decimal)module.value)) * 100, 1);
-                RuntimeSetDecimal(name + " discount", discount > 0.01M ? discount : (decimal?)null);
+                RuntimeSetDecimal( $"{name} discount", discount > 0.01M ? discount : (decimal?)null);
             }
             else
             {
-                RuntimeSetDecimal(name + " discount", null);
+                RuntimeSetDecimal( $"{name} discount", null);
             }
         }
 
@@ -471,21 +506,21 @@ namespace EddiVoiceAttackResponder
                     if (existing.edname == Module?.edname)
                     {
                         // Found it
-                        RuntimeSetDecimal(name + " station cost", Module?.price);
+                        RuntimeSetDecimal( $"{name} station cost", Module?.price);
                         if (Module?.price < existing.price)
                         {
                             // And it's cheaper
-                            RuntimeSetDecimal(name + " station discount", existing.price - Module.price);
-                            RuntimeSetText(name + " station discount (spoken)", SpeechConversions.Humanize(existing.price - Module.price));
+                            RuntimeSetDecimal( $"{name} station discount", existing.price - Module.price);
+                            RuntimeSetText( $"{name} station discount (spoken)", SpeechConversions.Humanize(existing.price - Module.price));
                         }
                         return;
                     }
                 }
             }
             // Not found so remove any existing
-            RuntimeSetDecimal(name + " station cost", null);
-            RuntimeSetDecimal(name + " station discount", null);
-            RuntimeSetText(name + " station discount (spoken)", null);
+            RuntimeSetDecimal( $"{name} station cost", null);
+            RuntimeSetDecimal( $"{name} station discount", null);
+            RuntimeSetText( $"{name} station discount (spoken)", null);
         }
 
         protected static void setShipyardValues(List<Ship> shipyard)
@@ -497,7 +532,7 @@ namespace EddiVoiceAttackResponder
                     var currentStoredShip = 1;
                     foreach (var StoredShip in shipyard)
                     {
-                        setShipValues(StoredShip, "Stored ship " + currentStoredShip);
+                        setShipValues(StoredShip, $"Stored ship {currentStoredShip}" );
                         currentStoredShip++;
                     }
 
@@ -510,62 +545,62 @@ namespace EddiVoiceAttackResponder
         {
             RunWithRuntimeActionBatch( () =>
             {
-                Logging.Debug("Setting system information (" + prefix + ")");
+                Logging.Debug( $"Setting system information ({prefix})" );
                 try
                 {
                     var phoneticStarSystem = SpeechConversions.getPhoneticStarSystem( system?.systemname );
                     var phoneticPopulation = SpeechConversions.Humanize( system?.population );
                     var phoneticPower = SpeechConversions.getPhoneticPower( system?.power );
 
-                    RuntimeSetText(prefix + " name", system?.systemname);
-                    RuntimeSetText(prefix + " name (spoken)", phoneticStarSystem );
-                    RuntimeSetDecimal(prefix + " distance from home", system?.distancefromhome);
-                    RuntimeSetInt(prefix + " visits", system?.visits);
-                    RuntimeSetDate(prefix + " previous visit", system?.visits > 1 ? system.lastvisit : null);
-                    RuntimeSetDecimal(prefix + " minutes since previous visit", system != null && system.visits > 1 && system.lastvisit is not null 
+                    RuntimeSetText( $"{prefix} name", system?.systemname);
+                    RuntimeSetText( $"{prefix} name (spoken)", phoneticStarSystem );
+                    RuntimeSetDecimal( $"{prefix} distance from home", system?.distancefromhome);
+                    RuntimeSetInt( $"{prefix} visits", system?.visits);
+                    RuntimeSetDate( $"{prefix} previous visit", system?.visits > 1 ? system.lastvisit : null);
+                    RuntimeSetDecimal( $"{prefix} minutes since previous visit", system != null && system.visits > 1 && system.lastvisit is not null 
                         ? (long)(DateTime.UtcNow - system.lastvisit.Value).TotalMinutes 
                         : (decimal?)null);
-                    RuntimeSetDecimal(prefix + " population", system?.population);
-                    RuntimeSetText(prefix + " population (spoken)", phoneticPopulation );
-                    RuntimeSetText(prefix + " allegiance", (system?.Faction?.Allegiance ?? Superpower.None).localizedName);
-                    RuntimeSetText(prefix + " government", (system?.Faction?.Government ?? Government.None).localizedName);
-                    RuntimeSetText(prefix + " faction", system?.Faction?.name);
-                    RuntimeSetText(prefix + " primary economy", system?.primaryeconomy);
-                    RuntimeSetText(prefix + " state", (system?.Faction?.presences
+                    RuntimeSetDecimal( $"{prefix} population", system?.population);
+                    RuntimeSetText( $"{prefix} population (spoken)", phoneticPopulation );
+                    RuntimeSetText( $"{prefix} allegiance", (system?.Faction?.Allegiance ?? Superpower.None).localizedName);
+                    RuntimeSetText( $"{prefix} government", (system?.Faction?.Government ?? Government.None).localizedName);
+                    RuntimeSetText( $"{prefix} faction", system?.Faction?.name);
+                    RuntimeSetText( $"{prefix} primary economy", system?.primaryeconomy);
+                    RuntimeSetText( $"{prefix} state", (system?.Faction?.presences
                         .FirstOrDefault(p => p.systemAddress == system.systemAddress)?.FactionState ?? FactionState.None).localizedName);
-                    RuntimeSetText(prefix + " security", system?.security);
-                    RuntimeSetText(prefix + " power", system?.power);
-                    RuntimeSetText(prefix + " power (spoken)", phoneticPower );
-                    RuntimeSetText(prefix + " power state", system?.powerstate);
-                    RuntimeSetBoolean(prefix + " requires permit", system?.requirespermit);
-                    RuntimeSetDecimal(prefix + " X", system?.x);
-                    RuntimeSetDecimal(prefix + " Y", system?.y);
-                    RuntimeSetDecimal(prefix + " Z", system?.z);
-                    RuntimeSetText(prefix + " comment", system?.comment);
-                    RuntimeSetBoolean(prefix + " scoopable", system?.scoopable);
-                    RuntimeSetInt(prefix + " total bodies", system?.totalbodies);
-                    RuntimeSetInt(prefix + " scanned bodies", system?.scannedbodies);
-                    RuntimeSetInt(prefix + " mapped bodies", system?.mappedbodies);
+                    RuntimeSetText( $"{prefix} security", system?.security);
+                    RuntimeSetText( $"{prefix} power", system?.power);
+                    RuntimeSetText( $"{prefix} power (spoken)", phoneticPower );
+                    RuntimeSetText( $"{prefix} power state", system?.powerstate);
+                    RuntimeSetBoolean( $"{prefix} requires permit", system?.requirespermit);
+                    RuntimeSetDecimal( $"{prefix} X", system?.x);
+                    RuntimeSetDecimal( $"{prefix} Y", system?.y);
+                    RuntimeSetDecimal( $"{prefix} Z", system?.z);
+                    RuntimeSetText( $"{prefix} comment", system?.comment);
+                    RuntimeSetBoolean( $"{prefix} scoopable", system?.scoopable);
+                    RuntimeSetInt( $"{prefix} total bodies", system?.totalbodies);
+                    RuntimeSetInt( $"{prefix} scanned bodies", system?.scannedbodies);
+                    RuntimeSetInt( $"{prefix} mapped bodies", system?.mappedbodies);
 
                     if (system != null)
                     {
                         foreach (var Station in system.stations)
                         {
-                            RuntimeSetText(prefix + " station name", Station.name);
+                            RuntimeSetText( $"{prefix} station name", Station.name);
                         }
-                        RuntimeSetInt(prefix + " stations", system.stations.Count);
-                        RuntimeSetInt(prefix + " orbital stations", system.stations.Count(s => !s.IsPlanetary()));
-                        RuntimeSetInt(prefix + " starports", system.stations.Count(s => s.IsStarport()));
-                        RuntimeSetInt(prefix + " outposts", system.stations.Count(s => s.IsOutpost()));
-                        RuntimeSetInt(prefix + " planetary stations", system.stations.Count(s => s.IsPlanetary()));
-                        RuntimeSetInt(prefix + " planetary settlements", system.stations.Count(s => s.IsPlanetarySettlement()));
+                        RuntimeSetInt( $"{prefix} stations", system.stations.Count);
+                        RuntimeSetInt( $"{prefix} orbital stations", system.stations.Count(s => !s.IsPlanetary()));
+                        RuntimeSetInt( $"{prefix} starports", system.stations.Count(s => s.IsStarport()));
+                        RuntimeSetInt( $"{prefix} outposts", system.stations.Count(s => s.IsOutpost()));
+                        RuntimeSetInt( $"{prefix} planetary stations", system.stations.Count(s => s.IsPlanetary()));
+                        RuntimeSetInt( $"{prefix} planetary settlements", system.stations.Count(s => s.IsPlanetarySettlement()));
 
                         Body primaryBody = null;
                         if (system.bodies is { } list && list.Count > 0 )
                         {
                             primaryBody = system.bodies[0].distance == 0 ? system.bodies[0] : null;
                         }
-                        setBodyValues(primaryBody, prefix + " main star");
+                        setBodyValues(primaryBody, $"{prefix} main star" );
                     }
                     // Backwards-compatibility with 1.x documented variables
                     RuntimeSetText( prefix, system?.systemname );
@@ -581,17 +616,17 @@ namespace EddiVoiceAttackResponder
                 {
                     setStatus( "Failed to set system information", e);
                 }
-                Logging.Debug("Set system information (" + prefix + ")");
+                Logging.Debug( $"Set system information ({prefix})" );
             } );
         }
 
         private static void setBodyValues(Body body, string prefix)
         {
-            Logging.Debug("Setting body information (" + prefix + ")");
-            RuntimeSetText(prefix + " name", body?.bodyname);
-            RuntimeSetText(prefix + " stellar class", body?.stellarclass);
-            RuntimeSetDecimal(prefix + " age", body?.age);
-            Logging.Debug("Set body information (" + prefix + ")");
+            Logging.Debug( $"Setting body information ({prefix})" );
+            RuntimeSetText( $"{prefix} name", body?.bodyname);
+            RuntimeSetText( $"{prefix} stellar class", body?.stellarclass);
+            RuntimeSetDecimal( $"{prefix} age", body?.age);
+            Logging.Debug( $"Set body information ({prefix})" );
         }
 
         protected static void setDetailedBodyValues(Body body, string prefix)
@@ -599,58 +634,58 @@ namespace EddiVoiceAttackResponder
             RunWithRuntimeActionBatch( () =>
             {
                 Logging.Debug("Setting current stellar body information");
-                RuntimeSetText(prefix + " type", (body?.bodyType ?? BodyType.None).localizedName);
-                RuntimeSetText( prefix + " system name", body?.systemname );
-                RuntimeSetText(prefix + " name", body?.bodyname);
-                RuntimeSetText(prefix + " short name", body?.shortname);
-                RuntimeSetDecimal( prefix + " distance", body?.distance );
-                RuntimeSetDecimal( prefix + " temperature", body?.temperature );
-                RuntimeSetDecimal( prefix + " radius", body?.radius );
+                RuntimeSetText( $"{prefix} type", (body?.bodyType ?? BodyType.None).localizedName);
+                RuntimeSetText( $"{prefix} system name", body?.systemname );
+                RuntimeSetText( $"{prefix} name", body?.bodyname);
+                RuntimeSetText( $"{prefix} short name", body?.shortname);
+                RuntimeSetDecimal( $"{prefix} distance", body?.distance );
+                RuntimeSetDecimal( $"{prefix} temperature", body?.temperature );
+                RuntimeSetDecimal( $"{prefix} radius", body?.radius );
                 TrySetFromMetaVariables( $"{prefix} rings", new MetaVariables( body?.rings?.GetType(), body?.rings ) );
 
                 // Orbital characteristics
-                RuntimeSetDecimal(prefix + " eccentricity", body?.eccentricity);
-                RuntimeSetDecimal(prefix + " inclination", body?.inclination);
-                RuntimeSetDecimal(prefix + " orbital period", body?.orbitalperiod);
-                RuntimeSetDecimal(prefix + " rotational period", body?.rotationalperiod);
-                RuntimeSetDecimal(prefix + " semi major axis", body?.semimajoraxis);
+                RuntimeSetDecimal( $"{prefix} eccentricity", body?.eccentricity);
+                RuntimeSetDecimal( $"{prefix} inclination", body?.inclination);
+                RuntimeSetDecimal( $"{prefix} orbital period", body?.orbitalperiod);
+                RuntimeSetDecimal( $"{prefix} rotational period", body?.rotationalperiod);
+                RuntimeSetDecimal( $"{prefix} semi major axis", body?.semimajoraxis);
 
                 // Star specific items
                 if (body?.bodyType?.invariantName == "Star")
                 {
-                    RuntimeSetBoolean(prefix + " main star", body.mainstar);
-                    RuntimeSetText(prefix + " stellar class", body.stellarclass);
-                    RuntimeSetText(prefix + " luminosity class", body.luminosityclass);
-                    RuntimeSetDecimal(prefix + " solar mass", body.solarmass);
-                    RuntimeSetDecimal(prefix + " solar radius", body.solarradius);
-                    RuntimeSetText(prefix + " chromaticity", body.chromaticity);
-                    RuntimeSetDecimal(prefix + " radius probability", body.radiusprobability);
-                    RuntimeSetDecimal(prefix + " mass probability", body.massprobability);
-                    RuntimeSetDecimal(prefix + " temp probability", body.tempprobability);
-                    RuntimeSetDecimal( prefix + " age", body.age );
-                    RuntimeSetDecimal(prefix + " age probability", body.ageprobability);
-                    RuntimeSetDecimal(prefix + " estimated inner hab zone", body.estimatedhabzoneinner);
-                    RuntimeSetDecimal(prefix + " estimated outer hab zone", body.estimatedhabzoneouter);
-                    RuntimeSetBoolean(prefix + " scoopable", body.scoopable);
+                    RuntimeSetBoolean( $"{prefix} main star", body.mainstar);
+                    RuntimeSetText( $"{prefix} stellar class", body.stellarclass);
+                    RuntimeSetText( $"{prefix} luminosity class", body.luminosityclass);
+                    RuntimeSetDecimal( $"{prefix} solar mass", body.solarmass);
+                    RuntimeSetDecimal( $"{prefix} solar radius", body.solarradius);
+                    RuntimeSetText( $"{prefix} chromaticity", body.chromaticity);
+                    RuntimeSetDecimal( $"{prefix} radius probability", body.radiusprobability);
+                    RuntimeSetDecimal( $"{prefix} mass probability", body.massprobability);
+                    RuntimeSetDecimal( $"{prefix} temp probability", body.tempprobability);
+                    RuntimeSetDecimal( $"{prefix} age", body.age );
+                    RuntimeSetDecimal( $"{prefix} age probability", body.ageprobability);
+                    RuntimeSetDecimal( $"{prefix} estimated inner hab zone", body.estimatedhabzoneinner);
+                    RuntimeSetDecimal( $"{prefix} estimated outer hab zone", body.estimatedhabzoneouter);
+                    RuntimeSetBoolean( $"{prefix} scoopable", body.scoopable);
                 }
 
                 // Body specific items
                 if (body?.bodyType?.invariantName == "Planet")
                 {
-                    RuntimeSetDecimal(prefix + " periapsis", body.periapsis);
-                    RuntimeSetText(prefix + " atmosphere", (body.atmosphereclass ?? AtmosphereClass.None).localizedName);
-                    RuntimeSetDecimal(prefix + " tilt", body.tilt);
-                    RuntimeSetDecimal(prefix + " earth mass", body.earthmass);
-                    RuntimeSetDecimal(prefix + " gravity", body.gravity);
-                    RuntimeSetDecimal(prefix + " pressure", body.pressure);
-                    RuntimeSetText(prefix + " terraform state", (body.terraformState ?? TerraformState.NotTerraformable).localizedName);
-                    RuntimeSetText(prefix + " planet type", (body.planetClass ?? PlanetClass.None).localizedName);
-                    RuntimeSetText(prefix + " reserves", (body.reserveLevel ?? ReserveLevel.None).localizedName);
-                    RuntimeSetBoolean(prefix + " landable", body.landable);
-                    RuntimeSetBoolean(prefix + " tidally locked", body.tidallylocked);
+                    RuntimeSetDecimal( $"{prefix} periapsis", body.periapsis);
+                    RuntimeSetText( $"{prefix} atmosphere", (body.atmosphereclass ?? AtmosphereClass.None).localizedName);
+                    RuntimeSetDecimal( $"{prefix} tilt", body.tilt);
+                    RuntimeSetDecimal( $"{prefix} earth mass", body.earthmass);
+                    RuntimeSetDecimal( $"{prefix} gravity", body.gravity);
+                    RuntimeSetDecimal( $"{prefix} pressure", body.pressure);
+                    RuntimeSetText( $"{prefix} terraform state", (body.terraformState ?? TerraformState.NotTerraformable).localizedName);
+                    RuntimeSetText( $"{prefix} planet type", (body.planetClass ?? PlanetClass.None).localizedName);
+                    RuntimeSetText( $"{prefix} reserves", (body.reserveLevel ?? ReserveLevel.None).localizedName);
+                    RuntimeSetBoolean( $"{prefix} landable", body.landable);
+                    RuntimeSetBoolean( $"{prefix} tidally locked", body.tidallylocked);
                 }
 
-                Logging.Debug("Set body information (" + prefix + ")");
+                Logging.Debug( $"Set body information ({prefix})" );
             } );
         }
 
@@ -834,6 +869,20 @@ namespace EddiVoiceAttackResponder
 
         private static void DispatchRuntimeAction( string action, string key, object value )
         {
+            // Check if value has changed since last dispatch using composite cache key
+            // Format: "{action}:{key}" ensures values of different types with same key don't collide
+            var cacheKey = $"{action}:{key}";
+            
+            // Compare with cached value; skip dispatch if unchanged
+            if ( lastDispatchedValues.TryGetValue( cacheKey, out var cachedValue ) && 
+                 ValueEquals( cachedValue, value ) )
+            {
+                return; // Value unchanged, skip this dispatch
+            }
+            
+            // Value changed or first time; update cache and dispatch
+            lastDispatchedValues[ cacheKey ] = value;
+
             var payload = new Dictionary<string, object>
             {
                 { RuntimePayloadKeys.CommandActionPayload.Action, action },
@@ -849,6 +898,24 @@ namespace EddiVoiceAttackResponder
             }
 
             DispatchRuntimeEventPayload( payload );
+        }
+
+        
+        /// <summary>Clear the dispatch value cache (for testing purposes)</summary>
+        internal static void ClearDispatchCache()
+        {
+            lastDispatchedValues.Clear();
+        }
+
+        /// <summary>Null-safe equality comparison for cached values</summary>
+        private static bool ValueEquals( object cached, object current )
+        {
+            // Both null = equal
+            if ( cached == null && current == null ) return true;
+            // One null, one not = not equal
+            if ( cached == null || current == null ) return false;
+            // Both present: use standard equality
+            return cached.Equals( current );
         }
 
         private static void DispatchRuntimeEventPayload( Dictionary<string, object> payload )

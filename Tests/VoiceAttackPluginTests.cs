@@ -280,6 +280,7 @@ namespace Tests
             MakeSafe();
             ResetVaProxy();
             _runtimeEvents.Clear();
+            VoiceAttackVariables.ClearDispatchCache();
             _runtimeEventDispatcherRegistration = RuntimeEventDispatcher.RegisterDispatcher( ( eventData, _ ) =>
             {
                 _runtimeEvents.Add( eventData );

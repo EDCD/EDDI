@@ -390,8 +390,7 @@ namespace EddiDataProviderService
 
             return results;
 
-           
-            bool HasKeyFields ( DatabaseStarSystem dbStarSystem )
+            static bool HasKeyFields ( DatabaseStarSystem dbStarSystem )
             {
                 return dbStarSystem.systemAddress > 0 && 
                        dbStarSystem.x != null && 
