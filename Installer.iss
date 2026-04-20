@@ -43,13 +43,12 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 
 [Files]
 Source: "*.exe"; DestDir: "{app}"
-Source: "*.exe.config"; DestDir: "{app}"
+Source: "*.exe.config"; DestDir: "{app}"; Flags: skipifsourcedoesntexist
 
-Source: "x86\*.*"; DestDir: "{app}\x86"; Flags: recursesubdirs createallsubdirs
-Source: "x64\*.*"; DestDir: "{app}\x64"; Flags: recursesubdirs createallsubdirs
+Source: "runtimes\*.*"; DestDir: "{app}\runtimes"; Flags: recursesubdirs createallsubdirs
 
 Source: "*.dll"; DestDir: "{app}"; Excludes: "Tests.dll"
-Source: "*.dll.config"; DestDir: "{app}"
+Source: "*.dll.config"; DestDir: "{app}"; Flags: skipifsourcedoesntexist
 
 Source: "*.resources.dll"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs
 Source: "eddi.json"; DestDir: "{app}"
@@ -62,6 +61,7 @@ Source: "*.vap"; DestDir: "{app}"
 ; --- Remove old architecture folders entirely ---
 Type: filesandordirs; Name: "{app}\x86"
 Type: filesandordirs; Name: "{app}\x64"
+Type: filesandordirs; Name: "{app}\runtimes"
 
 ; --- Remove all old DLLs in the root folder ---
 Type: files; Name: "{app}\*.dll"
