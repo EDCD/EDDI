@@ -123,12 +123,6 @@
   <data name="name" xml:space="preserve">
     <value>VoiceAttack Responder</value>
   </data>
-  <data name="p1" xml:space="preserve">
-    <value>EDDIとVoiceAttackを統合するためには、EDDIをVoiceAttackの 'Apps'ディレクトリにインストールする必要があります。 デフォルトのパスは「C：¥Program Files（x86）¥VoiceAttack¥Apps」で、デフォルトでEDDIがインストールされます。</value>
-  </data>
-  <data name="p2" xml:space="preserve">
-    <value>EDDIの統合は、VoiceAttack 1.5.12.22以上で動作します。この機能はベータ版です。</value>
-  </data>
   <data name="p3" xml:space="preserve">
     <value>VoiceAttackをインストールした後、プラグインのサポートを有効にする必要があります。そのためには、VoiceAttackの右上隅にある設定アイコン（スパナ）をクリックして、'Enable plugin support'オプションをチェックし、VoiceAttackを再起動する必要があります。 VoiceAttackウインドウの「Plugin EDDI 2.0.0 initialized」の行に沿ってメッセージが表示されます。</value>
   </data>

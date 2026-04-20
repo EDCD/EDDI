@@ -123,12 +123,6 @@
   <data name="name" xml:space="preserve">
     <value>VoiceAttack Ответчик</value>
   </data>
-  <data name="p1" xml:space="preserve">
-    <value>Для интеграции EDDI с VoiceAttack, EDDI должен быть установлен в каталоге «Apps» VoiceAttack. Путь по умолчанию «C:\Program Files(x86)\VoiceAttack\Apps», по умолчанию EDDI предлагает установится именно туда.</value>
-  </data>
-  <data name="p2" xml:space="preserve">
-    <value>EDDI будет работать только с версиями VoiceAttack 1.5.12.22 и выше. Обратите внимание, что это бета-версия.</value>
-  </data>
   <data name="p3" xml:space="preserve">
     <value>После установки VoiceAttack вам нужно будет включить поддержку плагинов. Для этого необходимо щелкнуть значок «Настройки» (гаечный ключ) в правом верхнем углу VoiceAttack, установить флажок «Включить поддержку плагинов» и перезапустить VoiceAttack. Вы должны увидеть сообщение в окне VoiceAttack вдоль строк 'Plugin EDDI 2.0.0 initialized'.</value>
   </data>
