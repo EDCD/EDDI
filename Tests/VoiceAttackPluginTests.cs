@@ -614,5 +614,29 @@ namespace Tests
             Assert.AreEqual( "Ship", mockVAProxy.GetText( "Status vehicle" ) );
             Assert.IsFalse( mockVAProxy.GetBoolean( "Status being interdicted" ) );
         }
+
+        [TestMethod]
+        public void TestInitializeStandardValues_WithoutData_CompletesSuccessfully()
+        {
+            // Arrange: Clear cache to simulate fresh initialization
+            VoiceAttackVariables.ClearDispatchCache();
+
+            // Act: Call initializeStandardValues when EDDI data may not be fully loaded
+            // (simulates the early startup scenario where monitors haven't populated data yet)
+            try
+            {
+                VoiceAttackVariables.initializeStandardValues();
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail($"initializeStandardValues should not throw exceptions during early startup. Exception: {ex.Message}");
+            }
+
+            // Assert: Verify that initialization completed successfully
+            // EDDI version should always be set (independent of EDDI data availability)
+            var eddiVersion = mockVAProxy.GetText("EDDI version");
+            Assert.IsFalse(string.IsNullOrEmpty(eddiVersion), 
+                "EDDI version should be set after initialization");
+        }
     }
 }

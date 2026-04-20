@@ -109,17 +109,49 @@ namespace EddiVoiceAttackResponder
         {
             RunWithRuntimeActionBatch( () =>
             {
+                setStatus( "Initializing" );
+                
                 foreach (var standardValue in StandardValues)
                 {
                     try
                     {
-                        LockManager.GetLock(standardValue.Key, standardValue.Value);
+                        // Wrap the standard value action to only execute if the underlying EDDI property has data
+                        // This prevents caching of null/empty values during early startup, allowing proper
+                        // initialization when monitors populate their data and PropertyChanged events fire
+                        LockManager.GetLock(standardValue.Key, () =>
+                        {
+                            // Determine if the property has data before executing the action
+                            var hasData = standardValue.Key switch
+                            {
+                                var k when k.Contains(nameof(EDDI.Instance.CurrentStarSystem)) => EDDI.Instance.CurrentStarSystem != null,
+                                var k when k.Contains(nameof(EDDI.Instance.LastStarSystem)) => EDDI.Instance.LastStarSystem != null,
+                                var k when k.Contains(nameof(EDDI.Instance.NextStarSystem)) => EDDI.Instance.NextStarSystem != null,
+                                var k when k.Contains(nameof(EDDI.Instance.DestinationStarSystem)) => EDDI.Instance.DestinationStarSystem != null,
+                                var k when k.Contains(nameof(EDDI.Instance.CurrentStellarBody)) => EDDI.Instance.CurrentStellarBody != null,
+                                var k when k.Contains(nameof(EDDI.Instance.CurrentStation)) => EDDI.Instance.CurrentStation != null,
+                                var k when k.Contains(nameof(EDDI.Instance.CurrentShip)) => EDDI.Instance.CurrentShip != null,
+                                _ => true, // Other properties are assumed to always have data
+                            };
+
+                            if (hasData)
+                            {
+                                standardValue.Value();
+                            }
+                        });
                     }
                     catch (Exception ex)
                     {
                         Logging.Error($"Failed to initialize {standardValue.Key}", ex);
                     }
                 }
+
+                // Initialize shipyard information
+                var shipConfig = ConfigService.Instance.shipMonitorConfiguration;
+                if ( shipConfig?.shipyard != null )
+                {
+                    setShipyardValues( shipConfig.shipyard.ToList() );
+                }
+
                 RuntimeSetText("EDDI version", Constants.EDDI_VERSION.ToString());
             } );
         }
@@ -327,8 +359,6 @@ namespace EddiVoiceAttackResponder
 
                     // Backwards-compatibility with 1.x
                     RuntimeSetText("System rank", cmdr?.title);
-
-                    setStatus( "Operational");
                 }
                 catch (Exception e)
                 {
@@ -422,8 +452,6 @@ namespace EddiVoiceAttackResponder
                         RuntimeSetText( $"{prefix} station", ship.station);
                         RuntimeSetDecimal( $"{prefix} distance", ship.distance);
                     }
-
-                    setStatus( "Operational");
                 }
                 catch (Exception e)
                 {

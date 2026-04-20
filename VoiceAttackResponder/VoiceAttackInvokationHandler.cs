@@ -366,7 +366,6 @@ namespace EddiVoiceAttackResponder
                 var systemUri =
                     $"https://inara.cz/elite/starsystem/?search={EDDI.Instance.CurrentStarSystem.systemAddress}";
                 OpenOrStoreURI( systemUri );
-                VoiceAttackVariables.setStatus( "Operational" );
             }
             catch ( Exception e )
             {
@@ -396,7 +395,6 @@ namespace EddiVoiceAttackResponder
 
                 var stationUri = $"https://inara.cz/elite/station/?search={EDDI.Instance.CurrentStation.marketId}";
                 OpenOrStoreURI( stationUri );
-                VoiceAttackVariables.setStatus( "Operational" );
             }
             catch ( Exception e )
             {
@@ -420,7 +418,6 @@ namespace EddiVoiceAttackResponder
                 var carrierUri =
                     $"https://inara.cz/elite/cmdr-fleetcarrier/?search={EDDI.Instance.FleetCarrier.callsign}";
                 OpenOrStoreURI( carrierUri );
-                VoiceAttackVariables.setStatus( "Operational" );
             }
             catch ( Exception e )
             {
@@ -444,7 +441,6 @@ namespace EddiVoiceAttackResponder
 
                 var cmdrUri = $"https://inara.cz/elite/cmdr/{inaraID}/";
                 OpenOrStoreURI( cmdrUri );
-                VoiceAttackVariables.setStatus( "Operational" );
             }
             catch ( Exception e )
             {
@@ -467,7 +463,6 @@ namespace EddiVoiceAttackResponder
 
                 var shipUri = EDDI.Instance.CurrentShip.CoriolisUri( beta );
                 OpenOrStoreURI( shipUri );
-                VoiceAttackVariables.setStatus( "Operational" );
             }
             catch ( Exception e )
             {
@@ -490,7 +485,6 @@ namespace EddiVoiceAttackResponder
 
                 var shipUri = EDDI.Instance.CurrentShip.EDShipyardUri();
                 OpenOrStoreURI( shipUri );
-                VoiceAttackVariables.setStatus( "Operational" );
             }
             catch ( Exception e )
             {
@@ -1033,4 +1027,3 @@ namespace EddiVoiceAttackResponder
         }
     }
 }
-
