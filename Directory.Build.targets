@@ -20,4 +20,6 @@
 		</ItemGroup>
 	</Target>
 
+    <!-- Import injected credentials -->
+    <Import Project="build\InjectedSecrets.targets" Condition="Exists('build\InjectedSecrets.targets')" />
 </Project>

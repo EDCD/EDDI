@@ -1,6 +1,5 @@
 ﻿using EddiCompanionAppService.Exceptions;
 using JetBrains.Annotations;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -16,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Utilities;
 
+[assembly: InternalsVisibleTo( "Tests" )]
 namespace EddiCompanionAppService
 {
     public class CompanionAppService : IDisposable, INotifyPropertyChanged, ICompanionAppServiceInitializer
@@ -115,10 +115,8 @@ namespace EddiCompanionAppService
             httpClient.DefaultRequestHeaders.UserAgent.ParseAdd( $"{Constants.EDDI_NAME}/{Constants.EDDI_VERSION}" );
             httpClient.DefaultRequestHeaders.Accept.Add( new MediaTypeWithQualityHeaderValue( "application/json" ) );
 
-            var secrets = new ConfigurationBuilder().AddUserSecrets<CompanionAppService>().Build();
-            clientID = secrets[ "CompanionAppService:ClientId" ]; // We don't need the Client Secret for PKCE authentication
-
-            if ( clientID == null)
+            clientID = ClientId.ID;
+            if (clientID == null)
             {
                 CurrentState = State.NoClientIDConfigured;
                 return;

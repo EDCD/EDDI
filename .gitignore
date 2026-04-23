@@ -17,7 +17,6 @@
 [Rr]eleases/
 x64/
 x86/
-build/
 bld/
 [Bb]in/
 [Oo]bj/
@@ -224,3 +223,6 @@ Documentation.chw
 # Resharper AI Assistant Generated Files
 /enc_temp_folder
 /EddiCore/EddiCore.csproj.DotSettings
+
+# Build Secrets
+/BuildSecrets/BuildInjectedSecrets.Local.cs

@@ -143,6 +143,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiVoiceAttackAdapter", "V
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiIPC_Service", "IPC_Service\EddiIPC_Service.csproj", "{6D178024-2B17-A598-760C-ED5440830C10}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildSecrets", "BuildSecrets\BuildSecrets.csproj", "{BB5FC9A3-3CBC-4446-BD32-A65E5858C938}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -297,6 +299,10 @@ Global
 		{6D178024-2B17-A598-760C-ED5440830C10}.Debug|x64.Build.0 = Debug|x64
 		{6D178024-2B17-A598-760C-ED5440830C10}.Release|x64.ActiveCfg = Release|x64
 		{6D178024-2B17-A598-760C-ED5440830C10}.Release|x64.Build.0 = Release|x64
+		{BB5FC9A3-3CBC-4446-BD32-A65E5858C938}.Debug|x64.ActiveCfg = Debug|x64
+		{BB5FC9A3-3CBC-4446-BD32-A65E5858C938}.Debug|x64.Build.0 = Debug|x64
+		{BB5FC9A3-3CBC-4446-BD32-A65E5858C938}.Release|x64.ActiveCfg = Release|x64
+		{BB5FC9A3-3CBC-4446-BD32-A65E5858C938}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

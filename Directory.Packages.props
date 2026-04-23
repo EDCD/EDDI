@@ -11,7 +11,6 @@
     <PackageVersion Include="JetBrains.Annotations" Version="2025.2.4" />
     <PackageVersion Include="MathNet.Numerics" Version="5.0.0" />
     <PackageVersion Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.5" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
     <PackageVersion Include="Microsoft.NETCore.Platforms" Version="7.0.4" />
     <PackageVersion Include="MSTest.TestAdapter" Version="4.1.0" />
@@ -22,7 +21,7 @@
     <PackageVersion Include="Rollbar" Version="5.2.2" />
     <PackageVersion Include="System.Collections" Version="4.3.0" />
     <PackageVersion Include="System.Collections.Concurrent" Version="4.3.0" />
-    <PackageVersion Include="System.Collections.Immutable" Version="10.0.5" />
+    <PackageVersion Include="System.Collections.Immutable" Version="8.0.0" />
     <PackageVersion Include="System.Data.SQLite.Core" Version="1.0.119" />
     <PackageVersion Include="System.Diagnostics.Debug" Version="4.3.0" />
     <PackageVersion Include="System.Diagnostics.Tools" Version="4.3.0" />
@@ -36,13 +35,13 @@
     <PackageVersion Include="System.Reflection.Extensions" Version="4.3.0" />
     <PackageVersion Include="System.Reflection.Primitives" Version="4.3.0" />
     <PackageVersion Include="System.Resources.ResourceManager" Version="4.3.0" />
-    <PackageVersion Include="System.Runtime.Caching" Version="10.0.5" />
+    <PackageVersion Include="System.Runtime.Caching" Version="8.0.1" />
     <PackageVersion Include="System.Runtime.InteropServices" Version="4.3.0" />
     <PackageVersion Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
     <PackageVersion Include="System.Runtime.Numerics" Version="4.3.0" />
     <PackageVersion Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
     <PackageVersion Include="System.Security.Cryptography.X509Certificates" Version="4.3.2" />
-    <PackageVersion Include="System.ServiceModel.Syndication" Version="10.0.5" />
+    <PackageVersion Include="System.ServiceModel.Syndication" Version="8.0.0" />
     <PackageVersion Include="System.Speech" Version="10.0.5" />
     <PackageVersion Include="System.Text.Encoding" Version="4.3.0" />
     <PackageVersion Include="System.Text.Encoding.Extensions" Version="4.3.0" />

@@ -1,6 +1,4 @@
-﻿using EddiCompanionAppService;
-using Microsoft.Extensions.Configuration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests
 {
@@ -10,8 +8,7 @@ namespace Tests
         [TestMethod]
         public void TestClientIDNotNull()
         {
-            var secrets = new ConfigurationBuilder().AddUserSecrets<CompanionAppService>().Build();
-            var clientID = secrets[ "CompanionAppService:ClientId" ];
+            var clientID = EddiCompanionAppService.ClientId.ID;
             Assert.IsInstanceOfType( clientID, typeof(string));
             Assert.IsNotNull( clientID );
         }

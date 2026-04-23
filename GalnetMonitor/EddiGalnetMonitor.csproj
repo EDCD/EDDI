@@ -23,6 +23,7 @@
         <PackageReference Include="Microsoft.CSharp" />
         <PackageReference Include="Newtonsoft.Json" />
         <PackageReference Include="System.Data.SQLite.Core" />
+        <PackageReference Include="System.Runtime.Caching" />
         <PackageReference Include="System.ServiceModel.Syndication" />
     </ItemGroup>
     <ItemGroup>

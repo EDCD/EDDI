@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Rollbar;
+﻿using Rollbar;
 using Rollbar.DTOs;
 using System;
 using System.Collections.Generic;
@@ -51,16 +50,13 @@ namespace Utilities.TelemetryService
         {
             try
             {
-                var secrets = new ConfigurationBuilder().AddUserSecrets<Telemetry>().Build();
-                var rollbarToken = secrets[ "Telemetry:RollbarToken" ];
-                
-                if ( string.IsNullOrEmpty( rollbarToken ) )
+                if ( string.IsNullOrEmpty( TelemetryTokens.rollbarToken ) )
                 {
                     Logging.Warn("Telemetry is not configured for this client.");
                     return;
                 }
 
-                var config = new RollbarInfrastructureConfig( rollbarToken, Constants.EDDI_VERSION.ToString() );
+                var config = new RollbarInfrastructureConfig( TelemetryTokens.rollbarToken, Constants.EDDI_VERSION.ToString() );
 
                 // Configure telemetry
                 config.RollbarTelemetryOptions.Reconfigure( new RollbarTelemetryOptions( true, 250 ) );
@@ -74,7 +70,7 @@ namespace Utilities.TelemetryService
                 } );
 
                 // Configure Logger Options
-                var loggerOptions = new RollbarLoggerConfig( rollbarToken, Constants.EDDI_VERSION.ToString() );
+                var loggerOptions = new RollbarLoggerConfig( TelemetryTokens.rollbarToken, Constants.EDDI_VERSION.ToString() );
                 loggerOptions.RollbarDataSecurityOptions.Reconfigure( new RollbarDataSecurityOptions(
                     PersonDataCollectionPolicies.None,
                     IpAddressCollectionPolicy.CollectAnonymized,
