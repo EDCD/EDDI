@@ -2,6 +2,11 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+## 5.0.0-b2
+  * Core
+    * Restored Frontier API connection functionality. 
+    * Update installer path handling and legacy cleanup
+
 ## 5.0.0-b1
   * Core
     * Target framework updated to .Net 8.

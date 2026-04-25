@@ -20,16 +20,20 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 AppVerName={#MyAppName} {#MyAppVersion}
 AppVersion={#MyAppVersion}
-DefaultDirName={reg:HKCU\Software\VoiceAttack.com\VoiceAttack2\LastRun,AppsFolder|{autopf64}\VoiceAttack2\Apps}\{#MyAppName}
+CloseApplications=yes
+DefaultDirName={code:GetDefaultInstallDir}
 DefaultGroupName={#MyAppName}
+DirExistsWarning=no
 DisableDirPage=no
 DisableWelcomePage=no
 LicenseFile="{#SourcePath}\LicenseFile.txt"
 OutputBaseFilename={#MyAppName}-{#MyAppVersion}
 OutputDir="{#SourcePath}\bin\Installer"
+RestartApplications=no
 SolidCompression=yes
 SourceDir="{#SourcePath}\bin\Release"
 UninstallDisplayIcon={app}\{#MyAppExeName}
+UsePreviousAppDir=no
 UsePreviousTasks=no
 WizardImageFile={#SourcePath}\graphics\logo.bmp
 WizardSmallImageFile={#SourcePath}\graphics\logo.bmp
@@ -115,7 +119,7 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChang
 UseRelativePaths=True
 
 [Messages]
-SelectDirBrowseLabel=To continue, click Next. If this is not your VoiceAttack installation location, or you would like to put the EDDI files in a different location, click Browse.
+SelectDirBrowseLabel=To continue, click Next. If this is not your VoiceAttack 2 installation location, or you would like to put the EDDI files in a different location, click Browse.
 
 [Registry]
 Root: "HKLM"; Subkey: "Software\Classes\eddi"; ValueType: string; ValueData: "EDDI URL Protocol"; Flags: uninsdeletekey
@@ -128,3 +132,189 @@ Root: "HKCU"; Subkey: "Software\Classes\eddi"; ValueType: string; ValueName: "UR
 Root: "HKCU"; Subkey: "Software\Classes\eddi\Default Icon"; ValueType: string; ValueData: "{app}\{#MyAppExeName},0"; Flags: uninsdeletekey
 Root: "HKCU"; Subkey: "Software\Classes\eddi\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletekey
 Root: "HKCU"; Subkey: "Software\Classes\eddi\shell\open\ddeexec"; ValueType: string; ValueData: "%1"; Flags: uninsdeletekey
+
+[Code]
+
+function NormalizePath(const S: string): string;
+begin
+  Result := Lowercase(RemoveBackslashUnlessRoot(S));
+end;
+
+function SamePath(const A, B: string): Boolean;
+begin
+  Result := NormalizePath(A) = NormalizePath(B);
+end;
+
+function IsUnderPath(const Child, Parent: string): Boolean;
+var
+  C, P: string;
+begin
+  C := NormalizePath(Child);
+  P := NormalizePath(Parent);
+  Result := (C = P) or (Pos(P + '\', C) = 1);
+end;
+
+function GetDefaultInstallDir(Param: string): string;
+var
+  AppsFolder: string;
+begin
+  if RegQueryStringValue(
+       HKCU,
+       'Software\VoiceAttack.com\VoiceAttack2\LastRun',
+       'AppsFolder',
+       AppsFolder) and (Trim(AppsFolder) <> '') then
+  begin
+    Result := AddBackslash(RemoveBackslashUnlessRoot(AppsFolder)) + '{#MyAppName}';
+    exit;
+  end;
+
+  Result := ExpandConstant('{userappdata}\VoiceAttack2\Apps\{#MyAppName}');
+end;
+
+function GetPreviousEddiInstallDir: string;
+begin
+  Result := '';
+
+  RegQueryStringValue(
+    HKLM,
+    'Software\Microsoft\Windows\CurrentVersion\Uninstall\{830C0324-30D8-423C-B5B4-D7EE8D007A79}_is1',
+    'InstallLocation',
+    Result);
+
+  if Trim(Result) <> '' then
+    Result := RemoveBackslashUnlessRoot(Result);
+end;
+
+function TryGetLegacyVoiceAttackAppsDir(var Dir: string): Boolean;
+var
+  VAFolder: string;
+begin
+  Result := False;
+
+  if RegQueryStringValue(
+       HKCU,
+       'Software\VoiceAttack.com\VoiceAttack\LastRun',
+       'AppsFolder',
+       Dir) and (Trim(Dir) <> '') then
+  begin
+    Dir := RemoveBackslashUnlessRoot(Dir);
+    Result := True;
+    exit;
+  end;
+
+  if RegQueryStringValue(
+       HKCU,
+       'Software\VoiceAttack.com\VoiceAttack\LastRun',
+       'VAFolder',
+       VAFolder) and (Trim(VAFolder) <> '') then
+  begin
+    Dir := AddBackslash(RemoveBackslashUnlessRoot(VAFolder)) + 'Apps';
+    Result := True;
+  end;
+end;
+
+function GetLegacyEddiDir: string;
+var
+  LegacyAppsDir: string;
+begin
+  Result := '';
+
+  if TryGetLegacyVoiceAttackAppsDir(LegacyAppsDir) then
+    Result := AddBackslash(RemoveBackslashUnlessRoot(LegacyAppsDir)) + '{#MyAppName}';
+end;
+
+function IsLegacyVoiceAttackPath(const Dir: string): Boolean;
+var
+  LegacyAppsDir: string;
+begin
+  Result := False;
+
+  if TryGetLegacyVoiceAttackAppsDir(LegacyAppsDir) then
+    Result := IsUnderPath(Dir, LegacyAppsDir);
+end;
+
+procedure RegisterCloseResource(const Dir: string);
+var
+  ExePath: string;
+begin
+  if Trim(Dir) = '' then
+    exit;
+
+  ExePath := AddBackslash(RemoveBackslashUnlessRoot(Dir)) + '{#MyAppExeName}';
+
+  if FileExists(ExePath) then
+    RegisterExtraCloseApplicationsResource(False, ExePath);
+end;
+
+procedure RegisterExtraCloseApplicationsResources;
+begin
+  RegisterCloseResource(GetLegacyEddiDir);
+  RegisterCloseResource(GetPreviousEddiInstallDir);
+end;
+
+function RemoveDirIfOldEddiInstall(const Dir: string): Boolean;
+var
+  CleanDir: string;
+begin
+  Result := True;
+
+  if Trim(Dir) = '' then
+    exit;
+
+  CleanDir := RemoveBackslashUnlessRoot(Dir);
+
+  if not DirExists(CleanDir) then
+    exit;
+
+  if SamePath(CleanDir, ExpandConstant('{app}')) then
+    exit;
+
+  if FileExists(AddBackslash(CleanDir) + '{#MyAppExeName}') then
+  begin
+    Log(Format('Removing old EDDI install at "%s".', [CleanDir]));
+    Result := DelTree(CleanDir, True, True, True);
+  end;
+end;
+
+function RemoveOldEddiInstalls: Boolean;
+begin
+  Result :=
+    RemoveDirIfOldEddiInstall(GetLegacyEddiDir) and
+    RemoveDirIfOldEddiInstall(GetPreviousEddiInstallDir);
+end;
+
+function NextButtonClick(CurPageID: Integer): Boolean;
+var
+  ChosenDir: string;
+begin
+  Result := True;
+
+  if CurPageID = wpSelectDir then
+  begin
+    ChosenDir := RemoveBackslashUnlessRoot(WizardDirValue);
+
+    if IsLegacyVoiceAttackPath(ChosenDir) then
+    begin
+      MsgBox(
+        'Installing EDDI into the legacy VoiceAttack plugin location is no longer supported.' + #13#10#13#10 +
+        'Select the new VoiceAttack 2 Apps folder instead.',
+        mbError, MB_OK);
+      Result := False;
+    end;
+  end;
+end;
+
+procedure CurStepChanged(CurStep: TSetupStep);
+begin
+  if CurStep = ssInstall then
+  begin
+    if not RemoveOldEddiInstalls then
+    begin
+      MsgBox(
+        'Setup could not remove an old EDDI install.' + #13#10#13#10 +
+        'Close EDDI and VoiceAttack, then run Setup again.',
+        mbCriticalError, MB_OK);
+      Abort;
+    end;
+  end;
+end;
