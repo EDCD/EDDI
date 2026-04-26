@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace Utilities
 {
@@ -378,7 +377,7 @@ namespace Utilities
 
                 if (ignoreSpace)
                 {
-                    s = Regex.Replace(s, "\\s+", " ");
+                    s = GeneratedRegex.WhiteSpaceRegex().Replace(s, " ");
                 }
 
                 if (ignoreCase)

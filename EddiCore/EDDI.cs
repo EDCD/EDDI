@@ -21,7 +21,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
@@ -95,9 +94,9 @@ namespace EddiCore
                     // The game version is typically a Semantic Version string (e.g. "4.0.0.102")
                     // but may sometimes include additional information (e.g. "4.0.0.32 (Alpha Phase 4 Hotfix 9)")
                     // or may be missing a Semantic Version altogether (e.g. "Fleet Carriers Update - Patch 11")
-                    var versionRegex = new Regex(@"^(?<engine>0|[1-9]\d*)\.(?<major>0|[1-9]\d*)(?:\.(?<minor>\d*))?(?:\.(?<patch>\d*))?");
-                    GameVersion = !string.IsNullOrEmpty(v) &&
-                                  System.Version.TryParse(versionRegex.Match(v).Value, out var versionResult)
+                    GameVersion = !string.IsNullOrEmpty( v ) &&
+                                  System.Version.TryParse( GeneratedRegex.SemanticVersionRegex().Match( v ).Value,
+                                      out var versionResult )
                         ? versionResult
                         : null;
 

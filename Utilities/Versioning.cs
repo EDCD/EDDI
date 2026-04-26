@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text.RegularExpressions;
 
 namespace Utilities
 {
@@ -46,8 +45,7 @@ namespace Utilities
             // https://docs.microsoft.com/en-us/dotnet/standard/base-types/best-practices?view=netframework-4.7.2 
             // I have concluded that an interpreted rather than compiled regex is the better choice here,
             // as version strings are parsed infrequently.
-            var pattern = @"^(?<major>\d+).(?<minor>\d+).(?<patch>\d+)(-(?<phase>[a-z]+)(?<iteration>\d+))?$";
-            var match = Regex.Match(input, pattern);
+            var match = GeneratedRegex.EddiVersionRegex().Match(input);
             var matchGroups = match.Groups;
 
             major = int.Parse(matchGroups["major"].Value);

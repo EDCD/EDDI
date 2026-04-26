@@ -307,7 +307,8 @@ namespace Utilities
             }
 
             var exceptions = new List<Exception>();
-            while ( maxAttempts-- > 0 )
+            var currAttempts = maxAttempts;
+            while ( currAttempts-- > 0 )
             {
                 if ( !IsFileLocked( fileInfo ) )
                 {

@@ -623,20 +623,21 @@ namespace Tests
 
             // Act: Call initializeStandardValues when EDDI data may not be fully loaded
             // (simulates the early startup scenario where monitors haven't populated data yet)
+            Exception exception = null;
             try
             {
                 VoiceAttackVariables.initializeStandardValues();
             }
             catch (Exception ex)
             {
-                Assert.Fail($"initializeStandardValues should not throw exceptions during early startup. Exception: {ex.Message}");
+                exception = ex;
             }
 
             // Assert: Verify that initialization completed successfully
             // EDDI version should always be set (independent of EDDI data availability)
+            Assert.IsNull( exception, $"initializeStandardValues should not throw exceptions during early startup. Exception: {exception?.Message}" );
             var eddiVersion = mockVAProxy.GetText("EDDI version");
-            Assert.IsFalse(string.IsNullOrEmpty(eddiVersion), 
-                "EDDI version should be set after initialization");
+            Assert.IsFalse(string.IsNullOrEmpty(eddiVersion), "EDDI version should be set after initialization");
         }
     }
 }

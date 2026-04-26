@@ -208,7 +208,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [ TestMethod ]
-        public void Serialize_EventMessage_WithModifyingCollection_DoesNotThrow ()
+        public async Task Serialize_EventMessage_WithModifyingCollection_DoesNotThrow ()
         {
             // Arrange: Create a mutable dictionary that simulates concurrent modification
             var payload = new Dictionary<string, object> { { "key1", "value1" } };
@@ -226,6 +226,7 @@ namespace Tests.EddiVoiceAttackService
             };
 
             // Act: Modify the dictionary in a separate task while serializing
+            Exception exception = null;
             var serializationTask = Task.Run( () =>
             {
                 // Serialize multiple times to increase chance of collision
@@ -252,14 +253,18 @@ namespace Tests.EddiVoiceAttackService
             // Assert: Both tasks should complete without exception
             try
             {
-                Task.WaitAll( [ serializationTask, modificationTask ], TimeSpan.FromSeconds( 5 ) );
-                Assert.IsTrue( serializationTask.IsCompletedSuccessfully );
-                Assert.IsTrue( modificationTask.IsCompletedSuccessfully );
+                await Task.WhenAll( serializationTask, modificationTask );
             }
-            catch ( AggregateException ex )
+            catch ( Exception ex )
             {
-                Assert.Fail( $"Serialization failed during concurrent modification: {ex.InnerException?.Message}" );
+                // Capture for debugging, but don't assert here
+                exception = ex;
             }
+
+            // Assert (outside the catch)
+            Assert.IsNull( exception, $"Serialization failed during concurrent modification: {exception}" );
+            Assert.IsTrue( serializationTask.IsCompletedSuccessfully );
+            Assert.IsTrue( modificationTask.IsCompletedSuccessfully );
         }
 
         [ TestMethod ]

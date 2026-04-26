@@ -8,7 +8,6 @@ using JetBrains.Annotations;
 using System;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -92,14 +91,29 @@ namespace EddiSpeechResponder.CustomFunctions
             return sb.ToString();
         }
 
-        private static string Get3LeadingCharacters(string input)
+        private static string Get3LeadingCharacters ( string input )
         {
-            // Obtain the first three characters of the input string, zero padded and converted to ICAO (e.g. "A" becomes "Alpha Zero Zero")
-            return SpeechConversions.ICAO(new Regex("[^a-zA-Z0-9]")
-                .Replace(input, "")
-                .ToUpperInvariant()
-                .PadRight(3, '0')
-                .Substring(0, 3));
+            Span<char> buffer = stackalloc char[3];
+            var count = 0;
+
+            if ( !string.IsNullOrEmpty( input ) )
+            {
+                foreach ( var c in input )
+                {
+                    if ( char.IsLetterOrDigit( c ) )
+                    {
+                        buffer[ count++ ] = char.ToUpperInvariant( c );
+                        if ( count == 3 ) { break; }
+                    }
+                }
+            }
+
+            while ( count < 3 )
+            {
+                buffer[ count++ ] = '0';
+            }
+
+            return SpeechConversions.ICAO( new string( buffer ) );
         }
     }
 }

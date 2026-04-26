@@ -5,7 +5,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 
@@ -154,12 +153,6 @@ namespace Tests
             Assert.Contains( @"The letter is c.", results );
             results.RemoveAll(result => result == @"The letter is c.");
             Assert.IsEmpty(results);
-        }
-
-        [TestMethod]
-        public void TestResolverCallsign()
-        {
-            Assert.AreEqual( "ABC", new Regex("[^a-zA-Z0-9]").Replace("a-b. c", "").ToUpperInvariant().Substring(0, 3) );
         }
 
         [TestMethod]

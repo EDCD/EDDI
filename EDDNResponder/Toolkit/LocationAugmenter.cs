@@ -2,7 +2,6 @@
 using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using Utilities;
 
 namespace EddiEddnResponder.Toolkit
@@ -350,8 +349,7 @@ namespace EddiEddnResponder.Toolkit
                     // If the body doesn't start with the system name, it should also 
                     // not match a naming pattern for a procedurally generated name.
                     // If it does, it's (probably) in the wrong place.
-                    var isProcGenName = new Regex(@"[A-Z][A-Z]-[A-Z] [a-h][0-9]");
-                    if (!isProcGenName.IsMatch(scannedBodyName))
+                    if (!GeneratedRegex.PROC_GEN_SYSTEM_BODY().IsMatch(scannedBodyName))
                     {
                         return true;
                     }

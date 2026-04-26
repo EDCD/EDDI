@@ -28,6 +28,9 @@ namespace Utilities
         [GeneratedRegex( @"\d+(?:\s|$)", RegexOptions.Compiled )]
         public static partial Regex DIGIT ();
 
+        [ GeneratedRegex( @"(?<major>\d+).(?<minor>\d+).(?<patch>\d+)(-(?<phase>[a-z]+)(?<iteration>\d+))?", RegexOptions.Compiled ) ]
+        public static partial Regex EddiVersionRegex ();
+        
         [GeneratedRegex( @"\s\(\d\)$", RegexOptions.Compiled )] 
         public static partial Regex EndingCountRegex (); // e.g. "Ancient Ruins (3)"
 
@@ -73,6 +76,9 @@ namespace Utilities
         [GeneratedRegex( @"^(?<SYSTEM>(?<SECTOR>[\w\s'.()-]+) (?<COORDINATES>(?<l1>[A-Za-z])(?<l2>[A-Za-z])-(?<l3>[A-Za-z]) (?<mcode>[A-Za-z])(?:(?<n1>\d+)-)?(?<n2>\d+))) ?(?<BODY>.*)$", RegexOptions.Compiled )]
         public static partial Regex PROC_GEN_SYSTEM_BODY ();
 
+        [ GeneratedRegex( @"^(?<engine>0|[1-9]\d*)\.(?<major>0|[1-9]\d*)(?:\.(?<minor>\d*))?(?:\.(?<patch>\d*))?", RegexOptions.Compiled ) ]
+        public static partial Regex SemanticVersionRegex ();
+        
         [GeneratedRegex( @"(?=\S)(?<STARS>(?<=^|\s)[A-E]+)? ?(?<PLANET>(?<=^|\s)\d{1,2})? ?(?<MOON>(?<=^|\s)[a-z])? ?(?<SUBMOON>(?<=^|\s)[a-z])? ?(?>(?<=^|\s)(?<RINGORBELTGROUP>[A-Z]) (?<RINGORBELTTYPE>Belt|Ring))? ?(?>(?<=^|\s)(?<CLUSTER>Cluster) (?<CLUSTERNUMBER>\d*))?$", RegexOptions.Compiled )]
         public static partial Regex SHORTBODY ();
 
@@ -125,13 +131,13 @@ namespace Utilities
 
         [GeneratedRegex( @"(?<=>)(.+)(?=<\/voice>)", RegexOptions.Compiled )]
         public static partial Regex VoiceSpeechExtractionRegex ();
-        
-        [GeneratedRegex( @"\s{2,}", RegexOptions.Compiled )]
-        public static partial Regex WhiteMultiSpaceRegex ();
 
         [GeneratedRegex( @"\s+", RegexOptions.Compiled )]
         public static partial Regex WhiteSpaceRegex ();
-        
+
+        [GeneratedRegex( @"\s{2,}", RegexOptions.Compiled )]
+        public static partial Regex WhiteSpaceTwoOrMoreRegex ();
+
         [GeneratedRegex( @"\w", RegexOptions.Compiled )]
         public static partial Regex WordCharacterRegex ();
         

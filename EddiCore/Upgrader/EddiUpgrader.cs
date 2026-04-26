@@ -7,7 +7,6 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Utilities;
 
@@ -95,7 +94,7 @@ namespace EddiCore.Upgrader
         {
             // Get the version information, removing any prefixing description and separator
             var version = release.Value<string>("tag_name");
-            version = Regex.Replace( version, @"(^\w+[\\\/:_\-\|+=#@&%!~^*])+", "" );
+            version = GeneratedRegex.EddiVersionRegex().Match( version ).Value;
 
             if ( release["assets"] is JArray assets )
             {

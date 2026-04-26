@@ -24,7 +24,7 @@ namespace Tests
 
         private string CondenseSpaces(string s)
         {
-            return GeneratedRegex.WhiteMultiSpaceRegex().Replace(s, " ");
+            return GeneratedRegex.WhiteSpaceRegex().Replace(s, " ");
         }
 
         [TestMethod]
