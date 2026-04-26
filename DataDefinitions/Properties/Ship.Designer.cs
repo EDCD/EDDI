@@ -342,6 +342,15 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to your.
         /// </summary>
+        public static string yourLynxHighliner {
+            get {
+                return ResourceManager.GetString("yourLynxHighliner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
         public static string yourMamba {
             get {
                 return ResourceManager.GetString("yourMamba", resourceCulture);

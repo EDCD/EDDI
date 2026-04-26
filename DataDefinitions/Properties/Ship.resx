@@ -314,4 +314,8 @@ If transporting via taxi or dropship</comment>
     <value>your</value>
     <comment>e.g. *your* Kestrel Mk. II</comment>
   </data>
+  <data name="yourLynxHighliner" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Lynx Highliner</comment>
+  </data>
 </root>

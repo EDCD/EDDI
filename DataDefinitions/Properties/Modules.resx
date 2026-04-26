@@ -701,4 +701,12 @@
     <value>Agile Boost Thrusters</value>
     <comment>Module mkiiagileboost_engine</comment>
   </data>
+  <data name="BusinessClassPassengerCabin_MkII" xml:space="preserve">
+    <value>Mark II Business Class Passenger Cabin</value>
+    <comment>(Presently Lynx Highliner exclusive)</comment>
+  </data>
+  <data name="EconomyClassPassengerCabin_MkII" xml:space="preserve">
+    <value>Mark II Economy Class Passenger Cabin</value>
+    <comment>(Presently Lynx Highliner exclusive)</comment>
+  </data>
 </root>

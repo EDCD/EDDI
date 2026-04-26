@@ -196,6 +196,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mark II Business Class Passenger Cabin.
+        /// </summary>
+        public static string BusinessClassPassengerCabin_MkII {
+            get {
+                return ResourceManager.GetString("BusinessClassPassengerCabin_MkII", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannon.
         /// </summary>
         public static string Cannon {
@@ -363,6 +372,15 @@ namespace EddiDataDefinitions.Properties {
         public static string EconomyClassPassengerCabin {
             get {
                 return ResourceManager.GetString("EconomyClassPassengerCabin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mark II Economy Class Passenger Cabin.
+        /// </summary>
+        public static string EconomyClassPassengerCabin_MkII {
+            get {
+                return ResourceManager.GetString("EconomyClassPassengerCabin_MkII", resourceCulture);
             }
         }
         

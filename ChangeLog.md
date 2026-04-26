@@ -4,6 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ## 5.0.0-b2
   * Core
+    * Added support for the Lynx Highliner and associated new modules.
     * Restored Frontier API connection functionality. 
     * Update installer path handling and legacy cleanup
   * Speech Responder
