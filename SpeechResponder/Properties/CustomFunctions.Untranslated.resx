@@ -781,4 +781,7 @@ Common usage is to convert an array to a list, for example:
     {set systemstorepair to ['the hull', 'the cockpit', 'corroded systems']}
     Do you want to repair {ListOr(systemstorepair)}?</value>
   </data>
+  <data name="StopSpeaking" xml:space="preserve">
+    <value>This function stops any active EDDI speech and dequeues any pending speech. It has no arguments.</value>
+  </data>
 </root>

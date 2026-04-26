@@ -447,7 +447,7 @@ To use this function in your own commands set the 'Script' variable and optional
 
 ### shutup
 
-This function stops any active EDDI speech. There are no parameters.
+This function stops any active EDDI speech and dequeues any pending speech. There are no parameters.
 
 To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'shutup'.
 

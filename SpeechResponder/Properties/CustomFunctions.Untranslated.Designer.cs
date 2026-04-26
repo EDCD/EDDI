@@ -847,6 +847,15 @@ namespace EddiSpeechResponder.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This function stops any active EDDI speech and dequeues any pending speech. It has no arguments..
+        /// </summary>
+        public static string StopSpeaking {
+            get {
+                return ResourceManager.GetString("StopSpeaking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This function will provide full information for a superpower given its name.
         ///
         ///SuperpowerDetails() takes a single argument of the superpower for which you want more information.
