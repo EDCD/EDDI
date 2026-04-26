@@ -23,7 +23,7 @@ namespace EddiDataDefinitions
             info = null;
             rawRoute = null;
 
-            var (raw, parsed) = Files.FromSavedGamesAsync(
+            var (raw, parsed, isRecent) = Files.FromSavedGamesAsync(
                 filename,
                 extract: json =>
                 {
@@ -33,8 +33,8 @@ namespace EddiDataDefinitions
                 compareTo: journalTimeStamp
             ).GetResultOrTimeout( TimeSpan.FromSeconds( 5 ) );
 
-            if ( parsed?.Route != null &&
-                 ( ( isRouteExpected && parsed.Route.Count > 0 ) || ( !isRouteExpected && parsed.Route.Count == 0 ) ) )
+            if ( isRecent && parsed?.Route != null 
+                          && ( ( isRouteExpected && parsed.Route.Count > 0 ) || ( !isRouteExpected && parsed.Route.Count == 0 ) ) )
             {
                 info = parsed;
                 rawRoute = raw;

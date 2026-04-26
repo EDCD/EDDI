@@ -1175,12 +1175,26 @@ namespace EddiDataDefinitions
         public static readonly Module Explorer_NX_Armour_Reactive = new( "Explorer_NX_Armour_Reactive", "ReactiveSurfaceComposite_Ablative_MkII", 1, "A", 459288060 );
         public static readonly Module hpt_mkiiplasmashockautocannon_fixed_large = new( "hpt_mkiiplasmashockautocannon_fixed_large", "MkIIPlasmaShockAccelerator", 3, "B", 4612670, ModuleMount.Fixed );
         public static readonly Module int_mkiiagileboost_engine_size5_class5 = new( "int_mkiiagileboost_engine_size5_class5", "MkIIAgileBoostThrusters", 5, "A", 6803570 );
-        public static readonly Module smallcombat01_nx_armour_grade1 = new( "smallcombat01_nx_armour_grade1", "LightweightAlloy", 1, "I", 0 );
-        public static readonly Module smallcombat01_nx_armour_grade2 = new( "smallcombat01_nx_armour_grade2", "ReinforcedAlloy", 1, "I", 5709527 );
-        public static readonly Module smallcombat01_nx_armour_grade3 = new( "smallcombat01_nx_armour_grade3", "MilitaryGradeComposite", 1, "I", 12846437 );
-        public static readonly Module smallcombat01_nx_armour_mirrored = new( "smallcombat01_nx_armour_mirrored", "MirroredSurfaceComposite", 1, "I", 30360409 );
-        public static readonly Module smallcombat01_nx_armour_reactive = new( "smallcombat01_nx_armour_reactive", "ReactiveSurfaceComposite", 1, "I", 33643387 );
-
+        public static readonly Module smallcombat01_nx_armour_grade1 = new( "smallcombat01_nx_armour_grade1", "LightweightAlloy", 1, "C", 0 );
+        public static readonly Module smallcombat01_nx_armour_grade2 = new( "smallcombat01_nx_armour_grade2", "ReinforcedAlloy", 1, "B", 5709527 );
+        public static readonly Module smallcombat01_nx_armour_grade3 = new( "smallcombat01_nx_armour_grade3", "MilitaryGradeComposite", 1, "A", 12846437 );
+        public static readonly Module smallcombat01_nx_armour_mirrored = new( "smallcombat01_nx_armour_mirrored", "MirroredSurfaceComposite", 1, "A", 30360409 );
+        public static readonly Module smallcombat01_nx_armour_reactive = new( "smallcombat01_nx_armour_reactive", "ReactiveSurfaceComposite", 1, "A", 33643387 );
+        public static readonly Module mediumtransport01_armour_grade1 = new( "mediumtransport01_armour_grade1", "LightweightAlloy", 1, "C", 0 );
+        public static readonly Module mediumtransport01_nx_armour_grade2 = new( "mediumtransport01_armour_grade2", "ReinforcedAlloy", 1, "B", 27715787 );
+        public static readonly Module mediumtransport01_nx_armour_grade3 = new( "mediumtransport01_armour_grade3", "MilitaryGradeComposite", 1, "A", 62360521 );
+        public static readonly Module mediumtransport01_armour_mirrored = new( "mediumtransport01_armour_mirrored", "MirroredSurfaceComposite", 1, "A", 147378697 );
+        public static readonly Module mediumtransport01_armour_reactive = new( "mediumtransport01_armour_reactive", "ReactiveSurfaceComposite", 1, "A", 163315274 );
+        public static readonly Module Int_mkii_passengercabin_size2_class1 = new( "Int_mkii_passengercabin_size2_class1", "EconomyClassPassengerCabin_MkII", 2, "D", 5750); // Mk II Economy Passenger Cabin Class 2 Rating D
+        public static readonly Module Int_mkii_passengercabin_size3_class1 = new( "Int_mkii_passengercabin_size3_class1", "EconomyClassPassengerCabin_MkII", 3, "D", 11544); // Mk II Economy Passenger Cabin Class 3 Rating D
+        public static readonly Module Int_mkii_passengercabin_size3_class2 = new( "Int_mkii_passengercabin_size3_class2", "BusinessClassPassengerCabin_MkII", 3, "C", 35607); // Mk II Business Class Passenger Cabin Class 3 Rating C
+        public static readonly Module Int_mkii_passengercabin_size4_class1 = new( "Int_mkii_passengercabin_size4_class1", "EconomyClassPassengerCabin_MkII", 4, "D", 25273); // Mk II Economy Passenger Cabin Class 4 Rating D
+        public static readonly Module Int_mkii_passengercabin_size4_class2 = new( "Int_mkii_passengercabin_size4_class2", "BusinessClassPassengerCabin_MkII", 4, "C", 75818); // Mk II Business Class Passenger Cabin Class 4 Rating C
+        public static readonly Module Int_mkii_passengercabin_size5_class1 = new( "Int_mkii_passengercabin_size5_class1", "EconomyClassPassengerCabin_MkII", 5, "D", 46606); // Mk II Economy Passenger Cabin Class 5 Rating D
+        public static readonly Module Int_mkii_passengercabin_size5_class2 = new( "Int_mkii_passengercabin_size5_class2", "BusinessClassPassengerCabin_MkII", 5, "C", 123151); // Mk II Business Class Passenger Cabin Class 5 Rating C
+        public static readonly Module int_mkii_passengercabin_size6_class1 = new( "int_mkii_passengercabin_size6_class1", "EconomyClassPassengerCabin_MkII", 6, "D", 81880); // Mk II Economy Passenger Cabin Class 6 Rating D
+        public static readonly Module Int_mkii_passengercabin_size6_class2 = new( "Int_mkii_passengercabin_size6_class2", "BusinessClassPassengerCabin_MkII", 6, "C", 245643); // Mk II Business Class Passenger Cabin Class 6 Rating C
+        
         // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
         public static readonly Module Hpt_PulseLaser_Fixed_SmallFree = new( "Hpt_PulseLaser_Fixed_SmallFree", "PulseLaser", 1, "F", 0, ModuleMount.Fixed);
         public static readonly Module Int_PowerPlant_Size2_Class1_free = new( "Int_PowerPlant_Size2_Class1_free", "PowerPlant", 2, "E", 0);

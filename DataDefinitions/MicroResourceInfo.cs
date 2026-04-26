@@ -49,7 +49,7 @@ namespace EddiDataDefinitions
             info = null;
             rawMicroResources = null;
 
-            var (raw, parsed) = Files.FromSavedGamesAsync(
+            var (raw, parsed, isRecent) = Files.FromSavedGamesAsync(
                 filename,
                 extract: json =>
                 {
@@ -59,7 +59,11 @@ namespace EddiDataDefinitions
                 compareTo: journalTimeStamp
             ).GetResultOrTimeout( TimeSpan.FromSeconds( 5 ) );
 
-            if ( parsed != null && parsed.Items != null && parsed.Components != null && parsed.Consumables != null && parsed.Data != null )
+            if ( isRecent && parsed != null 
+                          && parsed.Items != null 
+                          && parsed.Components != null 
+                          && parsed.Consumables != null 
+                          && parsed.Data != null )
             {
                 info = parsed;
                 rawMicroResources = raw;

@@ -2766,7 +2766,7 @@ namespace EddiJournalMonitor
                                     var carrierName = JsonParsing.getString(data, "CarrierName");
                                     var callsign = JsonParsing.getString(data, "CarrierID");
 
-                                    var (raw, parsed) = Files.FromSavedGamesAsync(
+                                    var (raw, parsed, isRecent) = Files.FromSavedGamesAsync(
                                         "FCMaterials.json",
                                         extract: json =>
                                         {
@@ -2776,11 +2776,13 @@ namespace EddiJournalMonitor
                                         compareTo: timestamp
                                     ).GetResultOrTimeout( TimeSpan.FromSeconds( 5 ) );
 
-                                    if ( parsed != null && parsed.CarrierID == carrierID
-                                                     && parsed.CarrierName == carrierName
-                                                     && parsed.callsign == callsign )
+                                    if ( isRecent && parsed != null
+                                                  && parsed.CarrierID == carrierID
+                                                  && parsed.CarrierName == carrierName
+                                                  && parsed.callsign == callsign )
                                     {
-                                        events.Add( new FleetCarrierMaterialsEvent( timestamp, carrierID, carrierName, callsign, parsed ) { raw = raw, fromLoad = fromLogLoad } );
+                                        events.Add( new FleetCarrierMaterialsEvent( timestamp, carrierID, carrierName,
+                                            callsign, parsed ) { raw = raw, fromLoad = fromLogLoad } );
                                     }
                                 }
                                 handled = true;

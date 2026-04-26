@@ -39,7 +39,7 @@ namespace EddiDataDefinitions
             info = null;
             rawOutfitting = null;
 
-            var ( raw, parsed) = Files.FromSavedGamesAsync(
+            var (raw, parsed, isRecent) = Files.FromSavedGamesAsync(
                 filename,
                 extract: json =>
                 {
@@ -49,10 +49,10 @@ namespace EddiDataDefinitions
                 compareTo: journalTimeStamp
             ).GetResultOrTimeout ( TimeSpan.FromSeconds( 5 ) );
 
-            if ( parsed?.Items != null &&
-                 parsed.StarSystem == expectedStarSystem &&
-                 parsed.StationName == expectedStation &&
-                 parsed.MarketID == expectedMarketID )
+            if ( isRecent && parsed?.Items != null 
+                          && parsed.StarSystem == expectedStarSystem 
+                          && parsed.StationName == expectedStation 
+                          && parsed.MarketID == expectedMarketID )
             {
                 info = parsed;
                 rawOutfitting = raw;

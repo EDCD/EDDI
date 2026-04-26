@@ -30,7 +30,7 @@ namespace EddiDataDefinitions
             info = null;
             rawCargo = null;
 
-            var (raw, parsed) = Files.FromSavedGamesAsync(
+            var (raw, parsed, isRecent) = Files.FromSavedGamesAsync(
                 filename,
                 extract: json =>
                 {
@@ -40,9 +40,9 @@ namespace EddiDataDefinitions
                 compareTo: journalTimeStamp
             ).GetResultOrTimeout( TimeSpan.FromSeconds( 5 ) );
 
-            if ( parsed?.Inventory != null &&
-                 parsed.Vessel == expectedVessel &&
-                 parsed.Count == expectedCount )
+            if ( isRecent && parsed?.Inventory != null 
+                          && parsed.Vessel == expectedVessel 
+                          && parsed.Count == expectedCount )
             {
                 info = parsed;
                 rawCargo = raw;

@@ -148,7 +148,8 @@ namespace EddiDataDefinitions
                     new Translation( "Kestrel", "ˈkɛstɹəl" ),
                     new Translation( "Mark", "mɑːk" ),
                     new Translation( "2", "ˈtuː" )
-                ], LandingPadSize.Small, 4, 0.61M )
+                ], LandingPadSize.Small, 4, 0.61M ),
+            new( "mediumtransport01", Manufacturer.ZorgonPeterson, "Lynx Highliner", nameof(Properties.Ship.yourLynxHighliner), null, LandingPadSize.Medium, 0, 0.75M )
         ];
 
         public static readonly SortedSet<string> ShipModels = new(AllOfThem.Select(ship => ship.model));

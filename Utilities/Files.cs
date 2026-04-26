@@ -280,14 +280,14 @@ namespace Utilities
             return false;
         }
         
-        public static async Task<(string raw, T parsed)> FromSavedGamesAsync<T> (
+        public static async Task<(string raw, T parsed, bool isRecent)> FromSavedGamesAsync<T> (
                 string filename, Func<string, (DateTime? ts, T parsed)> extract, DateTime compareTo, 
                 double maxAgeSeconds = 5, int maxAttempts = 10, int delayMs = 200 )
         {
             var directory = GetEliteSavedGamesDir();
             if ( string.IsNullOrWhiteSpace( directory ) )
             {
-                return (null, default);
+                return (null, default, false);
             }
 
             FileInfo fileInfo;
@@ -298,12 +298,12 @@ namespace Utilities
             catch ( NotSupportedException ex )
             {
                 Logging.Error( $"Directory '{directory}' not supported: ", ex );
-                return (null, default);
+                return (null, default, false);
             }
 
             if ( fileInfo is null )
             {
-                return (null, default);
+                return (null, default, false);
             }
 
             var exceptions = new List<Exception>();
@@ -324,10 +324,7 @@ namespace Utilities
                                 if ( ts != null )
                                 {
                                     var diff = ( ts.Value - compareTo ).Duration();
-                                    if ( diff.TotalSeconds <= maxAgeSeconds )
-                                    {
-                                        return ( raw, parsed );
-                                    }
+                                    return (raw, parsed, diff.TotalSeconds <= maxAgeSeconds);
                                 }
                             }
                         }
@@ -343,7 +340,7 @@ namespace Utilities
             }
 
             Logging.Warn( $"Unable to open Elite Dangerous '{filename}' file after {maxAttempts} retries", exceptions );
-            return (null, default);
+            return (null, default, false);
         }
 
         // Obtain file info for a file name and path, or null if the file is not available
