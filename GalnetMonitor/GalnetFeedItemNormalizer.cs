@@ -101,7 +101,7 @@ namespace EddiGalnetMonitor
 
         private static string StripDoubleOrMoreWhiteSpace ( string value )
         {
-            return GeneratedRegex.WhiteSpaceRegex().Replace( value, " " );
+            return GeneratedRegex.WhiteMultiSpaceRegex().Replace( value, " " );
         }
 
         private static string StripHTML ( string value )

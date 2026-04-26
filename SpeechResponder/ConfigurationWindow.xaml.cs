@@ -142,14 +142,6 @@ namespace EddiSpeechResponder
                 }
             } );
             standardMetaVariables = metaVars;
-
-            Dispatcher.InvokeAsync( () =>
-            {
-                if ( editScriptWindow?.IsLoaded ?? false )
-                {
-                    editScriptWindow.AddStandardMetaVariables( metaVars );
-                }
-            } );
         }
 
         private void PersonalitiesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

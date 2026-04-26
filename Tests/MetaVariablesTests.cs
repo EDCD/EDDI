@@ -12,6 +12,15 @@ namespace Tests
     [TestClass, TestCategory("UnitTests")]
     public class MetaVariablesTests : TestBase
     {
+        private sealed class TestSpeech
+        {
+            [PublicAPI( "The speech text." )]
+            public string Text { get; set; }
+
+            [PublicAPI( "Speech priority." )]
+            public int Priority { get; set; }
+        }
+        
         [TestInitialize]
         public void start()
         {
@@ -235,5 +244,92 @@ namespace Tests
             var vaVars = VoiceAttackVariables.Convert(vars,string.Empty, entry.Key );
             vaVars.ForEach( v => v.Set() ); // This test is primarily to check that no exceptions are thrown when setting variables.
         }
+
+#pragma warning disable MSTEST0037 // The current Assert pattern is is best available for these tests.
+
+        [TestMethod]
+        public void MetaVariables_ReturnsElementMembersForRootListType ()
+        {
+            var results = new MetaVariables(
+                typeof( List<TestSpeech> ),
+                null ).Results;
+
+            Assert.IsTrue( results.Any( v =>
+                v.keysPath.SequenceEqual( [
+                    MetaVariables.indexMarker,
+                    nameof( TestSpeech.Text )
+                ] ) ) );
+
+            Assert.IsTrue( results.Any( v =>
+                v.keysPath.SequenceEqual( [
+                    MetaVariables.indexMarker,
+                    nameof( TestSpeech.Text )
+                ] ) ) );
+
+            Assert.IsTrue( results.Any( v =>
+                v.keysPath.SequenceEqual( [
+                    MetaVariables.indexMarker,
+                    nameof( TestSpeech.Priority )
+                ] ) ) );
+        }
+
+        [TestMethod]
+        public void MetaVariables_ReturnsElementMembersForRootArrayType ()
+        {
+            var results = new MetaVariables(
+                typeof( TestSpeech[] ),
+                null ).Results;
+
+            Assert.IsTrue( results.Any( v =>
+                v.keysPath.SequenceEqual( [
+                    MetaVariables.indexMarker,
+                    nameof( TestSpeech.Text )
+                ] ) ) );
+        }
+
+        [TestMethod]
+        public void MetaVariables_ReturnsElementMembersForRootEnumerableInterfaceType ()
+        {
+            var results = new MetaVariables(
+                typeof( IEnumerable<TestSpeech> ),
+                null ).Results;
+
+            Assert.IsTrue( results.Any( v =>
+                v.keysPath.SequenceEqual( [
+                    MetaVariables.indexMarker,
+                    nameof( TestSpeech.Text )
+                ] ) ) );
+        }
+
+        [TestMethod]
+        public void MetaVariables_ReturnsIndexedElementMembersForRootListInstance ()
+        {
+            var speech = new List<TestSpeech>
+            {
+                new() { Text = "one", Priority = 1 },
+                new() { Text = "two", Priority = 2 }
+            };
+
+            var results = new MetaVariables(
+                typeof( List<TestSpeech> ),
+                speech ).Results;
+
+            Assert.IsTrue( results.Any( v =>
+                v.keysPath.SequenceEqual( [
+                    "1",
+                    nameof( TestSpeech.Text )
+                ] ) &&
+                Equals( v.value, "one" ) ) );
+
+            Assert.IsTrue( results.Any( v =>
+                v.keysPath.SequenceEqual( [
+                    "2",
+                    nameof( TestSpeech.Priority )
+                ] ) &&
+                Equals( v.value, 2 ) ) );
+        }
+
+#pragma warning restore MSTEST0037
+
     }
 }

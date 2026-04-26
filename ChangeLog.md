@@ -6,6 +6,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * Restored Frontier API connection functionality. 
     * Update installer path handling and legacy cleanup
+  * Speech Responder
+    * Improved text completion logic. 
+    * Custom Functions
+      * `StopSpeaking` added. This stops any active speech and dequeues any pending speech. 
 
 ## 5.0.0-b1
   * Core

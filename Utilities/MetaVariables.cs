@@ -65,10 +65,43 @@ namespace Utilities
             keysPath ??= [ ];
             Results ??= [ ];
 
-            // Some types don't need to be decomposed further.
-            if (undecomposedTypes.Contains(reflectionObjectType))
+            if ( reflectionObjectType is null )
             {
-                GetVariable(keysPath.ToList(), "", reflectionObjectType, string.Empty, reflectionObject, maxRecursionLevel );
+                return Results;
+            }
+
+            // If the type is optionally nullable, get the underlying non-nullable type.
+            if ( reflectionObjectType.IsGenericType &&
+                 reflectionObjectType.GetGenericTypeDefinition() == typeof( Nullable<> ) )
+            {
+                reflectionObjectType = Nullable.GetUnderlyingType( reflectionObjectType );
+            }
+
+            // Some types don't need to be decomposed further.
+            if ( undecomposedTypes.Contains( reflectionObjectType ) )
+            {
+                GetVariable(
+                    keysPath.ToList(),
+                    string.Empty,
+                    reflectionObjectType,
+                    string.Empty,
+                    reflectionObject,
+                    maxRecursionLevel );
+                return Results;
+            }
+
+            // When MetaVariables are constructed directly from a collection,
+            // reflect the collection element type rather than the collection type itself.
+            if ( IsEnumerableType( reflectionObjectType ) )
+            {
+                GetEnumerableVariables(
+                    keysPath.ToList(),
+                    reflectionObjectType,
+                    string.Empty,
+                    reflectionObject,
+                    maxRecursionLevel,
+                    addCollectionRoot: keysPath.Count > 0 );
+
                 return Results;
             }
 
@@ -183,56 +216,14 @@ namespace Utilities
                     var enumName = value != null ? fieldsArray[(int)value].Name : null;
                     Results.Add(new MetaVariable(keysPath, typeof(string), description, enumName));
                 }
-                else if (typeof(IEnumerable).IsAssignableFrom(type) && type != typeof(string))
+                else if ( IsEnumerableType( type ) )
                 {
-                    // The object is an enumerable collection. A list, array, or similar.
-                    // Determine the element type
-                    Type elementType = null;
-                    if (type.IsArray)
-                    {
-                        elementType = type.GetElementType();
-                    }
-                    else if (type.IsGenericType && type.GetGenericArguments().Length > 0)
-                    {
-                        elementType = type.GetGenericArguments().Last();
-                    }
-                    else
-                    {
-                        elementType = typeof(object);
-                    }
-
-                    int? i = 0;
-                    if (value != null)
-                    {
-                        // Handle filled collections
-                        foreach ( var item in (IEnumerable)value)
-                        {
-                            i++;
-                            var elementKeysPath = keysPath.ToList();
-                            elementKeysPath.Add(i.ToString());
-                            if (maxRecursionLevel is null || keysPath.Count < maxRecursionLevel)
-                            {
-                                GetVariables(elementType, maxRecursionLevel, item, elementKeysPath);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        // Handle empty collections (for example when we're generating wiki documentation)
-                        // Get the current list element's underlying variable data
-                        var elementKeysPath = keysPath.ToList();
-                        elementKeysPath.Add(indexMarker);
-                        if (maxRecursionLevel is null || keysPath.Count < maxRecursionLevel)
-                        {
-                            GetVariables(elementType, maxRecursionLevel, null, elementKeysPath);
-                        }
-                        // Set i to null so that no value is written to the wiki documentation
-                        i = null;
-                    }
-
-                    // Write the root element name with (if available) the number of associated entries from the collection
-                    var entriesPath = keysPath.ToList();
-                    Results.Add(new MetaVariable(entriesPath, typeof(IEnumerable<>), description, i));
+                    GetEnumerableVariables(
+                        keysPath,
+                        type,
+                        description,
+                        value,
+                        maxRecursionLevel );
                 }
                 else
                 {
@@ -273,6 +264,96 @@ namespace Utilities
             {
                 Logging.Error("Failed to obtain variable metadata by reflection.", ex);
             }
+        }
+
+        private void GetEnumerableVariables (
+            List<string> keysPath,
+            Type type,
+            string description,
+            object value,
+            int? maxRecursionLevel,
+            bool addCollectionRoot = true )
+        {
+            var elementType = GetEnumerableElementType( type );
+
+            int? i = 0;
+
+            if ( value != null )
+            {
+                foreach ( var item in (IEnumerable)value )
+                {
+                    i++;
+
+                    var elementKeysPath = keysPath.ToList();
+                    elementKeysPath.Add( i.ToString() );
+
+                    if ( maxRecursionLevel is null || keysPath.Count < maxRecursionLevel )
+                    {
+                        GetVariables( elementType, maxRecursionLevel, item, elementKeysPath );
+                    }
+                }
+            }
+            else
+            {
+                var elementKeysPath = keysPath.ToList();
+                elementKeysPath.Add( indexMarker );
+
+                if ( maxRecursionLevel is null || keysPath.Count < maxRecursionLevel )
+                {
+                    GetVariables( elementType, maxRecursionLevel, null, elementKeysPath );
+                }
+
+                i = null;
+            }
+
+            if ( addCollectionRoot && keysPath.Count > 0 )
+            {
+                Results.Add( new MetaVariable(
+                    keysPath.ToList(),
+                    typeof( IEnumerable<> ),
+                    description,
+                    i ) );
+            }
+        }
+
+        private static bool IsEnumerableType ( Type type )
+        {
+            return type != typeof( string ) &&
+                   typeof( IEnumerable ).IsAssignableFrom( type );
+        }
+
+        private static Type GetEnumerableElementType ( Type type )
+        {
+            if ( type.IsArray )
+            {
+                return type.GetElementType() ?? typeof( object );
+            }
+
+            if ( type.IsGenericType )
+            {
+                var genericTypeDefinition = type.GetGenericTypeDefinition();
+
+                if ( genericTypeDefinition == typeof( Dictionary<,> ) ||
+                     genericTypeDefinition == typeof( IDictionary<,> ) ||
+                     genericTypeDefinition == typeof( IReadOnlyDictionary<,> ) )
+                {
+                    return type.GetGenericArguments()[ 1 ];
+                }
+
+                var genericArguments = type.GetGenericArguments();
+                if ( genericArguments.Length > 0 )
+                {
+                    return genericArguments.Last();
+                }
+            }
+
+            var enumerableInterface = type
+                .GetInterfaces()
+                .FirstOrDefault( i =>
+                    i.IsGenericType &&
+                    i.GetGenericTypeDefinition() == typeof( IEnumerable<> ) );
+
+            return enumerableInterface?.GetGenericArguments().Last() ?? typeof( object );
         }
     }
 

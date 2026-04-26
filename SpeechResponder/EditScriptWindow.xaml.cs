@@ -1,6 +1,5 @@
 ﻿using EddiConfigService;
 using EddiSpeechResponder.AvalonEdit;
-using EddiSpeechResponder.ScriptResolverService;
 using EddiSpeechService;
 using ICSharpCode.AvalonEdit.Editing;
 using ICSharpCode.AvalonEdit.Folding;
@@ -10,7 +9,6 @@ using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -34,20 +32,18 @@ namespace EddiSpeechResponder
         private readonly Dictionary<string, Script> _scripts;
         private readonly bool isNewOrRecoveredScript;
 
-        private ScriptRecoveryService.ScriptRecoveryService ScriptRecoveryService { get; set; }
+        private ScriptRecoveryService.ScriptRecoveryService ScriptRecoveryService { get; }
 
 #pragma warning disable IDE0052 // Remove unused private members -- this may be used later
         private readonly DocumentHighlighter documentHighlighter;
 #pragma warning restore IDE0052 // Remove unused private members
 
+        private readonly TextCompletion textCompletion;
         private TextCompletionWindow completionWindow;
 
         private readonly FoldingStrategy foldingStrategy;
         private FoldingMargin foldingMargin;
 
-        private readonly List<MetaVariable> metaVars = [ ];
-        private readonly List<ICustomFunction> customFunctions;
-        private static readonly object metaVarLock = new();
         private readonly SpeechResponder speechResponder;
         private static Rect windowPosition;
 
@@ -56,24 +52,16 @@ namespace EddiSpeechResponder
             InitializeComponent();
             DataContext = this;
 
-            this.customFunctions = ScriptResolver.GetCustomFunctions();
             this.isNewOrRecoveredScript = isNewOrRecoveredScript;
             _scripts = scripts;
             this.originalScript = originalScript;
-            this.metaVars.AddRange(metaVars);
+            this.textCompletion = new TextCompletion( metaVars );
             this.speechResponder = speechResponder;
 
-            if ( originalScript == null )
-            {
-                // This is a new script
-                revisedScript = new Script( "New script", null, false, null ) { PersonalityIsCustom = true };
-            }
-            else
-            {
-                // This is an existing script
-                revisedScript = originalScript.Copy();
-            }
-
+            revisedScript = originalScript == null
+                ? new Script( "New script", null, false, null ) { PersonalityIsCustom = true } // This is a new script
+                : originalScript.Copy(); // This is an existing script
+            
             // See if there is the default value for this script is empty
             if ( string.IsNullOrWhiteSpace( revisedScript.defaultValue ) )
             {
@@ -232,9 +220,9 @@ namespace EddiSpeechResponder
                 // Select the specific data we need to obtain
                 var line = textArea.Document.GetLineByOffset(textArea.Caret.Offset);
                 var lineTxt = textArea.Document.GetText(line.Offset, textArea.Caret.Offset - line.Offset);
-                var lookupItem = GetTextCompletionLookupItem(lineTxt);
+                var lookupItem = TextCompletion.GetLookupItem(lineTxt);
                 var priorText = textArea.Document.GetText(0, textArea.Caret.Offset);
-                var textCompletionItems = GetCompletionItems(lookupItem, priorText);
+                var textCompletionItems = textCompletion.GetCompletionItems(lookupItem, priorText);
 
                 // Send the result to the text completion window
                 if ( textCompletionItems.Count > 0 )
@@ -244,170 +232,7 @@ namespace EddiSpeechResponder
                 }
             }
         }
-
-        public static string GetTextCompletionLookupItem(string lineTxt)
-        {
-            var lookupItem = string.Empty;
-            var lineMatch = GeneratedRegex.CottleFunctionLine().Match(lineTxt);
-            if (lineMatch.Success)
-            {
-                lookupItem = lineMatch.Groups[lineMatch.Groups.Count - 1].Value.TrimEnd('.');
-                if (!string.IsNullOrEmpty(lookupItem))
-                {
-                    // Replace any enumeration value for enumerable values (e.g. 'bodies[5]') with a standard index marker
-                    lookupItem = GeneratedRegex.EnumIndexRegex().Replace( lookupItem, $".{MetaVariables.indexMarker}" );
-                }
-            }
-            return lookupItem;
-        }
-
-        private List<TextCompletionItem> GetCompletionItems(string lookupItem, string priorText)
-        {
-            var textCompletionItems = new List<TextCompletionItem>();
-            if ( string.IsNullOrEmpty( lookupItem ) || string.IsNullOrEmpty( priorText ) )
-            {
-                return textCompletionItems;
-            }
-
-            // Remove any leading "!" and split our lookup item into its constituent parts / objects
-            var lookupKeys = lookupItem.Replace("!", "").Split('.').ToList();
-            if (lookupKeys.Count == 0)
-            {
-                return textCompletionItems;
-            }
-
-            // Resolve any simple text aliases (e.g. {set a to b.c}).
-            var simpleAliases = GeneratedRegex.CottleSetKeyToValueRegex().Matches( priorText );
-            foreach ( var obj in simpleAliases )
-            {
-                if ( obj is Match match )
-                {
-                    if ( lookupKeys[ 0 ] == match.Groups[ "key" ].Value )
-                    {
-                        lookupKeys.RemoveAt(0);
-                        lookupKeys.InsertRange(0, match.Groups[ "value" ].Value.Split( '.' ) );
-                    }
-                }
-            }
-
-            var filteredMetaVars = new List<MetaVariable>();
-
-            List<MetaVariable> FilterMetaVars ( List<MetaVariable> metaVariables )
-            {
-                // Remove any nested keys or keys that don't match our lookup value
-                var filteredMetaVariables = metaVariables
-                    .Where( v => v.keysPath.Count == ( lookupKeys.Count + 1 ) )
-                    .Where( v => string.Join( ".", v.keysPath ).StartsWith( string.Join( ".", lookupKeys ) ) )
-                    .ToList();
-
-                // Remove any redundant localized names
-                var localizedNameVar = filteredMetaVars.FirstOrDefault( v => v.keysPath.Last() == "localizedName" );
-                if ( filteredMetaVars.Any( v => localizedNameVar != null &&
-                                                v.keysPath.Last() == "name" &&
-                                                v.value == localizedNameVar.value ) )
-                {
-                    filteredMetaVars.Remove( localizedNameVar );
-                }
-
-                return filteredMetaVariables;
-            }
-
-            // Resolve any direct function invocations (e.g. `{function(x).`)
-            if ( filteredMetaVars.Count == 0 )
-            {
-                if ( lookupKeys[ 0 ].Contains( '(' ) )
-                {
-                    var functionKey = GeneratedRegex.CottleFunctionArgs().Replace( lookupKeys[ 0 ], string.Empty );
-                    // If a match is found then we won't need to search our metavariables for a match.
-                    var customFunction = customFunctions.FirstOrDefault( f => f.name == functionKey );
-                    if ( customFunction != null )
-                    {
-                        var unfilteredMetaVars = new MetaVariables( customFunction.ReturnType, null, lookupKeys.Count + 1 ).Results;
-                        unfilteredMetaVars.ForEach( mV =>
-                            mV.keysPath = mV.keysPath.Prepend( lookupKeys[ 0 ] ).ToList() );
-                        filteredMetaVars = FilterMetaVars( unfilteredMetaVars );
-                    }
-                }
-            }
-
-            // Resolve any function aliases (e.g. `{set a to function()} {a.`).
-            if ( filteredMetaVars.Count == 0 )
-            {
-                var functionAliases = GeneratedRegex.CottleSetKeyToFunctionRegex().Matches( priorText );
-
-                foreach ( var obj in functionAliases )
-                {
-                    if ( obj is Match match )
-                    {
-                        if ( lookupKeys[ 0 ] == match.Groups[ "key" ].Value )
-                        {
-                            // If a match is found then we won't need to search our metavariables for a match.
-                            var customFunction =
-                                customFunctions.FirstOrDefault( f => f.name == match.Groups[ "function" ].Value );
-                            if ( customFunction != null )
-                            {
-                                var unfilteredMetaVars = new MetaVariables( customFunction.ReturnType, null, lookupKeys.Count + 1 ).Results;
-                                unfilteredMetaVars.ForEach( mV =>
-                                    mV.keysPath = mV.keysPath.Prepend( lookupKeys[ 0 ] ).ToList() );
-                                filteredMetaVars = FilterMetaVars( unfilteredMetaVars );
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Search our compiled metavariables list for a matching key.
-            if ( filteredMetaVars.Count == 0 )
-            {
-                lock ( metaVarLock )
-                {
-                    filteredMetaVars = FilterMetaVars(metaVars);
-                }
-            }
-
-            // Generate textCompletionItems
-            foreach ( var item in filteredMetaVars.OrderBy(v => string.Concat(v.keysPath, '.')))
-            {
-                var itemKey = item.keysPath.Last();
-                if (!string.IsNullOrEmpty(itemKey) &&
-                    textCompletionItems.All(d => d.Text != itemKey) &&
-                    MetaVariables.indexMarker != itemKey)
-                {
-                    if (item.type == typeof(bool))
-                    {
-                        textCompletionItems.Add(new TextCompletionItem(itemKey, typeof(Cottle.Values.BooleanValue),
-                            item.description));
-                    }
-                    else if (item.type == typeof(int) ||
-                             item.type == typeof(double) ||
-                             item.type == typeof(float) ||
-                             item.type == typeof(long) ||
-                             item.type == typeof(ulong))
-                    {
-                        // Convert int, doubles, floats, and longs to number values
-                        textCompletionItems.Add(new TextCompletionItem(itemKey, typeof(Cottle.Values.NumberValue),
-                            item.description));
-                    }
-                    else if (item.type == typeof(string))
-                    {
-                        textCompletionItems.Add(new TextCompletionItem(itemKey, typeof(Cottle.Values.StringValue),
-                            item.description));
-                    }
-                    else if ( item.type == typeof( IEnumerable<>) )
-                    {
-                        textCompletionItems.Add(new TextCompletionItem(itemKey, typeof(Cottle.Values.MapValue),
-                            item.description));
-                    }
-                    else
-                    {
-                        textCompletionItems.Add(new TextCompletionItem(itemKey, item.type, item.description));
-                    }
-                }
-            }
-
-            return textCompletionItems;
-        }
-
+        
         private void ScriptView_TextArea_TextEntering ( object sender, TextCompositionEventArgs e )
         {
             if ( e.Text.Length > 0 && completionWindow != null )
@@ -420,14 +245,6 @@ namespace EddiSpeechResponder
                 }
             }
             // do not set e.Handled=true - we still want to insert the character that was typed
-        }
-
-        public void AddStandardMetaVariables ( IEnumerable<MetaVariable> stdMetaVars )
-        {
-            lock ( metaVarLock )
-            {
-                metaVars.AddRange(stdMetaVars);
-            }
         }
 
         protected override void OnClosed ( EventArgs e )

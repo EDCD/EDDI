@@ -24,7 +24,7 @@ namespace Tests
 
         private string CondenseSpaces(string s)
         {
-            return GeneratedRegex.WhiteSpaceRegex().Replace(s, " ");
+            return GeneratedRegex.WhiteMultiSpaceRegex().Replace(s, " ");
         }
 
         [TestMethod]
@@ -408,7 +408,7 @@ namespace Tests
         [DataRow( "{StationDetails().", "StationDetails()" )]
         public void TestSpeechResponderTextCompletionLookupItem ( string lineTxt, string result )
         {
-            Assert.AreEqual(result, EditScriptWindow.GetTextCompletionLookupItem(lineTxt));
+            Assert.AreEqual(result, TextCompletion.GetLookupItem(lineTxt));
         }
     }
 }

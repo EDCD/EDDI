@@ -68,7 +68,7 @@ namespace EddiSpeechService.SpeechConversions
                 }
             }
 
-            return GeneratedRegex.WhiteSpaceRegex().Replace(string.Join(" ", results), " ");
+            return GeneratedRegex.WhiteMultiSpaceRegex().Replace(string.Join(" ", results), " ");
         }
 
         private static string GetLastPart(Match match, int i, int j)

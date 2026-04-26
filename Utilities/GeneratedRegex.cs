@@ -10,26 +10,26 @@ namespace Utilities
         [GeneratedRegex( @"[A-Za-z]+[0-9]+", RegexOptions.Compiled )]
         public static partial Regex ALPHA_THEN_NUMERIC ();
 
+        [GeneratedRegex( @"(?<lookup>!?(?:[A-Za-z_]\w*(?:\([^{}\r\n]*\))?)(?:(?:\.[A-Za-z_]\w*)|\[[^\]\r\n]+\])*)\s*\.$", RegexOptions.CultureInvariant )]
+        public static partial Regex CottleCompletionLookupRegex ();
+
         [GeneratedRegex( @"(?=\().*", RegexOptions.Compiled )]
         public static partial Regex CottleFunctionArgs ();
+        
+        [GeneratedRegex( @"\[(?<key>(?:""[^""\r\n]*"")|(?:'[^'\r\n]*')|(?:[^\]\r\n]+))\]", RegexOptions.CultureInvariant )]
+        public static partial Regex CottleIndexerRegex ();
+        
+        [GeneratedRegex( @"\{for\s+(?:(?<key>[A-Za-z_]\w*)\s*,\s*)?(?<value>[A-Za-z_]\w*)\s+in\s+(?<collection>[^:{}\r\n]+?)\s*:", RegexOptions.CultureInvariant )]
+        public static partial Regex CottleForEnumerationRegex ();
 
-        [GeneratedRegex( @"(?<={)[^:}]*?(\S+(?>\[\d\])?\.)+$", RegexOptions.Compiled )]
-        public static partial Regex CottleFunctionLine ();
-
-        [GeneratedRegex( @"{set (?<key>\w*) to (?<function>\w*(?=\(.*\).*}))", RegexOptions.Compiled )]
-        public static partial Regex CottleSetKeyToFunctionRegex ();
-
-        [GeneratedRegex( @"{set (?<key>\w*) to (?<value>[\w|\.]*)}", RegexOptions.Compiled )]
-        public static partial Regex CottleSetKeyToValueRegex ();
+        [GeneratedRegex( @"\{set\s+(?<key>[A-Za-z_]\w*)\s+to\s+(?<expression>[^{}\r\n]+?)\s*\}", RegexOptions.CultureInvariant )]
+        public static partial Regex CottleSetExpressionRegex ();
 
         [GeneratedRegex( @"\d+(?:\s|$)", RegexOptions.Compiled )]
         public static partial Regex DIGIT ();
 
         [GeneratedRegex( @"\s\(\d\)$", RegexOptions.Compiled )] 
         public static partial Regex EndingCountRegex (); // e.g. "Ancient Ruins (3)"
-
-        [GeneratedRegex( @"(?<=\S)+\[\d+\]", RegexOptions.Compiled )] 
-        public static partial Regex EnumIndexRegex (); // e.g. "bodies[3]"
 
         [GeneratedRegex( @"(?>\s*<break time=""\d+[ms]+""\s*\/>)+\s*$", RegexOptions.Compiled )]
         public static partial Regex EndingPauseRegex ();
@@ -127,10 +127,16 @@ namespace Utilities
         public static partial Regex VoiceSpeechExtractionRegex ();
         
         [GeneratedRegex( @"\s{2,}", RegexOptions.Compiled )]
+        public static partial Regex WhiteMultiSpaceRegex ();
+
+        [GeneratedRegex( @"\s+", RegexOptions.Compiled )]
         public static partial Regex WhiteSpaceRegex ();
         
         [GeneratedRegex( @"\w", RegexOptions.Compiled )]
         public static partial Regex WordCharacterRegex ();
+        
+        [GeneratedRegex( @"\b\w+\b", RegexOptions.Compiled )]
+        public static partial Regex WordsRegex ();
 
         // Regexes we do not currently use but might at some point
         /*
