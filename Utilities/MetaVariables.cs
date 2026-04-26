@@ -182,7 +182,7 @@ namespace Utilities
                 {
                     Results.Add(new MetaVariable(keysPath, type, description, (int?)value));
                 }
-                else if (type == typeof(long))
+                else if (type == typeof(long) || type == typeof(uint))
                 {
                     Results.Add(new MetaVariable(keysPath, type, description, (long?)value));
                 }
