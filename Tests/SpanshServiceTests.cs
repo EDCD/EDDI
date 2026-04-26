@@ -540,8 +540,8 @@ namespace Tests
         {
             // Arrange
             EDDI.Instance.DataProvider = CreateTestDataProvider();
-            FakeSpanshHttpClient.Expect( @"systems/search?={""filters"":{""minor_faction_presences"":[{""name"":{""value"":[""Radio Sidewinder Crew""]}}]},""size"":500,""page"":0}", Encoding.UTF8.GetString( Resources.SpanshQueryFactionRadioSidewinderCrew ) );
-            FakeSpanshHttpClient.Expect( @"systems/search?={""filters"":{""minor_faction_presences"":[{""name"":{""value"":[""No such faction""]}}]},""size"":500,""page"":0}", null );
+            FakeSpanshHttpClient.Expect( @"systems/search?json={""filters"":{""minor_faction_presences"":[{""name"":{""value"":[""Radio Sidewinder Crew""]}}]},""size"":500,""page"":0}", Encoding.UTF8.GetString( Resources.SpanshQueryFactionRadioSidewinderCrew ) );
+            FakeSpanshHttpClient.Expect( @"systems/search?json={""filters"":{""minor_faction_presences"":[{""name"":{""value"":[""No such faction""]}}]},""size"":500,""page"":0}", null );
 
             // Act
             var faction1 = await fakeSpanshService.GetFactionByNameAsync( "Radio Sidewinder Crew", CancellationToken.None ).ConfigureAwait(false);

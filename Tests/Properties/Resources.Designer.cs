@@ -313,6 +313,16 @@ namespace Tests.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        public static byte[] SpanshQueryStationFactionCalenneroCrew {
+            get {
+                object obj = ResourceManager.GetObject("SpanshQueryStationFactionCalenneroCrew", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         public static byte[] SpanshQueryStationGuardianTechBroker {
             get {
                 object obj = ResourceManager.GetObject("SpanshQueryStationGuardianTechBroker", resourceCulture);

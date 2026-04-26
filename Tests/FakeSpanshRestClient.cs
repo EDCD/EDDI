@@ -25,7 +25,7 @@ namespace Tests
         public async Task<HttpResponseMessage> PostAsync ( string requestUri, HttpContent requestContent, CancellationToken cancellationToken )
         {
             var json = await requestContent.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-            requestUri += $"?={json}";
+            requestUri += $"?json={json}";
             var responseContent = FetchContentFromUri(requestUri);
             return await Task.FromResult( new HttpResponseMessage()
             {
