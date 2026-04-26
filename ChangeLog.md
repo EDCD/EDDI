@@ -9,7 +9,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech Responder
     * Improved text completion logic. 
     * Custom Functions
-      * `StopSpeaking` added. This stops any active speech and dequeues any pending speech. 
+      * `GetPendingSpeech` added. This retrieves information about pending speech in the speech queue for analysis. 
+      * `StopSpeaking` added. This stops any active speech and dequeues any pending speech. It is equivalent to the `Shutup` VoiceAttack command.
 
 ## 5.0.0-b1
   * Core

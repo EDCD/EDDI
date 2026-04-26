@@ -784,4 +784,15 @@ Common usage is to convert an array to a list, for example:
   <data name="StopSpeaking" xml:space="preserve">
     <value>This function stops any active EDDI speech and dequeues any pending speech. It has no arguments.</value>
   </data>
+  <data name="GetPendingSpeech" xml:space="preserve">
+    <value>This function will provide information on upcoming speech from the speech queue. It has no arguments. 
+
+Usage example:
+  {set speechQueue to GetPendingSpeech()}
+  {set wordCount to 0}
+  {for speech in speechQueue:
+    {set wordCount to wordCount + speech.wordCount}
+  }
+  There are {wordCount} words pending from {len(speechQueue)} queued messages.</value>
+  </data>
 </root>

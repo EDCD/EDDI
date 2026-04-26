@@ -353,6 +353,23 @@ namespace EddiSpeechResponder.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This function will provide information on upcoming speech from the speech queue. It has no arguments. 
+        ///
+        ///Usage example:
+        ///  {set speechQueue to GetPendingSpeech()}
+        ///  {set wordCount to 0}
+        ///  {for speech in speechQueue:
+        ///    {set wordCount to wordCount + speech.wordCount}
+        ///  }
+        ///  There are {wordCount} words pending from {len(speechQueue)} queued messages..
+        /// </summary>
+        public static string GetPendingSpeech {
+            get {
+                return ResourceManager.GetString("GetPendingSpeech", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This function will retrieve a session state value. 
         ///
         ///GetState takes one argument: the name of the state value to retrieve.  The name of the state value shall be converted to lower-case with spaces changed to underscores. 
