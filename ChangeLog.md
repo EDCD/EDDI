@@ -2,7 +2,7 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-## 5.0.0-b2
+## 5.0.0
   * Core
     * Added support for the Lynx Highliner and associated new modules.
     * Restored Frontier API connection functionality. 
