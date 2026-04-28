@@ -693,4 +693,20 @@
     <value>Reaktiver Ablativ-Verbundwerkstoff</value>
     <comment>Caspian Explorer Module Explorer_NX_Armour_Reactive</comment>
   </data>
+  <data name="MkIIPlasmaShockAccelerator" xml:space="preserve">
+    <value>Plasmaschockbeschleuniger</value>
+    <comment>Module mkiiplasmashockautocannon</comment>
+  </data>
+  <data name="MkIIAgileBoostThrusters" xml:space="preserve">
+    <value>Agile Schubtriebwerke</value>
+    <comment>Module mkiiagileboost_engine</comment>
+  </data>
+  <data name="BusinessClassPassengerCabin_MkII" xml:space="preserve">
+    <value>Mk2-Business-Klasse-Passagierkabine</value>
+    <comment>(Presently Lynx Highliner exclusive)</comment>
+  </data>
+  <data name="EconomyClassPassengerCabin_MkII" xml:space="preserve">
+    <value>Mk2-Economy-Klasse-Passagierkabine</value>
+    <comment>(Presently Lynx Highliner exclusive)</comment>
+  </data>
 </root>
