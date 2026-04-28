@@ -310,4 +310,12 @@ If transporting via taxi or dropship</comment>
     <value>deine</value>
     <comment>e.g. *your* Caspian Explorer</comment>
   </data>
+  <data name="yourKestrelMkII" xml:space="preserve">
+    <value>deine</value>
+    <comment>e.g. *your* Kestrel Mk. II</comment>
+  </data>
+  <data name="yourLynxHighliner" xml:space="preserve">
+    <value>dein</value>
+    <comment>e.g. *your* Lynx Highliner</comment>
+  </data>
 </root>
