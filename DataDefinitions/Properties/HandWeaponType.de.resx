@@ -117,4 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AssaultRifle" xml:space="preserve">
+    <value>Sturmgewehr</value>
+  </data>
+  <data name="Pistol" xml:space="preserve">
+    <value>Pistole</value>
+  </data>
+  <data name="RocketLauncher" xml:space="preserve">
+    <value>Raketenwerfer</value>
+  </data>
+  <data name="Shotgun" xml:space="preserve">
+    <value>Schrotflinte</value>
+  </data>
+  <data name="SniperRifle" xml:space="preserve">
+    <value>Scharfschützengewehr</value>
+  </data>
+  <data name="SubMachineGun" xml:space="preserve">
+    <value>Maschinenpistole</value>
+  </data>
 </root>
