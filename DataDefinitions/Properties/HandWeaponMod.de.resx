@@ -117,4 +117,48 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="weapon_accuracy" xml:space="preserve">
+    <value>Hüftfeuergenauigkeit</value>
+    <comment>Hand weapon mod</comment>
+  </data>
+  <data name="weapon_backpackreloading" xml:space="preserve">
+    <value>Nachladen bei verwahrter Waffe</value>
+    <comment>Hand weapon mod</comment>
+  </data>
+  <data name="weapon_clipsize" xml:space="preserve">
+    <value>Magazingröße</value>
+    <comment>Hand weapon mod</comment>
+  </data>
+  <data name="weapon_handling" xml:space="preserve">
+    <value>Schnellere Handhabung</value>
+    <comment>Hand weapon mod</comment>
+  </data>
+  <data name="weapon_headshotdamage" xml:space="preserve">
+    <value>Kopfschussschaden</value>
+    <comment>Hand weapon mod</comment>
+  </data>
+  <data name="weapon_range" xml:space="preserve">
+    <value>Größere Reichweite</value>
+    <comment>Hand weapon mod</comment>
+  </data>
+  <data name="weapon_reloadspeed" xml:space="preserve">
+    <value>Nachladegeschwindigkeit</value>
+    <comment>Hand weapon mod</comment>
+  </data>
+  <data name="weapon_scope" xml:space="preserve">
+    <value>Zielfernrohr</value>
+    <comment>Hand weapon mod</comment>
+  </data>
+  <data name="weapon_stability" xml:space="preserve">
+    <value>Stabilität</value>
+    <comment>Hand weapon mod</comment>
+  </data>
+  <data name="weapon_suppression_pressurised" xml:space="preserve">
+    <value>Schalldämpfer</value>
+    <comment>Hand weapon mod</comment>
+  </data>
+  <data name="weapon_suppression_unpressurised" xml:space="preserve">
+    <value>Audio-Maskierung</value>
+    <comment>Hand weapon mod</comment>
+  </data>
 </root>
