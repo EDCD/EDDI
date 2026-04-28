@@ -864,37 +864,37 @@ namespace EddiDataDefinitions
         public long? squadronbankshipsdepositedvalue { get; set; }
 
         [JsonProperty( "Squadron_Leaderboard_aegis_highestcontribution" )]
-        public int? squadronleaderboardaegishighestcontribution { get; set; }
+        public long? squadronleaderboardaegishighestcontribution { get; set; }
 
         [JsonProperty( "Squadron_Leaderboard_bgs_highestcontribution" )]
-        public int? squadronleaderboardbgshighestcontribution { get; set; }
+        public long? squadronleaderboardbgshighestcontribution { get; set; }
 
         [JsonProperty( "Squadron_Leaderboard_bounty_highestcontribution" )]
-        public int? squadronleaderboardbountyhighestcontribution { get; set; }
+        public long? squadronleaderboardbountyhighestcontribution { get; set; }
 
         [JsonProperty( "Squadron_Leaderboard_colonisation_contribution_highestcontribution" )]
-        public int? squadronleaderboardcolonisationContributionhighestcontribution { get; set; }
+        public long? squadronleaderboardcolonisationContributionhighestcontribution { get; set; }
 
         [JsonProperty( "Squadron_Leaderboard_combat_highestcontribution" )]
-        public int? squadronleaderboardcombathighestcontribution { get; set; }
+        public long? squadronleaderboardcombathighestcontribution { get; set; }
 
         [JsonProperty( "Squadron_Leaderboard_cqc_highestcontribution" )]
-        public int? squadronleaderboardcqchighestcontribution { get; set; }
+        public long? squadronleaderboardcqchighestcontribution { get; set; }
 
         [JsonProperty( "Squadron_Leaderboard_exploration_highestcontribution" )]
-        public int? squadronleaderboardexplorationhighestcontribution { get; set; }
+        public long? squadronleaderboardexplorationhighestcontribution { get; set; }
 
         [JsonProperty( "Squadron_Leaderboard_mining_highestcontribution" )]
-        public int? squadronleaderboardmininghighestcontribution { get; set; }
+        public long? squadronleaderboardmininghighestcontribution { get; set; }
 
         [JsonProperty( "Squadron_Leaderboard_powerplay_highestcontribution" )]
-        public int? squadronleaderboardpowerplayhighestcontribution { get; set; }
+        public long? squadronleaderboardpowerplayhighestcontribution { get; set; }
 
         [JsonProperty( "Squadron_Leaderboard_trade_highestcontribution" )]
-        public int? squadronleaderboardtradehighestcontribution { get; set; }
+        public long? squadronleaderboardtradehighestcontribution { get; set; }
 
         [JsonProperty( "Squadron_Leaderboard_trade_illicit_highestcontribution" )]
-        public int? squadronleaderboardtradeIllicithighestcontribution { get; set; }
+        public long? squadronleaderboardtradeIllicithighestcontribution { get; set; }
 
         [JsonProperty( "Squadron_Leaderboard_podiums" )]
         public int? squadronleaderboardpodiums { get; set; }
