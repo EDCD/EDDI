@@ -117,4 +117,48 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Wpn_M_AssaultRifle_Kinetic_FAuto" xml:space="preserve">
+    <value>AR-50</value>
+    <comment>Karma AR-50</comment>
+  </data>
+  <data name="Wpn_M_AssaultRifle_Laser_FAuto" xml:space="preserve">
+    <value>Aphelion</value>
+    <comment>TK Aphelion</comment>
+  </data>
+  <data name="Wpn_M_AssaultRifle_Plasma_FAuto" xml:space="preserve">
+    <value>Oppressor</value>
+    <comment>Manticore Oppressor</comment>
+  </data>
+  <data name="Wpn_M_Launcher_Rocket_SAuto" xml:space="preserve">
+    <value>L-6</value>
+    <comment>Karma L-6</comment>
+  </data>
+  <data name="Wpn_M_Shotgun_Plasma_DoubleBarrel" xml:space="preserve">
+    <value>Intimidator</value>
+    <comment>Manticore Intimidator</comment>
+  </data>
+  <data name="Wpn_M_Sniper_Plasma_Charged" xml:space="preserve">
+    <value>Executioner</value>
+    <comment>Manticore Executioner</comment>
+  </data>
+  <data name="Wpn_M_SubMachineGun_Kinetic_FAuto" xml:space="preserve">
+    <value>C-44</value>
+    <comment>Karma C-44</comment>
+  </data>
+  <data name="Wpn_M_SubMachineGun_Laser_FAuto" xml:space="preserve">
+    <value>Eclipse</value>
+    <comment>TK Eclipse</comment>
+  </data>
+  <data name="Wpn_S_Pistol_Kinetic_SAuto" xml:space="preserve">
+    <value>P 15</value>
+    <comment>Karma P-15</comment>
+  </data>
+  <data name="Wpn_S_Pistol_Laser_SAuto" xml:space="preserve">
+    <value>Zenit</value>
+    <comment>TK Zenith</comment>
+  </data>
+  <data name="Wpn_S_Pistol_Plasma_Charged" xml:space="preserve">
+    <value>Tormentor</value>
+    <comment>Manticore Tormentor</comment>
+  </data>
 </root>
