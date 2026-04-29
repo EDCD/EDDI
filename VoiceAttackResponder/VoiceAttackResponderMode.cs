@@ -191,7 +191,7 @@ namespace EddiVoiceAttackResponder
             try
             {
                 Logging.Info( $"Replaying VoiceAttack standard variables ({reason})" );
-
+                VoiceAttackVariables.ClearDispatchCache();
                 InitializeStandardValues();
                 SetStatus( "Operational", null );
 

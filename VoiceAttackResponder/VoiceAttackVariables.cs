@@ -145,8 +145,17 @@ namespace EddiVoiceAttackResponder
                     }
                 }
 
-                // Initialize shipyard information
+                // Initialize ship information
                 var shipConfig = ConfigService.Instance.shipMonitorConfiguration;
+                var currentShip = EDDI.Instance.CurrentShip
+                                  ?? shipConfig?.shipyard?.FirstOrDefault(s => s.LocalId == shipConfig.currentshipid);
+
+                if ( currentShip != null )
+                {
+                    setShipValues( currentShip, "Ship" );
+                }
+
+                // Initialize shipyard information
                 if ( shipConfig?.shipyard != null )
                 {
                     setShipyardValues( shipConfig.shipyard.ToList() );
@@ -369,96 +378,96 @@ namespace EddiVoiceAttackResponder
             } );
         }
 
-        public static void setShipValues(Ship ship, string prefix)
+        public static void setShipValues ( Ship ship, string prefix )
         {
             RunWithRuntimeActionBatch( () =>
             {
                 Logging.Debug( $"Setting ship information ({prefix})" );
                 try
                 {
-                    RuntimeSetText( $"{prefix} manufacturer", ship?.manufacturer);
-                    RuntimeSetText( $"{prefix} model", ship?.model);
-                    RuntimeSetText( $"{prefix} model (spoken)", ship?.SpokenModel());
+                    RuntimeSetText( $"{prefix} manufacturer", ship?.manufacturer );
+                    RuntimeSetText( $"{prefix} model", ship?.model );
+                    RuntimeSetText( $"{prefix} model (spoken)", ship?.SpokenModel() );
 
                     var cmdrName = ConfigService.Instance.commanderConfiguration.commanderName;
                     if ( cmdrName != null )
                     {
-                        var cmdrNamePrefix = cmdrName.Length >= 3 ? cmdrName.Substring( 0, 3 ).ToUpperInvariant() : cmdrName.ToUpperInvariant();
+                        var cmdrNamePrefix = cmdrName.Length >= 3
+                            ? cmdrName.Substring( 0, 3 ).ToUpperInvariant()
+                            : cmdrName.ToUpperInvariant();
                         RuntimeSetText( $"{prefix} callsign", $"{ship?.manufacturer} {cmdrNamePrefix}" );
                         RuntimeSetText( $"{prefix} callsign (spoken)",
                             $"{ship?.SpokenManufacturer()} {SpeechConversions.ICAO( cmdrNamePrefix )}" );
                     }
 
-                    RuntimeSetText( $"{prefix} name", ship?.name);
-                    RuntimeSetText( $"{prefix} name (spoken)", ship?.phoneticName);
-                    RuntimeSetText( $"{prefix} ident", ship?.ident);
-                    RuntimeSetText( $"{prefix} ident (spoken)", SpeechConversions.ICAO(ship?.ident, false));
-                    RuntimeSetText( $"{prefix} role", ship?.Role?.localizedName);
-                    RuntimeSetText( $"{prefix} size", ship?.Size?.localizedName);
-                    RuntimeSetDecimal( $"{prefix} value", ship?.value);
-                    RuntimeSetText( $"{prefix} value (spoken)", SpeechConversions.Humanize(ship?.value));
-                    RuntimeSetDecimal( $"{prefix} hull value", ship?.hullvalue);
-                    RuntimeSetText( $"{prefix} hull value (spoken)", SpeechConversions.Humanize(ship?.hullvalue));
-                    RuntimeSetDecimal( $"{prefix} modules value", ship?.modulesvalue);
-                    RuntimeSetText( $"{prefix} modules value (spoken)", SpeechConversions.Humanize(ship?.modulesvalue));
-                    RuntimeSetDecimal( $"{prefix} rebuy", ship?.rebuy);
-                    RuntimeSetText( $"{prefix} rebuy (spoken)", SpeechConversions.Humanize(ship?.rebuy));
-                    RuntimeSetDecimal( $"{prefix} health", ship?.health);
-                    RuntimeSetInt( $"{prefix} cargo capacity", ship?.cargocapacity);
-                    RuntimeSetBoolean( $"{prefix} hot", ship?.hot);
+                    RuntimeSetText( $"{prefix} name", ship?.name );
+                    RuntimeSetText( $"{prefix} name (spoken)", ship?.phoneticName );
+                    RuntimeSetText( $"{prefix} ident", ship?.ident );
+                    RuntimeSetText( $"{prefix} ident (spoken)", SpeechConversions.ICAO( ship?.ident, false ) );
+                    RuntimeSetText( $"{prefix} role", ship?.Role?.localizedName );
+                    RuntimeSetText( $"{prefix} size", ship?.Size?.localizedName );
+                    RuntimeSetDecimal( $"{prefix} value", ship?.value );
+                    RuntimeSetText( $"{prefix} value (spoken)", SpeechConversions.Humanize( ship?.value ) );
+                    RuntimeSetDecimal( $"{prefix} hull value", ship?.hullvalue );
+                    RuntimeSetText( $"{prefix} hull value (spoken)", SpeechConversions.Humanize( ship?.hullvalue ) );
+                    RuntimeSetDecimal( $"{prefix} modules value", ship?.modulesvalue );
+                    RuntimeSetText( $"{prefix} modules value (spoken)", SpeechConversions.Humanize( ship?.modulesvalue ) );
+                    RuntimeSetDecimal( $"{prefix} rebuy", ship?.rebuy );
+                    RuntimeSetText( $"{prefix} rebuy (spoken)", SpeechConversions.Humanize( ship?.rebuy ) );
+                    RuntimeSetDecimal( $"{prefix} health", ship?.health );
+                    RuntimeSetInt( $"{prefix} cargo capacity", ship?.cargocapacity );
+                    RuntimeSetBoolean( $"{prefix} hot", ship?.hot );
 
-                    setShipModuleValues(ship?.bulkheads, $"{prefix} bulkheads" );
-                    setShipModuleValues(ship?.powerplant, $"{prefix} power plant" );
-                    setShipModuleValues(ship?.thrusters, $"{prefix} thrusters" );
-                    setShipModuleValues(ship?.frameshiftdrive, $"{prefix} frame shift drive" );
-                    setShipModuleValues(ship?.powerdistributor, $"{prefix} power distributor" );
-                    setShipModuleValues(ship?.sensors, $"{prefix} sensors" );
-                    setShipModuleValues(ship?.fueltank, $"{prefix} fuel tank" );
+                    setShipModuleValues( ship?.bulkheads, $"{prefix} bulkheads" );
+                    setShipModuleValues( ship?.powerplant, $"{prefix} power plant" );
+                    setShipModuleValues( ship?.thrusters, $"{prefix} thrusters" );
+                    setShipModuleValues( ship?.frameshiftdrive, $"{prefix} frame shift drive" );
+                    setShipModuleValues( ship?.lifesupport, $"{prefix} life support" );
+                    setShipModuleValues( ship?.powerdistributor, $"{prefix} power distributor" );
+                    setShipModuleValues( ship?.sensors, $"{prefix} sensors" );
+                    setShipModuleValues( ship?.fueltank, $"{prefix} fuel tank" );
 
                     if ( EDDI.Instance.CurrentStation is not null && EDDI.Instance.CurrentStation.outfitting.Count > 0 )
                     {
                         var stationOutfitting = EDDI.Instance.CurrentStation?.outfitting.ToList();
-                        setShipModuleOutfittingValues(ship?.lifesupport, stationOutfitting, $"{prefix} life support" );
-                        setShipModuleOutfittingValues(ship?.bulkheads, stationOutfitting, $"{prefix} bulkheads" );
-                        setShipModuleOutfittingValues(ship?.powerplant, stationOutfitting, $"{prefix} power plant" );
-                        setShipModuleOutfittingValues(ship?.thrusters, stationOutfitting, $"{prefix} thrusters" );
-                        setShipModuleOutfittingValues(ship?.frameshiftdrive, stationOutfitting,
-                            $"{prefix} frame shift drive" );
-                        setShipModuleOutfittingValues(ship?.lifesupport, stationOutfitting, $"{prefix} life support" );
-                        setShipModuleOutfittingValues(ship?.powerdistributor, stationOutfitting,
-                            $"{prefix} power distributor" );
-                        setShipModuleOutfittingValues(ship?.sensors, stationOutfitting, $"{prefix} sensors" );
-                        setShipModuleOutfittingValues(ship?.fueltank, stationOutfitting, $"{prefix} fuel tank" );
+                        setShipModuleOutfittingValues( ship?.bulkheads, stationOutfitting, $"{prefix} bulkheads" );
+                        setShipModuleOutfittingValues( ship?.powerplant, stationOutfitting, $"{prefix} power plant" );
+                        setShipModuleOutfittingValues( ship?.thrusters, stationOutfitting, $"{prefix} thrusters" );
+                        setShipModuleOutfittingValues( ship?.frameshiftdrive, stationOutfitting, $"{prefix} frame shift drive" );
+                        setShipModuleOutfittingValues( ship?.lifesupport, stationOutfitting, $"{prefix} life support" );
+                        setShipModuleOutfittingValues( ship?.powerdistributor, stationOutfitting, $"{prefix} power distributor" );
+                        setShipModuleOutfittingValues( ship?.sensors, stationOutfitting, $"{prefix} sensors" );
+                        setShipModuleOutfittingValues( ship?.fueltank, stationOutfitting, $"{prefix} fuel tank" );
                     }
 
                     // Special for fuel tank - capacity and total capacity
-                    RuntimeSetDecimal( $"{prefix} fuel tank capacity", ship?.fueltankcapacity);
-                    RuntimeSetDecimal( $"{prefix} total fuel tank capacity", ship?.fueltanktotalcapacity);
+                    RuntimeSetDecimal( $"{prefix} fuel tank capacity", ship?.fueltankcapacity );
+                    RuntimeSetDecimal( $"{prefix} total fuel tank capacity", ship?.fueltanktotalcapacity );
 
                     // Special for max jump range and max fuel per jump
-                    RuntimeSetDecimal( $"{prefix} max jump range", ship?.maxjumprange);
-                    RuntimeSetDecimal( $"{prefix} max fuel per jump", ship?.maxfuelperjump);
+                    RuntimeSetDecimal( $"{prefix} max jump range", ship?.maxjumprange );
+                    RuntimeSetDecimal( $"{prefix} max fuel per jump", ship?.maxfuelperjump );
 
                     // Hardpoints
                     SetShipHardpoints( ship, prefix );
-                    
+
                     // Compartments
                     SetShipCompartments( ship, prefix );
 
                     // Fetch the star system in which the ship is stored
-                    if ( ship?.starsystem != null)
+                    if ( ship?.starsystem != null )
                     {
-                        RuntimeSetText( $"{prefix} system", ship.starsystem);
-                        RuntimeSetText( $"{prefix} station", ship.station);
-                        RuntimeSetDecimal( $"{prefix} distance", ship.distance);
+                        RuntimeSetText( $"{prefix} system", ship.starsystem );
+                        RuntimeSetText( $"{prefix} station", ship.station );
+                        RuntimeSetDecimal( $"{prefix} distance", ship.distance );
                     }
                 }
-                catch (Exception e)
+                catch ( Exception e )
                 {
-                    setStatus( "Failed to set ship information", e);
+                    setStatus( "Failed to set ship information", e );
                 }
 
-                Logging.Debug("Set ship information");
+                Logging.Debug( "Set ship information" );
             } );
         }
 
@@ -484,7 +493,7 @@ namespace EddiVoiceAttackResponder
         {
             var invariantSizeNames = new List<string> { "tiny", "small", "medium", "large", "huge" };
             var totalHardpointsCount = 0;
-            for ( var i = 0; i < (invariantSizeNames.Count - 1); i++ ) // Hardpoint Size
+            for ( var i = 0; i < invariantSizeNames.Count; i++ ) // Hardpoint Size
             {
                 var hardpointsAtSize = ship?.hardpoints?.Where( h => h.size == i )?.ToList() ?? new List<Hardpoint>();
                 for ( var j = 0; j < 12; j++ ) // Hardpoint Slots at Size
