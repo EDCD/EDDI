@@ -827,7 +827,7 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        protected internal static void setStatus( string status, Exception exception = null)
+        protected internal static void setStatus( string status, Exception exception = null )
         {
             RunWithRuntimeActionBatch( () =>
             {

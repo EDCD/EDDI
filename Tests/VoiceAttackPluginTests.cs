@@ -639,5 +639,54 @@ namespace Tests
             var eddiVersion = mockVAProxy.GetText("EDDI version");
             Assert.IsFalse(string.IsNullOrEmpty(eddiVersion), "EDDI version should be set after initialization");
         }
+
+        [TestMethod, DoNotParallelize]
+        public void VoiceAttackVariable_Set_NullTextValue_PreservesNullPayload ()
+        {
+            _runtimeEvents.Clear();
+
+            var variable = new VoiceAttackVariable(
+                "EDDI",
+                "test",
+                [ "value" ],
+                typeof( string ),
+                "Test value",
+                null );
+
+            variable.Set();
+
+            Assert.HasCount( 1, _runtimeEvents );
+            Assert.AreEqual( "va_runtime", _runtimeEvents[ 0 ].EventType );
+            Assert.AreEqual( "command_action", _runtimeEvents[ 0 ].EventName );
+
+            Assert.IsTrue( _runtimeEvents[ 0 ].EventPayload.TryGetValue( "action", out var action ) );
+            Assert.AreEqual( "set_text", action );
+
+            Assert.IsTrue( _runtimeEvents[ 0 ].EventPayload.TryGetValue( "key", out var key ) );
+            Assert.AreEqual( "EDDI test value", key );
+
+            Assert.IsTrue( _runtimeEvents[ 0 ].EventPayload.ContainsKey( "value" ) );
+            Assert.IsNull( _runtimeEvents[ 0 ].EventPayload[ "value" ] );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void VoiceAttackVariable_Set_WhenNoRuntimeDispatcher_DoesNotThrow ()
+        {
+            _runtimeEventDispatcherRegistration?.Dispose();
+            _runtimeEventDispatcherRegistration = null;
+            _runtimeEvents.Clear();
+
+            var variable = new VoiceAttackVariable(
+                "EDDI",
+                "test",
+                [ "value" ],
+                typeof( string ),
+                "Test value",
+                "abc" );
+
+            variable.Set();
+
+            Assert.HasCount( 0, _runtimeEvents );
+        }
     }
 }

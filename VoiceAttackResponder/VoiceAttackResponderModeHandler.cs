@@ -15,7 +15,7 @@ namespace EddiVoiceAttackResponder
         /// <summary>
         /// Enable or disable VoiceAttack responder mode.
         /// </summary>
-        public static Task SetResponderModeAsync( bool enable, System.Version? voiceAttackVersion,
+        public static async Task SetResponderModeAsync( bool enable, System.Version? voiceAttackVersion,
             CancellationToken cancellationToken = default )
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -32,13 +32,17 @@ namespace EddiVoiceAttackResponder
             if ( enable )
             {
                 EDDI.Instance.EnableResponder( VoiceAttackResponderName );
+                await VoiceAttackResponderMode.InitializeAsync().ConfigureAwait( false );
+
+                await VoiceAttackResponderMode.ReplayStandardValuesAsync(
+                    "VoiceAttack IPC responder-mode handshake",
+                    cancellationToken ).ConfigureAwait( false );
             }
             else
             {
                 EDDI.Instance.DisableResponder( VoiceAttackResponderName );
+                VoiceAttackResponderMode.Shutdown();
             }
-
-            return Task.CompletedTask;
         }
     }
 }

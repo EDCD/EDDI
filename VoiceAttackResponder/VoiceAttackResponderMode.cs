@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
 
@@ -25,26 +26,29 @@ namespace EddiVoiceAttackResponder
     {
         private static PropertyChangedEventHandler? _propertyChangedHandler;
         private static bool _initialized;
+        private static readonly SemaphoreSlim standardVariableReplayLock = new(1, 1);
+
+        // Test Hooks
+        internal static Action InitializeStandardValues = VoiceAttackVariables.initializeStandardValues;
+        internal static Action<string, Exception?> SetStatus = VoiceAttackVariables.setStatus;
+        internal static Action<VAInitializedEvent> EnqueueVAInitializedEvent = e => EDDI.Instance.enqueueEvent( e );
 
         /// <summary>
         /// Initialize responder mode subscriptions and event forwarding for VoiceAttack integration.
         /// Called from EDDI startup when FromVA=true and IPC connection is established.
         /// </summary>
-        internal static async Task InitializeAsync()
+        internal static Task InitializeAsync()
         {
             if (_initialized)
             {
-                return;
+                return Task.CompletedTask;
             }
 
             try
             {
                 Logging.Info("Initializing EDDI VoiceAttack responder mode");
 
-                // Push initial state to VA (standard variables and configuration)
-                VoiceAttackVariables.initializeStandardValues();
-
-                // Subscribe to EDDI events and property changes
+                // Subscribe to EDDI events and property changes. Associated variables will be forwarded to VoiceAttack via IPC after connection is established.
                 EDDI.Instance.PropertyChanged += OnEddiPropertyChanged;
                 EDDI.Instance.State.CollectionChanged += OnEddiStateCollectionChanged;
                 EDDI.Instance.State.PropertyChanged += OnEddiStatePropertyChanged;
@@ -68,12 +72,7 @@ namespace EddiVoiceAttackResponder
                     SpeechService.Instance.SayAsync(null, msg, 0)
                         .SafeFireAndForget(ex => Logging.Error(ex.Message, ex));
                 }
-
-                VoiceAttackVariables.setStatus("Operational");
-
-                // Fire initialization event
-                EDDI.Instance.enqueueEvent(new VAInitializedEvent(DateTime.UtcNow));
-
+                
                 _initialized = true;
                 Logging.Info("EDDI VoiceAttack responder mode initialization complete");
             }
@@ -82,6 +81,8 @@ namespace EddiVoiceAttackResponder
                 Logging.Error("Failed to initialize VoiceAttack responder mode", e);
                 RuntimeWriteToLog("Unable to fully initialize EDDI VoiceAttack integration. Some functions may not work.", "red");
             }
+
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -181,6 +182,35 @@ namespace EddiVoiceAttackResponder
             }
         }
 
+        internal static async Task ReplayStandardValuesAsync (
+            string reason,
+            CancellationToken cancellationToken = default )
+        {
+            await standardVariableReplayLock.WaitAsync( cancellationToken ).ConfigureAwait( false );
+
+            try
+            {
+                Logging.Info( $"Replaying VoiceAttack standard variables ({reason})" );
+
+                InitializeStandardValues();
+                SetStatus( "Operational", null );
+
+                // This should now fire after VA IPC is actually connected.
+                EnqueueVAInitializedEvent( new VAInitializedEvent( DateTime.UtcNow ) );
+
+                Logging.Info( $"VoiceAttack standard variable replay complete ({reason})" );
+            }
+            catch ( Exception ex )
+            {
+                Logging.Error( "Failed to replay VoiceAttack standard variables", ex );
+                throw;
+            }
+            finally
+            {
+                standardVariableReplayLock.Release();
+            }
+        }
+
         private static void RuntimeWriteToLog( string? message, string? color )
         {
             try
@@ -205,6 +235,13 @@ namespace EddiVoiceAttackResponder
             {
                 Logging.Warn( "Failed to dispatch runtime write-log payload", ex );
             }
+        }
+
+        internal static void ResetTestHooks ()
+        {
+            InitializeStandardValues = VoiceAttackVariables.initializeStandardValues;
+            SetStatus = VoiceAttackVariables.setStatus;
+            EnqueueVAInitializedEvent = e => EDDI.Instance.enqueueEvent( e );
         }
     }
 }
