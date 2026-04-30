@@ -127,7 +127,7 @@ namespace EddiVoiceAttackResponder
                                 var k when k.Contains(nameof(EDDI.Instance.DestinationStarSystem)) => EDDI.Instance.DestinationStarSystem != null,
                                 var k when k.Contains(nameof(EDDI.Instance.CurrentStellarBody)) => EDDI.Instance.CurrentStellarBody != null,
                                 var k when k.Contains(nameof(EDDI.Instance.CurrentStation)) => EDDI.Instance.CurrentStation != null,
-                                var k when k.Contains(nameof(EDDI.Instance.CurrentShip)) => EDDI.Instance.CurrentShip != null,
+                                var k when k.Contains(nameof(EDDI.Instance.CurrentShip)) => ResolveCurrentShip() != null,
                                 _ => true, // Other properties are assumed to always have data
                             };
 
@@ -1129,7 +1129,6 @@ namespace EddiVoiceAttackResponder
         internal static void NotifyVoiceAttackRuntimeSessionReady ()
         {
             ClearDispatchCache();
-            initializeStandardValues();
         }
 
         public static List<VoiceAttackVariable> Convert ( List<MetaVariable> source, string startingPrefix, string eventType = null )

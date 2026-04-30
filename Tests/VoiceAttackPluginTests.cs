@@ -290,6 +290,13 @@ namespace Tests
             } );
         }
 
+        private void DisableDefaultRuntimeDispatcher ()
+        {
+            _runtimeEventDispatcherRegistration?.Dispose();
+            _runtimeEventDispatcherRegistration = null;
+            _runtimeEvents.Clear();
+        }
+
         [TestCleanup]
         public void ResetVaProxy ()
         {
@@ -691,11 +698,13 @@ namespace Tests
         }
 
         [TestMethod, DoNotParallelize]
-        public void DispatchRuntimeAction_DoesNotCache_WhenNoVoiceAttackRecipient ()
+        public void DispatchRuntimeAction_DoesNotCache_WhenNoRuntimeDispatcher ()
         {
             VoiceAttackVariables.ClearDispatchCache();
+            DisableDefaultRuntimeDispatcher();
 
             // Arrange: no runtime dispatcher or no connected IPC sessions.
+            // No dispatcher is registered here. This must not cache the value.
 
             VoiceAttackVariables.RuntimeSetText( "Ship model", "Cobra Mk III" );
 
@@ -709,17 +718,21 @@ namespace Tests
                 return Task.FromResult(true);
             });
 
+            // Same value must be sent because the first attempted dispatch was not delivered.
             VoiceAttackVariables.RuntimeSetText( "Ship model", "Cobra Mk III" );
 
             Assert.HasCount( 1, received );
         }
 
         [TestMethod, DoNotParallelize]
-        public void DispatchRuntimeAction_DoesNotCache_WhenDispatcherReturnsFalse ()
+        public void DispatchRuntimeAction_DoesNotCache_WhenAllDispatchersReturnFalse ()
         {
             VoiceAttackVariables.ClearDispatchCache();
+            DisableDefaultRuntimeDispatcher();
+
             using ( RuntimeEventDispatcher.RegisterDispatcher( ( _, _ ) => Task.FromResult( false ) ) )
             {
+                // This must not cache because all registered dispatchers return false.
                 VoiceAttackVariables.RuntimeSetText( "Ship name", "Test Ship" );
             }
 
@@ -730,6 +743,7 @@ namespace Tests
                        return Task.FromResult( true );
                    } ) )
             {
+                // Same value must be sent because the earlier dispatch was not delivered.
                 VoiceAttackVariables.RuntimeSetText( "Ship name", "Test Ship" );
             }
 
@@ -777,9 +791,10 @@ namespace Tests
         }
 
         [TestMethod, DoNotParallelize]
-        public void InitializeStandardValues_UsesShipyardFallback_WhenCurrentShipIsNull ()
+        public async Task InitializeStandardValues_UsesShipyardFallback_WhenCurrentShipIsNull ()
         {
             VoiceAttackVariables.ClearDispatchCache();
+            DisableDefaultRuntimeDispatcher();
 
             EDDI.Instance.CurrentShip = null;
 
@@ -796,16 +811,48 @@ namespace Tests
 
             var receivedPayloads = new List<EventData>();
 
-            using var registration = RuntimeEventDispatcher.RegisterDispatcher((eventData, _) =>
+            using var registration = RuntimeEventDispatcher.RegisterDispatcher( ( eventData, _ ) =>
             {
-                receivedPayloads.Add(eventData);
-                return Task.FromResult(true);
-            });
+                receivedPayloads.Add( eventData );
+                return Task.FromResult( true );
+            } );
 
             VoiceAttackVariables.NotifyVoiceAttackRuntimeSessionReady();
+            await VoiceAttackResponderMode.ReplayStandardValuesAsync(
+                "test",
+                CancellationToken.None );
+            
+            var shipNameWasSent = receivedPayloads
+                .SelectMany( EnumerateRuntimeActions )
+                .Any( action =>
+                    action.TryGetValue( RuntimePayloadKeys.CommandActionPayload.Action, out var actionName ) &&
+                    Equals( actionName, "set_text" ) &&
 
-            Assert.IsTrue( receivedPayloads.Any( payload =>
-                payload.ToString().Contains( "Fallback Test Ship" ) ) );
+                    action.TryGetValue( RuntimePayloadKeys.CommandActionPayload.Key, out var key ) &&
+                    Equals( key, "Ship name" ) &&
+
+                    action.TryGetValue( RuntimePayloadKeys.CommandActionPayload.Value, out var value ) &&
+                    Equals( value, "Fallback Test Ship" ) );
+
+            Assert.IsTrue( shipNameWasSent );
+        }
+
+        private static IEnumerable<Dictionary<string, object>> EnumerateRuntimeActions ( EventData eventData )
+        {
+            if ( eventData.EventPayload.TryGetValue(
+                     RuntimePayloadKeys.CommandActionPayload.Actions,
+                     out var actionsPayload ) &&
+                 actionsPayload is IEnumerable<Dictionary<string, object>> actions )
+            {
+                foreach ( var action in actions )
+                {
+                    yield return action;
+                }
+
+                yield break;
+            }
+
+            yield return eventData.EventPayload;
         }
     }
 }
