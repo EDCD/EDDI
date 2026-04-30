@@ -293,7 +293,7 @@ namespace EddiIPC_Service.Client
                 try
                 {
                     rentedBuffer = ArrayPool<byte>.Shared.Rent( serialized.Length * 2 );
-                    var bytesWritten = Encoding.UTF8.GetBytes( serialized, 0, serialized.Length, rentedBuffer, 0 );
+                    var bytesWritten = Encoding.UTF8.GetBytes(serialized, 0, serialized.Length, rentedBuffer, 0);
 
                     // Write data (includes length prefix and JSON)
                     await _networkStream.WriteAsync( rentedBuffer.AsMemory( 0, bytesWritten ), cancellationToken ).ConfigureAwait( false );

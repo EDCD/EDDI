@@ -33,7 +33,7 @@ namespace EddiVoiceAttackResponder
             {
                 EDDI.Instance.EnableResponder( VoiceAttackResponderName );
                 await VoiceAttackResponderMode.InitializeAsync().ConfigureAwait( false );
-
+                VoiceAttackVariables.NotifyVoiceAttackRuntimeSessionReady();
                 await VoiceAttackResponderMode.ReplayStandardValuesAsync(
                     "VoiceAttack IPC responder-mode handshake",
                     cancellationToken ).ConfigureAwait( false );
@@ -41,6 +41,7 @@ namespace EddiVoiceAttackResponder
             else
             {
                 EDDI.Instance.DisableResponder( VoiceAttackResponderName );
+                VoiceAttackVariables.ClearDispatchCache();
                 VoiceAttackResponderMode.Shutdown();
             }
         }

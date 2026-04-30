@@ -4,6 +4,8 @@ using EddiIPC_Service.Messages;
 using EddiIPC_Service.Messaging;
 using System;
 using System.Buffers;
+using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -27,8 +29,7 @@ namespace EddiIPC_Service.Server
         private TcpListener? _listener;
         private CancellationTokenSource? _cancellationTokenSource;
         private Task? _acceptConnectionsTask;
-        private readonly Dictionary<string, ConnectionContext> _connections = [];
-        private readonly object _connectionsLock = new();
+        private readonly ConcurrentDictionary<string, ConnectionContext> _connections = [];
         private DefaultServerEventHandler? _ipcHandler;
         private IDisposable? _runtimeEventDispatcherRegistration;
 
@@ -39,16 +40,7 @@ namespace EddiIPC_Service.Server
         public bool IsRunning { get; private set; }
 
         /// <summary>Number of connected clients</summary>
-        public int ConnectionCount
-        {
-            get
-            {
-                lock ( _connectionsLock )
-                {
-                    return _connections.Count;
-                }
-            }
-        }
+        public int ConnectionCount => _connections.Count;
 
         /// <summary>
         /// Create a new IPC server instance.
@@ -76,8 +68,7 @@ namespace EddiIPC_Service.Server
             _runtimeEventDispatcherRegistration = RuntimeEventDispatcher.RegisterDispatcher( async ( eventData, cancellationToken ) =>
             {
                 var message = MessageEnvelope.Create( MessageTypes.Event, eventData );
-                await BroadcastAsync( message, cancellationToken ).ConfigureAwait( false );
-                return true;
+                return await BroadcastAsync( message, cancellationToken ).ConfigureAwait( false );
             } );
 
             // Register all message handlers
@@ -209,12 +200,7 @@ namespace EddiIPC_Service.Server
             ArgumentNullException.ThrowIfNull( sessionId );
             ArgumentNullException.ThrowIfNull( message );
 
-            ConnectionContext? context;
-            lock ( _connectionsLock )
-            {
-                _connections.TryGetValue( sessionId, out context );
-            }
-
+            _connections.TryGetValue( sessionId, out var context );
             if ( context is null )
             {
                 Logging.Warn( $"Connection not found for session {sessionId}" );
@@ -237,12 +223,14 @@ namespace EddiIPC_Service.Server
                 try
                 {
                     rentedBuffer = ArrayPool<byte>.Shared.Rent( serialized.Length * 2 );
-                    var bytesWritten = Encoding.UTF8.GetBytes( serialized, 0, serialized.Length, rentedBuffer, 0 );
+                    var bytesWritten = Encoding.UTF8.GetBytes(serialized, 0, serialized.Length, rentedBuffer, 0);
 
                     await context.Stream.WriteAsync( rentedBuffer.AsMemory( 0, bytesWritten ), cancellationToken ).ConfigureAwait( false );
                     await context.Stream.FlushAsync( cancellationToken ).ConfigureAwait( false );
 
-                    Logging.Debug( $"Sent {message.Type} message to session {sessionId}: {serialized}" );
+                    var actionCount = GetRuntimeActionCount(message);
+                    Logging.Debug(
+                        $"Sent {message.Type} message to session {sessionId}: {bytesWritten} bytes, {actionCount} runtime actions." );
                 }
                 finally
                 {
@@ -264,68 +252,123 @@ namespace EddiIPC_Service.Server
             }
         }
 
+        private static int GetRuntimeActionCount ( MessageEnvelope message )
+        {
+            if ( message.Data is not EventData eventData ||
+                 eventData.EventPayload == null )
+            {
+                return 0;
+            }
+
+            if ( eventData.EventPayload.TryGetValue(
+                     RuntimePayloadKeys.CommandActionPayload.Actions,
+                     out var actions ) &&
+                 actions is ICollection actionCollection )
+            {
+                return actionCollection.Count;
+            }
+
+            return 1;
+        }
+
         /// <summary>
         /// Broadcast a message to all connected clients.
         /// </summary>
         /// <param name="message">Message to broadcast</param>
         /// <param name="cancellationToken">Optional cancellation token</param>
-        public async Task BroadcastAsync ( MessageEnvelope message, CancellationToken cancellationToken = default )
+        public async Task<bool> BroadcastAsync ( MessageEnvelope message, CancellationToken cancellationToken = default )
         {
             ArgumentNullException.ThrowIfNull( message );
 
-            List<string> sessionIds;
-            lock ( _connectionsLock )
+            if ( !IsRunning )
             {
-                sessionIds = _connections.Keys.ToList();
+                Logging.Debug( "Broadcast skipped because IPC server is not running." );
+                return false;
             }
 
-            cancellationToken.ThrowIfCancellationRequested();
+            var sessionIds = _connections.Keys.ToList();
+
+            if ( sessionIds.Count == 0 )
+            {
+                Logging.Debug( $"Broadcast skipped for {message.Type}: no connected IPC sessions." );
+                return false;
+            }
 
             // Serialize once and reuse the bytes for all clients
-            var serialized = MessageSerializer.Serialize( message );
-            byte[]? rentedBuffer = null;
+            byte[]? rentedBuffer;
+            int bytesWritten;
+
             try
             {
-                rentedBuffer = ArrayPool<byte>.Shared.Rent( serialized.Length * 2 );
-                var bytesWritten = Encoding.UTF8.GetBytes( serialized, 0, serialized.Length, rentedBuffer, 0 );
+                var serialized = MessageSerializer.Serialize( message );
+                var byteCount = Encoding.UTF8.GetByteCount(serialized);
+                rentedBuffer = ArrayPool<byte>.Shared.Rent( byteCount );
+                bytesWritten = Encoding.UTF8.GetBytes(
+                    serialized,
+                    0,
+                    serialized.Length,
+                    rentedBuffer,
+                    0 );
+            }
+            catch ( Exception ex )
+            {
+                Logging.Error( $"Failed to serialize broadcast message {message.Type}", ex );
+                return false;
+            }
 
-                var tasks = sessionIds.Select( id => SendToConnectionAsyncWithBuffer( id, rentedBuffer, bytesWritten, message.Type, cancellationToken ) );
-                await Task.WhenAll( tasks ).ConfigureAwait( false );
+            try
+            {
+                var tasks = sessionIds
+                    .Select(sessionId => SendToConnectionAsyncWithBuffer(
+                        sessionId,
+                        rentedBuffer,
+                        bytesWritten,
+                        message.Type,
+                        cancellationToken))
+                    .ToArray();
+
+                var results = await Task.WhenAll(tasks).ConfigureAwait(false);
+                return results.Any( delivered => delivered );
             }
             finally
             {
-                if ( rentedBuffer != null )
-                {
-                    ArrayPool<byte>.Shared.Return( rentedBuffer );
-                }
+                ArrayPool<byte>.Shared.Return( rentedBuffer );
             }
         }
 
         /// <summary>
         /// Send pre-serialized message bytes to a connection (used by BroadcastAsync).
         /// </summary>
-        private async Task SendToConnectionAsyncWithBuffer ( string sessionId, byte[] buffer, int length, string messageType, CancellationToken cancellationToken )
+        private async Task<bool> SendToConnectionAsyncWithBuffer ( string sessionId, byte[] buffer, int byteCount, string messageType, CancellationToken cancellationToken )
         {
-            ConnectionContext? context;
-            lock ( _connectionsLock )
+            if ( !_connections.TryGetValue( sessionId, out var context ) ||
+                 context.Stream == null )
             {
-                _connections.TryGetValue( sessionId, out context );
-            }
-
-            if ( context?.Stream is null )
-            {
-                return;
+                return false;
             }
 
             try
             {
-                await context.Stream.WriteAsync( buffer.AsMemory( 0, length ), cancellationToken ).ConfigureAwait( false );
+                await context.Stream.WriteAsync( buffer.AsMemory( 0, byteCount ), cancellationToken ).ConfigureAwait( false );
                 await context.Stream.FlushAsync( cancellationToken ).ConfigureAwait( false );
+
+                Logging.Debug( $"Sent {messageType} message to session {sessionId}: {byteCount} bytes." );
+                return true;
             }
             catch ( Exception ex )
             {
-                Logging.Error( $"Error broadcasting {messageType} to session {sessionId}: {ex.Message}" );
-                await DisconnectAsync( sessionId, "broadcast_error" );
+                Logging.Warn( $"Failed to send {messageType} message to session {sessionId}: {ex.Message}" );
+
+                try
+                {
+                    await DisconnectAsync( sessionId ).ConfigureAwait( false );
+                }
+                catch ( Exception disconnectEx )
+                {
+                    Logging.Debug( $"Error disconnecting failed IPC session {sessionId}: {disconnectEx.Message}" );
+                }
+
+                return false;
             }
         }
 
@@ -336,12 +379,7 @@ namespace EddiIPC_Service.Server
         {
             ArgumentNullException.ThrowIfNull( sessionId );
 
-            ConnectionContext? context;
-            lock ( _connectionsLock )
-            {
-                _connections.Remove( sessionId, out context );
-            }
-
+            _connections.Remove( sessionId, out var context );
             if ( context?.Stream is null )
             {
                 return;
@@ -457,11 +495,7 @@ namespace EddiIPC_Service.Server
         private async Task HandleClientAsync ( TcpClient client, CancellationToken cancellationToken )
         {
             var context = new ConnectionContext( client );
-
-            lock ( _connectionsLock )
-            {
-                _connections[ context.SessionId ] = context;
-            }
+            _connections[ context.SessionId ] = context;
 
             Logging.Info( $"Client connected: session {context.SessionId}" );
 
@@ -546,10 +580,7 @@ namespace EddiIPC_Service.Server
                     ArrayPool<byte>.Shared.Return( rentedBuffer );
                 }
 
-                lock ( _connectionsLock )
-                {
-                    _connections.Remove( context.SessionId );
-                }
+                _connections.Remove( context.SessionId, out _ );
 
                 context.Dispose();
                 Logging.Info( $"Client disconnected: session {context.SessionId}" );
@@ -561,11 +592,7 @@ namespace EddiIPC_Service.Server
         /// </summary>
         private async Task CloseAllConnectionsAsync ()
         {
-            List<string> sessionIds;
-            lock ( _connectionsLock )
-            {
-                sessionIds = _connections.Keys.ToList();
-            }
+            var sessionIds = _connections.Keys.ToList();
 
             var tasks = sessionIds.Select( id => DisconnectAsync( id, "server_shutdown" ) );
             await Task.WhenAll( tasks ).ConfigureAwait( false );

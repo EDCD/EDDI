@@ -1,4 +1,5 @@
-﻿using EddiConfigService.Configurations;
+﻿using EddiConfigService;
+using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
@@ -687,6 +688,124 @@ namespace Tests
             variable.Set();
 
             Assert.HasCount( 0, _runtimeEvents );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void DispatchRuntimeAction_DoesNotCache_WhenNoVoiceAttackRecipient ()
+        {
+            VoiceAttackVariables.ClearDispatchCache();
+
+            // Arrange: no runtime dispatcher or no connected IPC sessions.
+
+            VoiceAttackVariables.RuntimeSetText( "Ship model", "Cobra Mk III" );
+
+            // Act: send the same value again after a fake dispatcher/session is available.
+
+            var received = new List<EventData>();
+
+            using var registration = RuntimeEventDispatcher.RegisterDispatcher((eventData, _) =>
+            {
+                received.Add(eventData);
+                return Task.FromResult(true);
+            });
+
+            VoiceAttackVariables.RuntimeSetText( "Ship model", "Cobra Mk III" );
+
+            Assert.HasCount( 1, received );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void DispatchRuntimeAction_DoesNotCache_WhenDispatcherReturnsFalse ()
+        {
+            VoiceAttackVariables.ClearDispatchCache();
+            using ( RuntimeEventDispatcher.RegisterDispatcher( ( _, _ ) => Task.FromResult( false ) ) )
+            {
+                VoiceAttackVariables.RuntimeSetText( "Ship name", "Test Ship" );
+            }
+
+            var received = 0;
+            using ( RuntimeEventDispatcher.RegisterDispatcher( ( _, _ ) =>
+                   {
+                       received++;
+                       return Task.FromResult( true );
+                   } ) )
+            {
+                VoiceAttackVariables.RuntimeSetText( "Ship name", "Test Ship" );
+            }
+
+            Assert.AreEqual( 1, received );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void DispatchRuntimeAction_CachesOnlyAfterSuccessfulDelivery ()
+        {
+            VoiceAttackVariables.ClearDispatchCache();
+
+            var received = 0;
+
+            using var registration = RuntimeEventDispatcher.RegisterDispatcher((_, _) =>
+            {
+                received++;
+                return Task.FromResult(true);
+            });
+
+            VoiceAttackVariables.RuntimeSetText( "Ship ident", "ABC-1" );
+            VoiceAttackVariables.RuntimeSetText( "Ship ident", "ABC-1" );
+
+            Assert.AreEqual( 1, received );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void DispatchRuntimeAction_PreservesNullValue ()
+        {
+            VoiceAttackVariables.ClearDispatchCache();
+
+            EventData received = null;
+
+            using var registration = RuntimeEventDispatcher.RegisterDispatcher((eventData, _) =>
+            {
+                received = eventData;
+                return Task.FromResult(true);
+            });
+
+            VoiceAttackVariables.RuntimeSetText( "Ship hardpoint 7 module", null );
+
+            var payload = received.EventPayload;
+            var value = payload[RuntimePayloadKeys.CommandActionPayload.Value];
+
+            Assert.IsTrue( value == null || value is JValue jValue && jValue.Type == JTokenType.Null );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void InitializeStandardValues_UsesShipyardFallback_WhenCurrentShipIsNull ()
+        {
+            VoiceAttackVariables.ClearDispatchCache();
+
+            EDDI.Instance.CurrentShip = null;
+
+            ConfigService.Instance.shipMonitorConfiguration.currentshipid = 123;
+            ConfigService.Instance.shipMonitorConfiguration.shipyard =
+            [
+                new Ship
+                {
+                    LocalId = 123,
+                    model = "cobramkiii",
+                    name = "Fallback Test Ship"
+                }
+            ];
+
+            var receivedPayloads = new List<EventData>();
+
+            using var registration = RuntimeEventDispatcher.RegisterDispatcher((eventData, _) =>
+            {
+                receivedPayloads.Add(eventData);
+                return Task.FromResult(true);
+            });
+
+            VoiceAttackVariables.NotifyVoiceAttackRuntimeSessionReady();
+
+            Assert.IsTrue( receivedPayloads.Any( payload =>
+                payload.ToString().Contains( "Fallback Test Ship" ) ) );
         }
     }
 }
