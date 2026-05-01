@@ -11,7 +11,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -68,7 +67,8 @@ namespace EddiIPC_Service.Server
             _runtimeEventDispatcherRegistration = RuntimeEventDispatcher.RegisterDispatcher( async ( eventData, cancellationToken ) =>
             {
                 var message = MessageEnvelope.Create( MessageTypes.Event, eventData );
-                return await BroadcastAsync( message, cancellationToken ).ConfigureAwait( false );
+                var frame = MessageSerializer.SerializeToFrame( message );
+                return await BroadcastAsync( frame, cancellationToken ).ConfigureAwait( false );
             } );
 
             // Register all message handlers
@@ -222,15 +222,17 @@ namespace EddiIPC_Service.Server
                 byte[]? rentedBuffer = null;
                 try
                 {
-                    rentedBuffer = ArrayPool<byte>.Shared.Rent( serialized.Length * 2 );
-                    var bytesWritten = Encoding.UTF8.GetBytes(serialized, 0, serialized.Length, rentedBuffer, 0);
+                    var frame = MessageSerializer.SerializeToFrame( message );
 
-                    await context.Stream.WriteAsync( rentedBuffer.AsMemory( 0, bytesWritten ), cancellationToken ).ConfigureAwait( false );
-                    await context.Stream.FlushAsync( cancellationToken ).ConfigureAwait( false );
+                    await context.Stream
+                        .WriteAsync( frame.Memory, cancellationToken )
+                        .ConfigureAwait( false );
 
-                    var actionCount = GetRuntimeActionCount(message);
-                    Logging.Debug(
-                        $"Sent {message.Type} message to session {sessionId}: {bytesWritten} bytes, {actionCount} runtime actions." );
+                    await context.Stream
+                        .FlushAsync( cancellationToken )
+                        .ConfigureAwait( false );
+
+                    Logging.Debug( $"Sent {frame.MessageType} message to session {sessionId}: {frame.Length} bytes." );
                 }
                 finally
                 {
@@ -276,9 +278,9 @@ namespace EddiIPC_Service.Server
         /// </summary>
         /// <param name="message">Message to broadcast</param>
         /// <param name="cancellationToken">Optional cancellation token</param>
-        public async Task<bool> BroadcastAsync ( MessageEnvelope message, CancellationToken cancellationToken = default )
+        public async Task<bool> BroadcastAsync ( SerializedMessageFrame frame, CancellationToken cancellationToken = default )
         {
-            ArgumentNullException.ThrowIfNull( message );
+            ArgumentNullException.ThrowIfNull( frame );
 
             if ( !IsRunning )
             {
@@ -290,56 +292,27 @@ namespace EddiIPC_Service.Server
 
             if ( sessionIds.Count == 0 )
             {
-                Logging.Debug( $"Broadcast skipped for {message.Type}: no connected IPC sessions." );
+                Logging.Debug( $"Broadcast skipped for {frame.MessageType}: no connected IPC sessions." );
                 return false;
             }
 
-            // Serialize once and reuse the bytes for all clients
-            byte[]? rentedBuffer;
-            int bytesWritten;
+            cancellationToken.ThrowIfCancellationRequested();
 
-            try
-            {
-                var serialized = MessageSerializer.Serialize( message );
-                var byteCount = Encoding.UTF8.GetByteCount(serialized);
-                rentedBuffer = ArrayPool<byte>.Shared.Rent( byteCount );
-                bytesWritten = Encoding.UTF8.GetBytes(
-                    serialized,
-                    0,
-                    serialized.Length,
-                    rentedBuffer,
-                    0 );
-            }
-            catch ( Exception ex )
-            {
-                Logging.Error( $"Failed to serialize broadcast message {message.Type}", ex );
-                return false;
-            }
+            var tasks = sessionIds
+                .Select( sessionId => SendToConnectionAsyncWithFrame(
+                    sessionId,
+                    frame,
+                    cancellationToken ) )
+                .ToArray();
 
-            try
-            {
-                var tasks = sessionIds
-                    .Select(sessionId => SendToConnectionAsyncWithBuffer(
-                        sessionId,
-                        rentedBuffer,
-                        bytesWritten,
-                        message.Type,
-                        cancellationToken))
-                    .ToArray();
-
-                var results = await Task.WhenAll(tasks).ConfigureAwait(false);
-                return results.Any( delivered => delivered );
-            }
-            finally
-            {
-                ArrayPool<byte>.Shared.Return( rentedBuffer );
-            }
+            var results = await Task.WhenAll( tasks ).ConfigureAwait( false );
+            return results.Any( delivered => delivered );
         }
 
-        /// <summary>
-        /// Send pre-serialized message bytes to a connection (used by BroadcastAsync).
-        /// </summary>
-        private async Task<bool> SendToConnectionAsyncWithBuffer ( string sessionId, byte[] buffer, int byteCount, string messageType, CancellationToken cancellationToken )
+        private async Task<bool> SendToConnectionAsyncWithFrame (
+            string sessionId,
+            SerializedMessageFrame frame,
+            CancellationToken cancellationToken )
         {
             if ( !_connections.TryGetValue( sessionId, out var context ) ||
                  context.Stream == null )
@@ -349,15 +322,23 @@ namespace EddiIPC_Service.Server
 
             try
             {
-                await context.Stream.WriteAsync( buffer.AsMemory( 0, byteCount ), cancellationToken ).ConfigureAwait( false );
-                await context.Stream.FlushAsync( cancellationToken ).ConfigureAwait( false );
+                await context.Stream
+                    .WriteAsync( frame.Memory, cancellationToken )
+                    .ConfigureAwait( false );
 
-                Logging.Debug( $"Sent {messageType} message to session {sessionId}: {byteCount} bytes." );
+                await context.Stream
+                    .FlushAsync( cancellationToken )
+                    .ConfigureAwait( false );
+
+                Logging.Debug(
+                    $"Sent {frame.MessageType} message to session {sessionId}: {frame.Length} bytes." );
+
                 return true;
             }
             catch ( Exception ex )
             {
-                Logging.Warn( $"Failed to send {messageType} message to session {sessionId}: {ex.Message}" );
+                Logging.Warn(
+                    $"Failed to send {frame.MessageType} message to session {sessionId}: {ex.Message}" );
 
                 try
                 {
@@ -365,7 +346,8 @@ namespace EddiIPC_Service.Server
                 }
                 catch ( Exception disconnectEx )
                 {
-                    Logging.Debug( $"Error disconnecting failed IPC session {sessionId}: {disconnectEx.Message}" );
+                    Logging.Debug(
+                        $"Error disconnecting failed IPC session {sessionId}: {disconnectEx.Message}" );
                 }
 
                 return false;
@@ -492,46 +474,73 @@ namespace EddiIPC_Service.Server
         /// <summary>
         /// Handle a connected client - receive messages and route to handlers.
         /// </summary>
-        private async Task HandleClientAsync ( TcpClient client, CancellationToken cancellationToken )
+        private async Task HandleClientAsync (
+            TcpClient client,
+            CancellationToken cancellationToken )
         {
             var context = new ConnectionContext( client );
             _connections[ context.SessionId ] = context;
 
             Logging.Info( $"Client connected: session {context.SessionId}" );
 
-            byte[]? rentedBuffer = null;
+            byte[]? readBuffer = null;
+            byte[]? pendingBuffer = null;
+
+            var pendingStart = 0;
+            var pendingLength = 0;
+
             try
             {
-                rentedBuffer = ArrayPool<byte>.Shared.Rent( 65536 );
-                var remainingBytes = new List<byte>( 131072 ); // Pre-allocate with typical message capacity
+                readBuffer = ArrayPool<byte>.Shared.Rent( 65536 );
+                pendingBuffer = ArrayPool<byte>.Shared.Rent( 131072 );
 
                 while ( !cancellationToken.IsCancellationRequested && context.IsConnected )
                 {
                     try
                     {
-                        ArgumentNullException.ThrowIfNull( context.Stream, "Client stream is null" );
+                        ArgumentNullException.ThrowIfNull(
+                            context.Stream,
+                            "Client stream is null" );
 
-                        var bytesRead = await context.Stream.ReadAsync( rentedBuffer.AsMemory( 0, 65536 ), cancellationToken )
-                            .ConfigureAwait( false );
+                        var bytesRead = await context.Stream
+                    .ReadAsync(
+                        readBuffer.AsMemory( 0, 65536 ),
+                        cancellationToken )
+                    .ConfigureAwait( false );
 
                         if ( bytesRead == 0 )
                         {
                             break;
                         }
 
-                        // Directly add span instead of ToArray() + AddRange() to reduce allocations
-                        remainingBytes.AddRange( rentedBuffer.AsSpan( 0, bytesRead ) );
+                        pendingBuffer = AppendPendingBytes(
+                            pendingBuffer,
+                            ref pendingStart,
+                            ref pendingLength,
+                            readBuffer,
+                            bytesRead );
 
-                        while ( remainingBytes.Count > 0 )
+                        while ( pendingLength > 0 )
                         {
                             var messageCount = MessageSerializer.DeserializeMessages(
-                                CollectionsMarshal.AsSpan( remainingBytes ), out var messages, out var bytesConsumed );
+                        pendingBuffer,
+                        pendingStart,
+                        pendingLength,
+                        out var messages,
+                        out var bytesConsumed );
+
                             if ( bytesConsumed == 0 )
                             {
                                 break;
                             }
 
-                            remainingBytes.RemoveRange( 0, bytesConsumed );
+                            pendingStart += bytesConsumed;
+                            pendingLength -= bytesConsumed;
+
+                            if ( pendingLength == 0 )
+                            {
+                                pendingStart = 0;
+                            }
 
                             if ( messageCount == 0 )
                             {
@@ -543,21 +552,30 @@ namespace EddiIPC_Service.Server
                                 try
                                 {
                                     message.Validate();
-                                    await Router.RouteAsync( message, context ).ConfigureAwait( false );
+
+                                    await Router
+                                        .RouteAsync( message, context )
+                                        .ConfigureAwait( false );
                                 }
                                 catch ( Exception ex )
                                 {
-                                    Logging.Error( $"Error processing message: {ex.Message}", ex );
+                                    Logging.Error(
+                                        $"Error processing message: {ex.Message}",
+                                        ex );
 
-                                    var errorMsg = MessageEnvelope.Create( "Error",
-                                        new ErrorData
-                                        {
-                                            ErrorCode = "PROCESSING_ERROR",
-                                            Message = ex.Message,
-                                            OriginalMessageId = message.Id
-                                        } );
+                                    var errorMsg = MessageEnvelope.Create(
+                                "Error",
+                                new ErrorData
+                                {
+                                    ErrorCode = "PROCESSING_ERROR",
+                                    Message = ex.Message,
+                                    OriginalMessageId = message.Id
+                                } );
 
-                                    await SendToConnectionAsync( context.SessionId, errorMsg, cancellationToken )
+                                    await SendToConnectionAsync(
+                                            context.SessionId,
+                                            errorMsg,
+                                            cancellationToken )
                                         .ConfigureAwait( false );
                                 }
                             }
@@ -575,16 +593,82 @@ namespace EddiIPC_Service.Server
             }
             finally
             {
-                if ( rentedBuffer != null )
+                if ( readBuffer != null )
                 {
-                    ArrayPool<byte>.Shared.Return( rentedBuffer );
+                    ArrayPool<byte>.Shared.Return( readBuffer );
+                }
+
+                if ( pendingBuffer != null )
+                {
+                    ArrayPool<byte>.Shared.Return( pendingBuffer );
                 }
 
                 _connections.Remove( context.SessionId, out _ );
-
                 context.Dispose();
+
                 Logging.Info( $"Client disconnected: session {context.SessionId}" );
             }
+        }
+
+        private static byte[] AppendPendingBytes (
+            byte[] pendingBuffer,
+            ref int pendingStart,
+            ref int pendingLength,
+            byte[] sourceBuffer,
+            int sourceLength )
+        {
+            if ( sourceLength <= 0 )
+            {
+                return pendingBuffer;
+            }
+
+            var requiredLength = pendingLength + sourceLength;
+
+            if ( requiredLength > pendingBuffer.Length )
+            {
+                var newSize = Math.Max( requiredLength, pendingBuffer.Length * 2 );
+                var newBuffer = ArrayPool<byte>.Shared.Rent( newSize );
+
+                if ( pendingLength > 0 )
+                {
+                    Buffer.BlockCopy(
+                        pendingBuffer,
+                        pendingStart,
+                        newBuffer,
+                        0,
+                        pendingLength );
+                }
+
+                ArrayPool<byte>.Shared.Return( pendingBuffer );
+
+                pendingBuffer = newBuffer;
+                pendingStart = 0;
+            }
+            else if ( pendingStart + pendingLength + sourceLength > pendingBuffer.Length )
+            {
+                if ( pendingLength > 0 )
+                {
+                    Buffer.BlockCopy(
+                        pendingBuffer,
+                        pendingStart,
+                        pendingBuffer,
+                        0,
+                        pendingLength );
+                }
+
+                pendingStart = 0;
+            }
+
+            Buffer.BlockCopy(
+                sourceBuffer,
+                0,
+                pendingBuffer,
+                pendingStart + pendingLength,
+                sourceLength );
+
+            pendingLength += sourceLength;
+
+            return pendingBuffer;
         }
 
         /// <summary>

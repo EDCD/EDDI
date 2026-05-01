@@ -49,7 +49,6 @@ namespace Tests.EddiVoiceAttackService
         private System.Version? _responderModeVersion;
         private IDisposable? _commandDispatcherRegistration;
         private IDisposable? _responderModeRegistration;
-        private IDisposable? _runtimeEventDispatcherRegistration;
 
         [TestInitialize]
         public async Task Initialize()
@@ -91,13 +90,6 @@ namespace Tests.EddiVoiceAttackService
                 return Task.CompletedTask;
             } );
 
-            _runtimeEventDispatcherRegistration = RuntimeEventDispatcher.RegisterDispatcher( async ( eventData, cancellationToken ) =>
-            {
-                var message = MessageEnvelope.Create( MessageTypes.Event, eventData );
-                await _server.BroadcastAsync( message, cancellationToken ).ConfigureAwait( false );
-                return true;
-            } );
-
             // Create config file
             _configFilePath = CreateConfigFile(_server.Port);
         }
@@ -107,8 +99,6 @@ namespace Tests.EddiVoiceAttackService
         {
             _commandDispatcherRegistration?.Dispose();
             _commandDispatcherRegistration = null;
-            _runtimeEventDispatcherRegistration?.Dispose();
-            _runtimeEventDispatcherRegistration = null;
             _responderModeRegistration?.Dispose();
             _responderModeRegistration = null;
             _dispatchSignal?.Dispose();

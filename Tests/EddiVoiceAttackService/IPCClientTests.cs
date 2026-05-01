@@ -360,32 +360,6 @@ namespace Tests.EddiVoiceAttackService
             Assert.IsGreaterThanOrEqualTo(1, status.MessagesSent, "Should have sent at least one message");
         }
 
-        [TestMethod]
-        public async Task MessageReceivedEvent_IsRaisedWhenEventReceived()
-        {
-            // Arrange
-            Assert.IsNotNull(_client);
-            Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken );
-
-            _client.MessageReceived += (s, e) =>
-            {
-                _ = e;
-            };
-
-            // Act - simulate server sending event by using internal broadcast
-            var eventMessage = MessageEnvelope.Create(
-                MessageTypes.Event,
-                new EventData { EventType = "test", EventName = "test.event" }
-            );
-            await _server.BroadcastAsync(eventMessage, TestContext.CancellationToken );
-            await Task.Delay(200, TestContext.CancellationToken ); // Give time to process
-
-            // Assert
-            // Note: This test assumes successful message delivery
-            // Implementation may need adjustment based on actual network timing
-        }
-
         #endregion
 
         #region Error Handling Tests

@@ -787,7 +787,7 @@ namespace Tests
             var payload = received.EventPayload;
             var value = payload[RuntimePayloadKeys.CommandActionPayload.Value];
 
-            Assert.IsTrue( value == null || value is JValue jValue && jValue.Type == JTokenType.Null );
+            Assert.IsTrue( value == null || (value is JValue jValue && jValue.Type == JTokenType.Null) );
         }
 
         [TestMethod, DoNotParallelize]

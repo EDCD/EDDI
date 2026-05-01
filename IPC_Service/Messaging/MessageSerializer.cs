@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Buffers;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using Utilities;
 
@@ -30,88 +31,8 @@ public static class MessageSerializer
     /// <exception cref="ArgumentException">If message fails validation</exception>
     public static string Serialize ( MessageEnvelope message )
     {
-        ArgumentNullException.ThrowIfNull( message );
-
-        try
-        {
-            message.Validate();
-        }
-        catch ( ArgumentException ex )
-        {
-            Logging.Error( $"Message validation failed: {ex.Message}" );
-            throw;
-        }
-
-        try
-        {
-            // Create a snapshot of the message to avoid collection modification during serialization
-            var messageCopy = CreateMessageSnapshot( message );
-
-            var json = JsonConvert.SerializeObject( messageCopy, new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                DateFormatString = "O",
-                Formatting = Formatting.None
-            } );
-
-            var payloadLength = Encoding.UTF8.GetByteCount( json );
-            return $"{payloadLength}\n{json}";
-        }
-        catch ( JsonException ex )
-        {
-            Logging.Error( $"Failed to serialize message of type {message.Type}: {ex.Message}" );
-            throw new ArgumentException( $"Message serialization failed: {ex.Message}", ex );
-        }
-        catch ( InvalidOperationException ex )
-        {
-            Logging.Error( $"Failed to create stable snapshot for message type {message.Type}: {ex.Message}" );
-            throw new ArgumentException( $"Message serialization failed due to concurrent collection modification: {ex.Message}", ex );
-        }
-    }
-
-    /// <summary>
-    /// Creates a snapshot of the message with complete deep copy of all data.
-    /// Uses reflection-based deep copy to ensure thread-safety and fidelity.
-    /// NOTE: This is a second line of defense. A shallow snapshot is created at the source
-    /// (in VoiceAttackVariables.DispatchRuntimeEventPayload). This deep snapshot here provides
-    /// defense-in-depth using the robust Copy() extension from ObjectExtensions.
-    /// </summary>
-    private static MessageEnvelope CreateMessageSnapshot( MessageEnvelope message )
-    {
-        if ( message.Data is EventData eventData )
-        {
-            Dictionary<string, object>? payloadSnapshot = null;
-            if ( eventData.EventPayload != null )
-            {
-                try
-                {
-                    // The Copy() extension handles all collection types, circular references,
-                    // and nested structures automatically via reflection-based deep cloning
-                    payloadSnapshot = eventData.EventPayload.Copy();
-                }
-                catch ( Exception ex )
-                {
-                    Logging.Error( $"Failed to deep copy event payload: {ex.Message}" );
-                    throw new ArgumentException( "Message serialization failed: Cannot create stable snapshot", ex );
-                }
-            }
-
-            return new MessageEnvelope
-            {
-                Type = message.Type,
-                Id = message.Id,
-                Timestamp = message.Timestamp,
-                Data = new EventData
-                {
-                    EventType = eventData.EventType,
-                    EventName = eventData.EventName,
-                    EventPayload = payloadSnapshot
-                }
-            };
-        }
-
-        // For other data types, return the message as-is
-        return message;
+        var frame = SerializeToFrame( message );
+        return Encoding.UTF8.GetString( frame.Bytes );
     }
 
     /// <summary>
@@ -208,6 +129,28 @@ public static class MessageSerializer
         return messages.Count;
     }
 
+    public static int DeserializeMessages (
+        byte[] buffer,
+        int offset,
+        int count,
+        out List<MessageEnvelope> messages,
+        out int bytesConsumed )
+    {
+        ArgumentNullException.ThrowIfNull( buffer );
+
+        if ( offset < 0 || count < 0 || (offset + count) > buffer.Length )
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof( offset ),
+                @"The offset/count range is outside the supplied buffer." );
+        }
+
+        return DeserializeMessages(
+            new ReadOnlySpan<byte>( buffer, offset, count ),
+            out messages,
+            out bytesConsumed );
+    }
+
     private static MessageEnvelope DeserializePayload ( string jsonPart )
     {
         try
@@ -261,5 +204,66 @@ public static class MessageSerializer
 
         payload = buffer.Slice( 0, charsConsumed ).ToString();
         return true;
+    }
+
+    public static SerializedMessageFrame SerializeToFrame ( MessageEnvelope message )
+    {
+        ArgumentNullException.ThrowIfNull( message );
+
+        try
+        {
+            message.Validate();
+        }
+        catch ( ArgumentException ex )
+        {
+            Logging.Error( $"Message validation failed: {ex.Message}" );
+            throw;
+        }
+
+        try
+        {
+            // Serialization is the freeze point. After this returns, nested mutations cannot affect transport.
+            var json = JsonConvert.SerializeObject( message, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DateFormatString = "O",
+                Formatting = Formatting.None
+            } );
+
+            var payloadLength = Encoding.UTF8.GetByteCount( json );
+            var header = payloadLength.ToString( CultureInfo.InvariantCulture ) + "\n";
+            var headerLength = Encoding.ASCII.GetByteCount( header );
+
+            var bytes = new byte[ headerLength + payloadLength ];
+
+            Encoding.ASCII.GetBytes(
+                header,
+                0,
+                header.Length,
+                bytes,
+                0 );
+
+            Encoding.UTF8.GetBytes(
+                json,
+                0,
+                json.Length,
+                bytes,
+                headerLength );
+
+            return new SerializedMessageFrame(
+                message.Type,
+                message.Id,
+                bytes );
+        }
+        catch ( JsonException ex )
+        {
+            Logging.Error( $"Failed to serialize message of type {message.Type}: {ex.Message}" );
+            throw new ArgumentException( $"Message serialization failed: {ex.Message}", ex );
+        }
+        catch ( InvalidOperationException ex )
+        {
+            Logging.Error( $"Failed to serialize message of type {message.Type}: {ex.Message}" );
+            throw new ArgumentException( $"Message serialization failed: {ex.Message}", ex );
+        }
     }
 }

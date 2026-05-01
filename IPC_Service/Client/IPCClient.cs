@@ -10,8 +10,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -292,12 +290,15 @@ namespace EddiIPC_Service.Client
                 byte[]? rentedBuffer = null;
                 try
                 {
-                    rentedBuffer = ArrayPool<byte>.Shared.Rent( serialized.Length * 2 );
-                    var bytesWritten = Encoding.UTF8.GetBytes(serialized, 0, serialized.Length, rentedBuffer, 0);
+                    var frame = MessageSerializer.SerializeToFrame( envelope );
 
-                    // Write data (includes length prefix and JSON)
-                    await _networkStream.WriteAsync( rentedBuffer.AsMemory( 0, bytesWritten ), cancellationToken ).ConfigureAwait( false );
-                    await _networkStream.FlushAsync( cancellationToken ).ConfigureAwait( false );
+                    await _networkStream
+                        .WriteAsync( frame.Memory, cancellationToken )
+                        .ConfigureAwait( false );
+
+                    await _networkStream
+                        .FlushAsync( cancellationToken )
+                        .ConfigureAwait( false );
 
                     _messagesSent++;
                     _lastActivityAt = DateTime.UtcNow;
@@ -324,8 +325,12 @@ namespace EddiIPC_Service.Client
                 return;
             }
 
-            var rentedBuffer = ArrayPool<byte>.Shared.Rent( 4096 );
-            var bufferedBytes = new List<byte>( 8192 ); // Pre-allocate with typical message capacity
+            var readBuffer = ArrayPool<byte>.Shared.Rent( 4096 );
+            var pendingBuffer = ArrayPool<byte>.Shared.Rent( 8192 );
+
+            var pendingStart = 0;
+            var pendingLength = 0;
+
             try
             {
                 while ( !cancellationToken.IsCancellationRequested && ( _tcpClient?.Connected ?? false ) )
@@ -333,29 +338,42 @@ namespace EddiIPC_Service.Client
                     try
                     {
                         var bytesRead = await _networkStream
-                            .ReadAsync( rentedBuffer.AsMemory( 0, 4096 ), cancellationToken )
-                            .ConfigureAwait( false );
+                    .ReadAsync( readBuffer.AsMemory( 0, 4096 ), cancellationToken )
+                    .ConfigureAwait( false );
 
                         if ( bytesRead == 0 )
                         {
-                            // Connection closed by server
                             break;
                         }
 
-                        // More efficient: directly extend the list instead of ToArray() + AddRange()
-                        bufferedBytes.AddRange( rentedBuffer.AsSpan( 0, bytesRead ) );
+                        pendingBuffer = AppendPendingBytes(
+                            pendingBuffer,
+                            ref pendingStart,
+                            ref pendingLength,
+                            readBuffer,
+                            bytesRead );
 
-                        while ( bufferedBytes.Count > 0 )
+                        while ( pendingLength > 0 )
                         {
                             var messageCount = MessageSerializer.DeserializeMessages(
-                                CollectionsMarshal.AsSpan( bufferedBytes ), out var messages, out var bytesConsumed );
+                        pendingBuffer,
+                        pendingStart,
+                        pendingLength,
+                        out var messages,
+                        out var bytesConsumed );
 
                             if ( bytesConsumed == 0 )
                             {
                                 break;
                             }
 
-                            bufferedBytes.RemoveRange( 0, bytesConsumed );
+                            pendingStart += bytesConsumed;
+                            pendingLength -= bytesConsumed;
+
+                            if ( pendingLength == 0 )
+                            {
+                                pendingStart = 0;
+                            }
 
                             if ( messageCount == 0 )
                             {
@@ -374,17 +392,74 @@ namespace EddiIPC_Service.Client
                     }
                     catch ( IOException )
                     {
-                        // Connection lost
                         break;
                     }
                 }
             }
             finally
             {
-                ArrayPool<byte>.Shared.Return( rentedBuffer );
+                ArrayPool<byte>.Shared.Return( readBuffer );
+                ArrayPool<byte>.Shared.Return( pendingBuffer );
+
                 IsConnected = false;
                 ConnectionLost?.Invoke( this, new ConnectionLostEventArgs( "Receive loop ended" ) );
             }
+        }
+
+        private static byte[] AppendPendingBytes (
+            byte[] pendingBuffer,
+            ref int pendingStart,
+            ref int pendingLength,
+            byte[] sourceBuffer,
+            int sourceLength )
+        {
+            var requiredLength = pendingLength + sourceLength;
+
+            if ( requiredLength > pendingBuffer.Length )
+            {
+                var newSize = Math.Max( requiredLength, pendingBuffer.Length * 2 );
+                var newBuffer = ArrayPool<byte>.Shared.Rent( newSize );
+
+                if ( pendingLength > 0 )
+                {
+                    Buffer.BlockCopy(
+                        pendingBuffer,
+                        pendingStart,
+                        newBuffer,
+                        0,
+                        pendingLength );
+                }
+
+                ArrayPool<byte>.Shared.Return( pendingBuffer );
+
+                pendingBuffer = newBuffer;
+                pendingStart = 0;
+            }
+            else if ( (pendingStart + pendingLength + sourceLength) > pendingBuffer.Length )
+            {
+                if ( pendingLength > 0 )
+                {
+                    Buffer.BlockCopy(
+                        pendingBuffer,
+                        pendingStart,
+                        pendingBuffer,
+                        0,
+                        pendingLength );
+                }
+
+                pendingStart = 0;
+            }
+
+            Buffer.BlockCopy(
+                sourceBuffer,
+                0,
+                pendingBuffer,
+                pendingStart + pendingLength,
+                sourceLength );
+
+            pendingLength += sourceLength;
+
+            return pendingBuffer;
         }
 
         private void ProcessReceivedMessage ( MessageEnvelope envelope )

@@ -4,6 +4,7 @@ using EddiIPC_Service.Messages;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace EddiIPC_Service.Server
 {
@@ -15,6 +16,7 @@ namespace EddiIPC_Service.Server
     {
         private readonly object _lockObj = new();
         private bool _disposed;
+        internal SemaphoreSlim SendLock { get; } = new( 1, 1 );
 
         /// <summary>Unique session identifier for this connection</summary>
         public string SessionId { get; }
