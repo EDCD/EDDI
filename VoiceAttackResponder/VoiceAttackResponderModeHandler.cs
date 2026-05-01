@@ -2,6 +2,7 @@
 
 using Eddi;
 using EddiCore;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
@@ -34,9 +35,23 @@ namespace EddiVoiceAttackResponder
                 EDDI.Instance.EnableResponder( VoiceAttackResponderName );
                 await VoiceAttackResponderMode.InitializeAsync().ConfigureAwait( false );
                 VoiceAttackVariables.NotifyVoiceAttackRuntimeSessionReady();
-                await VoiceAttackResponderMode.ReplayStandardValuesAsync(
-                    "VoiceAttack IPC responder-mode handshake",
-                    cancellationToken ).ConfigureAwait( false );
+                _ = Task.Run( async () =>
+                {
+                    try
+                    {
+                        await VoiceAttackResponderMode.ReplayStandardValuesAsync(
+                            "VoiceAttack IPC responder-mode background variable sync",
+                            CancellationToken.None ).ConfigureAwait( false );
+                        VoiceAttackVariables.WriteRuntimeLog(
+                            "EDDI VoiceAttack variables synchronized.",
+                            "green" );
+                    }
+                    catch ( Exception ex )
+                    {
+                        Logging.Error( "VoiceAttack responder-mode background variable sync failed", ex );
+                        VoiceAttackVariables.setStatus( "VoiceAttack variable sync failed", ex );
+                    }
+                }, cancellationToken );
             }
             else
             {

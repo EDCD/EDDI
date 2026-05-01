@@ -916,6 +916,11 @@ namespace EddiVoiceAttackResponder
             DispatchRuntimeEventPayload( payload );
         }
 
+        internal static void WriteRuntimeLog ( string message, string color = "white" )
+        {
+            RuntimeWriteToLog( message, color );
+        }
+
         private static void DispatchRuntimeAction ( string action, string key, object value )
         {
             var pendingAction = BuildRuntimeVariableAction(action, key, value);

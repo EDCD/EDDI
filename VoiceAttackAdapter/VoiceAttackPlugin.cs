@@ -126,8 +126,8 @@ namespace EddiVoiceAttackAdapter
                     }
 
                     Logging.Info("VoiceAttack responder mode handshake sent");
-                    WriteToLog( "The EDDI plugin is fully operational.", "green" );
-
+                    WriteToLog( "The EDDI plugin is connected. VoiceAttack variables are syncing.", "green" );
+                    
                     // Start background task to monitor for EDDI crashes we launched ourselves
                     if ( EddiProcessLauncher.HasManagedEddiProcess() )
                     {
