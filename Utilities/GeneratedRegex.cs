@@ -106,6 +106,9 @@ namespace Utilities
         [GeneratedRegex( @"^\bA[BCDE]?[CDE]?[DE]?[E]?\b|\bB[CDE]?[DE]?[E]?\b|\bC[DE]?[E]?\b|\bD[E]?\b$", RegexOptions.Compiled )]
         public static partial Regex SUBSTARS ();
 
+        [GeneratedRegex( @"\t| {2,}", RegexOptions.Compiled )] // Intentionally preserves vertical line whitespace characters like new lines for speechresponder.out.
+        public static partial Regex TabsOrTwoOrMoreSpacesRegex ();
+
         [GeneratedRegex( @"([A-Za-z]{1,3}(?:\s|$))", RegexOptions.Compiled )]
         public static partial Regex TEXT ();
 

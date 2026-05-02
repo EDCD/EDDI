@@ -131,7 +131,7 @@ namespace EddiSpeechResponder.ScriptResolverService
                 // Tidy up the output script
                 if ( isTopLevelScript )
                 {
-                    result = GeneratedRegex.WhiteSpaceTwoOrMoreRegex().Replace( result, " " )
+                    result = GeneratedRegex.TabsOrTwoOrMoreSpacesRegex().Replace( result, " " )
                         .Replace( " ,", "," )
                         .Replace( " .", "." ).Trim();
                     result = result.Trim() == "" ? null : result.Trim();

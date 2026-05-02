@@ -4,6 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ## 5.0.1
   * Speech Responder
+    * Fixed vertical whitespace characters being removed from speechresponder.out. (#2797
     * Custom Functions
       * `StopSpeaking` function signature corrected - it should now work as documented. (#2799)
   * VoiceAttack
