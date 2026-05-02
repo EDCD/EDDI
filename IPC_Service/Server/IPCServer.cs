@@ -4,18 +4,19 @@ using EddiIPC_Service.Messages;
 using EddiIPC_Service.Messaging;
 using System;
 using System.Buffers;
-using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
 
+[assembly: InternalsVisibleTo( "Tests" )]
 namespace EddiIPC_Service.Server
 {
     /// <summary>
@@ -62,14 +63,7 @@ namespace EddiIPC_Service.Server
         public void InitializeIpcServer ()
         {
             _ipcHandler = new DefaultServerEventHandler( this );
-
-            _runtimeEventDispatcherRegistration?.Dispose();
-            _runtimeEventDispatcherRegistration = RuntimeEventDispatcher.RegisterDispatcher( async ( eventData, cancellationToken ) =>
-            {
-                var message = MessageEnvelope.Create( MessageTypes.Event, eventData );
-                var frame = MessageSerializer.SerializeToFrame( message );
-                return await BroadcastAsync( frame, cancellationToken ).ConfigureAwait( false );
-            } );
+            RegisterRuntimeEventDispatcher();
 
             // Register all message handlers
             Router.RegisterHandler( MessageTypes.Connect, _ipcHandler.HandleConnectAsync );
@@ -217,30 +211,17 @@ namespace EddiIPC_Service.Server
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var serialized = MessageSerializer.Serialize( message );
-                // Use ArrayPool to reduce allocations
-                byte[]? rentedBuffer = null;
-                try
-                {
-                    var frame = MessageSerializer.SerializeToFrame( message );
+                var frame = MessageSerializer.SerializeToFrame( message );
 
-                    await context.Stream
-                        .WriteAsync( frame.Memory, cancellationToken )
-                        .ConfigureAwait( false );
+                await context.Stream
+                    .WriteAsync( frame.Memory, cancellationToken )
+                    .ConfigureAwait( false );
 
-                    await context.Stream
-                        .FlushAsync( cancellationToken )
-                        .ConfigureAwait( false );
+                await context.Stream
+                    .FlushAsync( cancellationToken )
+                    .ConfigureAwait( false );
 
-                    Logging.Debug( $"Sent {frame.MessageType} message to session {sessionId}: {frame.Length} bytes." );
-                }
-                finally
-                {
-                    if ( rentedBuffer != null )
-                    {
-                        ArrayPool<byte>.Shared.Return( rentedBuffer );
-                    }
-                }
+                Logging.Debug( $"Sent {frame.MessageType} message to session {sessionId}: {frame.Length} bytes." );
             }
             catch ( OperationCanceledException )
             {
@@ -254,29 +235,10 @@ namespace EddiIPC_Service.Server
             }
         }
 
-        private static int GetRuntimeActionCount ( MessageEnvelope message )
-        {
-            if ( message.Data is not EventData eventData ||
-                 eventData.EventPayload == null )
-            {
-                return 0;
-            }
-
-            if ( eventData.EventPayload.TryGetValue(
-                     RuntimePayloadKeys.CommandActionPayload.Actions,
-                     out var actions ) &&
-                 actions is ICollection actionCollection )
-            {
-                return actionCollection.Count;
-            }
-
-            return 1;
-        }
-
         /// <summary>
         /// Broadcast a message to all connected clients.
         /// </summary>
-        /// <param name="message">Message to broadcast</param>
+        /// <param name="frame">Message to broadcast, in bytes</param>
         /// <param name="cancellationToken">Optional cancellation token</param>
         public async Task<bool> BroadcastAsync ( SerializedMessageFrame frame, CancellationToken cancellationToken = default )
         {
@@ -416,6 +378,21 @@ namespace EddiIPC_Service.Server
             }
 
             throw new InvalidOperationException( $"No available ports in range {startPort}-{endPort}" );
+        }
+
+        internal void RegisterRuntimeEventDispatcher ()
+        {
+            _runtimeEventDispatcherRegistration?.Dispose();
+
+            _runtimeEventDispatcherRegistration = RuntimeEventDispatcher.RegisterDispatcher(
+                async ( eventData, cancellationToken ) =>
+                {
+                    var message = MessageEnvelope.Create( MessageTypes.Event, eventData );
+                    var frame = MessageSerializer.SerializeToFrame( message );
+
+                    return await BroadcastAsync( frame, cancellationToken )
+                        .ConfigureAwait( false );
+                } );
         }
 
         /// <summary>

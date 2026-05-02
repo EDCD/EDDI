@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 using System.Threading;
@@ -56,7 +57,8 @@ namespace Tests.EddiVoiceAttackService
             // Start IPC server
             _server = new IPCServer();
             await _server.StartAsync( TestContext.CancellationToken ).ConfigureAwait( false );
-
+            _server.RegisterRuntimeEventDispatcher();
+            
             _dispatchedCommands.Clear();
             _dispatchSignal = new ManualResetEventSlim( false );
             _responderModeSignal = new ManualResetEventSlim( false );
@@ -228,6 +230,12 @@ namespace Tests.EddiVoiceAttackService
             var pluginClient = new VoiceAttackPluginClient( _configFilePath );
             await pluginClient.InitializeAsync( TestContext.CancellationToken ).ConfigureAwait( false );
 
+            Debug.Assert( _server != null, $"{nameof( _server )} must not be null" );
+            Assert.IsGreaterThan(
+                0,
+                _server.ConnectionCount,
+                "Expected at least one connected IPC client before runtime broadcast." );
+            
             var eventReceived = new TaskCompletionSource<MessageEnvelope>( TaskCreationOptions.RunContinuationsAsynchronously );
             pluginClient.MessageReceived += ( _, args ) =>
             {
