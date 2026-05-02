@@ -75,5 +75,16 @@ namespace EddiNavigationMonitor
                 }
             }
         }
+
+        public void refreshGalacticPOIs ()
+        {
+            foreach (var t in tabControl.Items)
+            {
+                if ( t is TabItem tabItem && tabItem.Content is GalacticPOIControl poiControl )
+                {
+                    poiControl.POIView.Refresh();
+                }
+            }
+        }
     }
 }
