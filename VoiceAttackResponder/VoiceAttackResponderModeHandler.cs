@@ -2,6 +2,7 @@
 
 using Eddi;
 using EddiCore;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
@@ -15,7 +16,7 @@ namespace EddiVoiceAttackResponder
         /// <summary>
         /// Enable or disable VoiceAttack responder mode.
         /// </summary>
-        public static Task SetResponderModeAsync( bool enable, System.Version? voiceAttackVersion,
+        public static async Task SetResponderModeAsync( bool enable, System.Version? voiceAttackVersion,
             CancellationToken cancellationToken = default )
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -32,13 +33,32 @@ namespace EddiVoiceAttackResponder
             if ( enable )
             {
                 EDDI.Instance.EnableResponder( VoiceAttackResponderName );
+                await VoiceAttackResponderMode.InitializeAsync().ConfigureAwait( false );
+                VoiceAttackVariables.NotifyVoiceAttackRuntimeSessionReady();
+                _ = Task.Run( async () =>
+                {
+                    try
+                    {
+                        await VoiceAttackResponderMode.ReplayStandardValuesAsync(
+                            "VoiceAttack IPC responder-mode background variable sync",
+                            CancellationToken.None ).ConfigureAwait( false );
+                        VoiceAttackVariables.WriteRuntimeLog(
+                            "EDDI VoiceAttack variables synchronized.",
+                            "green" );
+                    }
+                    catch ( Exception ex )
+                    {
+                        Logging.Error( "VoiceAttack responder-mode background variable sync failed", ex );
+                        VoiceAttackVariables.setStatus( "VoiceAttack variable sync failed", ex );
+                    }
+                }, cancellationToken );
             }
             else
             {
                 EDDI.Instance.DisableResponder( VoiceAttackResponderName );
+                VoiceAttackVariables.ClearDispatchCache();
+                VoiceAttackResponderMode.Shutdown();
             }
-
-            return Task.CompletedTask;
         }
     }
 }

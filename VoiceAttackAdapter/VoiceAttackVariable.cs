@@ -51,18 +51,17 @@ namespace EddiVoiceAttackAdapter
                 this.value = null;
                 this.variableType = typeof(decimal);
             }
-            else if ( variableType == typeof( IEnumerable<>  ))
+            else if ( variableType != typeof( string ) &&
+                      typeof( System.Collections.IEnumerable ).IsAssignableFrom( variableType ) )
             {
-                if ( value is null )
+                this.value = value switch
                 {
-                    this.value = null;
-                    this.variableType = typeof( int );
-                }
-                if ( value is int count )
-                {
-                    this.value = count;
-                    this.variableType = typeof( int );
-                }
+                    null => null,
+                    int count => count,
+                    System.Collections.ICollection collection => collection.Count,
+                    _ => null
+                };
+                this.variableType = typeof( int );
             }
             else if (value is double d)
             {
@@ -188,11 +187,14 @@ namespace EddiVoiceAttackAdapter
 
         private static void DispatchRuntimeAction(string action, string key, object value)
         {
+            ArgumentNullException.ThrowIfNull( action );
+            ArgumentNullException.ThrowIfNull( key );
+            
             var payload = new Dictionary<string, object>
             {
                 { "action", action },
-                { "key", key ?? string.Empty },
-                { "value", value ?? string.Empty }
+                { "key", key },
+                { "value", value }
             };
 
             try
@@ -204,9 +206,15 @@ namespace EddiVoiceAttackAdapter
                     EventPayload = payload
                 };
 
-                RuntimeEventDispatcher.DispatchAsync(eventData)
+                var dispatched = RuntimeEventDispatcher.DispatchAsync(eventData)
                     .GetAwaiter()
                     .GetResult();
+
+                if ( !dispatched )
+                {
+                    Logging.Debug(
+                        $"VoiceAttack variable '{key}' could not be dispatched because no runtime dispatcher is available." );
+                }
             }
             catch (Exception ex)
             {

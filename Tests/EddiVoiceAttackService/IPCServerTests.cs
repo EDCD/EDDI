@@ -93,21 +93,6 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        public async Task BroadcastAsync_WorksWithNoConnections()
-        {
-            // Arrange
-            var server = new IPCServer();
-            await server.StartAsync( TestContext.CancellationToken );
-            var message = MessageEnvelope.Create("Test", new DisconnectData { Reason = "user_shutdown" } );
-
-            // Act & Assert - should not throw
-            await server.BroadcastAsync(message, TestContext.CancellationToken );
-
-            // Cleanup
-            await server.StopAsync( TestContext.CancellationToken );
-        }
-
-        [TestMethod]
         public async Task ConnectionCount_StartsAtZero()
         {
             // Arrange

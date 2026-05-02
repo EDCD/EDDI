@@ -17,6 +17,8 @@ namespace EddiVoiceAttackAdapter
     [UsedImplicitly]
     public class VoiceAttackPlugin
     {
+        private static bool? _supportsVariableSaveToProfile;
+
         [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
         public static string VA_DisplayName() => $"{Constants.EDDI_NAME} {Constants.EDDI_VERSION}";
 
@@ -126,8 +128,8 @@ namespace EddiVoiceAttackAdapter
                     }
 
                     Logging.Info("VoiceAttack responder mode handshake sent");
-                    WriteToLog( "The EDDI plugin is fully operational.", "green" );
-
+                    WriteToLog( "The EDDI plugin is connected. VoiceAttack variables are syncing.", "green" );
+                    
                     // Start background task to monitor for EDDI crashes we launched ourselves
                     if ( EddiProcessLauncher.HasManagedEddiProcess() )
                     {
@@ -598,16 +600,18 @@ namespace EddiVoiceAttackAdapter
         {
             lock ( vaProxyLock )
             {
-                if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
+                if ( _supportsVariableSaveToProfile != false &&
+                     IsVaVersionSameOrNewer( variableApiVaVersion ) )
                 {
                     try
                     {
                         VaProxy?.SetBoolean( key, value, saveToProfile );
+                        _supportsVariableSaveToProfile = true;
                         return;
                     }
                     catch ( RuntimeBinderException )
                     {
-                        // We'll need to use the legacy endpoint
+                        _supportsVariableSaveToProfile = false;
                     }
                 }
 
@@ -620,16 +624,18 @@ namespace EddiVoiceAttackAdapter
         {
             lock ( vaProxyLock )
             {
-                if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
+                if ( _supportsVariableSaveToProfile != false &&
+                     IsVaVersionSameOrNewer( variableApiVaVersion ) )
                 {
                     try
                     {
                         VaProxy?.SetDate( key, value, saveToProfile );
+                        _supportsVariableSaveToProfile = true;
                         return;
                     }
                     catch ( RuntimeBinderException )
                     {
-                        // We'll need to use the legacy endpoint
+                        _supportsVariableSaveToProfile = false;
                     }
                 }
 
@@ -642,16 +648,18 @@ namespace EddiVoiceAttackAdapter
         {
             lock ( vaProxyLock )
             {
-                if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
+                if ( _supportsVariableSaveToProfile != false &&
+                     IsVaVersionSameOrNewer( variableApiVaVersion ) )
                 {
                     try
                     {
                         VaProxy?.SetDecimal( key, value, saveToProfile );
+                        _supportsVariableSaveToProfile = true;
                         return;
                     }
                     catch ( RuntimeBinderException )
                     {
-                        // We'll need to use the legacy endpoint
+                        _supportsVariableSaveToProfile = false;
                     }
                 }
 
@@ -664,16 +672,18 @@ namespace EddiVoiceAttackAdapter
         {
             lock ( vaProxyLock )
             {
-                if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
+                if ( _supportsVariableSaveToProfile != false &&
+                     IsVaVersionSameOrNewer( variableApiVaVersion ) )
                 {
                     try
                     {
                         VaProxy?.SetInt( key, value, saveToProfile );
+                        _supportsVariableSaveToProfile = true;
                         return;
                     }
                     catch ( RuntimeBinderException )
                     {
-                        // We'll need to use the legacy endpoint
+                        _supportsVariableSaveToProfile = false;
                     }
                 }
 
@@ -686,16 +696,18 @@ namespace EddiVoiceAttackAdapter
         {
             lock ( vaProxyLock )
             {
-                if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
+                if ( _supportsVariableSaveToProfile != false &&
+                     IsVaVersionSameOrNewer( variableApiVaVersion ) )
                 {
                     try
                     {
                         VaProxy?.SetText( key, value, saveToProfile );
+                        _supportsVariableSaveToProfile = true;
                         return;
                     }
                     catch ( RuntimeBinderException )
                     {
-                        // We'll need to use the legacy endpoint
+                        _supportsVariableSaveToProfile = false;
                     }
                 }
 

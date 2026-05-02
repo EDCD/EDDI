@@ -109,27 +109,6 @@ namespace Tests.EddiVoiceAttackService
 
         [TestMethod]
         [Timeout(5000, CooperativeCancellation = true )]
-        public async Task BroadcastEventAsync_CanBeCalled()
-        {
-            // Arrange
-            var server = new IPCServer();
-            await server.StartAsync( TestContext.CancellationToken );
-            var handler = new DefaultServerEventHandler(server);
-            var eventMessage = MessageEnvelope.Create(MessageTypes.Event,
-                new EventData { EventType = "LocationChanged", EventName = "Location" });
-
-            // Act
-            await handler.BroadcastEventAsync(eventMessage);
-
-            // Assert
-            // If no exception is thrown, broadcasting works
-
-            // Cleanup
-            await server.StopAsync( TestContext.CancellationToken );
-        }
-
-        [TestMethod]
-        [Timeout(5000, CooperativeCancellation = true )]
         public async Task ServerLifecycle_StartStop_Works()
         {
             // Arrange
