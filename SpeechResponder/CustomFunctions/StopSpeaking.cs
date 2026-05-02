@@ -13,7 +13,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Voice;
         public string description => Properties.CustomFunctions_Untranslated.StopSpeaking;
         public Type ReturnType => typeof( string );
-        public IFunction function => Function.CreateNative1( ( _, _, _ ) =>
+        public IFunction function => Function.CreateNative0( ( _, _ ) =>
         {
             SpeechService.Instance.ShutUp();
             return "";

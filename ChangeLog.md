@@ -3,8 +3,12 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ## 5.0.1
+  * Speech Responder
+    * Custom Functions
+      * `StopSpeaking` function signature corrected - it should now work as documented. (#2799)
   * VoiceAttack
-    * Fix dropping variables "set" before VoiceAttack initialization is completed.
+    * Fix dropping variables "set" before VoiceAttack initialization is completed (#2796).
+    * Optimized the way that EDDI sends variables to VoiceAttack to improve performance and reliability (#2798). 
 
 ## 5.0.0
   * Core
