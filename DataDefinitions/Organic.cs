@@ -1,5 +1,6 @@
 ﻿using JetBrains.Annotations;
 using Newtonsoft.Json;
+using System;
 using System.Linq;
 
 namespace EddiDataDefinitions
@@ -35,10 +36,10 @@ namespace EddiDataDefinitions
         private OrganicVariant _variant;
 
         [ Utilities.PublicAPI("The invariant name of the organic")] 
-        public string invariantName => ConsolidatedName( _variant?.invariantName, _species?.invariantName, genus?.invariantName );
+        public string invariantName => ConsolidatedName( genus?.organicGroup, _variant?.invariantName, _species?.invariantName, genus?.invariantName );
 
         [Utilities.PublicAPI("The localized name of the organic")]
-        public string localizedName => ConsolidatedName( _variant?.localizedName, _species?.localizedName, genus?.localizedName );
+        public string localizedName => ConsolidatedName( genus?.organicGroup, _variant?.localizedName, _species?.localizedName, genus?.localizedName );
 
         [Utilities.PublicAPI( "The minimum distance that you must travel before you can collect a fresh sample of this genus (if known)" ), JsonIgnore]
         public int? minimumDistanceMeters => genus?.minimumDistanceMeters;
@@ -91,15 +92,27 @@ namespace EddiDataDefinitions
         /// <summary>
         /// Creates a joined organism name without redundant elements
         /// </summary>
-        private string ConsolidatedName ( string variantName, string speciesName, string genusName )
+        private string ConsolidatedName ( OrganicGenus.OrganicGroup? organicGroup, string variantName,
+            string speciesName, string genusName )
         {
-            return string.Join( " ", new[]
+            if ( organicGroup is OrganicGenus.OrganicGroup.Horizons )
+            {
+                return string.Join( " ", new[]
                     {
                         variantName,
-                        genus != null && speciesName.Contains( genusName ) ? null : genusName,
-                        _species != null && variantName.Contains( speciesName ) ? null : speciesName
+                        _species != null && variantName.Contains( speciesName, StringComparison.OrdinalIgnoreCase ) ? null : speciesName,
+                        genus != null && speciesName.Contains( genusName, StringComparison.OrdinalIgnoreCase ) ? null : genusName
                     }
                     .Where( n => n != null ) );
+            }
+
+            return string.Join( " ", new[]
+                {
+                    variantName,
+                    genus != null && speciesName.Contains( genusName, StringComparison.OrdinalIgnoreCase ) ? null : genusName,
+                    _species != null && variantName.Contains( speciesName, StringComparison.OrdinalIgnoreCase ) ? null : speciesName
+                }
+                .Where( n => n != null ) );
         }
 
         /// <summary> Get all the biological data, this should be done at the first sample </summary>

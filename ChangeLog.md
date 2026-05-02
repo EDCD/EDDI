@@ -3,8 +3,10 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ## 5.0.1
+  * Core
+    * Fixed generated consolidated organic names for Horizons organics. 
   * Speech Responder
-    * Fixed vertical whitespace characters being removed from speechresponder.out. (#2797
+    * Fixed vertical whitespace characters being removed from speechresponder.out. (#2797)
     * Custom Functions
       * `StopSpeaking` function signature corrected - it should now work as documented. (#2799)
   * VoiceAttack
