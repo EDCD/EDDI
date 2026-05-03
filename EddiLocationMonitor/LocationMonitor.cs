@@ -102,15 +102,19 @@ namespace EddiLocationMonitor
         {
             if ( @event.fromLoad ) { return; }
 
-            if ( @event.scanStage < 4 && latitude != null && longitude != null )
+            if ( latitude != null && longitude != null )
             {
                 var system = await EDDI.Instance.DataProvider
                     .GetOrFetchStarSystemAsync( @event.systemAddress ).ConfigureAwait( false );
                 var body = system?.bodies?.Find( b => b.bodyId == @event.bodyId );
                 @event.organic.firstFootfallRegistered = body?.alreadyfirstfootfalled == false;
-                exobiology.LogSample( @event.organic, @event.systemAddress, @event.bodyId, (decimal)latitude, (decimal)longitude );
+                if ( @event.scanStage < 4 )
+                {
+                    exobiology.LogSample( @event.organic, @event.systemAddress, @event.bodyId, (decimal)latitude, (decimal)longitude );
+                }
             }
-            else if ( @event.scanStage == 4 )
+
+            if ( @event.scanStage == 4 )
             {
                 exobiology.Reset();
             }

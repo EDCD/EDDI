@@ -61,7 +61,7 @@ namespace EddiEvents
                 case "Log":
                     _scanStage = 1;
                     break;
-                case "Sample" when _scanStage != null && _scanTarget == variant?.edname:
+                case "Sample" when (_scanStage is < 3 && _scanTarget == variant?.edname):
                     _scanStage += 1;
                     break;
                 case "Analyse":

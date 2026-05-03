@@ -4,7 +4,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ## 5.0.1
   * Core
-    * Fixed generated consolidated organic names for Horizons organics. 
+    * Fixed generated consolidated organic names for older-style Horizons organics. 
+    * Fixed `Scan organic` recording a bonus of 0 credits at the `Analyze` scan stage. (#2800)
     * Revised installer to allow installation when the VoiceAttack 1 and VoiceAttack 2 registry hives point to the same location (e.g. when VoiceAttack 2 is installed over an existing VoiceAttack 1 installation). (#2803)
   * Speech Responder
     * Fixed vertical whitespace characters being removed from speechresponder.out. (#2797)
