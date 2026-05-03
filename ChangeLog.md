@@ -5,6 +5,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ## 5.0.1
   * Core
     * Fixed generated consolidated organic names for older-style Horizons organics. 
+    * Fixed localized default personality selection so custom personalities are upgraded using the selected EDDI UI language rather than the Windows system language. (#2801)
     * Fixed `Scan organic` recording a bonus of 0 credits at the `Analyze` scan stage. (#2800)
     * Revised installer to allow installation when the VoiceAttack 1 and VoiceAttack 2 registry hives point to the same location (e.g. when VoiceAttack 2 is installed over an existing VoiceAttack 1 installation). (#2803)
   * Speech Responder

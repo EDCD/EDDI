@@ -1,5 +1,6 @@
 using Eddi;
 using EddiConfigService.Configurations;
+using EddiSpeechResponder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Globalization;
@@ -181,6 +182,43 @@ namespace Tests
             }
 
             Assert.IsTrue( found, "CrashLogger did not write the expected message to the log file within the timeout" );
+        }
+
+        [TestMethod, DoNotParallelize]
+        [DataRow( "fr-FR", "", "eddi.fr.json" )] // Automatic culture should use the system culture default personality
+        [DataRow( "fr-FR", "en", "eddi.json" )] // Override from French to English should use the English default personality
+        [DataRow( "en", "fr-FR", "eddi.fr.json" )] // Override from English to French should use the French default personality
+        public void PersonalityDefault_UsesOverrideCulture_NotSystemCulture ( string threadCulture, string overrideCulture, string expectedDefaultPersonalityFile )
+        {
+            var originalCurrentCulture = Thread.CurrentThread.CurrentCulture;
+            var originalCurrentUICulture = Thread.CurrentThread.CurrentUICulture;
+            var originalDefaultCulture = CultureInfo.DefaultThreadCurrentCulture;
+            var originalDefaultUICulture = CultureInfo.DefaultThreadCurrentUICulture;
+
+            try
+            {
+                Thread.CurrentThread.CurrentCulture = new CultureInfo( threadCulture );
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo( threadCulture );
+                CultureInfo.DefaultThreadCurrentCulture = new CultureInfo( threadCulture );
+                CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo( threadCulture );
+
+                App.ApplyAnyOverrideCulture( new EDDIConfiguration { OverrideCulture = overrideCulture } );
+                Personality.ResetDefault();
+
+                var personality = Personality.Default();
+
+                Assert.IsNotNull( personality );
+                Assert.EndsWith( expectedDefaultPersonalityFile, personality.dataPath );
+            }
+            finally
+            {
+                Personality.ResetDefault();
+
+                Thread.CurrentThread.CurrentCulture = originalCurrentCulture;
+                Thread.CurrentThread.CurrentUICulture = originalCurrentUICulture;
+                CultureInfo.DefaultThreadCurrentCulture = originalDefaultCulture;
+                CultureInfo.DefaultThreadCurrentUICulture = originalDefaultUICulture;
+            }
         }
 
         // Helper used to create an HttpRequestException whose stack trace contains the substring "Rollbar"
