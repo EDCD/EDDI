@@ -1192,7 +1192,7 @@ namespace EddiDataDefinitions
         public static readonly Module Int_mkii_passengercabin_size4_class2 = new( "Int_mkii_passengercabin_size4_class2", "BusinessClassPassengerCabin_MkII", 4, "C", 75818); // Mk II Business Class Passenger Cabin Class 4 Rating C
         public static readonly Module Int_mkii_passengercabin_size5_class1 = new( "Int_mkii_passengercabin_size5_class1", "EconomyClassPassengerCabin_MkII", 5, "D", 46606); // Mk II Economy Passenger Cabin Class 5 Rating D
         public static readonly Module Int_mkii_passengercabin_size5_class2 = new( "Int_mkii_passengercabin_size5_class2", "BusinessClassPassengerCabin_MkII", 5, "C", 123151); // Mk II Business Class Passenger Cabin Class 5 Rating C
-        public static readonly Module int_mkii_passengercabin_size6_class1 = new( "int_mkii_passengercabin_size6_class1", "EconomyClassPassengerCabin_MkII", 6, "D", 81880); // Mk II Economy Passenger Cabin Class 6 Rating D
+        public static readonly Module int_mkii_passengercabin_size6_class1 = new( "int_mkii_passengercabin_size6_class1", "EconomyClassPassengerCabin_MkII", 6, "D", 123152); // Mk II Economy Passenger Cabin Class 6 Rating D
         public static readonly Module Int_mkii_passengercabin_size6_class2 = new( "Int_mkii_passengercabin_size6_class2", "BusinessClassPassengerCabin_MkII", 6, "C", 245643); // Mk II Business Class Passenger Cabin Class 6 Rating C
         
         // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
