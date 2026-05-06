@@ -19,6 +19,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Xml;
+using System.Net.Http;
 using Utilities;
 
 namespace EddiGalnetMonitor
@@ -223,16 +224,23 @@ namespace EddiGalnetMonitor
             var items = new List<FeedItem>();
             try
             {
-                using ( var reader = XmlReader.Create( url ) )
+                using ( var httpClient = new HttpClient() )
                 {
-                    var feed = SyndicationFeed.Load( reader );
-                    var normalizer = new GalnetFeedItemNormalizer( fromAltUrl );
-                    foreach ( var syndicationItem in feed.Items )
+                    // Add a User-Agent header (required by many servers)
+                    httpClient.DefaultRequestHeaders.Add( "User-Agent", "EDDI/5.0 (Compatible)" );
+                    
+                    using ( var stream = httpClient.GetStreamAsync( url ).GetAwaiter().GetResult() )
+                    using ( var reader = XmlReader.Create( stream ) )
                     {
-                        var feedItem = normalizer.Normalize( feed, syndicationItem );
-                        if ( feedItem != null )
+                        var feed = SyndicationFeed.Load( reader );
+                        var normalizer = new GalnetFeedItemNormalizer( fromAltUrl );
+                        foreach ( var syndicationItem in feed.Items )
                         {
-                            items.Add( feedItem );
+                            var feedItem = normalizer.Normalize( feed, syndicationItem );
+                            if ( feedItem != null )
+                            {
+                                items.Add( feedItem );
+                            }
                         }
                     }
                 }
