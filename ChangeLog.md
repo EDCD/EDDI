@@ -8,6 +8,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed localized default personality selection so custom personalities are upgraded using the selected EDDI UI language rather than the Windows system language. (#2801)
     * Fixed `Scan organic` recording a bonus of 0 credits at the `Analyze` scan stage. (#2800)
     * Revised installer to allow installation when the VoiceAttack 1 and VoiceAttack 2 registry hives point to the same location (e.g. when VoiceAttack 2 is installed over an existing VoiceAttack 1 installation). (#2803)
+  * Galnet Monitor
+    * Fixed an error preventing Galnet RSS from being read correctly. (#2804) (thanks to @rodan123)
   * Speech Responder
     * Fixed vertical whitespace characters being removed from speechresponder.out. (#2797)
     * Custom Functions

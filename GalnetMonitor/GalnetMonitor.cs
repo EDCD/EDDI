@@ -31,7 +31,7 @@ namespace EddiGalnetMonitor
     [UsedImplicitly]
     public class GalnetMonitor : IEddiMonitor
     {
-        private static Dictionary<string, string> locales = [ ];
+        private static Dictionary<string, string> locales;
         private static string locale;
         private GalnetConfiguration configuration = ConfigService.Instance.galnetConfiguration;
         private static readonly ResourceManager resourceManager = Properties.GalnetMonitor.ResourceManager;
@@ -39,6 +39,7 @@ namespace EddiGalnetMonitor
         private CancellationTokenSource cancellationTokenSource;
         private bool running;
         private DateTime journalTimeStamp;
+        private static HttpClient httpClient;
 
         /// <summary>
         /// The name of the monitor; shows up in EDDI's configuration window
@@ -78,7 +79,14 @@ namespace EddiGalnetMonitor
         {
             cancellationTokenSource = new CancellationTokenSource();
             running = true;
-            locales = GetGalnetLocales();
+            locales ??= GetGalnetLocales();
+            if ( httpClient is null )
+            {
+                httpClient = new HttpClient();
+                // Add a User-Agent header (required by many servers)
+                httpClient.DefaultRequestHeaders.Add( "User-Agent", $"EDDI/{Constants.EDDI_VERSION}" );
+            }
+            
             MonitorAsync().GetAwaiter().GetResult();
         }
 
@@ -119,7 +127,7 @@ namespace EddiGalnetMonitor
                 {
                     if ( configuration.galnetAlwaysOn )
                     {
-                        FetchGalnet();
+                        await FetchGalnetAsync().ConfigureAwait(false);
                         await Task.Delay( passiveIntervalMilliSecs , cancellationTokenSource.Token ).ConfigureAwait(false);
                     }
                     else
@@ -134,7 +142,7 @@ namespace EddiGalnetMonitor
                                 await Task.Delay( inGameOnlyStartDelayMilliSecs, cancellationTokenSource.Token ).ConfigureAwait( false );
                             }
 
-                            FetchGalnet();
+                            await FetchGalnetAsync().ConfigureAwait(false);
                             await Task.Delay( activeIntervalMilliSecs , cancellationTokenSource.Token ).ConfigureAwait(false);
                         }
                         else
@@ -151,7 +159,7 @@ namespace EddiGalnetMonitor
             }
         }
 
-        private void FetchGalnet ()
+        private async Task FetchGalnetAsync ()
         {
             var newsItems = new List<News>();
             string firstUid = null;
@@ -160,7 +168,7 @@ namespace EddiGalnetMonitor
             var url = GetGalnetResource("sourceURL");
 
             Logging.Debug( "Fetching Galnet articles from " + url );
-            var items = GetFeedItems( url );
+            var items = await GetFeedItemsAsync( url ).ConfigureAwait(false);
             if ( items != null )
             {
                 try
@@ -219,17 +227,14 @@ namespace EddiGalnetMonitor
                 }
             }
         }
-        private static List<FeedItem> GetFeedItems ( string url, bool fromAltUrl = false )
+
+        private static async Task<List<FeedItem>> GetFeedItemsAsync ( string url, bool fromAltUrl = false )
         {
             var items = new List<FeedItem>();
             try
             {
-                using ( var httpClient = new HttpClient() )
+                await using ( var stream = await httpClient.GetStreamAsync( url ).ConfigureAwait( false ) )
                 {
-                    // Add a User-Agent header (required by many servers)
-                    httpClient.DefaultRequestHeaders.Add( "User-Agent", "EDDI/5.0 (Compatible)" );
-                    
-                    using ( var stream = httpClient.GetStreamAsync( url ).GetAwaiter().GetResult() )
                     using ( var reader = XmlReader.Create( stream ) )
                     {
                         var feed = SyndicationFeed.Load( reader );
@@ -245,15 +250,11 @@ namespace EddiGalnetMonitor
                     }
                 }
             }
-            catch ( WebException wex )
+            catch ( Exception ex ) when ( ex is HttpRequestException or WebException )
             {
-                Logging.Warn( $"The remote server at {url} has rejected the request: ", wex );
+                Logging.Warn( $"The remote server at {url} has rejected the request: ", ex );
             }
-            catch ( XmlException xex )
-            {
-                Logging.Error( "Exception attempting to obtain galnet feed: ", xex );
-            }
-            catch ( FileNotFoundException ex )
+            catch ( Exception ex ) when ( ex is XmlException or FileNotFoundException )
             {
                 Logging.Error( "Exception attempting to obtain galnet feed: ", ex );
             }
