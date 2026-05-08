@@ -15,6 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Utilities;
+using Version = System.Version;
 
 [assembly: InternalsVisibleTo( "Tests" )]
 namespace Eddi
@@ -34,8 +35,16 @@ namespace Eddi
         {
             // Parse command-line arguments
             args ??= Environment.GetCommandLineArgs().Skip( 1 ).ToArray();
-            EDDI.Instance.FromVA = args.Any( arg => arg.Equals( "--voice-attack-plugin", StringComparison.OrdinalIgnoreCase ) );
+            var fromVoiceAttack = args.Any(arg =>
+                arg.Equals("--voice-attack-plugin", StringComparison.OrdinalIgnoreCase));
             VoiceAttackVersion = ParseVoiceAttackVersion( args );
+
+            Logging.IncrementLogs(); // Increment to a new log file.
+            var configuration = ConfigService.Instance.eddiConfiguration;
+
+            // Must happen before any EDDI.Instance access, responder discovery,
+            // SpeechResponder construction, or Personality.Default() call.
+            ApplyAnyOverrideCulture( configuration );
 
             if ( VoiceAttackVersion != null )
             {
@@ -57,7 +66,7 @@ namespace Eddi
 
             try
             {
-                Initialize( app, VoiceAttackVersion );
+                Initialize( app, fromVoiceAttack, VoiceAttackVersion, configuration );
             }
             catch ( Exception e )
             {
@@ -97,20 +106,13 @@ namespace Eddi
             return null;
         }
 
-        /// <summary>
-        /// Initializes EDDI in standalone mode (not running under VoiceAttack).
-        /// </summary>
-        private static void Initialize( App app, System.Version vaVersion )
+        private static void Initialize ( App app, bool fromVA = false, Version vaVersion = null, EDDIConfiguration configuration = null )
         {
             // Prepare to start the application
-            Logging.IncrementLogs(); // Increment to a new log file.
-            var configuration = ConfigService.Instance.eddiConfiguration;
             if ( configuration != null && !configuration.DisableTelemetry )
             {
                 StartTelemetryService( vaVersion ); // do immediately to initialize error reporting
             }
-
-            ApplyAnyOverrideCulture( configuration ); // this must be done before any UI is generated
 
             // Start by fetching information from the update server, and handling appropriately.
             // This completes before showing any UI so that VoiceAttack can report the availability of the upgrade during its startup.
@@ -132,11 +134,13 @@ namespace Eddi
                 }
             }
 
+            EDDI.Instance.FromVA = fromVA;
+
             // Wait for preload to complete before MainWindow creation
             var preloadTasks = PreloadCriticalServicesAsync();
             Task.WaitAll( preloadTasks.ToArray() );
 
-            if ( EDDI.Instance.FromVA )
+            if ( fromVA )
             {
                 // Create the MainWindow with visibility controlled by code-behind logic
                 // (hidden by default in VA mode, shown on demand via VA commands)
@@ -265,10 +269,10 @@ namespace Eddi
                 var overrideCulture = string.IsNullOrEmpty(configuration.OverrideCulture) ? null : new CultureInfo(configuration.OverrideCulture);
                 ApplyCulture(overrideCulture);
             }
-            catch
+            catch ( Exception ex )
             {
-                ApplyCulture(null);
-                Debug.WriteLine("Culture [{0}] not available", configuration.OverrideCulture);
+                Logging.Warn( $"Culture [{configuration.OverrideCulture}] could not be applied; falling back to system culture.", ex );
+                ApplyCulture( null);
             }
         }
 
@@ -287,4 +291,3 @@ namespace Eddi
         }
     }
 }
-

@@ -12,6 +12,7 @@ using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
 
@@ -36,7 +37,10 @@ namespace EddiCompanionAppService
         private string verifier;
         private string authSessionID;
         private CompanionAppCredentials Credentials;
-
+        private readonly SemaphoreSlim refreshLock = new(1, 1);
+        private readonly Func<string, CompanionAppCredentials> loadCredentials;
+        private readonly string credentialsFilePath;
+        
         public bool gameIsBeta { get; set; }
         public bool unitTesting;
 
@@ -108,34 +112,49 @@ namespace EddiCompanionAppService
         #endregion
 
         private CompanionAppService ()
+            : this(
+                new HttpClient(),
+                CompanionAppCredentials.Load,
+                ClientId.ID,
+                runStartupRefresh: true )
+        { }
+
+        internal CompanionAppService (
+            HttpClient httpClient,
+            Func<string, CompanionAppCredentials> loadCredentials,
+            string clientID,
+            bool runStartupRefresh = false,
+            string credentialsFilePath = null )
         {
-            Credentials = CompanionAppCredentials.Load();
+            this.httpClient = httpClient ?? throw new ArgumentNullException( nameof(httpClient) );
+            this.loadCredentials = loadCredentials ?? throw new ArgumentNullException( nameof(loadCredentials) );
+            this.clientID = clientID;
+            this.credentialsFilePath = credentialsFilePath;
 
-            httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.UserAgent.ParseAdd( $"{Constants.EDDI_NAME}/{Constants.EDDI_VERSION}" );
-            httpClient.DefaultRequestHeaders.Accept.Add( new MediaTypeWithQualityHeaderValue( "application/json" ) );
+            Credentials = this.loadCredentials( this.credentialsFilePath );
 
-            clientID = ClientId.ID;
-            if (clientID == null)
+            this.httpClient.DefaultRequestHeaders.UserAgent.ParseAdd( $"{Constants.EDDI_NAME}/{Constants.EDDI_VERSION}" );
+            this.httpClient.DefaultRequestHeaders.Accept.Add( new MediaTypeWithQualityHeaderValue( "application/json" ) );
+
+            if ( clientID == null )
             {
                 CurrentState = State.NoClientIDConfigured;
                 return;
             }
-            if (unitTesting)
+
+            if ( !runStartupRefresh )
             {
                 CurrentState = State.Authorized;
                 return;
             }
 
             // Our access token may have expired. Use our refresh token to obtain a new access token.
-            RefreshTokenAsync().SafeFireAndForget( _ =>
+            TryRefreshTokenAsync().SafeFireAndForget( ex =>
             {
-                if ( Credentials.refreshToken != null )
-                {
-                    CurrentState = State.ConnectionLost;
-                }
-
-                CurrentState = State.LoggedOut;
+                Logging.Warn( "Initial companion API token refresh failed.", ex );
+                CurrentState = string.IsNullOrEmpty( Credentials.refreshToken )
+                    ? State.LoggedOut
+                    : State.ConnectionLost;
             } );
         }
 
@@ -256,7 +275,9 @@ namespace EddiCompanionAppService
                         var refreshToken = json[ "refresh_token" ]?.ToString();
                         var expiresInSec = json[ "expires_in" ]?.Value<long?>();
 
-                        if ( string.IsNullOrEmpty( accessToken ) || expiresInSec is null )
+                        if ( string.IsNullOrEmpty( accessToken ) ||
+                             string.IsNullOrEmpty( refreshToken ) ||
+                             expiresInSec is null )
                         {
                             throw new EliteDangerousCompanionAppAuthenticationException(
                                 "Response is missing expected fields" );
@@ -344,91 +365,108 @@ namespace EddiCompanionAppService
             }
         }
 
-        private async Task RefreshTokenAsync ()
+        internal async Task<bool> TryRefreshTokenAsync ( bool force = false )
         {
-            if ( clientID == null )
-            {
-                throw new EliteDangerousCompanionAppAuthenticationException( "Client ID is not configured" );
-            }
+            await refreshLock.WaitAsync().ConfigureAwait( false );
 
-            if ( Credentials.refreshToken == null )
-            {
-                throw new EliteDangerousCompanionAppAuthenticationException(
-                    "Refresh token not found, need full login" );
-            }
-
-            CurrentState = State.TokenRefresh;
-
-            const int maxRetries = 3;
-            var delay = 1000; // Initial delay in milliseconds
-
+            // Reload in case another refresh completed and saved a new token.
+            Credentials = loadCredentials( credentialsFilePath );
+            
             try
             {
-                for ( var retry = 0; retry < maxRetries; retry++ )
+                if ( clientID == null )
                 {
-                    var request = new HttpRequestMessage( HttpMethod.Post, AUTH_SERVER + TOKEN_URL )
-                    {
-                        Content = new StringContent(
-                            $"grant_type=refresh_token&client_id={clientID}&refresh_token={Credentials.refreshToken}",
-                            Encoding.UTF8, "application/x-www-form-urlencoded" )
-                    };
+                    CurrentState = State.NoClientIDConfigured;
+                    return false;
+                }
 
-                    using ( var response = await httpClient.SendAsync( request ).ConfigureAwait(false) )
-                    {
-                        if ( response == null )
-                        {
-                            throw new EliteDangerousCompanionAppException( "Failed to contact API server" );
-                        }
+                if ( !force &&
+                     !string.IsNullOrEmpty( Credentials.accessToken ) &&
+                     DateTime.UtcNow <= Credentials.tokenExpiry.AddSeconds( -60 ) )
+                {
+                    CurrentState = State.Authorized;
+                    return true;
+                }
 
+                if ( string.IsNullOrEmpty( Credentials.refreshToken ) )
+                {
+                    // No refresh token. Can't refresh. Need to log in again.
+                    CurrentState = State.LoggedOut;
+                    return false;
+                }
+
+                CurrentState = State.TokenRefresh;
+
+                using ( var request = new HttpRequestMessage( HttpMethod.Post, AUTH_SERVER + TOKEN_URL ) )
+                {
+                    request.Content = new FormUrlEncodedContent( new Dictionary<string, string>
+                    {
+                        [ "grant_type" ] = "refresh_token",
+                        [ "client_id" ] = clientID,
+                        [ "refresh_token" ] = Credentials.refreshToken
+                    } );
+
+                    using ( var response = await httpClient.SendAsync( request ).ConfigureAwait( false ) )
+                    {
                         if ( response.StatusCode == HttpStatusCode.Unauthorized )
                         {
-                            throw new EliteDangerousCompanionAppAuthenticationException(
-                                "Refresh token is invalid" );
+                            CurrentState = State.LoggedOut;
+                            return false;
                         }
 
-                        if ( response.StatusCode == HttpStatusCode.OK )
+                        if ( !response.IsSuccessStatusCode )
                         {
-                            var responseData = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            var json = JObject.Parse( responseData );
-                            Credentials.refreshToken = (string)json[ "refresh_token" ];
-                            Credentials.accessToken = (string)json[ "access_token" ];
-                            Credentials.tokenExpiry = DateTime.UtcNow.AddSeconds( (double)json[ "expires_in" ] );
-                            Credentials.Save();
-                            if ( Credentials.accessToken == null )
-                            {
-                                throw new EliteDangerousCompanionAppAuthenticationException(
-                                    "Access token not found" );
-                            }
-
-                            CurrentState = State.Authorized;
-                            return;
+                            CurrentState = State.ConnectionLost;
+                            return false;
                         }
-                    }
 
-                    await Task.Delay( delay ).ConfigureAwait(false);
-                    delay *= 2; // Exponential backoff
+                        var responseData = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                        var json = JObject.Parse(responseData);
 
-                    if ( retry == ( maxRetries - 1 ) )
-                    {
-                        throw new EliteDangerousCompanionAppAuthenticationException(
-                            "Request failed after multiple attempts" );
+                        var accessToken = json["access_token"]?.ToString();
+                        var refreshToken = json["refresh_token"]?.ToString();
+                        var expiresInSec = json["expires_in"]?.Value<double?>();
+
+                        if ( string.IsNullOrEmpty( accessToken ) ||
+                             string.IsNullOrEmpty( refreshToken ) ||
+                             expiresInSec is null )
+                        {
+                            CurrentState = State.ConnectionLost;
+                            return false;
+                        }
+
+                        Credentials.accessToken = accessToken;
+                        Credentials.refreshToken = refreshToken;
+                        Credentials.tokenExpiry = DateTime.UtcNow.AddSeconds( expiresInSec.Value );
+                        Credentials.Save();
+
+                        CurrentState = State.Authorized;
+                        return true;
                     }
-                    Logging.Warn( $"Attempt {retry + 1} failed." );
                 }
             }
             catch ( EliteDangerousCompanionAppAuthenticationException ex )
             {
-                CurrentState = State.ConnectionLost;
                 CurrentState = State.LoggedOut;
                 Logging.Warn( ex.Message, ex );
+                return false;
+            }
+            catch ( Exception ex ) when ( ex is HttpRequestException or TaskCanceledException or Newtonsoft.Json.JsonException or InvalidOperationException )
+            {
+                CurrentState = State.ConnectionLost;
+                Logging.Warn( "Companion API token refresh failed.", ex );
+                return false;
+            }
+            finally
+            {
+                refreshLock.Release();
             }
         }
 
         /// <summary>Log out of the companion API and remove local credentials</summary>
         public void Logout()
         {
-            // Remove everything other than the local email address
-            Credentials = CompanionAppCredentials.Load();
+            Credentials = loadCredentials( credentialsFilePath );
             Credentials.Clear();
             Credentials.Save();
             CurrentState = State.LoggedOut;
@@ -443,20 +481,24 @@ namespace EddiCompanionAppService
             {
                 // Our access token either has expired or shall expire within the next minute.
                 // Use our refresh token to obtain a new access token.
-                await RefreshTokenAsync().ConfigureAwait(false);
+                var refreshed = await TryRefreshTokenAsync().ConfigureAwait(false);
+                if ( !refreshed )
+                {
+                    return null;
+                }
+            }
+
+            if ( CurrentState == State.ConnectionLost &&
+                 !string.IsNullOrEmpty( Credentials.accessToken ) &&
+                 DateTime.UtcNow <= Credentials.tokenExpiry.AddSeconds( -60 ) )
+            {
+                // We still have a usable access token. Allow the request to retry.
+                CurrentState = State.Authorized;
             }
 
             if ( CurrentState != State.Authorized )
             {
-                // Happens if there is a problem with the API.  Logging in again might clear this...
-                CurrentState = State.ConnectionLost;
-                relogin();
-                if ( CurrentState != State.Authorized )
-                {
-                    // No luck; give up
-                    Logout();
-                    return null;
-                }
+                return null;
             }
 
             var maxRetries = 3;
@@ -477,6 +519,16 @@ namespace EddiCompanionAppService
                                 .ToUniversalTime();
                             var responseData = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                             return new Tuple<string, DateTime>( responseData, timestamp );
+                        }
+                        if ( response.StatusCode == HttpStatusCode.Unauthorized )
+                        {
+                            var refreshed = await TryRefreshTokenAsync(force: true).ConfigureAwait(false);
+                            if ( !refreshed )
+                            {
+                                return null;
+                            }
+
+                            continue; // retry with new access token
                         }
                     }
                 }
@@ -500,22 +552,9 @@ namespace EddiCompanionAppService
             return null;
         }
 
-        /**
-         * Try to relogin if there is some issue that requires it.
-         * Throws an exception if it failed to log in.
-         */
-        private void relogin()
+        internal void SetStateForTesting ( State state )
         {
-            // Need to log in again.
-            if (clientID == null) { return; }
-            Logging.Debug("Renewing login.");
-            Logout();
-            Login();
-            if (CurrentState != State.Authorized)
-            {
-                Logging.Debug("Service in incorrect state to provide profile (" + CurrentState + ")");
-                throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to provide profile (" + CurrentState + ")");
-            }
+            CurrentState = state;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

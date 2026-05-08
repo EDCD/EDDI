@@ -83,7 +83,9 @@ namespace Utilities
                             break;
                         }
                     }
-                    HandleTelemetry( errorlevel, sourceThreadID, message, timestamp, false, preppedData );
+
+                    HandleTelemetry( errorlevel, sourceThreadID, message, timestamp,
+                        errorlevel is ErrorLevel.Error or ErrorLevel.Critical, preppedData );
                 } );
             }
             catch

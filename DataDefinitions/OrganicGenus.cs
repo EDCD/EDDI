@@ -5,6 +5,12 @@ namespace EddiDataDefinitions
 {
     public class OrganicGenus : ResourceBasedLocalizedEDName<OrganicGenus>
     {
+        public enum OrganicGroup
+        {
+            Horizons,
+            Odyssey
+        }
+        
         static OrganicGenus ()
         {
             resourceManager = Properties.OrganicGenus.ResourceManager;
@@ -16,27 +22,27 @@ namespace EddiDataDefinitions
         public static readonly OrganicGenus Unknown = new( "Unknown" );
 
         // Terrestrial Genuses
-        public static readonly OrganicGenus Aleoids = new( "Aleoids", 150 );
-        public static readonly OrganicGenus Vents = new( "Vents", 100 );
-        public static readonly OrganicGenus Sphere = new( "Sphere", 100 );
-        public static readonly OrganicGenus Bacterial = new( "Bacterial", 500 );
-        public static readonly OrganicGenus Cone = new( "Cone", 100 );
-        public static readonly OrganicGenus Brancae = new( "Brancae", 100 );
-        public static readonly OrganicGenus Cactoid = new( "Cactoid", 300 );
-        public static readonly OrganicGenus Clypeus = new( "Clypeus", 150 );
-        public static readonly OrganicGenus Conchas = new( "Conchas", 150 );
-        public static readonly OrganicGenus Ground_Struct_Ice = new( "Ground_Struct_Ice", 100 );
-        public static readonly OrganicGenus Electricae = new( "Electricae", 1000 );
-        public static readonly OrganicGenus Fonticulus = new( "Fonticulus", 500 );
-        public static readonly OrganicGenus Shrubs = new( "Shrubs", 150 );
-        public static readonly OrganicGenus Fumerolas = new( "Fumerolas", 100 );
-        public static readonly OrganicGenus Fungoids = new( "Fungoids", 300 );
-        public static readonly OrganicGenus Osseus = new( "Osseus", 800 );
-        public static readonly OrganicGenus Recepta = new( "Recepta", 150 );
-        public static readonly OrganicGenus Tubers = new( "Tubers", 100 );
-        public static readonly OrganicGenus Stratum = new( "Stratum", 500 );
-        public static readonly OrganicGenus Tubus = new( "Tubus", 800 );
-        public static readonly OrganicGenus Tussocks = new( "Tussocks", 200 );
+        public static readonly OrganicGenus Aleoids = new( "Aleoids", OrganicGroup.Odyssey, minimumDistanceMeters: 150 );
+        public static readonly OrganicGenus Vents = new( "Vents", OrganicGroup.Odyssey, minimumDistanceMeters: 100 );
+        public static readonly OrganicGenus Sphere = new( "Sphere", minimumDistanceMeters: 100 );
+        public static readonly OrganicGenus Bacterial = new( "Bacterial", OrganicGroup.Odyssey, minimumDistanceMeters: 500 );
+        public static readonly OrganicGenus Cone = new( "Cone", minimumDistanceMeters: 100 );
+        public static readonly OrganicGenus Brancae = new( "Brancae", OrganicGroup.Odyssey, minimumDistanceMeters: 100 );
+        public static readonly OrganicGenus Cactoid = new( "Cactoid", OrganicGroup.Odyssey, minimumDistanceMeters: 300 );
+        public static readonly OrganicGenus Clypeus = new( "Clypeus", OrganicGroup.Odyssey, minimumDistanceMeters: 150 );
+        public static readonly OrganicGenus Conchas = new( "Conchas", OrganicGroup.Odyssey, minimumDistanceMeters: 150 );
+        public static readonly OrganicGenus Ground_Struct_Ice = new( "Ground_Struct_Ice", minimumDistanceMeters: 100 );
+        public static readonly OrganicGenus Electricae = new( "Electricae", OrganicGroup.Odyssey, minimumDistanceMeters: 1000 );
+        public static readonly OrganicGenus Fonticulus = new( "Fonticulus", OrganicGroup.Odyssey, minimumDistanceMeters: 500 );
+        public static readonly OrganicGenus Shrubs = new( "Shrubs", OrganicGroup.Odyssey, minimumDistanceMeters: 150 );
+        public static readonly OrganicGenus Fumerolas = new( "Fumerolas", OrganicGroup.Odyssey, minimumDistanceMeters: 100 );
+        public static readonly OrganicGenus Fungoids = new( "Fungoids", OrganicGroup.Odyssey, minimumDistanceMeters: 300 );
+        public static readonly OrganicGenus Osseus = new( "Osseus", OrganicGroup.Odyssey, minimumDistanceMeters: 800 );
+        public static readonly OrganicGenus Recepta = new( "Recepta", OrganicGroup.Odyssey, minimumDistanceMeters: 150 );
+        public static readonly OrganicGenus Tubers = new( "Tubers", OrganicGroup.Odyssey, minimumDistanceMeters: 100 );
+        public static readonly OrganicGenus Stratum = new( "Stratum", OrganicGroup.Odyssey, minimumDistanceMeters: 500 );
+        public static readonly OrganicGenus Tubus = new( "Tubus", OrganicGroup.Odyssey, minimumDistanceMeters: 800 );
+        public static readonly OrganicGenus Tussocks = new( "Tussocks", OrganicGroup.Odyssey, minimumDistanceMeters: 200 );
         // Genuses without any known minimum distance (including non-terrestrial genuses)
         public static readonly OrganicGenus MineralSpheres = new( "MineralSpheres" );
         public static readonly OrganicGenus MetallicCrystals = new( "MetallicCrystals" );
@@ -69,21 +75,25 @@ namespace EddiDataDefinitions
         public static readonly OrganicGenus VoidHeart = new( "VoidHeart" );
         public static readonly OrganicGenus CalcitePlates = new( "CalcitePlates" );
         public static readonly OrganicGenus ThargoidBarnacle = new( "ThargoidBarnacle" );
-        public static readonly OrganicGenus Ingensradices = new( "Ingensradices" ); // Appears to be unique to HIP 87621.
+        public static readonly OrganicGenus Ingensradices = new( "Ingensradices", OrganicGroup.Odyssey ); // Appears to be unique to HIP 87621.
 
         [JsonProperty]
         public int minimumDistanceMeters { get; private set; }
 
         [JsonIgnore, PublicAPI]
         public string localizedDescription => Properties.OrganicGenusDesc.ResourceManager.GetString( NormalizeGenus( edname ) );
+        
+        public OrganicGroup organicGroup { get; private set; }
 
         // dummy used to ensure that the static constructor has run
         public OrganicGenus () : this( "" )
         { }
 
-        private OrganicGenus ( string edname, int minimumDistanceMeters = 0 ) : base( edname, edname )
+        private OrganicGenus ( string edname, OrganicGroup organicGroup = OrganicGroup.Horizons,
+            int minimumDistanceMeters = 0 ) : base( edname, edname )
         {
             this.minimumDistanceMeters = minimumDistanceMeters;
+            this.organicGroup = organicGroup;
         }
 
         public static new OrganicGenus FromEDName ( string edname )

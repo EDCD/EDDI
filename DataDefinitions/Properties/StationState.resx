@@ -129,6 +129,10 @@
     <value>Damaged</value>
     <comment>StationState Damaged</comment>
   </data>
+  <data name="DamagedHuman" xml:space="preserve">
+    <value>Damaged</value>
+    <comment>StationState DamagedHuman</comment>
+  </data>
   <data name="NormalOperation" xml:space="preserve">
     <value>Normal Operation</value>
     <comment>StationState NormalOperation</comment>

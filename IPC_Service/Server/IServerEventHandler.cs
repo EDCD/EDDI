@@ -40,12 +40,6 @@ namespace EddiIPC_Service.Server
         Task HandleEventAsync(MessageEnvelope message, ConnectionContext context);
 
         /// <summary>
-        /// Broadcast an event to all connected clients.
-        /// </summary>
-        /// <param name="eventMessage">The Event message to broadcast</param>
-        Task BroadcastEventAsync(MessageEnvelope eventMessage);
-
-        /// <summary>
         /// Send a command response to a specific client.
         /// </summary>
         /// <param name="sessionId">The target client session ID</param>

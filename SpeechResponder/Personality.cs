@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -83,7 +84,7 @@ namespace EddiSpeechResponder
         private bool _isCustom;        
 
         [JsonIgnore]
-        private string dataPath;
+        internal string dataPath;
 
         [ JsonIgnore ] 
         private static Personality _defaultPersonality;
@@ -124,9 +125,16 @@ namespace EddiSpeechResponder
         ];
 
         private static readonly string DIRECTORYPATH = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-        private static readonly string DEFAULT_PATH = new DirectoryInfo(DIRECTORYPATH).FullName + @"\" + Properties.SpeechResponder.default_personality_script_filename;
-        private static readonly string DEFAULT_USER_PATH = Constants.DATA_DIR + @"\personalities\" + Properties.SpeechResponder.default_personality_script_filename;
-
+        private static string DEFAULT_PATH =>
+            Path.Combine(
+                new DirectoryInfo( DIRECTORYPATH ).FullName,
+                Properties.SpeechResponder.default_personality_script_filename );
+        private static string DEFAULT_USER_PATH =>
+            Path.Combine(
+                Constants.DATA_DIR,
+                "personalities",
+                Properties.SpeechResponder.default_personality_script_filename );
+        
         private static readonly List<string> upgradedPersonalities = [ ];
 
         public Personality(string name, string description, Dictionary<string, Script> scripts)
@@ -186,10 +194,24 @@ namespace EddiSpeechResponder
         }
 
         /// <summary>
+        ///  Language changes currently require a restart. This reset assists with unit testing.
+        /// </summary>
+        public static void ResetDefault ()
+        {
+            _defaultPersonality = null;
+        }
+
+        /// <summary>
         /// Obtain personality from a file.
         /// </summary>
         public static Personality FromFile(string filename = null, bool isDefault = false)
         {
+            if ( isDefault )
+            {
+                Logging.Debug( $"Loading default SpeechResponder personality from '{DEFAULT_PATH}' " +
+                               $"for UI culture '{CultureInfo.CurrentUICulture.Name}'." );
+            }
+            
             if (filename == null)
             {
                 filename = DEFAULT_USER_PATH;
@@ -232,6 +254,7 @@ namespace EddiSpeechResponder
                 personality.IsCustom = !isDefault;
                 if ( !isDefault )
                 {
+                    Logging.Info( $"Upgrading custom personality '{personality.Name}' using default personality '{DEFAULT_PATH}'." );
                     fixPersonalityInfo( personality );
                 }
                 else

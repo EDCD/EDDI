@@ -8,7 +8,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -564,10 +563,7 @@ namespace EddiNavigationMonitor
             // We need to refresh a collection view for galactic POIs
             await Application.Current.Dispatcher.InvokeAsync( () =>
             {
-                if ( ConfigurationWindow.Instance.TryFindResource( nameof( GalacticPOIControl.POIView ) ) is ICollectionView poiView )
-                {
-                    poiView.Refresh();
-                }
+                ConfigurationWindow.Instance.refreshGalacticPOIs();
             } );
 
             // Search Data

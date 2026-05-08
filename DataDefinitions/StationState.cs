@@ -16,6 +16,7 @@ namespace EddiDataDefinitions
         public static readonly StationState Abandoned = new( "Abandoned" );
         public static readonly StationState Construction = new( "Construction" );
         public static readonly StationState Damaged = new( "Damaged" );
+        public static readonly StationState DamagedHuman = new( "DamagedHuman" );
         public static readonly StationState NormalOperation = new( "NormalOperation" );
         public static readonly StationState UnderAttack = new( "UnderAttack" );
         public static readonly StationState UnderRepairs = new( "UnderRepairs" );
@@ -24,7 +25,7 @@ namespace EddiDataDefinitions
         public StationState () : this("")
         { }
 
-        private StationState ( string edname) : base(edname, edname)
+        private StationState ( string edname ) : base(edname, edname)
         { }
     }
 }

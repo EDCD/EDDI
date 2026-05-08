@@ -9,6 +9,7 @@ using EddiNavigationService;
 using EddiSpeechService;
 using EddiSpeechService.SpeechConversions;
 using EddiVoiceAttackAdapter;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -20,14 +21,11 @@ using Utilities;
 
 namespace EddiVoiceAttackResponder
 {
-    public class VoiceAttackVariables
+    public static class VoiceAttackVariables
     {
-        private const string RuntimeEventType = "va_runtime";
-        private const string CommandActionEventName = "command_action";
-
         private sealed class RuntimeActionBatchState
         {
-            public List<Dictionary<string, object>> Actions { get; } = [];
+            public List<PendingRuntimeAction> Actions { get; } = [];
 
             public int Depth { get; set; }
         }
@@ -48,7 +46,7 @@ namespace EddiVoiceAttackResponder
             { nameof(EDDI.Instance.DestinationDistanceLy), () => RuntimeSetDecimal("Destination system distance", EDDI.Instance.DestinationDistanceLy) },
             { nameof(EDDI.Instance.CurrentStellarBody), () => setDetailedBodyValues(EDDI.Instance.CurrentStellarBody, "Body") },
             { nameof(EDDI.Instance.CurrentStation), () => setStationValues(EDDI.Instance.CurrentStation, "Current station") },
-            { nameof(EDDI.Instance.CurrentShip), () => setShipValues(EDDI.Instance.CurrentShip, "Ship") },
+            { nameof(EDDI.Instance.CurrentShip), () => setShipValues(ResolveCurrentShip(), "Ship") },
             { nameof(EDDI.Instance.Environment), () => RuntimeSetText("Environment", EDDI.Instance.Environment) },
             { nameof(EDDI.Instance.Vehicle), () => RuntimeSetText("Vehicle", EDDI.Instance.Vehicle) },
             { nameof(EDDI.Instance.inHorizons), () => RuntimeSetBoolean("horizons", EDDI.Instance.inHorizons) },
@@ -73,7 +71,7 @@ namespace EddiVoiceAttackResponder
             return lookup;
         }
 
-        protected internal static void updateStandardValues(PropertyChangedEventArgs eventArgs)
+        internal static void updateStandardValues(PropertyChangedEventArgs eventArgs)
         {
             RunWithRuntimeActionBatch( () =>
             {
@@ -105,7 +103,7 @@ namespace EddiVoiceAttackResponder
             } );
         }
 
-        protected internal static void initializeStandardValues()
+        internal static void initializeStandardValues()
         {
             RunWithRuntimeActionBatch( () =>
             {
@@ -129,7 +127,7 @@ namespace EddiVoiceAttackResponder
                                 var k when k.Contains(nameof(EDDI.Instance.DestinationStarSystem)) => EDDI.Instance.DestinationStarSystem != null,
                                 var k when k.Contains(nameof(EDDI.Instance.CurrentStellarBody)) => EDDI.Instance.CurrentStellarBody != null,
                                 var k when k.Contains(nameof(EDDI.Instance.CurrentStation)) => EDDI.Instance.CurrentStation != null,
-                                var k when k.Contains(nameof(EDDI.Instance.CurrentShip)) => EDDI.Instance.CurrentShip != null,
+                                var k when k.Contains(nameof(EDDI.Instance.CurrentShip)) => ResolveCurrentShip() != null,
                                 _ => true, // Other properties are assumed to always have data
                             };
 
@@ -145,8 +143,16 @@ namespace EddiVoiceAttackResponder
                     }
                 }
 
-                // Initialize shipyard information
+                // Initialize ship information
                 var shipConfig = ConfigService.Instance.shipMonitorConfiguration;
+                var currentShip = ResolveCurrentShip();
+
+                if ( currentShip != null )
+                {
+                    setShipValues( currentShip, "Ship" );
+                }
+
+                // Initialize shipyard information
                 if ( shipConfig?.shipyard != null )
                 {
                     setShipyardValues( shipConfig.shipyard.ToList() );
@@ -156,7 +162,7 @@ namespace EddiVoiceAttackResponder
             } );
         }
 
-        protected internal static void updateConfigurationValues ( object sender, PropertyChangedEventArgs e )
+        internal static void updateConfigurationValues ( object sender, PropertyChangedEventArgs e )
         {
             RunWithRuntimeActionBatch( () =>
             {
@@ -208,11 +214,10 @@ namespace EddiVoiceAttackResponder
 
                     if ( e.PropertyName.Equals( nameof( ShipMonitorConfiguration ), StringComparison.InvariantCultureIgnoreCase ) )
                     {
-                        var shipConfig = configService.shipMonitorConfiguration;
-                        var currentShip = shipConfig.shipyard.FirstOrDefault( s => s.LocalId == shipConfig.currentshipid );
-                        setShipValues( currentShip, "Ship" );
+                        setShipValues( ResolveCurrentShip(), "Ship" );
                         Task.Run( () =>
                         {
+                            var shipConfig = configService.shipMonitorConfiguration;
                             setShipyardValues( shipConfig.shipyard?.ToList() );
                         } );
                         return;
@@ -290,7 +295,7 @@ namespace EddiVoiceAttackResponder
         }
 
         /// <summary>Set values for a station</summary>
-        protected static void setStationValues(Station station, string prefix)
+        static void setStationValues(Station station, string prefix)
         {
             RunWithRuntimeActionBatch( () =>
             {
@@ -321,7 +326,7 @@ namespace EddiVoiceAttackResponder
             } );
         }
 
-        protected static void setCommanderValues(Commander cmdr)
+        static void setCommanderValues(Commander cmdr)
         {
             RunWithRuntimeActionBatch( () =>
             {
@@ -369,96 +374,111 @@ namespace EddiVoiceAttackResponder
             } );
         }
 
-        public static void setShipValues(Ship ship, string prefix)
+        private static Ship ResolveCurrentShip ()
+        {
+            var currentShip = EDDI.Instance.CurrentShip;
+
+            if ( currentShip != null )
+            {
+                return currentShip;
+            }
+
+            var shipConfig = ConfigService.Instance.shipMonitorConfiguration;
+
+            return shipConfig?.shipyard?
+                .FirstOrDefault( ship => ship.LocalId == shipConfig.currentshipid );
+        }
+
+        public static void setShipValues ( Ship ship, string prefix )
         {
             RunWithRuntimeActionBatch( () =>
             {
                 Logging.Debug( $"Setting ship information ({prefix})" );
                 try
                 {
-                    RuntimeSetText( $"{prefix} manufacturer", ship?.manufacturer);
-                    RuntimeSetText( $"{prefix} model", ship?.model);
-                    RuntimeSetText( $"{prefix} model (spoken)", ship?.SpokenModel());
+                    RuntimeSetText( $"{prefix} manufacturer", ship?.manufacturer );
+                    RuntimeSetText( $"{prefix} model", ship?.model );
+                    RuntimeSetText( $"{prefix} model (spoken)", ship?.SpokenModel() );
 
                     var cmdrName = ConfigService.Instance.commanderConfiguration.commanderName;
                     if ( cmdrName != null )
                     {
-                        var cmdrNamePrefix = cmdrName.Length >= 3 ? cmdrName.Substring( 0, 3 ).ToUpperInvariant() : cmdrName.ToUpperInvariant();
+                        var cmdrNamePrefix = cmdrName.Length >= 3
+                            ? cmdrName.Substring( 0, 3 ).ToUpperInvariant()
+                            : cmdrName.ToUpperInvariant();
                         RuntimeSetText( $"{prefix} callsign", $"{ship?.manufacturer} {cmdrNamePrefix}" );
                         RuntimeSetText( $"{prefix} callsign (spoken)",
                             $"{ship?.SpokenManufacturer()} {SpeechConversions.ICAO( cmdrNamePrefix )}" );
                     }
 
-                    RuntimeSetText( $"{prefix} name", ship?.name);
-                    RuntimeSetText( $"{prefix} name (spoken)", ship?.phoneticName);
-                    RuntimeSetText( $"{prefix} ident", ship?.ident);
-                    RuntimeSetText( $"{prefix} ident (spoken)", SpeechConversions.ICAO(ship?.ident, false));
-                    RuntimeSetText( $"{prefix} role", ship?.Role?.localizedName);
-                    RuntimeSetText( $"{prefix} size", ship?.Size?.localizedName);
-                    RuntimeSetDecimal( $"{prefix} value", ship?.value);
-                    RuntimeSetText( $"{prefix} value (spoken)", SpeechConversions.Humanize(ship?.value));
-                    RuntimeSetDecimal( $"{prefix} hull value", ship?.hullvalue);
-                    RuntimeSetText( $"{prefix} hull value (spoken)", SpeechConversions.Humanize(ship?.hullvalue));
-                    RuntimeSetDecimal( $"{prefix} modules value", ship?.modulesvalue);
-                    RuntimeSetText( $"{prefix} modules value (spoken)", SpeechConversions.Humanize(ship?.modulesvalue));
-                    RuntimeSetDecimal( $"{prefix} rebuy", ship?.rebuy);
-                    RuntimeSetText( $"{prefix} rebuy (spoken)", SpeechConversions.Humanize(ship?.rebuy));
-                    RuntimeSetDecimal( $"{prefix} health", ship?.health);
-                    RuntimeSetInt( $"{prefix} cargo capacity", ship?.cargocapacity);
-                    RuntimeSetBoolean( $"{prefix} hot", ship?.hot);
+                    RuntimeSetText( $"{prefix} name", ship?.name );
+                    RuntimeSetText( $"{prefix} name (spoken)", ship?.phoneticName );
+                    RuntimeSetText( $"{prefix} ident", ship?.ident );
+                    RuntimeSetText( $"{prefix} ident (spoken)", SpeechConversions.ICAO( ship?.ident, false ) );
+                    RuntimeSetText( $"{prefix} role", ship?.Role?.localizedName );
+                    RuntimeSetText( $"{prefix} size", ship?.Size?.localizedName );
+                    RuntimeSetDecimal( $"{prefix} value", ship?.value );
+                    RuntimeSetText( $"{prefix} value (spoken)", SpeechConversions.Humanize( ship?.value ) );
+                    RuntimeSetDecimal( $"{prefix} hull value", ship?.hullvalue );
+                    RuntimeSetText( $"{prefix} hull value (spoken)", SpeechConversions.Humanize( ship?.hullvalue ) );
+                    RuntimeSetDecimal( $"{prefix} modules value", ship?.modulesvalue );
+                    RuntimeSetText( $"{prefix} modules value (spoken)", SpeechConversions.Humanize( ship?.modulesvalue ) );
+                    RuntimeSetDecimal( $"{prefix} rebuy", ship?.rebuy );
+                    RuntimeSetText( $"{prefix} rebuy (spoken)", SpeechConversions.Humanize( ship?.rebuy ) );
+                    RuntimeSetDecimal( $"{prefix} health", ship?.health );
+                    RuntimeSetInt( $"{prefix} cargo capacity", ship?.cargocapacity );
+                    RuntimeSetBoolean( $"{prefix} hot", ship?.hot );
 
-                    setShipModuleValues(ship?.bulkheads, $"{prefix} bulkheads" );
-                    setShipModuleValues(ship?.powerplant, $"{prefix} power plant" );
-                    setShipModuleValues(ship?.thrusters, $"{prefix} thrusters" );
-                    setShipModuleValues(ship?.frameshiftdrive, $"{prefix} frame shift drive" );
-                    setShipModuleValues(ship?.powerdistributor, $"{prefix} power distributor" );
-                    setShipModuleValues(ship?.sensors, $"{prefix} sensors" );
-                    setShipModuleValues(ship?.fueltank, $"{prefix} fuel tank" );
+                    setShipModuleValues( ship?.bulkheads, $"{prefix} bulkheads" );
+                    setShipModuleValues( ship?.powerplant, $"{prefix} power plant" );
+                    setShipModuleValues( ship?.thrusters, $"{prefix} thrusters" );
+                    setShipModuleValues( ship?.frameshiftdrive, $"{prefix} frame shift drive" );
+                    setShipModuleValues( ship?.lifesupport, $"{prefix} life support" );
+                    setShipModuleValues( ship?.powerdistributor, $"{prefix} power distributor" );
+                    setShipModuleValues( ship?.sensors, $"{prefix} sensors" );
+                    setShipModuleValues( ship?.fueltank, $"{prefix} fuel tank" );
 
                     if ( EDDI.Instance.CurrentStation is not null && EDDI.Instance.CurrentStation.outfitting.Count > 0 )
                     {
                         var stationOutfitting = EDDI.Instance.CurrentStation?.outfitting.ToList();
-                        setShipModuleOutfittingValues(ship?.lifesupport, stationOutfitting, $"{prefix} life support" );
-                        setShipModuleOutfittingValues(ship?.bulkheads, stationOutfitting, $"{prefix} bulkheads" );
-                        setShipModuleOutfittingValues(ship?.powerplant, stationOutfitting, $"{prefix} power plant" );
-                        setShipModuleOutfittingValues(ship?.thrusters, stationOutfitting, $"{prefix} thrusters" );
-                        setShipModuleOutfittingValues(ship?.frameshiftdrive, stationOutfitting,
-                            $"{prefix} frame shift drive" );
-                        setShipModuleOutfittingValues(ship?.lifesupport, stationOutfitting, $"{prefix} life support" );
-                        setShipModuleOutfittingValues(ship?.powerdistributor, stationOutfitting,
-                            $"{prefix} power distributor" );
-                        setShipModuleOutfittingValues(ship?.sensors, stationOutfitting, $"{prefix} sensors" );
-                        setShipModuleOutfittingValues(ship?.fueltank, stationOutfitting, $"{prefix} fuel tank" );
+                        setShipModuleOutfittingValues( ship?.bulkheads, stationOutfitting, $"{prefix} bulkheads" );
+                        setShipModuleOutfittingValues( ship?.powerplant, stationOutfitting, $"{prefix} power plant" );
+                        setShipModuleOutfittingValues( ship?.thrusters, stationOutfitting, $"{prefix} thrusters" );
+                        setShipModuleOutfittingValues( ship?.frameshiftdrive, stationOutfitting, $"{prefix} frame shift drive" );
+                        setShipModuleOutfittingValues( ship?.lifesupport, stationOutfitting, $"{prefix} life support" );
+                        setShipModuleOutfittingValues( ship?.powerdistributor, stationOutfitting, $"{prefix} power distributor" );
+                        setShipModuleOutfittingValues( ship?.sensors, stationOutfitting, $"{prefix} sensors" );
+                        setShipModuleOutfittingValues( ship?.fueltank, stationOutfitting, $"{prefix} fuel tank" );
                     }
 
                     // Special for fuel tank - capacity and total capacity
-                    RuntimeSetDecimal( $"{prefix} fuel tank capacity", ship?.fueltankcapacity);
-                    RuntimeSetDecimal( $"{prefix} total fuel tank capacity", ship?.fueltanktotalcapacity);
+                    RuntimeSetDecimal( $"{prefix} fuel tank capacity", ship?.fueltankcapacity );
+                    RuntimeSetDecimal( $"{prefix} total fuel tank capacity", ship?.fueltanktotalcapacity );
 
                     // Special for max jump range and max fuel per jump
-                    RuntimeSetDecimal( $"{prefix} max jump range", ship?.maxjumprange);
-                    RuntimeSetDecimal( $"{prefix} max fuel per jump", ship?.maxfuelperjump);
+                    RuntimeSetDecimal( $"{prefix} max jump range", ship?.maxjumprange );
+                    RuntimeSetDecimal( $"{prefix} max fuel per jump", ship?.maxfuelperjump );
 
                     // Hardpoints
                     SetShipHardpoints( ship, prefix );
-                    
+
                     // Compartments
                     SetShipCompartments( ship, prefix );
 
                     // Fetch the star system in which the ship is stored
-                    if ( ship?.starsystem != null)
+                    if ( ship?.starsystem != null )
                     {
-                        RuntimeSetText( $"{prefix} system", ship.starsystem);
-                        RuntimeSetText( $"{prefix} station", ship.station);
-                        RuntimeSetDecimal( $"{prefix} distance", ship.distance);
+                        RuntimeSetText( $"{prefix} system", ship.starsystem );
+                        RuntimeSetText( $"{prefix} station", ship.station );
+                        RuntimeSetDecimal( $"{prefix} distance", ship.distance );
                     }
                 }
-                catch (Exception e)
+                catch ( Exception e )
                 {
-                    setStatus( "Failed to set ship information", e);
+                    setStatus( "Failed to set ship information", e );
                 }
 
-                Logging.Debug("Set ship information");
+                Logging.Debug( "Set ship information" );
             } );
         }
 
@@ -484,7 +504,7 @@ namespace EddiVoiceAttackResponder
         {
             var invariantSizeNames = new List<string> { "tiny", "small", "medium", "large", "huge" };
             var totalHardpointsCount = 0;
-            for ( var i = 0; i < (invariantSizeNames.Count - 1); i++ ) // Hardpoint Size
+            for ( var i = 0; i < invariantSizeNames.Count; i++ ) // Hardpoint Size
             {
                 var hardpointsAtSize = ship?.hardpoints?.Where( h => h.size == i )?.ToList() ?? new List<Hardpoint>();
                 for ( var j = 0; j < 12; j++ ) // Hardpoint Slots at Size
@@ -516,7 +536,7 @@ namespace EddiVoiceAttackResponder
             if (module != null && module.price < module.value)
             {
                 var discount = Math.Round((1 - (module.price / (decimal)module.value)) * 100, 1);
-                RuntimeSetDecimal( $"{name} discount", discount > 0.01M ? discount : (decimal?)null);
+                RuntimeSetDecimal( $"{name} discount", discount > 0.01M ? discount : null);
             }
             else
             {
@@ -551,7 +571,7 @@ namespace EddiVoiceAttackResponder
             RuntimeSetText( $"{name} station discount (spoken)", null);
         }
 
-        protected static void setShipyardValues(List<Ship> shipyard)
+        static void setShipyardValues(List<Ship> shipyard)
         {
             RunWithRuntimeActionBatch( () =>
             {
@@ -569,7 +589,7 @@ namespace EddiVoiceAttackResponder
             } );
         }
 
-        protected internal static void setStarSystemValues(StarSystem system, string prefix)
+        internal static void setStarSystemValues(StarSystem system, string prefix)
         {
             RunWithRuntimeActionBatch( () =>
             {
@@ -587,7 +607,7 @@ namespace EddiVoiceAttackResponder
                     RuntimeSetDate( $"{prefix} previous visit", system?.visits > 1 ? system.lastvisit : null);
                     RuntimeSetDecimal( $"{prefix} minutes since previous visit", system != null && system.visits > 1 && system.lastvisit is not null 
                         ? (long)(DateTime.UtcNow - system.lastvisit.Value).TotalMinutes 
-                        : (decimal?)null);
+                        : null);
                     RuntimeSetDecimal( $"{prefix} population", system?.population);
                     RuntimeSetText( $"{prefix} population (spoken)", phoneticPopulation );
                     RuntimeSetText( $"{prefix} allegiance", (system?.Faction?.Allegiance ?? Superpower.None).localizedName);
@@ -657,7 +677,7 @@ namespace EddiVoiceAttackResponder
             Logging.Debug( $"Set body information ({prefix})" );
         }
 
-        protected static void setDetailedBodyValues(Body body, string prefix)
+        static void setDetailedBodyValues(Body body, string prefix)
         {
             RunWithRuntimeActionBatch( () =>
             {
@@ -811,12 +831,12 @@ namespace EddiVoiceAttackResponder
             return true;
         }
 
-        protected internal static void setCAPIState(bool caPIactive)
+        internal static void setCAPIState(bool caPIactive)
         {
             RuntimeSetBoolean("cAPI active", caPIactive);
         }
 
-        protected internal static void setSpeechState(PropertyChangedEventArgs eventArgs)
+        internal static void setSpeechState(PropertyChangedEventArgs eventArgs)
         {
             if (eventArgs.PropertyName == nameof(SpeechService.Instance.eddiSpeaking).Split('.').Last())
             {
@@ -827,7 +847,7 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        protected internal static void setStatus( string status, Exception exception = null)
+        internal static void setStatus( string status, Exception exception = null )
         {
             RunWithRuntimeActionBatch( () =>
             {
@@ -845,7 +865,7 @@ namespace EddiVoiceAttackResponder
             } );
         }
 
-        protected static void setCargo( CargoMonitorConfiguration cargoConfig )
+        static void setCargo( CargoMonitorConfiguration cargoConfig )
         {
             RunWithRuntimeActionBatch( () =>
             {
@@ -861,7 +881,7 @@ namespace EddiVoiceAttackResponder
             } );
         }
 
-        private static void RuntimeSetText( string key, string value )
+        internal static void RuntimeSetText( string key, string value )
             => DispatchRuntimeAction( "set_text", key, value );
 
         private static void RuntimeSetInt( string key, int? value )
@@ -884,51 +904,96 @@ namespace EddiVoiceAttackResponder
                 { RuntimePayloadKeys.CommandActionPayload.Message, message ?? string.Empty },
                 { RuntimePayloadKeys.CommandActionPayload.Color, color ?? "white" }
             };
+            var pendingAction = new PendingRuntimeAction(payload);
 
             var batch = runtimeActionBatch.Value;
             if ( batch != null )
             {
-                batch.Actions.Add( payload );
+                batch.Actions.Add( pendingAction );
                 return;
             }
 
             DispatchRuntimeEventPayload( payload );
         }
 
-        private static void DispatchRuntimeAction( string action, string key, object value )
+        internal static void WriteRuntimeLog ( string message, string color = "white" )
         {
-            // Check if value has changed since last dispatch using composite cache key
-            // Format: "{action}:{key}" ensures values of different types with same key don't collide
-            var cacheKey = $"{action}:{key}";
-            
-            // Compare with cached value; skip dispatch if unchanged
-            if ( lastDispatchedValues.TryGetValue( cacheKey, out var cachedValue ) && 
-                 ValueEquals( cachedValue, value ) )
-            {
-                return; // Value unchanged, skip this dispatch
-            }
-            
-            // Value changed or first time; update cache and dispatch
-            lastDispatchedValues[ cacheKey ] = value;
+            RuntimeWriteToLog( message, color );
+        }
 
-            var payload = new Dictionary<string, object>
-            {
-                { RuntimePayloadKeys.CommandActionPayload.Action, action },
-                { RuntimePayloadKeys.CommandActionPayload.Key, key ?? string.Empty },
-                { RuntimePayloadKeys.CommandActionPayload.Value, value ?? string.Empty }
-            };
+        private static void DispatchRuntimeAction ( string action, string key, object value )
+        {
+            var pendingAction = BuildRuntimeVariableAction(action, key, value);
 
             var batch = runtimeActionBatch.Value;
             if ( batch != null )
             {
-                batch.Actions.Add( payload );
+                batch.Actions.Add( pendingAction );
                 return;
             }
 
-            DispatchRuntimeEventPayload( payload );
+            DispatchRuntimeActions( new[] { pendingAction } );
         }
 
-        
+        private static void DispatchRuntimeActions ( IEnumerable<PendingRuntimeAction> actions, bool force = false )
+        {
+            var actionList = actions.ToList();
+
+            if ( actionList.Count == 0 )
+            {
+                return;
+            }
+
+            var nonCacheableActions = actionList
+                .Where(action => !action.Cacheable)
+                .ToList();
+
+            var cacheableActions = actionList
+                .Where(action => action.Cacheable)
+                .GroupBy(action => action.CacheKey)
+                .Select(group => group.Last())
+                .Where(action => force || !IsCached(action))
+                .ToList();
+
+            var actionsToSend = nonCacheableActions
+                .Concat(cacheableActions)
+                .ToList();
+
+            if ( actionsToSend.Count == 0 )
+            {
+                return;
+            }
+
+            Dictionary<string, object> payload;
+
+            if ( actionsToSend.Count == 1 )
+            {
+                payload = actionsToSend[ 0 ].Payload;
+            }
+            else
+            {
+                payload = new Dictionary<string, object>
+                {
+                    {
+                        RuntimePayloadKeys.CommandActionPayload.Actions,
+                        actionsToSend.Select(action => action.Payload).ToList()
+                    }
+                };
+            }
+
+            var delivered = DispatchRuntimeEventPayload(payload);
+
+            if ( !delivered )
+            {
+                return;
+            }
+
+            foreach ( var action in cacheableActions )
+            {
+                lastDispatchedValues[ action.CacheKey ] = action.CacheValue;
+            }
+        }
+
         /// <summary>Clear the dispatch value cache (for testing purposes)</summary>
         internal static void ClearDispatchCache()
         {
@@ -946,7 +1011,7 @@ namespace EddiVoiceAttackResponder
             return cached.Equals( current );
         }
 
-        private static void DispatchRuntimeEventPayload( Dictionary<string, object> payload )
+        private static bool DispatchRuntimeEventPayload ( Dictionary<string, object> payload )
         {
             try
             {
@@ -957,34 +1022,95 @@ namespace EddiVoiceAttackResponder
 
                 var eventData = new EventData
                 {
-                    EventType = RuntimeEventType,
-                    EventName = CommandActionEventName,
+                    EventType = "va_runtime",
+                    EventName = "command_action",
                     EventPayload = payloadSnapshot
                 };
 
-                RuntimeEventDispatcher.DispatchAsync( eventData )
+                return RuntimeEventDispatcher.DispatchAsync( eventData )
                     .GetAwaiter()
                     .GetResult();
             }
             catch ( Exception ex )
             {
                 Logging.Warn( "Failed to dispatch runtime variable action payload", ex );
+                return false;
             }
         }
 
-        private static void RunWithRuntimeActionBatch( Action action )
+        private static readonly object NullCacheValue = new();
+
+        private static bool IsCached ( PendingRuntimeAction action )
+        {
+            return action.Cacheable
+                   && lastDispatchedValues.TryGetValue( action.CacheKey, out var priorValue )
+                   && ValueEquals( priorValue, action.CacheValue );
+        }
+
+        private sealed class PendingRuntimeAction
+        {
+            public PendingRuntimeAction ( Dictionary<string, object> payload )
+            {
+                Payload = payload;
+                Cacheable = false;
+                CacheKey = string.Empty;
+                CacheValue = NullCacheValue;
+            }
+
+            public PendingRuntimeAction (
+                Dictionary<string, object> payload,
+                string cacheKey,
+                object cacheValue )
+            {
+                Payload = payload;
+                Cacheable = true;
+                CacheKey = cacheKey;
+                CacheValue = cacheValue ?? NullCacheValue;
+            }
+
+            public Dictionary<string, object> Payload { get; }
+            public bool Cacheable { get; }
+            public string CacheKey { get; }
+            public object CacheValue { get; }
+        }
+
+        private static PendingRuntimeAction BuildRuntimeVariableAction (
+            string action,
+            string key,
+            object value )
+        {
+            var normalizedKey = key ?? string.Empty;
+
+            var payload = new Dictionary<string, object>
+            {
+                { RuntimePayloadKeys.CommandActionPayload.Action, action },
+                { RuntimePayloadKeys.CommandActionPayload.Key, normalizedKey },
+
+                // Preserve null as null. Do not convert null to empty string.
+                { RuntimePayloadKeys.CommandActionPayload.Value, value ?? JValue.CreateNull() }
+            };
+
+            return new PendingRuntimeAction(
+                payload,
+                $"{action}:{normalizedKey}",
+                value );
+        }
+
+        private static void RunWithRuntimeActionBatch ( Action action, bool forceDispatch = false )
         {
             ArgumentNullException.ThrowIfNull( action );
 
             var batch = runtimeActionBatch.Value;
-            if ( batch == null )
+            var ownsBatch = batch == null;
+
+            if ( ownsBatch )
             {
                 batch = new RuntimeActionBatchState();
                 runtimeActionBatch.Value = batch;
             }
 
             batch.Depth++;
-            bool shouldFlush;
+
             try
             {
                 action();
@@ -992,31 +1118,22 @@ namespace EddiVoiceAttackResponder
             finally
             {
                 batch.Depth--;
-                shouldFlush = batch.Depth == 0;
-                if ( shouldFlush )
+
+                if ( ownsBatch )
                 {
                     runtimeActionBatch.Value = null;
+
+                    if ( batch.Actions.Count > 0 )
+                    {
+                        DispatchRuntimeActions( batch.Actions, forceDispatch );
+                    }
                 }
             }
+        }
 
-            if ( !shouldFlush )
-            {
-                return;
-            }
-
-            if ( batch.Actions.Count == 1 )
-            {
-                DispatchRuntimeEventPayload( batch.Actions[0] );
-                return;
-            }
-
-            if ( batch.Actions.Count > 1 )
-            {
-                DispatchRuntimeEventPayload( new Dictionary<string, object>
-                {
-                    { RuntimePayloadKeys.CommandActionPayload.Actions, batch.Actions }
-                } );
-            }
+        internal static void NotifyVoiceAttackRuntimeSessionReady ()
+        {
+            ClearDispatchCache();
         }
 
         public static List<VoiceAttackVariable> Convert ( List<MetaVariable> source, string startingPrefix, string eventType = null )

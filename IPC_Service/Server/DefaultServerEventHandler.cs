@@ -243,24 +243,6 @@ namespace EddiIPC_Service.Server
         }
 
         /// <summary>
-        /// Broadcast an event to all connected clients.
-        /// </summary>
-        public async Task BroadcastEventAsync ( MessageEnvelope eventMessage )
-        {
-            ArgumentNullException.ThrowIfNull( eventMessage );
-
-            try
-            {
-                await _server.BroadcastAsync( eventMessage );
-                Logging.Debug( $"Event broadcast to {_server.ConnectionCount} clients" );
-            }
-            catch ( Exception ex )
-            {
-                Logging.Error( $"Error broadcasting event: {ex.Message}", ex );
-            }
-        }
-
-        /// <summary>
         /// Send a command response to a specific client.
         /// </summary>
         public async Task SendCommandResponseAsync ( string sessionId, MessageEnvelope response )

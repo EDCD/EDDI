@@ -58,13 +58,14 @@ namespace EddiSpeechService
         public SpeechService()
         {
             // Monitor and respond appropriately to changes in the state of the CompanionAppService
-            CompanionAppService.Instance.StateChanged += ( oldState, newState ) =>
+            CompanionAppService.Instance.StateChanged += ( _, newState ) =>
                 CompanionAppService_StateChangedAsync( newState ).SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
         }
 
         private async Task CompanionAppService_StateChangedAsync( CompanionAppService.State newState)
         {
-            if ( newState == CompanionAppService.State.ConnectionLost && !CompanionAppService.Instance.unitTesting )
+            if ( newState == CompanionAppService.State.LoggedOut && 
+                 !CompanionAppService.Instance.unitTesting )
             {
                 await SpeechManager
                     .EnqueueAsync( null, EddiCompanionAppService.Properties.CapiResources.frontier_api_lost, 0 )

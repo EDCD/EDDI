@@ -154,15 +154,39 @@ begin
   Result := (C = P) or (Pos(P + '\', C) = 1);
 end;
 
-function GetDefaultInstallDir(Param: string): string;
+function TryGetVoiceAttack2AppsDir(var Dir: string): Boolean;
 var
-  AppsFolder: string;
+  VAFolder: string;
 begin
+  Result := False;
+
   if RegQueryStringValue(
        HKCU,
        'Software\VoiceAttack.com\VoiceAttack2\LastRun',
        'AppsFolder',
-       AppsFolder) and (Trim(AppsFolder) <> '') then
+       Dir) and (Trim(Dir) <> '') then
+  begin
+    Dir := RemoveBackslashUnlessRoot(Dir);
+    Result := True;
+    exit;
+  end;
+
+  if RegQueryStringValue(
+       HKCU,
+       'Software\VoiceAttack.com\VoiceAttack2\LastRun',
+       'VAFolder',
+       VAFolder) and (Trim(VAFolder) <> '') then
+  begin
+    Dir := AddBackslash(RemoveBackslashUnlessRoot(VAFolder)) + 'Apps';
+    Result := True;
+  end;
+end;
+
+function GetDefaultInstallDir(Param: string): string;
+var
+  AppsFolder: string;
+begin
+  if TryGetVoiceAttack2AppsDir(AppsFolder) then
   begin
     Result := AddBackslash(RemoveBackslashUnlessRoot(AppsFolder)) + '{#MyAppName}';
     exit;
@@ -226,11 +250,28 @@ end;
 function IsLegacyVoiceAttackPath(const Dir: string): Boolean;
 var
   LegacyAppsDir: string;
+  VoiceAttack2AppsDir: string;
 begin
   Result := False;
 
-  if TryGetLegacyVoiceAttackAppsDir(LegacyAppsDir) then
-    Result := IsUnderPath(Dir, LegacyAppsDir);
+  if not TryGetLegacyVoiceAttackAppsDir(LegacyAppsDir) then
+    exit;
+
+  {
+    VoiceAttack supports an in-place v1 -> v2 upgrade. In that case both
+    registry hives can legitimately point to the same Apps folder. Do not
+    block the selected path as legacy when the v1 and v2 Apps folders match.
+  }
+  if TryGetVoiceAttack2AppsDir(VoiceAttack2AppsDir) and
+     SamePath(LegacyAppsDir, VoiceAttack2AppsDir) then
+  begin
+    Log(Format(
+      'VoiceAttack and VoiceAttack 2 are registered to the same Apps folder: "%s".',
+      [LegacyAppsDir]));
+    exit;
+  end;
+
+  Result := IsUnderPath(Dir, LegacyAppsDir);
 end;
 
 procedure RegisterCloseResource(const Dir: string);
