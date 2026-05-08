@@ -117,4 +117,60 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="suit_adsmovementspeed" xml:space="preserve">
+    <value>Kampfbewegungsgeschwindigkeit</value>
+    <comment>Suit mod</comment>
+  </data>
+  <data name="suit_backpackcapacity" xml:space="preserve">
+    <value>Zusätzliche Rucksackkapazität</value>
+    <comment>Suit mod</comment>
+  </data>
+  <data name="suit_improvedarmourrating" xml:space="preserve">
+    <value>Schadensresistenz</value>
+    <comment>Suit mod</comment>
+  </data>
+  <data name="suit_improvedjumpassist" xml:space="preserve">
+    <value>Verbesserte Sprunghilfe</value>
+    <comment>Suit mod</comment>
+  </data>
+  <data name="suit_improvedradar" xml:space="preserve">
+    <value>Erweitertes Tracking</value>
+    <comment>Suit mod</comment>
+  </data>
+  <data name="suit_increasedammoreserves" xml:space="preserve">
+    <value>Zusätzliche Munitionskapazität</value>
+    <comment>Suit mod</comment>
+  </data>
+  <data name="suit_increasedbatterycapacity" xml:space="preserve">
+    <value>Verbesserte Batteriekapazität</value>
+    <comment>Suit mod</comment>
+  </data>
+  <data name="suit_increasedmeleedamage" xml:space="preserve">
+    <value>Erhöhter Nahkampfschaden</value>
+    <comment>Suit mod</comment>
+  </data>
+  <data name="suit_increasedo2capacity" xml:space="preserve">
+    <value>Erhöhte Luftreserven</value>
+    <comment>Suit mod</comment>
+  </data>
+  <data name="suit_increasedshieldregen" xml:space="preserve">
+    <value>Schnellere Schildregeneration</value>
+    <comment>Suit mod</comment>
+  </data>
+  <data name="suit_increasedsprintduration" xml:space="preserve">
+    <value>Erhöhte Sprintdauer</value>
+    <comment>Suit mod</comment>
+  </data>
+  <data name="suit_nightvision" xml:space="preserve">
+    <value>Nachtsicht</value>
+    <comment>Suit mod</comment>
+  </data>
+  <data name="suit_quieterfootsteps" xml:space="preserve">
+    <value>Leisere Schritte</value>
+    <comment>Suit mod</comment>
+  </data>
+  <data name="suit_reducedtoolbatteryconsumption" xml:space="preserve">
+    <value>Verringerter Werkzeug-Batterieverbrauch</value>
+    <comment>Suit mod</comment>
+  </data>
 </root>

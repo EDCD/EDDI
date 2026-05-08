@@ -122,4 +122,7 @@
   <data name="Stars" xml:space="preserve">
     <value>Sterne</value>
   </data>
+  <data name="Terrestrials" xml:space="preserve">
+    <value>Terrestrische</value>
+  </data>
 </root>

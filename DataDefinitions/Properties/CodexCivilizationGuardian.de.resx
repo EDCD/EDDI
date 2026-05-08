@@ -116,4 +116,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Guardian_Beacons" xml:space="preserve">
+    <value>Guardian-Beacon</value>
+  </data>
+  <data name="Guardian_Data_Logs" xml:space="preserve">
+    <value>Guardian-Codex</value>
+  </data>
+  <data name="Guardian_Pylon" xml:space="preserve">
+    <value>Guardian-Pylon</value>
+  </data>
+  <data name="Guardian_Sentinel" xml:space="preserve">
+    <value>Guardian-Wache</value>
+  </data>
+  <data name="Guardian_Terminal" xml:space="preserve">
+    <value>Guardian-Terminal</value>
+  </data>
+  <data name="Relic_Tower" xml:space="preserve">
+    <value>Guardian Relikt Turm</value>
+  </data>
 </root>
