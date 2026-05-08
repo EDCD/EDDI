@@ -266,8 +266,7 @@ begin
      SamePath(LegacyAppsDir, VoiceAttack2AppsDir) then
   begin
     Log(Format(
-      'VoiceAttack and VoiceAttack 2 are registered to the same Apps folder: "%s".',
-      [LegacyAppsDir]));
+      'VoiceAttack and VoiceAttack 2 are registered to the same Apps folder: "%s".',[LegacyAppsDir]));
     exit;
   end;
 
