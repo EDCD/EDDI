@@ -1,7 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-
-namespace EddiDataDefinitions
+﻿namespace EddiDataDefinitions
 {
     public static class GalacticRegionMap
     {

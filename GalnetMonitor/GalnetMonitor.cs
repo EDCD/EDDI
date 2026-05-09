@@ -1,4 +1,4 @@
-﻿using EddiConfigService;
+using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
@@ -11,6 +11,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Resources;
 using System.ServiceModel.Syndication;
@@ -19,7 +20,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Xml;
-using System.Net.Http;
 using Utilities;
 
 namespace EddiGalnetMonitor
