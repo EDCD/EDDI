@@ -54,11 +54,9 @@ namespace EddiVoiceAttackResponder
                 // Initialize responder mode: subscribe to EDDI events and set up VoiceAttack variable synchronization
                 VoiceAttackResponderMode.InitializeAsync().SafeFireAndForget( 
                     ex => Logging.Error( "Failed to initialize VoiceAttack responder mode", ex ) );
-
-                return true;
             }
 
-            return false;
+            return true;
         }
 
         public void Stop ()
