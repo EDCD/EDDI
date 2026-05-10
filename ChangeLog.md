@@ -15,6 +15,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Custom Functions
       * `StopSpeaking` function signature corrected - it should now work as documented. (#2799)
     * Scripts
+      * `Codex entry obtained` updated with minor grammatical refinements.
       * `Docking granted` updated to incorporate the `Dodec` station type. 
   * VoiceAttack
     * Fix dropping variables "set" before VoiceAttack initialization is completed (#2796).
