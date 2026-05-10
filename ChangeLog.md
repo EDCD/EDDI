@@ -16,6 +16,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `StopSpeaking` function signature corrected - it should now work as documented. (#2799)
     * Scripts
       * `Codex entry obtained` updated with minor grammatical refinements.
+      * `Commodity sale check` updated to skip commodities in a fleet carrier with no demand and increase speech variety.
       * `Docking granted` updated to incorporate the `Dodec` station type. 
   * VoiceAttack
     * Fix dropping variables "set" before VoiceAttack initialization is completed (#2796).
