@@ -127,9 +127,16 @@ namespace EddiSpeechResponder
         /// <returns>true if the speech responder is now using the new personality, otherwise false</returns>
         public bool TrySetPersonality(string newPersonalityName)
         {
-            if (newPersonalityName == Configuration?.Personality)
+            if ( !string.IsNullOrWhiteSpace( newPersonalityName ) && _personality?.Name.Equals( newPersonalityName, StringComparison.InvariantCultureIgnoreCase ) == true )
             {
                 // Already set to this personality
+                return true;
+            }
+
+            if ( string.IsNullOrWhiteSpace( newPersonalityName ) )
+            {
+                CurrentPersonality = Personalities.FirstOrDefault() ?? Personality.Default();
+                Logging.Debug( $@"Personality set to '{CurrentPersonality.Name}'" );
                 return true;
             }
 
@@ -140,12 +147,12 @@ namespace EddiSpeechResponder
             {
                 // Yes it does; use it
                 CurrentPersonality = newPersonality;
-                Logging.Debug($"Personality set to \"{newPersonality.Name}\"");
+                Logging.Debug( $@"Personality set to '{CurrentPersonality.Name}'" );
                 return true;
             }
 
             // No it does not; ignore it
-            Logging.Warn($"Personality \"{newPersonalityName}\" not found.");
+            Logging.Warn($@"Personality '{newPersonalityName}' not found.");
             return false;
         }
 

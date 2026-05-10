@@ -7,9 +7,6 @@
              xmlns:resx="clr-namespace:EddiSpeechResponder.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
-    <UserControl.DataContext>
-        <local:SpeechResponder/>
-    </UserControl.DataContext>
     <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="-10">
         <Grid DockPanel.Dock="Top" Margin="0">
             <Grid.ColumnDefinitions>
@@ -55,7 +52,7 @@
                 DockPanel.Dock="Top" 
                 TextWrapping="Wrap" 
                 VerticalAlignment="Center"
-                Text="{Binding ElementName=personalityComboBox, Path=DataContext.CurrentPersonality.Description, Mode=OneWay}">
+                Text="{Binding ElementName=personalityComboBox, Path=DataContext.(local:SpeechResponder.CurrentPersonality).Description, Mode=OneWay}">
             </TextBlock>
         </StackPanel>
         <DockPanel HorizontalAlignment="Stretch" DockPanel.Dock="Bottom" Margin="0, 0, 5, 0">
@@ -87,7 +84,7 @@
                         <Style TargetType="{x:Type Button}">
                             <Setter Property="Visibility"  Value="Visible" />
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=personalityComboBox, Path=DataContext.CurrentPersonality.IsCustom, Mode=OneWay}" Value="False">
+                                <DataTrigger Binding="{Binding ElementName=personalityComboBox, Path=DataContext.(local:SpeechResponder.CurrentPersonality).IsCustom, Mode=OneWay}" Value="False">
                                     <Setter Property="Visibility"  Value="Hidden" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -100,14 +97,14 @@
                     HorizontalAlignment="Center" 
                     Grid.Column="2" 
                     Click="deletePersonalityClicked" 
-                    IsEnabled="{Binding ElementName=personalityComboBox, Path=DataContext.CurrentPersonality.IsCustom, Mode=OneWay}" 
+                    IsEnabled="{Binding ElementName=personalityComboBox, Path=DataContext.(local:SpeechResponder.CurrentPersonality).IsCustom, Mode=OneWay}" 
                     Content="{x:Static resx:SpeechResponder.button_delete}"
                     >
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
                             <Setter Property="Visibility"  Value="Visible" />
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=personalityComboBox, Path=DataContext.CurrentPersonality.IsCustom, Mode=OneWay}" Value="False">
+                                <DataTrigger Binding="{Binding ElementName=personalityComboBox, Path=DataContext.(local:SpeechResponder.CurrentPersonality).IsCustom, Mode=OneWay}" Value="False">
                                     <Setter Property="Visibility"  Value="Hidden" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -131,7 +128,7 @@
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="Visibility"  Value="Visible" />
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=personalityComboBox, Path=DataContext.CurrentPersonality.IsCustom, Mode=OneWay}" Value="True">
+                                <DataTrigger Binding="{Binding ElementName=personalityComboBox, Path=DataContext.(local:SpeechResponder.CurrentPersonality).IsCustom, Mode=OneWay}" Value="True">
                                     <Setter Property="Visibility"  Value="Hidden" />
                                 </DataTrigger>
                             </Style.Triggers>

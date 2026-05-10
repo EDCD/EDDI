@@ -254,7 +254,6 @@ namespace EddiSpeechResponder
                 personality.IsCustom = !isDefault;
                 if ( !isDefault )
                 {
-                    Logging.Info( $"Upgrading custom personality '{personality.Name}' using default personality '{DEFAULT_PATH}'." );
                     fixPersonalityInfo( personality );
                 }
                 else
@@ -442,6 +441,7 @@ namespace EddiSpeechResponder
                 .ToDictionary(s => s.Key, s => s.Value);
             personality.ToFile();
             upgradedPersonalities.Add(personality.dataPath);
+            Logging.Info( $"Upgraded custom personality '{personality.Name}' using default personality '{DEFAULT_PATH}'." );
             return;
 
             void SortScripts ( IEnumerable<string> keys, bool isResponderScripts )
