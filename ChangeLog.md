@@ -14,6 +14,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed vertical whitespace characters being removed from speechresponder.out. (#2797)
     * Custom Functions
       * `StopSpeaking` function signature corrected - it should now work as documented. (#2799)
+    * Scripts
+      * `Docking granted` updated to incorporate the `Dodec` station type. 
   * VoiceAttack
     * Fix dropping variables "set" before VoiceAttack initialization is completed (#2796).
     * Optimized the way that EDDI sends variables to VoiceAttack to improve performance and reliability (#2798). 
