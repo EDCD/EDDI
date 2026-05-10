@@ -29,11 +29,7 @@ namespace EddiSpeechResponder
         // The file to log speech
         private static readonly string LogFile = Constants.DATA_DIR + @"\speechresponder.out";
 
-        // Static lazy initialization ensures only one thread initializes personalities
-        private static readonly Lazy<ObservableCollection<Personality>> PersonalitiesLazy 
-            = new(InitializePersonalities);
-
-        public static ObservableCollection<Personality> Personalities => PersonalitiesLazy.Value;
+        public ObservableCollection<Personality> Personalities { get; private set; }
 
         public Personality CurrentPersonality
         {
@@ -101,24 +97,28 @@ namespace EddiSpeechResponder
         public SpeechResponder()
         {
             Configuration = ConfigService.Instance.speechResponderConfiguration;
+            Personalities = GetPersonalities();
             TrySetPersonality(Configuration.Personality);
         }
 
         #region Personalities
 
-        private static ObservableCollection<Personality> InitializePersonalities()
+        private ObservableCollection<Personality> GetPersonalities()
         {
-            var personalities = new ObservableCollection<Personality> { Personality.Default() };
+            if (Personalities is not null) { return Personalities; }
 
+            // Initialize our collection and add our default personality
+            Personalities = [ Personality.Default() ];
+
+            // Add our custom personalities
             foreach (var customPersonality in Personality.AllFromDirectory())
             {
                 if (customPersonality != null)
                 {
-                    personalities.Add(customPersonality);
+                    Personalities.Add(customPersonality);
                 }
             }
-
-            return personalities;
+            return Personalities;
         }
 
         /// <summary>
@@ -243,20 +243,7 @@ namespace EddiSpeechResponder
         public void Reload()
         {
             Configuration = ConfigService.Instance.speechResponderConfiguration;
-
-            // Clear and repopulate the existing personalities collection
-            var personalities = Personalities;
-            personalities.Clear();
-            personalities.Add(Personality.Default());
-
-            foreach (var customPersonality in Personality.AllFromDirectory())
-            {
-                if (customPersonality != null)
-                {
-                    personalities.Add(customPersonality);
-                }
-            }
-
+            Personalities = GetPersonalities();
             TrySetPersonality(Configuration.Personality);
             Logging.Debug($"Reloaded {ResponderName()}");
         }
@@ -390,7 +377,7 @@ namespace EddiSpeechResponder
 
         public UserControl ConfigurationTabItem()
         {
-            return new ConfigurationWindow();
+            return new ConfigurationWindow(this);
         }
 
         public Task HandleStatusAsync ( Status status )

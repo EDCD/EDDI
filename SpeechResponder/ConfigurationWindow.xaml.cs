@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -84,28 +83,27 @@ namespace EddiSpeechResponder
             );
         }
         
-        public ConfigurationWindow()
+        public ConfigurationWindow(SpeechResponder speechResponder)
         {
-            var speechResponder = EDDI.Instance.ObtainResponder( Properties.SpeechResponder.ResourceManager.GetString( "name", CultureInfo.InvariantCulture ) );
             if (speechResponder is null) { return; }
-            SpeechResponder = (SpeechResponder)speechResponder;
+            this.SpeechResponder = speechResponder;
             customFunctionNames = ScriptResolver.GetCustomFunctions().Select( f => f.name );
-            DataContext = speechResponder;
             Task.Run( GetStandardVariables );
 
             InitializeComponent();
+            DataContext = speechResponder;
 
             // Set up the scripts view
-            InitializeView( SpeechResponder.CurrentPersonality.Scripts.Values);
+            InitializeView(speechResponder.CurrentPersonality.Scripts.Values);
 
             // Set up other preferences
-            subtitlesCheckbox.IsChecked = SpeechResponder.Configuration?.Subtitles ?? false;
-            subtitlesOnlyCheckbox.IsChecked = SpeechResponder.Configuration?.SubtitlesOnly ?? false;
+            subtitlesCheckbox.IsChecked = speechResponder.Configuration?.Subtitles ?? false;
+            subtitlesOnlyCheckbox.IsChecked = speechResponder.Configuration?.SubtitlesOnly ?? false;
 
             SpeechResponder.PersonalityChanged += PersonalityChanged;
-            SpeechResponder.Personalities.CollectionChanged += PersonalitiesCollectionChanged;
+            speechResponder.Personalities.CollectionChanged += PersonalitiesCollectionChanged;
             
-            CheckForScriptRecovery( SpeechResponder );
+            CheckForScriptRecovery(speechResponder);
         }
 
         private void CheckForScriptRecovery (SpeechResponder speechResponder)
@@ -327,27 +325,26 @@ namespace EddiSpeechResponder
             var messageBoxText = string.Format(Properties.SpeechResponder.delete_script_message, script.Name);
             var caption = Properties.SpeechResponder.delete_script_caption;
             var result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
-            if ( result == MessageBoxResult.Yes )
+            switch (result)
             {
-                // Remove the script from the list
-                SpeechResponder.CurrentPersonality.Scripts.Remove( script.Name );
+                case MessageBoxResult.Yes:
+                    // Remove the script from the list
+                    SpeechResponder.CurrentPersonality.Scripts.Remove( script.Name );
 
-                // Remove any references to the removed script in the `includes` scring of other scripts
-                SpeechResponder.CurrentPersonality.Scripts.AsParallel().ForAll( kv =>
-                    kv.Value.includes = kv.Value.includes is null
-                        ? string.Empty
-                        : string.Join( "; ",
-                            kv.Value.includes.Split( ';' ).Select( s => s.Trim() )
-                                .Except( [ script.Name ] ) ) );
+                    // Remove any references to the removed script in the `includes` scring of other scripts
+                    SpeechResponder.CurrentPersonality.Scripts.AsParallel().ForAll( kv =>
+                        kv.Value.includes = kv.Value.includes is null
+                            ? string.Empty
+                            : string.Join( "; ",
+                                kv.Value.includes.Split( ';' ).Select( s => s.Trim() )
+                                    .Except( [ script.Name ] ) ) );
 
-                SpeechResponder.SavePersonality();
-                scriptsView.Refresh();
-                e.Handled = true;
+                    SpeechResponder.SavePersonality();
+                    scriptsView.Refresh();
+                    break;
             }
-
             EDDI.Instance.SpeechResponderModalWait = false;
         }
-        
         private void resetScript(object sender, RoutedEventArgs e)
         {
             if (SpeechResponder?.CurrentPersonality?.Scripts is null) { return; }
@@ -359,13 +356,14 @@ namespace EddiSpeechResponder
                 var messageBoxText = string.Format(Properties.SpeechResponder.reset_script_message, script.Name);
                 var caption = Properties.SpeechResponder.reset_script_button;
                 var result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if ( result == MessageBoxResult.Yes )
+                switch (result)
                 {
-                    script.Value = script.defaultValue;
-                    SpeechResponder.CurrentPersonality.Scripts[ script.Name ] = script;
-                    SpeechResponder.SavePersonality();
-                    scriptsData.Items.Refresh();
-                    e.Handled = true;
+                    case MessageBoxResult.Yes:
+                        script.Value = script.defaultValue;
+                        SpeechResponder.CurrentPersonality.Scripts[script.Name] = script;
+                        SpeechResponder.SavePersonality();
+                        scriptsData.Items.Refresh();
+                        break;
                 }
             }
         }
@@ -396,7 +394,7 @@ namespace EddiSpeechResponder
 
         private void copyPersonalityClicked(object sender, RoutedEventArgs e)
         {
-            if (SpeechResponder.Personalities is null) { return; }
+            if (SpeechResponder?.Personalities is null) { return; }
             EDDI.Instance.SpeechResponderModalWait = true;
             var window = new CopyPersonalityWindow(SpeechResponder.Personalities)
             {
@@ -418,7 +416,7 @@ namespace EddiSpeechResponder
 
         private void deletePersonalityClicked(object sender, RoutedEventArgs e)
         {
-            if (SpeechResponder.Personalities is null) { return; }
+            if (SpeechResponder?.Personalities is null) { return; }
             EDDI.Instance.SpeechResponderModalWait = true;
             var messageBoxText = string.Format(Properties.SpeechResponder.delete_personality_message, SpeechResponder.CurrentPersonality.Name);
             var caption = Properties.SpeechResponder.delete_personality_caption;
