@@ -17,6 +17,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Scripts
       * `Codex entry obtained` updated with minor grammatical refinements.
       * `Commodity sale check` updated to skip commodities in a fleet carrier with no demand and increase speech variety.
+      * `Died` updated with a minor grammatical refinement.
       * `Docking granted` updated to incorporate the `Dodec` station type. 
   * VoiceAttack
     * Fix dropping variables "set" before VoiceAttack initialization is completed (#2796).
