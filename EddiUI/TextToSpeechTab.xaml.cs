@@ -32,6 +32,10 @@ namespace EddiUI
                 {
                     speechOptions.Add(voice);
                 }
+                if ( speechOptions.Count == 1 )
+                {
+                    Logging.Warn( "No speech synthesis voices were available." );
+                }
                 ttsVoiceDropDown.ItemsSource = speechOptions;
                 ttsVoiceDropDown.Text =  speechOptions.Any(v => v == speechServiceConfiguration.StandardVoice) 
                     ? speechServiceConfiguration.StandardVoice
@@ -45,7 +49,9 @@ namespace EddiUI
             }
             catch (Exception e)
             {
-                Logging.Warn("" + Environment.CurrentManagedThreadId + ": Caught exception " + e);
+                Logging.Warn( "Failed to enumerate text-to-speech voices.", e );
+                ttsVoiceDropDown.ItemsSource = speechOptions;
+                ttsVoiceDropDown.Text = "Windows TTS default";
             }
             ttsVolumeSlider.Value = speechServiceConfiguration.Volume;
             ttsRateSlider.Value = speechServiceConfiguration.Rate;

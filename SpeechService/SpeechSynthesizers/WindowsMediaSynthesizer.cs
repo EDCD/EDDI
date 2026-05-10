@@ -2,7 +2,6 @@
 using EddiSpeechService.SpeechPreparation;
 using Microsoft.Win32;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -30,87 +29,104 @@ namespace EddiSpeechService.SpeechSynthesizers
 
         private async Task InitializeAsync ( HashSet<VoiceDetails> voiceStore )
         {
-            // Cache the voices we're about to examine
             var allVoices = SpeechSynthesizer.AllVoices.ToList();
-            
-            var voices = new ConcurrentBag<VoiceDetails>();
-            await Task.WhenAll( allVoices.Select( async voice =>
+            var voices = new List<VoiceDetails>();
+
+            foreach ( var voice in allVoices )
             {
                 try
                 {
-                    Logging.Debug( $"Found voice: {voice.DisplayName}", voice );
+                    Logging.Debug( $"Found OneCore voice: {voice.DisplayName}", voice );
+
                     var voiceDetails = new VoiceDetails(
                         voice.DisplayName,
                         voice.Gender.ToString(),
                         CultureInfo.GetCultureInfo( voice.Language ),
-                        nameof(Windows.Media)
+                        nameof( Windows.Media )
                     );
-                    // Skip voices which are not fully registered or fail speech tests
-                    if ( !await TryOneCoreVoiceRegistryAsync( voiceDetails ).ConfigureAwait( false ) ||
-                         !await TryOneCoreVoiceSpeechAsync( voiceDetails ).ConfigureAwait( false ) )
+
+                    if ( !TryOneCoreVoiceRegistry( voiceDetails ) )
                     {
-                        return;
+                        continue;
+                    }
+
+                    if ( !await TryOneCoreVoiceSpeechAsync( voiceDetails ).ConfigureAwait( false ) )
+                    {
+                        continue;
                     }
 
                     voices.Add( voiceDetails );
-                    Logging.Debug( $"Loaded voice: {voice.DisplayName}", voiceDetails );
+                    Logging.Debug( $"Loaded OneCore voice: {voice.DisplayName}", voiceDetails );
                 }
-                catch ( Exception e )
+                catch ( Exception ex )
                 {
-                    Logging.Error( $"Failed to process voice: {voice.DisplayName}", e );
+                    Logging.Warn( $"Failed to process OneCore voice: {voice.DisplayName}", ex );
                 }
-            } ) ).ConfigureAwait( false );
-            
+            }
+
             foreach ( var voice in voices )
             {
                 voiceStore.Add( voice );
             }
+        }
 
-            return;
-
-            Task<bool> TryOneCoreVoiceRegistryAsync ( VoiceDetails voiceDetails )
+        private async Task<bool> TryOneCoreVoiceSpeechAsync ( VoiceDetails voiceDetails )
+        {
+            try
             {
-                // Windows.Media.SpeechSynthesis.SpeechSynthesizer.AllVoices can pick up voices we've previously uninstalled,
-                // so we test the registry entries for each voice to see if it is really fully registered.
-                
-                var oneCoreVoicesRegistryDir = @"SOFTWARE\Microsoft\Speech_OneCore\Voices\Tokens";
-                using ( var voiceKeys = Registry.LocalMachine.OpenSubKey( oneCoreVoicesRegistryDir, false ) )
+                var matchingVoice = SpeechSynthesizer.AllVoices
+                    .FirstOrDefault( v => v.DisplayName == voiceDetails.name );
+
+                if ( matchingVoice == null )
                 {
-                    if ( voiceKeys != null )
+                    Logging.Warn( $"{voiceDetails.name} was not found in SpeechSynthesizer.AllVoices, skipping." );
+                    return false;
+                }
+
+                synth.Voice = matchingVoice;
+
+                // Use a short non-empty phrase. Empty-string synthesis is not a good validation case.
+                using var stream = await synth
+                    .SynthesizeTextToStreamAsync( "test" )
+                    .AsTask()
+                    .ConfigureAwait( false );
+
+                return stream != null;
+            }
+            catch ( Exception ex )
+            {
+                Logging.Warn( $"{voiceDetails.name} failed a OneCore speech test, skipping.", ex );
+                return false;
+            }
+        }
+
+        private bool TryOneCoreVoiceRegistry(VoiceDetails voiceDetails)
+        {
+            // Windows.Media.SpeechSynthesis.SpeechSynthesizer.AllVoices can pick up voices we've previously uninstalled,
+            // so we test the registry entries for each voice to see if it is really fully registered.
+                
+            var oneCoreVoicesRegistryDir = @"SOFTWARE\Microsoft\Speech_OneCore\Voices\Tokens";
+            using ( var voiceKeys = Registry.LocalMachine.OpenSubKey( oneCoreVoicesRegistryDir, false ) )
+            {
+                if ( voiceKeys != null )
+                {
+                    foreach ( var subKeyName in voiceKeys.GetSubKeyNames() )
                     {
-                        foreach ( var subKeyName in voiceKeys.GetSubKeyNames() )
+                        using ( var voiceKey =
+                               Registry.LocalMachine.OpenSubKey( $@"{oneCoreVoicesRegistryDir}\{subKeyName}" ) )
                         {
-                            using ( var voiceKey =
-                                   Registry.LocalMachine.OpenSubKey( $@"{oneCoreVoicesRegistryDir}\{subKeyName}" ) )
+                            var voiceName = voiceKey?.GetValue( "" )?.ToString();
+                            if ( voiceName?.Contains( voiceDetails.name ) ?? false )
                             {
-                                var voiceName = voiceKey?.GetValue( "" )?.ToString();
-                                if ( voiceName?.Contains( voiceDetails.name ) ?? false )
-                                {
-                                    return Task.FromResult( true );
-                                }
+                                return true;
                             }
                         }
                     }
                 }
-
-                Logging.Warn( $"{voiceDetails.name} is missing registry keys (may have been uninstalled?), skipping." );
-                return Task.FromResult( false );
             }
 
-            async Task<bool> TryOneCoreVoiceSpeechAsync ( VoiceDetails voiceDetails )
-            {
-                try
-                {
-                    synth.Voice = SpeechSynthesizer.AllVoices.FirstOrDefault( v => v.DisplayName == voiceDetails.name );
-                    await synth.SynthesizeTextToStreamAsync( "" ).AsTask().ConfigureAwait( false );
-                    return true;
-                }
-                catch ( Exception e )
-                {
-                    Logging.Warn( $"{voiceDetails.name} failed a speech test, skipping.", e );
-                    return false;
-                }
-            }
+            Logging.Warn( $"{voiceDetails.name} is missing registry keys (may have been uninstalled?), skipping." );
+            return false;
         }
 
         internal Stream Speak(VoiceDetails voiceDetails, string speech, SpeechServiceConfiguration Configuration)
