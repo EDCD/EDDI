@@ -178,6 +178,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to C-J-Type Giant.
+        /// </summary>
+        public static string CJ_TypeGiant {
+            get {
+                return ResourceManager.GetString("CJ_TypeGiant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to C-N-Type Star.
         /// </summary>
         public static string CN_Type {

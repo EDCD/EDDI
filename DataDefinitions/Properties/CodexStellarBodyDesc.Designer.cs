@@ -178,6 +178,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to C-J-type stars are variants of carbon stars, which are stars approaching the end of their stellar lives as hydrogen fusion begins to stop. The C J variant has much more carbon-13 in its atmosphere..
+        /// </summary>
+        public static string CJ_TypeGiant {
+            get {
+                return ResourceManager.GetString("CJ_TypeGiant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to C-N-type stars are variants of carbon stars, which are stars approaching the end of their stellar lives as hydrogen fusion begins to stop. They were once K or M-type stars..
         /// </summary>
         public static string CN_Type {

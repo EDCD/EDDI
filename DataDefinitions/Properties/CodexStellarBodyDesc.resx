@@ -144,6 +144,9 @@
   <data name="CJ_Type" xml:space="preserve">
     <value>C-J-type stars are variants of carbon stars, which are stars approaching the end of their stellar lives as hydrogen fusion begins to stop. The C J variant has much more carbon-13 in its atmosphere.</value>
   </data>
+  <data name="CJ_TypeGiant" xml:space="preserve">
+    <value>C-J-type stars are variants of carbon stars, which are stars approaching the end of their stellar lives as hydrogen fusion begins to stop. The C J variant has much more carbon-13 in its atmosphere.</value>
+  </data>
   <data name="CN_Type" xml:space="preserve">
     <value>C-N-type stars are variants of carbon stars, which are stars approaching the end of their stellar lives as hydrogen fusion begins to stop. They were once K or M-type stars.</value>
   </data>

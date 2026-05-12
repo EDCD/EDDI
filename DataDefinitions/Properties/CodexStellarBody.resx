@@ -144,6 +144,9 @@
   <data name="CJ_Type" xml:space="preserve">
     <value>C-J-Type Star</value>
   </data>
+  <data name="CJ_TypeGiant" xml:space="preserve">
+    <value>C-J-Type Giant</value>
+  </data>
   <data name="CN_Type" xml:space="preserve">
     <value>C-N-Type Star</value>
   </data>
