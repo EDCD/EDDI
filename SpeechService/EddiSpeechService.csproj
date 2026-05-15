@@ -11,6 +11,7 @@
     </PropertyGroup>
     <ItemGroup>
         <EmbeddedResource Include="Properties\pls.xsd" />
+        <EmbeddedResource Include="Properties\xml.xsd" />
     </ItemGroup>
     <ItemGroup>
         <Compile Update="Properties\FormatOverrides.Designer.cs">
