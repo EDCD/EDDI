@@ -313,8 +313,8 @@ namespace Tests
                     await Task.Delay( 100, cancellationToken ).ConfigureAwait( false );
 
                     Assert.AreEqual( "POST", request.Method.Method );
-                    Assert.Contains( body, "grant_type=refresh_token" );
-                    Assert.Contains( body, "refresh_token=old-refresh" );
+                    Assert.Contains( "grant_type=refresh_token", body );
+                    Assert.Contains( "refresh_token=old-refresh", body );
 
                     return JsonResponse( HttpStatusCode.OK,
                         @"{""access_token"":""new-access"",""refresh_token"":""new-refresh"",""expires_in"":3600}" );
@@ -366,8 +366,8 @@ namespace Tests
                     tokenRequestCount++;
 
                     Assert.AreEqual( "POST", request.Method.Method );
-                    Assert.Contains( body, "grant_type=refresh_token" );
-                    Assert.Contains( body, "refresh_token=refresh-token" );
+                    Assert.Contains( "grant_type=refresh_token", body );
+                    Assert.Contains( "refresh_token=refresh-token", body );
 
                     return Task.FromResult( JsonResponse( HttpStatusCode.OK,
                         @"{""access_token"":""refreshed-access"",""refresh_token"":""refreshed-refresh"",""expires_in"":3600}" ) );
