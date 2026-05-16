@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+## 5.0.2
+  * Speech Responder
+    * Fixed failing lexicon schema validation (for .pls lexicon files). (#2814) (thanks to @klightspeed)
+
 ## 5.0.1
   * Core
     * Fixed generated consolidated organic names for older-style Horizons organics. 

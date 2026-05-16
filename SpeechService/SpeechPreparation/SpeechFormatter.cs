@@ -207,6 +207,17 @@ namespace EddiSpeechService.SpeechPreparation
         private static HashSet<string> GetLexicons ( VoiceDetails voice )
         {
             var result = new HashSet<string>();
+
+            // When multiple lexicons are referenced, their precedence goes from lower to higher with document order (https://www.w3.org/TR/2004/REC-speech-synthesis-20040907/#S3.1.4) 
+
+            // Add lexicons from our installation directory
+            result.UnionWith( GetLexiconsFromDirectory( new FileInfo( System.Reflection.Assembly.GetExecutingAssembly().Location ).DirectoryName + @"\lexicons" ) );
+
+            // Add lexicons from our user configuration (allowing these to overwrite any prior lexeme values)
+            result.UnionWith( GetLexiconsFromDirectory( Constants.DATA_DIR + @"\lexicons" ) );
+
+            return result;
+
             HashSet<string> GetLexiconsFromDirectory ( string directory, bool createIfMissing = false )
             {
                 // When multiple lexicons are referenced, their precedence goes from lower to higher with document order.
@@ -220,13 +231,13 @@ namespace EddiSpeechService.SpeechPreparation
                 {
                     // Find two letter language code lexicons (these will have lower precedence than any full language code lexicons)
                     foreach ( var file in dir.GetFiles( "*.pls", SearchOption.AllDirectories )
-                        .Where( f => $"{f.Name.ToLowerInvariant()}" == $"{voice.cultureTwoLetterISOLanguageName.ToLowerInvariant()}.pls" ) )
+                                 .Where( f => $"{f.Name.ToLowerInvariant()}" == $"{voice.cultureTwoLetterISOLanguageName.ToLowerInvariant()}.pls" ) )
                     {
                         CheckAndAdd( file );
                     }
                     // Find full language code lexicons
                     foreach ( var file in dir.GetFiles( "*.pls", SearchOption.AllDirectories )
-                        .Where( f => $"{f.Name.ToLowerInvariant()}" == $"{voice.cultureIetfLanguageTag.ToLowerInvariant()}.pls" ) )
+                                 .Where( f => $"{f.Name.ToLowerInvariant()}" == $"{voice.cultureIetfLanguageTag.ToLowerInvariant()}.pls" ) )
                     {
                         CheckAndAdd( file );
                     }
@@ -240,7 +251,7 @@ namespace EddiSpeechService.SpeechPreparation
 
             void CheckAndAdd ( FileInfo file )
             {
-                if ( IsValidXML( file.FullName ) )
+                if ( IsValidPLS( file.FullName ) )
                 {
                     result.Add( file.FullName );
                 }
@@ -249,51 +260,59 @@ namespace EddiSpeechService.SpeechPreparation
                     file.MoveTo( $"{file.FullName}.malformed" );
                 }
             }
-
-            // When multiple lexicons are referenced, their precedence goes from lower to higher with document order (https://www.w3.org/TR/2004/REC-speech-synthesis-20040907/#S3.1.4) 
-
-            // Add lexicons from our installation directory
-            result.UnionWith( GetLexiconsFromDirectory( new FileInfo( System.Reflection.Assembly.GetExecutingAssembly().Location ).DirectoryName + @"\lexicons" ) );
-
-            // Add lexicons from our user configuration (allowing these to overwrite any prior lexeme values)
-            result.UnionWith( GetLexiconsFromDirectory( Constants.DATA_DIR + @"\lexicons" ) );
-
-            return result;
         }
         
         /// <summary>
-        /// Check whether the file is valid .xml (.pls is an xml-based format)
+        /// Check whether the file is valid .pls (.pls is an xml-based format)
         /// </summary>
         /// <param name="filename"></param>
         /// <returns></returns>
-        private static bool IsValidXML ( string filename )
+        private static bool IsValidPLS ( string filename )
         {
+            const string PlsNamespace = "http://www.w3.org/2005/01/pronunciation-lexicon";
             try
             {
-                // Try to load the file as xml
-                var xml = XDocument.Load( filename );
+                var settings = new XmlReaderSettings
+                {
+                    ValidationType = ValidationType.Schema,
+                    Schemas = lexiconSchemas,
+                    DtdProcessing = DtdProcessing.Prohibit,
+                    XmlResolver = null,
+                    ValidationFlags = XmlSchemaValidationFlags.ReportValidationWarnings
+                };
 
-                // Validate the lexicon xml against the schema
-                xml.Validate( lexiconSchemas, ( o, e ) =>
+                settings.ValidationEventHandler += ( _, e ) =>
                 {
-                    if ( e.Severity is XmlSeverityType.Warning or XmlSeverityType.Error )
-                    {
-                        throw new XmlSchemaValidationException( e.Message, e.Exception );
-                    }
-                } );
-                var reader = xml.CreateReader();
-                var lastNodeName = string.Empty;
-                while ( reader.Read() )
+                    if ( e.Severity is not ( XmlSeverityType.Warning or XmlSeverityType.Error ) ) { return; }
+
+                    var ex = e.Exception;
+                    var location = $" at line {ex.LineNumber}, position {ex.LinePosition}";
+
+                    throw new XmlSchemaValidationException(
+                        $"Schema validation {e.Severity.ToString().ToLowerInvariant()}{location}: {e.Message}",
+                        ex );
+                };
+
+                XDocument xml;
+                using ( var reader = XmlReader.Create( filename, settings ) )
                 {
-                    if ( reader.HasValue &&
-                         reader.NodeType is XmlNodeType.Text &&
-                         lastNodeName == "phoneme" &&
-                         !IPA.IsValid( reader.Value ) )
-                    {
-                        throw new ArgumentException( $"Invalid phoneme found in lexicon file: {reader.Value}" );
-                    }
-                    lastNodeName = reader.Name;
+                    xml = XDocument.Load( reader, LoadOptions.SetLineInfo );
                 }
+                XNamespace pls = PlsNamespace;
+                foreach ( var phoneme in xml.Descendants( pls + "phoneme" ) )
+                {
+                    var value = phoneme.Value.Trim();
+                    if ( IPA.IsValid( value ) ) { continue; }
+
+                    IXmlLineInfo lineInfo = phoneme;
+                    var location = lineInfo.HasLineInfo()
+                        ? $" at line {lineInfo.LineNumber}, position {lineInfo.LinePosition}"
+                        : string.Empty;
+
+                    throw new ArgumentException(
+                        $"Invalid phoneme found in lexicon file{location}: {value}" );
+                }
+
                 return true;
             }
             catch ( Exception ex )
