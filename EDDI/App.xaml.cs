@@ -3,7 +3,6 @@ using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiCore;
 using EddiCore.Upgrader;
-using EddiSpeechService;
 using EddiStatusService;
 using EddiUI;
 using System;
@@ -15,7 +14,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Utilities;
-using Version = System.Version;
 
 [assembly: InternalsVisibleTo( "Tests" )]
 namespace Eddi
@@ -106,7 +104,7 @@ namespace Eddi
             return null;
         }
 
-        private static void Initialize ( App app, bool fromVA = false, Version vaVersion = null, EDDIConfiguration configuration = null )
+        private static void Initialize ( App app, bool fromVA = false, System.Version vaVersion = null, EDDIConfiguration configuration = null )
         {
             // Prepare to start the application
             if ( configuration != null && !configuration.DisableTelemetry )
@@ -166,19 +164,6 @@ namespace Eddi
                         Logging.Debug("ConfigService preloaded");
                     } catch (Exception ex) {
                         Logging.Error("Failed to preload ConfigService", ex);
-                    }
-                }),
-
-                // Pre-load speech service asynchronously
-                Task.Run(() => {
-                    try
-                    {
-                        _ = SpeechService.Instance;
-                        Logging.Debug( "SpeechService preloaded" );
-                    }
-                    catch ( Exception ex )
-                    {
-                        Logging.Error( "Failed to preload SpeechService", ex );
                     }
                 }),
 

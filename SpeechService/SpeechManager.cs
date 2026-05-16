@@ -22,19 +22,17 @@ using Utilities;
 
 namespace EddiSpeechService
 {
-    public class SpeechManager : IDisposable, INotifyPropertyChanged
+    public class SpeechManager ( AudioManager audioManager ) : IDisposable, INotifyPropertyChanged
     {
-        public readonly AudioManager AudioManager;
+        private SystemSpeechSynthesizer systemSpeechSynth;
+        private WindowsMediaSynthesizer windowsMediaSynth;
 
         private const float ActiveSpeechFadeOutMilliseconds = 250;
         private static readonly object activeSpeechLock = new();
         private readonly ConcurrentDictionary<IWavePlayer, CancellationTokenSource> activeSpeechTS = new();
         private static bool discardPendingSegments;
-        public List<VoiceDetails> allVoices { get; }
-
-        private readonly SystemSpeechSynthesizer systemSpeechSynth;
-        private readonly WindowsMediaSynthesizer windowsMediaSynth;
-
+        public List<VoiceDetails> validatedVoices { get; private set; } = [ ];
+        
         internal int activeSpeechPriority;
 
         public bool eddiSpeaking
@@ -50,13 +48,9 @@ namespace EddiSpeechService
 
         public readonly SpeechQueue speechQueue = new();
 
-        public SpeechManager ()
+        public async Task InitializeAsync (CancellationToken ct = default)
         {
-            AudioManager = new AudioManager();
-            
             var voiceStore = new HashSet<VoiceDetails>(); // Use a Hashset to ensure no duplicates
-
-            FetchLexiconSchemas();
 
             // Windows.Media.SpeechSynthesis isn't available on older Windows versions so we must check if we have access
             try
@@ -64,7 +58,7 @@ namespace EddiSpeechService
                 if ( IsWindowsMediaSynthesizerSupported() )
                 {
                     // Prep the Windows.Media.SpeechSynthesis synthesizer
-                    windowsMediaSynth = WindowsMediaSynthesizer.CreateAsync( voiceStore ).GetAwaiter().GetResult();
+                    windowsMediaSynth = await WindowsMediaSynthesizer.CreateAsync( voiceStore, ct ).ConfigureAwait( false );
                 }
             }
             catch ( Exception e )
@@ -89,7 +83,10 @@ namespace EddiSpeechService
             }
 
             // Sort results alphabetically by voice name
-            allVoices = voiceStore.OrderBy( v => v.name ).ToList();
+            validatedVoices.Clear();
+            validatedVoices.AddRange( voiceStore.OrderBy( v => v.name ) );
+
+            FetchLexiconSchemas();
         }
 
         public void Dispose ()
@@ -439,7 +436,7 @@ namespace EddiSpeechService
                     try
                     {
                         // Play the audio, waiting for the audio to complete unless we're in async mode
-                        await AudioManager.PlayAudioAsync( fileName, volumeOverride ).ConfigureAwait( !async );
+                        await audioManager.PlayAudioAsync( fileName, volumeOverride ).ConfigureAwait( !async );
                     }
                     catch ( OperationCanceledException )
                     {
@@ -519,7 +516,7 @@ namespace EddiSpeechService
             catch ( Exception ex )
             {
                 Logging.Warn( "Speech failed (" + Encoding.Default.EncodingName + ")", ex );
-                var voiceDetails = allVoices.FirstOrDefault( v => v.name == requestedVoice );
+                var voiceDetails = validatedVoices.FirstOrDefault( v => v.name == requestedVoice );
                 if ( voiceDetails?.synthType is nameof( Windows.Media ) && requestedVoice != windowsMediaSynth.currentVoice )
                 {
                     // Try falling back to our Windows Media default voice.
@@ -588,7 +585,7 @@ namespace EddiSpeechService
             // If the requested voice is not null and matches one we've previously found, return that voice.
             if ( !string.IsNullOrEmpty( requestedVoice ) )
             {
-                var foundVoice = allVoices
+                var foundVoice = validatedVoices
                     .FirstOrDefault( v => string.Equals( v.name, requestedVoice, StringComparison.InvariantCultureIgnoreCase ) );
                 if ( foundVoice != null )
                 {

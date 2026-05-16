@@ -7,6 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Versioning;
+using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
 using Windows.Media.SpeechSynthesis;
@@ -20,14 +21,14 @@ namespace EddiSpeechService.SpeechSynthesizers
 
         internal string currentVoice => synth.Voice.DisplayName;
         
-        public static async Task<WindowsMediaSynthesizer> CreateAsync ( HashSet<VoiceDetails> voiceStore )
+        public static async Task<WindowsMediaSynthesizer> CreateAsync ( HashSet<VoiceDetails> voiceStore, CancellationToken ct = default )
         {
             var synthesizer = new WindowsMediaSynthesizer();
-            await synthesizer.InitializeAsync( voiceStore ).ConfigureAwait( false );
+            await synthesizer.InitializeAsync( voiceStore, ct ).ConfigureAwait( false );
             return synthesizer;
         }
 
-        private async Task InitializeAsync ( HashSet<VoiceDetails> voiceStore )
+        private async Task InitializeAsync ( HashSet<VoiceDetails> voiceStore, CancellationToken ct = default )
         {
             var allVoices = SpeechSynthesizer.AllVoices.ToList();
             var voices = new List<VoiceDetails>();
@@ -50,7 +51,7 @@ namespace EddiSpeechService.SpeechSynthesizers
                         continue;
                     }
 
-                    if ( !await TryOneCoreVoiceSpeechAsync( voiceDetails ).ConfigureAwait( false ) )
+                    if ( !await TryOneCoreVoiceSpeechAsync( voiceDetails, ct ).ConfigureAwait( false ) )
                     {
                         continue;
                     }
@@ -70,7 +71,7 @@ namespace EddiSpeechService.SpeechSynthesizers
             }
         }
 
-        private async Task<bool> TryOneCoreVoiceSpeechAsync ( VoiceDetails voiceDetails )
+        private async Task<bool> TryOneCoreVoiceSpeechAsync ( VoiceDetails voiceDetails, CancellationToken ct = default )
         {
             try
             {
@@ -88,7 +89,7 @@ namespace EddiSpeechService.SpeechSynthesizers
                 // Use a short non-empty phrase. Empty-string synthesis is not a good validation case.
                 using var stream = await synth
                     .SynthesizeTextToStreamAsync( "test" )
-                    .AsTask()
+                    .AsTask( ct )
                     .ConfigureAwait( false );
 
                 return stream != null;

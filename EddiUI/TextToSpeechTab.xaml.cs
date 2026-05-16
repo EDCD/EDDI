@@ -28,7 +28,8 @@ namespace EddiUI
             };
             try
             {
-                foreach (var voice in SpeechService.Instance.allvoices)
+                SpeechService.Instance.SpeechManager.InitializeAsync().GetResultOrTimeout( TimeSpan.FromSeconds( 5 ) );
+                foreach (var voice in SpeechService.Instance.displayedVoiceNames)
                 {
                     speechOptions.Add(voice);
                 }

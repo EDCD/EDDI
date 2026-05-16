@@ -13,15 +13,15 @@ namespace EddiSpeechService
     /// <summary>Provide speech services with a varying amount of alterations to the voice</summary>
     public class SpeechService
     {
-        private AudioManager AudioManager => SpeechManager.AudioManager;
-        public readonly SpeechManager SpeechManager = new();
+        private readonly AudioManager AudioManager;
+        public readonly SpeechManager SpeechManager;
 
-        public List<string> allvoices => SpeechManager.allVoices
+        public List<VoiceDetails> validatedVoices => SpeechManager.validatedVoices;
+
+        public List<string> displayedVoiceNames => validatedVoices
             .Where(v => !v.hideVoice)
             .Select(v => v.name)
             .ToList();
-
-        public List<VoiceDetails> allVoices => SpeechManager.allVoices;
 
         public SpeechQueue speechQueue => SpeechManager.speechQueue;
 
@@ -60,6 +60,9 @@ namespace EddiSpeechService
             // Monitor and respond appropriately to changes in the state of the CompanionAppService
             CompanionAppService.Instance.StateChanged += ( _, newState ) =>
                 CompanionAppService_StateChangedAsync( newState ).SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
+
+            AudioManager = new AudioManager();
+            SpeechManager = new SpeechManager( AudioManager );
         }
 
         private async Task CompanionAppService_StateChangedAsync( CompanionAppService.State newState)
