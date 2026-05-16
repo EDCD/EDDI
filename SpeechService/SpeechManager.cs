@@ -143,6 +143,7 @@ namespace EddiSpeechService
                 }
 
                 FetchSchemasFromResource( "EddiSpeechService.Properties.pls.xsd" );
+                FetchSchemasFromResource( "EddiSpeechService.Properties.xml.xsd" );
             }
             catch ( ArgumentException ae )
             {
