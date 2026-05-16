@@ -22,7 +22,7 @@ namespace Tests
             MakeSafe();
         }
         
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public async Task TestSqlRepositoryPresent()
         {
             EDDI.Instance.DataProvider = DataProviderService.Create();
@@ -33,7 +33,7 @@ namespace Tests
             Assert.AreEqual("Sol", dbData.systemName);
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public async Task TestSqlRepositoryMissing()
         {
             EDDI.Instance.DataProvider = DataProviderService.Create();
