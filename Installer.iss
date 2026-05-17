@@ -113,10 +113,12 @@ Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: 
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: quicklaunchicon
 
 [Run]
+; Manual / non-silent installer launch option.
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
-[ThirdParty]
-UseRelativePaths=True
+; Silent in-app upgrade launch.
+; This always launches the newly installed executable.
+Filename: "{app}\{#MyAppExeName}"; Flags: nowait skipifnotsilent runasoriginaluser; Check: ShouldRunAfterInAppUpgrade
 
 [Messages]
 SelectDirBrowseLabel=To continue, click Next. If this is not your VoiceAttack 2 installation location, or you would like to put the EDDI files in a different location, click Browse.
@@ -134,6 +136,9 @@ Root: "HKCU"; Subkey: "Software\Classes\eddi\shell\open\command"; ValueType: str
 Root: "HKCU"; Subkey: "Software\Classes\eddi\shell\open\ddeexec"; ValueType: string; ValueData: "%1"; Flags: uninsdeletekey
 
 [Code]
+
+var
+  LegacySilentMigration: Boolean;
 
 function NormalizePath(const S: string): string;
 begin
@@ -183,6 +188,19 @@ begin
 end;
 
 function GetDefaultInstallDir(Param: string): string;
+var
+  AppsFolder: string;
+begin
+  if TryGetVoiceAttack2AppsDir(AppsFolder) then
+  begin
+    Result := AddBackslash(RemoveBackslashUnlessRoot(AppsFolder)) + '{#MyAppName}';
+    exit;
+  end;
+
+  Result := ExpandConstant('{userappdata}\VoiceAttack2\Apps\{#MyAppName}');
+end;
+
+function GetVoiceAttack2EddiDir: string;
 var
   AppsFolder: string;
 begin
@@ -266,11 +284,21 @@ begin
      SamePath(LegacyAppsDir, VoiceAttack2AppsDir) then
   begin
     Log(Format(
-      'VoiceAttack and VoiceAttack 2 are registered to the same Apps folder: "%s".',[LegacyAppsDir]));
+      'VoiceAttack and VoiceAttack 2 are registered to the same Apps folder: "%s".', [LegacyAppsDir]));
     exit;
   end;
 
   Result := IsUnderPath(Dir, LegacyAppsDir);
+end;
+
+function IsInAppUpgrade: Boolean;
+begin
+  Result := ExpandConstant('{param:EDDIInAppUpgrade|0}') = '1';
+end;
+
+function ShouldRunAfterInAppUpgrade: Boolean;
+begin
+  Result := IsInAppUpgrade or LegacySilentMigration;
 end;
 
 procedure RegisterCloseResource(const Dir: string);
@@ -326,6 +354,7 @@ end;
 function NextButtonClick(CurPageID: Integer): Boolean;
 var
   ChosenDir: string;
+  TargetDir: string;
 begin
   Result := True;
 
@@ -335,6 +364,18 @@ begin
 
     if IsLegacyVoiceAttackPath(ChosenDir) then
     begin
+      if WizardSilent then
+      begin
+        TargetDir := GetVoiceAttack2EddiDir;
+
+        Log(Format('Silent legacy in-app upgrade path detected. Replacing selected directory "%s" with "%s".', [ChosenDir, TargetDir]));
+
+        WizardForm.DirEdit.Text := TargetDir;
+        LegacySilentMigration := True;
+        Result := True;
+        exit;
+      end;
+
       MsgBox(
         'Installing EDDI into the legacy VoiceAttack plugin location is no longer supported.' + #13#10#13#10 +
         'Select the new VoiceAttack 2 Apps folder instead.',

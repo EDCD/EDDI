@@ -140,16 +140,18 @@ namespace EddiCore.Upgrader
                     }
                     else
                     {
-                        // Inno setup will attempt to restart this application so register it
-                        _ = EDDI.NativeMethods.RegisterApplicationRestart(null, EDDI.RestartFlags.NONE);
-
                         Logging.Info( $"Downloaded update to {updateFile}" );
                         Logging.Info( $"Path is {Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location )}" );
                         File.SetAttributes(updateFile, FileAttributes.Normal);
                         await SpeechService.Instance.SayAsync(null, Properties.Resources.starting_upgrade, 0).ConfigureAwait(false);
                         Logging.Info("Starting upgrade.");
 
-                        Process.Start(updateFile, $@"/closeapplications /restartapplications /silent /log /nocancel /noicon /dir=""{Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location )}""" );
+                        var currentInstallDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                        var args =
+                            $@"/closeapplications /silent /log /nocancel /noicon " +
+                            $@"/EDDIInAppUpgrade=1 " +
+                            $@"/dir=""{currentInstallDir}""";
+                        Process.Start( updateFile, args );
                     }
                 }
             }

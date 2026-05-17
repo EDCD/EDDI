@@ -19,7 +19,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -2941,27 +2940,6 @@ namespace EddiCore
                     Logging.Error("Exception obtaining station profile", ex);
                 }
             }
-        }
-
-        internal static class NativeMethods
-        {
-            // Required to restart app after upgrade
-            [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
-            internal static extern uint RegisterApplicationRestart(string pwzCommandLine, RestartFlags dwFlags);
-        }
-
-        // Flags for upgrade
-        [Flags]
-        internal enum RestartFlags
-        {
-            NONE = 0,
-            RESTART_CYCLICAL = 1,
-            RESTART_NOTIFY_SOLUTION = 2,
-            RESTART_NOTIFY_FAULT = 4,
-            RESTART_NO_CRASH = 8,
-            RESTART_NO_HANG = 16,
-            RESTART_NO_PATCH = 32,
-            RESTART_NO_REBOOT = 64
         }
 
         public async Task updateDestinationSystemAsync ( ulong? destinationSystemAddress, string destinationSystem = null )

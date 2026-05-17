@@ -630,9 +630,21 @@ namespace EddiUI
             OpenInBrowser( "https://github.com/EDCD/EDDI/issues/new?template=bug_report.md" );
         }
 
-        private void upgradeClicked(object sender, RoutedEventArgs e)
+        private async void upgradeClicked ( object sender, RoutedEventArgs e )
         {
-            EddiUpgrader.UpgradeAsync().ConfigureAwait(true);
+            try
+            {
+                upgradeButton.IsEnabled = false;
+                await EddiUpgrader.UpgradeAsync().ConfigureAwait( true );
+            }
+            catch ( Exception ex )
+            {
+                Logging.Error( ex.Message, ex );
+            }
+            finally
+            {
+                upgradeButton.IsEnabled = true;
+            }
         }
 
         private void EDDIClicked(object sender, RoutedEventArgs e)
