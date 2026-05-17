@@ -9,7 +9,7 @@ namespace Utilities
     {
         public const string EDDI_NAME = "EDDI";
         public const string EDDI_URL_PROTOCOL = "eddi";
-        public static readonly Version EDDI_VERSION = new( 5, 0, 1 );
+        public static readonly Version EDDI_VERSION = new( 5, 0, 2 );
         private const string EDDI_SERVER_URL = "https://github.com/EDCD/EDDI/";
         public static readonly string EDDI_SYSTEM_MUTEX_NAME = $"{EDDI_SERVER_URL}/{EDDI_NAME}/{Environment.GetEnvironmentVariable("UserName")}";
 
