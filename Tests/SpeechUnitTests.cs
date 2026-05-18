@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Threading;
 using Utilities;
 
 namespace Tests
@@ -409,6 +411,41 @@ namespace Tests
         public void TestSpeechResponderTextCompletionLookupItem ( string lineTxt, string result )
         {
             Assert.AreEqual(result, TextCompletion.GetLookupItem(lineTxt));
+        }
+
+        [TestMethod]
+        public void ShutUp_DoesNotCancelSpeechQueueWorker ()
+        {
+            var speechManager = new SpeechManager( new AudioManager() );
+            var speechQueueCts = GetSpeechQueueCts( speechManager );
+
+            Assert.IsFalse(
+                speechQueueCts.IsCancellationRequested,
+                "Precondition failed: speech queue CTS should not be cancelled before ShutUp()." );
+
+            speechManager.ShutUp();
+
+            Assert.IsFalse(
+                speechQueueCts.IsCancellationRequested,
+                "ShutUp() should clear queued speech and stop current speech without cancelling the speech queue worker CTS." );
+        }
+
+        private static CancellationTokenSource GetSpeechQueueCts ( SpeechManager speechManager )
+        {
+            var field = typeof( SpeechManager ).GetField(
+                "speechQueueCts",
+                BindingFlags.Instance | BindingFlags.NonPublic );
+
+            Assert.IsNotNull( field, "Unable to find SpeechManager.speechQueueCts." );
+
+            var value = field.GetValue( speechManager );
+
+            Assert.IsInstanceOfType(
+                value,
+                typeof( CancellationTokenSource ),
+                "SpeechManager.speechQueueCts should be a CancellationTokenSource." );
+
+            return (CancellationTokenSource)value;
         }
     }
 }

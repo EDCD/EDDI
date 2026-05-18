@@ -7,6 +7,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Installer revised to more gracefully handle installation over an existing installation of EDDI 4.1.9 or earlier (e.g. when installing VoiceAttack 2 over an existing VoiceAttack 1 installation).
   * Speech Responder
     * Fixed failing lexicon schema validation (for .pls lexicon files). (#2814) (thanks to @klightspeed)
+    * Fix `StopSpeaking()` function from creating unexpected "paused" speech outputs when used in a script which enqueues new speech. (#2815)
 
 ## 5.0.1
   * Core

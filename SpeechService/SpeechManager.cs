@@ -289,7 +289,6 @@ namespace EddiSpeechService
 
         public void ShutUp ()
         {
-            speechQueueCts.Cancel();
             speechQueue.DequeueAllSpeech();
             StopCurrentSpeech();
         }

@@ -322,7 +322,7 @@ namespace Tests.EddiVoiceAttackService
             }
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         [Timeout(15000, CooperativeCancellation = true )]
         public async Task E2E_MultiplePluginClients_ConnectSimultaneously()
         {
