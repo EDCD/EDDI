@@ -9,7 +9,11 @@ namespace EddiEvents
     {
         public const string NAME = "AFMU repairs";
         public const string DESCRIPTION = "Triggered when repairing modules using the Auto Field Maintenance Unit (AFMU)";
-        public const string SAMPLE = "{ \"timestamp\":\"2017-08-14T15:41:50Z\", \"event\":\"AfmuRepairs\", \"Module\":\"$modularcargobaydoor_name;\", \"Module_Localised\":\"Cargo Hatch\", \"FullyRepaired\":true, \"Health\":1.000000 }";
+        public static readonly string[] SAMPLES = 
+        { 
+            "{ \"timestamp\":\"2017-08-14T15:41:50Z\", \"event\":\"AfmuRepairs\", \"Module\":\"$modularcargobaydoor_name;\", \"Module_Localised\":\"Cargo Hatch\", \"FullyRepaired\":true, \"Health\":1.000000 }" ,
+            "{ \"timestamp\":\"2026-05-16T20:09:46Z\", \"event\":\"AfmuRepairs\", \"Module\":\"$modularcargobaydoorfdl_name;\", \"Module_Localised\":\"Cargo Hatch\", \"FullyRepaired\":true, \"Health\":1.000000 }"
+        };
 
         [PublicAPI("The module that was repaired")]
         public string item { get; private set; } = item;
