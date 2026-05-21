@@ -391,7 +391,7 @@ namespace Tests.EddiVoiceAttackService
 
         #region Protocol Compliance Tests
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         [Timeout(15000, CooperativeCancellation = true )]
         public async Task E2E_MessageProtocol_ConnectAck_Contains_ServerCapabilities()
         {

@@ -59,14 +59,30 @@ namespace EddiSpanshService
                         Logging.Error( "Failed to parse Spansh response", e );
                     }
                 }
-                catch ( HttpRequestException he )
+                catch ( OperationCanceledException oce ) when ( !IsCallerCancellation( cancellationToken ) )
                 {
-                    // Increment retry count and apply back-off
+                    // HttpClient timeout. Retry, then warn and return null.
                     retryCount++;
                     if ( retryCount < MaxRetries )
                     {
-                        var backoff = InitialBackoffMilliseconds * (int)Math.Pow(2, retryCount - 1); // Exponential back-off
-                        await Task.Delay( backoff, cancellationToken ).ConfigureAwait(false);
+                        await DelayBeforeRetryAsync( retryCount, cancellationToken ).ConfigureAwait( false );
+                    }
+                    else
+                    {
+                        Logging.Warn( $"Spansh API timed out during {queryGroup}/search", oce );
+                    }
+                }
+                catch ( OperationCanceledException oce ) when ( IsCallerCancellation( cancellationToken ) )
+                {
+                    Logging.Debug( $"Spansh API request canceled during {queryGroup}/search: {oce.Message}" );
+                    return null;
+                }
+                catch ( HttpRequestException he )
+                {
+                    retryCount++;
+                    if ( retryCount < MaxRetries )
+                    {
+                        await DelayBeforeRetryAsync( retryCount, cancellationToken ).ConfigureAwait( false );
                     }
                     else
                     {
@@ -110,18 +126,34 @@ namespace EddiSpanshService
                         Logging.Error( "Failed to parse Spansh response", e );
                     }
                 }
-                catch ( HttpRequestException he )
+                catch ( OperationCanceledException oce ) when ( !IsCallerCancellation( cancellationToken ) )
                 {
-                    // Increment retry count and apply back-off
+                    // HttpClient timeout. Retry, then warn and return null.
                     retryCount++;
                     if ( retryCount < MaxRetries )
                     {
-                        var backoff = InitialBackoffMilliseconds * (int)Math.Pow(2, retryCount - 1); // Exponential back-off
-                        await Task.Delay( backoff, cancellationToken ).ConfigureAwait(false);
+                        await DelayBeforeRetryAsync( retryCount, cancellationToken ).ConfigureAwait( false );
                     }
                     else
                     {
-                        Logging.Error( he.Message, he );
+                        Logging.Warn( $"Spansh API timed out during {queryGroup}/search", oce );
+                    }
+                }
+                catch ( OperationCanceledException oce ) when ( IsCallerCancellation( cancellationToken ) )
+                {
+                    Logging.Debug( $"Spansh API request canceled during {queryGroup}/search: {oce.Message}" );
+                    return null;
+                }
+                catch ( HttpRequestException he )
+                {
+                    retryCount++;
+                    if ( retryCount < MaxRetries )
+                    {
+                        await DelayBeforeRetryAsync( retryCount, cancellationToken ).ConfigureAwait( false );
+                    }
+                    else
+                    {
+                        Logging.Warn( he.Message, he );
                     }
                 }
             }
@@ -161,6 +193,17 @@ namespace EddiSpanshService
             };
 
             return new StringContent( JsonConvert.SerializeObject( jsonObject ), Encoding.UTF8, "application/json" );
+        }
+
+        private static bool IsCallerCancellation ( CancellationToken cancellationToken )
+        {
+            return cancellationToken.IsCancellationRequested;
+        }
+
+        private static async Task DelayBeforeRetryAsync ( int retryCount, CancellationToken cancellationToken )
+        {
+            var backoff = InitialBackoffMilliseconds * (int)Math.Pow( 2, retryCount - 1 );
+            await Task.Delay( backoff, cancellationToken ).ConfigureAwait( false );
         }
     }
 }

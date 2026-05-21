@@ -1290,6 +1290,11 @@ namespace EddiDataDefinitions
             {
                 return "cockpit";
             }
+
+            if ( rawEDName.Contains( "modularcargobaydoor", StringComparison.OrdinalIgnoreCase) )
+            {
+                return "modularcargobaydoor";
+            }   
             
             return rawEDName.ToLowerInvariant()
                 .Replace( "$", "" ) // Header for types from repair events

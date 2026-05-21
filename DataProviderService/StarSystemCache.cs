@@ -7,6 +7,7 @@ namespace EddiDataProviderService
     {
         private readonly SlidingExpirationCache<ulong, StarSystem> starSystemCache = new StarSystemSlidingCache( expirationSeconds );
         private readonly SlidingExpirationCache<string, ulong> starSystemNameCache = new NameToAddressSlidingCache( expirationSeconds );
+        private readonly SlidingExpirationCache<ulong, bool> missingStarSystemCache = new MissingStarSystemSlidingCache( expirationSeconds );
 
         // Store deserialized star systems in short term memory for this amount of time.
         // Storage time is reset whenever the cached value is accessed.
@@ -17,11 +18,28 @@ namespace EddiDataProviderService
         private class NameToAddressSlidingCache ( int expirationSeconds )
             : SlidingExpirationCache<string, ulong>( expirationSeconds );
 
+        private class MissingStarSystemSlidingCache ( int expirationSeconds )
+            : SlidingExpirationCache<ulong, bool>( expirationSeconds );
+
         public void AddOrUpdate ( StarSystem starSystem )
         {
             if ( starSystem is null ) { return; }
+            missingStarSystemCache.Remove( starSystem.systemAddress );
             starSystemCache.AddOrUpdate( starSystem.systemAddress, starSystem );
             starSystemNameCache.AddOrUpdate( starSystem.systemname, starSystem.systemAddress );
+        }
+
+        public bool IsUnavailable ( ulong systemAddress )
+        {
+            return missingStarSystemCache.TryGet( systemAddress, out _ );
+        }
+
+        public void MarkUnavailable ( ulong systemAddress )
+        {
+            if ( systemAddress > 0 )
+            {
+                missingStarSystemCache.AddOrUpdate( systemAddress, true );
+            }
         }
 
         public bool TryGet ( ulong systemAddress, out StarSystem result )

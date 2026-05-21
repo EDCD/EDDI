@@ -269,7 +269,7 @@ namespace EddiInaraService
             ArgumentNullException.ThrowIfNull( indexedEvents );
 
             // 200 - Success
-            if ( inaraResponse.eventStatus == HttpStatusCode.OK ) { return true; }
+            if ( inaraResponse.eventStatus == HttpStatusCode.OK || inaraResponse.eventStatus is HttpStatusCode.Accepted ) { return true; }
 
             var debugData = new Dictionary<string, object>()
             {
@@ -278,11 +278,10 @@ namespace EddiInaraService
             };
 
             // 202 and 204 - Success with warnings
-            if ( inaraResponse.eventStatus is HttpStatusCode.Accepted or HttpStatusCode.NoContent )
+            if ( inaraResponse.eventStatus is HttpStatusCode.Accepted or HttpStatusCode.NoContent && 
+                !string.IsNullOrEmpty( inaraResponse.eventStatusText ) )
             {
-                Logging.Warn(
-                    $"Inara warning/soft error reported (status {inaraResponse.eventStatus}): " +
-                    ( inaraResponse.eventStatusText ?? "(No response)" ), JsonConvert.SerializeObject( debugData ) );
+                Logging.Warn( $"Inara warning/soft error reported (status {(int)inaraResponse.eventStatus}): {inaraResponse.eventStatusText}" );
                 return true;
             }
 
