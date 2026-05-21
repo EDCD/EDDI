@@ -50,15 +50,27 @@ namespace EddiSpanshService
             {
                 HttpResponseMessage response = null;
 
-                for ( var retry = 0; retry < MaxRetries; retry++ )
+                for ( var attempt = 1; attempt <= MaxRetries; attempt++ )
                 {
-                    response = await client.GetAsync( requestUri, cancellationToken ).ConfigureAwait(false);
-                    if ( EnsureSuccess(response) )
+                    response = await client.GetAsync( requestUri, cancellationToken ).ConfigureAwait( false );
+
+                    if ( response.IsSuccessStatusCode )
                     {
                         return response;
                     }
 
-                    await Task.Delay( (int)Math.Pow( 2, retry ) * 100, cancellationToken ).ConfigureAwait(false);
+                    if ( !IsRetryableStatusCode( response.StatusCode ) )
+                    {
+                        return response;
+                    }
+
+                    if ( attempt < MaxRetries )
+                    {
+                        await Task.Delay(
+                            InitialBackoffMilliseconds * (int)Math.Pow( 2, attempt - 1 ),
+                            cancellationToken
+                        ).ConfigureAwait( false );
+                    }
                 }
 
                 return response;
@@ -109,21 +121,15 @@ namespace EddiSpanshService
             return null;
         }
 
-        private static bool EnsureSuccess ( HttpResponseMessage response )
+        private static bool IsRetryableStatusCode ( HttpStatusCode statusCode )
         {
-            if ( response == null )
-            {
-                Logging.Warn( "Spansh API did not respond" );
-                return false;
-            }
-
-            if ( !response.IsSuccessStatusCode )
-            {
-                Logging.Warn( $"Spansh API responded with: {(int)response.StatusCode} - {response.ReasonPhrase}" );
-                return false;
-            }
-
-            return true;
+            return statusCode is
+                HttpStatusCode.RequestTimeout or       // 408
+                (HttpStatusCode)429 or                 // Too Many Requests
+                HttpStatusCode.InternalServerError or  // 500
+                HttpStatusCode.BadGateway or           // 502
+                HttpStatusCode.ServiceUnavailable or   // 503
+                HttpStatusCode.GatewayTimeout;         // 504
         }
     }
 }

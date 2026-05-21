@@ -59,6 +59,11 @@ namespace EddiDataProviderService
             }
         }
 
+        public bool Remove ( TKey key )
+        {
+            return cache.TryRemove( key, out _ );
+        }
+
         private void Cleanup ( object state )
         {
             var now = DateTime.UtcNow;
