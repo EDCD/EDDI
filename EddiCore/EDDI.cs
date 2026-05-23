@@ -40,46 +40,51 @@ namespace EddiCore
         private static bool started;
         public bool running;
 
-        public bool inTelepresence { get; internal set; }
+        private readonly EddiGameState _gameState = new();
+
+        public IEddiGameState GameState => _gameState;
+
+        public bool inTelepresence
+        {
+            get => _gameState.inTelepresence;
+            internal set => _gameState.inTelepresence = value;
+        }
 
         public bool inHorizons 
         {
-            get => _inHorizons;
-            private set
-            {
-                _inHorizons = value;
-                OnPropertyChanged();
-            }
+            get => _gameState.inHorizons;
+            private set => _gameState.inHorizons = value;
         } 
-        private bool _inHorizons = true;
 
         public bool inOdyssey 
         { 
-            get => _inOdyssey;
-            private set
-            {
-                _inOdyssey = value;
-                OnPropertyChanged();
-            }
+            get => _gameState.inOdyssey;
+            private set => _gameState.inOdyssey = value;
         } 
-        private bool _inOdyssey = true;
 
-        public bool gameIsBeta { get; internal set; }
+        public bool gameIsBeta
+        {
+            get => _gameState.gameIsBeta;
+            internal set => _gameState.gameIsBeta = value;
+        }
 
         private string gameVersion
         {
-            get => _gameVersion;
+            get => _gameState.GameVersionRaw;
             set
             {
-                _gameVersion = value;
+                _gameState.GameVersionRaw = value;
                 SetGameVersion(value);
             }
         }
-        private string _gameVersion;
 
         private readonly StarSystemSignalSourceManager signalSourceManager = new();
 
-        public System.Version GameVersion { get; internal set; }
+        public System.Version GameVersion
+        {
+            get => _gameState.GameVersion;
+            internal set => _gameState.GameVersion = value;
+        }
 
         // EDDI uses APIs which only return data for the "live" galaxy, game version 4.0 or later.
         private readonly System.Version minGameVersion = new(4, 0);
@@ -181,104 +186,57 @@ namespace EddiCore
         [CanBeNull]
         public StarSystem DestinationStarSystem
         {
-            get => destinationStarSystem;
-            private set
-            {
-                void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
-                {
-                    OnPropertyChanged();
-                }
-                if (destinationStarSystem != null) { destinationStarSystem.PropertyChanged -= childPropertyChangedHandler; }
-                if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
-                destinationStarSystem = value;
-                OnPropertyChanged();
-            }
+            get => _gameState.DestinationStarSystem;
+            private set => _gameState.DestinationStarSystem = value;
         }
-        private StarSystem destinationStarSystem;
 
         public decimal DestinationDistanceLy 
         {
-            get => destinationDistanceLy;
-            set
-            {
-                if (Equals(value, destinationDistanceLy)) { return; }
-                destinationDistanceLy = value;
-                OnPropertyChanged();
-            }
+            get => _gameState.DestinationDistanceLy;
+            set => _gameState.DestinationDistanceLy = value;
         }
-        private decimal destinationDistanceLy;
 
         // Information obtained from the player journal
 
         public string Environment
         {
-            get => environment;
-            private set
-            {
-                if (Equals(value, environment)) { return; }
-                environment = value;
-                OnPropertyChanged();
-            }
+            get => _gameState.Environment;
+            private set => _gameState.Environment = value;
         }
-        private string environment;
 
         [CanBeNull]
         public StarSystem CurrentStarSystem 
         { 
-            get => currentStarSystem;
+            get => _gameState.CurrentStarSystem;
             internal set
             {
                 setSystemDistanceFromHome(value);
                 setSystemDistanceFromDestination(value);
-                void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
-                {
-                    OnPropertyChanged();
-                }
-                if (currentStarSystem != null) { currentStarSystem.PropertyChanged -= childPropertyChangedHandler; }
-                if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
-                currentStarSystem = value;
-                OnPropertyChanged(); 
+                _gameState.CurrentStarSystem = value;
             } 
         }
-        private StarSystem currentStarSystem;
 
         [CanBeNull]
         public StarSystem LastStarSystem
         {
-            get => lastStarSystem;
+            get => _gameState.LastStarSystem;
             internal set
             {
                 setSystemDistanceFromHome(value);
-                void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
-                {
-                    OnPropertyChanged();
-                }
-                if (lastStarSystem != null) { lastStarSystem.PropertyChanged -= childPropertyChangedHandler; }
-                if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
-                lastStarSystem = value;
-                OnPropertyChanged();
+                _gameState.LastStarSystem = value;
             }
         }
-        private StarSystem lastStarSystem;
 
         [CanBeNull]
         public StarSystem NextStarSystem
         {
-            get => nextStarSystem;
+            get => _gameState.NextStarSystem;
             internal set
             {
                 setSystemDistanceFromHome(value);
-                void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
-                {
-                    OnPropertyChanged();
-                }
-                if (nextStarSystem != null) { nextStarSystem.PropertyChanged -= childPropertyChangedHandler; }
-                if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
-                nextStarSystem = value;
-                OnPropertyChanged();
+                _gameState.NextStarSystem = value;
             }
         }
-        private StarSystem nextStarSystem;
 
         /// <summary>
         /// The currently docked station, if any
@@ -286,20 +244,9 @@ namespace EddiCore
         [CanBeNull]
         public Station CurrentStation
         {
-            get => currentStation;
-            private set
-            {
-                void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
-                {
-                    OnPropertyChanged();
-                }
-                if (currentStation != null) { currentStation.PropertyChanged -= childPropertyChangedHandler; }
-                if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
-                currentStation = value;
-                OnPropertyChanged();
-            }
+            get => _gameState.CurrentStation;
+            private set => _gameState.CurrentStation = value;
         }
-        private Station currentStation;
 
         /// <summary>
         /// The currently nearby star system (within the gravity well), if any
@@ -307,77 +254,33 @@ namespace EddiCore
         [CanBeNull]
         public Body CurrentStellarBody 
         {
-            get => currentStellarBody;
-            private set
-            {
-                void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
-                {
-                    OnPropertyChanged();
-                }
-                if (currentStellarBody != null) { currentStellarBody.PropertyChanged -= childPropertyChangedHandler; }
-                if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
-                currentStellarBody = value;
-                OnPropertyChanged();
-            }
+            get => _gameState.CurrentStellarBody;
+            private set => _gameState.CurrentStellarBody = value;
         }
-        private Body currentStellarBody;
 
         [CanBeNull]
         public FleetCarrier FleetCarrier
         {
-            get => _fleetCarrier;
-            set
-            {
-                void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
-                {
-                    OnPropertyChanged();
-                }
-                if (_fleetCarrier != null) { _fleetCarrier.PropertyChanged -= childPropertyChangedHandler; }
-                if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
-
-                _fleetCarrier = value;
-                OnPropertyChanged();
-            }
+            get => _gameState.FleetCarrier;
+            set => _gameState.FleetCarrier = value;
         }
-        private FleetCarrier _fleetCarrier;
 
         [CanBeNull]
         public FleetCarrier SquadronCarrier
         {
-            get => _squadronCarrier;
-            set
-            {
-                void childPropertyChangedHandler ( object sender, PropertyChangedEventArgs e )
-                {
-                    OnPropertyChanged();
-                }
-                if ( _squadronCarrier != null )
-                { _squadronCarrier.PropertyChanged -= childPropertyChangedHandler; }
-                if ( value != null )
-                { value.PropertyChanged += childPropertyChangedHandler; }
-
-                _squadronCarrier = value;
-                OnPropertyChanged();
-            }
+            get => _gameState.SquadronCarrier;
+            set => _gameState.SquadronCarrier = value;
         }
-        private FleetCarrier _squadronCarrier;
 
         [CanBeNull]
         public Ship CurrentShip
         {
-            get => _currentShip;
+            get => _gameState.CurrentShip;
             set
             {
-                if (Equals(value, _currentShip)) return;
-                void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
-                {
-                    OnPropertyChanged();
-                }
-                if (_currentShip != null) { _currentShip.PropertyChanged -= childPropertyChangedHandler; }
-                if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
-                _currentShip = value;
+                if (Equals(value, _gameState.CurrentShip)) return;
                 StatusService.Instance.CurrentShip = value;
-                OnPropertyChanged();
+                _gameState.CurrentShip = value;
             }
         }
 
@@ -387,14 +290,9 @@ namespace EddiCore
         // Current vehicle of player
         public string Vehicle
         {
-            get => vehicle;
-            set
-            {
-                vehicle = value;
-                OnPropertyChanged();
-            }
+            get => _gameState.Vehicle;
+            set => _gameState.Vehicle = value;
         }
-        private string vehicle = Constants.VEHICLE_SHIP;
 
         public readonly ObservableConcurrentDictionary<string, object> State = [ ];
 
@@ -407,6 +305,7 @@ namespace EddiCore
 
         private EDDI()
         {
+            _gameState.PropertyChanged += ( _, e ) => OnPropertyChanged( e.PropertyName );
             running = true;
             try
             {
@@ -1452,7 +1351,7 @@ namespace EddiCore
                 // Update Thargoid war data, when available
                 CurrentStarSystem.ThargoidWar = @event.ThargoidWar;
 
-                if ( currentStation != null )
+                if ( CurrentStation != null )
                 {
                     // Add our carrier to the new current star system
                     CurrentStarSystem.AddOrUpdateStation( CurrentStation );
@@ -1492,7 +1391,7 @@ namespace EddiCore
                 CurrentStarSystem.powerAcquisitionProgress = @event.powerAcquisitionProgress;
                 CurrentStarSystem.powerControlProgress = @event.powerControlProgress;
                 CurrentStarSystem.powerReinforcementControlPoints = @event.powerReinforcementControlPoints;
-                currentStarSystem.powerUnderminingControlPoints = @event.powerUnderminingControlPoints;
+                CurrentStarSystem.powerUnderminingControlPoints = @event.powerUnderminingControlPoints;
 
                 // Update to most recent information
                 CurrentStarSystem.visitLog.Add( @event.timestamp );
@@ -2046,9 +1945,9 @@ namespace EddiCore
 
                     // Post an update event for new market data
                     // Don't proceed if the data was already updated this visit
-                    if ( !currentStation.marketUpdatedThisVisit )
+                    if ( !CurrentStation.marketUpdatedThisVisit )
                     {
-                        currentStation.marketUpdatedThisVisit = true;
+                        CurrentStation.marketUpdatedThisVisit = true;
                         enqueueEvent( new MarketInformationUpdatedEvent( theEvent.timestamp, theEvent.marketId,
                             theEvent.station, theEvent.system, [ "market" ] ) { raw = theEvent.raw } );
                     }
@@ -2096,9 +1995,9 @@ namespace EddiCore
 
                     // Post an update event for new outfitting data
                     // Don't proceed if the data was already updated this visit
-                    if ( !currentStation.outfittingUpdatedThisVisit )
+                    if ( !CurrentStation.outfittingUpdatedThisVisit )
                     {
-                        currentStation.outfittingUpdatedThisVisit = true;
+                        CurrentStation.outfittingUpdatedThisVisit = true;
                         enqueueEvent( new MarketInformationUpdatedEvent( theEvent.timestamp, theEvent.marketId,
                             theEvent.station, theEvent.system, [ "outfitting" ] )
                         {
@@ -2148,9 +2047,9 @@ namespace EddiCore
 
                     // Post an update event for new shipyard data
                     // Don't proceed if the data was already updated this visit
-                    if ( !currentStation.shipyardUpdatedThisVisit )
+                    if ( !CurrentStation.shipyardUpdatedThisVisit )
                     {
-                        currentStation.shipyardUpdatedThisVisit = true;
+                        CurrentStation.shipyardUpdatedThisVisit = true;
                         enqueueEvent( new MarketInformationUpdatedEvent( theEvent.timestamp, theEvent.marketId,
                             theEvent.station, theEvent.system, [ "shipyard" ] )
                         {
@@ -2211,7 +2110,7 @@ namespace EddiCore
                 signalSourceManager.Register( CurrentStarSystem );
 
                 // If we've arrived at our destination system then clear it
-                if ( destinationStarSystem?.systemAddress == currentStarSystem.systemAddress )
+                if ( DestinationStarSystem?.systemAddress == CurrentStarSystem.systemAddress )
                 {
                     await updateDestinationSystemAsync( null ).ConfigureAwait(false);
                 }
@@ -2279,7 +2178,7 @@ namespace EddiCore
                 {
                     bodyType = BodyType.Star,
                     systemname = NextStarSystem.systemname,
-                    systemAddress = nextStarSystem.systemAddress,
+                    systemAddress = NextStarSystem.systemAddress,
                     distance = 0M,
                     stellarclass = @event.starclass
                 };
@@ -2397,7 +2296,7 @@ namespace EddiCore
             CurrentStarSystem.powerAcquisitionProgress = theEvent.powerAcquisitionProgress;
             CurrentStarSystem.powerControlProgress = theEvent.powerControlProgress;
             CurrentStarSystem.powerReinforcementControlPoints = theEvent.powerReinforcementControlPoints;
-            currentStarSystem.powerUnderminingControlPoints = theEvent.powerUnderminingControlPoints;
+            CurrentStarSystem.powerUnderminingControlPoints = theEvent.powerUnderminingControlPoints;
 
             // Update to most recent information
             CurrentStarSystem.visitLog.Add( theEvent.timestamp );
@@ -2749,7 +2648,7 @@ namespace EddiCore
         private void setSystemDistanceFromDestination(StarSystem system)
         {
             if (DestinationStarSystem is null) { return; }
-            DestinationDistanceLy = system.DistanceFromStarSystem(destinationStarSystem) ?? 0;
+            DestinationDistanceLy = system.DistanceFromStarSystem(DestinationStarSystem) ?? 0;
             Logging.Debug("Distance from destination system is " + DestinationDistanceLy);
         }
 
@@ -2894,8 +2793,6 @@ namespace EddiCore
             }
             return foundResponders;
         }
-
-        private Ship _currentShip;
 
         /// <summary>
         /// Update the profile when requested, ensuring that we meet the condition in the updated profile

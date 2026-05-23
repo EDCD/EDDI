@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -119,6 +120,83 @@ namespace Tests
         public void start()
         {
             MakeSafe();
+        }
+
+        [TestMethod]
+        public void EddiGameState_AssigningProperty_RaisesPropertyChanged ()
+        {
+            var gameState = new EddiGameState();
+            var propertyNames = new List<string>();
+            gameState.PropertyChanged += ( _, args ) => propertyNames.Add( args.PropertyName );
+
+            gameState.Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
+
+            Assert.Contains( nameof(EddiGameState.Environment), propertyNames );
+            Assert.AreEqual( Constants.ENVIRONMENT_NORMAL_SPACE, gameState.Environment );
+        }
+
+        [TestMethod]
+        public void EddiGameState_ReplacingChild_UnsubscribesPreviousChild ()
+        {
+            var gameState = new EddiGameState();
+            var oldSystem = new StarSystem { systemname = "Old", systemAddress = 1 };
+            var newSystem = new StarSystem { systemname = "New", systemAddress = 2 };
+            var propertyNames = new List<string>();
+            gameState.PropertyChanged += ( _, args ) => propertyNames.Add( args.PropertyName );
+
+            gameState.CurrentStarSystem = oldSystem;
+            gameState.CurrentStarSystem = newSystem;
+            propertyNames.Clear();
+
+            oldSystem.totalbodies = 1;
+            Assert.IsFalse( propertyNames.Contains( nameof(EddiGameState.CurrentStarSystem) ) );
+
+            newSystem.totalbodies = 2;
+            Assert.Contains( nameof(EddiGameState.CurrentStarSystem), propertyNames );
+        }
+
+        [TestMethod]
+        public void EddiGameState_ChildChange_RaisesOwningPropertyName ()
+        {
+            var gameState = new EddiGameState();
+            var ship = new Ship();
+            var propertyNames = new List<string>();
+            gameState.CurrentShip = ship;
+            gameState.PropertyChanged += ( _, args ) => propertyNames.Add( args.PropertyName );
+
+            ship.value = 42;
+
+            Assert.Contains( nameof(EddiGameState.CurrentShip), propertyNames );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void EddiFacade_ReRaisesGameStatePropertyChanged ()
+        {
+            var eddi = EDDI.Instance;
+            var originalVehicle = eddi.Vehicle;
+            var propertyNames = new List<string>();
+            eddi.PropertyChanged += handler;
+
+            try
+            {
+                var gameState = (EddiGameState)eddi.GameState;
+
+                gameState.Vehicle = "test vehicle";
+
+                Assert.Contains( nameof(EDDI.Vehicle), propertyNames );
+            }
+            finally
+            {
+                eddi.PropertyChanged -= handler;
+                eddi.Vehicle = originalVehicle;
+            }
+
+            return;
+
+            void handler ( object sender, PropertyChangedEventArgs args )
+            {
+                propertyNames.Add( args.PropertyName );
+            }
         }
 
         [TestMethod]
