@@ -235,13 +235,13 @@ namespace EddiSpeechResponder.ScriptResolverService
 
                     // Standard simple variables
                     [ "capi_active" ] = new( typeof(bool), CompanionAppService.Instance?.active ?? false ),
-                    [ "destinationdistance" ] = new( typeof(decimal), EDDI.Instance.DestinationDistanceLy ),
+                    [ "destinationdistance" ] = new( typeof(decimal), EDDI.Instance.GameState.DestinationDistanceLy ),
                     [ "searchdistance" ] = new( typeof(decimal), NavigationService.Instance.SearchDistanceLy ),
-                    [ "environment" ] = new( typeof(string), EDDI.Instance.Environment ),
-                    [ "horizons" ] = new( typeof(bool), EDDI.Instance.inHorizons ),
-                    [ "odyssey" ] = new( typeof(bool), EDDI.Instance.inOdyssey ),
+                    [ "environment" ] = new( typeof(string), EDDI.Instance.GameState.Environment ),
+                    [ "horizons" ] = new( typeof(bool), EDDI.Instance.GameState.inHorizons ),
+                    [ "odyssey" ] = new( typeof(bool), EDDI.Instance.GameState.inOdyssey ),
                     [ "va_active" ] = new( typeof(bool), EDDI.Instance.FromVA ),
-                    [ "vehicle" ] = new( typeof(string), EDDI.Instance.Vehicle ),
+                    [ "vehicle" ] = new( typeof(string), EDDI.Instance.GameState.Vehicle ),
                     [ "icao_active" ] = new( typeof(bool), ConfigService.Instance.speechServiceConfiguration.EnableIcao ),
                     [ "ipa_active" ] = new( typeof(bool), !ConfigService.Instance.speechServiceConfiguration.DisableIpa ),
                     [ "version" ] = new( typeof(string), Constants.EDDI_VERSION.ShortString )
@@ -249,31 +249,31 @@ namespace EddiSpeechResponder.ScriptResolverService
 
                 // Standard objects
 
-                if ( EDDI.Instance.CurrentStarSystem != null )
+                if ( EDDI.Instance.GameState.CurrentStarSystem != null )
                 {
                     dict[ "system" ] = new Tuple<Type, Value>( typeof(StarSystem),
-                        Value.FromReflection( EDDI.Instance.CurrentStarSystem,
+                        Value.FromReflection( EDDI.Instance.GameState.CurrentStarSystem,
                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
                 }
 
-                if ( EDDI.Instance.LastStarSystem != null )
+                if ( EDDI.Instance.GameState.LastStarSystem != null )
                 {
                     dict[ "lastsystem" ] = new Tuple<Type, Value>( typeof(StarSystem),
-                        Value.FromReflection( EDDI.Instance.LastStarSystem,
+                        Value.FromReflection( EDDI.Instance.GameState.LastStarSystem,
                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
                 }
 
-                if ( EDDI.Instance.NextStarSystem != null )
+                if ( EDDI.Instance.GameState.NextStarSystem != null )
                 {
                     dict[ "nextsystem" ] = new Tuple<Type, Value>( typeof(StarSystem),
-                        Value.FromReflection( EDDI.Instance.NextStarSystem,
+                        Value.FromReflection( EDDI.Instance.GameState.NextStarSystem,
                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
                 }
 
-                if ( EDDI.Instance.DestinationStarSystem != null )
+                if ( EDDI.Instance.GameState.DestinationStarSystem != null )
                 {
                     dict[ "destinationsystem" ] = new Tuple<Type, Value>( typeof(StarSystem),
-                        Value.FromReflection( EDDI.Instance.DestinationStarSystem,
+                        Value.FromReflection( EDDI.Instance.GameState.DestinationStarSystem,
                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
                 }
 
@@ -291,17 +291,17 @@ namespace EddiSpeechResponder.ScriptResolverService
                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
                 }
 
-                if ( EDDI.Instance.CurrentStation != null )
+                if ( EDDI.Instance.GameState.CurrentStation != null )
                 {
                     dict[ "station" ] = new Tuple<Type, Value>( typeof(Station),
-                        Value.FromReflection( EDDI.Instance.CurrentStation,
+                        Value.FromReflection( EDDI.Instance.GameState.CurrentStation,
                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
                 }
 
-                if ( EDDI.Instance.CurrentStellarBody != null )
+                if ( EDDI.Instance.GameState.CurrentStellarBody != null )
                 {
                     dict[ "body" ] = new Tuple<Type, Value>( typeof(Body),
-                        Value.FromReflection( EDDI.Instance.CurrentStellarBody,
+                        Value.FromReflection( EDDI.Instance.GameState.CurrentStellarBody,
                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
                 }
 

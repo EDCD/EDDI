@@ -25,7 +25,7 @@ namespace EddiSpeechResponder.CustomFunctions
                 if ( values.Count < 2 || string.IsNullOrEmpty( values[ 1 ].AsString ) )
                 {
                     // Current system
-                    system = EDDI.Instance.CurrentStarSystem;
+                    system = EDDI.Instance.GameState.CurrentStarSystem;
                 }
                 else
                 {
@@ -42,7 +42,7 @@ namespace EddiSpeechResponder.CustomFunctions
             }
             else
             {
-                body = EDDI.Instance.CurrentStellarBody;
+                body = EDDI.Instance.GameState.CurrentStellarBody;
             }
 
             return body is null

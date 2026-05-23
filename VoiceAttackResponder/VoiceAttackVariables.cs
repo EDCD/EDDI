@@ -39,18 +39,18 @@ namespace EddiVoiceAttackResponder
         // The following variables notify changes via `PropertyChanged`
         private static readonly Dictionary<string, Action> StandardValues = new()
         {
-            { nameof(EDDI.Instance.CurrentStarSystem), () => setStarSystemValues(EDDI.Instance.CurrentStarSystem, "System") },
-            { nameof(EDDI.Instance.LastStarSystem), () => setStarSystemValues(EDDI.Instance.LastStarSystem, "Last system") },
-            { nameof(EDDI.Instance.NextStarSystem), () => setStarSystemValues(EDDI.Instance.NextStarSystem, "Next system") },
-            { nameof(EDDI.Instance.DestinationStarSystem), () => setStarSystemValues(EDDI.Instance.DestinationStarSystem, "Destination system") },
-            { nameof(EDDI.Instance.DestinationDistanceLy), () => RuntimeSetDecimal("Destination system distance", EDDI.Instance.DestinationDistanceLy) },
-            { nameof(EDDI.Instance.CurrentStellarBody), () => setDetailedBodyValues(EDDI.Instance.CurrentStellarBody, "Body") },
-            { nameof(EDDI.Instance.CurrentStation), () => setStationValues(EDDI.Instance.CurrentStation, "Current station") },
-            { nameof(EDDI.Instance.CurrentShip), () => setShipValues(ResolveCurrentShip(), "Ship") },
-            { nameof(EDDI.Instance.Environment), () => RuntimeSetText("Environment", EDDI.Instance.Environment) },
-            { nameof(EDDI.Instance.Vehicle), () => RuntimeSetText("Vehicle", EDDI.Instance.Vehicle) },
-            { nameof(EDDI.Instance.inHorizons), () => RuntimeSetBoolean("horizons", EDDI.Instance.inHorizons) },
-            { nameof(EDDI.Instance.inOdyssey), () => RuntimeSetBoolean("odyssey", EDDI.Instance.inOdyssey) },
+            { nameof(EDDI.Instance.GameState.CurrentStarSystem), () => setStarSystemValues(EDDI.Instance.GameState.CurrentStarSystem, "System") },
+            { nameof(EDDI.Instance.GameState.LastStarSystem), () => setStarSystemValues(EDDI.Instance.GameState.LastStarSystem, "Last system") },
+            { nameof(EDDI.Instance.GameState.NextStarSystem), () => setStarSystemValues(EDDI.Instance.GameState.NextStarSystem, "Next system") },
+            { nameof(EDDI.Instance.GameState.DestinationStarSystem), () => setStarSystemValues(EDDI.Instance.GameState.DestinationStarSystem, "Destination system") },
+            { nameof(EDDI.Instance.GameState.DestinationDistanceLy), () => RuntimeSetDecimal("Destination system distance", EDDI.Instance.GameState.DestinationDistanceLy) },
+            { nameof(EDDI.Instance.GameState.CurrentStellarBody), () => setDetailedBodyValues(EDDI.Instance.GameState.CurrentStellarBody, "Body") },
+            { nameof(EDDI.Instance.GameState.CurrentStation), () => setStationValues(EDDI.Instance.GameState.CurrentStation, "Current station") },
+            { nameof(EDDI.Instance.GameState.CurrentShip), () => setShipValues(ResolveCurrentShip(), "Ship") },
+            { nameof(EDDI.Instance.GameState.Environment), () => RuntimeSetText("Environment", EDDI.Instance.GameState.Environment) },
+            { nameof(EDDI.Instance.GameState.Vehicle), () => RuntimeSetText("Vehicle", EDDI.Instance.GameState.Vehicle) },
+            { nameof(EDDI.Instance.GameState.inHorizons), () => RuntimeSetBoolean("horizons", EDDI.Instance.GameState.inHorizons) },
+            { nameof(EDDI.Instance.GameState.inOdyssey), () => RuntimeSetBoolean("odyssey", EDDI.Instance.GameState.inOdyssey) },
         };
 
         // Cache property names extracted from fully-qualified keys for lookups during PropertyChanged events
@@ -121,13 +121,13 @@ namespace EddiVoiceAttackResponder
                             // Determine if the property has data before executing the action
                             var hasData = standardValue.Key switch
                             {
-                                var k when k.Contains(nameof(EDDI.Instance.CurrentStarSystem)) => EDDI.Instance.CurrentStarSystem != null,
-                                var k when k.Contains(nameof(EDDI.Instance.LastStarSystem)) => EDDI.Instance.LastStarSystem != null,
-                                var k when k.Contains(nameof(EDDI.Instance.NextStarSystem)) => EDDI.Instance.NextStarSystem != null,
-                                var k when k.Contains(nameof(EDDI.Instance.DestinationStarSystem)) => EDDI.Instance.DestinationStarSystem != null,
-                                var k when k.Contains(nameof(EDDI.Instance.CurrentStellarBody)) => EDDI.Instance.CurrentStellarBody != null,
-                                var k when k.Contains(nameof(EDDI.Instance.CurrentStation)) => EDDI.Instance.CurrentStation != null,
-                                var k when k.Contains(nameof(EDDI.Instance.CurrentShip)) => ResolveCurrentShip() != null,
+                                var k when k.Contains(nameof(EDDI.Instance.GameState.CurrentStarSystem)) => EDDI.Instance.GameState.CurrentStarSystem != null,
+                                var k when k.Contains(nameof(EDDI.Instance.GameState.LastStarSystem)) => EDDI.Instance.GameState.LastStarSystem != null,
+                                var k when k.Contains(nameof(EDDI.Instance.GameState.NextStarSystem)) => EDDI.Instance.GameState.NextStarSystem != null,
+                                var k when k.Contains(nameof(EDDI.Instance.GameState.DestinationStarSystem)) => EDDI.Instance.GameState.DestinationStarSystem != null,
+                                var k when k.Contains(nameof(EDDI.Instance.GameState.CurrentStellarBody)) => EDDI.Instance.GameState.CurrentStellarBody != null,
+                                var k when k.Contains(nameof(EDDI.Instance.GameState.CurrentStation)) => EDDI.Instance.GameState.CurrentStation != null,
+                                var k when k.Contains(nameof(EDDI.Instance.GameState.CurrentShip)) => ResolveCurrentShip() != null,
                                 _ => true, // Other properties are assumed to always have data
                             };
 
@@ -376,7 +376,7 @@ namespace EddiVoiceAttackResponder
 
         private static Ship ResolveCurrentShip ()
         {
-            var currentShip = EDDI.Instance.CurrentShip;
+            var currentShip = EDDI.Instance.GameState.CurrentShip;
 
             if ( currentShip != null )
             {
@@ -438,9 +438,9 @@ namespace EddiVoiceAttackResponder
                     setShipModuleValues( ship?.sensors, $"{prefix} sensors" );
                     setShipModuleValues( ship?.fueltank, $"{prefix} fuel tank" );
 
-                    if ( EDDI.Instance.CurrentStation is not null && EDDI.Instance.CurrentStation.outfitting.Count > 0 )
+                    if ( EDDI.Instance.GameState.CurrentStation is not null && EDDI.Instance.GameState.CurrentStation.outfitting.Count > 0 )
                     {
-                        var stationOutfitting = EDDI.Instance.CurrentStation?.outfitting.ToList();
+                        var stationOutfitting = EDDI.Instance.GameState.CurrentStation?.outfitting.ToList();
                         setShipModuleOutfittingValues( ship?.bulkheads, stationOutfitting, $"{prefix} bulkheads" );
                         setShipModuleOutfittingValues( ship?.powerplant, stationOutfitting, $"{prefix} power plant" );
                         setShipModuleOutfittingValues( ship?.thrusters, stationOutfitting, $"{prefix} thrusters" );
@@ -494,7 +494,7 @@ namespace EddiVoiceAttackResponder
                 RuntimeSetInt( $"{baseCompartmentName} size", Compartment?.size );
                 RuntimeSetBoolean( $"{baseCompartmentName} occupied", Compartment?.module != null );
                 setShipModuleValues( Compartment?.module, $"{baseCompartmentName} module" );
-                setShipModuleOutfittingValues( Compartment?.module, EDDI.Instance.CurrentStation?.outfitting,
+                setShipModuleOutfittingValues( Compartment?.module, EDDI.Instance.GameState.CurrentStation?.outfitting,
                     $"{baseCompartmentName} module" );
             }
             RuntimeSetInt( $"{prefix} compartments", filledCompartments );
@@ -515,7 +515,7 @@ namespace EddiVoiceAttackResponder
                     var Hardpoint = j <= (hardpointsAtSize.Count - 1) ? hardpointsAtSize[j] : null;
                     RuntimeSetBoolean( $"{baseHardpointName} occupied", Hardpoint?.module != null );
                     setShipModuleValues( Hardpoint?.module, $"{baseHardpointName} module" );
-                    setShipModuleOutfittingValues( Hardpoint?.module, EDDI.Instance.CurrentStation?.outfitting,
+                    setShipModuleOutfittingValues( Hardpoint?.module, EDDI.Instance.GameState.CurrentStation?.outfitting,
                         $"{baseHardpointName} module" );
                 }
                 RuntimeSetInt( $"{prefix} {invariantSizeNames[ i ]} hardpoints", hardpointsAtSize.Count );

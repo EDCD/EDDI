@@ -286,8 +286,8 @@ namespace EddiMissionMonitor
             var mission = missions.FirstOrDefault( h => h.missionid == @event.missionid );
             if ( mission != null )
             {
-                mission.sourcesystem = EDDI.Instance.CurrentStarSystem?.systemname;
-                mission.sourcebody = EDDI.Instance.CurrentStellarBody?.bodyname;
+                mission.sourcesystem = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
+                mission.sourcebody = EDDI.Instance.GameState.CurrentStellarBody?.bodyname;
             }
             return true;
         }
@@ -309,8 +309,8 @@ namespace EddiMissionMonitor
             var collectMissions = missions.Where( m => m.CommodityDefinition?.edname == @event.commodityDefinition.edname && m.tagsList.Contains( MissionType.Collect ) ).ToList();
             foreach ( var mission in collectMissions )
             {
-                mission.sourcesystem = EDDI.Instance.CurrentStarSystem?.systemname;
-                mission.sourcebody = EDDI.Instance.CurrentStation?.name;
+                mission.sourcesystem = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
+                mission.sourcebody = EDDI.Instance.GameState.CurrentStation?.name;
             }
             return collectMissions.Count > 0;
         }
@@ -332,8 +332,8 @@ namespace EddiMissionMonitor
             var miningMissions = missions.Where( m => m.CommodityDefinition?.edname == @event.commodityDefinition.edname && m.tagsList.Contains( MissionType.Mining ) ).ToList();
             foreach ( var mission in miningMissions )
             {
-                mission.sourcesystem = EDDI.Instance.CurrentStarSystem?.systemname;
-                mission.sourcebody = EDDI.Instance.CurrentStation?.name;
+                mission.sourcesystem = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
+                mission.sourcebody = EDDI.Instance.GameState.CurrentStation?.name;
             }
             return miningMissions.Count > 0;
         }
@@ -359,7 +359,7 @@ namespace EddiMissionMonitor
                     // A `MissionRedirected` journal event isn't written for each waypoint in multi-destination passenger missions, so we handle those here.
                     if ( mission.tagsList.Contains(MissionType.SightSeeing) )
                     {
-                        var system = mission.destinationsystems.FirstOrDefault(s => s.systemAddress == EDDI.Instance.CurrentStarSystem?.systemAddress);
+                        var system = mission.destinationsystems.FirstOrDefault(s => s.systemAddress == EDDI.Instance.GameState.CurrentStarSystem?.systemAddress);
                         if ( system != null )
                         {
                             system.visited = true;
@@ -370,7 +370,7 @@ namespace EddiMissionMonitor
                                 // Set destination system to next in chain & trigger a 'Mission redirected' event
                                 EDDI.Instance.enqueueEvent( new MissionRedirectedEvent( DateTime.UtcNow,
                                     mission.missionid, mission.name, null, null, waypointSystemName,
-                                    EDDI.Instance.CurrentStarSystem?.systemname ) );
+                                    EDDI.Instance.GameState.CurrentStarSystem?.systemname ) );
                             }
 
                             return true;
@@ -719,16 +719,16 @@ namespace EddiMissionMonitor
             // Update mission details and generate wing update events where appropriate
             if ( @event.updatetype == "Collect" )
             {
-                mission.sourcesystem = EDDI.Instance.CurrentStarSystem?.systemname;
-                mission.sourcebody = EDDI.Instance.CurrentStation?.name;
-                mission.originsystem = EDDI.Instance.CurrentStarSystem?.systemname;
-                mission.originstation = EDDI.Instance.CurrentStation?.name;
+                mission.sourcesystem = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
+                mission.sourcebody = EDDI.Instance.GameState.CurrentStation?.name;
+                mission.originsystem = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
+                mission.originstation = EDDI.Instance.GameState.CurrentStation?.name;
             }
 
             if ( @event.updatetype == "Deliver" )
             {
-                mission.originsystem = EDDI.Instance.CurrentStarSystem?.systemname;
-                mission.originstation = EDDI.Instance.CurrentStation?.name;
+                mission.originsystem = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
+                mission.originstation = EDDI.Instance.GameState.CurrentStation?.name;
             }
             else if ( @event.updatetype == "WingUpdate" )
             {

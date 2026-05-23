@@ -126,7 +126,7 @@ namespace EddiNavigationService.QueryResolvers
         /// <returns> The query result </returns>
         private static async Task<RouteDetailsEvent> GetCarrierRouteAsync ( [NotNull] string targetSystemName, [NotNull] StarSystem startSystem, long? usedCarrierCapacity = 0, string[] refuelDestinations = null, bool fromUIquery = false )
         {
-            usedCarrierCapacity ??= EDDI.Instance.FleetCarrier?.usedCapacity;
+            usedCarrierCapacity ??= EDDI.Instance.GameState.FleetCarrier?.usedCapacity;
             if ( usedCarrierCapacity is null ) { return null; }
 
             var plottedRouteList = await EDDI.Instance.DataProvider.FetchCarrierRouteAsync( startSystem.systemname,

@@ -357,14 +357,14 @@ namespace EddiVoiceAttackResponder
             Logging.Debug( "Entered" );
             try
             {
-                if ( EDDI.Instance.CurrentStarSystem == null )
+                if ( EDDI.Instance.GameState.CurrentStarSystem == null )
                 {
                     Logging.Debug( "No information on current system" );
                     return;
                 }
 
                 var systemUri =
-                    $"https://inara.cz/elite/starsystem/?search={EDDI.Instance.CurrentStarSystem.systemAddress}";
+                    $"https://inara.cz/elite/starsystem/?search={EDDI.Instance.GameState.CurrentStarSystem.systemAddress}";
                 OpenOrStoreURI( systemUri );
             }
             catch ( Exception e )
@@ -380,20 +380,20 @@ namespace EddiVoiceAttackResponder
             Logging.Debug( "Entered" );
             try
             {
-                if ( EDDI.Instance.CurrentStarSystem == null )
+                if ( EDDI.Instance.GameState.CurrentStarSystem == null )
                 {
                     Logging.Debug( "No information on current station" );
                     return;
                 }
 
-                if ( EDDI.Instance.CurrentStation == null )
+                if ( EDDI.Instance.GameState.CurrentStation == null )
                 {
                     // Missing current star system information
                     Logging.Debug( "No information on current station" );
                     return;
                 }
 
-                var stationUri = $"https://inara.cz/elite/station/?search={EDDI.Instance.CurrentStation.marketId}";
+                var stationUri = $"https://inara.cz/elite/station/?search={EDDI.Instance.GameState.CurrentStation.marketId}";
                 OpenOrStoreURI( stationUri );
             }
             catch ( Exception e )
@@ -409,14 +409,14 @@ namespace EddiVoiceAttackResponder
             Logging.Debug( "Entered" );
             try
             {
-                if ( EDDI.Instance.FleetCarrier == null )
+                if ( EDDI.Instance.GameState.FleetCarrier == null )
                 {
                     Logging.Debug( "No information on fleet carrier" );
                     return;
                 }
 
                 var carrierUri =
-                    $"https://inara.cz/elite/cmdr-fleetcarrier/?search={EDDI.Instance.FleetCarrier.callsign}";
+                    $"https://inara.cz/elite/cmdr-fleetcarrier/?search={EDDI.Instance.GameState.FleetCarrier.callsign}";
                 OpenOrStoreURI( carrierUri );
             }
             catch ( Exception e )
@@ -455,13 +455,13 @@ namespace EddiVoiceAttackResponder
             Logging.Debug( "Entered" );
             try
             {
-                if ( EDDI.Instance.CurrentShip == null )
+                if ( EDDI.Instance.GameState.CurrentShip == null )
                 {
                     Logging.Debug( "No information on ship" );
                     return;
                 }
 
-                var shipUri = EDDI.Instance.CurrentShip.CoriolisUri( beta );
+                var shipUri = EDDI.Instance.GameState.CurrentShip.CoriolisUri( beta );
                 OpenOrStoreURI( shipUri );
             }
             catch ( Exception e )
@@ -477,13 +477,13 @@ namespace EddiVoiceAttackResponder
             Logging.Debug( "Entered" );
             try
             {
-                if ( EDDI.Instance.CurrentShip == null )
+                if ( EDDI.Instance.GameState.CurrentShip == null )
                 {
                     Logging.Debug( "No information on ship" );
                     return;
                 }
 
-                var shipUri = EDDI.Instance.CurrentShip.EDShipyardUri();
+                var shipUri = EDDI.Instance.GameState.CurrentShip.EDShipyardUri();
                 OpenOrStoreURI( shipUri );
             }
             catch ( Exception e )
@@ -546,9 +546,9 @@ namespace EddiVoiceAttackResponder
                 var speech = SpeechFromScript( script );
 
                 Ship ship = null;
-                if ( EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP )
+                if ( EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_SHIP )
                 {
-                    ship = EDDI.Instance.CurrentShip;
+                    ship = EDDI.Instance.GameState.CurrentShip;
                 }
 
                 await SpeechService.Instance.SayAsync( ship, speech, (int)priority, voice, false, null )
@@ -578,9 +578,9 @@ namespace EddiVoiceAttackResponder
                 var speech = SpeechFromScript( script );
 
                 Ship ship = null;
-                if ( EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP )
+                if ( EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_SHIP )
                 {
-                    ship = EDDI.Instance.CurrentShip;
+                    ship = EDDI.Instance.GameState.CurrentShip;
                 }
 
                 await SpeechService.Instance.SayAsync( ship, speech, (int)priority, voice, true, null )
@@ -630,9 +630,9 @@ namespace EddiVoiceAttackResponder
                 }
 
                 Ship ship = null;
-                if ( EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP )
+                if ( EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_SHIP )
                 {
-                    ship = EDDI.Instance.CurrentShip;
+                    ship = EDDI.Instance.GameState.CurrentShip;
                 }
 
                 // sayOutLoud must be true to match the behavior described by the wiki for the `disablespeechresponder` command
@@ -886,7 +886,7 @@ namespace EddiVoiceAttackResponder
             }
 
             // Variable replacement
-            var ship = EDDI.Instance.CurrentShip;
+            var ship = EDDI.Instance.GameState.CurrentShip;
             if ( ship != null )
             {
                 script = script.Replace( "$=", ship.phoneticname );
@@ -949,10 +949,10 @@ namespace EddiVoiceAttackResponder
                     return;
                 }
 
-                if ( EDDI.Instance.CurrentStarSystem != null )
+                if ( EDDI.Instance.GameState.CurrentStarSystem != null )
                 {
                     // Store locally
-                    var systemAddress = EDDI.Instance.CurrentStarSystem.systemAddress;
+                    var systemAddress = EDDI.Instance.GameState.CurrentStarSystem.systemAddress;
                     var currentSystem = await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( systemAddress )
                         .ConfigureAwait( false );
                     currentSystem.comment = comment == "" ? null : comment;
@@ -976,7 +976,7 @@ namespace EddiVoiceAttackResponder
                 var type = RuntimeGetText( "Type variable" );
                 if ( !string.IsNullOrEmpty( type ) )
                 {
-                    var detail = EDDI.Instance.CurrentShip?.JumpDetails( type );
+                    var detail = EDDI.Instance.GameState.CurrentShip?.JumpDetails( type );
                     RuntimeSetDecimal( "Ship jump detail distance", detail?.distance );
                     RuntimeSetInt( "Ship jump detail jumps", detail?.jumps );
                     RuntimeSetText( "Type variable", null );

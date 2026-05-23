@@ -284,15 +284,15 @@ namespace EddiCrimeMonitor
 
         internal async Task _handleBondAwardedEventAsync(BondAwardedEvent @event)
         {
-            var currentSystem = EDDI.Instance.CurrentStarSystem?.systemname;
+            var currentSystem = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
 
             // Get the victim faction data
             var faction = await EDDI.Instance.DataProvider.FetchFactionByNameAsync( @event.victimfaction ).ConfigureAwait(false);
 
             var report = new FactionReport(@event.timestamp, false, Crime.None, currentSystem, @event.reward)
             {
-                station = EDDI.Instance.CurrentStation?.name,
-                body = EDDI.Instance.CurrentStellarBody?.bodyname,
+                station = EDDI.Instance.GameState.CurrentStation?.name,
+                body = EDDI.Instance.GameState.CurrentStellarBody?.bodyname,
                 victim = @event.victimfaction,
                 victimAllegiance = (faction?.Allegiance ?? Superpower.None).invariantName
             };
@@ -328,7 +328,7 @@ namespace EddiCrimeMonitor
             // Handle journal event from Interstellar Factors transaction (FDEV bug)
             if (string.IsNullOrEmpty(@event.rewards[0].faction))
             {
-                var systemFactions = EDDI.Instance.CurrentStarSystem?.factions.Select(f => f.name).ToList();
+                var systemFactions = EDDI.Instance.GameState.CurrentStarSystem?.factions.Select(f => f.name).ToList();
 
                 // Get record which matches a system faction and the bond claims amount
                 lock (recordLock)
@@ -389,7 +389,7 @@ namespace EddiCrimeMonitor
         internal async Task _handleBountyAwardedEventAsync(BountyAwardedEvent @event, bool test = false)
         {
             // 20% bonus for Arissa Lavigny-Duval 'controlled' and 'exploited' systems
-            var currentSystem = EDDI.Instance.CurrentStarSystem;
+            var currentSystem = EDDI.Instance.GameState.CurrentStarSystem;
 
             // Default to 1.0 for unit testing
             var bonus = !test && currentSystem?.Power == Power.ALavignyDuval ? 1.2 : 1.0;
@@ -402,8 +402,8 @@ namespace EddiCrimeMonitor
                 var amount = Convert.ToInt64(reward.amount * bonus);
                 var report = new FactionReport(@event.timestamp, true, Crime.None, currentSystem?.systemname, amount)
                 {
-                    station = EDDI.Instance.CurrentStation?.name,
-                    body = EDDI.Instance.CurrentStellarBody?.bodyname,
+                    station = EDDI.Instance.GameState.CurrentStation?.name,
+                    body = EDDI.Instance.GameState.CurrentStellarBody?.bodyname,
                     victim = @event.faction,
                     victimAllegiance = (faction?.Allegiance ?? Superpower.None).invariantName
                 };
@@ -500,7 +500,7 @@ namespace EddiCrimeMonitor
         {
             crimeAuthorityFaction = @event.faction;
             var crime = Crime.FromEDName(@event.crimetype);
-            var currentSystem = EDDI.Instance.CurrentStarSystem?.systemname;
+            var currentSystem = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
 
             // Get victim allegiance from the 'Ship targeted' data
             Target target;
@@ -512,8 +512,8 @@ namespace EddiCrimeMonitor
             // Create a bounty report and add it to our record
             var report = new FactionReport(@event.timestamp, true, crime, currentSystem, @event.bounty)
             {
-                station = EDDI.Instance.CurrentStation?.name,
-                body = EDDI.Instance.CurrentStellarBody?.bodyname,
+                station = EDDI.Instance.GameState.CurrentStation?.name,
+                body = EDDI.Instance.GameState.CurrentStellarBody?.bodyname,
                 victim = @event.victim,
                 victimAllegiance = (target?.Allegiance ?? Superpower.None).invariantName
             };
@@ -570,7 +570,7 @@ namespace EddiCrimeMonitor
             {
                 foreach (var record in criminalrecord.ToList()
                              // Filter out records from factions within the current star system
-                             .Where(r => !(EDDI.Instance.CurrentStarSystem?.factions?.Select(f => f.name) ?? new List<string>()).Contains(r.faction)))
+                             .Where(r => !(EDDI.Instance.GameState.CurrentStarSystem?.factions?.Select(f => f.name) ?? new List<string>()).Contains(r.faction)))
                 {
                     if (@event.allbounties || record.faction == @event.faction)
                     {
@@ -615,11 +615,11 @@ namespace EddiCrimeMonitor
         {
             crimeAuthorityFaction = @event.faction;
             var crime = Crime.FromEDName(@event.crimetype);
-            var currentSystem = EDDI.Instance.CurrentStarSystem?.systemname;
+            var currentSystem = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
             var report = new FactionReport(@event.timestamp, false, crime, currentSystem, @event.fine)
             {
-                station = EDDI.Instance.CurrentStation?.name,
-                body = EDDI.Instance.CurrentStellarBody?.bodyname,
+                station = EDDI.Instance.GameState.CurrentStation?.name,
+                body = EDDI.Instance.GameState.CurrentStellarBody?.bodyname,
                 victim = @event.victim
             };
 
@@ -799,7 +799,7 @@ namespace EddiCrimeMonitor
                 case "handin": // Hand-in to authorities. Fines and bounties for the station authority faction (only) must be paid.
                                // Claims are preserved. Fines and bounties pertaining to other factions are preserved.
                 {
-                    RemoveCriminalRecords(EDDI.Instance.CurrentStation?.Faction?.name);
+                    RemoveCriminalRecords(EDDI.Instance.GameState.CurrentStation?.Faction?.name);
                     break;
                 }
             }
@@ -999,12 +999,12 @@ namespace EddiCrimeMonitor
 
             if (mission?.faction != null)
             {
-                var currentSystem = EDDI.Instance.CurrentStarSystem?.systemname;
+                var currentSystem = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
 
                 var report = new FactionReport(timestamp, false, Crime.MissionFine, currentSystem, fine)
                 {
-                    station = EDDI.Instance.CurrentStation?.name,
-                    body = EDDI.Instance.CurrentStellarBody?.bodyname,
+                    station = EDDI.Instance.GameState.CurrentStation?.name,
+                    body = EDDI.Instance.GameState.CurrentStellarBody?.bodyname,
                 };
 
                 var record = GetRecordWithFaction(mission.faction) ?? 
@@ -1103,8 +1103,8 @@ namespace EddiCrimeMonitor
             {
                 // Filter stations within the faction system which meet the station type prioritization,
                 // max distance from the main star, game version, and landing pad size requirements
-                var padSize = EDDI.Instance.CurrentShip?.Size ?? LandingPadSize.Large;
-                var factionStations = !ConfigService.Instance.navigationMonitorConfiguration.prioritizeOrbitalStations && EDDI.Instance.inHorizons
+                var padSize = EDDI.Instance.GameState.CurrentShip?.Size ?? LandingPadSize.Large;
+                var factionStations = !ConfigService.Instance.navigationMonitorConfiguration.prioritizeOrbitalStations && EDDI.Instance.GameState.inHorizons
                     ? factionStarSystem.stations.ToList()
                     : factionStarSystem.orbitalstations;
                 factionStations = factionStations

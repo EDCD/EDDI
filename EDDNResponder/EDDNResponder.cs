@@ -65,7 +65,7 @@ namespace EddiEddnResponder
 
         public Task HandleAsync ( Event @event )
         {
-            if (EDDI.Instance.inTelepresence || 
+            if (EDDI.Instance.GameState.inTelepresence || 
                 string.IsNullOrEmpty(@event.raw))
             {
                 // We don't do anything whilst in Telepresence

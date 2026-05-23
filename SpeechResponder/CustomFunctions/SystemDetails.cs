@@ -24,7 +24,7 @@ namespace EddiSpeechResponder.CustomFunctions
                 StarSystem result;
                 if ( values.Count == 0 )
                 {
-                    result = EDDI.Instance.CurrentStarSystem;
+                    result = EDDI.Instance.GameState.CurrentStarSystem;
                 }
                 else if ( ulong.TryParse( values[ 0 ].AsString, out var systemAddress ) )
                 {

@@ -147,7 +147,7 @@ namespace EddiNavigationService.QueryResolvers
             {
                 spanshQueryFilter.Add( "is_planetary", new { value = false } );
             }
-            var shipSize = EDDI.Instance.CurrentShip?.Size ?? LandingPadSize.Large;
+            var shipSize = EDDI.Instance.GameState.CurrentShip?.Size ?? LandingPadSize.Large;
             if ( shipSize.sizeIndex == 3 )
             {
                 spanshQueryFilter.Add( "has_large_pad", new { value = true } );

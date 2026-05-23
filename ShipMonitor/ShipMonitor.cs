@@ -271,9 +271,9 @@ namespace EddiShipMonitor
                         {
                             ship.StoredLocation = new Ship.Location( @event.systemname, @event.systemAddress, @event.x,
                                 @event.y, @event.z, @event.carriername, @event.carrierID );
-                            if ( EDDI.Instance.CurrentStarSystem != null )
+                            if ( EDDI.Instance.GameState.CurrentStarSystem != null )
                             {
-                                ship.distance = ship.DistanceLY( EDDI.Instance.CurrentStarSystem );
+                                ship.distance = ship.DistanceLY( EDDI.Instance.GameState.CurrentStarSystem );
                             }
                         }
                     }
@@ -376,10 +376,10 @@ namespace EddiShipMonitor
                 {
                     // We stored a ship - set its location to the current location
                     var storedShip = GetShip(@event.storedshipid);
-                    if (storedShip != null && EDDI.Instance.CurrentStarSystem != null)
+                    if (storedShip != null && EDDI.Instance.GameState.CurrentStarSystem != null)
                     {
                         // Set location of stored ship to the current system
-                        storedShip.StoredLocation = new Ship.Location( EDDI.Instance.CurrentStarSystem, EDDI.Instance.CurrentStation?.name, EDDI.Instance.CurrentStation?.marketId );
+                        storedShip.StoredLocation = new Ship.Location( EDDI.Instance.GameState.CurrentStarSystem, EDDI.Instance.GameState.CurrentStation?.name, EDDI.Instance.GameState.CurrentStation?.marketId );
                         storedShip.distance = 0;
                     }
                 }
@@ -425,10 +425,10 @@ namespace EddiShipMonitor
                     if (storedShip != null)
                     {
                         // Set location of stored ship to the current system
-                        if ( EDDI.Instance.CurrentStarSystem != null )
+                        if ( EDDI.Instance.GameState.CurrentStarSystem != null )
                         {
-                            storedShip.StoredLocation = new Ship.Location( EDDI.Instance.CurrentStarSystem,
-                                EDDI.Instance.CurrentStation?.name, EDDI.Instance.CurrentStation?.marketId );
+                            storedShip.StoredLocation = new Ship.Location( EDDI.Instance.GameState.CurrentStarSystem,
+                                EDDI.Instance.GameState.CurrentStation?.name, EDDI.Instance.GameState.CurrentStation?.marketId );
                             storedShip.distance = 0;
                         }
                     }
@@ -645,17 +645,17 @@ namespace EddiShipMonitor
                             ship.StoredLocation = systemData is null || stationData is null
                                 ? null
                                 : new Ship.Location( systemData, stationData.name, stationData.marketId );
-                            ship.distance = ship.DistanceLY( EDDI.Instance.CurrentStarSystem );
+                            ship.distance = ship.DistanceLY( EDDI.Instance.GameState.CurrentStarSystem );
                         }
                         else
                         {
                             ship.StoredLocation =
-                                EDDI.Instance.CurrentStarSystem is null || EDDI.Instance.CurrentStation is null
+                                EDDI.Instance.GameState.CurrentStarSystem is null || EDDI.Instance.GameState.CurrentStation is null
                                     ? null
                                     : new Ship.Location(
-                                        EDDI.Instance.CurrentStarSystem,
-                                        EDDI.Instance.CurrentStation.name,
-                                        EDDI.Instance.CurrentStation.marketId );
+                                        EDDI.Instance.GameState.CurrentStarSystem,
+                                        EDDI.Instance.GameState.CurrentStation.name,
+                                        EDDI.Instance.GameState.CurrentStation.marketId );
                             ship.distance = 0;
                         }
                     }
@@ -1146,8 +1146,8 @@ namespace EddiShipMonitor
             if ( @event.timestamp > updatedAt )
             {
                 // Committing a crime while on foot or in a taxi won't make your ship "hot"
-                if ( EDDI.Instance.Vehicle == Constants.VEHICLE_LEGS ||
-                     EDDI.Instance.Vehicle == Constants.VEHICLE_TAXI )
+                if ( EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_LEGS ||
+                     EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_TAXI )
                 {
                     return;
                 }
@@ -1155,13 +1155,13 @@ namespace EddiShipMonitor
                 updatedAt = @event.timestamp;
                 Ship ship = null;
 
-                if ( EDDI.Instance.Vehicle == Constants.VEHICLE_MULTICREW )
+                if ( EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_MULTICREW )
                 {
                     // Committing a crime while in multicrew will make your most valuable ship "hot"
                     ship = shipyard.ToList().OrderByDescending( s => s.value ).FirstOrDefault();
                 }
 
-                if ( EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP || EDDI.Instance.Vehicle == Constants.VEHICLE_SRV )
+                if ( EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_SHIP || EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_SRV )
                 {
                     // Committing a crime while in a ship, ship-launched fighter, or SRV will make your ship "hot"
                     ship = GetCurrentShip();
@@ -1380,7 +1380,7 @@ namespace EddiShipMonitor
                 else
                 {
                     ship.StoredLocation = profileShip.StoredLocation;
-                    ship.distance = ship.DistanceLY( EDDI.Instance.CurrentStarSystem );
+                    ship.distance = ship.DistanceLY( EDDI.Instance.GameState.CurrentStarSystem );
                 }
             }
 
@@ -1547,7 +1547,7 @@ namespace EddiShipMonitor
         public Ship GetCurrentShip()
         {
             var currentShip = GetShip(currentShipId);
-            EDDI.Instance.CurrentShip = currentShip ?? EDDI.Instance.CurrentShip;
+            EDDI.Instance.CurrentShip = currentShip ?? EDDI.Instance.GameState.CurrentShip;
             return currentShip;
         }
 

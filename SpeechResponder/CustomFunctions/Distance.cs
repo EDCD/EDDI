@@ -25,7 +25,7 @@ namespace EddiSpeechResponder.CustomFunctions
             NavWaypoint dest = null;
             if (values.Count == 1 && stringVal)
             {
-                curr = new NavWaypoint( EDDI.Instance.CurrentStarSystem );
+                curr = new NavWaypoint( EDDI.Instance.GameState.CurrentStarSystem );
                 dest = EDDI.Instance.DataProvider.GetOrFetchSystemWaypointAsync(values[0].AsString).GetAwaiter().GetResult();
             }
             else if (values.Count == 2 && stringVal)

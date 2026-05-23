@@ -1,5 +1,6 @@
 ﻿using EddiCompanionAppService;
 using EddiConfigService;
+using EddiCore.GameState;
 using EddiCore.Hotkeys;
 using EddiDataDefinitions;
 using EddiDataProviderService;
@@ -40,32 +41,28 @@ namespace EddiCore
         private static bool started;
         public bool running;
 
+        #region GameState
+
         private readonly EddiGameState _gameState = new();
 
         public IEddiGameState GameState => _gameState;
 
-        public bool inTelepresence
+        internal bool inTelepresence
         {
             get => _gameState.inTelepresence;
-            internal set => _gameState.inTelepresence = value;
+            set => _gameState.inTelepresence = value;
         }
 
-        public bool inHorizons 
+        internal bool inHorizons 
         {
             get => _gameState.inHorizons;
-            private set => _gameState.inHorizons = value;
+            set => _gameState.inHorizons = value;
         } 
 
-        public bool inOdyssey 
-        { 
-            get => _gameState.inOdyssey;
-            private set => _gameState.inOdyssey = value;
-        } 
-
-        public bool gameIsBeta
+        internal bool gameIsBeta
         {
             get => _gameState.gameIsBeta;
-            internal set => _gameState.gameIsBeta = value;
+            set => _gameState.gameIsBeta = value;
         }
 
         private string gameVersion
@@ -78,13 +75,124 @@ namespace EddiCore
             }
         }
 
-        private readonly StarSystemSignalSourceManager signalSourceManager = new();
-
-        public System.Version GameVersion
+        internal System.Version GameVersion
         {
             get => _gameState.GameVersion;
-            internal set => _gameState.GameVersion = value;
+            set => _gameState.GameVersion = value;
         }
+
+        // Destination variables
+        [CanBeNull]
+        internal StarSystem DestinationStarSystem
+        {
+            get => _gameState.DestinationStarSystem;
+            private set => _gameState.DestinationStarSystem = value;
+        }
+
+        public decimal DestinationDistanceLy
+        {
+            get => _gameState.DestinationDistanceLy;
+            set => _gameState.DestinationDistanceLy = value;
+        }
+
+        // Information obtained from the player journal
+
+        internal string Environment
+        {
+            get => _gameState.Environment;
+            private set => _gameState.Environment = value;
+        }
+
+        [CanBeNull]
+        internal StarSystem CurrentStarSystem
+        {
+            get => _gameState.CurrentStarSystem;
+            set
+            {
+                setSystemDistanceFromHome( value );
+                setSystemDistanceFromDestination( value );
+                _gameState.CurrentStarSystem = value;
+            }
+        }
+
+        [CanBeNull]
+        internal StarSystem LastStarSystem
+        {
+            get => _gameState.LastStarSystem;
+            set
+            {
+                setSystemDistanceFromHome( value );
+                _gameState.LastStarSystem = value;
+            }
+        }
+
+        [CanBeNull]
+        internal StarSystem NextStarSystem
+        {
+            get => _gameState.NextStarSystem;
+            set
+            {
+                setSystemDistanceFromHome( value );
+                _gameState.NextStarSystem = value;
+            }
+        }
+
+        /// <summary>
+        /// The currently docked station, if any
+        /// </summary>
+        [CanBeNull]
+        internal Station CurrentStation
+        {
+            get => _gameState.CurrentStation;
+            private set => _gameState.CurrentStation = value;
+        }
+
+        /// <summary>
+        /// The currently nearby star system (within the gravity well), if any
+        /// </summary>
+        [CanBeNull]
+        internal Body CurrentStellarBody
+        {
+            get => _gameState.CurrentStellarBody;
+            private set => _gameState.CurrentStellarBody = value;
+        }
+
+        [CanBeNull]
+        public FleetCarrier FleetCarrier
+        {
+            get => _gameState.FleetCarrier;
+            set => _gameState.FleetCarrier = value;
+        }
+
+        [CanBeNull]
+        public FleetCarrier SquadronCarrier
+        {
+            get => _gameState.SquadronCarrier;
+            set => _gameState.SquadronCarrier = value;
+        }
+
+        [CanBeNull]
+        public Ship CurrentShip
+        {
+            get => _gameState.CurrentShip;
+            set
+            {
+                if ( Equals( value, _gameState.CurrentShip ) ) { return; }
+                StatusService.Instance.CurrentShip = value;
+                _gameState.CurrentShip = value;
+            }
+        }
+
+        // Current vehicle of player
+        public string Vehicle
+        {
+            get => _gameState.Vehicle;
+            set => _gameState.Vehicle = value;
+        }
+
+        #endregion
+
+        private readonly StarSystemSignalSourceManager signalSourceManager = new();
 
         // EDDI uses APIs which only return data for the "live" galaxy, game version 4.0 or later.
         private readonly System.Version minGameVersion = new(4, 0);
@@ -180,119 +288,8 @@ namespace EddiCore
         public DataProviderService DataProvider { get; internal set; }
         public HotkeyManager HotkeyManager { get; } = new();
 
-        // Information obtained from the configuration
-
-        // Destination variables
-        [CanBeNull]
-        public StarSystem DestinationStarSystem
-        {
-            get => _gameState.DestinationStarSystem;
-            private set => _gameState.DestinationStarSystem = value;
-        }
-
-        public decimal DestinationDistanceLy 
-        {
-            get => _gameState.DestinationDistanceLy;
-            set => _gameState.DestinationDistanceLy = value;
-        }
-
-        // Information obtained from the player journal
-
-        public string Environment
-        {
-            get => _gameState.Environment;
-            private set => _gameState.Environment = value;
-        }
-
-        [CanBeNull]
-        public StarSystem CurrentStarSystem 
-        { 
-            get => _gameState.CurrentStarSystem;
-            internal set
-            {
-                setSystemDistanceFromHome(value);
-                setSystemDistanceFromDestination(value);
-                _gameState.CurrentStarSystem = value;
-            } 
-        }
-
-        [CanBeNull]
-        public StarSystem LastStarSystem
-        {
-            get => _gameState.LastStarSystem;
-            internal set
-            {
-                setSystemDistanceFromHome(value);
-                _gameState.LastStarSystem = value;
-            }
-        }
-
-        [CanBeNull]
-        public StarSystem NextStarSystem
-        {
-            get => _gameState.NextStarSystem;
-            internal set
-            {
-                setSystemDistanceFromHome(value);
-                _gameState.NextStarSystem = value;
-            }
-        }
-
-        /// <summary>
-        /// The currently docked station, if any
-        /// </summary>
-        [CanBeNull]
-        public Station CurrentStation
-        {
-            get => _gameState.CurrentStation;
-            private set => _gameState.CurrentStation = value;
-        }
-
-        /// <summary>
-        /// The currently nearby star system (within the gravity well), if any
-        /// </summary>
-        [CanBeNull]
-        public Body CurrentStellarBody 
-        {
-            get => _gameState.CurrentStellarBody;
-            private set => _gameState.CurrentStellarBody = value;
-        }
-
-        [CanBeNull]
-        public FleetCarrier FleetCarrier
-        {
-            get => _gameState.FleetCarrier;
-            set => _gameState.FleetCarrier = value;
-        }
-
-        [CanBeNull]
-        public FleetCarrier SquadronCarrier
-        {
-            get => _gameState.SquadronCarrier;
-            set => _gameState.SquadronCarrier = value;
-        }
-
-        [CanBeNull]
-        public Ship CurrentShip
-        {
-            get => _gameState.CurrentShip;
-            set
-            {
-                if (Equals(value, _gameState.CurrentShip)) return;
-                StatusService.Instance.CurrentShip = value;
-                _gameState.CurrentShip = value;
-            }
-        }
-
         // Information from the last events of each type that we've received (for reference)
         public ConcurrentDictionary<string, Event> lastEventOfType { get; } = [ ];
-
-        // Current vehicle of player
-        public string Vehicle
-        {
-            get => _gameState.Vehicle;
-            set => _gameState.Vehicle = value;
-        }
 
         public readonly ObservableConcurrentDictionary<string, object> State = [ ];
 
@@ -456,10 +453,10 @@ namespace EddiCore
 
         public static bool EddiIsBeta() => Constants.EDDI_VERSION.phase < Utilities.Version.TestPhase.rc;
 
-        public static bool ShouldUseTestEndpoints()
+        public bool ShouldUseTestEndpoints()
         {
             // use test endpoints if the game is in beta or EDDI is in a test phase
-            return Instance.gameIsBeta || 
+            return GameState.gameIsBeta || 
                    Constants.EDDI_VERSION.phase < Utilities.Version.TestPhase.rc ;
         }
 
@@ -2412,8 +2409,8 @@ namespace EddiCore
             inTelepresence = false;
 
             // Identify active game version
-            inHorizons = theEvent.horizons;
-            inOdyssey = theEvent.odyssey;
+            _gameState.inHorizons = theEvent.horizons;
+            _gameState.inOdyssey = theEvent.odyssey;
             gameBuild = theEvent.gamebuild;
             gameVersion = theEvent.gameversion;
 

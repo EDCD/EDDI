@@ -92,9 +92,9 @@ namespace EddiEdsmResponder
 
         public Task HandleAsync ( Event @event )
         {
-            if ( EDDI.Instance.inTelepresence || 
-                 EDDI.Instance.gameIsBeta ||
-                 EDDI.Instance.GameVersion is null || EDDI.Instance.GameVersion < minGameVersion
+            if ( EDDI.Instance.GameState.inTelepresence || 
+                 EDDI.Instance.GameState.gameIsBeta ||
+                 EDDI.Instance.GameState.GameVersion is null || EDDI.Instance.GameState.GameVersion < minGameVersion
                  )
             {
                 // We don't do anything whilst in CQC
@@ -117,7 +117,7 @@ namespace EddiEdsmResponder
             {
                 var eventObject = await prepareEventDataAsync(@event).ConfigureAwait(false);
 
-                if ( eventObject != null && !EDDI.Instance.gameIsBeta )
+                if ( eventObject != null && !EDDI.Instance.GameState.gameIsBeta )
                 {
                     EDDI.Instance.DataProvider.EnqueueEdsmEvent( eventObject );
                 }
@@ -233,13 +233,13 @@ namespace EddiEdsmResponder
             }
 
             // Supplement with metadata from the tracked game state, as applicable
-            var currentStarSystemAddress = EDDI.Instance.CurrentStarSystem?.systemAddress;
+            var currentStarSystemAddress = EDDI.Instance.GameState.CurrentStarSystem?.systemAddress;
             if ( currentStarSystemAddress != null && !eventObject.ContainsKey( "_systemAddress" ) )
             {
                 eventObject.Add( "_systemAddress", currentStarSystemAddress );
             }
 
-            var currentStarSystemName = EDDI.Instance.CurrentStarSystem?.systemname;
+            var currentStarSystemName = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
             if ( !string.IsNullOrEmpty( currentStarSystemName ) && !eventObject.ContainsKey( "_systemName" ) )
             {
                 eventObject.Add( "_systemName", currentStarSystemName );
@@ -247,9 +247,9 @@ namespace EddiEdsmResponder
 
             var currentStarSystemCoordinates = new []
             {
-                EDDI.Instance.CurrentStarSystem?.x,
-                EDDI.Instance.CurrentStarSystem?.y,
-                EDDI.Instance.CurrentStarSystem?.z
+                EDDI.Instance.GameState.CurrentStarSystem?.x,
+                EDDI.Instance.GameState.CurrentStarSystem?.y,
+                EDDI.Instance.GameState.CurrentStarSystem?.z
             };
             if ( currentStarSystemCoordinates.All( c => c != null ) &&
                  !eventObject.ContainsKey( "_systemCoordinates" ) )
@@ -257,19 +257,19 @@ namespace EddiEdsmResponder
                 eventObject.Add( "_systemCoordinates", currentStarSystemCoordinates );
             }
 
-            var currentStationMarketID = EDDI.Instance.CurrentStation?.marketId;
+            var currentStationMarketID = EDDI.Instance.GameState.CurrentStation?.marketId;
             if ( currentStationMarketID != null && !eventObject.ContainsKey( "_marketId" ) )
             {
                 eventObject.Add( "_marketId", currentStationMarketID );
             }
 
-            var currentStationName = EDDI.Instance.CurrentStation?.name;
+            var currentStationName = EDDI.Instance.GameState.CurrentStation?.name;
             if ( !string.IsNullOrEmpty( currentStationName ) && !eventObject.ContainsKey( "_stationName" ) )
             {
                 eventObject.Add( "_stationName", currentStationName );
             }
 
-            var currentShipID = EDDI.Instance.CurrentShip?.LocalId;
+            var currentShipID = EDDI.Instance.GameState.CurrentShip?.LocalId;
             if (currentShipID != null && !eventObject.ContainsKey("_shipId"))
             {
                 eventObject.Add("_shipId", currentShipID);

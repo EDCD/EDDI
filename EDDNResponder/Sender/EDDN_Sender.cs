@@ -57,7 +57,7 @@ namespace EddiEddnResponder.Sender
                 var body = new EDDNBody
                 {
                     header = generateHeader(eddnState.GameVersion, gameVersionOverride),
-                    schemaRef = schema + (EDDI.ShouldUseTestEndpoints() ? "/test" : ""),
+                    schemaRef = schema + (EDDI.Instance.ShouldUseTestEndpoints() ? "/test" : ""),
                     message = data
                 };
                 Logging.Debug( $"EDDN schema {schema} message is: ", body );

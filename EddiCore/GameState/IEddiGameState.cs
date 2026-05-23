@@ -1,7 +1,7 @@
 using EddiDataDefinitions;
 using System.ComponentModel;
 
-namespace EddiCore
+namespace EddiCore.GameState
 {
     public interface IEddiGameState : INotifyPropertyChanged
     {

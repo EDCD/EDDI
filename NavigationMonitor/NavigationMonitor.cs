@@ -22,7 +22,7 @@ namespace EddiNavigationMonitor
     [UsedImplicitly]
     public class NavigationMonitor : IEddiMonitor
     {
-        public FleetCarrier FleetCarrier => EDDI.Instance.FleetCarrier;
+        public FleetCarrier FleetCarrier => EDDI.Instance.GameState.FleetCarrier;
 
         #region Collections
 
@@ -272,7 +272,7 @@ namespace EddiNavigationMonitor
                 var routeList = @event.route?.Select(r => new NavWaypoint(r)).ToList();
                 if (routeList != null)
                 {
-                    if (routeList.Count > 1 && routeList[0].systemAddress == EDDI.Instance.CurrentStarSystem?.systemAddress)
+                    if (routeList.Count > 1 && routeList[0].systemAddress == EDDI.Instance.GameState.CurrentStarSystem?.systemAddress)
                     {
                         // Update the Nav Route
                         routeList[0].visited = true;
@@ -659,7 +659,7 @@ namespace EddiNavigationMonitor
 
         private static decimal? SurfaceConstantHeadingDegrees(Status curr, decimal? bookmarkLatitude, decimal? bookmarkLongitude)
         {
-            var radiusMeters = curr.planetradius ?? (EDDI.Instance.CurrentStarSystem?.bodies
+            var radiusMeters = curr.planetradius ?? (EDDI.Instance.GameState.CurrentStarSystem?.bodies
                 ?.FirstOrDefault(b => b.bodyname == curr.bodyname)
                 ?.radius * 1000);
             return Functions.SurfaceConstantHeadingDegrees(radiusMeters, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude) ?? 0;
@@ -667,7 +667,7 @@ namespace EddiNavigationMonitor
 
         private static decimal? SurfaceConstantHeadingDistanceKm(Status curr, decimal? bookmarkLatitude, decimal? bookmarkLongitude)
         {
-            var radiusMeters = curr.planetradius ?? (EDDI.Instance.CurrentStarSystem?.bodies
+            var radiusMeters = curr.planetradius ?? (EDDI.Instance.GameState.CurrentStarSystem?.bodies
                 ?.FirstOrDefault(b => b.bodyname == curr.bodyname)
                 ?.radius * 1000);
             return Functions.SurfaceConstantHeadingDistanceKm(radiusMeters, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude) ?? 0;
@@ -680,7 +680,7 @@ namespace EddiNavigationMonitor
 
         private static decimal? SurfaceShortestPathDistanceKm(Status curr, decimal? bookmarkLatitude, decimal? bookmarkLongitude)
         {
-            var radiusMeters = curr.planetradius ?? (EDDI.Instance.CurrentStarSystem?.bodies
+            var radiusMeters = curr.planetradius ?? (EDDI.Instance.GameState.CurrentStarSystem?.bodies
                 ?.FirstOrDefault(b => b.bodyname == curr.bodyname)
                 ?.radius * 1000);
             return Functions.SurfaceDistanceKm(radiusMeters, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude) ?? 0;

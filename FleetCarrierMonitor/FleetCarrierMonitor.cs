@@ -28,7 +28,7 @@ namespace EddiFleetCarrierMonitor
 
         private FleetCarrier FleetCarrier
         {
-            get => EDDI.Instance.FleetCarrier;
+            get => EDDI.Instance.GameState.FleetCarrier;
             set
             {
                 EDDI.Instance.FleetCarrier = value;
@@ -588,8 +588,8 @@ namespace EddiFleetCarrierMonitor
                 await DelayThenAsync( cooldownDelay, () =>
                 {
                     var carrier = StationModel.SquadronCarrier.edname.Equals( cjc.carrierType.edname )
-                        ? EDDI.Instance.SquadronCarrier
-                        : EDDI.Instance.FleetCarrier;
+                        ? EDDI.Instance.GameState.SquadronCarrier
+                        : EDDI.Instance.GameState.FleetCarrier;
 
                     EDDI.Instance.enqueueEvent(
                         new CarrierCooldownEvent(
@@ -637,10 +637,10 @@ namespace EddiFleetCarrierMonitor
 
                 var carrierJumpEngagedEvent = DelayThenAsync( departureDelay, () =>
                 {
-                    if ( EDDI.Instance.CurrentStarSystem != null )
+                    if ( EDDI.Instance.GameState.CurrentStarSystem != null )
                     {
-                        var originStarSystem = EDDI.Instance.CurrentStarSystem.systemname;
-                        var originSystemAddress = EDDI.Instance.CurrentStarSystem.systemAddress;
+                        var originStarSystem = EDDI.Instance.GameState.CurrentStarSystem.systemname;
+                        var originSystemAddress = EDDI.Instance.GameState.CurrentStarSystem.systemAddress;
 
                         EDDI.Instance.enqueueEvent(
                             new CarrierJumpEngagedEvent(
@@ -869,11 +869,11 @@ namespace EddiFleetCarrierMonitor
                 var configuration = ConfigService.Instance.fleetCarrierConfiguration;
                 if ( configuration.fleetCarrier?.timestamp < FleetCarrier?.timestamp )
                 {
-                    EDDI.Instance.OnPropertyChanged( nameof( EDDI.Instance.FleetCarrier ) );
+                    EDDI.Instance.OnPropertyChanged( nameof( EDDI.Instance.GameState.FleetCarrier ) );
                 }
                 if ( configuration.squadronCarrier?.timestamp < SquadronCarrier?.timestamp )
                 {
-                    EDDI.Instance.OnPropertyChanged( nameof( EDDI.Instance.SquadronCarrier ) );
+                    EDDI.Instance.OnPropertyChanged( nameof( EDDI.Instance.GameState.SquadronCarrier ) );
                 }
             }
         }

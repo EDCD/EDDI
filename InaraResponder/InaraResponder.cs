@@ -62,7 +62,7 @@ namespace EddiInaraResponder
             {
                 // Alert the user that there is a problem with the Inara API key
                 Logging.Info( "API key is invalid: Please open the Inara Responder and update the API key." );
-                await SpeechService.Instance.SayAsync( EDDI.Instance.CurrentShip, Properties.InaraResources.invalidKeyErr ).ConfigureAwait(false);
+                await SpeechService.Instance.SayAsync( EDDI.Instance.GameState.CurrentShip, Properties.InaraResources.invalidKeyErr ).ConfigureAwait(false);
             }
             catch ( Exception ex )
             {
@@ -109,9 +109,9 @@ namespace EddiInaraResponder
         public Task HandleAsync ( Event @event )
         {
             if ( @event is null ||
-                 EDDI.Instance.inTelepresence || 
-                 EDDI.Instance.gameIsBeta ||
-                 EDDI.Instance.GameVersion is null || EDDI.Instance.GameVersion < minGameVersion ||
+                 EDDI.Instance.GameState.inTelepresence || 
+                 EDDI.Instance.GameState.gameIsBeta ||
+                 EDDI.Instance.GameState.GameVersion is null || EDDI.Instance.GameState.GameVersion < minGameVersion ||
                  ( DateTime.UtcNow - @event.timestamp ).TotalDays > 30 )
             {
                 // We don't do anything whilst in CQC,
@@ -397,8 +397,8 @@ namespace EddiInaraResponder
         {
             var eventData = new Dictionary<string, object>()
             {
-                { "starsystemName", !string.IsNullOrEmpty(@event.systemname) ? @event.systemname : EDDI.Instance.CurrentStarSystem?.systemname },
-                { "starsystemBodyName", !string.IsNullOrEmpty(@event.bodyname) ? @event.bodyname : EDDI.Instance.CurrentStellarBody?.bodyname },
+                { "starsystemName", !string.IsNullOrEmpty(@event.systemname) ? @event.systemname : EDDI.Instance.GameState.CurrentStarSystem?.systemname },
+                { "starsystemBodyName", !string.IsNullOrEmpty(@event.bodyname) ? @event.bodyname : EDDI.Instance.GameState.CurrentStellarBody?.bodyname },
                 { "starsystemBodyCoords", new [] { @event.latitude, @event.longitude } }
             };
             if (string.IsNullOrEmpty(eventData["starsystemName"]?.ToString())) { return; }
@@ -416,7 +416,7 @@ namespace EddiInaraResponder
                 { "stationName", @event.carriername },
                 { "marketID", @event.carrierID }
             };
-            var currentShip = EDDI.Instance.CurrentShip;
+            var currentShip = EDDI.Instance.GameState.CurrentShip;
             if (!string.IsNullOrEmpty(currentShip?.EDName))
             {
                 eventData.Add("shipType", currentShip.EDName);
@@ -475,7 +475,7 @@ namespace EddiInaraResponder
         {
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderCombatKill", new Dictionary<string, object>()
             {
-                { "starsystemName", EDDI.Instance.CurrentStarSystem?.systemname },
+                { "starsystemName", EDDI.Instance.GameState.CurrentStarSystem?.systemname },
                 { "opponentName", @event.victim }
             }));
         }
@@ -486,7 +486,7 @@ namespace EddiInaraResponder
             // opponentName: Name of the target (commander or NPC). If there is no 'Inderticted' property in the journal event, use just 'Power' or 'Faction' property instead. 
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderCombatInterdiction", new Dictionary<string, object>()
             {
-                { "starsystemName", EDDI.Instance.CurrentStarSystem?.systemname },
+                { "starsystemName", EDDI.Instance.GameState.CurrentStarSystem?.systemname },
                 { "opponentName", @event.interdictee ?? @event.faction ?? @event.power }, // Ordered from more precise to less precise
                 { "isPlayer", @event.iscommander },
                 { "isSuccess", @event.succeeded }
@@ -496,7 +496,7 @@ namespace EddiInaraResponder
         private void handleShipInterdictedEvent(ShipInterdictedEvent @event)
         {
             if (!string.IsNullOrEmpty(@event.interdictor ?? @event.faction ?? @event.power) &&
-                !string.IsNullOrEmpty(EDDI.Instance.CurrentStarSystem?.systemname))
+                !string.IsNullOrEmpty(EDDI.Instance.GameState.CurrentStarSystem?.systemname))
             {
                 // If the player was interdicted
                 if (@event.succeeded)
@@ -505,7 +505,7 @@ namespace EddiInaraResponder
                     inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderCombatInterdicted",
                         new Dictionary<string, object>()
                         {
-                            { "starsystemName", EDDI.Instance.CurrentStarSystem?.systemname },
+                            { "starsystemName", EDDI.Instance.GameState.CurrentStarSystem?.systemname },
                             { "opponentName", @event.interdictor ?? @event.faction ?? @event.power },
                             { "isPlayer", @event.iscommander },
                             { "isSubmit", @event.submitted }
@@ -517,7 +517,7 @@ namespace EddiInaraResponder
                     inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp,
                         "addCommanderCombatInterdictionEscape", new Dictionary<string, object>()
                         {
-                            { "starsystemName", EDDI.Instance.CurrentStarSystem?.systemname },
+                            { "starsystemName", EDDI.Instance.GameState.CurrentStarSystem?.systemname },
                             { "opponentName", @event.interdictor ?? @event.faction ?? @event.power },
                             { "isPlayer", @event.iscommander }
                         }));
@@ -624,7 +624,7 @@ namespace EddiInaraResponder
                     { "marketID", @event.marketId }
                 };
 
-                var currentShip = EDDI.Instance.CurrentShip;
+                var currentShip = EDDI.Instance.GameState.CurrentShip;
                 if ( !string.IsNullOrEmpty( currentShip?.EDName ) )
                 {
                     eventData.Add( "shipType", currentShip.EDName );
@@ -637,9 +637,9 @@ namespace EddiInaraResponder
 
         private void handleShipTransferInitiatedEvent(ShipTransferInitiatedEvent @event)
         {
-            var systemName = EDDI.Instance.CurrentStarSystem?.systemname?.Copy();
-            var stationName = EDDI.Instance.CurrentStation?.name?.Copy();
-            var marketId = EDDI.Instance.CurrentStation?.marketId?.Copy();
+            var systemName = EDDI.Instance.GameState.CurrentStarSystem?.systemname?.Copy();
+            var stationName = EDDI.Instance.GameState.CurrentStation?.name?.Copy();
+            var marketId = EDDI.Instance.GameState.CurrentStation?.marketId?.Copy();
             if (string.IsNullOrEmpty(systemName) || string.IsNullOrEmpty(stationName)) { return; }
             var data = new Dictionary<string, object>()
             {
@@ -792,9 +792,9 @@ namespace EddiInaraResponder
                     { "shipType", @event.storedEdModel },
                     { "shipGameID", @event.storedshipid },
                     { "isCurrentShip", false },
-                    { "starsystemName", EDDI.Instance.CurrentStarSystem?.systemname },
-                    { "stationName", EDDI.Instance.CurrentStation?.name },
-                    { "marketID", EDDI.Instance.CurrentStation?.marketId }
+                    { "starsystemName", EDDI.Instance.GameState.CurrentStarSystem?.systemname },
+                    { "stationName", EDDI.Instance.GameState.CurrentStation?.name },
+                    { "marketID", EDDI.Instance.GameState.CurrentStation?.marketId }
                 };
                 var storedShip = ConfigService.Instance.shipMonitorConfiguration?.shipyard.FirstOrDefault(s => s.LocalId == @event.storedshipid);
                 if (!string.IsNullOrEmpty(storedShip?.EDName) && storedShip.EDName == @event.storedEdModel)
@@ -869,9 +869,9 @@ namespace EddiInaraResponder
                     { "shipType", @event.storedEdModel },
                     { "shipGameID", @event.storedshipid },
                     { "isCurrentShip", false },
-                    { "starsystemName", EDDI.Instance.CurrentStarSystem?.systemname },
-                    { "stationName", EDDI.Instance.CurrentStation?.name },
-                    { "marketID", EDDI.Instance.CurrentStation?.marketId }
+                    { "starsystemName", EDDI.Instance.GameState.CurrentStarSystem?.systemname },
+                    { "stationName", EDDI.Instance.GameState.CurrentStation?.name },
+                    { "marketID", EDDI.Instance.GameState.CurrentStation?.marketId }
                 };
                 var storedShip = ConfigService.Instance.shipMonitorConfiguration?.shipyard.FirstOrDefault(s => s.LocalId == @event.storedshipid);
                 if (!string.IsNullOrEmpty(storedShip?.EDName) && storedShip.EDName == @event.storedEdModel)
@@ -1067,7 +1067,7 @@ namespace EddiInaraResponder
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderInventoryCargo", (List<Dictionary<string, object>>)[ ] ));
             var diedEventData = new Dictionary<string, object>()
             {
-                { "starsystemName", EDDI.Instance.CurrentStarSystem?.systemname }
+                { "starsystemName", EDDI.Instance.GameState.CurrentStarSystem?.systemname }
             };
             if (@event.killers?.Count > 1)
             {
@@ -1219,7 +1219,7 @@ namespace EddiInaraResponder
                     { "jumpDistance", @event.distance }
                 };
 
-            var currentShip = EDDI.Instance.CurrentShip;
+            var currentShip = EDDI.Instance.GameState.CurrentShip;
             if ( !string.IsNullOrEmpty( currentShip?.EDName ) )
             {
                 eventData.Add( "shipType", currentShip.EDName );

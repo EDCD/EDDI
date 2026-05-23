@@ -172,14 +172,14 @@ namespace EddiNavigationMonitor
             var nearby = false;
             var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
 
-            if (EDDI.Instance.CurrentStarSystem != null)
+            if (EDDI.Instance.GameState.CurrentStarSystem != null)
             {
-                var currentSystem = EDDI.Instance.CurrentStarSystem;
-                var currentStation = EDDI.Instance.CurrentStation;
+                var currentSystem = EDDI.Instance.GameState.CurrentStarSystem;
+                var currentStation = EDDI.Instance.GameState.CurrentStation;
 
-                if (EDDI.Instance.Environment == Constants.ENVIRONMENT_LANDED || EDDI.Instance.Environment == Constants.ENVIRONMENT_DOCKED)
+                if (EDDI.Instance.GameState.Environment == Constants.ENVIRONMENT_LANDED || EDDI.Instance.GameState.Environment == Constants.ENVIRONMENT_DOCKED)
                 {
-                    if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP || EDDI.Instance.Vehicle == Constants.VEHICLE_MULTICREW || EDDI.Instance.Vehicle == Constants.VEHICLE_TAXI)
+                    if (EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_SHIP || EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_MULTICREW || EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_TAXI)
                     {
                         if (navConfig.tdLat != null && navConfig.tdLong != null)
                         {
@@ -189,7 +189,7 @@ namespace EddiNavigationMonitor
                             nearby = true;
                         }
                     }
-                    else if (EDDI.Instance.Vehicle == Constants.VEHICLE_SRV || EDDI.Instance.Vehicle == Constants.VEHICLE_LEGS || EDDI.Instance.Vehicle == Constants.VEHICLE_FIGHTER)
+                    else if (EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_SRV || EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_LEGS || EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_FIGHTER)
                     {
                         if (navigationMonitor().currentStatus != null)
                         {
@@ -209,7 +209,7 @@ namespace EddiNavigationMonitor
                         }
                     }
                 }
-                else if (EDDI.Instance.Environment == Constants.ENVIRONMENT_DOCKED)
+                else if (EDDI.Instance.GameState.Environment == Constants.ENVIRONMENT_DOCKED)
                 {
                     if (currentStation != null)
                     {
@@ -220,7 +220,7 @@ namespace EddiNavigationMonitor
                         nearby = true;
                     }
                 }
-                else if (EDDI.Instance.Environment == Constants.ENVIRONMENT_NORMAL_SPACE)
+                else if (EDDI.Instance.GameState.Environment == Constants.ENVIRONMENT_NORMAL_SPACE)
                 {
                     if (currentStation != null)
                     {
@@ -231,9 +231,9 @@ namespace EddiNavigationMonitor
 
                     if (navigationMonitor().currentStatus != null && navigationMonitor().currentStatus.near_surface)
                     {
-                        if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP ||
-                            EDDI.Instance.Vehicle == Constants.VEHICLE_MULTICREW ||
-                            EDDI.Instance.Vehicle == Constants.VEHICLE_TAXI)
+                        if (EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_SHIP ||
+                            EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_MULTICREW ||
+                            EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_TAXI)
                         {
                             GetSurfaceCoordinates(navigationMonitor().currentStatus, out latitude, out longitude);
                         }
@@ -256,7 +256,7 @@ namespace EddiNavigationMonitor
                         }
                     }
                 }
-                else if (EDDI.Instance.Environment == Constants.ENVIRONMENT_SUPERCRUISE)
+                else if (EDDI.Instance.GameState.Environment == Constants.ENVIRONMENT_SUPERCRUISE)
                 {
                     if (navigationMonitor().currentStatus != null && navigationMonitor().currentStatus.near_surface)
                     {
@@ -300,9 +300,9 @@ namespace EddiNavigationMonitor
 
         private void updateBookmark(object sender, RoutedEventArgs e)
         {
-            var currentSystem = EDDI.Instance.CurrentStarSystem;
-            var currentBody = EDDI.Instance.CurrentStellarBody;
-            var currentStation = EDDI.Instance.CurrentStation;
+            var currentSystem = EDDI.Instance.GameState.CurrentStarSystem;
+            var currentBody = EDDI.Instance.GameState.CurrentStellarBody;
+            var currentStation = EDDI.Instance.GameState.CurrentStation;
             var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
 
             if (e.Source is Button button)
@@ -315,9 +315,9 @@ namespace EddiNavigationMonitor
                     // Update latitude & longitude if current body matches the bookmarked body
                     if (currentBody?.bodyname == navBookmark.bodyname || currentStation?.name == navBookmark.poi)
                     {
-                        if (EDDI.Instance.Environment == Constants.ENVIRONMENT_LANDED || EDDI.Instance.Environment == Constants.ENVIRONMENT_DOCKED)
+                        if (EDDI.Instance.GameState.Environment == Constants.ENVIRONMENT_LANDED || EDDI.Instance.GameState.Environment == Constants.ENVIRONMENT_DOCKED)
                         {
-                            if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP || EDDI.Instance.Vehicle == Constants.VEHICLE_MULTICREW || EDDI.Instance.Vehicle == Constants.VEHICLE_TAXI)
+                            if (EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_SHIP || EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_MULTICREW || EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_TAXI)
                             {
                                 if (navConfig.tdLat != null && navConfig.tdLong != null)
                                 {
@@ -326,7 +326,7 @@ namespace EddiNavigationMonitor
                                     navBookmark.poi ??= navConfig.tdPOI;
                                 }
                             }
-                            else if (EDDI.Instance.Vehicle == Constants.VEHICLE_SRV || EDDI.Instance.Vehicle == Constants.VEHICLE_LEGS || EDDI.Instance.Vehicle == Constants.VEHICLE_FIGHTER)
+                            else if (EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_SRV || EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_LEGS || EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_FIGHTER)
                             {
                                 navBookmark.latitude = navigationMonitor().currentStatus.latitude;
                                 navBookmark.longitude = navigationMonitor().currentStatus.longitude;
@@ -343,7 +343,7 @@ namespace EddiNavigationMonitor
                             }
                             navBookmark.bodyname = navigationMonitor().currentStatus.bodyname;
                         }
-                        else if (EDDI.Instance.Environment == Constants.ENVIRONMENT_SUPERCRUISE)
+                        else if (EDDI.Instance.GameState.Environment == Constants.ENVIRONMENT_SUPERCRUISE)
                         {
                             if (navigationMonitor().currentStatus.near_surface)
                             {
@@ -358,7 +358,7 @@ namespace EddiNavigationMonitor
                     // Update if a station is instanced and a body was not previously bookmarked
                     else if (currentStation != null && navBookmark.bodyname is null)
                     {
-                        if (EDDI.Instance.Environment == Constants.ENVIRONMENT_NORMAL_SPACE)
+                        if (EDDI.Instance.GameState.Environment == Constants.ENVIRONMENT_NORMAL_SPACE)
                         {
                             navBookmark.isstation = true;
                             navBookmark.poi = currentStation.name;

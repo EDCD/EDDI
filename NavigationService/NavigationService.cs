@@ -167,7 +167,7 @@ namespace EddiNavigationService
                 // Resolve the current search query
                 if ( queryResolvers.ContainsKey( queryType ) )
                 {
-                    if ( EDDI.Instance.CurrentStarSystem == null )
+                    if ( EDDI.Instance.GameState.CurrentStarSystem == null )
                     {
                         Logging.Debug( "Could not resolve navigation query: current star system is unknown." );
                         return null;
@@ -178,7 +178,7 @@ namespace EddiNavigationService
                     {
                         if ( queryType == QueryType.carrier )
                         {
-                            var fleetCarrier = EDDI.Instance.FleetCarrier;
+                            var fleetCarrier = EDDI.Instance.GameState.FleetCarrier;
                             if ( fleetCarrier is null )
                             {
                                 Logging.Warn( "Invalid query: no fleet carrier found." );
@@ -201,7 +201,7 @@ namespace EddiNavigationService
                         }
                         else
                         {
-                            result = await resolver.Value.ResolveAsync( query, EDDI.Instance.CurrentStarSystem ).ConfigureAwait(false);
+                            result = await resolver.Value.ResolveAsync( query, EDDI.Instance.GameState.CurrentStarSystem ).ConfigureAwait(false);
                         }
                         break;
                     }
@@ -297,7 +297,7 @@ namespace EddiNavigationService
                         SearchStarSystem = system;
                     }
                     // Update search system distance
-                    SearchDistanceLy = EDDI.Instance.CurrentStarSystem?.DistanceFromStarSystem(system) ?? 0;
+                    SearchDistanceLy = EDDI.Instance.GameState.CurrentStarSystem?.DistanceFromStarSystem(system) ?? 0;
                 }
             }
             else

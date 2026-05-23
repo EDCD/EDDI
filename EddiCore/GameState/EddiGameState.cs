@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Utilities;
 
-namespace EddiCore
+namespace EddiCore.GameState
 {
     internal sealed class EddiGameState : IEddiGameState
     {
@@ -152,8 +152,6 @@ namespace EddiCore
         }
         private string _vehicle = Constants.VEHICLE_SHIP;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         private void SetValue<T> ( ref T field, T value, [CallerMemberName] string propertyName = null )
         {
             if ( EqualityComparer<T>.Default.Equals( field, value ) ) { return; }
@@ -213,6 +211,8 @@ namespace EddiCore
                     break;
             }
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged ( [CallerMemberName] string propertyName = null )

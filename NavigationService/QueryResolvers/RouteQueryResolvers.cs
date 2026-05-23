@@ -138,7 +138,7 @@ namespace EddiNavigationService.QueryResolvers
 
             var destinationWaypoint = currentPlottedRoute.Waypoints
                 .Where( w => !w.visited )
-                .FirstOrDefault( w => w.systemAddress == EDDI.Instance.DestinationStarSystem?.systemAddress );
+                .FirstOrDefault( w => w.systemAddress == EDDI.Instance.GameState.DestinationStarSystem?.systemAddress );
             if ( destinationWaypoint != null )
             {
                 // We're making our way towards a valid destination waypoint

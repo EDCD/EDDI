@@ -48,14 +48,14 @@ namespace EddiSpeechResponder.CustomFunctions
             if ( values.Count == 1 )
             {
                 // Named commodity, current station
-                var station = EDDI.Instance.CurrentStation;
+                var station = EDDI.Instance.GameState.CurrentStation;
                 return CommodityDetails( values[ 0 ].AsString, station );
             }
 
             if ( values.Count == 2 )
             {
                 // Named commodity, named station, current system
-                var system = EDDI.Instance.CurrentStarSystem;
+                var system = EDDI.Instance.GameState.CurrentStarSystem;
                 var stationName = values[1].AsString;
                 var station = system?.stations?.FirstOrDefault(v => v.name == stationName);
                 return CommodityDetails( values[ 0 ].AsString, station );

@@ -286,9 +286,9 @@ namespace EddiEddnResponder.Toolkit
             if ( systemAddress > 0 )
             {
                 StarSystem system;
-                if (systemAddress == EDDI.Instance.CurrentStarSystem?.systemAddress)
+                if (systemAddress == EDDI.Instance.GameState.CurrentStarSystem?.systemAddress)
                 {
-                    system = EDDI.Instance.CurrentStarSystem;
+                    system = EDDI.Instance.GameState.CurrentStarSystem;
                 }
                 else
                 {

@@ -43,7 +43,7 @@ namespace EddiShipMonitor
                                 : await EDDI.Instance.DataProvider.GetOrFetchStationWaypointAsync( (ulong)shipSystemAddress, (long)shipMarketId ).ConfigureAwait(false);
                             ship.StoredLocation =
                                 stationWaypoint is null ? null : new Ship.Location( stationWaypoint );
-                            ship.distance = ship.DistanceLY( EDDI.Instance.CurrentStarSystem );
+                            ship.distance = ship.DistanceLY( EDDI.Instance.GameState.CurrentStarSystem );
                             shipyard.Add( ship );
                         }
                     }

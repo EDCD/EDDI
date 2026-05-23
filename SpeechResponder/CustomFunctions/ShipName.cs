@@ -24,12 +24,12 @@ namespace EddiSpeechResponder.CustomFunctions
 
             if (localId is null && model is null)
             {
-                if (EDDI.Instance.Vehicle == Constants.VEHICLE_TAXI)
+                if (EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_TAXI)
                 {
                     return EddiDataDefinitions.Properties.Ship.yourTransport;
                 }
 
-                if (EDDI.Instance.Vehicle == Constants.VEHICLE_MULTICREW)
+                if (EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_MULTICREW)
                 {
                     return EddiDataDefinitions.Properties.Ship.yourShip;
                 }
@@ -37,7 +37,7 @@ namespace EddiSpeechResponder.CustomFunctions
 
             var shipyard = ConfigService.Instance.shipMonitorConfiguration?.shipyard;
             var ship = localId is null
-                ? EDDI.Instance.CurrentShip
+                ? EDDI.Instance.GameState.CurrentShip
                 : shipyard?.FirstOrDefault(s => s.LocalId == localId)
                   ?? ShipDefinitions.FromModel(model)
                   ?? ShipDefinitions.FromEDModel(model);

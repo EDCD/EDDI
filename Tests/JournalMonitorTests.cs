@@ -2215,7 +2215,7 @@ namespace Tests
             await EDDI.Instance.HandleEventAsync( (JumpedEvent)events[ 0 ] ).ConfigureAwait(false);
 
             // Test that the current star system has been updated
-            var currentStarSystem = EDDI.Instance.CurrentStarSystem;
+            var currentStarSystem = EDDI.Instance.GameState.CurrentStarSystem;
             Assert.IsNotNull(currentStarSystem);
             Assert.HasCount( 1, currentStarSystem.bodies );
 

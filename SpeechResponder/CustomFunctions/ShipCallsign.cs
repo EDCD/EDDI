@@ -33,7 +33,7 @@ namespace EddiSpeechResponder.CustomFunctions
                 : (int?)null);
 
             var shipyard = ConfigService.Instance.shipMonitorConfiguration?.shipyard;
-            var ship = localId is null ? EDDI.Instance.CurrentShip : shipyard?.FirstOrDefault(s => s.LocalId == localId);
+            var ship = localId is null ? EDDI.Instance.GameState.CurrentShip : shipyard?.FirstOrDefault(s => s.LocalId == localId);
 
             return callsignType switch
             {

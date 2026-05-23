@@ -282,7 +282,7 @@ namespace EddiSpeechResponder
                     return;
                 }
 
-                if (EDDI.Instance.CurrentStarSystem?.bodies?
+                if (EDDI.Instance.GameState.CurrentStarSystem?.bodies?
                         .FirstOrDefault(s => s.bodyname == starScannedEvent.bodyname)?
                         .scannedDateTime < starScannedEvent.timestamp)
                 {
@@ -312,9 +312,9 @@ namespace EddiSpeechResponder
         private async Task SayAsync(Event @event)
         {
             Ship ship = null;
-            if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP)
+            if (EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_SHIP)
             {
-                ship = EDDI.Instance.CurrentShip;
+                ship = EDDI.Instance.GameState.CurrentShip;
             }
             await SayAsync( ScriptResolver, ship, @event.type, @event, null, null, SayOutLoud() )
                 .ConfigureAwait( false );

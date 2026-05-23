@@ -488,7 +488,7 @@ namespace EddiCommanderMonitor
             {
                 SetCommanderTitle( @event.controllingsystemfaction.Allegiance );
             }
-            if ( ( @event.docked || @event.onFoot ) && @event.factions.Count > 0 && EDDI.Instance.CurrentStarSystem != null )
+            if ( ( @event.docked || @event.onFoot ) && @event.factions.Count > 0 && EDDI.Instance.GameState.CurrentStarSystem != null )
             {
                 if ( @event.timestamp >= updatedAt && 
                      TryUpdateSquadronHomeSystem( @event.systemAddress, @event.factions ) )
@@ -604,7 +604,7 @@ namespace EddiCommanderMonitor
             {
                 SetCommanderTitle( @event.controllingfaction?.Allegiance );
             }
-            if ( @event.factions.Count > 0 && EDDI.Instance.CurrentStarSystem != null )
+            if ( @event.factions.Count > 0 && EDDI.Instance.GameState.CurrentStarSystem != null )
             {
                 if ( @event.timestamp >= updatedAt &&
                      TryUpdateSquadronHomeSystem( @event.systemAddress, @event.factions ) )
@@ -620,7 +620,7 @@ namespace EddiCommanderMonitor
             {
                 SetCommanderTitle( @event.controllingsystemfaction.Allegiance );
             }
-            if ( @event.factions.Count > 0 && EDDI.Instance.CurrentStarSystem != null )
+            if ( @event.factions.Count > 0 && EDDI.Instance.GameState.CurrentStarSystem != null )
             {
                 if ( @event.timestamp >= updatedAt &&
                      TryUpdateSquadronHomeSystem( @event.systemAddress, @event.factions ) )
@@ -805,20 +805,19 @@ namespace EddiCommanderMonitor
                     Cmdr.squadronfaction = squadronFaction.name;
 
                     // Update system, allegiance, & power when in squadron home system
-                    if ( EDDI.Instance.CurrentStarSystem?.systemAddress == currentSystemAddress )
+                    if ( EDDI.Instance.GameState.CurrentStarSystem?.systemAddress == currentSystemAddress )
                     {
                         // Update the squadron system data, if changed
-                        SquadronSystemName = EDDI.Instance.CurrentStarSystem.systemname;
-                        Cmdr.squadronSystemName = EDDI.Instance.CurrentStarSystem.systemname;
-                        Cmdr.squadronSystemAddress = EDDI.Instance.CurrentStarSystem.systemAddress;
+                        SquadronSystemName = EDDI.Instance.GameState.CurrentStarSystem.systemname;
+                        Cmdr.squadronSystemName = EDDI.Instance.GameState.CurrentStarSystem.systemname;
+                        Cmdr.squadronSystemAddress = EDDI.Instance.GameState.CurrentStarSystem.systemAddress;
                         Cmdr.squadronfaction = squadronFaction.name;
 
                         // Update the squadron allegiance according to the faction info from the journal
-                        Cmdr.squadronallegiance =
-                            EDDI.Instance.CurrentStarSystem?.Faction?.Allegiance ?? Superpower.None;
+                        Cmdr.squadronallegiance = EDDI.Instance.GameState.CurrentStarSystem?.Faction?.Allegiance ?? Superpower.None;
 
                         // Update the squadron power to match the HQ system's controlling power if it has not been previously set
-                        Cmdr.squadronpower = EDDI.Instance.CurrentStarSystem?.Power ?? Power.None;
+                        Cmdr.squadronpower = EDDI.Instance.GameState.CurrentStarSystem?.Power ?? Power.None;
                     }
                 }
 

@@ -99,18 +99,18 @@ namespace EddiStatusMonitor
             // Update vehicle information
             if ( !string.IsNullOrEmpty( status.vehicle ) && status.vehicle != lastStatus?.vehicle )
             {
-                if ( EDDI.Instance.Vehicle != status.vehicle )
+                if ( EDDI.Instance.GameState.Vehicle != status.vehicle )
                 {
                     var statusSummary = new Dictionary<string, Status> { { "isStatus", status }, { "wasStatus", lastStatus } };
                     Logging.Debug( $"Status changed vehicle from {lastStatus?.vehicle ?? "<NULL>"} to {status.vehicle}", statusSummary );
                     EDDI.Instance.Vehicle = status.vehicle;
                 }
             }
-            if ( status.vehicle == Constants.VEHICLE_SHIP && EDDI.Instance.CurrentShip != null )
+            if ( status.vehicle == Constants.VEHICLE_SHIP && EDDI.Instance.GameState.CurrentShip != null )
             {
-                EDDI.Instance.CurrentShip.cargoCarried = status.cargo_carried ?? 0;
-                EDDI.Instance.CurrentShip.fuelInTanks = status.fuelInTanks ?? 0;
-                EDDI.Instance.CurrentShip.fuelInReservoir = status.fuelInReservoir ?? 0;
+                EDDI.Instance.GameState.CurrentShip.cargoCarried = status.cargo_carried ?? 0;
+                EDDI.Instance.GameState.CurrentShip.fuelInTanks = status.fuelInTanks ?? 0;
+                EDDI.Instance.GameState.CurrentShip.fuelInReservoir = status.fuelInReservoir ?? 0;
             }
 
             if ( lastStatus is null ) { return; }
@@ -220,13 +220,13 @@ namespace EddiStatusMonitor
             if ( !string.IsNullOrEmpty( status.destination_name ) && status.destination_name != lastStatus.destination_name
                                                                          && status.vehicle == lastStatus.vehicle )
             {
-                if ( EDDI.Instance.CurrentStarSystem != null && EDDI.Instance.CurrentStarSystem.systemAddress ==
+                if ( EDDI.Instance.GameState.CurrentStarSystem != null && EDDI.Instance.GameState.CurrentStarSystem.systemAddress ==
                     status.destinationSystemAddress && status.destination_name != lastDestinationPOI )
                 {
-                    var body = EDDI.Instance.CurrentStarSystem.bodies.FirstOrDefault(b =>
+                    var body = EDDI.Instance.GameState.CurrentStarSystem.bodies.FirstOrDefault(b =>
                         b.bodyId == status.destinationBodyId
                         && b.bodyname == status.destination_name);
-                    var station = EDDI.Instance.CurrentStarSystem.stations.FirstOrDefault(s =>
+                    var station = EDDI.Instance.GameState.CurrentStarSystem.stations.FirstOrDefault(s =>
                         s.name == status.destination_name);
 
                     // Could be a scannable megaship (these move on a weekly schedule and are not dockable)
@@ -255,7 +255,7 @@ namespace EddiStatusMonitor
                     // It's also possible for both the standard name and localized name to be symbolic values. If so, prefer and try to match the value in the localized field. 
                     var signalSource = status.destination_name == "$USS_HighGradeEmissions;"
                         ? SignalSource.GenericSignalSource
-                        : EDDI.Instance.CurrentStarSystem.signalSources.FirstOrDefault( s =>
+                        : EDDI.Instance.GameState.CurrentStarSystem.signalSources.FirstOrDefault( s =>
                             s.edname == status.destination_name ) ?? SignalSource.FromEDName(
                             ( status.destination_localized_name?.StartsWith( '$' ) ?? false )
                                 ? status.destination_localized_name
@@ -316,7 +316,7 @@ namespace EddiStatusMonitor
             }
             if ( !status.gliding && lastStatus.gliding )
             {
-                events.Add( new GlideEvent( status.timestamp, status.gliding, EDDI.Instance.CurrentStellarBody?.systemname, EDDI.Instance.CurrentStellarBody?.systemAddress, EDDI.Instance.CurrentStellarBody?.bodyname, EDDI.Instance.CurrentStellarBody?.bodyType ) );
+                events.Add( new GlideEvent( status.timestamp, status.gliding, EDDI.Instance.GameState.CurrentStellarBody?.systemname, EDDI.Instance.GameState.CurrentStellarBody?.systemAddress, EDDI.Instance.GameState.CurrentStellarBody?.bodyname, EDDI.Instance.GameState.CurrentStellarBody?.bodyType ) );
             }
             else if ( status.gliding && !lastStatus.gliding && StatusService.Instance.lastEnteredNormalSpaceEvent != null )
             {
