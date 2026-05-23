@@ -100,7 +100,7 @@ namespace EddiSpeechResponder
             subtitlesCheckbox.IsChecked = speechResponder.Configuration?.Subtitles ?? false;
             subtitlesOnlyCheckbox.IsChecked = speechResponder.Configuration?.SubtitlesOnly ?? false;
 
-            SpeechResponder.PersonalityChanged += PersonalityChanged;
+            SpeechResponder.PropertyChanged += OnSpeechResponderPropertyChanged;
             speechResponder.Personalities.CollectionChanged += PersonalitiesCollectionChanged;
             
             CheckForScriptRecovery(speechResponder);
@@ -156,17 +156,25 @@ namespace EddiSpeechResponder
             }
         }
 
-        private void PersonalityChanged(object sender, EventArgs e)
+        private void OnSpeechResponderPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (sender is Personality personality)
+            if (e.PropertyName == nameof(SpeechResponder.CurrentPersonality))
             {
-                InitializeView(personality.Scripts?.Values);
+                InitializeView(SpeechResponder.CurrentPersonality.Scripts?.Values);
             }
         }
 
-        private void InitializeView(object source)
+        private void InitializeView(IEnumerable<Script> scripts)
         {
-            ScriptsView = CollectionViewSource.GetDefaultView(source);
+            if ( scripts is null )
+            {
+                ScriptsView = null;
+                return;
+            }
+
+            SpeechResponder.CurrentPersonality.ApplyScriptPersonalityState();
+
+            ScriptsView = CollectionViewSource.GetDefaultView(scripts);
             ScriptsView.SortDescriptions.Add(new SortDescription(nameof(Script.Name), ListSortDirection.Ascending));
 
             // Re-apply text filter, as needed

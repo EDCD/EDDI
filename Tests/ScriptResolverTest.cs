@@ -208,6 +208,18 @@ namespace Tests
         }
 
         [TestMethod]
+        public void TestUpgradeScript_ClonesDefaultWhenPersonalityScriptIsMissing()
+        {
+            var newDefaultScript = new Script("testScript", "Updated Test script Description", true, "Updated Test script", 3, "Updated Test script");
+
+            var upgradedScript = Personality.UpgradeScript(null, newDefaultScript);
+
+            Assert.AreNotSame(newDefaultScript, upgradedScript);
+            Assert.AreEqual(newDefaultScript.Name, upgradedScript.Name);
+            Assert.AreEqual(newDefaultScript.Value, upgradedScript.Value);
+        }
+
+        [TestMethod]
         public void TestSetClipboard()
         {
             var testThread = new Thread(() =>

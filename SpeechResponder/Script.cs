@@ -47,7 +47,16 @@ namespace EddiSpeechResponder
         public bool Responder
         {
             get => responder;
-            set { responder = value; OnPropertyChanged(); }
+            set
+            {
+                if ( responder == value ) { return; }
+
+                responder = value;
+                OnPropertyChanged();
+                OnPropertyChanged( nameof( Priority ) );
+                OnPropertyChanged( nameof( IsResettable ) );
+                OnPropertyChanged( nameof( IsResetOrDeleteEnabled ) );
+            }
         }
 
         [JsonProperty("script")]
@@ -58,13 +67,30 @@ namespace EddiSpeechResponder
             {
                 if (script != value)
                 {
-                    script = value; OnPropertyChanged();
+                    script = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged( nameof( HasValue ) );
+                    OnPropertyChanged( nameof( Default ) );
+                    OnPropertyChanged( nameof( IsResetOrDeleteEnabled ) );
                 }
             }
         }
 
         [JsonProperty("defaultValue")]
-        public string defaultValue { get; internal set; }
+        public string defaultValue
+        {
+            get => _defaultValue;
+            internal set
+            {
+                if ( _defaultValue == value ) { return; }
+
+                _defaultValue = value;
+                OnPropertyChanged();
+                OnPropertyChanged( nameof( Default ) );
+                OnPropertyChanged( nameof( IsResettable ) );
+                OnPropertyChanged( nameof( IsResetOrDeleteEnabled ) );
+            }
+        }
 
         [JsonProperty("default")]
         // Determine whether the script matches the default, treating empty strings and null values as equal
@@ -96,9 +122,24 @@ namespace EddiSpeechResponder
         private bool responder;
         [JsonIgnore]
         private string script;
+        [JsonIgnore]
+        private string _defaultValue;
+        [JsonIgnore]
+        private bool personalityIsCustom;
 
         [ JsonIgnore ] 
-        public bool PersonalityIsCustom { get; set; }
+        public bool PersonalityIsCustom
+        {
+            get => personalityIsCustom;
+            set
+            {
+                if ( personalityIsCustom == value ) { return; }
+
+                personalityIsCustom = value;
+                OnPropertyChanged();
+                OnPropertyChanged( nameof( IsResetOrDeleteEnabled ) );
+            }
+        }
 
         public Script(string name, string description, bool responder, string script, int? priority = 3, string defaultScript = null)
         {

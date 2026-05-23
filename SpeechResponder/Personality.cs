@@ -66,7 +66,10 @@ namespace EddiSpeechResponder
             get => _isCustom;
             set
             {
+                if ( _isCustom == value ) { return; }
+
                 _isCustom = value;
+                ApplyScriptPersonalityState();
                 OnPropertyChanged();
             }
         }
@@ -278,14 +281,19 @@ namespace EddiSpeechResponder
 
             if (filename != DEFAULT_PATH)
             {
-                var json = JsonConvert.SerializeObject(this, Formatting.Indented);
-                Files.Write(filename, json);
+                Files.Write(filename, ToJson());
             }
+        }
+
+        internal string ToJson()
+        {
+            return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
 
         public static void incrementPersonalityBackups(Personality personality)
         {
             if (!personality.IsCustom) { return; }
+            if (Files.unitTesting) { return; }
 
             var filesToMove = new Dictionary<string, string>(); // Key = FROM, Value = TO
             var filesToDelete = new List<string>();
@@ -339,7 +347,15 @@ namespace EddiSpeechResponder
             }
 
             // Save the most recent backup
-            personality.ToFile($"{personality.dataPath}.bak");
+            var backupPath = $"{personality.dataPath}.bak";
+            if (File.Exists(personality.dataPath))
+            {
+                File.Copy(personality.dataPath, backupPath, true);
+            }
+            else
+            {
+                personality.ToFile(backupPath);
+            }
         }
 
         /// <summary>
@@ -355,24 +371,30 @@ namespace EddiSpeechResponder
             // Save a copy of this personality
             var iname = name.ToLowerInvariant();
             var copyPath = Constants.DATA_DIR + @"\personalities\" + iname + ".json";
-            // Ensure it doesn't exist
-            if (!File.Exists(copyPath))
+            var scripts = Scripts.ToDictionary(kv => kv.Key, kv => kv.Value.Copy());
+            var newPersonality = new Personality(name, description, scripts)
             {
-                ToFile(copyPath);
-            }
-            // Load the personality back in
-            var newPersonality = FromFile(copyPath);
-            // Change its name and description and save it back out again
-            newPersonality.Name = name;
-            newPersonality.Description = description;
+                dataPath = copyPath,
+                IsCustom = true
+            };
+
             newPersonality.ToFile();
-            // And finally return it
             return newPersonality;
         }
 
         public void RemoveFile()
         {
             File.Delete(dataPath);
+        }
+
+        internal void ApplyScriptPersonalityState()
+        {
+            if ( Scripts is null ) { return; }
+
+            foreach ( var script in Scripts.Values )
+            {
+                script.PersonalityIsCustom = IsCustom;
+            }
         }
 
         /// <summary>
@@ -459,8 +481,9 @@ namespace EddiSpeechResponder
                         // If the script is not present in the target personality then add the default script to the output
                         if ( defaultPersonality.Scripts.TryGetValue( key, out var defaultScript ) )
                         {
-                            defaultScript.Responder = isResponderScripts;
-                            fixedScripts.Add( key, defaultScript );
+                            var script = defaultScript.Copy();
+                            script.Responder = isResponderScripts;
+                            fixedScripts.Add( key, script );
                         }
                     }
                 }
@@ -469,7 +492,7 @@ namespace EddiSpeechResponder
 
         public static Script UpgradeScript(Script personalityScript, Script defaultScript)
         {
-            var script = personalityScript ?? defaultScript;
+            var script = personalityScript ?? defaultScript?.Copy();
             if (script != null)
             {
                 if (defaultScript != null)

@@ -9,11 +9,11 @@ using EddiSpeechService;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using Utilities;
@@ -24,37 +24,36 @@ namespace EddiSpeechResponder
     /// <summary>
     /// A responder that responds to events with a speech
     /// </summary>
-    public class SpeechResponder : IEddiResponder
+    public class SpeechResponder : IEddiResponder, INotifyPropertyChanged
     {
         // The file to log speech
         private static readonly string LogFile = Constants.DATA_DIR + @"\speechresponder.out";
 
         public ObservableCollection<Personality> Personalities { get; private set; }
 
+        /// <summary>
+        /// Currently selected personality for the speech responder.
+        /// Changes to this property automatically update configuration and trigger script resolver updates.
+        /// WPF bindings are notified through INotifyPropertyChanged.
+        /// </summary>
         public Personality CurrentPersonality
         {
-            get => _personality 
-                   ?? Personalities.FirstOrDefault(p => p.Name == Configuration.Personality) 
-                   ?? Personalities.FirstOrDefault()
-                   ?? Personality.Default();
+            get => _currentPersonality;
             set
             {
-                // Set the updated personality
-                if (_personality != value)
-                {
-                    _personality = value ?? Personalities.FirstOrDefault() ?? Personality.Default();
-                    ScriptResolver = new ScriptResolver(_personality.Scripts);
+                // Validate: ensure we have a valid personality
+                var newPersonality = value ?? Personalities?.FirstOrDefault() ?? Personality.Default();
 
-                    // Update our configuration also
-                    Configuration.Personality = _personality?.Name;
-                    ConfigService.Instance.speechResponderConfiguration = Configuration;
+                SetProperty(ref _currentPersonality, newPersonality, nameof(CurrentPersonality));
+                newPersonality.ApplyScriptPersonalityState();
 
-                    RaiseOnUIThread(PersonalityChanged, _personality);
-                }
+                // Update derived properties
+                ScriptResolver = new ScriptResolver(newPersonality.Scripts);
+                Configuration.Personality = newPersonality.Name;
+                ConfigService.Instance.speechResponderConfiguration = Configuration;
             }
         }
-
-        public EventHandler PersonalityChanged;
+        private Personality _currentPersonality;
 
         public SpeechResponderConfiguration Configuration
         {
@@ -68,15 +67,17 @@ namespace EddiSpeechResponder
                 _configuration = value;
             }
         }
+        private SpeechResponderConfiguration _configuration;
 
+        /// <summary>
+        /// Resolver for parsing scripts with current personality's definitions.
+        /// Updated automatically when CurrentPersonality changes.
+        /// </summary>
         public ScriptResolver ScriptResolver
         {
             get => _scriptResolver ?? new ScriptResolver(CurrentPersonality.Scripts);
             private set => _scriptResolver = value;
         }
-
-        private Personality _personality;
-        private SpeechResponderConfiguration _configuration;
         private ScriptResolver _scriptResolver;
 
         public string ResponderName()
@@ -127,7 +128,7 @@ namespace EddiSpeechResponder
         /// <returns>true if the speech responder is now using the new personality, otherwise false</returns>
         public bool TrySetPersonality(string newPersonalityName)
         {
-            if ( !string.IsNullOrWhiteSpace( newPersonalityName ) && _personality?.Name.Equals( newPersonalityName, StringComparison.InvariantCultureIgnoreCase ) == true )
+            if ( !string.IsNullOrWhiteSpace( newPersonalityName ) && _currentPersonality?.Name.Equals( newPersonalityName, StringComparison.InvariantCultureIgnoreCase ) == true )
             {
                 // Already set to this personality
                 return true;
@@ -161,6 +162,7 @@ namespace EddiSpeechResponder
             var newPersonality = CurrentPersonality.Copy(personalityName?.Trim(), personalityDescription?.Trim());
             if (disableScripts) { EnableOrDisableAllScripts(newPersonality, false); }
             Personalities.Add(newPersonality);
+            CurrentPersonality = newPersonality;
         }
 
         internal void RemoveCurrentPersonality()
@@ -183,6 +185,8 @@ namespace EddiSpeechResponder
 
         internal void EnableOrDisableAllScripts(Personality targetPersonality, bool desiredState)
         {
+            if (targetPersonality?.Scripts is null) { return; }
+
             foreach (var kvScript in targetPersonality.Scripts)
             {
                 var script = kvScript.Value;
@@ -191,7 +195,7 @@ namespace EddiSpeechResponder
                     script.Enabled = desiredState;
                 }
             }
-            SavePersonality();
+            targetPersonality.ToFile();
         }
 
         public async Task TestScriptAsync(string scriptName, Dictionary<string, Script> scripts)
@@ -413,20 +417,23 @@ namespace EddiSpeechResponder
             }
         }
 
-        static void RaiseOnUIThread(EventHandler handler, object sender)
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged ( [CallerMemberName] string propertyName = null )
         {
-            if (handler != null)
-            {
-                var uiSyncContext = SynchronizationContext.Current ?? new SynchronizationContext();
-                if (uiSyncContext == null)
-                {
-                    handler(sender, EventArgs.Empty);
-                }
-                else
-                {
-                    uiSyncContext.Send(delegate { handler(sender, EventArgs.Empty); }, null);
-                }
-            }
+            PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propertyName ) );
         }
+
+        private void SetProperty<T> ( ref T backingField, T value, [CallerMemberName] string propertyName = null )
+        {
+            if ( Equals( backingField, value ) )
+            { return; }
+            backingField = value;
+            OnPropertyChanged( propertyName );
+        }
+
+        #endregion
     }
 }

@@ -1,5 +1,7 @@
 ﻿using EddiSpeechResponder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using Utilities;
 
@@ -97,6 +99,45 @@ namespace Tests
             var actual = TextCompletion.GetLookupItem( "{set wordCount to wordCount + speech" );
 
             Assert.AreEqual( string.Empty, actual );
+        }
+
+        [TestMethod]
+        public void ScriptPersonalityIsCustom_NotifiesResetOrDeleteEnabled ()
+        {
+            var script = new Script( "Test script", null, false, "Custom script", 3, "Default script" );
+            var propertyNames = new List<string>();
+            script.PropertyChanged += ( _, args ) => propertyNames.Add( args.PropertyName );
+
+            Assert.IsFalse( script.IsResetOrDeleteEnabled );
+
+            script.PersonalityIsCustom = true;
+
+            Assert.IsTrue( script.IsResetOrDeleteEnabled );
+            CollectionAssert.Contains( propertyNames, nameof( Script.PersonalityIsCustom ) );
+            CollectionAssert.Contains( propertyNames, nameof( Script.IsResetOrDeleteEnabled ) );
+        }
+
+        [TestMethod]
+        public void PersonalityToJson_WritesLegacyScriptShapeForRollbackCompatibility ()
+        {
+            var script = Personality.Default().Scripts[ "AFMU repairs" ].Copy();
+            script.Enabled = false;
+            script.Value = "Custom AFMU repairs";
+            var personality = new Personality( "Custom", "Custom description", new Dictionary<string, Script>
+            {
+                [ script.Name ] = script
+            } );
+
+            var json = personality.ToJson();
+            var file = JObject.Parse( json );
+            var serializedScript = (JObject)file[ "scripts" ]?[ "AFMU repairs" ];
+
+            Assert.IsNull( file[ "version" ] );
+            Assert.IsFalse( serializedScript?.Value<bool>( "enabled" ) );
+            Assert.AreEqual( "AFMU repairs", serializedScript?.Value<string>( "name" ) );
+            Assert.IsTrue( serializedScript?.Value<bool>( "responder" ) );
+            Assert.AreEqual( "Custom AFMU repairs", serializedScript?.Value<string>( "script" ) );
+            Assert.IsNotNull( serializedScript?[ "defaultValue" ] );
         }
 
         [TestMethod]
