@@ -215,11 +215,8 @@ namespace EddiVoiceAttackResponder
                     if ( e.PropertyName.Equals( nameof( ShipMonitorConfiguration ), StringComparison.InvariantCultureIgnoreCase ) )
                     {
                         setShipValues( ResolveCurrentShip(), "Ship" );
-                        Task.Run( () =>
-                        {
-                            var shipConfig = configService.shipMonitorConfiguration;
-                            setShipyardValues( shipConfig.shipyard?.ToList() );
-                        } );
+                        var shipyardSnapshot = configService.shipMonitorConfiguration.shipyard?.ToList();
+                        setShipyardValues( shipyardSnapshot );
                         return;
                     }
 
@@ -1125,7 +1122,8 @@ namespace EddiVoiceAttackResponder
 
                     if ( batch.Actions.Count > 0 )
                     {
-                        DispatchRuntimeActions( batch.Actions, forceDispatch );
+                        var actionsSnapshot = batch.Actions.ToArray();
+                        DispatchRuntimeActions( actionsSnapshot, forceDispatch );
                     }
                 }
             }
