@@ -28,7 +28,7 @@ namespace EddiSpeechService.SpeechSynthesizers
             }
         }
 
-        public SystemSpeechSynthesizer ( ref HashSet<VoiceDetails> voiceStore )
+        public void Initialize ( HashSet<VoiceDetails> voiceStore )
         {
             bool TrySystemVoice ( VoiceDetails voiceDetails )
             {
@@ -57,75 +57,86 @@ namespace EddiSpeechService.SpeechSynthesizers
                 systemSpeechVoices = synth
                     .GetInstalledVoices()
                     .Where( v => v.Enabled &&
-                                 !v.VoiceInfo.Name.Contains( "Microsoft Server Speech Text to Speech Voice" ) && 
+                                 !v.VoiceInfo.Name.Contains( "Microsoft Server Speech Text to Speech Voice" ) &&
                                  !v.VoiceInfo.Name.Contains( "eSpeak" ) )
                     .ToList();
             }
 
-            foreach ( var voice in systemSpeechVoices )
+            try
             {
-                try
+                foreach ( var voice in systemSpeechVoices )
                 {
-                    Logging.Debug( $"Found voice: {voice.VoiceInfo.Name}", voice.VoiceInfo );
+                    try
+                    {
+                        Logging.Debug( $"Found voice: {voice.VoiceInfo.Name}", voice.VoiceInfo );
 
-                    var voiceDetails = new VoiceDetails( voice.VoiceInfo.Name, voice.VoiceInfo.Gender.ToString(),
+                        var voiceDetails = new VoiceDetails( voice.VoiceInfo.Name, voice.VoiceInfo.Gender.ToString(),
                         voice.VoiceInfo.Culture ?? CultureInfo.InvariantCulture, nameof(System) );
 
-                    // Skip duplicates of voices already added from Windows.Media.SpeechSynthesis
-                    // (for example, if OneCore voices have been added to System.Speech with a registry edit)
-                    if ( voiceStore.Any( v => v.name == voiceDetails.name ) )
+                        // Skip duplicates of voices already added from Windows.Media.SpeechSynthesis
+                        // (for example, if OneCore voices have been added to System.Speech with a registry edit)
+                        if ( voiceStore.Any( v => v.name == voiceDetails.name ) )
+                        {
+                            Logging.Debug(
+                                $"{voice.VoiceInfo.Name} has already been added to the voice list, skipping." );
+                            continue;
+                        }
+
+                        // Suppress voices "Desktop" variant voices from System.Speech.Synthesis
+                        // where we already have a (newer) OneCore version (without disabling manual invocation of those voices)
+                        if ( voiceStore.Any( v => $"{v.name} Desktop" == voiceDetails.name ) )
+                        {
+                            voiceDetails.hideVoice = true;
+                        }
+
+                        // Skip Amazon Polly voices - these tend to throw various internal errors (cause unknown)
+                        // and are not currently reliable, particularly in VoiceAttack.
+                        if ( !string.IsNullOrEmpty( voiceDetails.name ) &&
+                             voiceDetails.name.StartsWith( "Amazon Polly" ) )
+                        {
+                            continue;
+                        }
+
+                        // Skip voices which are not selectable
+                        if ( !TrySystemVoice( voiceDetails ) )
+                        {
+                            Logging.Debug( $"{voice.VoiceInfo.Name} is not selectable, skipping." );
+                            continue;
+                        }
+
+                        voiceStore.Add( voiceDetails );
+                        Logging.Debug( $"Loaded voice: {voice.VoiceInfo.Name}", voiceDetails );
+                    }
+                    catch ( Exception e )
                     {
-                        Logging.Debug(
-                            $"{voice.VoiceInfo.Name} has already been added to the voice list, skipping." );
+                        if ( voice.VoiceInfo.Culture is null )
+                        {
+                            Logging.Warn( $"Failed to load {voice.VoiceInfo.Name}, voice culture is not set.", e );
+                        }
+                        else
+                        {
+                            Logging.Error( $"Failed to load {voice.VoiceInfo.Name}", e );
+                        }
                         continue;
                     }
-
-                    // Skip voices which are not selectable
-                    if ( !TrySystemVoice( voiceDetails ) )
-                    {
-                        Logging.Debug( $"{voice.VoiceInfo.Name} is not selectable, skipping." );
-                        continue;
-                    }
-
-                    // Suppress voices "Desktop" variant voices from System.Speech.Synthesis
-                    // where we already have a (newer) OneCore version (without disabling manual invocation of those voices)
-                    if ( voiceStore.Any( v => $"{v.name} Desktop" == voiceDetails.name ) )
-                    {
-                        voiceDetails.hideVoice = true;
-                    }
-
-                    // Skip Amazon Polly voices - these tend to throw various internal errors (cause unknown)
-                    // and are not currently reliable, particularly in VoiceAttack.
-                    if ( !string.IsNullOrEmpty( voiceDetails.name ) &&
-                         voiceDetails.name.StartsWith( "Amazon Polly" ) )
-                    {
-                        continue;
-                    }
-
-                    voiceStore.Add( voiceDetails );
-                    Logging.Debug( $"Loaded voice: {voice.VoiceInfo.Name}", voiceDetails );
                 }
-                catch ( Exception e )
+            }
+            finally
+            {
+                if ( selectedVoice != null )
                 {
-                    if ( voice.VoiceInfo.Culture is null )
+                    try
                     {
-                        Logging.Warn( $"Failed to load {voice.VoiceInfo.Name}, voice culture is not set.", e );
+                        lock ( synthLock )
+                        {
+                            synth.SelectVoice( selectedVoice.Name );
+                        }
                     }
-                    else
+                    catch ( Exception e )
                     {
-                        Logging.Error( $"Failed to load {voice.VoiceInfo.Name}", e );
+                        Logging.Warn( $"Failed to restore selected voice {selectedVoice.Name} during initialization.", e );
                     }
                 }
-            }
-
-            if ( selectedVoice == null )
-            {
-                return;
-            }
-
-            lock ( synthLock )
-            {
-                synth.SelectVoice( selectedVoice.Name );
             }
         }
 

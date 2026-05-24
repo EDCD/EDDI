@@ -69,7 +69,8 @@ namespace EddiSpeechService
             // Prep the System.Speech synthesizer
             try
             {
-                systemSpeechSynth = new SystemSpeechSynthesizer( ref voiceStore );
+                systemSpeechSynth = new SystemSpeechSynthesizer();
+                systemSpeechSynth.Initialize( voiceStore );
             }
             catch ( ThreadAbortException )
             {
