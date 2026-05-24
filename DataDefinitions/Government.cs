@@ -18,6 +18,7 @@ namespace EddiDataDefinitions
             Colony = new Government("$government_Colony;");
             Communism = new Government("$government_Communism;");
             Confederacy = new Government("$government_Confederacy;");
+            Construction = new Government("$government_Megaconstruction;");
             Cooperative = new Government("$government_Cooperative;");
             Corporate = new Government("$government_Corporate;");
             Democracy = new Government("$government_Democracy;");
@@ -37,6 +38,7 @@ namespace EddiDataDefinitions
         public static readonly Government Colony;
         public static readonly Government Communism;
         public static readonly Government Confederacy;
+        public static readonly Government Construction;
         public static readonly Government Cooperative;
         public static readonly Government Corporate;
         public static readonly Government Democracy;
