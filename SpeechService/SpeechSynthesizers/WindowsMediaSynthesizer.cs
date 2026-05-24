@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,13 +18,36 @@ namespace EddiSpeechService.SpeechSynthesizers
     [SupportedOSPlatform( "windows10.0.17763.0" )]
     public sealed class WindowsMediaSynthesizer : IDisposable
     {
-        private readonly SpeechSynthesizer synth = new();
+        private readonly SpeechSynthesizer synth;
+
+        private WindowsMediaSynthesizer ( SpeechSynthesizer synth )
+        {
+            this.synth = synth ?? throw new ArgumentNullException( nameof( synth ) );
+        }
 
         internal string currentVoice => synth.Voice.DisplayName;
-        
-        public static async Task<WindowsMediaSynthesizer> CreateAsync ( HashSet<VoiceDetails> voiceStore, CancellationToken ct = default )
+
+        public static async Task<WindowsMediaSynthesizer> CreateAsync (
+            HashSet<VoiceDetails> voiceStore,
+            CancellationToken ct = default )
         {
-            var synthesizer = new WindowsMediaSynthesizer();
+            SpeechSynthesizer synth;
+            try
+            {
+                synth = new SpeechSynthesizer();
+            }
+            catch ( Exception ex ) when ( ex is ArgumentException || ex is InvalidOperationException ||
+                                          ex is NotImplementedException || ex is COMException ||
+                                          ex.GetType().FullName?.Contains( "WinRT" ) == true )
+            {
+                Logging.Warn(
+                    $"Windows.Media.SpeechSynthesis.SpeechSynthesizer is not activatable on this system. " +
+                    $"Windows Media voices will be unavailable. {RuntimeInformation.OSDescription}",
+                    ex );
+                return null;
+            }
+
+            var synthesizer = new WindowsMediaSynthesizer( synth );
             await synthesizer.InitializeAsync( voiceStore, ct ).ConfigureAwait( false );
             return synthesizer;
         }
