@@ -1,6 +1,7 @@
 ﻿using NAudio.Wave;
 using System;
 using System.Collections.Concurrent;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
@@ -26,48 +27,55 @@ namespace EddiSpeechService
         public async Task PlayAudioAsync ( string fileName, decimal? volumeOverride )
         {
             var absolutePath = Files.GetAbsoluteFilePath( Constants.DATA_DIR, fileName );
-            await using ( var audioSource = new AudioFileReader( absolutePath ) )
-            using ( var soundOut = SoundManager.GetSoundOut( audioSource ) )
+            try
             {
-                if ( soundOut == null )
+                await using ( var audioSource = new AudioFileReader( absolutePath ) )
+                using ( var soundOut = SoundManager.GetSoundOut( audioSource ) )
                 {
-                    return;
-                }
-
-                Logging.Debug( $"Beginning audio playback for {fileName}." );
-
-                if ( volumeOverride != null )
-                {
-                    audioSource.Volume = Math.Max( Math.Min( (float)volumeOverride / 100, 1 ), 0 );
-                }
-
-                soundOut.Play();
-
-                var cancellationTokenSource = new CancellationTokenSource();
-                lock ( activeAudioLock )
-                {
-                    activeAudioTS.TryAdd( soundOut, cancellationTokenSource );
-                }
-
-                try
-                {
-                    var waitTime = audioSource.TotalTime;
-                    Logging.Debug( $"Waiting for audio - {waitTime.TotalMilliseconds} ms (unless ended early)." );
-                    await Task.Delay( waitTime, cancellationTokenSource.Token ).ConfigureAwait(false);
-                }
-                catch ( OperationCanceledException )
-                {
-                    // Graceful exit on cancellation
-                }
-
-                Logging.Debug( $"Ending audio playback for {fileName}." );
-                lock ( activeAudioLock )
-                {
-                    if ( activeAudioTS.TryRemove( soundOut, out var ts ) )
+                    if ( soundOut == null )
                     {
-                        ts.Dispose();
+                        return;
+                    }
+
+                    Logging.Debug( $"Beginning audio playback for {fileName}." );
+
+                    if ( volumeOverride != null )
+                    {
+                        audioSource.Volume = Math.Max( Math.Min( (float)volumeOverride / 100, 1 ), 0 );
+                    }
+
+                    soundOut.Play();
+
+                    var cancellationTokenSource = new CancellationTokenSource();
+                    lock ( activeAudioLock )
+                    {
+                        activeAudioTS.TryAdd( soundOut, cancellationTokenSource );
+                    }
+
+                    try
+                    {
+                        var waitTime = audioSource.TotalTime;
+                        Logging.Debug( $"Waiting for audio - {waitTime.TotalMilliseconds} ms (unless ended early)." );
+                        await Task.Delay( waitTime, cancellationTokenSource.Token ).ConfigureAwait( false );
+                    }
+                    catch ( OperationCanceledException )
+                    {
+                        // Graceful exit on cancellation
+                    }
+
+                    Logging.Debug( $"Ending audio playback for {fileName}." );
+                    lock ( activeAudioLock )
+                    {
+                        if ( activeAudioTS.TryRemove( soundOut, out var ts ) )
+                        {
+                            ts.Dispose();
+                        }
                     }
                 }
+            }
+            catch ( DirectoryNotFoundException dnf )
+            {
+                Logging.Warn( dnf.Message, dnf );
             }
         }
 
