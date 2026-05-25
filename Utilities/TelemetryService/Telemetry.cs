@@ -75,6 +75,13 @@ namespace Utilities.TelemetryService
                     PersonDataCollectionPolicies.None,
                     IpAddressCollectionPolicy.CollectAnonymized,
                     scrubFields ) );
+                loggerOptions.RollbarPayloadManipulationOptions.Reconfigure( new RollbarPayloadManipulationOptions(
+                    transform: payload =>
+                    {
+                        if ( payload?.Data is null ) { return; }
+                        payload.Data.Request ??= new Request();
+                        payload.Data.Request.UserIp ??= "$remote_ip";
+                    } ) );
                 loggerOptions.RollbarDeveloperOptions.Reconfigure( new RollbarDeveloperOptions
                 {
                     WrapReportedExceptionWithRollbarException = false
