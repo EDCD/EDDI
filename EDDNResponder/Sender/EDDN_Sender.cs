@@ -121,12 +121,27 @@ namespace EddiEddnResponder.Sender
                 {
                     response = await SendRequestAsync( json ).ConfigureAwait(false);
                 }
-                catch ( HttpRequestException hre ) when ( hre.HttpRequestError == HttpRequestError.ResponseEnded )
+                catch ( HttpRequestException hre )
+                    when ( hre.HttpRequestError is HttpRequestError.ConnectionError or HttpRequestError.SecureConnectionError or HttpRequestError.ResponseEnded )
                 {
-                    // Transient network error where the server ends the connection before sending a response. Retry once.
-                    Logging.Warn( $"EDDN {body.schemaRef} connection ended prematurely, retrying in {shortRetryDelaySeconds}s" );
-                    await Task.Delay( TimeSpan.FromSeconds( shortRetryDelaySeconds ) ).ConfigureAwait(false);
-                    response = await SendRequestAsync( json ).ConfigureAwait(false);
+                    Logging.Debug(
+                        $"EDDN {body.schemaRef} transient network error ({hre.HttpRequestError}): {hre.Message}. " +
+                        $"Retrying in {shortRetryDelaySeconds}s."
+                    );
+                    await Task.Delay( TimeSpan.FromSeconds( shortRetryDelaySeconds ) ).ConfigureAwait( false );
+                    try
+                    {
+                        response = await SendRequestAsync( json ).ConfigureAwait( false );
+                    }
+                    catch ( HttpRequestException retryException )
+                        when ( retryException.HttpRequestError is HttpRequestError.ConnectionError or HttpRequestError.SecureConnectionError or HttpRequestError.ResponseEnded )
+                    {
+                        Logging.Warn(
+                            $"EDDN {body.schemaRef} failed after retry ({retryException.HttpRequestError}): {retryException.Message}. " +
+                            "Dropping message."
+                        );
+                        return;
+                    }
                 }
 
                 if ( response.StatusCode is HttpStatusCode.RequestTimeout or HttpStatusCode.GatewayTimeout ) // Code 408 or 504
