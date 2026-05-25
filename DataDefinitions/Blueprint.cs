@@ -843,6 +843,7 @@ namespace EddiDataDefinitions
             _ = new Blueprint( 129030458, "GuardianWeaponSturdy1", "GuardianWeaponSturdy", 1 ); // Anti-Guardian Zone Resistance
             _ = new Blueprint( 129035483, "PowerDistributor_PrioritySystems", null, 5 ); // Pre-engineered system and engine focused power distributor
             _ = new Blueprint( 129036395, "CargoRack_IncreasedCapacity", "CargoRackIncreasedCapacity", 5 ); // Pre-engineered high capacity cargo racks
+            _ = new Blueprint( 129041439, "Weapon_HighCapacity", "Weapon_HighCapacity", 5 ); // Pre-engineered high capacity super penetrator railgun
         }
         public static readonly Blueprint None;
         private static readonly Dictionary<long, Blueprint> BlueprintsByEliteID;
