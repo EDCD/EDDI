@@ -198,7 +198,7 @@ namespace EddiShipMonitor
             var matches = GeneratedRegex.ShipSlotSizeRegex().Match((string)json.Name);
             if (matches.Success)
             {
-                Compartment.size = Int32.Parse(matches.Groups[1].Value);
+                Compartment.size = int.Parse(matches.Groups[2].Value);
 
                 if (json.Value is JObject)
                 {
@@ -311,7 +311,7 @@ namespace EddiShipMonitor
             var matches = GeneratedRegex.ShipSlotSizeRegex().Match((string)json.Name);
             if ( matches.Success)
             {
-                launchbay.size = Int32.Parse(matches.Groups[1].Value);
+                launchbay.size = int.Parse(matches.Groups[2].Value);
 
                 if (json.Value is JObject)
                 {

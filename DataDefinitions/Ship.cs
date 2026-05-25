@@ -42,12 +42,17 @@ namespace EddiDataDefinitions
         [Utilities.PublicAPI, JsonIgnore]
         public string size => (Size ?? LandingPadSize.Small).localizedName;
 
-        /// <summary>the size of the military compartment slots</summary>
+        /// <summary>specialty compartment slot sizes</summary>
         [JsonIgnore]
-        public int? militarysize { get; set; }
+        public Dictionary<string, int> specialtySlotSizes 
+        {
+            get { return _specialtySlotSizes ?? []; }
+            set { _specialtySlotSizes = value; } 
+        }
+        private Dictionary<string, int> _specialtySlotSizes;
 
         /// <summary>the total tonnage cargo capacity</summary>
-        [ Utilities.PublicAPI, JsonIgnore ]
+        [Utilities.PublicAPI, JsonIgnore ]
         public int cargocapacity => compartments
             .Where( c => c.module != null )
             .Select( c => c.module )
@@ -538,7 +543,7 @@ namespace EddiDataDefinitions
         public Ship()
         { }
 
-        public Ship( string EDName, Manufacturer Manufacturer, string Model, string possessiveYour, List<Translation> PhoneticModel, LandingPadSize Size, int? MilitarySize, decimal reservoirFuelTankSize )
+        public Ship( string EDName, Manufacturer Manufacturer, string Model, string possessiveYour, List<Translation> PhoneticModel, LandingPadSize Size, Dictionary<string, int> SpecialtySlotSizes, decimal reservoirFuelTankSize )
         {
             this.EDName = EDName;
             manufacturer = Manufacturer.name;
@@ -546,7 +551,7 @@ namespace EddiDataDefinitions
             this.possessiveYour = possessiveYour;
             phoneticModel = PhoneticModel;
             this.Size = Size;
-            militarysize = MilitarySize;
+            specialtySlotSizes = SpecialtySlotSizes;
             activeFuelReservoirCapacity = reservoirFuelTankSize;
         }
 
@@ -662,7 +667,7 @@ namespace EddiDataDefinitions
                 possessiveYour = template.possessiveYour;
                 phoneticModel = template.phoneticModel;
                 Size = template.Size;
-                militarysize = template.militarysize;
+                specialtySlotSizes = template.specialtySlotSizes;
                 activeFuelReservoirCapacity = template.activeFuelReservoirCapacity;
                 Role ??= Role.MultiPurpose;
             }

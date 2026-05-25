@@ -2,6 +2,7 @@
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
+using MathNet.Numerics.RootFinding;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -969,21 +970,37 @@ namespace EddiShipMonitor
                         var fromCompartment = ship.compartments.FirstOrDefault( c => c.name == fromSlot );
                         if ( fromCompartment is null )
                         {
-                            fromCompartment = new Compartment()
+                            try
                             {
-                                name = fromSlot, size = getCompartmentSize( fromSlot, ship.militarysize )
-                            };
-                            ship.compartments.Add( fromCompartment );
+                                fromCompartment = new Compartment()
+                                {
+                                    name = fromSlot,
+                                    size = getCompartmentSize( fromSlot, ship.specialtySlotSizes )
+                                };
+                                ship.compartments.Add( fromCompartment );
+                            }
+                            catch ( ArgumentException ae )
+                            {
+                                Logging.Error(ae.Message, @event.raw);
+                            }
                         }
 
                         var toCompartment = ship.compartments.FirstOrDefault( c => c.name == toSlot );
                         if ( toCompartment is null )
                         {
-                            toCompartment = new Compartment()
+                            try
                             {
-                                name = toSlot, size = getCompartmentSize( toSlot, ship.militarysize )
-                            };
-                            ship.compartments.Add( toCompartment );
+                                toCompartment = new Compartment()
+                                {
+                                    name = toSlot,
+                                    size = getCompartmentSize( toSlot, ship.specialtySlotSizes )
+                                };
+                                ship.compartments.Add( toCompartment );
+                            }
+                            catch ( ArgumentException ae )
+                            {
+                                Logging.Error( ae.Message, @event.raw );
+                            }
                         }
 
                         sortCompartments( ship );
@@ -1619,8 +1636,17 @@ namespace EddiShipMonitor
                             case "Armour":
                                 ship.bulkheads = module;
                                 break;
-                            case "PowerPlant":
-                                ship.powerplant = module;
+                            case "CargoHatch":
+                                ship.cargohatch = module;
+                                break;
+                            case "FrameShiftDrive":
+                                ship.frameshiftdrive = module;
+                                break;
+                            case "FuelTank":
+                                ship.fueltank = module;
+                                break;
+                            case "LifeSupport":
+                                ship.lifesupport = module;
                                 break;
                             case "MainEngines":
                                 ship.thrusters = module;
@@ -1628,20 +1654,11 @@ namespace EddiShipMonitor
                             case "PowerDistributor":
                                 ship.powerdistributor = module;
                                 break;
-                            case "FrameShiftDrive":
-                                ship.frameshiftdrive = module;
-                                break;
-                            case "LifeSupport":
-                                ship.lifesupport = module;
+                            case "PowerPlant":
+                                ship.powerplant = module;
                                 break;
                             case "Radar":
                                 ship.sensors = module;
-                                break;
-                            case "FuelTank":
-                                ship.fueltank = module;
-                                break;
-                            case "CargoHatch":
-                                ship.cargohatch = module;
                                 break;
                         }
 
@@ -1658,17 +1675,24 @@ namespace EddiShipMonitor
                             hardpoint.module = module;
                             sortHardpoints( ship );
                         }
-                        else if ( slot.Contains( "Slot" ) || slot.Contains( "Military" ) )
+                        else if ( slot.Contains( "Slot" ) || GeneratedRegex.ShipSpecialtySlotRegex().IsMatch(slot) )
                         {
                             // This is a compartment
                             var compartment = ship.compartments.FirstOrDefault( c => c.name == slot );
                             if ( compartment is null )
                             {
-                                compartment = new Compartment
+                                try
                                 {
-                                    name = slot, size = getCompartmentSize( slot, ship.militarysize )
-                                };
-                                ship.compartments.Add( compartment );
+                                    compartment = new Compartment
+                                    {
+                                        name = slot, size = getCompartmentSize( slot, ship.specialtySlotSizes )
+                                    };
+                                    ship.compartments.Add( compartment );
+                                }
+                                catch ( ArgumentException ae )
+                                {
+                                    Logging.Error( ae.Message, ship.raw );
+                                }
                             }
 
                             compartment.module = module;
@@ -1722,7 +1746,7 @@ namespace EddiShipMonitor
                         {
                             return ship.hardpoints.FirstOrDefault( h => h.name.Equals( slot, StringComparison.OrdinalIgnoreCase ) )?.module;
                         }
-                        if ( slot.Contains( "Slot" ) || slot.Contains( "Military" ) )
+                        if ( slot.Contains( "Slot" ) || ship.specialtySlotSizes.ContainsKey( slot ) )
                         {
                             // This is a compartment
                             return ship.compartments.FirstOrDefault( c => c.name == slot )?.module;
@@ -1748,34 +1772,11 @@ namespace EddiShipMonitor
             try
             {
                 Logging.Debug($"Sorting ship {ship.LocalId} compartments", ship.compartments);
-
-                // Build new dictionary of ship compartments, excepting sold/stored compartment
-                var compartments = new Dictionary<string, Compartment>();
-                foreach (var cpt in ship.compartments)
-                {
-                    compartments.Add(cpt.name, cpt);
-                }
-
-                // Clear ship compartments and repopulate in correct order
-                ship.compartments.Clear();
-                for (var i = 1; i <= 12; i++)
-                {
-                    for (var j = 1; j <= 8; j++)
-                    {
-                        if (compartments.TryGetValue("Slot" + i.ToString("00") + "_Size" + j, out var cpt))
-                        {
-                            ship.compartments.Add(cpt);
-                        }
-                    }
-                }
-
-                for (var i = 1; i <= 3; i++)
-                {
-                    if (compartments.TryGetValue("Military" + i.ToString("00"), out var cpt))
-                    {
-                        ship.compartments.Add(cpt);
-                    }
-                }
+                // Sort compartments first by whether they are a standard slot or a specialty slot,
+                // then by name within those groups
+                ship.compartments = ship.compartments
+                    .OrderBy( c => !GeneratedRegex.ShipSlotSizeRegex().IsMatch( c.name ) )
+                    .ThenBy(c => c.name).ToList();
             }
             catch (ArgumentException ex)
             {
@@ -1783,27 +1784,23 @@ namespace EddiShipMonitor
             }
         }
 
-        private static int getCompartmentSize(string slot, int? militarySlotSize)
+        private static int getCompartmentSize ( string slot, Dictionary<string, int> specialtySlotSizes )
         {
-            // Compartment slots are in the form of "Slotnn_Sizen" or "Militarynn"
-            if (!string.IsNullOrEmpty(slot))
+            if ( !string.IsNullOrEmpty( slot ) )
             {
-                if (slot.Contains("Slot"))
+                // Standard compartment slots are in the form of "SlotNN_SizeN"
+                var match = GeneratedRegex.ShipSlotSizeRegex().Match(slot);
+                if ( match.Success )
                 {
-                    var matches = GeneratedRegex.ShipSlotSizeRegex().Match(slot);
-                    if ( matches.Success)
-                    {
-                        return int.Parse(matches.Groups[1].Value);
-                    }
+                    return int.Parse( match.Groups[ 2 ].Value );
                 }
-                else if (slot.Contains("Military") && militarySlotSize != null)
+                else if ( specialtySlotSizes.TryGetValue( slot, out var size ) )
                 {
-                    return (int)militarySlotSize;
+                    return size;
                 }
             }
             // Compartment size could not be determined
-            Logging.Error("Ship compartment slot size could not be determined for " + slot);
-            return -1;
+            throw new ArgumentException( $"Ship compartment slot size could not be determined for slot {slot}." );
         }
 
         private static void sortHardpoints(Ship ship)

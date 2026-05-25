@@ -82,8 +82,11 @@ namespace Utilities
         [GeneratedRegex( @"(?=\S)(?<STARS>(?<=^|\s)[A-E]+)? ?(?<PLANET>(?<=^|\s)\d{1,2})? ?(?<MOON>(?<=^|\s)[a-z])? ?(?<SUBMOON>(?<=^|\s)[a-z])? ?(?>(?<=^|\s)(?<RINGORBELTGROUP>[A-Z]) (?<RINGORBELTTYPE>Belt|Ring))? ?(?>(?<=^|\s)(?<CLUSTER>Cluster) (?<CLUSTERNUMBER>\d*))?$", RegexOptions.Compiled )]
         public static partial Regex SHORTBODY ();
 
-        [GeneratedRegex( @"Size([0-9]+)", RegexOptions.Compiled )]
+        [GeneratedRegex( @"Slot([0-9]{1,2})_Size([0-9]+)", RegexOptions.Compiled )]
         public static partial Regex ShipSlotSizeRegex ();
+
+        [GeneratedRegex( @"(Cargo|Military|Passenger)([0-9]{2})", RegexOptions.Compiled )]
+        public static partial Regex ShipSpecialtySlotRegex ();
 
         [GeneratedRegex( @"(<.+?src="")(.:)(.*?\/>)", RegexOptions.Compiled )]
         public static partial Regex SrcFixRegex ();

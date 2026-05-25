@@ -524,41 +524,29 @@ namespace EddiEvents
         {
             var compartment = new Compartment() { name = slot };
 
-            // The Panther Clipper Mk. II  has special cargo slots which can hold additional cargo
-            if ( slot.Equals( "Cargo01", StringComparison.InvariantCultureIgnoreCase ) )
+            // Standard compartment slots are in the form of "SlotNN_SizeN"
+            var matches = GeneratedRegex.ShipSlotSizeRegex().Match(compartment.name);
+            if ( matches.Success )
             {
-                compartment.size = 8;
-            }
-            if ( slot.Equals( "Cargo02", StringComparison.InvariantCultureIgnoreCase ) )
-            {
-                compartment.size = 7;
+                compartment.size = int.Parse( matches.Groups[ 2 ].Value );
             }
 
-            // Standard compartment slots are in the form of "Slotnn_Sizen" or "Militarynn"
-            if ( slot.Contains( "Slot" ) )
+            // Specialty slots are in the form of "CargoNN", "MilitaryNN", or "PassengerNN"
+            else if ( GeneratedRegex.ShipSpecialtySlotRegex().IsMatch( compartment.name ) )
             {
-                var matches = GeneratedRegex.ShipSlotSizeRegex().Match(compartment.name);
-                if ( matches.Success )
+                var specialtySlotSizes = ShipDefinitions.FromEDModel(shipEDName, false)?.specialtySlotSizes;
+                if ( specialtySlotSizes != null && specialtySlotSizes.TryGetValue( slot, out var slotSize ) )
                 {
-                    compartment.size = Int32.Parse( matches.Groups[ 1 ].Value );
+                    compartment.size = slotSize;
+                }
+                else
+                {
+                    Logging.Error( $"Unexpected specialty slot '{slot}' observed in ship edName '{shipEDName}'." );
                 }
             }
-            else if ( slot.Contains( "Military" ) )
-            {
-                var slotSize = ShipDefinitions.FromEDModel(shipEDName, false)?.militarysize;
-                if ( slotSize is null )
-                {
-                    var data = new Dictionary<string, object>
-                    {
-                        { "ShipEDName", shipEDName }, 
-                        { "Slot", slot }, 
-                        { "Exception", new ArgumentException( "We didn't expect to have a military slot on this ship." ) }
-                    };
-                    Logging.Error( $"Unexpected military slot found in ship edName {shipEDName}.", data );
-                    return compartment;
-                }
-                compartment.size = (int)slotSize;
-            }
+
+            // Additional slots are reserved for core modules and various cosmetics.
+
             return compartment;
         }
 

@@ -308,8 +308,6 @@ namespace EddiEvents
                     {
                         // This is a compartment
                         var compartment = EventParsing.ShipCompartment(ship, slot);
-                        // Compartment slots may be in the form of "Slotnn_Sizen" or "Militarynn"
-
                         var module = new Module(Module.FromEDName(item, moduleData) ?? new Module());
                         if ( module.edname == null )
                         {
