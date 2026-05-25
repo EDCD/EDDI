@@ -99,7 +99,7 @@ namespace EddiDataDefinitions
 
         public static readonly CodexStellarBody DC_Type = new("DC_Type", 1102213, CodexStellarBodyType.Stars);
 
-        public static readonly CodexStellarBody DCV_Type = new("DCV_Type", null, CodexStellarBodyType.Stars);
+        public static readonly CodexStellarBody DCV_Type = new("DCV_Type", 1102214, CodexStellarBodyType.Stars);
 
         public static readonly CodexStellarBody DQ_Type = new("DQ_Type", 1102212, CodexStellarBodyType.Stars);
 
