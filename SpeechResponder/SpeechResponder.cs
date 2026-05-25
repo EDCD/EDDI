@@ -152,8 +152,9 @@ namespace EddiSpeechResponder
                 return true;
             }
 
-            // No it does not; ignore it
-            Logging.Warn($@"Personality '{newPersonalityName}' not found.");
+            // No it does not; fall back and log a warning
+            CurrentPersonality = Personalities.FirstOrDefault() ?? Personality.Default();
+            Logging.Warn( $@"Personality '{newPersonalityName}' not found, falling back to '{CurrentPersonality.Name}'." );
             return false;
         }
 
