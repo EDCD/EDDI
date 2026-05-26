@@ -5,6 +5,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ## 5.0.2
   * Core
     * Installer revised to more gracefully handle installation over an existing installation of EDDI 4.1.9 or earlier (e.g. when installing VoiceAttack 2 over an existing VoiceAttack 1 installation).
+    * Various bug fixes from telemetry.
   * Speech Responder
     * Fixed copied personalities not being editable until EDDI is restarted.
     * Fixed failing lexicon schema validation (for .pls lexicon files). (#2814) (thanks to @klightspeed)
