@@ -555,7 +555,9 @@ namespace EddiDataProviderService
             {
                 foreach ( var updatedFaction in updatedSystem.factions )
                 {
-                    if ( updatedFaction.name == oldFaction.name )
+                    // Only preserve reputation data if the faction name matches and the updated faction does not include reputation data
+                    // (to avoid overwriting reputation data obtained from the journal)
+                    if ( updatedFaction.name == oldFaction.name && updatedFaction.myreputation is null )
                     {
                         updatedFaction.myreputation = oldFaction.myreputation;
                     }

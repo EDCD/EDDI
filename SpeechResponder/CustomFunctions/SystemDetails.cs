@@ -2,9 +2,11 @@
 using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
+using EddiNavigationService;
 using EddiSpeechResponder.ScriptResolverService;
 using JetBrains.Annotations;
 using System;
+using System.Linq;
 using System.Reflection;
 using Utilities;
 
@@ -26,13 +28,29 @@ namespace EddiSpeechResponder.CustomFunctions
                 {
                     result = EDDI.Instance.GameState.CurrentStarSystem;
                 }
-                else if ( ulong.TryParse( values[ 0 ].AsString, out var systemAddress ) )
-                {
-                    result = EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( systemAddress, true, true ).GetAwaiter().GetResult();
-                }
                 else
                 {
-                    result = EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( values[ 0 ].AsString, true, true ).GetAwaiter().GetResult();
+                    var key = values[ 0 ].AsString;
+
+                    // First attempt to resolve the system from the live game state, then fall back to the data provider if that fails.
+                    // This allows us to resolve the current system even if it has not yet been added to the data provider.
+                    result = ResolveLiveSystemFirst( key );
+
+                    // If we didn't find a match in the live game state, try the data provider.
+                    if ( result is null && ulong.TryParse( key, out var systemAddress ) )
+                    {
+                        result = EDDI.Instance.DataProvider
+                            .GetOrFetchStarSystemAsync( systemAddress, true, true )
+                            .GetAwaiter()
+                            .GetResult();
+                    }
+                    else if ( result is null )
+                    {
+                        result = EDDI.Instance.DataProvider
+                            .GetOrFetchStarSystemAsync( key, true, true )
+                            .GetAwaiter()
+                            .GetResult();
+                    }
                 }
 
                 var commanderConfig = ConfigService.Instance.commanderConfiguration;
@@ -56,5 +74,34 @@ namespace EddiSpeechResponder.CustomFunctions
                 return $"The SystemDetails function is used incorrectly. {e.Message}.";
             }
         }, 0, 1);
+
+        private static bool MatchesSystem ( StarSystem system, string key, ulong? systemAddress )
+        {
+            if ( system is null ) { return false; }
+
+            if ( systemAddress is > 0 && system.systemAddress == systemAddress )
+            {
+                return true;
+            }
+
+            return !string.IsNullOrEmpty( key ) && system.systemname.Equals( key, StringComparison.InvariantCultureIgnoreCase );
+        }
+
+        private static StarSystem ResolveLiveSystemFirst ( string key )
+        {
+            ulong.TryParse( key, out var parsedAddress );
+            ulong? systemAddress = parsedAddress > 0 ? parsedAddress : null;
+
+            var gameState = EDDI.Instance.GameState;
+
+            return new[]
+                {
+                    gameState.CurrentStarSystem,
+                    gameState.LastStarSystem,
+                    gameState.NextStarSystem,
+                    gameState.DestinationStarSystem,
+                    NavigationService.Instance.SearchStarSystem
+                }.FirstOrDefault( s => MatchesSystem( s, key, systemAddress ) );
+        }
     }
 }

@@ -1341,59 +1341,13 @@ namespace EddiCore
                 // Update our system properties
                 if ( CurrentStarSystem is null ) { return false; }
 
-                CurrentStarSystem.x = @event.x;
-                CurrentStarSystem.y = @event.y;
-                CurrentStarSystem.z = @event.z;
-
-                // Update Thargoid war data, when available
-                CurrentStarSystem.ThargoidWar = @event.ThargoidWar;
+                await ApplyCurrentSystemSnapshotAsync( CurrentStarSystem, @event.systemname, @event.systemAddress, @event.x, @event.y, @event.z, @event.controllingsystemfaction, @event.factions, @event.conflicts, @event.systemEconomy, @event.systemEconomy2, @event.securityLevel, @event.population, @event.Power, @event.NearbyPowers, @event.PowerState, @event.powerAcquisitionProgress, @event.powerControlProgress, @event.powerReinforcementControlPoints, @event.powerUnderminingControlPoints, @event.ThargoidWar, @event.timestamp, true ).ConfigureAwait(false);
 
                 if ( CurrentStation != null )
                 {
                     // Add our carrier to the new current star system
                     CurrentStarSystem.AddOrUpdateStation( CurrentStation );
                 }
-
-                // Update the mutable system data from the journal
-                if ( @event.population != null )
-                {
-                    CurrentStarSystem.population = @event.population;
-                    CurrentStarSystem.Economies = [ @event.systemEconomy, @event.systemEconomy2 ];
-                    CurrentStarSystem.securityLevel = @event.securityLevel;
-                    CurrentStarSystem.Faction = @event.controllingsystemfaction;
-                }
-
-                // Update system faction data if available
-                if ( @event.factions != null )
-                {
-                    CurrentStarSystem.factions = @event.factions;
-                    CurrentStarSystem.conflicts = @event.conflicts;
-
-                    // Update station controlling faction data
-                    foreach ( var station in CurrentStarSystem.stations )
-                    {
-                        var stationFaction = @event.factions
-                            .FirstOrDefault( f => f.name == station.Faction?.name );
-                        if ( stationFaction != null )
-                        {
-                            station.Faction = stationFaction;
-                        }
-                    }
-                }
-
-                // (When pledged) Powerplay information
-                CurrentStarSystem.Power = @event.Power;
-                CurrentStarSystem.NearbyPowers = @event.NearbyPowers;
-                CurrentStarSystem.powerState = @event.PowerState ?? CurrentStarSystem.powerState;
-                CurrentStarSystem.powerAcquisitionProgress = @event.powerAcquisitionProgress;
-                CurrentStarSystem.powerControlProgress = @event.powerControlProgress;
-                CurrentStarSystem.powerReinforcementControlPoints = @event.powerReinforcementControlPoints;
-                CurrentStarSystem.powerUnderminingControlPoints = @event.powerUnderminingControlPoints;
-
-                // Update to most recent information
-                CurrentStarSystem.visitLog.Add( @event.timestamp );
-                CurrentStarSystem.updatedat = Dates.fromDateTimeToSeconds( @event.timestamp );
-                await DataProvider.SaveStarSystemAsync( CurrentStarSystem ).ConfigureAwait(false);
 
                 // Kick off the profile refresh if the companion API is available
                 if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized && carrierID != null)
@@ -1635,48 +1589,7 @@ namespace EddiCore
             await updateCurrentSystemAsync( theEvent.systemname, theEvent.systemAddress ).ConfigureAwait(false);
             if ( CurrentStarSystem is null ) { return false; }
 
-            // Always update the current system with the current co-ordinates, just in case things have changed or coordinates are not yet known
-            CurrentStarSystem.x = theEvent.x;
-            CurrentStarSystem.y = theEvent.y;
-            CurrentStarSystem.z = theEvent.z;
-
-            // Update Thargoid war data, as applicable
-            CurrentStarSystem.ThargoidWar = theEvent.ThargoidWar;
-
-            // Update the mutable system data from the journal
-            if ( theEvent.population != null )
-            {
-                CurrentStarSystem.population = theEvent.population;
-                CurrentStarSystem.Economies = [ theEvent.Economy, theEvent.Economy2 ];
-                CurrentStarSystem.securityLevel = theEvent.securityLevel;
-                CurrentStarSystem.Faction = theEvent.controllingsystemfaction;
-            }
-
-            // Update system faction data if available
-            if ( theEvent.factions != null )
-            {
-                CurrentStarSystem.factions = theEvent.factions;
-                CurrentStarSystem.conflicts = theEvent.conflicts;
-
-                // Update station controlling faction data
-                foreach ( var station in CurrentStarSystem.stations )
-                {
-                    var stationFaction = theEvent.factions.FirstOrDefault( f => f.name == station?.Faction?.name );
-                    if ( stationFaction != null )
-                    {
-                        station.Faction = stationFaction;
-                    }
-                }
-            }
-
-            // (When pledged) Powerplay information
-            CurrentStarSystem.Power = theEvent.Power;
-            CurrentStarSystem.NearbyPowers = theEvent.NearbyPowers;
-            CurrentStarSystem.powerState = theEvent.PowerState ?? CurrentStarSystem.powerState;
-            CurrentStarSystem.powerAcquisitionProgress = theEvent.powerAcquisitionProgress;
-            CurrentStarSystem.powerControlProgress = theEvent.powerControlProgress;
-            CurrentStarSystem.powerReinforcementControlPoints = theEvent.powerReinforcementControlPoints;
-            CurrentStarSystem.powerUnderminingControlPoints = theEvent.powerUnderminingControlPoints;
+            await ApplyCurrentSystemSnapshotAsync( CurrentStarSystem, theEvent.systemname, theEvent.systemAddress, theEvent.x, theEvent.y, theEvent.z, theEvent.controllingsystemfaction, theEvent.factions, theEvent.conflicts, theEvent.Economy, theEvent.Economy2, theEvent.securityLevel, theEvent.population, theEvent.Power, theEvent.NearbyPowers, theEvent.PowerState, theEvent.powerAcquisitionProgress, theEvent.powerControlProgress, theEvent.powerReinforcementControlPoints, theEvent.powerUnderminingControlPoints, theEvent.ThargoidWar, theEvent.timestamp, true ).ConfigureAwait(false);
 
             if ( theEvent.docked )
             {
@@ -2070,6 +1983,82 @@ namespace EddiCore
             return false;
         }
 
+        private async Task ApplyCurrentSystemSnapshotAsync (
+            StarSystem system,
+            string systemName,
+            ulong systemAddress,
+            decimal? x,
+            decimal? y,
+            decimal? z,
+            Faction controllingFaction,
+            List<Faction> factions,
+            List<Conflict> conflicts,
+            Economy economy,
+            Economy economy2,
+            SecurityLevel security,
+            long? population,
+            Power power,
+            List<Power> nearbyPowers,
+            PowerplayState powerState,
+            List<PowerAcquisitionProgress> acquisitionProgress,
+            decimal controlProgress,
+            int reinforcementPoints,
+            int underminingPoints,
+            ThargoidWar thargoidWar,
+            DateTime timestamp,
+            bool addVisit )
+        {
+            if ( system is null )
+            { return; }
+
+            system.systemname = systemName;
+            system.systemAddress = systemAddress;
+            system.x = x;
+            system.y = y;
+            system.z = z;
+
+            if ( factions != null )
+            {
+                system.factions = factions;
+                system.conflicts = conflicts;
+
+                // Make the controlling faction reference the same object as the factions list.
+                system.Faction = factions.FirstOrDefault( f => f.name == controllingFaction?.name )
+                                 ?? controllingFaction;
+            }
+            else
+            {
+                system.Faction = controllingFaction;
+                system.conflicts = conflicts;
+            }
+
+            system.ThargoidWar = thargoidWar;
+            system.Economies = [ economy, economy2 ];
+            system.securityLevel = security ?? SecurityLevel.None;
+
+            if ( population != null )
+            {
+                system.population = population;
+            }
+
+            system.Power = power;
+            system.NearbyPowers = nearbyPowers;
+            system.powerState = powerState ?? system.powerState;
+            system.powerAcquisitionProgress = acquisitionProgress;
+            system.powerControlProgress = controlProgress;
+            system.powerReinforcementControlPoints = reinforcementPoints;
+            system.powerUnderminingControlPoints = underminingPoints;
+
+            if ( addVisit )
+            {
+                system.visitLog.Add( timestamp );
+            }
+
+            system.updatedat = Dates.fromDateTimeToSeconds( timestamp );
+
+            await DataProvider.SaveStarSystemAsync( system ).ConfigureAwait( false );
+        }
+
         internal async Task updateCurrentSystemAsync([NotNull] string systemName, ulong systemAddress )
         {
             try
@@ -2151,10 +2140,12 @@ namespace EddiCore
                 ? Constants.ENVIRONMENT_SUPERCRUISE 
                 : Constants.ENVIRONMENT_WITCH_SPACE;
 
-            // Set the destination system as the current star system
-            if ( @event.systemAddress != null )
+            // Set the destination system as the next star system
+            if ( @event.systemAddress != null && @event.systemAddress != NextStarSystem?.systemAddress )
             {
-                await updateCurrentSystemAsync( @event.systemname, (ulong)@event.systemAddress ).ConfigureAwait(false);
+                NextStarSystem = await DataProvider
+                    .GetOrCreateStarSystemAsync( (ulong)@event.systemAddress, @event.systemname )
+                    .ConfigureAwait( false );
             }
 
             // Remove information about the current station and stellar body 
@@ -2229,7 +2220,7 @@ namespace EddiCore
                 Vehicle = Constants.VEHICLE_SHIP;
             }
 
-            if ( LastStarSystem?.systemAddress > 0 && LastStarSystem.systemAddress == theEvent.systemAddress )
+            if ( CurrentStarSystem?.systemAddress > 0 && CurrentStarSystem.systemAddress == theEvent.systemAddress )
             {
                 // Thargoid Hyperdiction
                 Logging.Info( $"Jump Interrupted: Hyperdicted in {theEvent.system}" );
@@ -2255,50 +2246,7 @@ namespace EddiCore
 
             await updateCurrentSystemAsync( theEvent.system, theEvent.systemAddress ).ConfigureAwait(false);
             if ( CurrentStarSystem is null ) { return false; }
-            CurrentStarSystem.systemAddress = theEvent.systemAddress;
-            CurrentStarSystem.x = theEvent.x;
-            CurrentStarSystem.y = theEvent.y;
-            CurrentStarSystem.z = theEvent.z;
-            CurrentStarSystem.Faction = theEvent.controllingfaction;
-            CurrentStarSystem.conflicts = theEvent.conflicts;
-            CurrentStarSystem.ThargoidWar = theEvent.ThargoidWar;
-
-            // Update system faction data if available
-            if ( theEvent.factions != null )
-            {
-                CurrentStarSystem.factions = theEvent.factions;
-
-                // Update station controlling faction data
-                foreach ( var station in CurrentStarSystem.stations )
-                {
-                    var stationFaction = theEvent.factions.Find(f => f.name == station?.Faction?.name);
-                    if ( stationFaction != null )
-                    {
-                        station.Faction = stationFaction;
-                    }
-                }
-            }
-
-            CurrentStarSystem.Economies = [ theEvent.Economy, theEvent.Economy2 ];
-            CurrentStarSystem.securityLevel = theEvent.securityLevel;
-            if ( theEvent.population != null )
-            {
-                CurrentStarSystem.population = theEvent.population;
-            }
-
-            // Powerplay information
-            CurrentStarSystem.Power = theEvent.Power;
-            CurrentStarSystem.NearbyPowers = theEvent.NearbyPowers;
-            CurrentStarSystem.powerState = theEvent.PowerState;
-            CurrentStarSystem.powerAcquisitionProgress = theEvent.powerAcquisitionProgress;
-            CurrentStarSystem.powerControlProgress = theEvent.powerControlProgress;
-            CurrentStarSystem.powerReinforcementControlPoints = theEvent.powerReinforcementControlPoints;
-            CurrentStarSystem.powerUnderminingControlPoints = theEvent.powerUnderminingControlPoints;
-
-            // Update to most recent information
-            CurrentStarSystem.visitLog.Add( theEvent.timestamp );
-            CurrentStarSystem.updatedat = Dates.fromDateTimeToSeconds( theEvent.timestamp );
-            await DataProvider.SaveStarSystemAsync( CurrentStarSystem ).ConfigureAwait(false);
+            await ApplyCurrentSystemSnapshotAsync( CurrentStarSystem, theEvent.system, theEvent.systemAddress, theEvent.x, theEvent.y, theEvent.z, theEvent.controllingfaction, theEvent.factions, theEvent.conflicts, theEvent.Economy, theEvent.Economy2, theEvent.securityLevel, theEvent.population, theEvent.Power, theEvent.NearbyPowers, theEvent.PowerState, theEvent.powerAcquisitionProgress, theEvent.powerControlProgress, theEvent.powerReinforcementControlPoints, theEvent.powerUnderminingControlPoints, theEvent.ThargoidWar, theEvent.timestamp, true ).ConfigureAwait( false );
 
             return passEvent;
         }
