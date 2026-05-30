@@ -117,7 +117,7 @@ namespace Tests
             Assert.AreEqual("Well Hello world", result);
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public void TestResolverNativeSetCustomFunction()
         {
             var scripts = new Dictionary<string, Script>
