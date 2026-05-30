@@ -6,16 +6,32 @@ namespace EddiDataProviderService
     public class FactionCache ( int expirationSeconds ) : SlidingExpirationCache<string, Faction>( expirationSeconds )
     {
         /// <summary>
-        /// Add or update a faction in the cache. Retain faction presence information
+        /// Add or update a faction in the cache. Retain old faction presence and reputation information until newer data is available.
         /// </summary>
         /// <param name="faction"></param>
         public void AddOrUpdate ( Faction faction )
         {
-            if ( faction == null ) { return; }
-            if ( TryGet( faction.name, out var existing ) && faction.updatedAt > existing.updatedAt )
+            if ( faction == null || string.IsNullOrEmpty( faction.name ) )
             {
-                faction = PreservePresenceData( faction, existing );
+                return;
             }
+
+            if ( TryGet( faction.name, out var existing ) )
+            {
+                if ( faction.updatedAt < existing.updatedAt )
+                {
+                    PreservePresenceData( existing, faction );
+                    return;
+                }
+
+                faction = PreservePresenceData( faction, existing );
+
+                if ( faction.myreputation is null )
+                {
+                    faction.myreputation = existing.myreputation;
+                }
+            }
+
             base.AddOrUpdate( faction.name, faction );
         }
 

@@ -565,6 +565,32 @@ namespace EddiDataProviderService
             }
         }
 
+        private void ApplyFactionCache ( StarSystem starSystem )
+        {
+            if ( starSystem?.factions is null )
+            {
+                return;
+            }
+
+            foreach ( var faction in starSystem.factions )
+            {
+                if ( string.IsNullOrEmpty( faction?.name ) )
+                {
+                    continue;
+                }
+
+                if ( factionCache.TryGet( faction.name, out var cachedFaction ) )
+                {
+                    if ( cachedFaction != null && cachedFaction.updatedAt > faction.updatedAt )
+                    {
+                        faction.myreputation = cachedFaction.myreputation;
+                        faction.presences = cachedFaction.presences;
+                        faction.updatedAt = cachedFaction.updatedAt;
+                    }
+                }
+            }
+        }
+
         private StarSystem DeserializeStarSystem ( ulong systemAddress, string data )
         {
             if ( systemAddress == 0 || data == string.Empty )
@@ -587,6 +613,7 @@ namespace EddiDataProviderService
                 // Save the deserialized star system to our short term star system cache for reference
                 if ( result != null )
                 {
+                    ApplyFactionCache( result );
                     factionCache.AddOrUpdate( result.factions );
                     starSystemCache.AddOrUpdate( result );
                 }
@@ -615,6 +642,7 @@ namespace EddiDataProviderService
             // Update any faction and star systems in our short term faction and star system caches to minimize repeat deserialization
             foreach ( var starSystem in starSystems )
             {
+                ApplyFactionCache( starSystem );
                 factionCache.AddOrUpdate( starSystem.factions );
                 starSystemCache.AddOrUpdate( starSystem );
             }

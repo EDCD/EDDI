@@ -191,7 +191,7 @@ namespace Tests
         [TestMethod]
         public void TestPreservedPropertiesCarryOverFactionReputationAndScannedBodies()
         {
-            var visitDate = new DateTime( 2024, 02, 03, 04, 05, 06, DateTimeKind.Utc );
+            var originalVisitDate = new DateTime( 2024, 02, 03, 04, 05, 06, DateTimeKind.Utc );
             var systemName = "Preservation Test";
             const ulong systemAddress = 42UL;
 
@@ -205,11 +205,11 @@ namespace Tests
                 totalbodies = 7,
                 factions =
                 [
-                    new Faction { name = "Faction A", myreputation = 77.5m },
-                    new Faction { name = "Faction B", myreputation = 12.5m }
+                    new Faction { name = "Faction A", myreputation = 77.5m, updatedAt = originalVisitDate },
+                    new Faction { name = "Faction B", myreputation = 12.5m, updatedAt = originalVisitDate }
                 ]
             };
-            originalSystem.visitLog.Add( visitDate );
+            originalSystem.visitLog.Add( originalVisitDate );
             originalSystem.AddOrUpdateBodies(
             [
                 new Body
@@ -219,8 +219,8 @@ namespace Tests
                     bodyname = $"{systemName} 1",
                     systemname = systemName,
                     systemAddress = systemAddress,
-                    scannedDateTime = visitDate,
-                    mappedDateTime = visitDate,
+                    scannedDateTime = originalVisitDate,
+                    mappedDateTime = originalVisitDate,
                     mappedEfficiently = true
                 },
                 new Body
@@ -230,7 +230,7 @@ namespace Tests
                     bodyname = $"{systemName} 2",
                     systemname = systemName,
                     systemAddress = systemAddress,
-                    scannedDateTime = visitDate
+                    scannedDateTime = originalVisitDate
                 },
                 new Body
                 {
@@ -273,14 +273,17 @@ namespace Tests
 
             Assert.AreEqual( 7, result.totalbodies );
             Assert.AreEqual( 1, result.visits );
-            Assert.AreEqual( visitDate, result.lastvisit );
+            Assert.AreEqual( originalVisitDate, result.lastvisit );
+            Assert.AreEqual( originalVisitDate, result.factions.First( f => f.name == "Faction A" ).updatedAt );
+            Assert.AreEqual( originalVisitDate, result.factions.First( f => f.name == "Faction B" ).updatedAt );
+            Assert.AreEqual( DateTime.MinValue, result.factions.First( f => f.name == "Faction C" ).updatedAt );
             Assert.AreEqual( 77.5m, result.factions.First( f => f.name == "Faction A" ).myreputation );
             Assert.AreEqual( 12.5m, result.factions.First( f => f.name == "Faction B" ).myreputation );
             Assert.AreEqual( 55m, result.factions.First( f => f.name == "Faction C" ).myreputation );
 
             var updatedBody = result.bodies.First( b => b.bodyname == $"{systemName} 1" );
-            Assert.AreEqual( visitDate, updatedBody.scannedDateTime );
-            Assert.AreEqual( visitDate, updatedBody.mappedDateTime );
+            Assert.AreEqual( originalVisitDate, updatedBody.scannedDateTime );
+            Assert.AreEqual( originalVisitDate, updatedBody.mappedDateTime );
             Assert.IsTrue( updatedBody.mappedEfficiently );
             Assert.IsNotNull( result.bodies.FirstOrDefault( b => b.bodyname == $"{systemName} 2" ) );
             Assert.IsNull( result.bodies.FirstOrDefault( b => b.bodyname == $"{systemName} 3" ) );
