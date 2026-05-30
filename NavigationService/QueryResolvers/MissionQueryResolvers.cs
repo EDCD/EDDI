@@ -249,7 +249,11 @@ namespace EddiNavigationService.QueryResolvers
         {
             var missions = ConfigService.Instance.missionMonitorConfiguration.missions.ToList();
             if ( missions.Count == 0 ) { return null; }
-            var navRouteList = new NavWaypointCollection(Convert.ToDecimal(startSystem.x), Convert.ToDecimal(startSystem.y), Convert.ToDecimal(startSystem.z));
+            var navRouteList = new NavWaypointCollection(
+                Convert.ToDecimal(startSystem.x), 
+                Convert.ToDecimal(startSystem.y), 
+                Convert.ToDecimal(startSystem.z)
+                );
             var startSystemWaypoint = new NavWaypoint( startSystem ) { visited = true };
             navRouteList.Waypoints.Add( startSystemWaypoint );
 
@@ -332,23 +336,18 @@ namespace EddiNavigationService.QueryResolvers
             {
                 if ( mission.tagsList.Any ( t => t.IncludeInMissionRouting ) )
                 {
-                    if ( !( mission.destinationsystems is null || mission.destinationsystems.Count == 0 ) )
+                    if ( !string.IsNullOrEmpty( mission.destinationsystem ) && 
+                         !systems.Contains( mission.destinationsystem, StringComparer.OrdinalIgnoreCase ) )
                     {
-                        if ( !string.IsNullOrEmpty ( mission.destinationsystem ) && !systems.Contains ( mission.destinationsystem ) )
-                        {
-                            systems.Add ( mission.destinationsystem );
-                        }
+                        systems.Add( mission.destinationsystem );
                     }
-                    else
+                    if ( mission.destinationsystems != null )
                     {
-                        if ( mission.destinationsystems != null )
+                        foreach ( var system in mission.destinationsystems )
                         {
-                            foreach ( var system in mission.destinationsystems )
+                            if ( !systems.Contains( system.systemName, StringComparer.OrdinalIgnoreCase ) )
                             {
-                                if ( !systems.Contains( system.systemName ) )
-                                {
-                                    systems.Add( system.systemName );
-                                }
+                                systems.Add( system.systemName );
                             }
                         }
                     }
