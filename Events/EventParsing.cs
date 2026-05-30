@@ -214,6 +214,7 @@ namespace EddiEvents
                         FactionState.FromEDName( JsonParsing.getString( factionDetail, "FactionState" ) ) ??
                         FactionState.None;
                     var fGov =
+                        Government.FromEDName( JsonParsing.getString( factionDetail, "Government" ) ) ??
                         Government.FromEDName( JsonParsing.getString( factionDetail, "SystemGovernment" ) ) ??
                         Government.None;
                     var influence =
