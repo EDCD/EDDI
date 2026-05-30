@@ -12,7 +12,7 @@ namespace EddiDataProviderService
         public void AddOrUpdate ( Faction faction )
         {
             if ( faction == null ) { return; }
-            if ( TryGet( faction.name, out var existing ) )
+            if ( TryGet( faction.name, out var existing ) && faction.updatedAt > existing.updatedAt )
             {
                 faction = PreservePresenceData( faction, existing );
             }
