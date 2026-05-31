@@ -534,9 +534,9 @@ namespace EddiFleetCarrierMonitor
             }
         }
 
-        public Task PostHandleAsync ( Event @event )
+        public async Task PostHandleAsync ( Event @event )
         {
-            if ( @event.fromLoad ) { return Task.CompletedTask; }
+            if ( @event.fromLoad ) { return; }
 
             switch ( @event )
             {
@@ -559,6 +559,7 @@ namespace EddiFleetCarrierMonitor
                     break;
 
                 case CarrierPurchasedEvent cp:
+                    await Task.Delay( TimeSpan.FromSeconds( 10 ) ).ConfigureAwait( false );
                     RefreshCarrierFromFrontierAPI( cp.carrierType );
                     break;
 
@@ -572,7 +573,7 @@ namespace EddiFleetCarrierMonitor
                     break;
             }
 
-            return Task.CompletedTask;
+            return;
         }
 
         private static async Task HandleCarrierJumpCancelledAsync ( CarrierJumpCancelledEvent cjc )
