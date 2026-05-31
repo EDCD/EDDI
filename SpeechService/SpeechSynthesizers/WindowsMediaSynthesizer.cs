@@ -125,7 +125,7 @@ namespace EddiSpeechService.SpeechSynthesizers
             }
         }
 
-        private bool TryOneCoreVoiceRegistry(VoiceDetails voiceDetails)
+        private static bool TryOneCoreVoiceRegistry(VoiceDetails voiceDetails)
         {
             // Windows.Media.SpeechSynthesis.SpeechSynthesizer.AllVoices can pick up voices we've previously uninstalled,
             // so we test the registry entries for each voice to see if it is really fully registered.

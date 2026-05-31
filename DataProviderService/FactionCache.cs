@@ -26,10 +26,7 @@ namespace EddiDataProviderService
 
                 faction = PreservePresenceData( faction, existing );
 
-                if ( faction.myreputation is null )
-                {
-                    faction.myreputation = existing.myreputation;
-                }
+                faction.myreputation ??= existing.myreputation;
             }
 
             base.AddOrUpdate( faction.name, faction );

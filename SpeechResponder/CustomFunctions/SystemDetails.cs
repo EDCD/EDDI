@@ -44,13 +44,10 @@ namespace EddiSpeechResponder.CustomFunctions
                             .GetAwaiter()
                             .GetResult();
                     }
-                    else if ( result is null )
-                    {
-                        result = EDDI.Instance.DataProvider
+                    else result ??= EDDI.Instance.DataProvider
                             .GetOrFetchStarSystemAsync( key, true, true )
                             .GetAwaiter()
                             .GetResult();
-                    }
                 }
 
                 var commanderConfig = ConfigService.Instance.commanderConfiguration;
@@ -89,19 +86,24 @@ namespace EddiSpeechResponder.CustomFunctions
 
         private static StarSystem ResolveLiveSystemFirst ( string key )
         {
-            ulong.TryParse( key, out var parsedAddress );
-            ulong? systemAddress = parsedAddress > 0 ? parsedAddress : null;
+            if ( ulong.TryParse( key, out var parsedAddress ) )
+            {
+                ulong? systemAddress = parsedAddress > 0 ? parsedAddress : null;
 
-            var gameState = EDDI.Instance.GameState;
+                var gameState = EDDI.Instance.GameState;
 
-            return new[]
-                {
+                return new[]
+                    {
                     gameState.CurrentStarSystem,
                     gameState.LastStarSystem,
                     gameState.NextStarSystem,
                     gameState.DestinationStarSystem,
                     NavigationService.Instance.SearchStarSystem
                 }.FirstOrDefault( s => MatchesSystem( s, key, systemAddress ) );
+            }
+
+            // If the key is not a valid ulong, we must match on system name instead.
+            return null;
         }
     }
 }
