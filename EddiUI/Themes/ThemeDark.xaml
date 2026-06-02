@@ -1,0 +1,81 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    
+    <!-- Design Spacing Scale (Must match Light dictionary keys exactly for fallback/safety) -->
+    <system:Double x:Key="SpacingXXS">2</system:Double>
+    <system:Double x:Key="SpacingXS">4</system:Double>
+    <system:Double x:Key="SpacingS">8</system:Double>
+    <system:Double x:Key="SpacingM">12</system:Double>
+    <system:Double x:Key="SpacingL">16</system:Double>
+    <system:Double x:Key="SpacingXL">20</system:Double>
+    
+    <Thickness x:Key="MarginS">8</Thickness>
+    <Thickness x:Key="MarginM">12</Thickness>
+    <Thickness x:Key="MarginL">16</Thickness>
+    
+    <Thickness x:Key="PaddingS">8</Thickness>
+    <Thickness x:Key="PaddingM">12</Thickness>
+    <Thickness x:Key="PaddingL">16</Thickness>
+    
+    <!-- Typography -->
+    <FontFamily x:Key="FontFamilyDefault">Segoe UI, Helvetica, Arial, sans-serif</FontFamily>
+    
+    <system:Double x:Key="FontSizeS">12</system:Double>
+    <system:Double x:Key="FontSizeBase">14</system:Double>
+    <system:Double x:Key="FontSizeL">16</system:Double>
+    <system:Double x:Key="FontSizeHero">18</system:Double>
+
+    <!-- Colors & Brushes -->
+    <Color x:Key="PrimaryBrand">#60CDFF</Color>
+    <SolidColorBrush x:Key="PrimaryBrandBrush" Color="{StaticResource PrimaryBrand}"/>
+    
+    <Color x:Key="AccentColor">#0078D4</Color>
+    <SolidColorBrush x:Key="AccentColorBrush" Color="{StaticResource AccentColor}"/>
+
+    <Color x:Key="NeutralBackground">#202020</Color>
+    <SolidColorBrush x:Key="NeutralBackgroundBrush" Color="{StaticResource NeutralBackground}"/>
+
+    <Color x:Key="WindowBackground">#1F1F1F</Color>
+    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{StaticResource WindowBackground}"/>
+
+    <Color x:Key="ControlBackground">#2D2D2D</Color>
+    <SolidColorBrush x:Key="ControlBackgroundBrush" Color="{StaticResource ControlBackground}"/>
+
+    <Color x:Key="ControlBackgroundHover">#383838</Color>
+    <SolidColorBrush x:Key="ControlBackgroundHoverBrush" Color="{StaticResource ControlBackgroundHover}"/>
+
+    <!-- DataGrid Alternating -->
+    <Color x:Key="DataGridRowAlternating">#28282B</Color>
+    <SolidColorBrush x:Key="DataGridRowAlternatingBrush" Color="{StaticResource DataGridRowAlternating}"/>
+
+    <!-- Grid Lines & Borders -->
+    <Color x:Key="BorderLight">#3A3A3A</Color>
+    <SolidColorBrush x:Key="BorderLightBrush" Color="{StaticResource BorderLight}"/>
+    <SolidColorBrush x:Key="DataGridLineBrush" Color="{StaticResource BorderLight}"/>
+
+    <Color x:Key="BorderMedium">#555555</Color>
+    <SolidColorBrush x:Key="BorderMediumBrush" Color="{StaticResource BorderMedium}"/>
+
+    <!-- Text Colors -->
+    <Color x:Key="TextPrimary">#FFFFFF</Color>
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimary}"/>
+
+    <Color x:Key="TextSecondary">#CCCCCC</Color>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondary}"/>
+
+    <Color x:Key="TextDisabled">#666666</Color>
+    <SolidColorBrush x:Key="TextDisabledBrush" Color="{StaticResource TextDisabled}"/>
+
+    <!-- Accent Header Gradients (Windows 11 Dark inspired) -->
+    <LinearGradientBrush x:Key="DockPanelBackgroundBrush" EndPoint="0.5,1.0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0.0">
+        <GradientStop Color="#0F161E" Offset="0.0"/>
+        <GradientStop Color="#1E1E1E" Offset="1.0"/>
+    </LinearGradientBrush>
+    
+    <!-- Status Brushes -->
+    <SolidColorBrush x:Key="SuccessBrush" Color="#6BC26B"/>
+    <SolidColorBrush x:Key="WarningBrush" Color="#FCD116"/>
+    <SolidColorBrush x:Key="ErrorBrush" Color="#F1707A"/>
+
+</ResourceDictionary>

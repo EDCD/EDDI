@@ -1,4 +1,4 @@
-﻿<Window x:Class="EddiSpeechResponder.CopyPersonalityWindow"
+<Window x:Class="EddiSpeechResponder.CopyPersonalityWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -13,7 +13,7 @@
         Height="200" Width="300"
         >
     <Window.Resources>
-        <Style x:Key="textBoxWithValidationToolTip" TargetType="{x:Type TextBox}">
+        <Style x:Key="textBoxWithValidationToolTip" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
             <Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="true">
                     <Setter Property="ToolTip"
@@ -23,7 +23,7 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
-    <DockPanel LastChildFill="True" Background="#FFE5E5E5">
+    <DockPanel LastChildFill="True" Background="{DynamicResource WindowBackgroundBrush}">
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />

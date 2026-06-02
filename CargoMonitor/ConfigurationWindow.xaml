@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="EddiCargoMonitor.ConfigurationWindow"
+<UserControl x:Class="EddiCargoMonitor.ConfigurationWindow"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -10,7 +10,7 @@
              xmlns:System="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="800">
-    <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0,5">
+    <DockPanel LastChildFill="True" Background="{DynamicResource WindowBackgroundBrush}" Margin="0,5">
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5, 0" Text="{x:Static resx:CargoMonitor.para1}" />
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:CargoMonitor.para2}" />
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:CargoMonitor.para3}" />
@@ -18,7 +18,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{x:Static resx:CargoMonitor.header_name}" Width="*" IsReadOnly="True" Binding="{Binding Path=localizedName}">
                     <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
+                        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
@@ -31,7 +31,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="{x:Static resx:CargoMonitor.header_type}" Width="*" IsReadOnly="True" Binding="{Binding Path=localizedCategory}">
                     <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
+                        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
@@ -44,7 +44,7 @@
                 </DataGridTextColumn>
                 <utility:DataGridNumericColumn Header="{x:Static resx:CargoMonitor.header_price}" Width="120" IsReadOnly="True" Binding="{Binding Path=price}">
                     <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
+                        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
@@ -57,7 +57,7 @@
                 </utility:DataGridNumericColumn>
                 <utility:DataGridNumericColumn Header="{x:Static resx:CargoMonitor.header_haulage}" Width="80" Binding="{Binding Path=(eddiDataDefinitions:Cargo.haulage), NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, TargetNullValue={x:Static System:String.Empty}}">
                     <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
+                        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
@@ -70,7 +70,7 @@
                 </utility:DataGridNumericColumn>
                 <utility:DataGridNumericColumn Header="{x:Static resx:CargoMonitor.header_stolen}" Width="80" Binding="{Binding Path=(eddiDataDefinitions:Cargo.stolen), NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
                     <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
+                        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
@@ -83,7 +83,7 @@
                 </utility:DataGridNumericColumn>
                 <utility:DataGridNumericColumn Header="{x:Static resx:CargoMonitor.header_owned}" Width="80" Binding="{Binding Path=(eddiDataDefinitions:Cargo.owned), NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
                     <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
+                        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
@@ -96,7 +96,7 @@
                 </utility:DataGridNumericColumn>
                 <utility:DataGridNumericColumn Header="{x:Static resx:CargoMonitor.header_need}" Width="80" Binding="{Binding Path=(eddiDataDefinitions:Cargo.need), NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, TargetNullValue={x:Static System:String.Empty}}">
                     <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
+                        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                         </Style>
                     </DataGridTextColumn.HeaderStyle>

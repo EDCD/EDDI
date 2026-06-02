@@ -44,6 +44,12 @@ namespace EddiUI
             }
         }
 
+        internal struct ThemeDef(string name, string displayName)
+        {
+            public string name = name;
+            public string displayName { get; set; } = displayName;
+        }
+
         private void SaveWindowState()
         {
             Rect savePosition;
@@ -183,11 +189,13 @@ namespace EddiUI
                 VaWindowStateChange += OnVaWindowStateChange;
                 heroText.Text = Properties.Resources.change_affect_va;
                 chooseLanguageText.Text = Properties.Resources.choose_lang_label_va;
+                chooseThemeText.Text = Properties.Resources.choose_theme_label_va;
             }
             else
             {
                 heroText.Text = Properties.Resources.if_using_va;
                 chooseLanguageText.Text = Properties.Resources.choose_lang_label;
+                chooseThemeText.Text = Properties.Resources.choose_theme_label;
             }
 
             var eddiConfiguration = ConfigService.Instance.eddiConfiguration;
@@ -204,6 +212,30 @@ namespace EddiUI
                 var cultureDef = (LanguageDef)chooseLanguageDropDown.SelectedItem;
                 eddiConfiguration.OverrideCulture = cultureDef.ci.Name;
                 ConfigService.Instance.eddiConfiguration = eddiConfiguration;
+            };
+
+            // Theme selection initialization
+            var themes = new List<ThemeDef>
+            {
+                new("System", Properties.Resources.theme_system),
+                new("Light", Properties.Resources.theme_light),
+                new("Dark", Properties.Resources.theme_dark)
+            };
+            chooseThemeDropDown.ItemsSource = themes;
+            chooseThemeDropDown.DisplayMemberPath = "displayName";
+            chooseThemeDropDown.SelectedItem = string.IsNullOrEmpty(eddiConfiguration.OverrideTheme) 
+                ? themes.Find(t => t.name == "System") 
+                : themes.Find(t => string.Equals(t.name, eddiConfiguration.OverrideTheme, StringComparison.OrdinalIgnoreCase));
+            chooseThemeDropDown.SelectionChanged += (sender, e) =>
+            {
+                if (chooseThemeDropDown.SelectedItem is ThemeDef selectedTheme)
+                {
+                    eddiConfiguration.OverrideTheme = selectedTheme.name == "System" ? null : selectedTheme.name;
+                    ConfigService.Instance.eddiConfiguration = eddiConfiguration;
+                    
+                    // Instantly apply theme choice at runtime
+                    Themes.ThemeManager.ApplyTheme();
+                }
             };
 
             LoadAndSortTabs(eddiConfiguration);
