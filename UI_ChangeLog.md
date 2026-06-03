@@ -65,7 +65,8 @@ This document details all the modifications, enhancements, and bug fixes introdu
 ## 8. Microsoft Azure Speech Services Integration
 * **Neural Voices Support**: Integrated Microsoft Cognitive Services Speech SDK and extended `SpeechServiceConfiguration` to support Azure API Keys and Regions.
 * **Dynamic Synthesis**: Built dynamic voice loading and PCM stream audio synthesis, routing Azure Neural voices through EDDI's existing `SpeechFx` effects processor (radio distortion, chorus, echo).
-* **High-Readability Dropdown**: Formatted Azure and Windows voices in the voice dropdown to put friendly language names first (e.g., `English (United States) Emma - Neural` or `Russian (Russia) Svetlana - Local`).
+* **High-Readability Dropdown**: Formatted Azure and Windows voices in the voice dropdown to put friendly language names first (e.g., `English (United States) Emma - Neural` or `Russian (Russia) Svetlana - Local`). Also, filtered out redundant Windows "(Online) - Local" voices and sorted all available options alphabetically to simplify selection.
 * **Accessible Hyperlink**: Added a `How to get your Azure API Key` hyperlink referencing the official setup guide. The link features WCAG AAA high-contrast colors (link blue in Light Mode, bright sky blue in Dark Mode) and permanent underlines for clear accessibility.
 * **Layout & Save Adjustments**: Stacked the settings controls into three rows (API Key, Region, Save Button) to prevent clipping at the edge of the window, and configured immediate synchronous saves to disk to resolve settings loss.
+* **Volume & Rate Slider Support**: Wrapped Azure speech synthesis requests in SSML `<prosody>` tags to ensure Azure Neural voices correctly honor the volume and speaking rate sliders configured in the Text-to-Speech section.
 

@@ -674,10 +674,14 @@ namespace EddiSpeechService
                     Logging.Info($"[SpeakAzure task] PreparedSpeech: '{preparedSpeech}', useSSML: {useSSML}");
                     
                     Microsoft.CognitiveServices.Speech.SpeechSynthesisResult result;
+                    var ratePercent = Configuration.Rate * 10;
+                    var rateString = ratePercent >= 0 ? $"+{ratePercent}%" : $"{ratePercent}%";
+
                     if (useSSML)
                     {
                         // Azure requires a <voice name="voiceName"> tag inside the <speak> element.
-                        // We will insert it after the <speak> tag and before the closing </speak> tag.
+                        // We will insert it after the <speak> tag and before the closing </speak> tag,
+                        // and wrap the contents in a <prosody> tag to set the volume and rate.
                         int speakIndex = preparedSpeech.IndexOf("<speak");
                         if (speakIndex >= 0)
                         {
@@ -703,7 +707,7 @@ namespace EddiSpeechService
                                     afterVoice = afterVoice.Substring(0, afterVoice.Length - "</speak>".Length);
                                 }
                                 
-                                preparedSpeech = beforeVoice + $"<voice name=\"{voiceDetails.name}\">" + afterVoice + "</voice></speak>";
+                                preparedSpeech = beforeVoice + $"<voice name=\"{voiceDetails.name}\"><prosody volume=\"{Configuration.Volume}\" rate=\"{rateString}\">" + afterVoice + "</prosody></voice></speak>";
                             }
                         }
 
@@ -712,8 +716,14 @@ namespace EddiSpeechService
                     }
                     else
                     {
-                        Logging.Info("[SpeakAzure task] Calling SpeakTextAsync with prepared text...");
-                        result = await synthesizer.SpeakTextAsync(preparedSpeech).ConfigureAwait(false);
+                        var xmlEscapedSpeech = System.Security.SecurityElement.Escape(preparedSpeech);
+                        var ssml = $"<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"{voiceDetails.culturecode ?? "en-US"}\">" +
+                                   $"<voice name=\"{voiceDetails.name}\">" +
+                                   $"<prosody volume=\"{Configuration.Volume}\" rate=\"{rateString}\">" +
+                                   $"{xmlEscapedSpeech}" +
+                                   $"</prosody></voice></speak>";
+                        Logging.Info("[SpeakAzure task] Calling SpeakSsmlAsync with prepared text-to-SSML...");
+                        result = await synthesizer.SpeakSsmlAsync(ssml).ConfigureAwait(false);
                     }
                     
                     using (result)
