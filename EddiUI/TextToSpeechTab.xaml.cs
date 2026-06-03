@@ -29,11 +29,21 @@ namespace EddiUI
             try
             {
                 SpeechService.Instance.SpeechManager.InitializeAsync().GetResultOrTimeout( TimeSpan.FromSeconds( 15 ) );
+                var voicesList = new List<VoiceOption>();
                 foreach (var voice in SpeechService.Instance.SpeechManager.validatedVoices)
                 {
                     if (voice.hideVoice) continue;
-                    speechOptions.Add(new VoiceOption { Value = voice.name, DisplayName = GetFriendlyVoiceName(voice) });
+                    if (voice.synthType == "System" && voice.name.IndexOf("Online", StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        continue;
+                    }
+                    voicesList.Add(new VoiceOption { Value = voice.name, DisplayName = GetFriendlyVoiceName(voice) });
                 }
+
+                // Sort the voices alphabetically by DisplayName
+                voicesList = voicesList.OrderBy(v => v.DisplayName, StringComparer.CurrentCultureIgnoreCase).ToList();
+                speechOptions.AddRange(voicesList);
+
                 if ( speechOptions.Count == 1 )
                 {
                     Logging.Warn( "No speech synthesis voices were available." );
