@@ -53,3 +53,19 @@ This document details all the modifications, enhancements, and bug fixes introdu
 
 ## 6. Build and Installer Enhancements
 * **Absolute Path Compilers**: Updated `build-installer.cmd` to utilize absolute path mappings for Inno Setup 6 (`ISCC.exe`) and 7-Zip (`7z.exe`), preventing environment variable path failures.
+
+---
+
+## 7. Unified Responders Layout
+* **Unified Responders Tab**: Grouped the external network responders (EDDN, EDSM, and Inara) into a clean, unified sub-tab layout under a single top-level "Responders" tab.
+* **Layout Navigation**: Sorted the remaining tabs (including Text-to-Speech) alphabetically alongside monitors for a clean, intuitive layout, placing Text-to-Speech directly underneath Speech Responder.
+
+---
+
+## 8. Microsoft Azure Speech Services Integration
+* **Neural Voices Support**: Integrated Microsoft Cognitive Services Speech SDK and extended `SpeechServiceConfiguration` to support Azure API Keys and Regions.
+* **Dynamic Synthesis**: Built dynamic voice loading and PCM stream audio synthesis, routing Azure Neural voices through EDDI's existing `SpeechFx` effects processor (radio distortion, chorus, echo).
+* **High-Readability Dropdown**: Formatted Azure and Windows voices in the voice dropdown to put friendly language names first (e.g., `English (United States) Emma - Neural` or `Russian (Russia) Svetlana - Local`).
+* **Accessible Hyperlink**: Added a `How to get your Azure API Key` hyperlink referencing the official setup guide. The link features WCAG AAA high-contrast colors (link blue in Light Mode, bright sky blue in Dark Mode) and permanent underlines for clear accessibility.
+* **Layout & Save Adjustments**: Stacked the settings controls into three rows (API Key, Region, Save Button) to prevent clipping at the edge of the window, and configured immediate synchronous saves to disk to resolve settings loss.
+
