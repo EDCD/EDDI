@@ -844,5 +844,14 @@ namespace EddiUI.Properties {
                 return ResourceManager.GetString("theme_dark", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Responders.
+        /// </summary>
+        public static string tab_responders {
+            get {
+                return ResourceManager.GetString("tab_responders", resourceCulture);
+            }
+        }
     }
 }

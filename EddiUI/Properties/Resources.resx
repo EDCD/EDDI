@@ -388,4 +388,7 @@ Please close the other instance and try again.</value>
   <data name="theme_dark" xml:space="preserve">
     <value>Dark</value>
   </data>
+  <data name="tab_responders" xml:space="preserve">
+    <value>Responders</value>
+  </data>
 </root>

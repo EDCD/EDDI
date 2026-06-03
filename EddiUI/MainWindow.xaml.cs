@@ -271,24 +271,30 @@ namespace EddiUI
 
         private void LoadAndSortTabs(EDDIConfiguration eddiConfiguration)
         {
-            // Sort all but the first TabItem by name, ignoring case
-            var items = tabControl.Items;
-            var sortedItems = new List<TabItem>();
-            foreach (var item in items)
-            {
-                sortedItems.Add(item as TabItem);
-            }
+            var dynamicTabs = new List<TabItem>();
 
             var monitors = LoadMonitors(eddiConfiguration);
-            sortedItems.AddRange(monitors);
+            dynamicTabs.AddRange(monitors);
             var responders = LoadResponders(eddiConfiguration);
-            sortedItems.AddRange(responders);
+            dynamicTabs.AddRange(responders);
+
+            // Add Frontier API and Text-to-Speech to the dynamically sorted tabs
+            dynamicTabs.Add(frontierTab);
+            dynamicTabs.Add(ttsTab);
 
             var comparer = new TabItemComparer(StringComparer.CurrentCultureIgnoreCase);
-            sortedItems.Sort(1, sortedItems.Count - 1, comparer);
+            dynamicTabs.Sort(comparer);
 
+            var finalTabs = new List<TabItem>
+            {
+                eddiTab,
+                respondersTab
+            };
+            finalTabs.AddRange(dynamicTabs);
+
+            var items = tabControl.Items;
             items.Clear();
-            foreach (var item in sortedItems)
+            foreach (var item in finalTabs)
             {
                 items.Add(item);
             }
@@ -380,8 +386,13 @@ namespace EddiUI
         private static List<TabItem> LoadResponders(EDDIConfiguration eddiConfiguration)
         {
             var result = new List<TabItem>();
+            var targetResponderNames = new[] { "EDDN Responder", "EDSM Responder", "Inara Responder" };
             foreach (var responder in EDDI.Instance.responders)
             {
+                if (targetResponderNames.Contains(responder.ResponderName(), StringComparer.InvariantCultureIgnoreCase))
+                {
+                    continue;
+                }
                 Logging.Debug("Adding configuration tab for " + responder.ResponderName());
 
                 var skeleton = new PluginSkeleton(responder.ResponderName());
