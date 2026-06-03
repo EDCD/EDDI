@@ -650,13 +650,12 @@
     </Style>
 
     <Style TargetType="{x:Type Hyperlink}">
-        <Setter Property="Foreground" Value="{DynamicResource PrimaryBrandBrush}"/>
-        <Setter Property="TextDecorations" Value="None"/>
+        <Setter Property="Foreground" Value="{DynamicResource HyperlinkForegroundBrush}"/>
+        <Setter Property="TextDecorations" Value="Underline"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}"/>
-                <Setter Property="TextDecorations" Value="Underline"/>
+                <Setter Property="Foreground" Value="{DynamicResource HyperlinkHoverForegroundBrush}"/>
             </Trigger>
         </Style.Triggers>
     </Style>

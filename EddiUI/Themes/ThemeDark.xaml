@@ -33,6 +33,12 @@
     <Color x:Key="AccentColor">#0078D4</Color>
     <SolidColorBrush x:Key="AccentColorBrush" Color="{StaticResource AccentColor}"/>
 
+    <!-- Hyperlink Brushes -->
+    <Color x:Key="HyperlinkForeground">#60CDFF</Color>
+    <SolidColorBrush x:Key="HyperlinkForegroundBrush" Color="{StaticResource HyperlinkForeground}"/>
+    <Color x:Key="HyperlinkHoverForeground">#90DBFF</Color>
+    <SolidColorBrush x:Key="HyperlinkHoverForegroundBrush" Color="{StaticResource HyperlinkHoverForeground}"/>
+
     <Color x:Key="NeutralBackground">#202020</Color>
     <SolidColorBrush x:Key="NeutralBackgroundBrush" Color="{StaticResource NeutralBackground}"/>
 

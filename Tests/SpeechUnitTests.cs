@@ -1,15 +1,20 @@
-﻿using EddiSpeechResponder;
+using EddiSpeechResponder;
 using EddiSpeechService;
 using EddiSpeechService.SpeechConversions;
 using EddiSpeechService.SpeechPreparation;
 using EddiVoiceAttackResponder;
+using EddiConfigService;
+using EddiConfigService.Configurations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace Tests
@@ -446,6 +451,61 @@ namespace Tests
                 "SpeechManager.speechQueueCts should be a CancellationTokenSource." );
 
             return (CancellationTokenSource)value;
+        }
+
+        [TestMethod]
+        public async Task TestAzureSpeechManagerIntegration()
+        {
+            string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string speechJsonPath = Path.Combine(appData, "EDDI", "speech.json");
+            
+            if (!File.Exists(speechJsonPath))
+            {
+                Assert.Inconclusive("speech.json not found in AppData. Cannot run Azure integration test.");
+                return;
+            }
+
+            var rawJson = File.ReadAllText(speechJsonPath);
+            var realConfig = Newtonsoft.Json.JsonConvert.DeserializeObject<SpeechServiceConfiguration>(rawJson);
+            
+            if (string.IsNullOrWhiteSpace(realConfig.AzureApiKey) || string.IsNullOrWhiteSpace(realConfig.AzureRegion))
+            {
+                Assert.Inconclusive("Azure credentials not configured in speech.json. Cannot run Azure integration test.");
+                return;
+            }
+
+            ConfigService.unitTesting = false;
+            ConfigService.Instance.speechServiceConfiguration = realConfig;
+
+            var speechManager = new SpeechManager(new AudioManager());
+            await speechManager.InitializeAsync();
+
+            var azureVoices = speechManager.validatedVoices.Where(v => v.synthType == "Azure").ToList();
+            Console.WriteLine($"Found {azureVoices.Count} Azure voices in SpeechManager.");
+            Assert.IsTrue(azureVoices.Count > 0, "Azure voices were not successfully loaded.");
+
+            var targetVoice = azureVoices.FirstOrDefault(v => v.name.Contains("Sonia")) ?? azureVoices.First();
+            Console.WriteLine($"Testing synthesis with voice: {targetVoice.name}");
+
+            var method = typeof(SpeechManager).GetMethod("SpeakAzure", 
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            Assert.IsNotNull(method, "SpeakAzure method not found via reflection.");
+
+            var stream = method.Invoke(speechManager, new object[] { targetVoice, "This is an integration test of Azure Neural voice.", realConfig }) as Stream;
+            
+            Assert.IsNotNull(stream, "Speech synthesis returned a null stream.");
+            Assert.IsTrue(stream.Length > 1000, $"Speech synthesis returned too small of a stream: {stream.Length} bytes.");
+            Console.WriteLine($"Success! Generated speech stream size: {stream.Length} bytes.");
+
+            // Test if SpeechFx can process this stream
+            stream.Seek(0, SeekOrigin.Begin);
+            var provider = SpeechFx.addEffectsToSource(stream, 10, 0, 0, false);
+            Assert.IsNotNull(provider, "addEffectsToSource returned null provider.");
+            var sp = provider.ToSampleProvider();
+            var buffer = new float[44100];
+            int read = sp.Read(buffer, 0, buffer.Length);
+            Assert.IsTrue(read > 0, "Failed to read samples from provider.");
+            Console.WriteLine($"Successfully read {read} samples from the effects provider.");
         }
     }
 }
