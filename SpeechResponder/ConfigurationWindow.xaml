@@ -81,7 +81,7 @@
                     Content="{x:Static resx:SpeechResponder.button_new}"
                     >
                     <Button.Style>
-                        <Style TargetType="{x:Type Button}">
+                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
                             <Setter Property="Visibility"  Value="Visible" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding ElementName=personalityComboBox, Path=DataContext.(local:SpeechResponder.CurrentPersonality).IsCustom, Mode=OneWay}" Value="False">
@@ -101,7 +101,7 @@
                     Content="{x:Static resx:SpeechResponder.button_delete}"
                     >
                     <Button.Style>
-                        <Style TargetType="{x:Type Button}">
+                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
                             <Setter Property="Visibility"  Value="Visible" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding ElementName=personalityComboBox, Path=DataContext.(local:SpeechResponder.CurrentPersonality).IsCustom, Mode=OneWay}" Value="False">
