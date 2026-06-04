@@ -1,4 +1,4 @@
-﻿<Window x:Class="EddiSpeechResponder.ShowDiffWindow"
+<Window x:Class="EddiSpeechResponder.ShowDiffWindow"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,11 +9,11 @@
              Title="{x:Static resx:SpeechResponder.compare_script_title}" 
              ResizeMode="CanResizeWithGrip"
              Height="600" Width="800"
-             Background="#FFE5E5E5" >
+             Background="{DynamicResource WindowBackgroundBrush}" >
     <avalonEdit:TextEditor Margin="10" 
                            Name="scriptView"
-                           Foreground="DarkSlateGray"
-                           Background="WhiteSmoke"
+                           Foreground="{DynamicResource TextPrimaryBrush}"
+                           Background="{DynamicResource ControlBackgroundBrush}"
                            FontFamily="Consolas"
                            IsReadOnly="True"
                            WordWrap="True"

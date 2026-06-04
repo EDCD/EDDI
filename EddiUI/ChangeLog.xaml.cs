@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Windows;
@@ -30,7 +30,7 @@ namespace EddiUI
                 markdown = "";
             }
             var html = CommonMark.CommonMarkConverter.Convert(markdown);
-            html = "<head>  <meta charset=\"UTF-8\"> </head> " + html;
+            html = Utilities.MarkdownDecorator.Decorate(html);
 
             // Insert the HTML
             textBrowser.NavigateToString(html);

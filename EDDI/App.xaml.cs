@@ -60,6 +60,7 @@ namespace Eddi
             }
 
             var app = new App();
+            app.InitializeComponent();
             app.Exit += OnExit;
 
             try
@@ -106,6 +107,9 @@ namespace Eddi
 
         private static void Initialize ( App app, bool fromVA = false, System.Version vaVersion = null, EDDIConfiguration configuration = null )
         {
+            // Initialize our dynamic theme management engine
+            EddiUI.Themes.ThemeManager.Initialize();
+
             // Prepare to start the application
             if ( configuration != null && !configuration.DisableTelemetry )
             {
@@ -187,6 +191,7 @@ namespace Eddi
             // Always stop the EDDI instance so monitors and services are shut down
             // cleanly before the process exits.  
             EDDI.Instance.Stop();
+            ConfigService.Instance.Dispose();
 
             Current?.Dispatcher?.InvokeAsync( () => {
                 eddiMutex.ReleaseMutex();
