@@ -60,7 +60,7 @@
         </ContextMenu>
     </UserControl.Resources>
     <DockPanel LastChildFill="True">
-        <UniformGrid DockPanel.Dock="Bottom" Rows="1" Columns="3" Margin="0,5">
+        <UniformGrid DockPanel.Dock="Bottom" Rows="1" Columns="3" Margin="20, 5, 20, 5">
             <Button HorizontalAlignment="Center" Click="bookmarkLocation" Content="{x:Static resx:NavigationMonitor.bm_location_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_location_button_tooltip}" />
             <Button HorizontalAlignment="Center" Click="importBookmarks" Content="{x:Static resx:NavigationMonitor.bm_import_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_import_button_tooltip}" />
             <Button HorizontalAlignment="Center" Click="exportBookmarks" Content="{x:Static resx:NavigationMonitor.bm_export_button}" ToolTip="{x:Static resx:NavigationMonitor.bm_export_button_tooltip}" />
