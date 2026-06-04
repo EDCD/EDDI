@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -373,7 +373,22 @@ Please close the other instance and try again.</value>
   <data name="voice_test_ship" xml:space="preserve">
     <value>This is how I will sound in your {0}.</value>
   </data>
-  <data name="wiki_hyperlink" xml:space="preserve">
-    <value>project wiki</value>
+  <data name="choose_theme_label" xml:space="preserve">
+    <value>Select EDDI's theme (requires relaunching EDDI):</value>
+  </data>
+  <data name="choose_theme_label_va" xml:space="preserve">
+    <value>Select EDDI's theme (requires relaunching VoiceAttack):</value>
+  </data>
+  <data name="theme_system" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="theme_light" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="theme_dark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="tab_responders" xml:space="preserve">
+    <value>Responders</value>
   </data>
 </root>
