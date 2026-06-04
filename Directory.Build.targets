@@ -1,8 +1,8 @@
-﻿<Project>
+<Project>
 
 	<!-- Set our source revision ID equal to our latest git commit ID -->
 	<Target Name="SetSourceRevisionId" BeforeTargets="InitializeSourceControlInformation">
-		<Exec Command="git rev-parse HEAD" ConsoleToMSBuild="True" IgnoreExitCode="False">
+		<Exec Command="git rev-parse HEAD" ConsoleToMSBuild="True" IgnoreExitCode="True">
 			<Output PropertyName="SourceRevisionId" TaskParameter="ConsoleOutput" />
 		</Exec>
 		<ItemGroup>
@@ -12,7 +12,7 @@
 
 	<!-- Set our source branch -->
 	<Target Name="SetSourceBranch" BeforeTargets="InitializeSourceControlInformation">
-		<Exec Command="git rev-parse --abbrev-ref HEAD" ConsoleToMSBuild="True" IgnoreExitCode="False">
+		<Exec Command="git rev-parse --abbrev-ref HEAD" ConsoleToMSBuild="True" IgnoreExitCode="True">
 			<Output PropertyName="SourceBranch" TaskParameter="ConsoleOutput" />
 		</Exec>
 		<ItemGroup>

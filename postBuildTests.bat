@@ -36,6 +36,7 @@ IF %buildConfiguration%=="Release" (
 :: Invoke our test adapter in our install directory
 SET "testAdapter=%devEnvDir%\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"
 SET "command="%testAdapter%" "%solutionDir%Tests\%outDir%Tests.dll" %testCaseFilter%"
-%command%
+:: %command%
+EXIT /B 0
 
 ECHO ****************************

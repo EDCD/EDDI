@@ -1,4 +1,4 @@
-﻿using EddiEvents;
+using EddiEvents;
 using System;
 using System.IO;
 using System.Linq;
@@ -53,7 +53,7 @@ namespace EddiSpeechResponder
             }
 
             var html = CommonMark.CommonMarkConverter.Convert(markdown);
-            html = "<head>  <meta charset=\"UTF-8\"> </head> " + html;
+            html = Utilities.MarkdownDecorator.Decorate(html);
 
             // Insert the HTML
             textBrowser.NavigateToString(html);

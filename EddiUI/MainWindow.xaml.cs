@@ -44,6 +44,12 @@ namespace EddiUI
             }
         }
 
+        internal struct ThemeDef(string name, string displayName)
+        {
+            public string name = name;
+            public string displayName { get; set; } = displayName;
+        }
+
         private void SaveWindowState()
         {
             Rect savePosition;
@@ -183,11 +189,13 @@ namespace EddiUI
                 VaWindowStateChange += OnVaWindowStateChange;
                 heroText.Text = Properties.Resources.change_affect_va;
                 chooseLanguageText.Text = Properties.Resources.choose_lang_label_va;
+                chooseThemeText.Text = Properties.Resources.choose_theme_label_va;
             }
             else
             {
                 heroText.Text = Properties.Resources.if_using_va;
                 chooseLanguageText.Text = Properties.Resources.choose_lang_label;
+                chooseThemeText.Text = Properties.Resources.choose_theme_label;
             }
 
             var eddiConfiguration = ConfigService.Instance.eddiConfiguration;
@@ -204,6 +212,30 @@ namespace EddiUI
                 var cultureDef = (LanguageDef)chooseLanguageDropDown.SelectedItem;
                 eddiConfiguration.OverrideCulture = cultureDef.ci.Name;
                 ConfigService.Instance.eddiConfiguration = eddiConfiguration;
+            };
+
+            // Theme selection initialization
+            var themes = new List<ThemeDef>
+            {
+                new("System", Properties.Resources.theme_system),
+                new("Light", Properties.Resources.theme_light),
+                new("Dark", Properties.Resources.theme_dark)
+            };
+            chooseThemeDropDown.ItemsSource = themes;
+            chooseThemeDropDown.DisplayMemberPath = "displayName";
+            chooseThemeDropDown.SelectedItem = string.IsNullOrEmpty(eddiConfiguration.OverrideTheme) 
+                ? themes.Find(t => t.name == "System") 
+                : themes.Find(t => string.Equals(t.name, eddiConfiguration.OverrideTheme, StringComparison.OrdinalIgnoreCase));
+            chooseThemeDropDown.SelectionChanged += (sender, e) =>
+            {
+                if (chooseThemeDropDown.SelectedItem is ThemeDef selectedTheme)
+                {
+                    eddiConfiguration.OverrideTheme = selectedTheme.name == "System" ? null : selectedTheme.name;
+                    ConfigService.Instance.eddiConfiguration = eddiConfiguration;
+                    
+                    // Instantly apply theme choice at runtime
+                    Themes.ThemeManager.ApplyTheme();
+                }
             };
 
             LoadAndSortTabs(eddiConfiguration);
@@ -239,24 +271,30 @@ namespace EddiUI
 
         private void LoadAndSortTabs(EDDIConfiguration eddiConfiguration)
         {
-            // Sort all but the first TabItem by name, ignoring case
-            var items = tabControl.Items;
-            var sortedItems = new List<TabItem>();
-            foreach (var item in items)
-            {
-                sortedItems.Add(item as TabItem);
-            }
+            var dynamicTabs = new List<TabItem>();
 
             var monitors = LoadMonitors(eddiConfiguration);
-            sortedItems.AddRange(monitors);
+            dynamicTabs.AddRange(monitors);
             var responders = LoadResponders(eddiConfiguration);
-            sortedItems.AddRange(responders);
+            dynamicTabs.AddRange(responders);
+
+            // Add Frontier API and Text-to-Speech to the dynamically sorted tabs
+            dynamicTabs.Add(frontierTab);
+            dynamicTabs.Add(ttsTab);
 
             var comparer = new TabItemComparer(StringComparer.CurrentCultureIgnoreCase);
-            sortedItems.Sort(1, sortedItems.Count - 1, comparer);
+            dynamicTabs.Sort(comparer);
 
+            var finalTabs = new List<TabItem>
+            {
+                eddiTab,
+                respondersTab
+            };
+            finalTabs.AddRange(dynamicTabs);
+
+            var items = tabControl.Items;
             items.Clear();
-            foreach (var item in sortedItems)
+            foreach (var item in finalTabs)
             {
                 items.Add(item);
             }
@@ -348,8 +386,13 @@ namespace EddiUI
         private static List<TabItem> LoadResponders(EDDIConfiguration eddiConfiguration)
         {
             var result = new List<TabItem>();
+            var targetResponderNames = new[] { "EDDN Responder", "EDSM Responder", "Inara Responder" };
             foreach (var responder in EDDI.Instance.responders)
             {
+                if (targetResponderNames.Contains(responder.ResponderName(), StringComparer.InvariantCultureIgnoreCase))
+                {
+                    continue;
+                }
                 Logging.Debug("Adding configuration tab for " + responder.ResponderName());
 
                 var skeleton = new PluginSkeleton(responder.ResponderName());
