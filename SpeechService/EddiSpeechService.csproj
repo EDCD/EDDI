@@ -63,5 +63,12 @@
         <PackageReference Include="NWaves" />
         <PackageReference Include="System.Speech" />
         <PackageReference Include="System.Text.RegularExpressions" />
+        <PackageReference Include="Microsoft.CognitiveServices.Speech" />
     </ItemGroup>
+    <Target Name="CopyAzureSpeechNativeDlls" AfterTargets="Build">
+        <ItemGroup>
+            <AzureSpeechNativeFiles Include="$(OutputPath)runtimes\win-x64\native\*.*" />
+        </ItemGroup>
+        <Copy SourceFiles="@(AzureSpeechNativeFiles)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
+    </Target>
 </Project>

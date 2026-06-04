@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 
 namespace EddiConfigService.Configurations
 {
@@ -128,6 +128,41 @@ namespace EddiConfigService.Configurations
             }
         }
 
+        private string _azureApiKey;
+        private string _azureRegion;
+
+        [ JsonProperty( "azureApiKey" ) ]
+        public string AzureApiKey
+        {
+            get => _azureApiKey;
+            set
+            {
+                if ( value == _azureApiKey )
+                {
+                    return;
+                }
+
+                _azureApiKey = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [ JsonProperty( "azureRegion" ) ]
+        public string AzureRegion
+        {
+            get => _azureRegion;
+            set
+            {
+                if ( value == _azureRegion )
+                {
+                    return;
+                }
+
+                _azureRegion = value;
+                OnPropertyChanged();
+            }
+        }
+
         /// <summary>
         /// Clear the information held by speech
         /// </summary>
@@ -139,6 +174,8 @@ namespace EddiConfigService.Configurations
             DistortOnDamage = true;
             DisableIpa = false;
             EnableIcao = false;
+            AzureApiKey = null;
+            AzureRegion = null;
         }
     }
 }
