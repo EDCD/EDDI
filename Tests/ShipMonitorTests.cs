@@ -1,4 +1,4 @@
-﻿using EddiConfigService.Configurations;
+using EddiConfigService.Configurations;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
@@ -180,6 +180,44 @@ namespace Tests
             Assert.AreEqual( "int_largecargorack_size8_class1", ship.compartments[ 0 ].module.edname );
             Assert.AreEqual( "Cargo Rack", ship.compartments[ 0 ].module.invariantName );
         }
+
+        [ TestMethod ]
+        public void TestLoadoutParsingType11 ()
+        {
+            var data = @"{ ""timestamp"":""2026-06-04T18:54:51Z"", ""event"":""Loadout"", ""Ship"":""lakonminer"", ""ShipID"":49, ""ShipName"":"""", ""ShipIdent"":""TI-03L"", ""HullValue"":58218811, ""ModulesValue"":28367848, ""HullHealth"":1.000000, ""UnladenMass"":567.400024, ""CargoCapacity"":257, ""MaxJumpRange"":45.943016, ""FuelCapacity"":{ ""Main"":32.000000, ""Reserve"":0.600000 }, ""Rebuy"":4329337, ""Modules"":[ { ""Slot"":""MediumMiningHardpoint1"", ""Item"":""hpt_mininglaser_fixed_medium"", ""On"":true, ""Priority"":0, ""Health"":1.000000, ""Value"":19812 }, { ""Slot"":""MediumMiningHardpoint2"", ""Item"":""hpt_mininglaser_fixed_medium"", ""On"":true, ""Priority"":0, ""Health"":1.000000, ""Value"":19812 }, { ""Slot"":""LargeMiningHardpoint1"", ""Item"":""hpt_miningtoolv2_fixed_large"", ""On"":true, ""Priority"":0, ""Health"":1.000000, ""Value"":131542 }, { ""Slot"":""TinyHardpoint1"", ""Item"":""hpt_heatsinklauncher_turret_tiny"", ""On"":true, ""Priority"":0, ""AmmoInClip"":1, ""AmmoInHopper"":3, ""Health"":1.000000, ""Value"":3072 }, { ""Slot"":""TinyHardpoint2"", ""Item"":""hpt_heatsinklauncher_turret_tiny"", ""On"":true, ""Priority"":0, ""AmmoInClip"":1, ""AmmoInHopper"":3, ""Health"":1.000000, ""Value"":3072 }, { ""Slot"":""Armour"", ""Item"":""lakonminer_armour_grade1"", ""On"":true, ""Priority"":1, ""Health"":1.000000, ""Value"":0 }, { ""Slot"":""PowerPlant"", ""Item"":""Int_PowerPlant_Size6_Class5"", ""On"":true, ""Priority"":0, ""Health"":1.000000, ""Value"":16164222 }, { ""Slot"":""MainEngines"", ""Item"":""Int_Engine_Size6_Class2"", ""On"":true, ""Priority"":0, ""Health"":1.000000, ""Value"":161642 }, { ""Slot"":""FrameShiftDrive"", ""Item"":""Int_Hyperdrive_Size6_Class5"", ""On"":true, ""Priority"":0, ""Health"":1.000000, ""Value"":16164222 }, { ""Slot"":""LifeSupport"", ""Item"":""Int_LifeSupport_Size5_Class2"", ""On"":true, ""Priority"":0, ""Health"":1.000000, ""Value"":24564 }, { ""Slot"":""PowerDistributor"", ""Item"":""Int_PowerDistributor_Size6_Class5"", ""On"":true, ""Priority"":0, ""Health"":1.000000, ""Value"":3164222 }, { ""Slot"":""Radar"", ""Item"":""Int_Sensors_Size4_Class2"", ""On"":true, ""Priority"":0, ""Health"":1.000000, ""Value"":9843 }, { ""Slot"":""FuelTank"", ""Item"":""Int_FuelTank_Size5_Class3"", ""On"":true, ""Priority"":1, ""Health"":1.000000, ""Value"":24197 }, { ""Slot"":""CargoHatch"", ""Item"":""ModularCargoBayDoor"", ""On"":true, ""Priority"":0, ""Health"":1.000000, ""Value"":0 }, { ""Slot"":""Slot01_Size6"", ""Item"":""Int_CargoRack_Size6_Class1"", ""On"":true, ""Priority"":1, ""Health"":1.000000, ""Value"":24197 }, { ""Slot"":""Slot02_Size6"", ""Item"":""Int_CargoRack_Size6_Class1"", ""On"":true, ""Priority"":1, ""Health"":1.000000, ""Value"":24197 }, { ""Slot"":""Slot03_Size5"", ""Item"":""Int_CargoRack_Size5_Class1"", ""On"":true, ""Priority"":1, ""Health"":1.000000, ""Value"":9843 }, { ""Slot"":""Slot04_Size5"", ""Item"":""Int_CargoRack_Size5_Class1"", ""On"":true, ""Priority"":1, ""Health"":1.000000, ""Value"":9843 }, { ""Slot"":""LimpetController01"", ""Item"":""int_multidronecontrol_mining_size5_class2"", ""On"":true, ""Priority"":1, ""Health"":1.000000, ""Value"":9843 }, { ""Slot"":""Slot06_Size4"", ""Item"":""Int_CargoRack_Size4_Class1"", ""On"":true, ""Priority"":1, ""Health"":1.000000, ""Value"":3072 }, { ""Slot"":""Slot07_Size3"", ""Item"":""Int_CargoRack_Size3_Class1"", ""On"":true, ""Priority"":1, ""Health"":1.000000, ""Value"":1270 }, { ""Slot"":""Slot08_Size2"", ""Item"":""Int_CargoRack_Size2_Class1"", ""On"":true, ""Priority"":1, ""Health"":1.000000, ""Value"":550 }, { ""Slot"":""Slot09_Size1"", ""Item"":""Int_CargoRack_Size1_Class1"", ""On"":true, ""Priority"":1, ""Health"":1.000000, ""Value"":250 }, { ""Slot"":""Slot10_Size1"", ""Item"":""Int_CargoRack_Size1_Class1"", ""On"":true, ""Priority"":1, ""Health"":1.000000, ""Value"":250 } ] }";
+
+            var events = JournalMonitor.ParseJournalEntry( data );
+            Assert.HasCount( 1, events );
+            var loadoutEvent = events[ 0 ] as ShipLoadoutEvent;
+            Assert.IsNotNull(loadoutEvent);
+            Assert.AreEqual( "", loadoutEvent.shipname );
+            Assert.HasCount( 19, loadoutEvent.compartments );
+            Assert.HasCount( 5, loadoutEvent.hardpoints );
+
+            var shipMonitor = new ShipMonitor { updatedAt = DateTime.MinValue };
+            var ship = shipMonitor.ParseShipLoadoutEvent( loadoutEvent );
+            Assert.IsNotNull( ship );
+            Assert.AreEqual( "Type-11 Prospector", ship.model );
+            Assert.AreEqual( "TI-03L", ship.ident );
+            Assert.AreEqual( 49, ship.LocalId );
+            Assert.AreEqual( 32, ship.fueltankcapacity );
+            Assert.AreEqual( 32, ship.fueltanktotalcapacity );
+            Assert.AreEqual( 58218811, ship.hullvalue );
+            Assert.AreEqual( 28367848, ship.modulesvalue );
+            Assert.AreEqual( 4329337, ship.rebuy );
+            Assert.AreEqual( 100, ship.health );
+            Assert.IsFalse( ship.hot );
+            Assert.AreEqual( 567.400024M, ship.unladenmass );
+            Assert.AreEqual( 224, ship.cargocapacity );
+            Assert.HasCount( 10, ship.compartments );
+
+            var limpetCompartment = ship.compartments.FirstOrDefault( c => c.name == "LimpetController01" );
+            Assert.IsNotNull( limpetCompartment );
+            Assert.AreEqual( 5, limpetCompartment.size );
+            Assert.AreEqual( "Int_MultiDroneControl_Mining_Size5_Class2", limpetCompartment.module.edname );
+            Assert.AreEqual( "Mining Multi Limpet Controller", limpetCompartment.module.invariantName );
+        }
+
 
         [ TestMethod ]
         public async Task TestShipScenarioAsync1 ()

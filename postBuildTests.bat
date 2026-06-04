@@ -1,4 +1,4 @@
-:: Batch file assumes parameters: postBuild.bat "$(ConfigurationName)" "$(SolutionDir)" "$(OutDir)"
+:: Batch file assumes parameters: postBuildTests.bat "$(Configuration)" "$(SolutionDir)" "bin\$(Configuration)\"
 
 ECHO ****************************
 SET this=Post-build script
@@ -11,8 +11,18 @@ SET "buildConfiguration=%1"
 SET "solutionDir=%~2"
 SET "outDir=%~3"
 
+IF NOT "%solutionDir:~-1%"=="\" SET "solutionDir=%solutionDir%\"
+IF "%outDir%"=="" SET "outDir=bin\%buildConfiguration%\"
+IF NOT "%outDir:~-1%"=="\" SET "outDir=%outDir%\"
+
 :: Our build configuration
 ECHO %this%: Build configuration is %buildConfiguration%
+
+:: If Debug build, skip tests
+IF "%buildConfiguration%"=="Debug" (
+    ECHO %this%: Skipping post-build tests for Debug configuration
+    EXIT /B 0
+)
 
 :: Find our install directory
 SET "vswhere=%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"
@@ -22,15 +32,13 @@ FOR /f "usebackq tokens=*" %%i IN (
  ) DO (
   SET devEnvDir=%%i
 )
-
-:: Ref. vstest.console.exe documentation at https://docs.microsoft.com/en-us/visualstudio/test/vstest-console-options?view=vs-2019
-:: We need to apply batch file rules for escaping certain characters in our command (using "^"), ref. https://www.robvanderwoude.com/escapechars.php
-IF %buildConfiguration%=="Release" (
-  :: Run all tests except Speech tests 
-  SET "testCaseFilter=^/TestCaseFilter:""TestCategory!=SpeechTests"""
+:: Run appropriate tests based on configuration
+IF "%buildConfiguration%"=="Release" (
+    :: Run all tests except Speech tests 
+    SET "testCaseFilter=/TestCaseFilter:""TestCategory!=SpeechTests"""
 ) ELSE (
-  :: Run just our Credentials and Doc Generation tests
-  SET "testCaseFilter=^/TestCaseFilter:""TestCategory=Credentials""^|""TestCategory=DocGen"""
+    :: Run just our Credentials and Doc Generation tests
+    SET "testCaseFilter=/TestCaseFilter:""TestCategory=Credentials""^|""TestCategory=DocGen"""
 )
 
 :: Invoke our test adapter in our install directory
@@ -39,3 +47,4 @@ SET "command="%testAdapter%" "%solutionDir%Tests\%outDir%Tests.dll" %testCaseFil
 %command%
 
 ECHO ****************************
+EXIT /B 0

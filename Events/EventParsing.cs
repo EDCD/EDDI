@@ -1,4 +1,4 @@
-﻿using EddiDataDefinitions;
+using EddiDataDefinitions;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -532,7 +532,7 @@ namespace EddiEvents
                 compartment.size = int.Parse( matches.Groups[ 2 ].Value );
             }
 
-            // Specialty slots are in the form of "CargoNN", "MilitaryNN", or "PassengerNN"
+            // Specialty slots are in the form of "CargoNN", "MilitaryNN", "PassengerNN", or "LimpetControllerNN"
             else if ( GeneratedRegex.ShipSpecialtySlotRegex().IsMatch( compartment.name ) )
             {
                 var specialtySlotSizes = ShipDefinitions.FromEDModel(shipEDName, false)?.specialtySlotSizes;

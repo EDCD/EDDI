@@ -1387,7 +1387,7 @@
       "enabled": true,
       "priority": null,
       "responder": false,
-      "script": "{set  controllers to 0}\r\n{for compartment in ship.compartments:\r\n    {if find(compartment.module.name, \"控制器\") != -1:\r\n        {set controllers to controllers + 1}\r\n    }\r\n}\r\n\r\n{set limpets to 0}\r\n{for cargo in inventory:\r\n    {if cargo.edname = \"Drones\":\r\n        {set limpets to cargo.total}\r\n    }\r\n}\r\n\r\n{set tenpercent to ship.cargocapacity / 10 - 1}\r\n{if controllers > 0 && limpets = 0:\r\n    请注意: 您装备了无人机控制器,却没有任何无人机.\r\n|elif controllers = 0 && limpets > 0:\r\n    您船上装载了无人机却没有无人机控制器.\r\n|elif controllers > 0 && limpets < tenpercent:\r\n    您船上只剩下 {limpets} 个无人机了; 您可能需要补给.\r\n}\r\n",
+      "script": "{set  controllers to 0}\r\n{for compartment in ship.compartments:\r\n    {if find(compartment.module.invariantName, \"Controller\") != -1:\r\n        {set controllers to controllers + 1}\r\n    }\r\n}\r\n\r\n{set limpets to 0}\r\n{for cargo in inventory:\r\n    {if cargo.edname = \"Drones\":\r\n        {set limpets to cargo.total}\r\n    }\r\n}\r\n\r\n{set tenpercent to ship.cargocapacity / 10 - 1}\r\n{if controllers > 0 && limpets = 0:\r\n    请注意: 您装备了无人机控制器,却没有任何无人机.\r\n|elif controllers = 0 && limpets > 0:\r\n    您船上装载了无人机却没有无人机控制器.\r\n|elif controllers > 0 && limpets < tenpercent:\r\n    您船上只剩下 {limpets} 个无人机了; 您可能需要补给.\r\n}\r\n",
       "default": true,
       "name": "Limpet check",
       "description": "Check for the presence/absence of limpets and limpet controllers"

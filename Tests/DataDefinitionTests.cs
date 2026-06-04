@@ -938,5 +938,41 @@ namespace Tests
             var spokenName = ship.SpokenName();
             Assert.AreEqual( result, spokenName );
         }
+
+        [TestMethod]
+        public void TestModuleMiningV2()
+        {
+            var module = Module.FromEDName("int_multidronecontrol_miningv2_size5_class5");
+            Assert.IsNotNull(module);
+            Assert.AreEqual("MultiDroneControl_Mining_Mk2", module.basename);
+            Assert.AreEqual("Mining Multi Limpet Controller", module.localizedName);
+            Assert.AreEqual("Mining Multi Limpet Controller", module.name);
+        }
+
+        [TestMethod]
+        public void TestShipSpecialtySlots()
+        {
+            var type11 = ShipDefinitions.FromModel("LakonMiner");
+            Assert.IsNotNull(type11);
+            Assert.IsTrue(type11.specialtySlotSizes.TryGetValue("LimpetController01", out var t11Size));
+            Assert.AreEqual(5, t11Size);
+
+            var type8 = ShipDefinitions.FromModel("type8");
+            Assert.IsNotNull(type8);
+            Assert.IsTrue(type8.specialtySlotSizes.TryGetValue("LimpetController01", out var t8Size));
+            Assert.AreEqual(4, t8Size);
+
+            Assert.IsTrue(Utilities.GeneratedRegex.ShipSpecialtySlotRegex().IsMatch("LimpetController01"));
+
+            var compartment11 = EventParsing.ShipCompartment("LakonMiner", "LimpetController01");
+            Assert.IsNotNull(compartment11);
+            Assert.AreEqual("LimpetController01", compartment11.name);
+            Assert.AreEqual(5, compartment11.size);
+
+            var compartment8 = EventParsing.ShipCompartment("type8", "LimpetController01");
+            Assert.IsNotNull(compartment8);
+            Assert.AreEqual("LimpetController01", compartment8.name);
+            Assert.AreEqual(4, compartment8.size);
+        }
     }
 }

@@ -1696,7 +1696,7 @@
       "enabled": true,
       "priority": null,
       "responder": false,
-      "script": "{set controllers to 0}\n{for compartment in ship.compartments:\n    {if find(compartment.module.name, \"drón\") != -1 || find(compartment.module.name, \"dron\") != -1 || find(compartment.module.name, \"Limpet\") != -1:\n        {set controllers to controllers + 1}\n    }\n}\n\n{set limpets to 0}\n{for cargo in inventory:\n    {if cargo.name = \"Drón\":\n        {set limpets to cargo.owned}\n    }\n}\n{set tenpercent to ship.cargocapacity / 10 - 1}\n{if controllers > 0 && limpets = 0:\n    Aviso: llevamos un lanzador de drónes pero no llevamos ningún drón.\n|elif controllers = 0 && limpets > 0:\n    transportamos drónes pero no llevamos ningún lanzador\n|elif controllers > 0 && limpets < tenpercent:\n    sólo llevamos {limpets} drónes a bordo; debería considerar el adquirir más.\n}\n",
+      "script": "{set controllers to 0}\n{for compartment in ship.compartments:\n    {if find(compartment.module.invariantName, \"Controller\") != -1:\n        {set controllers to controllers + 1}\n    }\n}\n\n{set limpets to 0}\n{for cargo in inventory:\n    {if cargo.name = \"Drón\":\n        {set limpets to cargo.owned}\n    }\n}\n{set tenpercent to ship.cargocapacity / 10 - 1}\n{if controllers > 0 && limpets = 0:\n    Aviso: llevamos un lanzador de drónes pero no llevamos ningún drón.\n|elif controllers = 0 && limpets > 0:\n    transportamos drónes pero no llevamos ningún lanzador\n|elif controllers > 0 && limpets < tenpercent:\n    sólo llevamos {limpets} drónes a bordo; debería considerar el adquirir más.\n}\n",
       "default": true,
       "includes": null
     },

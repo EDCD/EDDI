@@ -1,4 +1,4 @@
-﻿using EddiConfigService;
+using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
@@ -607,7 +607,7 @@ namespace EddiShipMonitor
                 // Internal + restricted modules
                 ship.compartments = @event.compartments
                     .Where( c =>
-                        c.name.StartsWith( "Cargo" ) || c.name.StartsWith( "Military" ) || c.name.StartsWith( "Slot" ) )
+                        c.name.StartsWith( "Slot" ) || GeneratedRegex.ShipSpecialtySlotRegex().IsMatch( c.name ) )
                     .ToList();
 
                 // Hardpoints
@@ -1123,7 +1123,7 @@ namespace EddiShipMonitor
                                         break;
                                 }
 
-                                if ( slot.Contains( "Slot" ) )
+                                if ( slot.Contains( "Slot" ) || GeneratedRegex.ShipSpecialtySlotRegex().IsMatch( slot ) )
                                 {
                                     var compartment = ship.compartments.FirstOrDefault( c => c.name == slot );
                                     if ( compartment != null )
@@ -1927,7 +1927,7 @@ namespace EddiShipMonitor
 
                                 ship.hardpoints = hardpoints;
                             }
-                            else if ( slot.Contains( "Slot" ) || slot.Contains( "Military" ) )
+                            else if ( slot.Contains( "Slot" ) || GeneratedRegex.ShipSpecialtySlotRegex().IsMatch( slot ) )
                             {
                                 // Build new list of ship compartments, excepting sold/stored compartment
                                 var compartments = new List<Compartment>();

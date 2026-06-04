@@ -1,32 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Library</OutputType>
     </PropertyGroup>
     <PropertyGroup>
-        <RunPostBuildEvent>Always</RunPostBuildEvent>
-    </PropertyGroup>
-    <PropertyGroup>
-        <PostBuildEvent>
-            :: Skip our post-build events when running continuous integration
-            IF DEFINED CI (
-            GOTO :EOF :: Set to TRUE in Github Actions
-            )
-            IF DEFINED APPVEYOR (
-            GOTO :EOF :: Set to TRUE in Appveyor
-            )
-
-            :: This is a local build rather than a continuous integration... we will proceed.
-
-            cd "$(SolutionDir)"
-            if exist $(SolutionDir)postBuildTests.bat (
-            @echo Post-build script exists at: $(SolutionDir)postBuildTests.bat - executing...
-            call $(SolutionDir)postBuildTests.bat "$(Configuration)" "$(SolutionDir)" "bin\$(Configuration)\"
-            )
-
-            if "$(Configuration)" == "Release" (
-            build-installer
-            )
-        </PostBuildEvent>
+        <!-- Post-build tests are run through an explicit MSBuild Exec target. -->
     </PropertyGroup>
     <PropertyGroup>
         <PreBuildEvent>
@@ -38,6 +15,10 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.CSharp" />
     </ItemGroup>
+
+    <Target Name="RunPostBuildTests" AfterTargets="Build">
+        <Exec Command="$(SolutionDir)postBuildTests.bat $(Configuration) $(SolutionDir.TrimEnd('\')) bin\$(Configuration)" />
+    </Target>
 
     <!--Check for unused dependencies in Directory.Packages.props-->
     <Target Name="CheckUnusedPackages" AfterTargets="Build">

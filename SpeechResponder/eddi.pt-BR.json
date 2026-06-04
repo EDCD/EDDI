@@ -1,4 +1,4 @@
-﻿{
+{
 	"name": "EDDI",
 	"description": "Versão em Português da Persona do Darkcyde",
 	"scripts": {
@@ -1496,7 +1496,7 @@
 			"enabled": true,
 			"priority": 3,
 			"responder": false,
-			"script": "{set  controllers to 0}\r\n{for compartment in ship.compartments:\r\n    {if find(compartment.module.name, \"Controller\") != -1:\r\n        {set controllers to controllers + 1}\r\n    }\r\n}\r\n\r\n{set limpets to 0}\r\n{for cargo in inventory:\r\n    {if cargo.edname = \"Drones\":\r\n        {set limpets to cargo.total}\r\n    }\r\n}\r\n\r\n{set tenpercent to ship.cargocapacity / 10 - 1}\r\n{if controllers > 0 && limpets = 0:\r\n    Lembrete:: você tem um controlador de drones mas não os está carregando.\r\n|elif controllers = 0 && limpets > 0:\r\n    Você está carregando drones, mas nenhum controlador.\r\n|elif controllers > 0 && limpets < tenpercent:\r\n    Você só tem {limpets} {if limpets = 1: drone |else: drones} a bordo; você deveria pensar em comprar mais.\r\n}\r\n",
+			"script": "{set  controllers to 0}\r\n{for compartment in ship.compartments:\r\n    {if find(compartment.module.invariantName, \"Controller\") != -1:\r\n        {set controllers to controllers + 1}\r\n    }\r\n}\r\n\r\n{set limpets to 0}\r\n{for cargo in inventory:\r\n    {if cargo.edname = \"Drones\":\r\n        {set limpets to cargo.total}\r\n    }\r\n}\r\n\r\n{set tenpercent to ship.cargocapacity / 10 - 1}\r\n{if controllers > 0 && limpets = 0:\r\n    Lembrete:: você tem um controlador de drones mas não os está carregando.\r\n|elif controllers = 0 && limpets > 0:\r\n    Você está carregando drones, mas nenhum controlador.\r\n|elif controllers > 0 && limpets < tenpercent:\r\n    Você só tem {limpets} {if limpets = 1: drone |else: drones} a bordo; você deveria pensar em comprar mais.\r\n}\r\n",
 			"name": "Limpet check",
 			"description": "Check for the presence/absence of limpets and limpet controllers",
 			"default": true
