@@ -379,4 +379,10 @@ Please close the other instance and try again.</value>
   <data name="wiki_hyperlink" xml:space="preserve">
     <value>project wiki</value>
   </data>
+  <data name="tts_default_audio_device" xml:space="preserve">
+    <value>Default Device</value>
+  </data>
+  <data name="tts_default_voice" xml:space="preserve">
+    <value>Windows TTS default</value>
+  </data>
 </root>

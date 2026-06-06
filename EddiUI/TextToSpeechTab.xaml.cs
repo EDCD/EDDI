@@ -72,7 +72,7 @@ namespace EddiUI
 
                 var audioDeviceOptions = new List<AudioDevice>
                 {
-                    new AudioDevice { Name = "Default Device", Id = null }
+                    new AudioDevice { Name = Properties.Resources.tts_default_audio_device, Id = null }
                 };
                 audioDeviceOptions.AddRange(activeDevices);
 
@@ -103,7 +103,7 @@ namespace EddiUI
             // Populate audio devices
             var audioDeviceOptions = new List<AudioDevice>
             {
-                new AudioDevice { Name = "Default Device", Id = null }
+                new AudioDevice { Name = Properties.Resources.tts_default_audio_device, Id = null }
             };
             audioDeviceOptions.AddRange(AudioDeviceService.GetAudioDevices());
             ttsAudioDeviceDropDown.ItemsSource = audioDeviceOptions;
@@ -124,7 +124,7 @@ namespace EddiUI
 
             var speechOptions = new List<string>
             {
-                "Windows TTS default"
+                Properties.Resources.tts_default_voice
             };
             try
             {
@@ -140,7 +140,7 @@ namespace EddiUI
                 ttsVoiceDropDown.ItemsSource = speechOptions;
                 ttsVoiceDropDown.Text =  speechOptions.Any(v => v == speechServiceConfiguration.StandardVoice) 
                     ? speechServiceConfiguration.StandardVoice
-                    : "Windows TTS default";
+                    : Properties.Resources.tts_default_voice;
 
                 // If the prior selected voice is no longer a valid option, we revert to the system default.
                 if (speechServiceConfiguration.StandardVoice != ttsVoiceDropDown.Text)
@@ -152,7 +152,7 @@ namespace EddiUI
             {
                 Logging.Warn( "Failed to enumerate text-to-speech voices.", e );
                 ttsVoiceDropDown.ItemsSource = speechOptions;
-                ttsVoiceDropDown.Text = "Windows TTS default";
+                ttsVoiceDropDown.Text = Properties.Resources.tts_default_voice;
             }
             ttsVolumeSlider.Value = speechServiceConfiguration.Volume;
             ttsRateSlider.Value = speechServiceConfiguration.Rate;
@@ -277,7 +277,7 @@ namespace EddiUI
             {
                 AudioDevice = ttsAudioDeviceDropDown.SelectedValue?.ToString(),
                 StandardVoice = ttsVoiceDropDown.SelectedItem == null || 
-                                ttsVoiceDropDown.SelectedItem.ToString() == "Windows TTS default" 
+                                ttsVoiceDropDown.SelectedItem.ToString() == Properties.Resources.tts_default_voice 
                     ? null 
                     : ttsVoiceDropDown.SelectedItem.ToString(),
                 Volume = (int)ttsVolumeSlider.Value,
