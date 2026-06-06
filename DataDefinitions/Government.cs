@@ -12,25 +12,25 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new Government(edname);
 
-            None = new Government("$government_None;");
-            Anarchy = new Government("$government_Anarchy;");
-            Carrier = new Government( "$government_Carrier;" );
-            Colony = new Government("$government_Colony;");
-            Communism = new Government("$government_Communism;");
-            Confederacy = new Government("$government_Confederacy;");
-            Construction = new Government("$government_Megaconstruction;");
-            Cooperative = new Government("$government_Cooperative;");
-            Corporate = new Government("$government_Corporate;");
-            Democracy = new Government("$government_Democracy;");
-            Dictatorship = new Government("$government_Dictatorship;");
-            Feudal = new Government("$government_Feudal;");
-            Imperial = new Government("$government_Imperial;"); // Might not exist? I've never encountered this one.
-            Patronage = new Government("$government_Patronage;");
-            Prison = new Government("$government_Prison;");
-            PrisonColony = new Government("$government_PrisonColony;");
-            Theocracy = new Government("$government_Theocracy;");
-            Workshop = new Government("$government_Workshop;");
-            Engineer = new Government("$government_engineer;");
+            None = new Government("None");
+            Anarchy = new Government("Anarchy");
+            Carrier = new Government( "Carrier" );
+            Colony = new Government("Colony");
+            Communism = new Government("Communism");
+            Confederacy = new Government("Confederacy");
+            Construction = new Government("Megaconstruction");
+            Cooperative = new Government("Cooperative");
+            Corporate = new Government("Corporate");
+            Democracy = new Government("Democracy");
+            Dictatorship = new Government("Dictatorship");
+            Feudal = new Government("Feudal");
+            Imperial = new Government("Imperial"); // Might not exist? I've never encountered this one.
+            Patronage = new Government("Patronage");
+            Prison = new Government("Prison");
+            PrisonColony = new Government("PrisonColony");
+            Theocracy = new Government("Theocracy");
+            Workshop = new Government("Workshop");
+            Engineer = new Government("engineer");
         }
 
         public static readonly Government None;
@@ -57,19 +57,24 @@ namespace EddiDataDefinitions
         public Government () : this("")
         { }
 
-        private Government(string edname) : base(edname, edname.Replace("$government_", "").Replace(";", ""))
+        private Government(string edname) : base(edname, edname)
         { }
+
+        new public static Government FromEDName ( string from )
+        {
+            if ( from is null ) { return None; }
+
+            var tidiedFrom = from.Replace("$government_", "").Replace(";", "");
+            return ResourceBasedLocalizedEDName<Government>.FromEDName( tidiedFrom );
+        }
 
         new public static Government FromName(string from)
         {
-            if (from is null)
-            {
-                return None;
-            }
+            if (from is null) { return None; }
 
             // EDSM uses a special string to describe engineering workshops, standardize here.
             from = from.Replace("Workshop (Engineer)", "engineer");
-            return ResourceBasedLocalizedEDName<Government>.FromName(from);
+            return ResourceBasedLocalizedEDName<Government>.FromName( from );
         }
     }
 }
