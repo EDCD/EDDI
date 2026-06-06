@@ -213,13 +213,9 @@ namespace EddiGalnetMonitor
                         Logging.Debug( "Updated latest UID to " + firstUid );
                         configuration.lastuuid = firstUid;
                         ConfigService.Instance.galnetConfiguration = configuration;
-                    }
-
-                    if ( newsItems.Count > 0 )
-                    {
                         EDDI.Instance.enqueueEvent( new GalnetNewsPublishedEvent( DateTime.UtcNow, newsItems ) );
                     }
-
+                    
                 }
                 catch ( Exception ex )
                 {
