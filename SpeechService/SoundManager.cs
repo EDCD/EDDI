@@ -22,6 +22,7 @@ namespace EddiSpeechService
                     {
                         var enumerator = new MMDeviceEnumerator();
                         var device = enumerator.GetDevice( deviceId );
+                        // Latency prevents audio dropouts and popping sounds. 200ms is the default latency value for NAudio. 
                         wasapiOut = new WasapiOut( device, AudioClientShareMode.Shared, true, 200 );
                     }
                     catch ( Exception ex )

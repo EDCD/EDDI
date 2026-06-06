@@ -8,6 +8,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fix the Type-11 Prospector's specialty limpet controller specialty slot definition. (#2818) (thanks to @Tiberious-Sicae) 
   * Crime Monitor 
     * Reviewed and revised crime monitor logic to better handle edge cases and to more accurately track crimes and bounties.
+  * Text-To-Speech
+    * Add the ability to select the output audio device (rather than relying on Windows settings). (#2413) (thanks to @Tiberious-Sicae) 
   * Speech Responder
     * Scripts
       * `Limpet check` revised to reference invariant controller name.  
