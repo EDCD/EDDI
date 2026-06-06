@@ -16,6 +16,8 @@ namespace Tests
     [TestClass, TestCategory("UnitTests")]
     public class DataProviderTests : TestBase
     {
+        public TestContext TestContext { get; set; }
+
         [TestInitialize]
         public void start()
         {
@@ -275,10 +277,10 @@ namespace Tests
             Assert.AreEqual( 1, result.visits );
             Assert.AreEqual( originalVisitDate, result.lastvisit );
             Assert.AreEqual( originalVisitDate, result.factions.First( f => f.name == "Faction A" ).updatedAt );
-            Assert.AreEqual( originalVisitDate, result.factions.First( f => f.name == "Faction B" ).updatedAt );
+            Assert.AreEqual( DateTime.MinValue, result.factions.First( f => f.name == "Faction B" ).updatedAt );
             Assert.AreEqual( DateTime.MinValue, result.factions.First( f => f.name == "Faction C" ).updatedAt );
             Assert.AreEqual( 77.5m, result.factions.First( f => f.name == "Faction A" ).myreputation );
-            Assert.AreEqual( 12.5m, result.factions.First( f => f.name == "Faction B" ).myreputation );
+            Assert.AreEqual( 0m, result.factions.First( f => f.name == "Faction B" ).myreputation );
             Assert.AreEqual( 55m, result.factions.First( f => f.name == "Faction C" ).myreputation );
 
             var updatedBody = result.bodies.First( b => b.bodyname == $"{systemName} 1" );
@@ -287,6 +289,133 @@ namespace Tests
             Assert.IsTrue( updatedBody.mappedEfficiently );
             Assert.IsNotNull( result.bodies.FirstOrDefault( b => b.bodyname == $"{systemName} 2" ) );
             Assert.IsNull( result.bodies.FirstOrDefault( b => b.bodyname == $"{systemName} 3" ) );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task TestLocalDatabaseHydratesFactionReputationAcrossStarSystemsAsync()
+        {
+            var dataProvider = CreateTestDataProvider();
+            EDDI.Instance.DataProvider = dataProvider;
+
+            var factionName = $"Shared Reputation Faction {Guid.NewGuid():N}";
+            var reputationUpdatedAt = new DateTime( 2026, 01, 02, 03, 04, 05, DateTimeKind.Utc );
+            var sourceSystem = CreateFactionHydrationSystem(
+                $"Source System {Guid.NewGuid():N}",
+                BitConverter.ToUInt64( Guid.NewGuid().ToByteArray(), 0 ),
+                factionName,
+                72.5m,
+                reputationUpdatedAt );
+            var targetSystem = CreateFactionHydrationSystem(
+                $"Target System {Guid.NewGuid():N}",
+                BitConverter.ToUInt64( Guid.NewGuid().ToByteArray(), 0 ),
+                factionName,
+                null,
+                DateTime.MinValue );
+
+            await dataProvider.starSystemRepository.SaveStarSystemAsync( sourceSystem, CancellationToken.None )
+                .ConfigureAwait( false );
+            await dataProvider.starSystemRepository.SaveStarSystemAsync( targetSystem, CancellationToken.None )
+                .ConfigureAwait( false );
+
+            var result = await dataProvider.GetOrFetchStarSystemAsync(
+                    targetSystem.systemAddress,
+                    fetchIfMissing: false,
+                    excludeStaleResults: false )
+                .ConfigureAwait( false );
+
+            var faction = result?.factions.Single( f => f.name == factionName );
+            Assert.AreEqual( 72.5m, faction?.myreputation );
+            Assert.AreEqual( reputationUpdatedAt, faction?.updatedAt );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task TestFactionReputationUsesNewestTimestampAndCaseInsensitiveNamesAsync()
+        {
+            var dataProvider = CreateTestDataProvider();
+            EDDI.Instance.DataProvider = dataProvider;
+
+            var factionName = $"Case Reputation Faction {Guid.NewGuid():N}";
+            var olderDate = new DateTime( 2026, 01, 01, 00, 00, 00, DateTimeKind.Utc );
+            var newerDate = new DateTime( 2026, 01, 03, 00, 00, 00, DateTimeKind.Utc );
+            var latestDate = new DateTime( 2026, 01, 04, 00, 00, 00, DateTimeKind.Utc );
+
+            await dataProvider.starSystemRepository.SaveStarSystemAsync(
+                CreateFactionHydrationSystem(
+                    $"Newer Source {Guid.NewGuid():N}",
+                    BitConverter.ToUInt64( Guid.NewGuid().ToByteArray(), 0 ),
+                    factionName,
+                    80m,
+                    newerDate ),
+                CancellationToken.None ).ConfigureAwait( false );
+            await dataProvider.starSystemRepository.SaveStarSystemAsync(
+                CreateFactionHydrationSystem(
+                    $"Older Source {Guid.NewGuid():N}",
+                    BitConverter.ToUInt64( Guid.NewGuid().ToByteArray(), 0 ),
+                    factionName.ToUpperInvariant(),
+                    20m,
+                    olderDate ),
+                CancellationToken.None ).ConfigureAwait( false );
+
+            var firstTarget = CreateFactionHydrationSystem(
+                $"First Target {Guid.NewGuid():N}",
+                BitConverter.ToUInt64( Guid.NewGuid().ToByteArray(), 0 ),
+                factionName.ToLowerInvariant(),
+                null,
+                DateTime.MinValue );
+            await dataProvider.starSystemRepository.SaveStarSystemAsync( firstTarget, CancellationToken.None )
+                .ConfigureAwait( false );
+
+            var firstResult = await dataProvider.GetOrFetchStarSystemAsync(
+                    firstTarget.systemAddress,
+                    fetchIfMissing: false,
+                    excludeStaleResults: false )
+                .ConfigureAwait( false );
+
+            Assert.AreEqual( 80m, firstResult?.factions.Single().myreputation );
+            Assert.AreEqual( newerDate, firstResult?.factions.Single().updatedAt );
+
+            await dataProvider.starSystemRepository.SaveStarSystemAsync(
+                CreateFactionHydrationSystem(
+                    $"Latest Source {Guid.NewGuid():N}",
+                    BitConverter.ToUInt64( Guid.NewGuid().ToByteArray(), 0 ),
+                    factionName,
+                    95m,
+                    latestDate ),
+                CancellationToken.None ).ConfigureAwait( false );
+
+            var freshDataProvider = CreateTestDataProvider();
+            var secondTarget = CreateFactionHydrationSystem(
+                $"Second Target {Guid.NewGuid():N}",
+                BitConverter.ToUInt64( Guid.NewGuid().ToByteArray(), 0 ),
+                factionName,
+                null,
+                DateTime.MinValue );
+            await freshDataProvider.starSystemRepository.SaveStarSystemAsync( secondTarget, CancellationToken.None )
+                .ConfigureAwait( false );
+
+            var secondResult = await freshDataProvider.GetOrFetchStarSystemAsync(
+                    secondTarget.systemAddress,
+                    fetchIfMissing: false,
+                    excludeStaleResults: false )
+                .ConfigureAwait( false );
+
+            Assert.AreEqual( 95m, secondResult?.factions.Single().myreputation );
+            Assert.AreEqual( latestDate, secondResult?.factions.Single().updatedAt );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task TestSchemaVersionFiveCreatesFactionTable()
+        {
+            await using ( var con = SqLiteBaseRepository.SimpleDbConnection() )
+            {
+                await con.OpenAsync(TestContext.CancellationToken).ConfigureAwait( false );
+                await using var cmd = con.CreateCommand();
+                cmd.CommandText = "DROP TABLE IF EXISTS factions;";
+                await cmd.ExecuteNonQueryAsync(TestContext.CancellationToken).ConfigureAwait( false );
+            }
+
+            StarSystemSqLiteRepository.Create( true );
+            Assert.IsTrue( await FactionTableExistsAsync().ConfigureAwait( false ) );
         }
 
         [TestMethod, DoNotParallelize]
@@ -385,6 +514,55 @@ namespace Tests
                     body.bodyname = systemName + body.bodyname[ originalSystemName.Length.. ];
                 }
             }
+        }
+
+        private static async Task<bool> FactionTableExistsAsync ()
+        {
+            await using var con = SqLiteBaseRepository.SimpleDbConnection();
+            await con.OpenAsync().ConfigureAwait( false );
+            await using var cmd = con.CreateCommand();
+            cmd.CommandText = "SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = 'factions';";
+            return (long)( await cmd.ExecuteScalarAsync().ConfigureAwait( false ) ?? 0 ) > 0;
+        }
+
+        private static StarSystem CreateFactionHydrationSystem (
+            string systemName,
+            ulong systemAddress,
+            string factionName,
+            decimal? reputation,
+            DateTime factionUpdatedAt )
+        {
+            return new StarSystem
+            {
+                systemname = systemName,
+                systemAddress = systemAddress,
+                x = 1,
+                y = 2,
+                z = 3,
+                population = 1000,
+                lastupdated = factionUpdatedAt > DateTime.MinValue
+                    ? factionUpdatedAt
+                    : new DateTime( 2026, 01, 01, 00, 00, 00, DateTimeKind.Utc ),
+                factions =
+                [
+                    new Faction
+                    {
+                        name = factionName,
+                        myreputation = reputation,
+                        updatedAt = factionUpdatedAt,
+                        presences =
+                        [
+                            new FactionPresence
+                            {
+                                systemName = systemName,
+                                systemAddress = systemAddress,
+                                FactionState = FactionState.None,
+                                influence = 10m
+                            }
+                        ]
+                    }
+                ]
+            };
         }
 
         private static string CreateSpanshDumpResponse ( StarSystem starSystem, params Body[] fetchedBodies )

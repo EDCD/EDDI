@@ -3,6 +3,8 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ## 5.0.3
+  * Core
+    * Add `factions` table to local SQLITE database for better tracking of faction reputation data. 
   * Crime Monitor 
     * Reviewed and revised crime monitor logic to better handle edge cases and to more accurately track crimes and bounties.
 

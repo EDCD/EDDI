@@ -591,6 +591,47 @@ namespace Tests
         }
 
         [TestMethod]
+        public void TestFactionParsingLeavesMissingMyReputationNull()
+        {
+            var factionsVal = new List<object>
+            {
+                new Dictionary<string, object>
+                {
+                    [ "Name" ] = "Missing Reputation Faction",
+                    [ "FactionState" ] = "None",
+                    [ "Government" ] = "Democracy",
+                    [ "Influence" ] = 0.1d,
+                    [ "Allegiance" ] = "Independent"
+                }
+            };
+
+            var factions = EventParsing.Factions( factionsVal, "Parser Test", 12345 );
+
+            Assert.IsNull( factions.Single().myreputation );
+        }
+
+        [TestMethod]
+        public void TestFactionParsingKeepsExplicitZeroMyReputation()
+        {
+            var factionsVal = new List<object>
+            {
+                new Dictionary<string, object>
+                {
+                    [ "Name" ] = "Zero Reputation Faction",
+                    [ "FactionState" ] = "None",
+                    [ "Government" ] = "Democracy",
+                    [ "Influence" ] = 0.1d,
+                    [ "Allegiance" ] = "Independent",
+                    [ "MyReputation" ] = 0d
+                }
+            };
+
+            var factions = EventParsing.Factions( factionsVal, "Parser Test", 12345 );
+
+            Assert.AreEqual( 0m, factions.Single().myreputation );
+        }
+
+        [TestMethod]
         [DataRow("citizensuitai_admin", "Administrator", 1)]
         [DataRow("citizensuitai_industrial", "Technician", 1)]
         [DataRow("citizensuitai_scientific", "Researcher", 1)]

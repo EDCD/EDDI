@@ -38,6 +38,13 @@ namespace EddiDataProviderService
                         comment TEXT,
                         CONSTRAINT combined_uniques UNIQUE (name, systemaddress)
                      );";
+        private const string CREATE_FACTIONS_TABLE_SQL = @"
+                    CREATE TABLE IF NOT EXISTS factions
+                    (
+                        name TEXT NOT NULL COLLATE NOCASE PRIMARY KEY,
+                        myreputation DECIMAL(12,6),
+                        reputationupdatedat DATETIME
+                    );";
         private const string CREATE_INDEX_SQL = @" 
                     CREATE INDEX IF NOT EXISTS 
                         starsystems_idx_1 ON starsystems(name COLLATE NOCASE);
@@ -100,8 +107,27 @@ namespace EddiDataProviderService
                             lastvisit = @lastvisit,
                             comment = @comment
                     ";
+        private const string UPSERT_FACTION_SQL = @"
+                    INSERT INTO factions
+                    (
+                        name,
+                        myreputation,
+                        reputationupdatedat
+                    )
+                    VALUES
+                    (
+                        @name,
+                        @myreputation,
+                        @reputationupdatedat
+                    )
+                    ON CONFLICT(name) DO UPDATE SET
+                        myreputation = excluded.myreputation,
+                        reputationupdatedat = excluded.reputationupdatedat
+                    WHERE factions.reputationupdatedat IS NULL
+                       OR excluded.reputationupdatedat >= factions.reputationupdatedat;";
         private const string DELETE_SQL = @"DELETE FROM starsystems ";
         private const string SELECT_SQL = @"SELECT * FROM starsystems ";
+        private const string SELECT_FACTIONS_SQL = @"SELECT name, myreputation, reputationupdatedat FROM factions ";
         private const string SELECT_NAME_SQL = @"SELECT name FROM starsystems ";
         private const string VALUES_SQL = @" 
                     VALUES
@@ -435,6 +461,77 @@ namespace EddiDataProviderService
             return null;
         }
 
+        internal async Task<Dictionary<string, DatabaseFaction>> GetFactionDataAsync (
+            IEnumerable<string> factionNames,
+            CancellationToken cancellationToken )
+        {
+            var names = factionNames?
+                .Where( n => !string.IsNullOrWhiteSpace( n ) )
+                .Select( n => n.Trim() )
+                .Distinct( StringComparer.InvariantCultureIgnoreCase )
+                .ToList() ?? [ ];
+            var results = new Dictionary<string, DatabaseFaction>( StringComparer.InvariantCultureIgnoreCase );
+
+            if ( !File.Exists( DbFile ) || names.Count == 0 )
+            {
+                return results;
+            }
+
+            try
+            {
+                await using ( var con = SimpleDbConnection() )
+                {
+                    await con.OpenAsync( cancellationToken ).ConfigureAwait( false );
+                    await using ( var cmd = new SQLiteCommand( con ) )
+                    {
+                        var parameterNames = names
+                            .Select( ( _, index ) => $"@faction{index}" )
+                            .ToList();
+                        cmd.CommandText = SELECT_FACTIONS_SQL
+                                          + $"WHERE name IN ({string.Join( ",", parameterNames )});";
+                        for ( var i = 0; i < names.Count; i++ )
+                        {
+                            cmd.Parameters.AddWithValue( parameterNames[ i ], names[ i ] );
+                        }
+
+                        await using ( var rdr = await cmd.ExecuteReaderAsync( cancellationToken ).ConfigureAwait( false ) )
+                        {
+                            while ( await rdr.ReadAsync( cancellationToken ).ConfigureAwait( false ) )
+                            {
+                                var name = rdr.IsDBNull( rdr.GetOrdinal( "name" ) )
+                                    ? null
+                                    : rdr.GetString( rdr.GetOrdinal( "name" ) );
+                                if ( string.IsNullOrWhiteSpace( name ) )
+                                {
+                                    continue;
+                                }
+
+                                results[ name ] = new DatabaseFaction( name )
+                                {
+                                    myreputation = rdr.IsDBNull( rdr.GetOrdinal( "myreputation" ) )
+                                        ? null
+                                        : rdr.GetDecimal( rdr.GetOrdinal( "myreputation" ) ),
+                                    reputationUpdatedAt = rdr.IsDBNull( rdr.GetOrdinal( "reputationupdatedat" ) )
+                                        ? null
+                                        : rdr.GetDateTime( rdr.GetOrdinal( "reputationupdatedat" ) ).ToUniversalTime()
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+            catch ( SQLiteException sqle )
+            {
+                Logging.Warn( "Problem reading faction data from database.", sqle );
+            }
+            catch ( DllNotFoundException dllEx )
+            {
+                Logging.Warn( $"SQLite database unavailable when reading faction data: {dllEx.Message}" );
+            }
+
+            return results;
+        }
+
         public async Task SaveStarSystemAsync( StarSystem starSystem, CancellationToken cancellationToken )
         {
             if (starSystem == null) { return; }
@@ -485,6 +582,9 @@ namespace EddiDataProviderService
 
             // Update applicable systems
             await updateStarSystemsAsync(update.ToImmutableList() ).ConfigureAwait(false);
+
+            // Update faction-wide data known from the saved systems.
+            await upsertFactionDataAsync( starSystems, true ).ConfigureAwait( false );
         }
 
         private static async Task insertStarSystemsAsync(ImmutableList<StarSystem> systems)
@@ -649,6 +749,126 @@ namespace EddiDataProviderService
             }
         }
 
+        private static async Task upsertFactionDataAsync ( IList<StarSystem> systems, bool includeZeroReputations )
+        {
+            var factionData = ExtractFactionData( systems, includeZeroReputations );
+            if ( factionData.Count == 0 )
+            {
+                return;
+            }
+
+            await using ( var con = SimpleDbConnection() )
+            {
+                try
+                {
+                    await con.OpenAsync().ConfigureAwait( false );
+                    await using ( var cmd = new SQLiteCommand( con ) )
+                    {
+                        await using ( var transaction = con.BeginTransaction() )
+                        {
+                            try
+                            {
+                                cmd.Transaction = transaction;
+                                foreach ( var faction in factionData )
+                                {
+                                    ConfigureFactionUpsertCommand( cmd, faction );
+                                    await cmd.ExecuteNonQueryAsync().ConfigureAwait( false );
+                                }
+
+                                transaction.Commit();
+                            }
+                            catch ( SQLiteException ex )
+                            {
+                                LogAndRollbackSqlLiteException( transaction, ex );
+                            }
+                        }
+                    }
+                }
+                catch ( DllNotFoundException dllEx )
+                {
+                    Logging.Warn( $"SQLite database unavailable. Unable to update faction data: {dllEx.Message}" );
+                }
+            }
+        }
+
+        private static void ConfigureFactionUpsertCommand ( SQLiteCommand cmd, DatabaseFaction faction )
+        {
+            cmd.CommandText = UPSERT_FACTION_SQL;
+            cmd.Parameters.Clear();
+            cmd.Parameters.AddWithValue( "@name", faction.name );
+            cmd.Parameters.AddWithValue( "@myreputation", faction.myreputation );
+            cmd.Parameters.AddWithValue( "@reputationupdatedat", faction.reputationUpdatedAt ?? DateTime.UtcNow );
+        }
+
+        private static List<DatabaseFaction> ExtractFactionData ( IList<StarSystem> systems, bool includeZeroReputations )
+        {
+            var results = new Dictionary<string, DatabaseFaction>( StringComparer.InvariantCultureIgnoreCase );
+
+            foreach ( var system in systems ?? [ ] )
+            {
+                foreach ( var faction in system?.factions ?? [ ] )
+                {
+                    if ( string.IsNullOrWhiteSpace( faction?.name ) || faction.myreputation is null )
+                    {
+                        continue;
+                    }
+
+                    if ( !includeZeroReputations && faction.myreputation == 0 )
+                    {
+                        continue;
+                    }
+
+                    var reputationUpdatedAt = ResolveReputationUpdatedAt( faction, system );
+                    var databaseFaction = new DatabaseFaction( faction.name.Trim() )
+                    {
+                        myreputation = faction.myreputation,
+                        reputationUpdatedAt = reputationUpdatedAt
+                    };
+
+                    if ( !results.TryGetValue( databaseFaction.name, out var existing ) ||
+                         databaseFaction.reputationUpdatedAt >= existing.reputationUpdatedAt )
+                    {
+                        results[ databaseFaction.name ] = databaseFaction;
+                    }
+                }
+            }
+
+            return results.Values.ToList();
+        }
+
+        private static DateTime ResolveReputationUpdatedAt ( Faction faction, StarSystem system )
+        {
+            if ( faction.updatedAt > DateTime.MinValue )
+            {
+                return NormalizeDateTime( faction.updatedAt );
+            }
+
+            var updatedAt = Dates.fromTimestamp( system.updatedat );
+            if ( updatedAt > DateTime.MinValue )
+            {
+                return NormalizeDateTime( updatedAt.Value );
+            }
+
+            if ( system.lastvisit > DateTime.MinValue )
+            {
+                return NormalizeDateTime( system.lastvisit.Value );
+            }
+
+            if ( system.lastupdated > DateTime.MinValue )
+            {
+                return NormalizeDateTime( system.lastupdated );
+            }
+
+            return DateTime.UtcNow;
+        }
+
+        private static DateTime NormalizeDateTime ( DateTime dateTime )
+        {
+            return dateTime.Kind == DateTimeKind.Unspecified
+                ? DateTime.SpecifyKind( dateTime, DateTimeKind.Utc )
+                : dateTime.ToUniversalTime();
+        }
+
         private void CreateOrUpdateDatabase()
         {
             using ( var con = SimpleDbConnection() )
@@ -723,6 +943,16 @@ namespace EddiDataProviderService
                         }
 
                         SCHEMA_VERSION = 4;
+                    }
+
+                    if ( SCHEMA_VERSION < 5 )
+                    {
+                        Logging.Debug( "Updating starsystem repository to schema version 5" );
+                        SCHEMA_VERSION = 5;
+                    }
+                    using ( var cmd = new SQLiteCommand( CREATE_FACTIONS_TABLE_SQL, con ) )
+                    {
+                        cmd.ExecuteNonQuery();
                     }
 
                     // Add our indices (if they don't already exist)

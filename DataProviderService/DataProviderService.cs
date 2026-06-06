@@ -35,7 +35,7 @@ namespace EddiDataProviderService
         private DataProviderService ( StarMapService edsmService = null,
             SpanshService spanshService = null, StarSystemSqLiteRepository starSystemRepository = null, bool unitTesting = false )
         {
-            factionCache = new FactionCache( 43200 ); // Keep a cache of factions for 12 hours
+            factionCache = new FactionCache( 3600 ); // Keep a cache of faction details for 1 hour
             starSystemCache = new StarSystemCache( 300 ); // Keep a cache of star systems for 5 minutes
             this.edsmService = edsmService;
             this.spanshService = spanshService;
@@ -176,6 +176,7 @@ namespace EddiDataProviderService
         {
             if ( starSystemCache.TryGet( systemAddress, out var cachedSystem ) )
             {
+                ApplyFactionCache( cachedSystem );
                 return cachedSystem;
             }
 
@@ -215,6 +216,7 @@ namespace EddiDataProviderService
             }
 
             fetchedSystems = PreserveUnsyncedProperties( fetchedSystems, localDbSystems ).ToList();
+            await HydrateFactionDataAsync( fetchedSystems ).ConfigureAwait( false );
 
             foreach ( var starSystem in fetchedSystems )
             {
@@ -241,7 +243,10 @@ namespace EddiDataProviderService
 
             // Fetch from cached systems
             if ( starSystemCache.TryGet( systemName, out var cachedSystem ) )
-            { return cachedSystem; }
+            {
+                ApplyFactionCache( cachedSystem );
+                return cachedSystem;
+            }
 
             // Fetch from the local database. If there is more than one result, return the most recent result (by visits and then by update time)
             var sqlStarSystems = await GetSqlStarSystemsAsync( [ systemName ], cts.Token ).ConfigureAwait(false);
@@ -338,6 +343,12 @@ namespace EddiDataProviderService
                 results.AddRange( await spanshService.GetQuickStarSystemsAsync( missingSystems(), cts.Token ).ConfigureAwait( false ) );
             }
 
+            await HydrateFactionDataAsync( results ).ConfigureAwait( false );
+            foreach ( var result in results )
+            {
+                ApplyFactionCache( result );
+            }
+
             if ( missingSystems().Length > 0 )
             {
                 Logging.Warn( "Unable to retrieve data on all requested star systems.", missingSystems() );
@@ -395,6 +406,7 @@ namespace EddiDataProviderService
             // Try to fetch from cached systems
             if ( starSystemCache.TryGet( fromSystemAddress, out var cachedStarSystem ) )
             {
+                ApplyFactionCache( cachedStarSystem );
                 var cachedStation = cachedStarSystem.stations.FirstOrDefault( s => s.marketId == fromMarketId );
                 if ( cachedStation != null )
                 {
@@ -431,6 +443,7 @@ namespace EddiDataProviderService
             // Try to fetch from cached systems
             if ( !string.IsNullOrEmpty( fromSystemName ) && starSystemCache.TryGet( fromSystemName, out var cachedStarSystem ) )
             {
+                ApplyFactionCache( cachedStarSystem );
                 var cachedStation = cachedStarSystem.stations.FirstOrDefault( s => s.marketId == fromMarketId );
                 if ( cachedStation != null )
                 {
@@ -464,13 +477,13 @@ namespace EddiDataProviderService
         private async Task<List<StarSystem>> GetSqlStarSystemsAsync ( ulong[] systemAddresses )
         {
             var dbStarSystems = await starSystemRepository.GetSqlStarSystemsAsync( systemAddresses, cts.Token ).ConfigureAwait(false);
-            return DeserializeSqlStarSystems( dbStarSystems );
+            return await DeserializeSqlStarSystemsAsync( dbStarSystems ).ConfigureAwait( false );
         }
 
         private async Task<List<StarSystem>> GetSqlStarSystemsAsync ( string[] systemNames, CancellationToken cancellationToken )
         {
             var dbStarSystems = await starSystemRepository.GetSqlStarSystemsAsync( systemNames, cancellationToken ).ConfigureAwait(false);
-            return DeserializeSqlStarSystems( dbStarSystems );
+            return await DeserializeSqlStarSystemsAsync( dbStarSystems ).ConfigureAwait( false );
         }
 
         private static bool IsStale ( StarSystem starSystem )
@@ -483,7 +496,7 @@ namespace EddiDataProviderService
                 : starSystem.lastupdated < DateTime.UtcNow.AddMonths( -1 );
         }
 
-        private List<StarSystem> DeserializeSqlStarSystems ( List<DatabaseStarSystem> dbStarSystems )
+        private async Task<List<StarSystem>> DeserializeSqlStarSystemsAsync ( List<DatabaseStarSystem> dbStarSystems )
         {
             var results = new List<StarSystem>();
             foreach ( var dbStarSystem in dbStarSystems )
@@ -500,6 +513,14 @@ namespace EddiDataProviderService
                     }
                 }
 
+            }
+
+            await HydrateFactionDataAsync( results ).ConfigureAwait( false );
+            foreach ( var result in results )
+            {
+                ApplyFactionCache( result );
+                factionCache.AddOrUpdate( result.factions );
+                starSystemCache.AddOrUpdate( result );
             }
 
             return results;
@@ -557,9 +578,51 @@ namespace EddiDataProviderService
                 {
                     // Only preserve reputation data if the faction name matches and the updated faction does not include reputation data
                     // (to avoid overwriting reputation data obtained from the journal)
-                    if ( updatedFaction.name == oldFaction.name && updatedFaction.myreputation is null )
+                    if ( updatedFaction.name == oldFaction.name &&
+                         updatedFaction.myreputation is null &&
+                         oldFaction.myreputation != null )
                     {
                         updatedFaction.myreputation = oldFaction.myreputation;
+                        updatedFaction.updatedAt = oldFaction.updatedAt;
+                    }
+                }
+            }
+        }
+
+        private async Task HydrateFactionDataAsync ( IEnumerable<StarSystem> starSystems )
+        {
+            await HydrateFactionDataAsync( starSystems?
+                    .SelectMany( s => s?.factions ?? [ ] ) )
+                .ConfigureAwait( false );
+        }
+
+        private async Task HydrateFactionDataAsync ( IEnumerable<Faction> factions )
+        {
+            var factionList = factions?
+                .Where( f => !string.IsNullOrWhiteSpace( f?.name ) )
+                .ToList() ?? [ ];
+            if ( factionList.Count == 0 )
+            {
+                return;
+            }
+
+            var factionData = await starSystemRepository
+                .GetFactionDataAsync( factionList.Select( f => f.name ), cts.Token )
+                .ConfigureAwait( false );
+            if ( factionData.Count == 0 )
+            {
+                return;
+            }
+
+            foreach ( var faction in factionList )
+            {
+                if ( factionData.TryGetValue( faction.name, out var databaseFaction ) &&
+                     databaseFaction.myreputation != null )
+                {
+                    faction.myreputation = databaseFaction.myreputation;
+                    if ( databaseFaction.reputationUpdatedAt != null )
+                    {
+                        faction.updatedAt = databaseFaction.reputationUpdatedAt.Value;
                     }
                 }
             }
@@ -642,6 +705,7 @@ namespace EddiDataProviderService
             // Update any faction and star systems in our short term faction and star system caches to minimize repeat deserialization
             foreach ( var starSystem in starSystems )
             {
+                NormalizeFactionReputationUpdatedAt( starSystem );
                 ApplyFactionCache( starSystem );
                 factionCache.AddOrUpdate( starSystem.factions );
                 starSystemCache.AddOrUpdate( starSystem );
@@ -651,6 +715,50 @@ namespace EddiDataProviderService
             { return; }
 
             await starSystemRepository.SaveStarSystemsAsync( starSystems, cancellationToken ).ConfigureAwait( false );
+        }
+
+        private static void NormalizeFactionReputationUpdatedAt ( StarSystem starSystem )
+        {
+            if ( starSystem?.factions is null )
+            {
+                return;
+            }
+
+            foreach ( var faction in starSystem.factions )
+            {
+                if ( faction?.myreputation != null && faction.updatedAt <= DateTime.MinValue )
+                {
+                    faction.updatedAt = ResolveReputationUpdatedAt( starSystem );
+                }
+            }
+        }
+
+        private static DateTime ResolveReputationUpdatedAt ( StarSystem starSystem )
+        {
+            var updatedAt = Dates.fromTimestamp( starSystem.updatedat );
+            if ( updatedAt > DateTime.MinValue )
+            {
+                return NormalizeDateTime( updatedAt.Value );
+            }
+
+            if ( starSystem.lastvisit > DateTime.MinValue )
+            {
+                return NormalizeDateTime( starSystem.lastvisit.Value );
+            }
+
+            if ( starSystem.lastupdated > DateTime.MinValue )
+            {
+                return NormalizeDateTime( starSystem.lastupdated );
+            }
+
+            return DateTime.UtcNow;
+        }
+
+        private static DateTime NormalizeDateTime ( DateTime dateTime )
+        {
+            return dateTime.Kind == DateTimeKind.Unspecified
+                ? DateTime.SpecifyKind( dateTime, DateTimeKind.Utc )
+                : dateTime.ToUniversalTime();
         }
 
         #endregion
@@ -732,6 +840,7 @@ namespace EddiDataProviderService
             // First try to fetch the faction from the cache
             if ( factionCache.TryGet( factionName, out var faction ) )
             {
+                await HydrateFactionDataAsync( [ faction ] ).ConfigureAwait( false );
                 return faction;
             }
 
@@ -741,6 +850,7 @@ namespace EddiDataProviderService
             // If we've successfully retrieved the faction then update our cache
             if ( faction != null )
             {
+                await HydrateFactionDataAsync( [ faction ] ).ConfigureAwait( false );
                 factionCache.AddOrUpdate( faction );
             }
 

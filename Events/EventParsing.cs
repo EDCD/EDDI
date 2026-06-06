@@ -222,7 +222,7 @@ namespace EddiEvents
                     var fAllegiance = Allegiance( factionDetail, "Allegiance" );
                     var happiness =
                         Happiness.FromEDName( JsonParsing.getString( factionDetail, "Happiness" ) ?? string.Empty );
-                    var myReputation = JsonParsing.getOptionalDecimal( factionDetail, "MyReputation" ) ?? 0;
+                    var myReputation = JsonParsing.getOptionalDecimal( factionDetail, "MyReputation" );
 
                     var fFaction = new Faction()
                     {
