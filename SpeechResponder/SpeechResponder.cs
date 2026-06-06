@@ -184,7 +184,7 @@ namespace EddiSpeechResponder
 
         #region Scripts
 
-        internal void EnableOrDisableAllScripts(Personality targetPersonality, bool desiredState)
+        internal static void EnableOrDisableAllScripts(Personality targetPersonality, bool desiredState)
         {
             if (targetPersonality?.Scripts is null) { return; }
 

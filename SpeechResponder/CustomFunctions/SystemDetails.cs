@@ -1,4 +1,4 @@
-﻿using Cottle;
+using Cottle;
 using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;

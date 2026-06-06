@@ -578,12 +578,12 @@ namespace EddiSpeechResponder
 
         private void EnableAll_Clicked(object sender, RoutedEventArgs e) 
         {
-            SpeechResponder?.EnableOrDisableAllScripts(SpeechResponder.CurrentPersonality, true);
+            SpeechResponder.EnableOrDisableAllScripts(SpeechResponder.CurrentPersonality, true);
         }
 
         private void DisableAll_Clicked(object sender, RoutedEventArgs e)
         {
-            SpeechResponder?.EnableOrDisableAllScripts(SpeechResponder.CurrentPersonality, false);
+            SpeechResponder.EnableOrDisableAllScripts(SpeechResponder.CurrentPersonality, false);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

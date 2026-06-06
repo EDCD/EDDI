@@ -144,7 +144,7 @@ namespace EddiGalnetMonitor
             return result;
         }
 
-        public List<News> GetArticles(string category = null, bool incRead = false)
+        public static List<News> GetArticles(string category = null, bool incRead = false)
         {
             if (!File.Exists(DbFile)) return null;
             if (String.Equals(category, "All", StringComparison.Ordinal)) { category = null; }

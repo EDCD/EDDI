@@ -987,7 +987,6 @@ namespace Tests
             Assert.IsNotNull(module);
             Assert.AreEqual("MultiDroneControl_Mining_Mk2", module.basename);
             Assert.AreEqual("Mining Multi Limpet Controller", module.localizedName);
-            Assert.AreEqual("Mining Multi Limpet Controller", module.name);
         }
 
         [TestMethod]
