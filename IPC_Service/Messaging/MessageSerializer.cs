@@ -206,64 +206,143 @@ public static class MessageSerializer
         return true;
     }
 
-    public static SerializedMessageFrame SerializeToFrame ( MessageEnvelope message )
-    {
-        ArgumentNullException.ThrowIfNull( message );
+        public static SerializedMessageFrame SerializeToFrame ( MessageEnvelope message )
+        {
+            ArgumentNullException.ThrowIfNull( message );
 
-        try
-        {
-            message.Validate();
-        }
-        catch ( ArgumentException ex )
-        {
-            Logging.Error( $"Message validation failed: {ex.Message}" );
-            throw;
-        }
-
-        try
-        {
-            // Serialization is the freeze point. After this returns, nested mutations cannot affect transport.
-            var json = JsonConvert.SerializeObject( message, new JsonSerializerSettings
+            try
             {
-                NullValueHandling = NullValueHandling.Ignore,
-                DateFormatString = "O",
-                Formatting = Formatting.None
-            } );
+                message.Validate();
+            }
+            catch ( ArgumentException ex )
+            {
+                Logging.Error( $"Message validation failed: {ex.Message}" );
+                throw;
+            }
 
-            var payloadLength = Encoding.UTF8.GetByteCount( json );
-            var header = payloadLength.ToString( CultureInfo.InvariantCulture ) + "\n";
-            var headerLength = Encoding.ASCII.GetByteCount( header );
+            try
+            {
+                // Create a snapshot of the message with deep-copied mutable collections
+                // to prevent concurrent modification exceptions during serialization.
+                var snapshot = CreateThreadSafeSnapshot( message );
 
-            var bytes = new byte[ headerLength + payloadLength ];
+                // Serialization is the freeze point. After this returns, nested mutations cannot affect transport.
+                var json = JsonConvert.SerializeObject( snapshot, new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    DateFormatString = "O",
+                    Formatting = Formatting.None
+                } );
 
-            Encoding.ASCII.GetBytes(
-                header,
-                0,
-                header.Length,
-                bytes,
-                0 );
+                var payloadLength = Encoding.UTF8.GetByteCount( json );
+                var header = payloadLength.ToString( CultureInfo.InvariantCulture ) + "\n";
+                var headerLength = Encoding.ASCII.GetByteCount( header );
 
-            Encoding.UTF8.GetBytes(
-                json,
-                0,
-                json.Length,
-                bytes,
-                headerLength );
+                var bytes = new byte[ headerLength + payloadLength ];
 
-            return new SerializedMessageFrame(
-                message.Type,
-                message.Id,
-                bytes );
+                Encoding.ASCII.GetBytes(
+                    header,
+                    0,
+                    header.Length,
+                    bytes,
+                    0 );
+
+                Encoding.UTF8.GetBytes(
+                    json,
+                    0,
+                    json.Length,
+                    bytes,
+                    headerLength );
+
+                return new SerializedMessageFrame(
+                    message.Type,
+                    message.Id,
+                    bytes );
+            }
+            catch ( JsonException ex )
+            {
+                Logging.Error( $"Failed to serialize message of type {message.Type}: {ex.Message}" );
+                throw new ArgumentException( $"Message serialization failed: {ex.Message}", ex );
+            }
+            catch ( InvalidOperationException ex )
+            {
+                Logging.Error( $"Failed to serialize message of type {message.Type}: {ex.Message}" );
+                throw new ArgumentException( $"Message serialization failed: {ex.Message}", ex );
+            }
         }
-        catch ( JsonException ex )
+
+        /// <summary>
+        /// Creates a thread-safe snapshot of the message by deep-copying mutable collections.
+        /// This prevents InvalidOperationException when concurrent modifications occur during serialization.
+        /// </summary>
+        private static MessageEnvelope CreateThreadSafeSnapshot ( MessageEnvelope message )
         {
-            Logging.Error( $"Failed to serialize message of type {message.Type}: {ex.Message}" );
-            throw new ArgumentException( $"Message serialization failed: {ex.Message}", ex );
+            var snapshot = new MessageEnvelope
+            {
+                Type = message.Type,
+                Timestamp = message.Timestamp,
+                Id = message.Id,
+                Data = CopyMessageData( message.Data )
+            };
+
+            return snapshot;
         }
-        catch ( InvalidOperationException ex )
+
+        /// <summary>
+        /// Recursively copies message data, creating new instances of mutable dictionaries
+        /// to avoid concurrent modification exceptions.
+        /// </summary>
+        private static object CopyMessageData ( object data )
         {
-            Logging.Error( $"Failed to serialize message of type {message.Type}: {ex.Message}" );
-            throw new ArgumentException( $"Message serialization failed: {ex.Message}", ex );
+            return data switch
+            {
+                EventData eventData => new EventData
+                {
+                    EventType = eventData.EventType,
+                    EventName = eventData.EventName,
+                    EventPayload = eventData.EventPayload != null
+                        ? new Dictionary<string, object>( eventData.EventPayload )
+                        : new Dictionary<string, object>()
+                },
+                CommandData commandData => new CommandData
+                {
+                    Command = commandData.Command,
+                    Target = commandData.Target,
+                    Parameters = commandData.Parameters != null
+                        ? new Dictionary<string, object>( commandData.Parameters )
+                        : new Dictionary<string, object>()
+                },
+                ConnectData connectData => new ConnectData
+                {
+                    PluginVersion = connectData.PluginVersion,
+                    PluginName = connectData.PluginName,
+                    Capabilities = new List<string>( connectData.Capabilities ),
+                    SupportedMessageTypes = new List<string>( connectData.SupportedMessageTypes )
+                },
+                ConnectAckData connectAckData => new ConnectAckData
+                {
+                    EddiVersion = connectAckData.EddiVersion,
+                    ServerName = connectAckData.ServerName,
+                    Accepted = connectAckData.Accepted,
+                    Capabilities = new List<string>( connectAckData.Capabilities ),
+                    SupportedMessageTypes = new List<string>( connectAckData.SupportedMessageTypes ),
+                    SessionId = connectAckData.SessionId
+                },
+                DisconnectData disconnectData => new DisconnectData
+                {
+                    Reason = disconnectData.Reason,
+                    Message = disconnectData.Message
+                },
+                CommandResponseData commandResponseData => new CommandResponseData
+                {
+                    CommandId = commandResponseData.CommandId,
+                    Status = commandResponseData.Status,
+                    Message = commandResponseData.Message,
+                    Result = commandResponseData.Result != null
+                        ? new Dictionary<string, object>( commandResponseData.Result )
+                        : new Dictionary<string, object>()
+                },
+                _ => data
+            };
         }
     }
-}
