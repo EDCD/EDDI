@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -592,6 +592,10 @@
   <data name="MultiDroneControl_Mining" xml:space="preserve">
     <value>挖矿任务无人机控制器</value>
     <comment>Module MultiDroneControl_Mining</comment>
+  </data>
+  <data name="MultiDroneControl_Mining_Mk2" xml:space="preserve">
+    <value>挖矿任务无人机控制器 Mk2</value>
+    <comment>Module Hpt_MiningToolV2_Fixed_Large</comment>
   </data>
   <data name="MultiDroneControl_Operations" xml:space="preserve">
     <value>特种行动无人机控制器</value>

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Utilities;
 
@@ -51,7 +51,7 @@ namespace EddiDataDefinitions
             new( "CobraMkV", Manufacturer.FaulconDeLacy, "Cobra Mk. V", nameof(Properties.Ship.yourCobraMkIV), [ new Translation( "cobra", "ˈkəʊbrə" ), new Translation( "Mark", "mɑːk" ), new Translation( "5", "faɪv" ) ], LandingPadSize.Small, null, 0.49M ),
             new( "Corsair", Manufacturer.Gutamaya, "Corsair", nameof(Properties.Ship.yourCorsair), [ new Translation( "corsair", "kɔːɹsɛəɹ" ) ], LandingPadSize.Medium, null, 0.41M ),
             new( "PantherMkII", Manufacturer.ZorgonPeterson, "Panther Clipper Mk. II", nameof(Properties.Ship.yourPantherClipperMkII), [ new Translation( "Panther", "ˈpænθɚ" ), new Translation( "Clipper", "ˈklɪpər" ), new Translation( "Mark", "mɑːk" ), new Translation( "2", "ˈtuː" ) ], LandingPadSize.Large, new Dictionary<string, int> () { { "Cargo01", 8 }, { "Cargo02", 7 } }, 1.11M ),
-            new( "LakonMiner", Manufacturer.LakonSpaceways, "Type-11 Prospector", nameof(Properties.Ship.yourType11), null, LandingPadSize.Medium, null, 0.60M ),
+            new( "LakonMiner", Manufacturer.LakonSpaceways, "Type-11 Prospector", nameof(Properties.Ship.yourType11), null, LandingPadSize.Medium, new Dictionary<string, int> () { { "LimpetController01", 5 } }, 0.60M ),
             new( "explorer_nx", Manufacturer.ZorgonPeterson, "Caspian Explorer", nameof(Properties.Ship.yourCaspianExplorer), null, LandingPadSize.Large, null, 1.14M ),
             new( "smallcombat01_nx", Manufacturer.CoreDynamics, "Kestrel Mk. II", nameof(Properties.Ship.yourKestrelMkII), [ new Translation( "Kestrel", "ˈkɛstɹəl" ), new Translation( "Mark", "mɑːk" ), new Translation( "2", "ˈtuː" ) ], LandingPadSize.Small, new Dictionary<string, int> () { { "Military01", 4 } }, 0.61M ), 
             new( "mediumtransport01", Manufacturer.ZorgonPeterson, "Lynx Highliner", nameof(Properties.Ship.yourLynxHighliner), null, LandingPadSize.Medium, new Dictionary<string, int> () { { "Passenger01", 6 }, { "Passenger02", 6 }, { "Passenger03", 5 } }, 0.75M )
