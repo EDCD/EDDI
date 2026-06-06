@@ -18,9 +18,9 @@
             :: This is a local build rather than a continuous integration... we will proceed.
 
             cd "$(SolutionDir)"
-            if exist $(SolutionDir)postBuildTests.bat (
+            if exist "$(SolutionDir)postBuildTests.bat" (
             @echo Post-build script exists at: $(SolutionDir)postBuildTests.bat - executing...
-            call $(SolutionDir)postBuildTests.bat "$(Configuration)" "$(SolutionDir)" "bin\$(Configuration)\"
+            call "$(SolutionDir)postBuildTests.bat" "$(Configuration)" "$(SolutionDir)" "bin\$(Configuration)\"
             )
 
             if "$(Configuration)" == "Release" (

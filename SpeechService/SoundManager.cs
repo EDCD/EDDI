@@ -1,4 +1,6 @@
-﻿using NAudio.Wave;
+using NAudio.Wave;
+using NAudio.CoreAudioApi;
+using EddiConfigService;
 using System;
 using System.Runtime.InteropServices;
 using Utilities;
@@ -12,7 +14,28 @@ namespace EddiSpeechService
             // Try WASAPI first
             try
             {
-                var wasapiOut = new WasapiOut();
+                WasapiOut wasapiOut;
+                var deviceId = ConfigService.Instance.speechServiceConfiguration?.AudioDevice;
+                if ( !string.IsNullOrEmpty( deviceId ) )
+                {
+                    try
+                    {
+                        var enumerator = new MMDeviceEnumerator();
+                        var device = enumerator.GetDevice( deviceId );
+                        // Latency prevents audio dropouts and popping sounds. 200ms is the default latency value for NAudio. 
+                        wasapiOut = new WasapiOut( device, AudioClientShareMode.Shared, true, 200 );
+                    }
+                    catch ( Exception ex )
+                    {
+                        Logging.Warn( $"Failed to initialize WASAPI with selected device {deviceId}, falling back to default device.", ex );
+                        wasapiOut = new WasapiOut();
+                    }
+                }
+                else
+                {
+                    wasapiOut = new WasapiOut();
+                }
+
                 if ( TryInitializeSoundOut( wasapiOut, provider ) )
                 {
                     return wasapiOut;
