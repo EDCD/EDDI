@@ -1,8 +1,9 @@
 ﻿using EddiCore;
 using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -26,7 +27,73 @@ namespace EddiCrimeMonitor
         {
             InitializeComponent();
 
-            criminalRecord.ItemsSource = crimeMonitor()?.criminalrecord;
+            var monitor = crimeMonitor();
+            if ( monitor != null )
+            {
+                criminalRecord.ItemsSource = monitor.criminalrecord;
+                monitor.RecordUpdatedEvent += crimeMonitorUpdated;
+                Unloaded += ConfigurationWindow_Unloaded;
+            }
+            updateModifiersEstimateSummary();
+        }
+
+        private void ConfigurationWindow_Unloaded(object sender, RoutedEventArgs e)
+        {
+            var monitor = crimeMonitor();
+            if ( monitor != null )
+            {
+                monitor.RecordUpdatedEvent -= crimeMonitorUpdated;
+            }
+        }
+
+        private void crimeMonitorUpdated(object sender, EventArgs e)
+        {
+            Dispatcher.Invoke(  updateModifiersEstimateSummary  );
+        }
+
+        private void updateModifiersEstimateSummary()
+        {
+            var monitor = crimeMonitor();
+            if ( monitor == null )
+            {
+                modifiersEstimateSummary.Visibility = Visibility.Collapsed;
+                return;
+            }
+
+            var summaryLines = new List<string>();
+            var bountyVoucherBonus = monitor.PowerplayBountyBonus;
+            var finalBountyClaims = monitor.criminalrecord.Sum(c => c.bountyclaims);
+            if ( bountyVoucherBonus is not null && finalBountyClaims > 0 )
+            {
+                var power = EDDI.Instance.GameState.CurrentStarSystem?.Power?.localizedName ?? string.Empty;
+                var percent = (int)decimal.Round( bountyVoucherBonus.Value * 100, 0 );
+                summaryLines.Add( string.Format(
+                    CultureInfo.CurrentCulture,
+                    Properties.CrimeMonitor.powerplay_bounty_boost_active,
+                    power,
+                    monitor.PledgedPowerRank,
+                    percent,
+                    finalBountyClaims ) );
+            }
+
+            var bountyReduction = monitor.PowerplayCrimeReduction;
+            if ( bountyReduction is not null )
+            {
+                var power = EDDI.Instance.GameState.CurrentStarSystem?.Power?.localizedName ?? string.Empty;
+                var percent = (int)decimal.Round( bountyReduction.Value * 100, 0 );
+                var example = 100000 * (100 - percent) / 100;
+
+                summaryLines.Add( string.Format(
+                    CultureInfo.CurrentCulture,
+                    Properties.CrimeMonitor.powerplay_bounty_reduction_active,
+                    power,
+                    monitor.PledgedPowerRank,
+                    percent,
+                    example ) );
+            }
+
+            modifiersEstimateSummary.Visibility = summaryLines.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+            modifiersEstimateText.Text = string.Join( Environment.NewLine, summaryLines );
         }
 
         private void addRecord(object sender, RoutedEventArgs e)
@@ -46,40 +113,39 @@ namespace EddiCrimeMonitor
             crimeMonitor()?.writeRecord();
         }
 
-        private void updateRecord(object sender, RoutedEventArgs e)
+        private async void updateRecord(object sender, RoutedEventArgs e)
         {
             if ( sender is Button updateButton && updateButton.DataContext is FactionRecord record )
             {
-                //var record = (FactionRecord)((Button)e.Source).DataContext;
                 if ( record.faction != Properties.CrimeMonitor.blank_faction )
                 {
                     updateButton.Foreground = Brushes.Red;
                     updateButton.FontWeight = FontWeights.Bold;
+                    updateButton.IsEnabled = false;
 
                     try
                     {
-                        var UpdateRecordTask = Task.Run( async () =>
+                        var Allegiance = Superpower.FromNameOrEdName( record.faction );
+                        if ( Allegiance == null )
                         {
-                            var Allegiance = Superpower.FromNameOrEdName(record.faction);
-                            if (Allegiance == null)
-                            {
-                                await crimeMonitor().GetFactionDataAsync(record, record.system).ConfigureAwait(false);
-                            }
-                            else
-                            {
-                                record.Allegiance = Allegiance;
-                            }
-                            crimeMonitor()?.writeRecord();
-                        } );
-                        UpdateRecordTask.Wait();
+                            await crimeMonitor().GetFactionDataAsync( record, record.system );
+                        }
+                        else
+                        {
+                            record.Allegiance = Allegiance;
+                        }
+                        crimeMonitor()?.writeRecord();
                     }
                     catch ( OperationCanceledException )
                     {
                         // Task cancelled
                     }
-
-                    updateButton.Foreground = Brushes.Black;
-                    updateButton.FontWeight = FontWeights.Regular;
+                    finally
+                    {
+                        updateButton.Foreground = Brushes.Black;
+                        updateButton.FontWeight = FontWeights.Regular;
+                        updateButton.IsEnabled = true;
+                    }
                 }
             }
         }
@@ -96,24 +162,8 @@ namespace EddiCrimeMonitor
                     {
                         case 3: // Claims column
                             {
-                                // All claims, including discrepancy report
-                                var claims = record.factionReports
-                                    .Where(r => r.crimeDef == Crime.None || r.crimeDef == Crime.Claim)
-                                    .Sum(r => r.amount);
-                                if (record.claims != claims)
-                                {
-                                    // Create/modify 'discrepancy' report if total claims does not equal sum of claim reports
-                                    var amount = record.claims - claims;
-                                    var report = record.factionReports
-                                        .FirstOrDefault(r => r.crimeDef == Crime.Claim);
-                                    if (report == null)
-                                    {
-                                        report = new FactionReport(DateTime.UtcNow, false, Crime.Claim, null, 0);
-                                        record.factionReports.Add(report);
-                                    }
-                                    report.amount += amount;
-                                    if (report.amount == 0) { record.factionReports.Remove(report); }
-                                }
+                                // Claims are final calculated values; programmatic claim adjustments are handled
+                                // by FactionRecord.claims as final-value discrepancy reports.
                             }
                             break;
                         case 4: // Fines column
@@ -164,6 +214,7 @@ namespace EddiCrimeMonitor
             }
             // Update the crime monitor's information
             crimeMonitor()?.writeRecord();
+            updateModifiersEstimateSummary();
         }
 
         private void EnsureValidInteger(object sender, TextCompositionEventArgs e)

@@ -37,7 +37,7 @@ namespace EddiEvents
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {
             var power = Power.FromEDName(JsonParsing.getString(data, "Power"));
-            var rank = JsonParsing.getInt(data, "Rank") + 1; // This is zero based in the journal but not in the Frontier API. Adding +1 here synchronizes the two.
+            var rank = JsonParsing.getInt(data, "Rank");
             var merits = JsonParsing.getInt(data, "Merits");
             var timePledged = TimeSpan.FromSeconds(JsonParsing.getLong(data, "TimePledged"));
             events.Add( new PowerplayEvent( timestamp, power, rank, merits, timePledged ) { raw = line, fromLoad = fromLogLoad } );

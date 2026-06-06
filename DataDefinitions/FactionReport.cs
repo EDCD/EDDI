@@ -6,6 +6,9 @@ namespace EddiDataDefinitions
 {
     public class FactionReport
     {
+        public const string BondClaimType = "bond";
+        public const string BountyClaimType = "bounty";
+
         public DateTime timestamp { get; set; }
 
         [PublicAPI]
@@ -31,6 +34,18 @@ namespace EddiDataDefinitions
 
         [JsonIgnore]
         public Crime crimeDef;
+
+        private string _claimtype;
+
+        [PublicAPI, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string claimtype
+        {
+            get => _claimtype ?? (crimeDef == Crime.None ? (bounty ? BountyClaimType : BondClaimType) : null);
+            set => _claimtype = value;
+        }
+
+        [PublicAPI, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string claimvehicle { get; set; }
 
         [PublicAPI]
         public string system { get; set; }
@@ -61,6 +76,8 @@ namespace EddiDataDefinitions
             body = factionReport.body;
             victim = factionReport.victim;
             victimAllegiance = factionReport.victimAllegiance;
+            claimtype = factionReport.claimtype;
+            claimvehicle = factionReport.claimvehicle;
             amount = factionReport.amount;
             timestamp = factionReport.timestamp;
         }

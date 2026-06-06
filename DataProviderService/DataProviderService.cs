@@ -35,7 +35,7 @@ namespace EddiDataProviderService
         private DataProviderService ( StarMapService edsmService = null,
             SpanshService spanshService = null, StarSystemSqLiteRepository starSystemRepository = null, bool unitTesting = false )
         {
-            factionCache = new FactionCache( 3600 ); // Keep a cache of factions for 1 hour
+            factionCache = new FactionCache( 43200 ); // Keep a cache of factions for 12 hours
             starSystemCache = new StarSystemCache( 300 ); // Keep a cache of star systems for 5 minutes
             this.edsmService = edsmService;
             this.spanshService = spanshService;

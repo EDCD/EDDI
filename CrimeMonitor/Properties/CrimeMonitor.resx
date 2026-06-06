@@ -142,7 +142,7 @@
     <value>Bounties</value>
   </data>
   <data name="header_claims" xml:space="preserve">
-    <value>Claims</value>
+    <value>Estimated Claims</value>
   </data>
   <data name="header_faction" xml:space="preserve">
     <value>Faction</value>
@@ -156,6 +156,12 @@
   <data name="header_system" xml:space="preserve">
     <value>System</value>
   </data>
+  <data name="powerplay_bounty_reduction_active" xml:space="preserve">
+    <value>{0} rank {1}: -{2}% fines and bounties incurred in Power territory. A 100,000 credit crime would be recorded as {3:N0} credits.</value>
+  </data>
+  <data name="active_modifiers_label" xml:space="preserve">
+    <value>Active Modifiers:</value>
+  </data>
   <data name="remove_button" xml:space="preserve">
     <value>Remove</value>
   </data>
@@ -167,5 +173,8 @@
   </data>
   <data name="update_button_desc" xml:space="preserve">
     <value>Updates the minor faction (system, station, etc) information.</value>
+  </data>
+  <data name="powerplay_bounty_boost_active" xml:space="preserve">
+    <value>{0} rank {1}: +{2}% Powerplay bounty voucher bonus active. Estimated final bounty voucher value is {3:N0} credits from Power contacts in your Power's territory.</value>
   </data>
 </root>

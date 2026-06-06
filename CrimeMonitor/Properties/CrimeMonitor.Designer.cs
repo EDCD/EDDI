@@ -19,7 +19,7 @@ namespace EddiCrimeMonitor.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class CrimeMonitor {
@@ -57,6 +57,15 @@ namespace EddiCrimeMonitor.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active Modifiers:.
+        /// </summary>
+        public static string active_modifiers_label {
+            get {
+                return ResourceManager.GetString("active_modifiers_label", resourceCulture);
             }
         }
         
@@ -133,7 +142,7 @@ namespace EddiCrimeMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Claims.
+        ///   Looks up a localized string similar to Estimated Claims.
         /// </summary>
         public static string header_claims {
             get {
@@ -174,6 +183,24 @@ namespace EddiCrimeMonitor.Properties {
         public static string header_system {
             get {
                 return ResourceManager.GetString("header_system", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} rank {1}: +{2}% Powerplay bounty voucher bonus active. Estimated final bounty voucher value is {3:N0} credits from Power contacts in your Power&apos;s territory..
+        /// </summary>
+        public static string powerplay_bounty_boost_active {
+            get {
+                return ResourceManager.GetString("powerplay_bounty_boost_active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} rank {1}: -{2}% fines and bounties incurred in Power territory. A 100,000 credit crime would be recorded as {3:N0} credits..
+        /// </summary>
+        public static string powerplay_bounty_reduction_active {
+            get {
+                return ResourceManager.GetString("powerplay_bounty_reduction_active", resourceCulture);
             }
         }
         

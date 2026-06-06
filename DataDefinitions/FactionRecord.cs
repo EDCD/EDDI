@@ -71,17 +71,64 @@ namespace EddiDataDefinitions
             }
         }
 
-        /// <summary> The total credit value of claims (bounty vouchers and bonds) (including any discrepancy report) </summary>
-        [PublicAPI]
+        /// <summary> The final estimated credit value of claims (bounty vouchers and bonds), including any final-value discrepancy report </summary>
+        [PublicAPI, JsonIgnore]
         public long claims
         {
-            get => _claims;
+            get => _finalClaims ?? ( _baseclaims + finalClaimDiscrepancy );
             set
             {
-                _claims = value;
+                var amount = value - claims;
+                if ( amount == 0 )
+                {
+                    return;
+                }
+
+                ApplyFinalClaimDiscrepancy( amount );
+                _finalClaims = value;
                 OnPropertyChanged();
             }
         }
+
+        /// <summary> The journal credit value of claims before non-journal modifiers and final-value discrepancy reports are applied </summary>
+        [PublicAPI, JsonIgnore]
+        public long baseclaims
+        {
+            get => _baseclaims;
+            set
+            {
+                if (_baseclaims == value)
+                {
+                    return;
+                }
+
+                _baseclaims = value;
+                _finalClaims = null;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(claims));
+            }
+        }
+
+        /// <summary> The final estimated credit value of bounty voucher claims only </summary>
+        [PublicAPI, JsonIgnore]
+        public long bountyclaims
+        {
+            get => _finalBountyClaims ?? basebountyclaims;
+            private set
+            {
+                if (_finalBountyClaims == value)
+                {
+                    return;
+                }
+
+                _finalBountyClaims = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary> The journal credit value of bounty voucher claims before non-journal modifiers are applied </summary>
+        [PublicAPI, JsonIgnore]
+        public long basebountyclaims => basebountiesAmount;
 
         /// <summary> The total credit value of fines incurred (including any discrepancy report) </summary>
         [PublicAPI]
@@ -95,6 +142,10 @@ namespace EddiDataDefinitions
             }
         }
 
+        /// <summary> The journal credit value of fines incurred </summary>
+        [PublicAPI, JsonIgnore]
+        public long basefines => finesIncurred.Sum(ReportBaseAmount);
+
         /// <summary> The total credit value of bounties incurred (including any discrepancy report) </summary>
         [PublicAPI]
         public long bounties
@@ -106,6 +157,10 @@ namespace EddiDataDefinitions
                 OnPropertyChanged();
             }
         }
+
+        /// <summary> The journal credit value of bounties incurred </summary>
+        [PublicAPI, JsonIgnore]
+        public long basebounties => bountiesIncurred.Sum(ReportBaseAmount);
 
         public List<string> factionSystems { get; set; } = [ ];
         public List<string> interstellarBountyFactions { get; set; } = [ ];
@@ -120,8 +175,8 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         private string _station;
 
-        [JsonIgnore]
-        private long _claims;
+        [JsonProperty( "claims" )]
+        private long _baseclaims;
 
         [JsonIgnore]
         private long _fines;
@@ -129,23 +184,56 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         private long _bounties;
 
+        [JsonIgnore]
+        private long? _finalClaims;
+
+        [JsonIgnore]
+        private long? _finalBountyClaims;
+
+        [JsonIgnore]
+        private long finalClaimDiscrepancy => factionReports
+            .Where( r => r.crimeDef == Crime.Claim )
+            .Sum( r => r.amount );
+
+        private void ApplyFinalClaimDiscrepancy ( long amount )
+        {
+            var report = factionReports.FirstOrDefault( r => r.crimeDef == Crime.Claim );
+            if ( report == null )
+            {
+                report = new FactionReport( System.DateTime.UtcNow, false, Crime.Claim, null, 0 );
+                factionReports.Add( report );
+            }
+
+            report.amount += amount;
+            if ( report.amount == 0 )
+            {
+                factionReports.Remove( report );
+            }
+        }
+
         /// <summary> All bond vouchers awarded, excluding the discrepancy report </summary>
         [PublicAPI, JsonIgnore]
         public List<FactionReport> bondsAwarded => factionReports
-            .Where(r => !r.bounty && r.crimeDef == Crime.None)
+            .Where(r => !r.bounty && r.crimeDef == Crime.None && r.claimtype == FactionReport.BondClaimType)
             .ToList();
 
         [JsonIgnore] 
         public long bondsAmount => bondsAwarded.Sum(r => r.amount);
 
-        /// <summary> All bounty vouchers awarded, including the discrepancy report </summary>
+        [JsonIgnore]
+        public long basebondsAmount => bondsAwarded.Sum(ReportBaseAmount);
+
+        /// <summary> All bounty vouchers awarded, excluding the discrepancy report </summary>
         [PublicAPI, JsonIgnore]
         public List<FactionReport> bountiesAwarded => factionReports
-            .Where(r => r.bounty && r.crimeDef == Crime.None)
+            .Where(r => r.bounty && r.crimeDef == Crime.None && r.claimtype == FactionReport.BountyClaimType)
             .ToList();
 
         [JsonIgnore] 
         public long bountiesAmount => bountiesAwarded.Sum(r => r.amount);
+
+        [JsonIgnore]
+        public long basebountiesAmount => bountiesAwarded.Sum(ReportBaseAmount);
 
         /// <summary> All fines incurred, including the discrepancy report </summary>
         [PublicAPI, JsonIgnore]
@@ -169,6 +257,26 @@ namespace EddiDataDefinitions
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public void UpdateFinalClaimValues(long finalClaims, long? finalBountyClaims)
+        {
+            if (_finalClaims != finalClaims)
+            {
+                _finalClaims = finalClaims;
+                OnPropertyChanged(nameof(claims));
+            }
+
+            if (_finalBountyClaims != finalBountyClaims)
+            {
+                _finalBountyClaims = finalBountyClaims;
+                OnPropertyChanged(nameof(bountyclaims));
+            }
+        }
+
+        private static long ReportBaseAmount(FactionReport report)
+        {
+            return report?.amount ?? 0;
+        }
 
         [JetBrains.Annotations.NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)

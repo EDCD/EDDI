@@ -26,6 +26,11 @@ namespace EddiCrimeMonitor
      */
     public class CrimeMonitor : IEddiMonitor
     {
+        // Combat bond award journals carry base values; the Transactions panel shows boosted voucher values.
+        // Ship bond samples vary, so this remains a fallback estimate until the missing condition is identified.
+        private const decimal HiddenShipCombatBondVoucherMultiplier = 2.85M;
+        private const decimal HiddenOnFootCombatBondVoucherMultiplier = 4.2486M;
+
         // Observable collection for us to handle changes
         public ObservableCollection<FactionRecord> criminalrecord { get; }
         private long claims => criminalrecord.Sum(r => r.claims);
@@ -34,10 +39,17 @@ namespace EddiCrimeMonitor
         private Dictionary<string, string> homeSystems;
         private DateTime updateDat;
         private string crimeAuthorityFaction;
+        private Power pledgedPower = Power.None;
+
+        private Power currentSystemPower = Power.None;
         public readonly List<Target> shipTargets = [ ];
 
         internal static readonly object recordLock = new();
         public event EventHandler RecordUpdatedEvent;
+
+        internal decimal? PowerplayBountyBonus { get; private set; }
+        internal decimal? PowerplayCrimeReduction { get; private set; }
+        internal int PledgedPowerRank { get; private set; }
 
         public string MonitorName()
         {
@@ -195,9 +207,33 @@ namespace EddiCrimeMonitor
             {
                 handleLocationEvent(locationEvent);
             }
+            else if (@event is DockedEvent dockedEvent)
+            {
+                handleDockedEvent(dockedEvent);
+            }
             else if (@event is JumpedEvent jumpedEvent)
             {
                 handleJumpedEvent(jumpedEvent);
+            }
+            else if (@event is PowerplayEvent powerplayEvent)
+            {
+                handlePowerplayEvent(powerplayEvent);
+            }
+            else if (@event is PowerRankEvent powerRankEvent)
+            {
+                handlePowerRankEvent(powerRankEvent);
+            }
+            else if (@event is PowerMeritsEvent powerMeritsEvent)
+            {
+                handlePowerMeritsEvent(powerMeritsEvent);
+            }
+            else if (@event is PowerJoinedEvent powerJoinedEvent)
+            {
+                handlePowerJoinedEvent(powerJoinedEvent);
+            }
+            else if (@event is PowerLeftEvent powerLeftEvent)
+            {
+                handlePowerLeftEvent(powerLeftEvent);
             }
             else if (@event is BondAwardedEvent awardedEvent)
             {
@@ -245,13 +281,35 @@ namespace EddiCrimeMonitor
             }
         }
 
+        private void handleDockedEvent(DockedEvent @event)
+        {
+            if (@event.timestamp > updateDat || (@event.timestamp == updateDat && !@event.fromLoad))
+            {
+                updateDat = @event.timestamp;
+                _handleDockedEvent(@event);
+            }
+        }
+
+        internal void _handleDockedEvent(DockedEvent @event)
+        {
+            crimeAuthorityFaction = @event.faction;
+            UpdateCrimeValueModifiers();
+        }
+
         private void handleLocationEvent(LocationEvent @event)
         {
             if (@event.timestamp > updateDat || (@event.timestamp == updateDat && !@event.fromLoad))
             {
                 updateDat = @event.timestamp;
+                _handleLocationEvent(@event);
                 writeRecord();
             }
+        }
+
+        internal void _handleLocationEvent(LocationEvent @event)
+        {
+            currentSystemPower = @event.Power ?? Power.None;
+            UpdateCrimeValueModifiers();
         }
 
         private void handleJumpedEvent(JumpedEvent @event)
@@ -259,7 +317,7 @@ namespace EddiCrimeMonitor
             if (@event.timestamp > updateDat || (@event.timestamp == updateDat && !@event.fromLoad))
             {
                 updateDat = @event.timestamp;
-                _handleJumpedEvent();
+                _handleJumpedEvent(@event);
                 writeRecord();
             }
         }
@@ -270,6 +328,101 @@ namespace EddiCrimeMonitor
             {
                 shipTargets.Clear();
             }
+        }
+
+        internal void _handleJumpedEvent(JumpedEvent @event)
+        {
+            currentSystemPower = @event.Power ?? Power.None;
+            _handleJumpedEvent();
+            UpdateCrimeValueModifiers();
+        }
+
+        private void handlePowerplayEvent(PowerplayEvent @event)
+        {
+            pledgedPower = @event.Power ?? Power.None;
+            PledgedPowerRank = @event.rank;
+            UpdateCrimeValueModifiers();
+            RaiseOnUIThread(RecordUpdatedEvent, criminalrecord);
+        }
+
+        private void handlePowerRankEvent(PowerRankEvent @event)
+        {
+            pledgedPower = @event.Power ?? Power.None;
+            PledgedPowerRank = @event.rank;
+            UpdateCrimeValueModifiers();
+            RaiseOnUIThread(RecordUpdatedEvent, criminalrecord);
+        }
+
+        private void handlePowerMeritsEvent(PowerMeritsEvent @event)
+        {
+            pledgedPower = @event.Power ?? Power.None;
+            UpdateCrimeValueModifiers();
+            RaiseOnUIThread(RecordUpdatedEvent, criminalrecord);
+        }
+
+        private void handlePowerJoinedEvent(PowerJoinedEvent @event)
+        {
+            pledgedPower = @event.Power ?? Power.None;
+            PledgedPowerRank = 0;
+            UpdateCrimeValueModifiers();
+            RaiseOnUIThread(RecordUpdatedEvent, criminalrecord);
+        }
+
+        private void handlePowerLeftEvent(PowerLeftEvent _)
+        {
+            pledgedPower = Power.None;
+            PledgedPowerRank = 0;
+            UpdateCrimeValueModifiers();
+            RaiseOnUIThread(RecordUpdatedEvent, criminalrecord);
+        }
+
+        private void LoadPowerplayContext()
+        {
+            var commanderConfiguration = ConfigService.Instance.commanderConfiguration;
+            pledgedPower = commanderConfiguration.Power ?? Power.None;
+            PledgedPowerRank = commanderConfiguration.powerRank;
+
+            var currentSystem = EDDI.Instance.GameState.CurrentStarSystem;
+            currentSystemPower = currentSystem?.Power ?? Power.None;
+        }
+
+        private void UpdateCrimeValueModifiers()
+        {
+            UpdateFinalClaimValues();
+            UpdatePowerplayBountyReduction();
+        }
+
+        private void UpdateFinalClaimValues()
+        {
+            var bonus = GetActivePowerplayBountyVoucherBonus();
+            lock ( recordLock )
+            {
+                foreach ( var record in criminalrecord )
+                {
+                    var finalBountyClaims = record.basebountyclaims > 0
+                        ? EstimateRecordBountyClaims( record, bonus )
+                        : (long?)null;
+                    record.UpdateFinalClaimValues(
+                        EstimateRecordClaims( record, bonus ),
+                        finalBountyClaims );
+                }
+            }
+
+            PowerplayBountyBonus = bonus;
+        }
+
+        private void UpdatePowerplayBountyReduction()
+        {
+            if ( pledgedPower is null || pledgedPower == Power.None ||
+                 currentSystemPower is null || currentSystemPower == Power.None ||
+                 !string.Equals( pledgedPower.edname, currentSystemPower.edname, StringComparison.OrdinalIgnoreCase ) ||
+                 !PowerplayBountyReduction.TryGetReduction( pledgedPower, PledgedPowerRank, out var reduction ) )
+            {
+                PowerplayCrimeReduction = null;
+                return;
+            }
+
+            PowerplayCrimeReduction = reduction;
         }
 
         private async Task handleBondAwardedEventAsync(BondAwardedEvent @event)
@@ -291,6 +444,8 @@ namespace EddiCrimeMonitor
 
             var report = new FactionReport(@event.timestamp, false, Crime.None, currentSystem, @event.reward)
             {
+                claimtype = FactionReport.BondClaimType,
+                claimvehicle = EDDI.Instance.GameState.Vehicle,
                 station = EDDI.Instance.GameState.CurrentStation?.name,
                 body = EDDI.Instance.GameState.CurrentStellarBody?.bodyname,
                 victim = @event.victimfaction,
@@ -300,7 +455,8 @@ namespace EddiCrimeMonitor
             var record = GetRecordWithFaction(@event.awardingfaction) 
                 ?? await AddRecordAsync(@event.awardingfaction).ConfigureAwait(false);
             record.factionReports.Add(report);
-            record.claims += @event.reward;
+            record.baseclaims += @event.reward;
+            UpdateCrimeValueModifiers();
         }
 
         private void handleBondRedeemedEvent(BondRedeemedEvent @event)
@@ -317,63 +473,12 @@ namespace EddiCrimeMonitor
 
         internal bool _handleBondRedeemedEvent(BondRedeemedEvent @event)
         {
-            var update = false;
-
-            FactionRecord record;
-
-            // Calculate amount, broker fees
-            var percentage = (100 - (@event.brokerpercentage ?? 0)) / 100;
-            var amount = Convert.ToInt64(Math.Ceiling(@event.rewards[0].amount / percentage));
-
-            // Handle journal event from Interstellar Factors transaction (FDEV bug)
-            if (string.IsNullOrEmpty(@event.rewards[0].faction))
-            {
-                var systemFactions = EDDI.Instance.GameState.CurrentStarSystem?.factions.Select(f => f.name).ToList();
-
-                // Get record which matches a system faction and the bond claims amount
-                lock (recordLock)
-                {
-                    record = criminalrecord
-                        .Where(r => systemFactions?.Contains(r.faction) ?? false)
-                        .FirstOrDefault(r => r.bondsAmount == amount);
-                }
-            }
-            else
-            {
-                record = GetRecordWithFaction(@event.rewards[0].faction);
-            }
-
-            if (record != null)
-            {
-                // Get all bond claims, excluding the discrepancy report
-                var reports = record.factionReports
-                    .Where(r => !r.bounty && r.crimeDef == Crime.None).ToList();
-                if (reports.Count > 0 )
-                {
-                    var total = reports.Sum(r => r.amount);
-
-                    // Check for discrepancy in logged bond claims
-                    if (total < amount)
-                    {
-                        // Adjust the discrepancy report & remove when zeroed out
-                        var report = record.factionReports
-                            .FirstOrDefault(r => r.crimeDef == Crime.Claim);
-                        if (report != null)
-                        {
-                            report.amount -= Math.Min(amount - total, report.amount);
-                            if (report.amount == 0) { reports.Add(report); }
-                        }
-                    }
-                    // Remove associated bonds claims
-                    record.factionReports = record.factionReports.Except(reports).ToList();
-                }
-                // Adjust the total claims
-                record.claims -= Math.Min(amount, record.claims);
-
-                RemoveRecordIfEmpty(record);
-                update = true;
-            }
-            return update;
+            return RedeemClaimRewards(
+                @event.rewards,
+                @event.brokerpercentage,
+                r => !r.bounty && r.crimeDef == Crime.None && r.claimtype == FactionReport.BondClaimType,
+                r => r.bondsAmount,
+                true );
         }
 
         private async Task handleBountyAwardedEventAsync(BountyAwardedEvent @event)
@@ -386,22 +491,19 @@ namespace EddiCrimeMonitor
             }
         }
 
-        internal async Task _handleBountyAwardedEventAsync(BountyAwardedEvent @event, bool test = false)
+        internal async Task _handleBountyAwardedEventAsync(BountyAwardedEvent @event)
         {
-            // 20% bonus for Arissa Lavigny-Duval 'controlled' and 'exploited' systems
             var currentSystem = EDDI.Instance.GameState.CurrentStarSystem;
-
-            // Default to 1.0 for unit testing
-            var bonus = !test && currentSystem?.Power == Power.ALavignyDuval ? 1.2 : 1.0;
 
             // Get the victim faction data
             var faction = await EDDI.Instance.DataProvider.FetchFactionByNameAsync( @event.faction ).ConfigureAwait(false);
 
             foreach (var reward in @event.rewards.ToList())
             {
-                var amount = Convert.ToInt64(reward.amount * bonus);
+                var amount = reward.amount;
                 var report = new FactionReport(@event.timestamp, true, Crime.None, currentSystem?.systemname, amount)
                 {
+                    claimtype = FactionReport.BountyClaimType,
                     station = EDDI.Instance.GameState.CurrentStation?.name,
                     body = EDDI.Instance.GameState.CurrentStellarBody?.bodyname,
                     victim = @event.faction,
@@ -411,8 +513,9 @@ namespace EddiCrimeMonitor
                 var record = GetRecordWithFaction(reward.faction) 
                     ?? await AddRecordAsync(reward.faction).ConfigureAwait(false);
                 record.factionReports.Add(report);
-                record.claims += amount;
+                record.baseclaims += amount;
             }
+            UpdateCrimeValueModifiers();
         }
 
         private void handleBountyRedeemedEvent(BountyRedeemedEvent @event)
@@ -429,61 +532,82 @@ namespace EddiCrimeMonitor
 
         internal bool _handleBountyRedeemedEvent(BountyRedeemedEvent @event)
         {
+            return RedeemClaimRewards(
+                @event.rewards,
+                @event.brokerpercentage,
+                r => r.bounty && r.crimeDef == Crime.None && r.claimtype == FactionReport.BountyClaimType,
+                r => r.bountiesAmount );
+        }
+
+        private bool RedeemClaimRewards (
+            IEnumerable<Reward> rewards,
+            decimal? brokerpercentage,
+            Func<FactionReport, bool> reportSelector,
+            Func<FactionRecord, long> recordAmountSelector,
+            bool restrictFallbackToSystemFactions = false )
+        {
             var update = false;
-
-            foreach (var reward in @event.rewards.ToList())
+            foreach ( var reward in rewards.ToList() )
             {
-                FactionRecord record;
-
-                // Calculate amount, before broker fees
-                var percentage = (100 - (@event.brokerpercentage ?? 0)) / 100;
-                var amount = Convert.ToInt64(Math.Ceiling(reward.amount / percentage));
-
-                // Handle journal event from Interstellar Factors transaction (FDEV bug)
-                if (string.IsNullOrEmpty(reward.faction))
+                var amount = AmountBeforeRedeemBrokerFee( reward.amount, brokerpercentage );
+                var record = FindClaimRedemptionRecord( reward.faction, amount, recordAmountSelector, restrictFallbackToSystemFactions );
+                if ( record != null )
                 {
-                    lock (recordLock)
-                    {
-                        record = criminalrecord.FirstOrDefault(r => r.bountiesAmount == amount);
-                    }
-                }
-                else
-                {
-                    record = GetRecordWithFaction(reward.faction);
-                }
-
-                if (record != null)
-                {
-                    // Get all bounty claims, excluding the discrepancy report
-                    var reports = record.factionReports
-                        .Where(r => r.bounty && r.crimeDef == Crime.None).ToList();
-                    if (reports.Count > 0 )
-                    {
-                        var total = reports.Sum(r => r.amount);
-
-                        // Check for discrepancy in logged bounty claims
-                        if (total < amount)
-                        {
-                            // Adjust the discrepancy report & remove when zeroed out
-                            var report = record.factionReports
-                                .FirstOrDefault(r => r.crimeDef == Crime.Claim);
-                            if (report != null)
-                            {
-                                report.amount -= Math.Min(amount - total, report.amount);
-                                if (report.amount == 0) { reports.Add(report); }
-                            }
-                        }
-                        // Remove associated bounty claims
-                        record.factionReports = record.factionReports.Except(reports).ToList();
-                    }
-                    // Adjust the total claims
-                    record.claims -= Math.Min(amount, record.claims);
-
-                    RemoveRecordIfEmpty(record);
-                    update = true;
+                    update |= RemoveClaimReports( record, amount, reportSelector );
                 }
             }
             return update;
+        }
+
+        private FactionRecord FindClaimRedemptionRecord (
+            string faction,
+            long amount,
+            Func<FactionRecord, long> recordAmountSelector,
+            bool restrictFallbackToSystemFactions )
+        {
+            if ( !string.IsNullOrEmpty( faction ) )
+            {
+                return GetRecordWithFaction( faction );
+            }
+
+            var systemFactions = restrictFallbackToSystemFactions
+                ? EDDI.Instance.GameState.CurrentStarSystem?.factions?.Select( f => f.name ).ToList()
+                : null;
+
+            lock ( recordLock )
+            {
+                return criminalrecord
+                    .Where( r => !restrictFallbackToSystemFactions || (systemFactions?.Contains( r.faction ) ?? false) )
+                    .FirstOrDefault( r => recordAmountSelector( r ) == amount );
+            }
+        }
+
+        private bool RemoveClaimReports ( FactionRecord record, long amount, Func<FactionReport, bool> reportSelector )
+        {
+            var reports = record.factionReports.Where( reportSelector ).ToList();
+            if ( reports.Count == 0 )
+            {
+                return false;
+            }
+
+            var removedAmount = reports.Sum( ReportBaseAmount );
+            if ( removedAmount < amount )
+            {
+                var report = record.factionReports.FirstOrDefault( r => r.crimeDef == Crime.Claim );
+                if ( report != null )
+                {
+                    var discrepancyAmount = Math.Min( amount - removedAmount, ReportBaseAmount( report ) );
+                    report.amount -= discrepancyAmount;
+                    removedAmount += discrepancyAmount;
+                    if ( report.amount == 0 ) { reports.Add( report ); }
+                }
+            }
+
+            record.factionReports = record.factionReports.Except( reports ).ToList();
+            record.baseclaims -= Math.Min( removedAmount, record.baseclaims );
+            RemoveRecordIfEmpty( record );
+            UpdateCrimeValueModifiers();
+            return true;
         }
 
         private async Task handleBountyIncurredEventAsync(BountyIncurredEvent @event)
@@ -536,69 +660,61 @@ namespace EddiCrimeMonitor
 
         internal bool _handleBountyPaidEvent(BountyPaidEvent @event)
         {
-            void PayBounty(FactionRecord record)
-            {
-                // Get all bounties incurred, excluding the discrepancy report
-                var reports = record.factionReports
-                    .Where(r => r.crimeDef != Crime.None && r.crimeDef != Crime.Bounty)
-                    .ToList();
-
-                // Check for discrepancy in logged bounties incurred
-                var total = reports.Sum(r => r.amount);
-                if (total < @event.amount)
-                {
-                    // Adjust the discrepancy report & remove when zeroed out
-                    var report = record.factionReports
-                        .FirstOrDefault(r => r.crimeDef == Crime.Bounty);
-                    if (report != null)
-                    {
-                        report.amount -= Math.Min(@event.amount - total, report.amount);
-                        if (report.amount == 0) { reports.Add(report); }
-                    }
-                }
-                // Remove associated records
-                record.factionReports = record.factionReports.Except(reports).ToList();
-
-                // Adjust the total bounties incurred amount
-                record.bounties -= Math.Min(@event.amount, record.bounties);
-
-                RemoveRecordIfEmpty(record);
-            }
-
             var update = false;
-            lock (recordLock)
+            var amount = AmountBeforePaymentBrokerFee( @event.amount, @event.brokerpercentage );
+            var records = GetBountyPaymentRecords( @event.faction, @event.allbounties, amount );
+            foreach ( var record in records )
             {
-                foreach (var record in criminalrecord.ToList()
-                             // Filter out records from factions within the current star system
-                             .Where(r => !(EDDI.Instance.GameState.CurrentStarSystem?.factions?.Select(f => f.name) ?? new List<string>()).Contains(r.faction)))
-                {
-                    if (@event.allbounties || record.faction == @event.faction)
-                    {
-                        PayBounty(record);
-                        update = true;
-                        if (record.faction == @event.faction) { break; }
-                    }
-                }
-            }
-            if (!update)
-            {
-                // The bounty may have been converted to a Superpower bounty. See if we can find a record w/ a matching bounty.
-                var superpower = Superpower.FromNameOrEdName(@event.faction);
-                if (superpower != null)
-                {
-                    lock (recordLock)
-                    {
-                        var record = criminalrecord.ToList().SingleOrDefault(r => r.Allegiance == superpower && r.bounties == @event.amount);
-                        if (record != null)
-                        {
-                            PayBounty(record);
-                            update = true;
-                        }
-                    }
-                }
+                update |= RemoveCrimeReports(
+                    record,
+                    amount,
+                    r => r.bounty && r.crimeDef != Crime.None && r.crimeDef != Crime.Bounty && r.crimeDef != Crime.Claim,
+                    r => r.bounty && r.crimeDef == Crime.Bounty,
+                    true );
             }
 
             return update;
+        }
+
+        private List<FactionRecord> GetBountyPaymentRecords ( string faction, bool allbounties, long amount )
+        {
+            var records = SnapshotRecords();
+
+            if ( !string.IsNullOrEmpty( faction ) )
+            {
+                var exactRecord = records.FirstOrDefault( r => string.Equals( r.faction, faction, StringComparison.InvariantCultureIgnoreCase ) );
+                if ( exactRecord?.bounties > 0 )
+                {
+                    return [ exactRecord ];
+                }
+
+                var superpower = Superpower.FromNameOrEdName( faction );
+                if ( superpower != null )
+                {
+                    var matches = records.Where( r => r.Allegiance == superpower && r.bounties == amount ).ToList();
+                    if ( matches.Count == 1 )
+                    {
+                        return matches;
+                    }
+                }
+            }
+
+            if ( allbounties )
+            {
+                var exactMatches = records.Where( r => r.bounties == amount ).ToList();
+                if ( exactMatches.Count == 1 )
+                {
+                    return exactMatches;
+                }
+
+                var bountyRecords = records.Where( r => r.bounties > 0 ).ToList();
+                if ( bountyRecords.Count > 0 && bountyRecords.Sum( r => r.bounties ) <= amount )
+                {
+                    return bountyRecords;
+                }
+            }
+
+            return [ ];
         }
 
         private async Task handleFineIncurredEventAsync(FineIncurredEvent @event)
@@ -622,7 +738,6 @@ namespace EddiCrimeMonitor
                 body = EDDI.Instance.GameState.CurrentStellarBody?.bodyname,
                 victim = @event.victim
             };
-
             var record = GetRecordWithFaction(@event.faction) ?? await AddRecordAsync(@event.faction).ConfigureAwait(false);
             await AddReportToRecordAsync(record, report).ConfigureAwait(false);
         }
@@ -641,45 +756,234 @@ namespace EddiCrimeMonitor
 
         internal bool _handleFinePaidEvent(FinePaidEvent @event)
         {
-            // This event may trigger for both bounties paid and fines paid (FDev bug)
             var update = false;
-            lock (recordLock)
+            var amount = AmountBeforePaymentBrokerFee( @event.amount, @event.brokerpercentage );
+            var records = GetFinePaymentRecords( @event.faction, @event.allfines, amount );
+            foreach ( var record in records )
             {
-                foreach (var record in criminalrecord.ToList())
-                {
-                    if (@event.allfines || record.faction == @event.faction)
-                    {
-                        // Get all fines incurred, excluding the discrepancy report
-                        var reports = record.factionReports
-                            .Where(r => r.crimeDef != Crime.None && r.crimeDef != Crime.Fine)
-                            .ToList();
-                        var total = reports.Sum(r => r.amount);
-
-                        // Check for discrepancy in logged fines incurred
-                        if (total < @event.amount)
-                        {
-                            // Adjust the discrepancy report & remove when zeroed out
-                            var report = record.factionReports
-                                .FirstOrDefault(r => r.crimeDef == Crime.Fine);
-                            if (report != null)
-                            {
-                                report.amount -= Math.Min(@event.amount - total, report.amount);
-                                if (report.amount == 0) { reports.Add(report); }
-                            }
-                        }
-                        // Remove associated records
-                        record.factionReports = record.factionReports.Except(reports).ToList();
-
-                        // Adjust the total fines incurred amount
-                        record.fines -= Math.Min(@event.amount, record.fines);
-
-                        RemoveRecordIfEmpty(record);
-                        update = true;
-                        if (record.faction == @event.faction) { break; }
-                    }
-                }
-                return update;
+                update |= RemoveCrimeReports(
+                    record,
+                    amount,
+                    r => !r.bounty && r.crimeDef != Crime.None && r.crimeDef != Crime.Fine && r.crimeDef != Crime.Claim,
+                    r => !r.bounty && r.crimeDef == Crime.Fine,
+                    false );
             }
+
+            // Older journals can report a bounty payment as PayFines. Only apply that fallback when
+            // there is no fine match and the bounty match is unambiguous.
+            if ( !update )
+            {
+                var legacyBountyRecord = GetLegacyFinePaidBountyFallbackRecord( @event.faction, amount );
+                if ( legacyBountyRecord != null )
+                {
+                    update = RemoveCrimeReports(
+                        legacyBountyRecord,
+                        amount,
+                        r => r.bounty && r.crimeDef != Crime.None && r.crimeDef != Crime.Bounty && r.crimeDef != Crime.Claim,
+                        r => r.bounty && r.crimeDef == Crime.Bounty,
+                        true );
+                }
+            }
+
+            return update;
+        }
+
+        private List<FactionRecord> GetFinePaymentRecords ( string faction, bool allfines, long amount )
+        {
+            var records = SnapshotRecords();
+
+            if ( !string.IsNullOrEmpty( faction ) )
+            {
+                var exactRecord = records.FirstOrDefault( r => string.Equals( r.faction, faction, StringComparison.InvariantCultureIgnoreCase ) );
+                return exactRecord?.fines > 0 ? [ exactRecord ] : [ ];
+            }
+
+            var authorityRecord = GetRecordWithFaction( crimeAuthorityFaction );
+            if ( authorityRecord?.fines > 0 && authorityRecord.fines <= amount )
+            {
+                return [ authorityRecord ];
+            }
+
+            if ( allfines )
+            {
+                var exactMatches = records.Where( r => r.fines == amount ).ToList();
+                if ( exactMatches.Count == 1 )
+                {
+                    return exactMatches;
+                }
+
+                var fineRecords = records.Where( r => r.fines > 0 ).ToList();
+                if ( fineRecords.Count > 0 && fineRecords.Sum( r => r.fines ) <= amount )
+                {
+                    return fineRecords;
+                }
+            }
+
+            return [ ];
+        }
+
+        private FactionRecord GetLegacyFinePaidBountyFallbackRecord ( string faction, long amount )
+        {
+            var records = SnapshotRecords();
+            var candidates = new List<FactionRecord>();
+
+            if ( !string.IsNullOrEmpty( faction ) )
+            {
+                var exactRecord = records.FirstOrDefault( r =>
+                    string.Equals( r.faction, faction, StringComparison.InvariantCultureIgnoreCase ) &&
+                    r.bounties == amount );
+                if ( exactRecord != null )
+                {
+                    candidates.Add( exactRecord );
+                }
+
+                var superpower = Superpower.FromNameOrEdName( faction );
+                if ( superpower != null )
+                {
+                    candidates.AddRange( records.Where( r => r.Allegiance == superpower && r.bounties == amount ) );
+                }
+            }
+            else
+            {
+                candidates.AddRange( records.Where( r => r.bounties == amount ) );
+            }
+
+            var distinctCandidates = candidates.Distinct().ToList();
+            return distinctCandidates.Count == 1 ? distinctCandidates.Single() : null;
+        }
+
+        private List<FactionRecord> SnapshotRecords()
+        {
+            lock ( recordLock )
+            {
+                return criminalrecord.ToList();
+            }
+        }
+
+        private static long AmountBeforePaymentBrokerFee(long amount, decimal? brokerpercentage)
+        {
+            var multiplier = 1 + ((brokerpercentage ?? 0) / 100);
+            return multiplier <= 0
+                ? amount
+                : Convert.ToInt64(Math.Round(amount / multiplier, MidpointRounding.AwayFromZero));
+        }
+
+        private static long AmountBeforeRedeemBrokerFee(long amount, decimal? brokerpercentage)
+        {
+            var multiplier = (100 - (brokerpercentage ?? 0)) / 100;
+            return multiplier <= 0
+                ? amount
+                : Convert.ToInt64(Math.Ceiling(amount / multiplier));
+        }
+
+        private decimal? GetActivePowerplayBountyVoucherBonus()
+        {
+            return pledgedPower is null || pledgedPower == Power.None ||
+                   currentSystemPower is null || currentSystemPower == Power.None ||
+                   !string.Equals( pledgedPower.edname, currentSystemPower.edname, StringComparison.OrdinalIgnoreCase ) ||
+                   !PowerplayBountyVoucherBonus.TryGetBonus( pledgedPower, PledgedPowerRank, out var bonus )
+                ? null
+                : bonus;
+        }
+
+        private static long EstimateRecordClaims ( FactionRecord record, decimal? bountyVoucherBonus )
+        {
+            if ( record is null )
+            {
+                return 0;
+            }
+
+            var claimReports = record.factionReports
+                .Where( r => r.crimeDef == Crime.None || r.crimeDef == Crime.Claim )
+                .ToList();
+            if ( claimReports.Count == 0 )
+            {
+                return record.baseclaims;
+            }
+
+            var discrepancyClaims = claimReports
+                .Where( r => r.crimeDef == Crime.Claim )
+                .Sum( ReportBaseAmount );
+
+            return EstimateRecordBondClaims( record ) +
+                   EstimateRecordBountyClaims( record, bountyVoucherBonus ) +
+                   discrepancyClaims;
+        }
+
+        private static long EstimateRecordBondClaims ( FactionRecord record )
+        {
+            return record?.bondsAwarded.Sum( EstimateBondVoucherValue ) ?? 0;
+        }
+
+        private static long EstimateRecordBountyClaims ( FactionRecord record, decimal? bountyVoucherBonus )
+        {
+            return record?.bountiesAwarded.Sum( r => EstimateBountyVoucherValue( ReportBaseAmount( r ), bountyVoucherBonus ) ) ?? 0;
+        }
+
+        private static long EstimateBondVoucherValue ( FactionReport report )
+        {
+            var multiplier = IsOnFootBondReport( report )
+                ? HiddenOnFootCombatBondVoucherMultiplier
+                : HiddenShipCombatBondVoucherMultiplier;
+
+            return Convert.ToInt64( Math.Round( ReportBaseAmount( report ) * multiplier, MidpointRounding.AwayFromZero ) );
+        }
+
+        private static bool IsOnFootBondReport ( FactionReport report )
+        {
+            return string.Equals( report?.claimvehicle, Constants.VEHICLE_LEGS, StringComparison.OrdinalIgnoreCase );
+        }
+
+        private static long EstimateBountyVoucherValue ( long amount, decimal? bountyVoucherBonus )
+        {
+            return bountyVoucherBonus is > 0
+                ? PowerplayBountyVoucherBonus.ApplyBonus( amount, bountyVoucherBonus.Value )
+                : amount;
+        }
+
+        private static long ReportBaseAmount ( FactionReport report )
+        {
+            return report?.amount ?? 0;
+        }
+
+        private bool RemoveCrimeReports (
+            FactionRecord record,
+            long amount,
+            Func<FactionReport, bool> reportSelector,
+            Func<FactionReport, bool> discrepancySelector,
+            bool bounty )
+        {
+            var reports = record.factionReports.Where( reportSelector ).ToList();
+            var removedAmount = reports.Sum( r => r.amount );
+            if ( removedAmount < amount )
+            {
+                var report = record.factionReports.FirstOrDefault( discrepancySelector );
+                if ( report != null )
+                {
+                    var discrepancyAmount = Math.Min( amount - removedAmount, report.amount );
+                    report.amount -= discrepancyAmount;
+                    removedAmount += discrepancyAmount;
+                    if ( report.amount == 0 ) { reports.Add( report ); }
+                }
+            }
+
+            if ( removedAmount == 0 )
+            {
+                return false;
+            }
+
+            record.factionReports = record.factionReports.Except( reports ).ToList();
+            if ( bounty )
+            {
+                record.bounties -= Math.Min( removedAmount, record.bounties );
+            }
+            else
+            {
+                record.fines -= Math.Min( removedAmount, record.fines );
+            }
+
+            RemoveRecordIfEmpty( record );
+            return true;
         }
 
         private async Task handleMissionAbandonedEventAsync(MissionAbandonedEvent @event)
@@ -737,8 +1041,9 @@ namespace EddiCrimeMonitor
 
         private void _handleRespawnedEvent(RespawnedEvent @event)
         {
-            void RemoveCriminalRecords(string faction = null)
+            long RemoveCriminalRecords(string faction = null)
             {
+                long removed = 0;
                 // Update the criminal record fines and bounties for each faction, as appropriate.
                 lock (recordLock)
                 {
@@ -752,10 +1057,51 @@ namespace EddiCrimeMonitor
                             // Remove all pending fines and bounties (from a named faction, if a faction name is given)
                             var forFaction = !string.IsNullOrEmpty(faction) ? $"for faction {record.faction} " : "";
                             Logging.Debug($"Paid {@event.price} credits to resolve fines and bounties {forFaction} (expected {crimeReports.Sum(r => r.amount)}).");
+                            removed += crimeReports.Sum(r => r.amount);
                             record.factionReports = record.factionReports.Except(crimeReports).ToList();
                             RemoveRecordIfEmpty(record);
                         }
                     }
+                }
+                return removed;
+            }
+
+            long RemoveCriminalRecordsByAmount(long amount)
+            {
+                if ( amount <= 0 )
+                {
+                    return 0;
+                }
+
+                lock (recordLock)
+                {
+                    var matches = criminalrecord
+                        .Select(record => new
+                        {
+                            record,
+                            crimeReports = record.factionReports
+                                .Where(r => r.crimeDef != Crime.None && r.crimeDef != Crime.Claim)
+                                .ToList()
+                        })
+                        .Select(match => new
+                        {
+                            match.record,
+                            match.crimeReports,
+                            total = match.crimeReports.Sum(r => r.amount)
+                        })
+                        .Where(match => match.total == amount)
+                        .ToList();
+
+                    if (matches.Count != 1)
+                    {
+                        return 0;
+                    }
+
+                    var match = matches[0];
+                    Logging.Debug($"Paid {@event.price} credits to resolve fines and bounties by matching the recover cost to {match.record.faction}.");
+                    match.record.factionReports = match.record.factionReports.Except(match.crimeReports).ToList();
+                    RemoveRecordIfEmpty(match.record);
+                    return match.total;
                 }
             }
 
@@ -784,10 +1130,14 @@ namespace EddiCrimeMonitor
                     RemoveCriminalRecords();
                     RemoveClaimsRecords();
                     break;
-                    }
+                }
                 case "recover":  // Recover from an on-foot critical injury. All fines and bounties for the local authority faction (only) must be paid. Claims are lost.
                 {
-                    RemoveCriminalRecords(crimeAuthorityFaction);
+                    var removed = RemoveCriminalRecords(crimeAuthorityFaction);
+                    if (removed == 0)
+                    {
+                        RemoveCriminalRecordsByAmount(@event.price);
+                    }
                     RemoveClaimsRecords();
                     break;
                 }
@@ -807,6 +1157,7 @@ namespace EddiCrimeMonitor
 
         public IDictionary<string, Tuple<Type, object>> GetVariables()
         {
+            UpdateCrimeValueModifiers();
             lock ( recordLock )
             {
                 return new Dictionary<string, Tuple<Type, object>>
@@ -815,6 +1166,8 @@ namespace EddiCrimeMonitor
                     [ "claims" ] = new( typeof(long), claims ),
                     [ "fines" ] = new( typeof(long), fines ),
                     [ "bounties" ] = new( typeof(long), bounties ),
+                    [ "powerplaybountybonus" ] = new( typeof(decimal?), PowerplayBountyBonus ),
+                    [ "powerplaycrimereduction" ] = new( typeof(decimal?), PowerplayCrimeReduction ),
                     [ "shiptargets" ] = new( typeof(List<Target>), shipTargets.ToList() )
                 };
             }
@@ -824,6 +1177,8 @@ namespace EddiCrimeMonitor
         {
             lock (recordLock)
             {
+                UpdateCrimeValueModifiers();
+
                 // Write criminal configuration with current criminal record
                 var configuration = new CrimeMonitorConfiguration()
                 {
@@ -845,6 +1200,7 @@ namespace EddiCrimeMonitor
                 configuration ??= ConfigService.Instance.crimeMonitorConfiguration;
                 homeSystems = configuration.homeSystems;
                 updateDat = configuration.updatedat;
+                LoadPowerplayContext();
 
                 // Build a new criminal record
                 var records = configuration.criminalrecord.OrderBy(c => c.faction).ToList();
@@ -853,6 +1209,7 @@ namespace EddiCrimeMonitor
                 {
                     criminalrecord.Add(record);
                 }
+                UpdateCrimeValueModifiers();
             }
         }
 
@@ -908,6 +1265,11 @@ namespace EddiCrimeMonitor
 
             var total = record.fines + record.bounties + report.amount;
             var powerRecord = GetRecordWithFaction(record.allegiance);
+            if ( ReferenceEquals( powerRecord, record ) )
+            {
+                _AddReportToRecord(record, report);
+                return;
+            }
 
             // Minor faction crimes are converted to an interstellar power record, owned by the faction's aligned
             // superpower, when total fines & bounties incurred exceed 10,000 credits
@@ -944,6 +1306,31 @@ namespace EddiCrimeMonitor
                     // An interstellar power record is already active, update it
                     _AddReportToRecord(powerRecord, report);
                 }
+                else if (report.bounty)
+                {
+                    // A superpower bounty is already active. Any bounty from an aligned faction
+                    // contributes to that superpower bounty, even if this faction was not yet tracked.
+                    var reports = record.factionReports
+                        .Where(r => r.crimeDef != Crime.None && r.crimeDef != Crime.Claim)
+                        .ToList();
+                    powerRecord.factionReports.AddRange(reports);
+                    powerRecord.fines += record.fines;
+                    powerRecord.bounties += record.bounties;
+                    if (!powerRecord.interstellarBountyFactions.Contains(record.faction))
+                    {
+                        powerRecord.interstellarBountyFactions.Add(record.faction);
+                    }
+                    record.factionReports = record.factionReports.Except(reports).ToList();
+                    record.fines = 0;
+                    record.bounties = 0;
+
+                    _AddReportToRecord(powerRecord, report);
+                    RemoveRecordIfEmpty(record);
+                }
+                else
+                {
+                    _AddReportToRecord(record, report);
+                }
             }
         }
 
@@ -954,7 +1341,9 @@ namespace EddiCrimeMonitor
             {
                 record.bounties += report.amount;
             }
-            else if ( !report.bounty && record.bounties > 0 )
+            else if ( !report.bounty &&
+                      !IsOnFootCrimeReport( report ) &&
+                      record.bountiesIncurred.Any( r => !IsOnFootCrimeReport( r ) ) )
             {
                 // This fine is converted to a bounty because we already have a bounty from this faction.
                 record.bounties += report.amount;
@@ -966,10 +1355,13 @@ namespace EddiCrimeMonitor
             }
 
             // When a bounty is incurred, we convert any pending fines to bounties
-            if (report.bounty && report.crimeDef != Crime.None)
+            if ( report.bounty && report.crimeDef != Crime.None && !IsOnFootCrimeReport( report ) )
             {
                 var fineReports = record.factionReports
-                    .Where(r => r.crimeDef != Crime.None && r.crimeDef != Crime.Claim && !r.bounty)
+                    .Where( r => r.crimeDef != Crime.None &&
+                                 r.crimeDef != Crime.Claim &&
+                                 !r.bounty &&
+                                 !IsOnFootCrimeReport( r ) )
                     .ToList();
                 if (fineReports.Count > 0 )
                 {
@@ -978,6 +1370,11 @@ namespace EddiCrimeMonitor
                     record.bounties += fineReports.Sum(r => r.amount);
                 }
             }
+        }
+
+        private static bool IsOnFootCrimeReport ( FactionReport report )
+        {
+            return report?.crimeDef?.edname?.StartsWith( "onFoot_", StringComparison.OrdinalIgnoreCase ) ?? false;
         }
 
         private async Task<bool> handleMissionFineAsync(DateTime timestamp, ulong missionid, long fine)

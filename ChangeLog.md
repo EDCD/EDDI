@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+## 5.0.3
+  * Crime Monitor 
+    * Reviewed and revised crime monitor logic to better handle edge cases and to more accurately track crimes and bounties.
+
 ## 5.0.2
   * Core
     * Installer revised to more gracefully handle installation over an existing installation of EDDI 4.1.9 or earlier (e.g. when installing VoiceAttack 2 over an existing VoiceAttack 1 installation).

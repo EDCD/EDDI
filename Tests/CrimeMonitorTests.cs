@@ -6,10 +6,15 @@ using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using Utilities;
 
 namespace Tests
 {
@@ -213,7 +218,7 @@ namespace Tests
             line = "{ \"timestamp\":\"2019-04-22T03:13:36Z\", \"event\":\"Bounty\", \"Rewards\":[ { \"Faction\":\"Calennero State Industries\", \"Reward\":22265 } ], \"Target\":\"adder\", \"TotalReward\":22265, \"VictimFaction\":\"Natural Amemakarna Movement\" }";
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.HasCount( 1, events );
-            await crimeMonitor._handleBountyAwardedEventAsync( (BountyAwardedEvent)events[ 0 ], true ).ConfigureAwait(false);
+            await crimeMonitor._handleBountyAwardedEventAsync( (BountyAwardedEvent)events[ 0 ] ).ConfigureAwait(false);
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Calennero State Industries");
             Assert.IsNotNull(record);
             Assert.AreEqual(2, record.factionReports.Count(r => r.bounty && r.crimeDef == Crime.None));
@@ -266,7 +271,8 @@ namespace Tests
             Assert.HasCount( 1, events );
             crimeMonitor._handleFinePaidEvent( (FinePaidEvent)events[ 0 ] );
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Calennero State Industries");
-            Assert.IsNull(record);
+            Assert.IsNotNull(record);
+            Assert.AreEqual(800, record.bountiesIncurred.Sum(r => r.amount));
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Constitution Party of Aerial");
             Assert.IsNull(record);
 
@@ -301,12 +307,837 @@ namespace Tests
             Assert.HasCount( 0, crimeMonitor.shipTargets );
         }
 
+        [TestMethod, DoNotParallelize]
+        public void TestFinePaidClearsOnlyFineReports()
+        {
+            crimeMonitor.readRecord( new CrimeMonitorConfiguration() );
+            var lostRecord = new FactionRecord( "LOST Industrial Technologies" )
+            {
+                Allegiance = Superpower.Independent,
+                fines = 400,
+                bounties = 753685
+            };
+            lostRecord.factionReports.Add( new FactionReport( DateTime.Parse( "2026-05-26T06:40:10Z" ), false,
+                Crime.TrespassMinor, "HIP 37722", 400 ) );
+            lostRecord.factionReports.Add( new FactionReport( DateTime.Parse( "2026-05-26T06:42:00Z" ), true,
+                Crime.Assault, "HIP 37722", 753685 ) );
+            crimeMonitor.criminalrecord.Add( lostRecord );
+
+            line = @"{ ""timestamp"":""2026-05-26T06:51:10Z"", ""event"":""PayFines"", ""Amount"":400, ""AllFines"":true, ""ShipID"":143 }";
+            events = JournalMonitor.ParseJournalEntry( line );
+            Assert.HasCount( 1, events );
+
+            Assert.IsTrue( crimeMonitor._handleFinePaidEvent( (FinePaidEvent)events[ 0 ] ) );
+
+            record = crimeMonitor.criminalrecord.FirstOrDefault( r => r.faction == "LOST Industrial Technologies" );
+            Assert.IsNotNull( record );
+            Assert.AreEqual( 0, record.fines );
+            Assert.AreEqual( 753685, record.bounties );
+            Assert.HasCount( 0, record.finesIncurred );
+            Assert.ContainsSingle( r => r.bounty && r.crimeDef != Crime.None, record.factionReports );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void TestFinePaidWithoutFineMatchDoesNotClearUnrelatedBounties()
+        {
+            crimeMonitor.readRecord( new CrimeMonitorConfiguration() );
+            var bountyRecord = new FactionRecord( "LOST Industrial Technologies" )
+            {
+                Allegiance = Superpower.Independent,
+                bounties = 882242
+            };
+            bountyRecord.factionReports.Add( new FactionReport( DateTime.Parse( "2026-05-26T14:10:00Z" ), true,
+                Crime.Assault, "HIP 37722", 882242 ) );
+            crimeMonitor.criminalrecord.Add( bountyRecord );
+
+            line = @"{ ""timestamp"":""2026-05-26T14:14:48Z"", ""event"":""PayFines"", ""Amount"":100000, ""AllFines"":true, ""ShipID"":143 }";
+            events = JournalMonitor.ParseJournalEntry( line );
+            Assert.HasCount( 1, events );
+
+            Assert.IsFalse( crimeMonitor._handleFinePaidEvent( (FinePaidEvent)events[ 0 ] ) );
+
+            record = crimeMonitor.criminalrecord.FirstOrDefault( r => r.faction == "LOST Industrial Technologies" );
+            Assert.IsNotNull( record );
+            Assert.AreEqual( 882242, record.bounties );
+            Assert.ContainsSingle( r => r.bounty && r.crimeDef != Crime.None, record.factionReports );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void TestLegacyFinePaidBountyFallbackRequiresUniqueMatch()
+        {
+            crimeMonitor.readRecord( new CrimeMonitorConfiguration() );
+            var firstRecord = new FactionRecord( "First Faction" )
+            {
+                Allegiance = Superpower.Independent,
+                bounties = 100
+            };
+            firstRecord.factionReports.Add( new FactionReport( DateTime.Parse( "2026-05-26T10:00:00Z" ), true,
+                Crime.Assault, "HIP 37722", 100 ) );
+            var secondRecord = new FactionRecord( "Second Faction" )
+            {
+                Allegiance = Superpower.Independent,
+                bounties = 100
+            };
+            secondRecord.factionReports.Add( new FactionReport( DateTime.Parse( "2026-05-26T10:01:00Z" ), true,
+                Crime.Assault, "HIP 37722", 100 ) );
+            crimeMonitor.criminalrecord.Add( firstRecord );
+            crimeMonitor.criminalrecord.Add( secondRecord );
+
+            line = @"{ ""timestamp"":""2026-05-26T10:05:00Z"", ""event"":""PayFines"", ""Amount"":100, ""AllFines"":true, ""ShipID"":143 }";
+            events = JournalMonitor.ParseJournalEntry( line );
+            Assert.HasCount( 1, events );
+
+            Assert.IsFalse( crimeMonitor._handleFinePaidEvent( (FinePaidEvent)events[ 0 ] ) );
+            Assert.HasCount( 2, crimeMonitor.criminalrecord );
+            Assert.IsTrue( crimeMonitor.criminalrecord.All( r => r.bounties == 100 ) );
+
+            crimeMonitor._RemoveRecord( secondRecord );
+
+            Assert.IsTrue( crimeMonitor._handleFinePaidEvent( (FinePaidEvent)events[ 0 ] ) );
+            Assert.HasCount( 0, crimeMonitor.criminalrecord );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task TestSameSuperpowerBountyAddsToActiveSuperpowerRecord()
+        {
+            crimeMonitor.readRecord( new CrimeMonitorConfiguration() );
+            var empireRecord = new FactionRecord( "Empire" )
+            {
+                Allegiance = Superpower.Empire,
+                bounties = 12000,
+                interstellarBountyFactions = [ "First Imperial Faction" ]
+            };
+            empireRecord.factionReports.Add( new FactionReport( DateTime.Parse( "2026-05-26T10:00:00Z" ), true,
+                Crime.Assault, "Achenar", 12000 ) );
+            var minorRecord = new FactionRecord( "Second Imperial Faction" )
+            {
+                Allegiance = Superpower.Empire
+            };
+            crimeMonitor.criminalrecord.Add( empireRecord );
+            crimeMonitor.criminalrecord.Add( minorRecord );
+
+            line = @"{ ""timestamp"":""2026-05-26T10:05:00Z"", ""event"":""CommitCrime"", ""CrimeType"":""assault"", ""Faction"":""Second Imperial Faction"", ""Victim"":""Target"", ""Bounty"":400 }";
+            events = JournalMonitor.ParseJournalEntry( line );
+            Assert.HasCount( 1, events );
+
+            await crimeMonitor._handleBountyIncurredEventAsync( (BountyIncurredEvent)events[ 0 ] ).ConfigureAwait( false );
+
+            record = crimeMonitor.criminalrecord.FirstOrDefault( r => r.faction == "Empire" );
+            Assert.IsNotNull( record );
+            Assert.AreEqual( 12400, record.bounties );
+            Assert.Contains( "Second Imperial Faction", record.interstellarBountyFactions );
+            Assert.HasCount( 2, record.bountiesIncurred);
+            Assert.IsNull( crimeMonitor.criminalrecord.FirstOrDefault( r => r.faction == "Second Imperial Faction" ) );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void TestMultiFactionCombatBondRedemptionClearsAllListedFactions()
+        {
+            crimeMonitor.readRecord( new CrimeMonitorConfiguration() );
+            var firstRecord = new FactionRecord( "First Bond Faction" )
+            {
+                Allegiance = Superpower.Independent,
+                baseclaims = 100
+            };
+            firstRecord.factionReports.Add( new FactionReport( DateTime.Parse( "2026-05-26T10:00:00Z" ), false,
+                Crime.None, "HIP 37722", 100 ) );
+            var secondRecord = new FactionRecord( "Second Bond Faction" )
+            {
+                Allegiance = Superpower.Independent,
+                baseclaims = 200
+            };
+            secondRecord.factionReports.Add( new FactionReport( DateTime.Parse( "2026-05-26T10:01:00Z" ), false,
+                Crime.None, "HIP 37722", 200 ) );
+            crimeMonitor.criminalrecord.Add( firstRecord );
+            crimeMonitor.criminalrecord.Add( secondRecord );
+
+            line = @"{ ""timestamp"":""2026-05-26T10:05:00Z"", ""event"":""RedeemVoucher"", ""Type"":""CombatBond"", ""Amount"":300, ""Factions"":[ { ""Faction"":""First Bond Faction"", ""Amount"":100 }, { ""Faction"":""Second Bond Faction"", ""Amount"":200 } ] }";
+            events = JournalMonitor.ParseJournalEntry( line );
+            Assert.HasCount( 1, events );
+
+            Assert.IsTrue( crimeMonitor._handleBondRedeemedEvent( (BondRedeemedEvent)events[ 0 ] ) );
+
+            Assert.HasCount( 0, crimeMonitor.criminalrecord );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task TestDataVoucherEventsAreOutOfScope()
+        {
+            crimeMonitor.readRecord( new CrimeMonitorConfiguration() );
+            var payeeRecord = new FactionRecord( "Payee Faction" )
+            {
+                Allegiance = Superpower.Independent
+            };
+            crimeMonitor.criminalrecord.Add( payeeRecord );
+
+            line = @"{ ""timestamp"":""2026-05-26T10:00:00Z"", ""event"":""DatalinkVoucher"", ""Reward"":500, ""VictimFaction"":""Victim Faction"", ""PayeeFaction"":""Payee Faction"" }";
+            events = JournalMonitor.ParseJournalEntry( line );
+            Assert.HasCount( 1, events );
+            await crimeMonitor.PreHandleAsync( events[ 0 ] ).ConfigureAwait( false );
+
+            record = crimeMonitor.criminalrecord.FirstOrDefault( r => r.faction == "Payee Faction" );
+            Assert.IsNotNull( record );
+            Assert.AreEqual( 0, record.claims );
+            Assert.HasCount( 0, record.factionReports );
+
+            line = @"{ ""timestamp"":""2026-05-26T10:05:00Z"", ""event"":""RedeemVoucher"", ""Type"":""settlement"", ""Amount"":500, ""Factions"":[ { ""Faction"":""Payee Faction"", ""Amount"":500 } ] }";
+            events = JournalMonitor.ParseJournalEntry( line );
+            Assert.HasCount( 1, events );
+            await crimeMonitor.PreHandleAsync( events[ 0 ] ).ConfigureAwait( false );
+
+            record = crimeMonitor.criminalrecord.FirstOrDefault( r => r.faction == "Payee Faction" );
+            Assert.IsNotNull( record );
+            Assert.AreEqual( 0, record.claims );
+            Assert.HasCount( 0, record.factionReports );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task TestBountyAwardStoresAndDisplaysJournalAmount()
+        {
+            crimeMonitor.readRecord( new CrimeMonitorConfiguration() );
+            EDDI.Instance.CurrentStarSystem = new StarSystem
+            {
+                systemname = "Power Territory",
+                systemAddress = 1,
+                Power = Power.ALavignyDuval
+            };
+            var record = new FactionRecord( "Awarding Faction" )
+            {
+                Allegiance = Superpower.Empire
+            };
+            crimeMonitor.criminalrecord.Add( record );
+
+            line = @"{ ""timestamp"":""2026-05-26T10:00:00Z"", ""event"":""Bounty"", ""Rewards"":[ { ""Faction"":""Awarding Faction"", ""Reward"":100 } ], ""Target"":""adder"", ""TotalReward"":100, ""VictimFaction"":""Victim Faction"" }";
+            events = JournalMonitor.ParseJournalEntry( line );
+            Assert.HasCount( 1, events );
+
+            await crimeMonitor._handleBountyAwardedEventAsync( (BountyAwardedEvent)events[ 0 ] ).ConfigureAwait( false );
+
+            Assert.AreEqual( 100, record.baseclaims );
+            Assert.AreEqual( 100, record.claims );
+            Assert.AreEqual( 100, record.basebountyclaims );
+            Assert.AreEqual( 100, record.bountyclaims );
+            Assert.AreEqual( 100, record.bountiesAmount );
+            var variables = crimeMonitor.GetVariables();
+            Assert.AreEqual( 100L, variables[ "claims" ].Item2 );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task TestInShipBountyAwardJournalRewardsRemainUnmultiplied()
+        {
+            crimeMonitor.readRecord( new CrimeMonitorConfiguration() );
+
+            var bountyLines = new[]
+            {
+                @"{ ""timestamp"":""2026-06-01T06:05:03Z"", ""event"":""Bounty"", ""Rewards"":[ { ""Faction"":""GAT 2 Exchange"", ""Reward"":118008 }, { ""Faction"":""LOST Industrial Technologies"", ""Reward"":174508 }, { ""Faction"":""Canonn"", ""Reward"":88638 } ], ""PilotName"":""$npc_name_decorate:#name=Hadzihasanovic;"", ""PilotName_Localised"":""Hadzihasanovic"", ""Target"":""vulture"", ""TotalReward"":381154, ""VictimFaction"":""Children of Raxxla"" }",
+                @"{ ""timestamp"":""2026-06-01T06:05:36Z"", ""event"":""Bounty"", ""Rewards"":[ { ""Faction"":""LOST Industrial Technologies"", ""Reward"":209622 }, { ""Faction"":""Pereng Asli General Ltd"", ""Reward"":70854 } ], ""PilotName"":""$npc_name_decorate:#name=Michael Flexarius;"", ""PilotName_Localised"":""Michael Flexarius"", ""Target"":""asp"", ""Target_Localised"":""Asp Explorer"", ""TotalReward"":280476, ""VictimFaction"":""LTT 4730 Noblement"" }",
+                @"{ ""timestamp"":""2026-06-01T06:11:23Z"", ""event"":""Bounty"", ""Rewards"":[ { ""Faction"":""LOST Industrial Technologies"", ""Reward"":229024 }, { ""Faction"":""Canonn"", ""Reward"":167112 } ], ""PilotName"":""$npc_name_decorate:#name=Sigurd Arvik;"", ""PilotName_Localised"":""Sigurd Arvik"", ""Target"":""vulture"", ""TotalReward"":396136, ""VictimFaction"":""Children of Raxxla"" }"
+            };
+
+            foreach ( var bountyLine in bountyLines )
+            {
+                events = JournalMonitor.ParseJournalEntry( bountyLine );
+                Assert.HasCount( 1, events );
+                await crimeMonitor.PreHandleAsync( events[ 0 ] ).ConfigureAwait( false );
+            }
+
+            Assert.AreEqual( 118008, crimeMonitor.criminalrecord.Single( r => r.faction == "GAT 2 Exchange" ).claims );
+            Assert.AreEqual( 613154, crimeMonitor.criminalrecord.Single( r => r.faction == "LOST Industrial Technologies" ).claims );
+            Assert.AreEqual( 70854, crimeMonitor.criminalrecord.Single( r => r.faction == "Pereng Asli General Ltd" ).claims );
+            Assert.AreEqual( 255750, crimeMonitor.criminalrecord.Single( r => r.faction == "Canonn" ).claims );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void TestBountyVoucherRedemptionUsesJournalAmount()
+        {
+            crimeMonitor.readRecord( new CrimeMonitorConfiguration() );
+            var record = new FactionRecord( "Awarding Faction" )
+            {
+                Allegiance = Superpower.Independent,
+                baseclaims = 100
+            };
+            record.factionReports.Add( new FactionReport( DateTime.Parse( "2026-05-26T10:00:00Z" ), true,
+                Crime.None, "HIP 37722", 100 )
+            {
+                claimtype = FactionReport.BountyClaimType
+            } );
+            crimeMonitor.criminalrecord.Add( record );
+
+            var variables = crimeMonitor.GetVariables();
+            Assert.AreEqual( 100, record.baseclaims );
+            Assert.AreEqual( 100L, variables[ "claims" ].Item2 );
+            Assert.AreEqual( 100, record.claims );
+            Assert.AreEqual( 100, record.bountyclaims );
+
+            line = @"{ ""timestamp"":""2026-05-26T10:05:00Z"", ""event"":""RedeemVoucher"", ""Type"":""bounty"", ""Amount"":100, ""Factions"":[ { ""Faction"":""Awarding Faction"", ""Amount"":100 } ] }";
+            events = JournalMonitor.ParseJournalEntry( line );
+            Assert.HasCount( 1, events );
+
+            Assert.IsTrue( crimeMonitor._handleBountyRedeemedEvent( (BountyRedeemedEvent)events[ 0 ] ) );
+            Assert.IsNull( crimeMonitor.criminalrecord.FirstOrDefault( r => r.faction == "Awarding Faction" ) );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task TestOnFootRecoverClearsResolvedFineAndBountyCost()
+        {
+            crimeMonitor.readRecord( new CrimeMonitorConfiguration() );
+
+            var eventLines = new[]
+            {
+                @"{ ""timestamp"":""2026-06-01T04:00:30Z"", ""event"":""CommitCrime"", ""CrimeType"":""onFoot_carryingIllegalData"", ""Faction"":""The Buurian Protectorate"", ""Fine"":12500 }",
+                @"{ ""timestamp"":""2026-06-01T04:00:39Z"", ""event"":""CommitCrime"", ""CrimeType"":""onFoot_murder"", ""Faction"":""The Buurian Protectorate"", ""Victim"":""Seerat Douglas"", ""Bounty"":1000 }",
+                @"{ ""timestamp"":""2026-06-01T04:00:53Z"", ""event"":""CommitCrime"", ""CrimeType"":""onFoot_murder"", ""Faction"":""The Buurian Protectorate"", ""Victim"":""Garth Cooley"", ""Bounty"":1000 }"
+            };
+
+            foreach ( var eventLine in eventLines )
+            {
+                events = JournalMonitor.ParseJournalEntry( eventLine );
+                Assert.HasCount( 1, events );
+                await crimeMonitor.PreHandleAsync( events[ 0 ] ).ConfigureAwait( false );
+            }
+
+            Assert.AreEqual( 12500, crimeMonitor.criminalrecord.Sum( r => r.fines ) );
+            Assert.AreEqual( 2000, crimeMonitor.criminalrecord.Sum( r => r.bounties ) );
+
+            line = @"{ ""timestamp"":""2026-06-01T04:01:39Z"", ""event"":""Resurrect"", ""Option"":""recover"", ""Cost"":14500, ""Bankrupt"":false }";
+            events = JournalMonitor.ParseJournalEntry( line );
+            Assert.HasCount( 1, events );
+            await crimeMonitor.PreHandleAsync( events[ 0 ] ).ConfigureAwait( false );
+
+            Assert.AreEqual( 0, crimeMonitor.criminalrecord.Sum( r => r.fines ) );
+            Assert.AreEqual( 0, crimeMonitor.criminalrecord.Sum( r => r.bounties ) );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void TestFactionRecordSerializesBaseClaimsForRollbackCompatibility()
+        {
+            var record = new FactionRecord( "Awarding Faction" )
+            {
+                Allegiance = Superpower.Independent,
+                baseclaims = 100
+            };
+            record.UpdateFinalClaimValues( 425, 425 );
+
+            var serialized = JsonConvert.SerializeObject( record );
+
+            Assert.Contains( @"""claims"":100", serialized);
+            Assert.IsFalse( serialized.Contains( @"""claims"":425", StringComparison.Ordinal ) );
+
+            var deserialized = JsonConvert.DeserializeObject<FactionRecord>( serialized );
+
+            Assert.IsNotNull( deserialized );
+            Assert.AreEqual( 100, deserialized.baseclaims );
+            Assert.AreEqual( 100, deserialized.claims );
+            Assert.AreEqual( 0, deserialized.bountyclaims );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void TestFactionRecordFinalClaimsSetterCreatesDiscrepancyWithoutChangingBaseClaims()
+        {
+            var record = new FactionRecord( "Awarding Faction" )
+            {
+                Allegiance = Superpower.Independent,
+                baseclaims = 100
+            };
+            record.factionReports.Add( new FactionReport( DateTime.Parse( "2026-05-26T10:00:00Z" ), true,
+                Crime.None, "HIP 37722", 100 )
+            {
+                claimtype = FactionReport.BountyClaimType
+            } );
+            record.UpdateFinalClaimValues( 425, 425 );
+
+            record.claims = 500;
+
+            Assert.AreEqual( 100, record.baseclaims );
+            Assert.AreEqual( 500, record.claims );
+            var discrepancy = record.factionReports.SingleOrDefault( r => r.crimeDef == Crime.Claim );
+            Assert.IsNotNull( discrepancy );
+            Assert.AreEqual( 75, discrepancy.amount );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void TestClaimsColumnIsEditableForDiscrepancyReports()
+        {
+            var xamlPath = FindRepositoryFile( Path.Combine( "CrimeMonitor", "ConfigurationWindow.xaml" ) );
+            var document = XDocument.Load( xamlPath );
+            var claimsColumn = document
+                .Descendants()
+                .Single( e => e.Name.LocalName == "DataGridNumericColumn" &&
+                             (string)e.Attribute( "Header" ) == "{x:Static resx:CrimeMonitor.header_claims}" );
+
+            Assert.AreNotEqual( "True", (string)claimsColumn.Attribute( "IsReadOnly" ) );
+            Assert.Contains( "Mode=TwoWay" , (string)claimsColumn.Attribute( "Binding" ));
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task TestCrewWageDoesNotReducePendingDisplayedClaims()
+        {
+            crimeMonitor.readRecord( new CrimeMonitorConfiguration() );
+            var redeemedRecord = new FactionRecord( "Pereng Asli General Ltd" )
+            {
+                Allegiance = Superpower.Independent,
+                baseclaims = 437994
+            };
+            redeemedRecord.factionReports.Add( new FactionReport( DateTime.Parse( "2026-05-31T05:16:30Z" ), false,
+                Crime.None, "Col 69 Sector SU-E c12-2", 437994 )
+            {
+                claimtype = FactionReport.BondClaimType
+            } );
+            crimeMonitor.criminalrecord.Add( redeemedRecord );
+
+            line = @"{ ""timestamp"":""2026-05-31T05:16:30Z"", ""event"":""RedeemVoucher"", ""Type"":""CombatBond"", ""Amount"":437994, ""Faction"":""Pereng Asli General Ltd"" }";
+            events = JournalMonitor.ParseJournalEntry( line );
+            Assert.HasCount( 1, events );
+            Assert.IsTrue( crimeMonitor._handleBondRedeemedEvent( (BondRedeemedEvent)events[ 0 ] ) );
+
+            line = @"{ ""timestamp"":""2026-05-31T05:16:30Z"", ""event"":""NpcCrewPaidWage"", ""NpcCrewName"":""Arden Petersen-Quinn"", ""NpcCrewId"":105187904, ""Amount"":43799 }";
+            events = JournalMonitor.ParseJournalEntry( line, false, true );
+            Assert.HasCount( 1, events );
+            await crimeMonitor.PreHandleAsync( events[ 0 ] ).ConfigureAwait( false );
+
+            var pendingRecord = new FactionRecord( "Future Voucher Faction" )
+            {
+                Allegiance = Superpower.Independent,
+                baseclaims = 2000
+            };
+            pendingRecord.factionReports.Add( new FactionReport( DateTime.Parse( "2026-05-31T05:20:00Z" ), false,
+                Crime.None, "Col 69 Sector SU-E c12-2", 1000 )
+            {
+                claimtype = FactionReport.BondClaimType
+            } );
+            pendingRecord.factionReports.Add( new FactionReport( DateTime.Parse( "2026-05-31T05:21:00Z" ), true,
+                Crime.None, "Col 69 Sector SU-E c12-2", 1000 )
+            {
+                claimtype = FactionReport.BountyClaimType
+            } );
+            crimeMonitor.criminalrecord.Add( pendingRecord );
+
+            var variables = crimeMonitor.GetVariables();
+            Assert.AreEqual( 2000, pendingRecord.baseclaims );
+            Assert.AreEqual( 3850L, variables[ "claims" ].Item2 );
+            Assert.AreEqual( 1000, pendingRecord.basebountyclaims );
+            Assert.AreEqual( 1000, pendingRecord.bountyclaims );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void TestSharedCombatBondJournalRewardsApplyDisplayedBondMultiplier()
+        {
+            crimeMonitor.readRecord( new CrimeMonitorConfiguration() );
+            var rewards = new[]
+            {
+                37352, 47977, 39967, 22025, 63107, 48684, 77324, 26833, 37352, 31359,
+                29967, 31693, 24967, 40457, 33335, 21659, 27473, 24967, 32732, 39840
+            };
+            var record = new FactionRecord( "Children of Raxxla" )
+            {
+                Allegiance = Superpower.Independent,
+                baseclaims = rewards.Sum()
+            };
+            foreach ( var reward in rewards )
+            {
+                record.factionReports.Add( new FactionReport( DateTime.Parse( "2026-05-31T23:10:27Z" ), false,
+                    Crime.None, "Col 69 Sector TP-E c12-4", reward )
+                {
+                    claimtype = FactionReport.BondClaimType
+                } );
+            }
+            crimeMonitor.criminalrecord.Add( record );
+
+            var variables = crimeMonitor.GetVariables();
+
+            Assert.AreEqual( 739070, record.baseclaims );
+            Assert.AreEqual( 2106347L, record.claims );
+            Assert.AreEqual( 2106347L, variables[ "claims" ].Item2 );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void TestOnFootCombatBondJournalRewardsApplyOnFootBondMultiplier()
+        {
+            crimeMonitor.readRecord( new CrimeMonitorConfiguration() );
+            var rewards = new[]
+            {
+                2278, 2278, 3189, 2911, 2278, 3189, 2079, 1896, 4172, 2911,
+                4172, 3189, 3189, 2278, 3189, 2278, 3189, 2278, 2980, 2980,
+                2278, 2655, 2655, 1896, 2655, 2079, 2980, 3189, 2655, 2727,
+                2980, 3189, 2911, 2980, 2911, 2079, 2278, 3818, 4172, 2278,
+                2278
+            };
+            var record = new FactionRecord( "Pereng Asli General Ltd" )
+            {
+                Allegiance = Superpower.Independent,
+                baseclaims = rewards.Sum()
+            };
+            foreach ( var reward in rewards )
+            {
+                record.factionReports.Add( new FactionReport( DateTime.Parse( "2026-05-30T21:07:17Z" ), false,
+                    Crime.None, "Col 69 Sector TP-E c12-4", reward )
+                {
+                    claimtype = FactionReport.BondClaimType,
+                    claimvehicle = Constants.VEHICLE_LEGS
+                } );
+            }
+            crimeMonitor.criminalrecord.Add( record );
+
+            var variables = crimeMonitor.GetVariables();
+
+            Assert.AreEqual( 114546, record.baseclaims );
+            Assert.AreEqual( 486660L, record.claims );
+            Assert.AreEqual( 486660L, variables[ "claims" ].Item2 );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void TestInShipCombatBondJournalRewardsDoNotApplyOnFootBondMultiplier()
+        {
+            crimeMonitor.readRecord( new CrimeMonitorConfiguration() );
+            var rewards = new[]
+            {
+                50987, 32238, 38018, 44840, 85989, 32352, 51881, 31060, 37352, 27473,
+                39967, 33684, 37473, 27392, 39840, 46693, 39070, 21833, 57977, 32352,
+                33335, 46659, 31833, 42352
+            };
+            var record = new FactionRecord( "Children of Raxxla" )
+            {
+                Allegiance = Superpower.Independent,
+                baseclaims = rewards.Sum()
+            };
+            foreach ( var reward in rewards )
+            {
+                record.factionReports.Add( new FactionReport( DateTime.Parse( "2026-06-02T06:10:45Z" ), false,
+                    Crime.None, "Col 69 Sector TP-E c12-4", reward )
+                {
+                    claimtype = FactionReport.BondClaimType,
+                    claimvehicle = Constants.VEHICLE_SHIP
+                } );
+            }
+            crimeMonitor.criminalrecord.Add( record );
+
+            var variables = crimeMonitor.GetVariables();
+
+            Assert.AreEqual( 962650, record.baseclaims );
+            Assert.AreEqual( 2743551L, record.claims );
+            Assert.AreEqual( 2743551L, variables[ "claims" ].Item2 );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task TestSettlementApproachDoesNotChangeInShipCombatBondEstimate()
+        {
+            crimeMonitor.readRecord( new CrimeMonitorConfiguration() );
+            var originalVehicle = EDDI.Instance.Vehicle;
+            try
+            {
+                EDDI.Instance.Vehicle = Constants.VEHICLE_SHIP;
+
+                line = @"{ ""timestamp"":""2026-06-02T06:10:00Z"", ""event"":""ApproachSettlement"", ""Name"":""Baade Prospect"", ""MarketID"":3702110464, ""SystemAddress"":670256236121, ""Latitude"":1.0, ""Longitude"":2.0 }";
+                events = JournalMonitor.ParseJournalEntry( line );
+                Assert.HasCount( 1, events );
+                await crimeMonitor.PreHandleAsync( events[ 0 ] ).ConfigureAwait( false );
+
+                line = @"{ ""timestamp"":""2026-06-02T06:10:45Z"", ""event"":""FactionKillBond"", ""Reward"":1000, ""AwardingFaction"":""Settlement Context Only"", ""VictimFaction"":""Target Faction"" }";
+                events = JournalMonitor.ParseJournalEntry( line );
+                Assert.HasCount( 1, events );
+                await crimeMonitor.PreHandleAsync( events[ 0 ] ).ConfigureAwait( false );
+
+                var variables = crimeMonitor.GetVariables();
+                record = crimeMonitor.criminalrecord.FirstOrDefault( r => r.faction == "Settlement Context Only" );
+
+                Assert.IsNotNull( record );
+                Assert.AreEqual( 1000, record.baseclaims );
+                Assert.AreEqual( 2850L, record.claims );
+                Assert.AreEqual( 2850L, variables[ "claims" ].Item2 );
+            }
+            finally
+            {
+                EDDI.Instance.Vehicle = originalVehicle;
+            }
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void TestPowerplayBountyVoucherBonusTables()
+        {
+            Assert.IsTrue( PowerplayBountyVoucherBonus.TryGetBonus( Power.ALavignyDuval, 5, out var aldBonus ) );
+            Assert.AreEqual( 0.10M, aldBonus );
+            Assert.IsTrue( PowerplayBountyVoucherBonus.TryGetBonus( Power.JeromeArcher, 86, out var archerBonus ) );
+            Assert.AreEqual( 0.90M, archerBonus );
+            Assert.IsTrue( PowerplayBountyVoucherBonus.TryGetBonus( Power.ALavignyDuval, 100, out var aldMaxBonus ) );
+            Assert.AreEqual( 1.00M, aldMaxBonus );
+            Assert.IsTrue( PowerplayBountyVoucherBonus.TryGetBonus( Power.DentonPatreus, 42, out var patreusBonus ) );
+            Assert.AreEqual( 0.35M, patreusBonus );
+            Assert.IsTrue( PowerplayBountyVoucherBonus.TryGetBonus( Power.YuriGrom, 43, out var gromBonus ) );
+            Assert.AreEqual( 0.10M, gromBonus );
+            Assert.IsTrue( PowerplayBountyVoucherBonus.TryGetBonus( Power.YuriGrom, 48, out var gromRank48Bonus ) );
+            Assert.AreEqual( 0.13M, gromRank48Bonus );
+            Assert.IsFalse( PowerplayBountyVoucherBonus.TryGetBonus( Power.AislingDuval, 100, out _ ) );
+            Assert.IsFalse( PowerplayBountyVoucherBonus.TryGetBonus( Power.ArchonDelaine, 100, out _ ) );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void TestPowerplayBountiesAgainstCommanderReductionTables()
+        {
+            Assert.IsTrue( PowerplayBountyReduction.TryGetReduction( Power.ArchonDelaine, 5, out var rank5Reduction ) );
+            Assert.AreEqual( 0.10M, rank5Reduction );
+            Assert.IsTrue( PowerplayBountyReduction.TryGetReduction( Power.ArchonDelaine, 48, out var rank48Reduction ) );
+            Assert.AreEqual( 0.50M, rank48Reduction );
+            Assert.IsTrue( PowerplayBountyReduction.TryGetReduction( Power.ArchonDelaine, 86, out var rank86Reduction ) );
+            Assert.AreEqual( 0.90M, rank86Reduction );
+            Assert.IsTrue( PowerplayBountyReduction.TryGetReduction( Power.ArchonDelaine, 100, out var rank100Reduction ) );
+            Assert.AreEqual( 1.00M, rank100Reduction );
+            Assert.IsFalse( PowerplayBountyReduction.TryGetReduction( Power.YuriGrom, 100, out _ ) );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void TestPowerplayEventStoresJournalRankExactly()
+        {
+            line = @"{ ""timestamp"":""2026-05-26T04:42:29Z"", ""event"":""Powerplay"", ""Power"":""Yuri Grom"", ""Rank"":43, ""Merits"":322584, ""TimePledged"":49113620 }";
+            events = JournalMonitor.ParseJournalEntry( line );
+            Assert.HasCount( 1, events );
+
+            var powerplayEvent = (PowerplayEvent)events[ 0 ];
+
+            Assert.AreEqual( Power.YuriGrom, powerplayEvent.Power );
+            Assert.AreEqual( 43, powerplayEvent.rank );
+            Assert.AreEqual( 322584, powerplayEvent.merits );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task TestPowerplayBountyVoucherEstimateActiveInPledgedPowerTerritory()
+        {
+            var commanderConfig = ConfigService.Instance.commanderConfiguration;
+            commanderConfig.Power = Power.YuriGrom;
+            commanderConfig.powerRank = 43;
+            commanderConfig.powerMerits = 322584;
+            crimeMonitor.readRecord( new CrimeMonitorConfiguration() );
+
+            var record = new FactionRecord( "LOST Industrial Technologies" )
+            {
+                Allegiance = Superpower.Independent,
+                baseclaims = 150000
+            };
+            record.factionReports.Add( new FactionReport( DateTime.Parse( "2026-05-26T14:10:00Z" ), true,
+                Crime.None, "HIP 37722", 100000 )
+            {
+                claimtype = FactionReport.BountyClaimType
+            } );
+            record.factionReports.Add( new FactionReport( DateTime.Parse( "2026-05-26T14:11:00Z" ), false,
+                Crime.None, "HIP 37722", 50000 )
+            {
+                claimtype = FactionReport.BondClaimType
+            } );
+            crimeMonitor.criminalrecord.Add( record );
+
+            line = @"{ ""timestamp"":""2026-05-26T14:12:00Z"", ""event"":""FSDJump"", ""StarSystem"":""Grom Territory"", ""SystemAddress"":670256236121, ""StarPos"":[0,0,0], ""SystemAllegiance"":""Independent"", ""SystemEconomy"":""$economy_None;"", ""SystemSecondEconomy"":""$economy_None;"", ""SystemGovernment"":""$government_None;"", ""SystemSecurity"":""$SYSTEM_SECURITY_high;"", ""Population"":0, ""Body"":""Grom Territory"", ""BodyID"":0, ""BodyType"":""Star"", ""ControllingPower"":""Yuri Grom"", ""Powers"":[ ""Yuri Grom"" ], ""PowerplayState"":""Stronghold"", ""JumpDist"":1, ""FuelUsed"":1, ""FuelLevel"":1 }";
+            events = JournalMonitor.ParseJournalEntry( line );
+            Assert.HasCount( 1, events );
+            await crimeMonitor.PreHandleAsync( events[ 0 ] ).ConfigureAwait( false );
+
+            var variables = crimeMonitor.GetVariables();
+            Assert.AreEqual( 0.10M, variables[ "powerplaybountybonus" ].Item2 );
+            Assert.AreEqual( 252500L, variables[ "claims" ].Item2 );
+            Assert.AreEqual( 110000L, record.bountyclaims );
+            Assert.AreEqual( 252500L, record.claims );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task TestPowerplayBountiesAgainstCommanderReductionActiveInPledgedPowerTerritory()
+        {
+            var commanderConfig = ConfigService.Instance.commanderConfiguration;
+            commanderConfig.Power = Power.ArchonDelaine;
+            commanderConfig.powerRank = 48;
+            crimeMonitor.readRecord( new CrimeMonitorConfiguration() );
+
+            var record = new FactionRecord( "Delaine Territory Faction" )
+            {
+                Allegiance = Superpower.Independent,
+                bounties = 100000
+            };
+            record.factionReports.Add( new FactionReport( DateTime.Parse( "2026-05-26T14:10:00Z" ), true,
+                Crime.Murder, "Harma", 100000 ) );
+            crimeMonitor.criminalrecord.Add( record );
+
+            line = @"{ ""timestamp"":""2026-05-26T14:12:00Z"", ""event"":""FSDJump"", ""StarSystem"":""Delaine Territory"", ""SystemAddress"":670256236121, ""StarPos"":[0,0,0], ""SystemAllegiance"":""Independent"", ""SystemEconomy"":""$economy_None;"", ""SystemSecondEconomy"":""$economy_None;"", ""SystemGovernment"":""$government_None;"", ""SystemSecurity"":""$SYSTEM_SECURITY_high;"", ""Population"":0, ""Body"":""Delaine Territory"", ""BodyID"":0, ""BodyType"":""Star"", ""ControllingPower"":""Archon Delaine"", ""Powers"":[ ""Archon Delaine"" ], ""PowerplayState"":""Stronghold"", ""JumpDist"":1, ""FuelUsed"":1, ""FuelLevel"":1 }";
+            events = JournalMonitor.ParseJournalEntry( line );
+            Assert.HasCount( 1, events );
+            await crimeMonitor.PreHandleAsync( events[ 0 ] ).ConfigureAwait( false );
+
+            var variables = crimeMonitor.GetVariables();
+            Assert.AreEqual( 0.50M, variables[ "powerplaycrimereduction" ].Item2 );
+            Assert.AreEqual( 100000L, variables[ "bounties" ].Item2 );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task TestDelaineReductionContextTrustsJournalBountyAmount()
+        {
+            var commanderConfig = ConfigService.Instance.commanderConfiguration;
+            commanderConfig.Power = Power.ArchonDelaine;
+            commanderConfig.powerRank = 48;
+            crimeMonitor.readRecord( new CrimeMonitorConfiguration() );
+
+            line = @"{ ""timestamp"":""2026-05-26T14:12:00Z"", ""event"":""FSDJump"", ""StarSystem"":""Delaine Territory"", ""SystemAddress"":670256236121, ""StarPos"":[0,0,0], ""SystemAllegiance"":""Independent"", ""SystemEconomy"":""$economy_None;"", ""SystemSecondEconomy"":""$economy_None;"", ""SystemGovernment"":""$government_None;"", ""SystemSecurity"":""$SYSTEM_SECURITY_high;"", ""Population"":0, ""Body"":""Delaine Territory"", ""BodyID"":0, ""BodyType"":""Star"", ""ControllingPower"":""Archon Delaine"", ""Powers"":[ ""Archon Delaine"" ], ""PowerplayState"":""Stronghold"", ""JumpDist"":1, ""FuelUsed"":1, ""FuelLevel"":1 }";
+            events = JournalMonitor.ParseJournalEntry( line );
+            Assert.HasCount( 1, events );
+            await crimeMonitor.PreHandleAsync( events[ 0 ] ).ConfigureAwait( false );
+
+            line = @"{ ""timestamp"":""2026-05-26T14:13:00Z"", ""event"":""CommitCrime"", ""CrimeType"":""assault"", ""Faction"":""Delaine Territory Faction"", ""Victim"":""Target"", ""Bounty"":1000 }";
+            events = JournalMonitor.ParseJournalEntry( line );
+            Assert.HasCount( 1, events );
+            await crimeMonitor.PreHandleAsync( events[ 0 ] ).ConfigureAwait( false );
+
+            record = crimeMonitor.criminalrecord.FirstOrDefault( r => r.faction == "Delaine Territory Faction" );
+            Assert.IsNotNull( record );
+            Assert.AreEqual( 1000, record.bounties );
+            report = record.bountiesIncurred.SingleOrDefault();
+            Assert.IsNotNull( report );
+            Assert.AreEqual( 1000, report.amount );
+
+            var variables = crimeMonitor.GetVariables();
+            Assert.AreEqual( 1000L, variables[ "bounties" ].Item2 );
+            Assert.AreEqual( 1000, record.basebounties );
+
+            line = @"{ ""timestamp"":""2026-05-26T14:14:00Z"", ""event"":""PayBounties"", ""Amount"":1000, ""Faction"":""Delaine Territory Faction"", ""ShipID"":1, ""BrokerPercentage"":0.000000 }";
+            events = JournalMonitor.ParseJournalEntry( line );
+            Assert.HasCount( 1, events );
+            await crimeMonitor.PreHandleAsync( events[ 0 ] ).ConfigureAwait( false );
+
+            Assert.IsNull( crimeMonitor.criminalrecord.FirstOrDefault( r => r.faction == "Delaine Territory Faction" ) );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task TestDelaineReductionContextTrustsJournalFineAmount()
+        {
+            var commanderConfig = ConfigService.Instance.commanderConfiguration;
+            commanderConfig.Power = Power.ArchonDelaine;
+            commanderConfig.powerRank = 48;
+            crimeMonitor.readRecord( new CrimeMonitorConfiguration() );
+
+            line = @"{ ""timestamp"":""2026-05-26T14:12:00Z"", ""event"":""FSDJump"", ""StarSystem"":""Delaine Territory"", ""SystemAddress"":670256236121, ""StarPos"":[0,0,0], ""SystemAllegiance"":""Independent"", ""SystemEconomy"":""$economy_None;"", ""SystemSecondEconomy"":""$economy_None;"", ""SystemGovernment"":""$government_None;"", ""SystemSecurity"":""$SYSTEM_SECURITY_high;"", ""Population"":0, ""Body"":""Delaine Territory"", ""BodyID"":0, ""BodyType"":""Star"", ""ControllingPower"":""Archon Delaine"", ""Powers"":[ ""Archon Delaine"" ], ""PowerplayState"":""Stronghold"", ""JumpDist"":1, ""FuelUsed"":1, ""FuelLevel"":1 }";
+            events = JournalMonitor.ParseJournalEntry( line );
+            Assert.HasCount( 1, events );
+            await crimeMonitor.PreHandleAsync( events[ 0 ] ).ConfigureAwait( false );
+
+            line = @"{ ""timestamp"":""2026-05-26T14:13:00Z"", ""event"":""CommitCrime"", ""CrimeType"":""dockingMinorTresspass"", ""Faction"":""Delaine Territory Faction"", ""Fine"":1000 }";
+            events = JournalMonitor.ParseJournalEntry( line );
+            Assert.HasCount( 1, events );
+            await crimeMonitor.PreHandleAsync( events[ 0 ] ).ConfigureAwait( false );
+
+            record = crimeMonitor.criminalrecord.FirstOrDefault( r => r.faction == "Delaine Territory Faction" );
+            Assert.IsNotNull( record );
+            Assert.AreEqual( 1000, record.fines );
+            report = record.finesIncurred.SingleOrDefault();
+            Assert.IsNotNull( report );
+            Assert.AreEqual( 1000, report.amount );
+
+            var variables = crimeMonitor.GetVariables();
+            Assert.AreEqual( 1000L, variables[ "fines" ].Item2 );
+            Assert.AreEqual( 1000, record.basefines );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void TestJournalAmountJsonDoesNotChangeBaseCrimeValues()
+        {
+            var json = @"{
+                ""faction"": ""Ignored Journal Amount"",
+                ""bounties"": 500,
+                ""factionReports"": [ {
+                    ""timestamp"": ""2026-05-26T14:13:00Z"",
+                    ""bounty"": true,
+                    ""crimeEDName"": ""assault"",
+                    ""system"": ""Delaine Territory"",
+                    ""amount"": 500,
+                    ""journalamount"": 1000
+                } ]
+            }";
+
+            record = JsonConvert.DeserializeObject<FactionRecord>( json );
+
+            Assert.IsNotNull( record );
+            Assert.AreEqual( 500, record.bounties );
+            Assert.AreEqual( 500, record.basebounties );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task TestPowerplayBountyVoucherEstimateInactiveOutsidePledgedPowerTerritory()
+        {
+            var commanderConfig = ConfigService.Instance.commanderConfiguration;
+            commanderConfig.Power = Power.YuriGrom;
+            commanderConfig.powerRank = 43;
+            commanderConfig.powerMerits = 322584;
+            crimeMonitor.readRecord( new CrimeMonitorConfiguration() );
+
+            var record = new FactionRecord( "LOST Industrial Technologies" )
+            {
+                Allegiance = Superpower.Independent,
+                baseclaims = 100000
+            };
+            record.factionReports.Add( new FactionReport( DateTime.Parse( "2026-05-26T14:10:00Z" ), true,
+                Crime.None, "HIP 37722", 100000 )
+            {
+                claimtype = FactionReport.BountyClaimType
+            } );
+            crimeMonitor.criminalrecord.Add( record );
+
+            line = @"{ ""timestamp"":""2026-05-26T14:12:00Z"", ""event"":""FSDJump"", ""StarSystem"":""Imperial Territory"", ""SystemAddress"":670256236122, ""StarPos"":[0,0,0], ""SystemAllegiance"":""Empire"", ""SystemEconomy"":""$economy_None;"", ""SystemSecondEconomy"":""$economy_None;"", ""SystemGovernment"":""$government_None;"", ""SystemSecurity"":""$SYSTEM_SECURITY_high;"", ""Population"":0, ""Body"":""Imperial Territory"", ""BodyID"":0, ""BodyType"":""Star"", ""ControllingPower"":""Arissa Lavigny-Duval"", ""Powers"":[ ""Arissa Lavigny-Duval"" ], ""PowerplayState"":""Stronghold"", ""JumpDist"":1, ""FuelUsed"":1, ""FuelLevel"":1 }";
+            events = JournalMonitor.ParseJournalEntry( line );
+            Assert.HasCount( 1, events );
+            await crimeMonitor.PreHandleAsync( events[ 0 ] ).ConfigureAwait( false );
+
+            var variables = crimeMonitor.GetVariables();
+            Assert.IsNull( variables[ "powerplaybountybonus" ].Item2 );
+            Assert.AreEqual( 100000L, variables[ "claims" ].Item2 );
+            Assert.AreEqual( 100000, record.claims );
+            Assert.AreEqual( 100000, record.bountyclaims );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void TestPowerplayEstimateDoesNotAffectVoucherRedemption()
+        {
+            var commanderConfig = ConfigService.Instance.commanderConfiguration;
+            commanderConfig.Power = Power.YuriGrom;
+            commanderConfig.powerRank = 43;
+            crimeMonitor.readRecord( new CrimeMonitorConfiguration() );
+
+            var record = new FactionRecord( "LOST Industrial Technologies" )
+            {
+                Allegiance = Superpower.Independent,
+                baseclaims = 100000
+            };
+            record.factionReports.Add( new FactionReport( DateTime.Parse( "2026-05-26T14:10:00Z" ), true,
+                Crime.None, "HIP 37722", 100000 )
+            {
+                claimtype = FactionReport.BountyClaimType
+            } );
+            crimeMonitor.criminalrecord.Add( record );
+
+            line = @"{ ""timestamp"":""2026-05-26T14:13:31Z"", ""event"":""RedeemVoucher"", ""Type"":""bounty"", ""Amount"":100000, ""Factions"":[ { ""Faction"":""LOST Industrial Technologies"", ""Amount"":100000 } ] }";
+            events = JournalMonitor.ParseJournalEntry( line );
+            Assert.HasCount( 1, events );
+
+            Assert.IsTrue( crimeMonitor._handleBountyRedeemedEvent( (BountyRedeemedEvent)events[ 0 ] ) );
+
+            Assert.IsNull( crimeMonitor.criminalrecord.FirstOrDefault( r => r.faction == "LOST Industrial Technologies" ) );
+        }
+
+        private static string FindRepositoryFile ( string relativePath )
+        {
+            var directory = new DirectoryInfo( AppContext.BaseDirectory );
+            while ( directory != null )
+            {
+                var path = Path.Combine( directory.FullName, relativePath );
+                if ( File.Exists( path ) )
+                {
+                    return path;
+                }
+
+                directory = directory.Parent;
+            }
+
+            throw new FileNotFoundException( $"Could not find {relativePath} from {AppContext.BaseDirectory}." );
+        }
+
         // Test that we're able to detect and correct for simple scenarios where a bounty has been converted to an interstellar bounty
         [TestMethod, DoNotParallelize]
         public async Task TestCrimeInterstellarFactorsScenario()
         {
             var line1 = @"{ ""timestamp"":""2022-01-15T18:37:38Z"", ""event"":""CommitCrime"", ""CrimeType"":""assault"", ""Faction"":""Radio Sidewinder Crew"", ""Victim"":""Jim Grady"", ""Bounty"":100 }";
-            var line2 = @"{ ""timestamp"":""2022-01-15T18:41:31Z"", ""event"":""PayBounties"", ""Amount"":100, ""Faction"":""$faction_Independent;"", ""Faction_Localised"":""Independent"", ""ShipID"":38, ""BrokerPercentage"":25.000000 }";
+            var line2 = @"{ ""timestamp"":""2022-01-15T18:41:31Z"", ""event"":""PayBounties"", ""Amount"":125, ""Faction"":""$faction_Independent;"", ""Faction_Localised"":""Independent"", ""ShipID"":38, ""BrokerPercentage"":25.000000 }";
 
             // Save original data
             var data = ConfigService.Instance.crimeMonitorConfiguration;

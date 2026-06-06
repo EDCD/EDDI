@@ -216,10 +216,12 @@ Details of an individual mission in the commander's mission log.
 
 The criminal record  and derived properties of commander is available under the *criminalrecord* object.
 
-  - *criminalrecord* - list of minor faction records, detailing bond & bounty claims, and fine and bounties incurred
-  - *claims* - total credits for all unredeemed bond and bounty rewards
-  - *fines* - total credits for all unpaid fines incurred
-  - *bounties* - total credits for all unpaid bounties incurred
+  - *criminalrecord* - list of minor faction records, detailing voucher claims, fines, and bounties incurred
+  - *claims* - estimated final credits for all unredeemed bounty voucher and combat bond rewards, after known current voucher modifiers. Pending claim values do not subtract NPC crew wages.
+  - *fines* - total journal credits for all unpaid fines incurred, including any reductions already applied by the game
+  - *bounties* - total journal credits for all unpaid bounties incurred, including any reductions already applied by the game
+  - *powerplaybountybonus* - current Powerplay bounty voucher bonus as a decimal multiplier, for example 0.10 for +10%, or null when inactive. This applies when the bounty is claimed and only in your power's territory.
+  - *powerplaycrimereduction* - current Powerplay fine and bounty reduction as a decimal multiplier, for example 0.50 for -50%, or null when inactive. This applies when the crime is committed and only in your power's territory.
   - *orbitalpriority* - true when orbital stations are prioritized over planetary for station selection
   - *shiptargets* - list of ships targeted within the current system.
 
@@ -231,9 +233,14 @@ Details of individual faction records, within the *criminalrecord* object
   - *allegiance* - superpower to which the minor faction is aligned
   - *system* - faction presence determined by minor faction name or highest influence
   - *station* - station nearest to main star, filtered by landing pad & ship size
-  - *claims* - total credits for minor faction's uncollected bond and bounty rewards
-  - *fines* - total credits for minor faction's unpaid fines incurred
-  - *bounties* - total credits for minor faction's unpaid bounties incurred
+  - *claims* - estimated final credits for minor faction's uncollected bounty voucher and combat bond rewards, after known current voucher modifiers. Pending claim values do not subtract NPC crew wages.
+  - *baseclaims* - journal credits for minor faction's uncollected bounty voucher and combat bond rewards before known current voucher modifiers
+  - *bountyclaims* - estimated final credits for the minor faction's uncollected bounty voucher rewards only, after known current voucher modifiers
+  - *basebountyclaims* - journal credits for the minor faction's uncollected bounty voucher rewards only before known current voucher modifiers
+  - *fines* - total journal credits for minor faction's unpaid fines incurred, including any reductions already applied by the game
+  - *basefines* - journal credits for minor faction's unpaid fines incurred
+  - *bounties* - total journal credits for minor faction's unpaid bounties incurred, including any reductions already applied by the game
+  - *basebounties* - journal credits for minor faction's unpaid bounties incurred
   - *bondsAwarded* - list of individual faction reports for uncollected bonds awarded
   - *bountiesAwarded* - list of individual faction reports for uncollected bounties awarded
   - *finesIncurred* - list of individual faction reports for unpaid fines incurred
@@ -244,13 +251,15 @@ Details of individual faction records, within the *criminalrecord* object
 Details of individual minor faction reports, within the *FactionRecord* object.
 
   - *bounty* - true if bounty awarded or incurred
+  - *claimtype* - type of voucher claim: 'bond' or 'bounty'
+  - *claimvehicle* - vehicle context recorded when a voucher claim was awarded
   - *shipId* - ship ID in which the 'criminal' event occurred
   - *crime* - localized type of crime committed, 'None' when report is a claim
   - *system* - system in which the 'criminal' event occurred
   - *station* - nearby station (null if no station nearby)
   - *body* - nearby body (null if no body nearby)
   - *victim* - victim faction
-  - *amount* - credits awarded or incurred
+  - *amount* - effective credits awarded or incurred
 
 ### Target
 
