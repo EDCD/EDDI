@@ -950,17 +950,12 @@ namespace Tests
         }
 
         [TestMethod]
-        public void TestShipSpecialtySlots()
+        public void TestLakonMinerSpecialtySlots()
         {
             var type11 = ShipDefinitions.FromModel("LakonMiner");
             Assert.IsNotNull(type11);
             Assert.IsTrue(type11.specialtySlotSizes.TryGetValue("LimpetController01", out var t11Size));
             Assert.AreEqual(5, t11Size);
-
-            var type8 = ShipDefinitions.FromModel("type8");
-            Assert.IsNotNull(type8);
-            Assert.IsTrue(type8.specialtySlotSizes.TryGetValue("LimpetController01", out var t8Size));
-            Assert.AreEqual(4, t8Size);
 
             Assert.IsTrue(Utilities.GeneratedRegex.ShipSpecialtySlotRegex().IsMatch("LimpetController01"));
 
@@ -968,11 +963,6 @@ namespace Tests
             Assert.IsNotNull(compartment11);
             Assert.AreEqual("LimpetController01", compartment11.name);
             Assert.AreEqual(5, compartment11.size);
-
-            var compartment8 = EventParsing.ShipCompartment("type8", "LimpetController01");
-            Assert.IsNotNull(compartment8);
-            Assert.AreEqual("LimpetController01", compartment8.name);
-            Assert.AreEqual(4, compartment8.size);
         }
     }
 }

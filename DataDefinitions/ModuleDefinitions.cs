@@ -1072,10 +1072,6 @@ namespace EddiDataDefinitions
         public static readonly Module Int_MultiDroneControl_Xeno_Size3_Class4 = new( "Int_MultiDroneControl_Xeno_Size3_Class4", "MultiDroneControl_Xeno", 3, "B", 80000);
         public static readonly Module Int_MultiDroneControl_Universal_Size7_Class3 = new( "Int_MultiDroneControl_Universal_Size7_Class3", "MultiDroneControl_Universal", 7, "C", 4000000);
         public static readonly Module Int_MultiDroneControl_Universal_Size7_Class5 = new( "Int_MultiDroneControl_Universal_Size7_Class5", "MultiDroneControl_Universal", 7, "A", 8000000);
-        public static readonly Module Int_MultiDroneControl_Mining_Size5_Class2 = new( "Int_MultiDroneControl_Mining_Size5_Class2", "MultiDroneControl_Mining", 5, "C", 225000);
-        public static readonly Module Int_MultiDroneControl_Operations_Size5_Class2 = new( "Int_MultiDroneControl_Operations_Size5_Class2", "MultiDroneControl_Operations", 5, "C", 225000);
-        public static readonly Module Int_MultiDroneControl_Rescue_Size5_Class2 = new( "Int_MultiDroneControl_Rescue_Size5_Class2", "MultiDroneControl_Rescue", 5, "C", 225000);
-        public static readonly Module Int_MultiDroneControl_Xeno_Size5_Class2 = new( "Int_MultiDroneControl_Xeno_Size5_Class2", "MultiDroneControl_Xeno", 5, "C", 225000);
         public static readonly Module Int_ExpModuleStabiliser_Size3_Class3 = new( "Int_ExpModuleStabiliser_Size3_Class3", "ExpModuleStabiliser", 3, "F", 2000000);
         public static readonly Module Int_ExpModuleStabiliser_Size5_Class3 = new( "Int_ExpModuleStabiliser_Size5_Class3", "ExpModuleStabiliser", 5, "F", 4000000);
         public static readonly Module Hpt_CausticSinkLauncher_Turret_Tiny = new( "Hpt_CausticSinkLauncher_Turret_Tiny", "Caustic_Sink_Launcher", 0, "I", 50000);
