@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
     <DockPanel LastChildFill="True" Background="{DynamicResource WindowBackgroundBrush}" Margin="-10">
-        <Grid DockPanel.Dock="Top" Margin="20, 10, 20, 10">
+        <Grid DockPanel.Dock="Top" Margin="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="285"/>
@@ -36,7 +36,7 @@
                 </FlowDocument>
             </RichTextBox>
         </Grid>
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="20, 5, 20, 5">
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="5, 0">
             <TextBlock VerticalAlignment="Center" Text="{x:Static resx:SpeechResponder.active_personality}" />
             <ComboBox 
                 x:Name="personalityComboBox"
@@ -55,7 +55,7 @@
                 Text="{Binding ElementName=personalityComboBox, Path=DataContext.(local:SpeechResponder.CurrentPersonality).Description, Mode=OneWay}">
             </TextBlock>
         </StackPanel>
-        <DockPanel HorizontalAlignment="Stretch" DockPanel.Dock="Bottom" Margin="20, 5, 20, 5">
+        <DockPanel HorizontalAlignment="Stretch" DockPanel.Dock="Bottom" Margin="0, 0, 5, 0">
             <Label x:Name ="searchLabel" VerticalContentAlignment="Center" Content="{x:Static resx:SpeechResponder.search_filter}" />
             <TextBox x:Name ="searchFilterText" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="25" Width="Auto" MinWidth="100" TextChanged="SearchFilterText_OnTextChanged" ToolTip="{x:Static resx:SpeechResponder.search_filter_tooltip}"/>
             <Grid Margin="0">

@@ -6,10 +6,7 @@
         xmlns:resx="clr-namespace:EddiUI.Properties"
         mc:Ignorable="d"
         d:DesignHeight="600" d:DesignWidth="800">
-    <UserControl.Resources>
-        <SolidColorBrush x:Key="NeutralBackgroundBrush" Color="{x:Static SystemColors.ControlLightColor}"/>
-    </UserControl.Resources>
-    <DockPanel LastChildFill="True" Background="{StaticResource NeutralBackgroundBrush}" >
+    <DockPanel LastChildFill="True" Background="{DynamicResource WindowBackgroundBrush}" >
         <TextBlock x:Name="ttsText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:Resources.tab_tts_desc}" />
         <Grid>
             <Grid.ColumnDefinitions>

@@ -7,7 +7,7 @@
             mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="600">
     <DockPanel LastChildFill="False" Background="{DynamicResource WindowBackgroundBrush}" Margin="0,5">
-        <Grid DockPanel.Dock="Top" Margin="20, 10, 20, 10">
+        <Grid DockPanel.Dock="Top" Margin="0, 10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>

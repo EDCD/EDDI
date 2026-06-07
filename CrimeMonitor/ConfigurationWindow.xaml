@@ -10,7 +10,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="340" d:DesignWidth="800">
     <DockPanel LastChildFill="True" Background="{DynamicResource WindowBackgroundBrush}" Margin="0,5">
-        <UniformGrid DockPanel.Dock="Bottom" Rows="1" Columns="1" Margin="20, 5, 20, 5">
+        <UniformGrid DockPanel.Dock="Bottom" Rows="1" Columns="1" Margin="0,5">
             <Button HorizontalAlignment="Center" Click="addRecord" Content="{x:Static resx:CrimeMonitor.add_button}" ToolTip="{x:Static resx:CrimeMonitor.add_button_desc}" />
         </UniformGrid>
         <Border x:Name="modifiersEstimateSummary" DockPanel.Dock="Top" Visibility="Collapsed" Margin="0,5,0,0" Padding="8" Background="#FFF4F8FB" BorderBrush="#FFB8CBD8" BorderThickness="1">

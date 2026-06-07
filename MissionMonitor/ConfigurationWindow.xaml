@@ -68,7 +68,7 @@
         </DataTemplate>
     </UserControl.Resources>
     <DockPanel LastChildFill="True" Background="{DynamicResource WindowBackgroundBrush}" Margin="0,5">
-        <StackPanel DockPanel.Dock="Top" Margin="20, 5, 20, 5" Orientation="Vertical">
+        <StackPanel DockPanel.Dock="Top" Margin="5,0" Orientation="Vertical">
             <TextBlock TextWrapping="Wrap" Margin="0, 0, 0, 5" Text="{x:Static resx:MissionMonitor.para1}" />
             <TextBlock TextWrapping="Wrap" Margin="0, 5" Text="{x:Static resx:MissionMonitor.para2}" />
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,5" >

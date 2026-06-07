@@ -7,8 +7,8 @@
         xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         mc:Ignorable="d"
         d:DesignHeight="600" d:DesignWidth="800">
-    <DockPanel LastChildFill="True" Background="{DynamicResource WindowBackgroundBrush}" Margin="20, 10, 20, 10">
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Text="{x:Static resx:Resources.tab_frontier_desc}" VerticalAlignment="Top"/>
+    <DockPanel LastChildFill="True" Background="{DynamicResource WindowBackgroundBrush}">
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:Resources.tab_frontier_desc}" VerticalAlignment="Top"/>
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />

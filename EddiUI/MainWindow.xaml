@@ -23,7 +23,7 @@
             </TabControl.Resources>
             <TabItem Header="EDDI" x:Name="eddiTab">
                 <DockPanel LastChildFill="True" Background="{DynamicResource WindowBackgroundBrush}">
-                    <DockPanel LastChildFill="True" Background="Transparent" DockPanel.Dock="Bottom" Margin="20, 10, 20, 10">
+                    <DockPanel LastChildFill="True" Background="Transparent" DockPanel.Dock="Bottom" Margin="5">
                         <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Text="{x:Static resx:Resources.EDDI_status_label}"/>
                         <TextBlock x:Name="versionText" VerticalAlignment="Center" DockPanel.Dock="Right"/>
                         <Label Height="28" Margin="0,0,0,0" Name="Version" DockPanel.Dock="Right" VerticalAlignment="Center">
@@ -34,8 +34,8 @@
                         <Button x:Name="upgradeButton" VerticalAlignment="Center" DockPanel.Dock="Left" Visibility="Collapsed" Margin="10,0,10,0" Click="upgradeClicked" Content="{x:Static resx:Resources.upgrade_button}"></Button>
                         <TextBlock x:Name="statusText" VerticalAlignment="Center" DockPanel.Dock="Left" Text="{x:Static resx:Resources.operational}"/>
                     </DockPanel>
-                    <RichTextBox DockPanel.Dock="Top" Margin="20, 10, 20, 10" IsReadOnly="True" IsDocumentEnabled="True" BorderThickness="0">
-                        <FlowDocument>
+                    <RichTextBox DockPanel.Dock="Top" Margin="5" IsReadOnly="True" IsDocumentEnabled="True" Background="{DynamicResource WindowBackgroundBrush}" BorderThickness="0">
+                        <FlowDocument Background="{DynamicResource WindowBackgroundBrush}">
                             <Paragraph>
                                 <Hyperlink Click="EDDIClicked">EDDI</Hyperlink>
                                 <Run Text="{x:Static resx:Resources.paragraph_0}" />
@@ -57,7 +57,7 @@
                             </Paragraph>
                         </FlowDocument>
                     </RichTextBox>
-                    <Grid DockPanel.Dock="Bottom" Margin="20, 10, 20, 10">
+                    <Grid DockPanel.Dock="Bottom">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
@@ -84,7 +84,7 @@
                         <TextBlock Grid.Row="5" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:Resources.access_beta}" VerticalAlignment="Top"/>
                         <CheckBox x:Name="eddiBetaProgramme" Grid.Row="5" Grid.Column="1" Margin="5" VerticalAlignment="Center" Checked="betaProgrammeEnabled" Unchecked="betaProgrammeDisabled"/>
                     </Grid>
-                    <TextBlock x:Name="heroText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="20, 10, 20, 10" FontSize="18" FontStyle="Italic" FontWeight="Bold" Text="{x:Static resx:Resources.if_using_va}" VerticalAlignment="Center" TextAlignment="Center"/>
+                    <TextBlock x:Name="heroText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" FontSize="18" FontStyle="Italic" FontWeight="Bold" Text="{x:Static resx:Resources.if_using_va}" VerticalAlignment="Center" TextAlignment="Center"/>
                 </DockPanel>
             </TabItem>
             <TabItem Header="{x:Static resx:Resources.tab_frontier_header}" x:Name="frontierTab">

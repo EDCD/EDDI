@@ -61,7 +61,7 @@
         </DataTemplate>
     </UserControl.Resources>
     <DockPanel LastChildFill="True" Background="{DynamicResource WindowBackgroundBrush}" Margin="0">
-        <StackPanel DockPanel.Dock="Top" Margin="20, 5, 20, 5" Orientation="Vertical">
+        <StackPanel DockPanel.Dock="Top" Margin="5" Orientation="Vertical">
             <TextBlock TextWrapping="Wrap" Margin="0, 5" Text="{x:Static resx:ShipMonitor.p1}" VerticalAlignment="Top"/>
             <RichTextBox Margin="0, 5" IsReadOnly="True" IsDocumentEnabled="True" BorderThickness="0">
                 <FlowDocument>

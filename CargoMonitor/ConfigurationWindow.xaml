@@ -11,7 +11,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="800">
     <DockPanel LastChildFill="True" Background="{DynamicResource WindowBackgroundBrush}" Margin="0,5">
-        <StackPanel DockPanel.Dock="Top" Margin="20, 5, 20, 5" Orientation="Vertical">
+        <StackPanel DockPanel.Dock="Top" Margin="5,0" Orientation="Vertical">
             <TextBlock TextWrapping="Wrap" Margin="0, 5" Text="{x:Static resx:CargoMonitor.para1}" />
             <TextBlock TextWrapping="Wrap" Margin="0, 5" Text="{x:Static resx:CargoMonitor.para2}" />
             <TextBlock TextWrapping="Wrap" Margin="0, 5" Text="{x:Static resx:CargoMonitor.para3}" />

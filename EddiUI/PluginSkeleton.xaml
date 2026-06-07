@@ -8,8 +8,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="400">
     <DockPanel x:Name="panel" LastChildFill="False" Background="{DynamicResource WindowBackgroundBrush}">
-        <TextBlock DockPanel.Dock="Top" x:Name="plugindescription" TextWrapping="Wrap" Margin="20, 10, 20, 5" />
-        <StackPanel Name="PluginSkeletonCheckbox" DockPanel.Dock="Top" Orientation="Horizontal" Margin="20, 5, 20, 10">
+        <TextBlock DockPanel.Dock="Top" x:Name="plugindescription" TextWrapping="Wrap" Margin="5" />
+        <StackPanel Name="PluginSkeletonCheckbox" DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
             <CheckBox x:Name="pluginenabled" Checked="pluginenabled_Checked" Unchecked="pluginenabled_Unchecked"></CheckBox>
             <TextBlock Margin="5,0" Text="{x:Static resx:Resources.plugin_enabled}" />
         </StackPanel>
