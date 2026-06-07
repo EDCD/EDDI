@@ -8,11 +8,10 @@
         mc:Ignorable="d"
         d:DesignHeight="600" d:DesignWidth="800">
     <DockPanel LastChildFill="True" Background="{DynamicResource WindowBackgroundBrush}">
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:Resources.tab_frontier_desc}" VerticalAlignment="Top"/>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="0, 5" Text="{x:Static resx:Resources.tab_frontier_desc}" VerticalAlignment="Top"/>
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -23,18 +22,19 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
+            <TextBlock x:Name ="companionAppText" Grid.Row="4" Grid.Column="0" Margin="0, 5" TextWrapping="Wrap" Text="{x:Static resx:Resources.tab_frontier_reset_desc}" VerticalAlignment="Center"/>
             <Button  x:Name="companionAppButton"
                                  Grid.Row="4"
-                                 Grid.Column="0"
-                                 Grid.ColumnSpan="2"
+                                 Grid.Column="1"
                                  Content="{x:Static resx:Resources.login}"
                                  Margin="5"
+                                 Padding="5"
                                  Click="companionAppClicked"
                                  HorizontalAlignment="Right"
+                                 VerticalAlignment="Center"
                                  MinWidth="80" />
-            <TextBlock x:Name ="companionAppText" Grid.Row="4" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:Resources.tab_frontier_reset_desc}"/>
-            <TextBlock x:Name ="companionAppStatusLabel" Grid.Row="5" Grid.Column="0" Margin="5" Text="{x:Static resx:Resources.frontierApiStatusLabel}"  HorizontalAlignment="Right"/>
-            <TextBlock x:Name ="companionAppStatusValue" Grid.Row="5" Grid.Column="1" Margin="5" Text="{x:Static resx:Resources.frontierApiNotConnected}"  HorizontalAlignment="Right" MinWidth="80" TextAlignment="Center"/>
+            <TextBlock x:Name ="companionAppStatusLabel" Grid.Row="5" Grid.Column="0" Text="{x:Static resx:Resources.frontierApiStatusLabel}"  HorizontalAlignment="Right"/>
+            <TextBlock x:Name ="companionAppStatusValue" Grid.Row="5" Grid.Column="1" Text="{x:Static resx:Resources.frontierApiNotConnected}"  HorizontalAlignment="Right" MinWidth="90" TextAlignment="Center"/>
         </Grid>
     </DockPanel>
 </UserControl>

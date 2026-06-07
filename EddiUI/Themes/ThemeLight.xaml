@@ -2,22 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     
-    <!-- Design Spacing Scale -->
-    <system:Double x:Key="SpacingXXS">2</system:Double>
-    <system:Double x:Key="SpacingXS">4</system:Double>
-    <system:Double x:Key="SpacingS">8</system:Double>
-    <system:Double x:Key="SpacingM">12</system:Double>
-    <system:Double x:Key="SpacingL">16</system:Double>
-    <system:Double x:Key="SpacingXL">20</system:Double>
-    
-    <Thickness x:Key="MarginS">8</Thickness>
-    <Thickness x:Key="MarginM">12</Thickness>
-    <Thickness x:Key="MarginL">16</Thickness>
-    
-    <Thickness x:Key="PaddingS">8</Thickness>
-    <Thickness x:Key="PaddingM">12</Thickness>
-    <Thickness x:Key="PaddingL">16</Thickness>
-    
     <!-- Typography -->
     <FontFamily x:Key="FontFamilyDefault">Segoe UI, Helvetica, Arial, sans-serif</FontFamily>
     
@@ -32,6 +16,9 @@
     
     <Color x:Key="AccentColor">#005A9E</Color>
     <SolidColorBrush x:Key="AccentColorBrush" Color="{StaticResource AccentColor}"/>
+
+    <Color x:Key="ComboBoxItemSelectedBackground">#005A9E</Color>
+    <SolidColorBrush x:Key="ComboBoxItemSelectedBackgroundBrush" Color="{StaticResource ComboBoxItemSelectedBackground}"/>
 
     <!-- Hyperlink Brushes -->
     <Color x:Key="HyperlinkForeground">#0066CC</Color>
@@ -48,20 +35,26 @@
     <Color x:Key="ControlBackground">#F9F9F9</Color>
     <SolidColorBrush x:Key="ControlBackgroundBrush" Color="{StaticResource ControlBackground}"/>
 
-    <Color x:Key="ControlBackgroundHover">#EFEFEF</Color>
+    <Color x:Key="ControlBackgroundHover">#E6E6E6</Color>
     <SolidColorBrush x:Key="ControlBackgroundHoverBrush" Color="{StaticResource ControlBackgroundHover}"/>
 
+    <Color x:Key="TabStripBackground">#F3F3F3</Color>
+    <SolidColorBrush x:Key="TabStripBackgroundBrush" Color="{StaticResource TabStripBackground}"/>
+
+    <Color x:Key="EditableControlBackground">#FFFFFF</Color>
+    <SolidColorBrush x:Key="EditableControlBackgroundBrush" Color="{StaticResource EditableControlBackground}"/>
+
     <!-- DataGrid Alternating -->
-    <Color x:Key="DataGridRowAlternating">#F3F6FA</Color>
+    <Color x:Key="DataGridRowAlternating">#F8F8F8</Color>
     <SolidColorBrush x:Key="DataGridRowAlternatingBrush" Color="{StaticResource DataGridRowAlternating}"/>
 
     <!-- Grid Lines & Borders -->
     <Color x:Key="BorderLight">#E0E0E0</Color>
     <SolidColorBrush x:Key="BorderLightBrush" Color="{StaticResource BorderLight}"/>
-    <SolidColorBrush x:Key="DataGridLineBrush" Color="{StaticResource BorderLight}"/>
 
     <Color x:Key="BorderMedium">#CCCCCC</Color>
     <SolidColorBrush x:Key="BorderMediumBrush" Color="{StaticResource BorderMedium}"/>
+    <SolidColorBrush x:Key="DataGridLineBrush" Color="{StaticResource BorderMedium}"/>
 
     <!-- Text Colors -->
     <Color x:Key="TextPrimary">#1A1A1A</Color>
@@ -70,8 +63,33 @@
     <Color x:Key="TextSecondary">#5E5E5E</Color>
     <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondary}"/>
 
-    <Color x:Key="TextDisabled">#9E9E9E</Color>
-    <SolidColorBrush x:Key="TextDisabledBrush" Color="{StaticResource TextDisabled}"/>
+     <Color x:Key="TextDisabled">#707070</Color>
+     <SolidColorBrush x:Key="TextDisabledBrush" Color="{StaticResource TextDisabled}"/>
+
+    <Color x:Key="ReadOnlyControlBackground">#F4F4F4</Color>
+    <SolidColorBrush x:Key="ReadOnlyControlBackgroundBrush" Color="{StaticResource ReadOnlyControlBackground}"/>
+    <Color x:Key="ReadOnlyControlForeground">#5E5E5E</Color>
+    <SolidColorBrush x:Key="ReadOnlyControlForegroundBrush" Color="{StaticResource ReadOnlyControlForeground}"/>
+    <Color x:Key="ReadOnlyControlBorder">#D0D0D0</Color>
+    <SolidColorBrush x:Key="ReadOnlyControlBorderBrush" Color="{StaticResource ReadOnlyControlBorder}"/>
+
+    <Color x:Key="DisabledControlBackground">#FAFAFA</Color>
+    <SolidColorBrush x:Key="DisabledControlBackgroundBrush" Color="{StaticResource DisabledControlBackground}"/>
+     <Color x:Key="DisabledControlForeground">#707070</Color>
+     <SolidColorBrush x:Key="DisabledControlForegroundBrush" Color="{StaticResource DisabledControlForeground}"/>
+    <Color x:Key="DisabledControlBorder">#E4E4E4</Color>
+    <SolidColorBrush x:Key="DisabledControlBorderBrush" Color="{StaticResource DisabledControlBorder}"/>
+
+    <!-- Default WPF template brushes -->
+    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="{StaticResource ControlBackground}"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.ControlLightBrushKey}" Color="{StaticResource NeutralBackground}"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.ControlDarkBrushKey}" Color="{StaticResource BorderMedium}"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="{StaticResource TextPrimary}"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="{StaticResource WindowBackground}"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.WindowTextBrushKey}" Color="{StaticResource TextPrimary}"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{StaticResource AccentColor}"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.HotTrackBrushKey}" Color="{StaticResource HyperlinkForeground}"/>
 
     <!-- Accent Header Gradients (Windows 11 inspired) -->
     <LinearGradientBrush x:Key="DockPanelBackgroundBrush" EndPoint="0.5,1.0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0.0">

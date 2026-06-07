@@ -13,6 +13,7 @@
              d:DesignHeight="600" d:DesignWidth="800" >
     <UserControl.Resources>
         <local:RawIsNotNullConverter x:Key="RawIsNotNullConverter"/>
+        <local:ShipRoleConverter x:Key="ShipRoleConverter"/>
         <DataTemplate x:Key="shipDetailsTemplate" DataType="{x:Type defs:Ship}">
             <Grid Background="{DynamicResource ControlBackgroundBrush}">
                 <Grid.ColumnDefinitions>
@@ -60,8 +61,8 @@
             </Grid>
         </DataTemplate>
     </UserControl.Resources>
-    <DockPanel LastChildFill="True" Background="{DynamicResource WindowBackgroundBrush}" Margin="0">
-        <StackPanel DockPanel.Dock="Top" Margin="5" Orientation="Vertical">
+    <DockPanel LastChildFill="True" Background="{DynamicResource WindowBackgroundBrush}">
+        <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
             <TextBlock TextWrapping="Wrap" Margin="0, 5" Text="{x:Static resx:ShipMonitor.p1}" VerticalAlignment="Top"/>
             <RichTextBox Margin="0, 5" IsReadOnly="True" IsDocumentEnabled="True" BorderThickness="0">
                 <FlowDocument>
@@ -83,8 +84,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock TextWrapping="Wrap" Text="{x:Static resx:ShipMonitor.p5}" Margin="0" VerticalAlignment="Center"/>
-                <ComboBox x:Name="exportComboBox" Grid.Column="1" Margin="10, 0, 0, 0" SelectionChanged="onExportTargetChanged" SelectedValuePath="Content" IsEditable="False" IsReadOnly="True" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Right">
+                <TextBlock TextWrapping="Wrap" Text="{x:Static resx:ShipMonitor.p5}" VerticalAlignment="Center"/>
+                <ComboBox x:Name="exportComboBox" Grid.Column="1" SelectionChanged="onExportTargetChanged" SelectedValuePath="Content" IsEditable="False" IsReadOnly="True" VerticalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Right" MinWidth="100">
                     <ComboBoxItem>Coriolis</ComboBoxItem>
                     <ComboBoxItem>Coriolis (Beta)</ComboBoxItem>
                     <ComboBoxItem>EDSY</ComboBoxItem>
@@ -96,17 +97,17 @@
                 <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_name}" IsReadOnly="True" Binding="{Binding Path=name}"/>
                 <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_model}" IsReadOnly="True" Binding="{Binding Path=model}"/>
                 <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_location}" IsReadOnly="True" Binding="{Binding Path=StoredLocation.systemName}"/>
-                <utility:DataGridNumericColumn Header="{x:Static resx:ShipMonitor.header_distanceLY}" IsReadOnly="True" Binding="{Binding Path=distance, StringFormat=\{0:N0\}}">
-                    <DataGridTextColumn.ElementStyle>
+                <utility:DataGridNumericColumn Header="{x:Static resx:ShipMonitor.header_distanceLY}" IsReadOnly="True" Binding="{Binding Path=distance, StringFormat=\{0:N0\}}" Width="Auto">
+                    <!--<DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Right" />
                             <Setter Property="Margin" Value="5, 0" />
                         </Style>
-                    </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn.ElementStyle>-->
                 </utility:DataGridNumericColumn>
-                <DataGridComboBoxColumn Header="{x:Static resx:ShipMonitor.header_role}" SelectedItemBinding="{Binding Path=Role, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={x:Static defs:Role.Sorted}}">
+                <DataGridComboBoxColumn Header="{x:Static resx:ShipMonitor.header_role}" SelectedItemBinding="{Binding Path=Role, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource ShipRoleConverter}}" ItemsSource="{Binding Source={x:Static defs:Role.Sorted}}"  Width="Auto">
                     <DataGridComboBoxColumn.EditingElementStyle>
-                        <Style TargetType="{x:Type ComboBox}">
+                        <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
                             <EventSetter Event="SelectionChanged" Handler="shipsUpdated" />
                         </Style>
                     </DataGridComboBoxColumn.EditingElementStyle>
@@ -120,7 +121,7 @@
                         </Binding>
                     </DataGridTextColumn.Binding>
                     <DataGridTextColumn.EditingElementStyle>
-                        <Style TargetType="{x:Type TextBox}">
+                        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
                             <EventSetter Event="TextChanged" Handler="PhoneticName_TextChanged" />
                             <Style.Triggers>
                                 <Trigger Property="Validation.HasError" Value="true">

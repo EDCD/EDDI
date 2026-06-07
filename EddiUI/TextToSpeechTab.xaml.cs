@@ -57,8 +57,7 @@ namespace EddiUI
         private void RefreshAudioDevices()
         {
             var activeDevices = AudioDeviceService.GetAudioDevices();
-            var currentOptions = ttsAudioDeviceDropDown.ItemsSource as List<AudioDevice>;
-            if (currentOptions == null) return;
+            if ( ttsAudioDeviceDropDown.ItemsSource is not List<AudioDevice> currentOptions ) { return; }
 
             var currentIds = currentOptions.Skip(1).Select(d => d.Id).ToList();
             var activeIds = activeDevices.Select(d => d.Id).ToList();
@@ -72,7 +71,7 @@ namespace EddiUI
 
                 var audioDeviceOptions = new List<AudioDevice>
                 {
-                    new AudioDevice { Name = Properties.Resources.tts_default_audio_device, Id = null }
+                    new() { Name = Properties.Resources.tts_default_audio_device, Id = null }
                 };
                 audioDeviceOptions.AddRange(activeDevices);
 
@@ -103,7 +102,7 @@ namespace EddiUI
             // Populate audio devices
             var audioDeviceOptions = new List<AudioDevice>
             {
-                new AudioDevice { Name = Properties.Resources.tts_default_audio_device, Id = null }
+                new() { Name = Properties.Resources.tts_default_audio_device, Id = null }
             };
             audioDeviceOptions.AddRange(AudioDeviceService.GetAudioDevices());
             ttsAudioDeviceDropDown.ItemsSource = audioDeviceOptions;

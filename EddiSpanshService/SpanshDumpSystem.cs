@@ -471,10 +471,12 @@ namespace EddiSpanshService
                 { "Ocellus Starport", StationModel.Ocellus },
                 { "Orbis Starport", StationModel.Orbis },
                 { "Outpost", StationModel.Outpost},
+                { "Planetary Construction Depot", StationModel.PlanetaryConstructionDepot },
                 { "Planetary Outpost", StationModel.CraterOutpost },
                 { "Planetary Port", StationModel.CraterPort },
                 { "Scientific Outpost", StationModel.Outpost },
-                { "Settlement", StationModel.OnFootSettlement }
+                { "Settlement", StationModel.OnFootSettlement },
+                { "Space Construction Depot", StationModel.SpaceConstructionDepot }
             };
             return modelTranslations.TryGetValue( spanshModel, out var model )
                 ? model

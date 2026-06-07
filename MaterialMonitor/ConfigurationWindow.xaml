@@ -10,8 +10,8 @@
              xmlns:utility="clr-namespace:Utilities;assembly=Utilities"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="800">
-    <DockPanel LastChildFill="True" Background="{DynamicResource WindowBackgroundBrush}" Margin="0,5">
-        <StackPanel DockPanel.Dock="Top" Margin="5,0" Orientation="Vertical">
+    <DockPanel LastChildFill="True" Background="{DynamicResource WindowBackgroundBrush}">
+        <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
             <TextBlock TextWrapping="Wrap" Margin="0, 5" Text="{x:Static resx:MaterialMonitor.p1}"/>
             <TextBlock TextWrapping="Wrap" Margin ="0, 5" Text="{x:Static resx:MaterialMonitor.p2}"/>
         </StackPanel>

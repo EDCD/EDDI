@@ -142,7 +142,8 @@
     <value>Bounties</value>
   </data>
   <data name="header_claims" xml:space="preserve">
-    <value>Estimated Claims</value>
+    <value>Est. Claims</value>
+    <comment>Estimated Claims</comment>
   </data>
   <data name="header_faction" xml:space="preserve">
     <value>Faction</value>

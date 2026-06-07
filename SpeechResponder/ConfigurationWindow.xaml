@@ -7,23 +7,27 @@
              xmlns:resx="clr-namespace:EddiSpeechResponder.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
-    <DockPanel LastChildFill="True" Background="{DynamicResource WindowBackgroundBrush}" Margin="-10">
-        <Grid DockPanel.Dock="Top" Margin="0">
+    <UserControl.Resources>
+        <local:BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <local:ResetDeleteContentConverter x:Key="ResetDeleteContentConv"/>
+    </UserControl.Resources>
+    <DockPanel LastChildFill="True" Background="{DynamicResource WindowBackgroundBrush}">
+        <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="285"/>
             </Grid.ColumnDefinitions>
             <StackPanel Orientation="Vertical" Grid.Column="0" DockPanel.Dock="Top" >
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-                    <TextBlock Margin="5" TextWrapping="Wrap" Text="{x:Static resx:SpeechResponder.subs}" />
+                    <TextBlock Margin="0, 5" TextWrapping="Wrap" Text="{x:Static resx:SpeechResponder.subs}" />
                     <CheckBox x:Name="subtitlesCheckbox" VerticalAlignment="Center" Margin="5, 0" Checked="subtitlesEnabled" Unchecked="subtitlesDisabled"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" >
-                    <TextBlock Margin="5" TextWrapping="Wrap" Text="{x:Static resx:SpeechResponder.subs_only}"/>
-                    <CheckBox x:Name="subtitlesOnlyCheckbox" Margin="0" VerticalAlignment="Center" Checked="subtitlesOnlyEnabled" Unchecked="subtitlesOnlyDisabled"/>
+                    <TextBlock Margin="0, 5" TextWrapping="Wrap" Text="{x:Static resx:SpeechResponder.subs_only}" VerticalAlignment="Center"/>
+                    <CheckBox x:Name="subtitlesOnlyCheckbox" Margin="5" VerticalAlignment="Center" Checked="subtitlesOnlyEnabled" Unchecked="subtitlesOnlyDisabled"/>
                 </StackPanel>
             </StackPanel>
-            <RichTextBox x:Name="speechResponderHelp" DockPanel.Dock="Left" Grid.Column="1" Width="Auto" Margin="5"  IsReadOnly="True" IsDocumentEnabled="True" BorderThickness="0">
+            <RichTextBox x:Name="speechResponderHelp" DockPanel.Dock="Left" Grid.Column="1" Width="Auto" IsReadOnly="True" IsDocumentEnabled="True" BorderThickness="0" VerticalAlignment="Center">
                 <FlowDocument>
                     <Paragraph>
                         <TextBlock TextWrapping="Wrap">
@@ -36,15 +40,18 @@
                 </FlowDocument>
             </RichTextBox>
         </Grid>
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="5, 0">
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
             <TextBlock VerticalAlignment="Center" Text="{x:Static resx:SpeechResponder.active_personality}" />
             <ComboBox 
                 x:Name="personalityComboBox"
                 Margin="5,0"
+                Padding="5"
+                MinWidth="100"
                 ItemsSource="{Binding Personalities, NotifyOnSourceUpdated=True, Mode=OneWay, BindsDirectlyToSource=True}" 
                 SelectedItem="{Binding CurrentPersonality, NotifyOnSourceUpdated=True, Mode=TwoWay, BindsDirectlyToSource=True}"
                 DisplayMemberPath="Name" 
                 IsSynchronizedWithCurrentItem="True"
+                HorizontalContentAlignment="Left"
                 >
             </ComboBox>
             <TextBlock 
@@ -57,7 +64,7 @@
         </StackPanel>
         <DockPanel HorizontalAlignment="Stretch" DockPanel.Dock="Bottom" Margin="0, 0, 5, 0">
             <Label x:Name ="searchLabel" VerticalContentAlignment="Center" Content="{x:Static resx:SpeechResponder.search_filter}" />
-            <TextBox x:Name ="searchFilterText" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="25" Width="Auto" MinWidth="100" TextChanged="SearchFilterText_OnTextChanged" ToolTip="{x:Static resx:SpeechResponder.search_filter_tooltip}"/>
+            <TextBox x:Name ="searchFilterText" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="25" Width="Auto" MinWidth="100" TextChanged="SearchFilterText_OnTextChanged" ToolTip="{x:Static resx:SpeechResponder.search_filter_tooltip}" Margin="5"/>
             <Grid Margin="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -79,18 +86,8 @@
                     Grid.Column="1" 
                     Click="newScriptClicked" 
                     Content="{x:Static resx:SpeechResponder.button_new}"
-                    >
-                    <Button.Style>
-                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
-                            <Setter Property="Visibility"  Value="Visible" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=personalityComboBox, Path=DataContext.(local:SpeechResponder.CurrentPersonality).IsCustom, Mode=OneWay}" Value="False">
-                                    <Setter Property="Visibility"  Value="Hidden" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
+                    Visibility="{Binding ElementName=personalityComboBox, Path=DataContext.(local:SpeechResponder.CurrentPersonality).IsCustom, Mode=OneWay, Converter={StaticResource BoolToVis}}"
+                    />
                 <Button 
                     x:Name="deletePersonalityButton"
                     Margin="10" 
@@ -99,18 +96,8 @@
                     Click="deletePersonalityClicked" 
                     IsEnabled="{Binding ElementName=personalityComboBox, Path=DataContext.(local:SpeechResponder.CurrentPersonality).IsCustom, Mode=OneWay}" 
                     Content="{x:Static resx:SpeechResponder.button_delete}"
-                    >
-                    <Button.Style>
-                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
-                            <Setter Property="Visibility"  Value="Visible" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=personalityComboBox, Path=DataContext.(local:SpeechResponder.CurrentPersonality).IsCustom, Mode=OneWay}" Value="False">
-                                    <Setter Property="Visibility"  Value="Hidden" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
+                    Visibility="{Binding ElementName=personalityComboBox, Path=DataContext.(local:SpeechResponder.CurrentPersonality).IsCustom, Mode=OneWay, Converter={StaticResource BoolToVis}}"
+                    />
                 <Button x:Name="configureHotkeysButton" Margin="10" HorizontalAlignment="Center" Grid.Column="3" 
                         Click="configureHotkeysButtonClicked" Content="{x:Static resx:SpeechResponder.button_hotkeys}"/>
                 <TextBlock 
@@ -121,7 +108,7 @@
                     Grid.ColumnSpan="2" 
                     TextWrapping="Wrap" 
                     Width="Auto" 
-                    Margin="10, 0" 
+                    Margin="0" 
                     Text="{x:Static resx:SpeechResponder.default_is_read_only}" FontWeight="Bold" FontStyle="Italic" FontSize="13" 
                     >
                     <TextBlock.Style>
@@ -169,9 +156,7 @@
                     SortMemberPath="Enabled"
                     >
                     <DataGridTemplateColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
-                            <Setter Property="ContextMenu" Value="{DynamicResource HeaderEnableAllContextMenu}"/>
-                        </Style>
+                        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource HeaderContextMenuStyle}"/>
                     </DataGridTemplateColumn.HeaderStyle>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="{x:Type local:Script}">
@@ -192,25 +177,10 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="{x:Type local:Script}">
                             <ComboBox 
+                                Style="{DynamicResource PriorityComboBoxStyle}"
                                 SelectedValue="{Binding Path=Priority, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                                 ItemsSource="{x:Static local:ConfigurationWindow.Priorities}" 
-                                SelectionChanged="eddiScriptsPriorityUpdated"
-                                >
-                                <ComboBox.Style>
-                                    <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
-                                        <Setter Property="Opacity"  Value="1" />
-                                        <Setter Property="IsEnabled"  Value="{Binding Path=Responder}" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Path=Responder}" Value="False">
-                                                <Setter Property="Opacity"  Value="0" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding Path=PersonalityIsCustom}" Value="False">
-                                                <Setter Property="IsEnabled"  Value="False" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ComboBox.Style>
-                            </ComboBox>
+                                SelectionChanged="eddiScriptsPriorityUpdated"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -224,14 +194,14 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="{x:Type local:Script}">
-                            <Button IsEnabled="{Binding Path=HasValue}" Click="testScript" Content="{x:Static resx:SpeechResponder.test_script}" />
+                            <Button IsEnabled="{Binding Path=HasValue}" Click="testScript" Content="{x:Static resx:SpeechResponder.test_script}" Style="{DynamicResource ScriptGridButtonStyle}" Margin="1,0" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="{x:Type local:Script}">
-                            <Button IsEnabled="{Binding Path=HasValue}" Click="viewScript" Content="{x:Static resx:SpeechResponder.view_script}" />
+                            <Button IsEnabled="{Binding Path=HasValue}" Click="viewScript" Content="{x:Static resx:SpeechResponder.view_script}" Style="{DynamicResource ScriptGridButtonStyle}" Margin="1,0" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -241,27 +211,21 @@
                             <Button 
                                 IsEnabled="{Binding Path=PersonalityIsCustom}" 
                                 Click="editScript" 
-                                Content="{x:Static resx:SpeechResponder.edit_script}" />
+                                Content="{x:Static resx:SpeechResponder.edit_script}"
+                                Style="{DynamicResource ScriptGridButtonStyle}" Margin="1,0" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="{x:Type local:Script}">
-                            <Button Click="resetOrDeleteScript">
+                            <Button Click="resetOrDeleteScript" Padding="4,0" MinHeight="20" MinWidth="0" Margin="1,0">
                                 <Button.IsEnabled>
                                     <Binding Path="IsResetOrDeleteEnabled"/>
                                 </Button.IsEnabled>
-                                <Button.Style>
-                                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
-                                        <Setter Property="Content" Value="{x:Static resx:SpeechResponder.delete_script}" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Path=IsResettable}" Value="True">
-                                                <Setter Property="Content" Value="{x:Static resx:SpeechResponder.reset_script}" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Button.Style>
+                                <Button.Content>
+                                    <Binding Path="IsResettable" Converter="{StaticResource ResetDeleteContentConv}"/>
+                                </Button.Content>
                             </Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

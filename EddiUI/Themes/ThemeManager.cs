@@ -1,7 +1,9 @@
 using Microsoft.Win32;
 using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Media;
 
 namespace EddiUI.Themes
@@ -9,6 +11,17 @@ namespace EddiUI.Themes
     public static class ThemeManager
     {
         private static bool isInitialized = false;
+        private const string ClassicTheme = "Classic";
+        private const string LightThemeDictionaryName = "ThemeLight.xaml";
+        private const string DarkThemeDictionaryName = "ThemeDark.xaml";
+        private const string ClassicThemeDictionaryName = "ThemeClassic.xaml";
+        private const string ModernThemeDictionaryName = "ThemeModern.xaml";
+        private const int DwmwaUseImmersiveDarkMode = 20;
+        private const int DwmwaUseImmersiveDarkModeBefore20H1 = 19;
+        private const int DwmwaBorderColor = 34;
+        private const int DwmwaCaptionColor = 35;
+        private const int DwmwaTextColor = 36;
+        private const int DwmColorDefault = -1;
 
         public static void Initialize()
         {
@@ -25,8 +38,7 @@ namespace EddiUI.Themes
 
         private static void OnUserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e)
         {
-            // React when the user switches Light/Dark mode or changes accent colors
-            if (e.Category == UserPreferenceCategory.General || e.Category == UserPreferenceCategory.Color)
+            if (ShouldReapplyThemeForUserPreferenceChange(e.Category))
             {
                 Application.Current?.Dispatcher?.InvokeAsync(() =>
                 {
@@ -40,55 +52,126 @@ namespace EddiUI.Themes
             var currentResources = Application.Current?.Resources;
             if (currentResources == null) return;
 
-            bool isDarkTheme;
             var overrideTheme = EddiConfigService.ConfigService.Instance.eddiConfiguration.OverrideTheme;
-            if (string.Equals(overrideTheme, "Light", StringComparison.OrdinalIgnoreCase))
-            {
-                isDarkTheme = false;
-            }
-            else if (string.Equals(overrideTheme, "Dark", StringComparison.OrdinalIgnoreCase))
-            {
-                isDarkTheme = true;
-            }
-            else
-            {
-                isDarkTheme = IsWindowsDarkTheme();
-            }
+            var themeDictionaryName = ResolveThemeDictionaryName(overrideTheme, IsWindowsDarkTheme());
 
-            // Swap out Light/Dark resource dictionary
-            var existingTheme = currentResources.MergedDictionaries.FirstOrDefault(d =>
-                d.Source != null && (d.Source.OriginalString.Contains("ThemeLight.xaml") || d.Source.OriginalString.Contains("ThemeDark.xaml"))
-            );
-
-            var themeUri = isDarkTheme
-                ? new Uri("pack://application:,,,/EddiUI;component/Themes/ThemeDark.xaml", UriKind.Absolute)
-                : new Uri("pack://application:,,,/EddiUI;component/Themes/ThemeLight.xaml", UriKind.Absolute);
-
+            var themeUri = new Uri($"pack://application:,,,/EddiUI;component/Themes/{themeDictionaryName}", UriKind.Absolute);
             var newTheme = new ResourceDictionary { Source = themeUri };
 
-            if (existingTheme != null)
+            RemoveExistingThemeDictionaries(currentResources);
+
+            var existingModern = currentResources.MergedDictionaries.FirstOrDefault(IsModernThemeDictionary);
+            if (existingModern != null)
             {
-                int index = currentResources.MergedDictionaries.IndexOf(existingTheme);
-                currentResources.MergedDictionaries[index] = newTheme;
+                int index = currentResources.MergedDictionaries.IndexOf(existingModern);
+                currentResources.MergedDictionaries.Insert(index, newTheme);
             }
             else
             {
                 currentResources.MergedDictionaries.Add(newTheme);
             }
 
-            // Ensure ThemeModern.xaml is always present in MergedDictionaries
-            var existingModern = currentResources.MergedDictionaries.FirstOrDefault(d =>
-                d.Source != null && d.Source.OriginalString.Contains("ThemeModern.xaml")
-            );
+            existingModern = currentResources.MergedDictionaries.FirstOrDefault(IsModernThemeDictionary);
+            var shouldLoadModern = ShouldLoadModernThemeDictionary(overrideTheme);
 
-            if (existingModern == null)
+            if (shouldLoadModern)
             {
-                var modernUri = new Uri("pack://application:,,,/EddiUI;component/Themes/ThemeModern.xaml", UriKind.Absolute);
-                currentResources.MergedDictionaries.Add(new ResourceDictionary { Source = modernUri });
+                if (existingModern == null)
+                {
+                    var modernUri = new Uri($"pack://application:,,,/EddiUI;component/Themes/{ModernThemeDictionaryName}", UriKind.Absolute);
+                    currentResources.MergedDictionaries.Add(new ResourceDictionary { Source = modernUri });
+                }
+            }
+            else if (existingModern != null)
+            {
+                currentResources.MergedDictionaries.Remove(existingModern);
             }
 
-            // Also, dynamically inject the Windows Accent Color directly
-            ApplyWindowsAccentColor(currentResources);
+            if (ShouldApplyWindowsAccentColor(overrideTheme))
+            {
+                ApplyWindowsAccentColor(currentResources);
+            }
+            else
+            {
+                ClearWindowsAccentColor(currentResources);
+            }
+
+            ApplyWindowFrame(themeDictionaryName, currentResources);
+        }
+
+        internal static string ResolveThemeDictionaryName(string overrideTheme, bool isWindowsDarkTheme)
+        {
+            if (string.Equals(overrideTheme, "Light", StringComparison.OrdinalIgnoreCase))
+            {
+                return LightThemeDictionaryName;
+            }
+            if (string.Equals(overrideTheme, "Dark", StringComparison.OrdinalIgnoreCase))
+            {
+                return DarkThemeDictionaryName;
+            }
+            if (string.Equals(overrideTheme, ClassicTheme, StringComparison.OrdinalIgnoreCase))
+            {
+                return ClassicThemeDictionaryName;
+            }
+
+            return isWindowsDarkTheme ? DarkThemeDictionaryName : LightThemeDictionaryName;
+        }
+
+        internal static bool ShouldApplyWindowsAccentColor(string overrideTheme)
+        {
+            return !string.Equals(overrideTheme, ClassicTheme, StringComparison.OrdinalIgnoreCase);
+        }
+
+        internal static bool ShouldReapplyThemeForUserPreferenceChange(UserPreferenceCategory category)
+        {
+            // General covers light/dark app mode; Color covers Windows accent color changes.
+            return category is UserPreferenceCategory.General or UserPreferenceCategory.Color;
+        }
+
+        internal static bool ShouldUseDarkWindowFrame(string themeDictionaryName)
+        {
+            return string.Equals(themeDictionaryName, DarkThemeDictionaryName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        internal static bool ShouldLoadModernThemeDictionary(string overrideTheme)
+        {
+            return !string.Equals(overrideTheme, ClassicTheme, StringComparison.OrdinalIgnoreCase);
+        }
+
+        internal static void RemoveExistingThemeDictionaries(ResourceDictionary resources)
+        {
+            if (resources == null)
+            {
+                return;
+            }
+
+            foreach (var dictionary in resources.MergedDictionaries.Where(IsBaseThemeDictionary).ToList())
+            {
+                resources.MergedDictionaries.Remove(dictionary);
+            }
+        }
+
+        internal static bool IsBaseThemeDictionary(ResourceDictionary dictionary)
+        {
+            return IsBaseThemeDictionarySource(dictionary?.Source?.OriginalString);
+        }
+
+        internal static bool IsModernThemeDictionary(ResourceDictionary dictionary)
+        {
+            return IsModernThemeDictionarySource(dictionary?.Source?.OriginalString);
+        }
+
+        internal static bool IsBaseThemeDictionarySource(string source)
+        {
+            return source != null &&
+                (source.Contains(LightThemeDictionaryName) ||
+                 source.Contains(DarkThemeDictionaryName) ||
+                 source.Contains(ClassicThemeDictionaryName));
+        }
+
+        internal static bool IsModernThemeDictionarySource(string source)
+        {
+            return source?.Contains(ModernThemeDictionaryName) == true;
         }
 
         private static bool IsWindowsDarkTheme()
@@ -142,6 +225,7 @@ namespace EddiUI.Themes
                             var accentBrush = new SolidColorBrush(hoverColor);
                             accentBrush.Freeze();
                             resources["AccentColorBrush"] = accentBrush;
+                            resources["ComboBoxItemSelectedBackgroundBrush"] = accentBrush;
                             return;
                         }
                     }
@@ -160,6 +244,7 @@ namespace EddiUI.Themes
                 brush.Freeze();
                 resources["PrimaryBrandBrush"] = brush;
                 resources["AccentColorBrush"] = brush;
+                resources["ComboBoxItemSelectedBackgroundBrush"] = brush;
             }
             catch
             {
@@ -169,7 +254,72 @@ namespace EddiUI.Themes
                 brush.Freeze();
                 resources["PrimaryBrandBrush"] = brush;
                 resources["AccentColorBrush"] = brush;
+                resources["ComboBoxItemSelectedBackgroundBrush"] = brush;
             }
         }
+
+        private static void ClearWindowsAccentColor(ResourceDictionary resources)
+        {
+            resources.Remove("PrimaryBrandBrush");
+            resources.Remove("AccentColorBrush");
+        }
+
+        private static void ApplyWindowFrame(string themeDictionaryName, ResourceDictionary resources)
+        {
+            var application = Application.Current;
+            if (application == null) { return; }
+
+            foreach (Window window in application.Windows)
+            {
+                var handle = new WindowInteropHelper(window).Handle;
+                if (handle == IntPtr.Zero) { continue; }
+
+                ApplyWindowFrame(handle, themeDictionaryName, resources);
+            }
+        }
+
+        private static void ApplyWindowFrame(IntPtr handle, string themeDictionaryName, ResourceDictionary resources)
+        {
+            try
+            {
+                var useDarkFrame = ShouldUseDarkWindowFrame(themeDictionaryName);
+                var useDarkFrameValue = useDarkFrame ? 1 : 0;
+                _ = DwmSetWindowAttribute(handle, DwmwaUseImmersiveDarkMode, ref useDarkFrameValue, sizeof(int));
+                _ = DwmSetWindowAttribute(handle, DwmwaUseImmersiveDarkModeBefore20H1, ref useDarkFrameValue, sizeof(int));
+
+                if (useDarkFrame)
+                {
+                    var captionColor = ToColorRef(GetBrushColor(resources, "WindowBackgroundBrush", Colors.Black));
+                    var textColor = ToColorRef(GetBrushColor(resources, "TextPrimaryBrush", Colors.White));
+                    _ = DwmSetWindowAttribute(handle, DwmwaCaptionColor, ref captionColor, sizeof(int));
+                    _ = DwmSetWindowAttribute(handle, DwmwaBorderColor, ref captionColor, sizeof(int));
+                    _ = DwmSetWindowAttribute(handle, DwmwaTextColor, ref textColor, sizeof(int));
+                }
+                else
+                {
+                    var defaultColor = DwmColorDefault;
+                    _ = DwmSetWindowAttribute(handle, DwmwaCaptionColor, ref defaultColor, sizeof(int));
+                    _ = DwmSetWindowAttribute(handle, DwmwaBorderColor, ref defaultColor, sizeof(int));
+                    _ = DwmSetWindowAttribute(handle, DwmwaTextColor, ref defaultColor, sizeof(int));
+                }
+            }
+            catch
+            {
+                // DWM frame attributes are best-effort and unavailable on older Windows builds.
+            }
+        }
+
+        private static int ToColorRef(Color color)
+        {
+            return color.R | (color.G << 8) | (color.B << 16);
+        }
+
+        private static Color GetBrushColor(ResourceDictionary resources, string key, Color fallback)
+        {
+            return resources[key] is SolidColorBrush brush ? brush.Color : fallback;
+        }
+
+        [DllImport("dwmapi.dll", PreserveSig = true)]
+        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int dwAttribute, ref int pvAttribute, int cbAttribute);
     }
 }

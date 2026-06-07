@@ -68,15 +68,14 @@
         </DataTemplate>
     </UserControl.Resources>
     <DockPanel LastChildFill="True" Background="{DynamicResource WindowBackgroundBrush}" Margin="0,5">
-        <StackPanel DockPanel.Dock="Top" Margin="5,0" Orientation="Vertical">
-            <TextBlock TextWrapping="Wrap" Margin="0, 0, 0, 5" Text="{x:Static resx:MissionMonitor.para1}" />
+        <StackPanel DockPanel.Dock="Top"  Orientation="Vertical">
             <TextBlock TextWrapping="Wrap" Margin="0, 5" Text="{x:Static resx:MissionMonitor.para2}" />
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,5" >
-                <Label x:Name ="missionWarningLabel" VerticalContentAlignment="Center" Margin="0" Content="{x:Static resx:MissionMonitor.tab_mission_warning}"/>
-                <TextBox x:Name="missionWarningInt" Margin="10, 0, 0, 0" PreviewTextInput="EnsureValidInteger" TextChanged="warningChanged" TextAlignment="Center" VerticalContentAlignment="Center" Height="25" Width="40"/>
+                <Label x:Name ="missionWarningLabel" VerticalContentAlignment="Center" Content="{x:Static resx:MissionMonitor.tab_mission_warning}"/>
+                <TextBox x:Name="missionWarningInt" Margin="5, 0, 0, 0" PreviewTextInput="EnsureValidInteger" TextChanged="warningChanged" TextAlignment="Center" VerticalContentAlignment="Center" Height="25" Width="40"/>
             </StackPanel>
         </StackPanel>
-        <DataGrid Margin="0,10" AutoGenerateColumns="False" x:Name="missionsData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="missionsUpdated" HeadersVisibility="Column" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <DataGrid AutoGenerateColumns="False" x:Name="missionsData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="missionsUpdated" HeadersVisibility="Column" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
@@ -85,7 +84,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="{x:Static resx:MissionMonitor.header_name}" MinWidth="140" IsReadOnly="True" Binding="{Binding Path=localisedname}">
+                <DataGridTextColumn Header="{x:Static resx:MissionMonitor.header_name}" Width="*" IsReadOnly="True" Binding="{Binding Path=localisedname}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -94,11 +93,12 @@
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Left" />
-                            <Setter Property="Margin" Value="5, 0" />
+                            <Setter Property="Padding" Value="5, 0" />
+                            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_destinationsystem}" Width="*" IsReadOnly="True" Binding="{Binding Path=destinationsystem}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_destinationsystem}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=destinationsystem}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -107,11 +107,11 @@
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Center" />
-                            <Setter Property="Margin" Value="5, 0" />
+                            <Setter Property="Padding" Value="5, 0" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_destinationstation}" Width="*" IsReadOnly="True" Binding="{Binding Path=destinationstation}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_destinationstation}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=destinationstation}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -120,11 +120,11 @@
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Center" />
-                            <Setter Property="Margin" Value="5, 0" />
+                            <Setter Property="Padding" Value="5, 0" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_status}" Width="100" IsReadOnly="True" Binding="{Binding Path=localizedStatus}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_status}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=localizedStatus}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -133,11 +133,11 @@
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Center" />
-                            <Setter Property="Margin" Value="5, 0" />
+                            <Setter Property="Padding" Value="5, 0" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_remaining}" Width="140" IsReadOnly="True" Binding="{Binding Path=timeRemaining, StringFormat={}{0:g}, Mode=OneWay}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_remaining}" MinWidth="80" IsReadOnly="True" Binding="{Binding Path=timeRemaining, StringFormat={}{0:g}, Mode=OneWay}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -146,7 +146,7 @@
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Center" />
-                            <Setter Property="Margin" Value="5, 0" />
+                            <Setter Property="Padding" Value="5, 0" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>

@@ -203,7 +203,7 @@ Please close the other instance and try again.</value>
     <value>Connection reset.</value>
   </data>
   <data name="if_using_va" xml:space="preserve">
-    <value>If you are using VoiceAttack then please close this window before you start VoiceAttack for your changes to take effect. You can access this window from VoiceAttack with the 'Configure EDDI' command.</value>
+    <value>You can access this window from VoiceAttack with the 'Configure EDDI' command from the 'EDDI' VoiceAttack profile.</value>
   </data>
   <data name="link_ipa" xml:space="preserve">
     <value>International Phonetic Alphabet</value>
@@ -394,8 +394,8 @@ Please close the other instance and try again.</value>
   <data name="theme_dark" xml:space="preserve">
     <value>Dark</value>
   </data>
-  <data name="tab_responders" xml:space="preserve">
-    <value>Responders</value>
+  <data name="theme_classic" xml:space="preserve">
+    <value>Classic</value>
   </data>
   <data name="tts_default_audio_device" xml:space="preserve">
     <value>Default Device</value>

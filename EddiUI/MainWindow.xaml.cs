@@ -50,6 +50,41 @@ namespace EddiUI
             public string displayName { get; set; } = displayName;
         }
 
+        internal static List<ThemeDef> GetThemeDefs()
+        {
+            return
+            [
+                new( "System", Properties.Resources.theme_system ),
+                new( "Light", Properties.Resources.theme_light ),
+                new( "Dark", Properties.Resources.theme_dark ),
+                new( "Classic", Properties.Resources.theme_classic )
+            ];
+        }
+
+        internal static ThemeDef GetSelectedThemeDef ( List<ThemeDef> themes, string overrideTheme )
+        {
+            var systemTheme = themes.Find( t => t.name == "System" );
+            if ( string.IsNullOrEmpty( overrideTheme ) )
+            {
+                return systemTheme;
+            }
+
+            var selectedTheme = themes.Find( t =>
+                string.Equals( t.name, overrideTheme, StringComparison.OrdinalIgnoreCase ) );
+            return string.IsNullOrEmpty( selectedTheme.name ) ? systemTheme : selectedTheme;
+        }
+
+        internal static void ApplyMainTabSizing ( TabItem tabItem )
+        {
+            if ( tabItem == null )
+            {
+                return;
+            }
+
+            tabItem.MinWidth = 150;
+            tabItem.MinHeight = 30;
+        }
+
         private void SaveWindowState()
         {
             Rect savePosition;
@@ -176,7 +211,7 @@ namespace EddiUI
             // Start the EDDI instance
             EDDI.Instance.Start();
 
-            versionText.Text = Constants.EDDI_VERSION.ToString();
+            versionText.Text = $" {Constants.EDDI_VERSION}";
             Title = "EDDI v." + Constants.EDDI_VERSION;
             setStatusInfo();
             CompanionAppService.Instance.StateChanged += ( s, e ) => setStatusInfo();
@@ -214,26 +249,16 @@ namespace EddiUI
                 ConfigService.Instance.eddiConfiguration = eddiConfiguration;
             };
 
-            // Theme selection initialization
-            var themes = new List<ThemeDef>
-            {
-                new("System", Properties.Resources.theme_system),
-                new("Light", Properties.Resources.theme_light),
-                new("Dark", Properties.Resources.theme_dark)
-            };
+            var themes = GetThemeDefs();
             chooseThemeDropDown.ItemsSource = themes;
             chooseThemeDropDown.DisplayMemberPath = "displayName";
-            chooseThemeDropDown.SelectedItem = string.IsNullOrEmpty(eddiConfiguration.OverrideTheme) 
-                ? themes.Find(t => t.name == "System") 
-                : themes.Find(t => string.Equals(t.name, eddiConfiguration.OverrideTheme, StringComparison.OrdinalIgnoreCase));
+            chooseThemeDropDown.SelectedItem = GetSelectedThemeDef( themes, eddiConfiguration.OverrideTheme );
             chooseThemeDropDown.SelectionChanged += (sender, e) =>
             {
                 if (chooseThemeDropDown.SelectedItem is ThemeDef selectedTheme)
                 {
                     eddiConfiguration.OverrideTheme = selectedTheme.name == "System" ? null : selectedTheme.name;
                     ConfigService.Instance.eddiConfiguration = eddiConfiguration;
-                    
-                    // Instantly apply theme choice at runtime
                     Themes.ThemeManager.ApplyTheme();
                 }
             };
@@ -244,6 +269,8 @@ namespace EddiUI
 
         private void MainWindow_Loaded ( object sender, RoutedEventArgs e )
         {
+            Themes.ThemeManager.ApplyTheme();
+
             // Show window in standalone mode (keep hidden in VA mode, shown on demand by VA plugin)
             if ( !EDDI.Instance.FromVA )
             {
@@ -271,31 +298,26 @@ namespace EddiUI
 
         private void LoadAndSortTabs(EDDIConfiguration eddiConfiguration)
         {
-            var dynamicTabs = new List<TabItem>();
+            // Sort all but the first TabItem by name, ignoring case
+            var items = tabControl.Items;
+            var sortedItems = new List<TabItem>();
+            foreach (var item in items)
+            {
+                sortedItems.Add(item as TabItem);
+            }
 
             var monitors = LoadMonitors(eddiConfiguration);
-            dynamicTabs.AddRange(monitors);
+            sortedItems.AddRange(monitors);
             var responders = LoadResponders(eddiConfiguration);
-            dynamicTabs.AddRange(responders);
-
-            // Add Frontier API and Text-to-Speech to the dynamically sorted tabs
-            dynamicTabs.Add(frontierTab);
-            dynamicTabs.Add(ttsTab);
+            sortedItems.AddRange(responders);
 
             var comparer = new TabItemComparer(StringComparer.CurrentCultureIgnoreCase);
-            dynamicTabs.Sort(comparer);
+            sortedItems.Sort(1, sortedItems.Count - 1, comparer);
 
-            var finalTabs = new List<TabItem>
-            {
-                eddiTab,
-                respondersTab
-            };
-            finalTabs.AddRange(dynamicTabs);
-
-            var items = tabControl.Items;
             items.Clear();
-            foreach (var item in finalTabs)
+            foreach (var item in sortedItems)
             {
+                ApplyMainTabSizing(item);
                 items.Add(item);
             }
         }
@@ -386,13 +408,8 @@ namespace EddiUI
         private static List<TabItem> LoadResponders(EDDIConfiguration eddiConfiguration)
         {
             var result = new List<TabItem>();
-            var targetResponderNames = new[] { "EDDN Responder", "EDSM Responder", "Inara Responder" };
             foreach (var responder in EDDI.Instance.responders)
             {
-                if (targetResponderNames.Contains(responder.ResponderName(), StringComparer.InvariantCultureIgnoreCase))
-                {
-                    continue;
-                }
                 Logging.Debug("Adding configuration tab for " + responder.ResponderName());
 
                 var skeleton = new PluginSkeleton(responder.ResponderName());
@@ -413,7 +430,6 @@ namespace EddiUI
                 var monitorConfiguration = responder.ConfigurationTabItem();
                 if (monitorConfiguration != null)
                 {
-                    monitorConfiguration.Margin = new Thickness(10);
                     skeleton.panel.Children.Add(monitorConfiguration);
                 }
 

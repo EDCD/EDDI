@@ -5,7 +5,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ## 5.0.3
   * Core
     * Add `factions` table to local SQLITE database for better tracking of faction reputation data. 
-    * Fix the Type-11 Prospector's specialty limpet controller specialty slot definition. (#2818) (thanks to @Tiberious-Sicae) 
+    * Add theme support with Light, Dark, and Classic themes, in addition to a "System" theme that matches your Windows OS preference. (thanks to @Tiberius-Sicae)
+    * Fix the Type-11 Prospector's specialty limpet controller specialty slot definition. (#2818) (thanks to @Tiberius-Sicae) 
   * Crime Monitor 
     * Reviewed and revised crime monitor logic to better handle edge cases and to more accurately track crimes and bounties.
   * Text-To-Speech

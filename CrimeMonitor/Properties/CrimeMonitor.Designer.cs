@@ -142,7 +142,7 @@ namespace EddiCrimeMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Estimated Claims.
+        ///   Looks up a localized string similar to Est. Claims.
         /// </summary>
         public static string header_claims {
             get {

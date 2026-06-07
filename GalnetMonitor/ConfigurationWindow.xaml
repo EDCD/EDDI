@@ -7,9 +7,8 @@
             mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="600">
     <DockPanel LastChildFill="False" Background="{DynamicResource WindowBackgroundBrush}" Margin="0,5">
-        <Grid DockPanel.Dock="Top" Margin="0, 10">
+        <Grid DockPanel.Dock="Top" >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -17,13 +16,15 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0,5,10">
-                <TextBlock Margin="0,0,10,0" TextWrapping="Wrap" Text="{x:Static resx:GalnetMonitor.language_label}" VerticalAlignment="Center"/>
-                <ComboBox x:Name="languageComboBox" SelectionChanged="onLanguageChanged" SelectedValue="Key" VerticalAlignment="Center"/>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,5">
+                <TextBlock TextWrapping="Wrap" Text="{x:Static resx:GalnetMonitor.language_label}" VerticalAlignment="Center"/>
+                <ComboBox x:Name="languageComboBox" SelectionChanged="onLanguageChanged" SelectedValue="Key" VerticalAlignment="Center" Padding="5" Margin="5, 0" MinWidth="100"/>
             </StackPanel>
-            <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,0,5,15" TextWrapping="Wrap" Text="{x:Static resx:GalnetMonitor.p1}" VerticalAlignment="Top"/>
-            <CheckBox x:Name="galnetAlwaysOnCheckBox" Grid.Row="2" Grid.Column="0" Margin="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Checked="galnetAlwaysOnChecked" Unchecked="galnetAlwaysOnUnchecked"/>
-            <TextBlock Grid.Row="2" Grid.Column="1" Margin="5,0,5,0" TextWrapping="Wrap" Text="{x:Static resx:GalnetMonitor.p2}" VerticalAlignment="Center"/>
+            <TextBlock Grid.Row="1" Margin="0,5" TextWrapping="Wrap" Text="{x:Static resx:GalnetMonitor.p1}" VerticalAlignment="Center"/>
+            <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,10">
+                <CheckBox x:Name="galnetAlwaysOnCheckBox" HorizontalAlignment="Left" VerticalAlignment="Center" Checked="galnetAlwaysOnChecked" Unchecked="galnetAlwaysOnUnchecked"/>
+                <TextBlock TextWrapping="Wrap" Text="{x:Static resx:GalnetMonitor.p2}" VerticalAlignment="Center"/>
+            </StackPanel>
         </Grid>
     </DockPanel>
 </UserControl>

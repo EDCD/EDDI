@@ -9,25 +9,19 @@
              d:DesignHeight="600" d:DesignWidth="800">
     <DockPanel LastChildFill="True" Background="{DynamicResource WindowBackgroundBrush}">
         <TabControl x:Name="tabControl" DockPanel.Dock="Top" TabStripPlacement="Top">
-            <TabControl.Resources>
-                <Style TargetType="TabItem" BasedOn="{StaticResource {x:Type TabItem}}">
-                    <Setter Property="MinWidth" Value="150" />
-                    <Setter Property="Height" Value="Auto" />
-                </Style>
-            </TabControl.Resources>
-            <TabItem Header ="{x:Static resx:NavigationMonitor.tab_bookmarks}">
+            <TabItem Header ="{x:Static resx:NavigationMonitor.tab_bookmarks}" Padding="25, 0">
                 <local:BookmarksControl/>
             </TabItem>
-            <TabItem Header ="{x:Static resx:NavigationMonitor.tab_galactic_poi}">
+            <TabItem Header ="{x:Static resx:NavigationMonitor.tab_galactic_poi}" Padding="25, 0">
                 <local:GalacticPOIControl/>
             </TabItem>
-            <TabItem Header ="{x:Static resx:NavigationMonitor.tab_plotted_route}">
+            <TabItem Header ="{x:Static resx:NavigationMonitor.tab_plotted_route}" Padding="25, 0">
                 <local:CurrentRouteControl/>
             </TabItem>
-            <TabItem Header ="{x:Static resx:NavigationMonitor.tab_plot_carrier_route}">
+            <TabItem Header ="{x:Static resx:NavigationMonitor.tab_plot_carrier_route}" Padding="25, 0">
                 <local:PlotCarrierControl/>
             </TabItem>
-            <TabItem Header ="{x:Static resx:NavigationMonitor.tab_plot_ship_route}">
+            <TabItem Header ="{x:Static resx:NavigationMonitor.tab_plot_ship_route}" Padding="25, 0">
                 <local:PlotShipControl/>
             </TabItem>
         </TabControl>

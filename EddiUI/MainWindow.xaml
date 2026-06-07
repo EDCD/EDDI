@@ -11,31 +11,12 @@
         Width="928" Height="600" MinWidth="928" MinHeight="600" 
         Loaded="MainWindow_Loaded"
         Unloaded="OnUnloaded">
-    <Window.Resources>
-    </Window.Resources>
     <DockPanel LastChildFill="True" Background="{DynamicResource DockPanelBackgroundBrush}">
         <TabControl x:Name="tabControl" DockPanel.Dock="Top" TabStripPlacement="Left">
-            <TabControl.Resources>
-                <Style TargetType="TabItem" BasedOn="{StaticResource {x:Type TabItem}}">
-                    <Setter Property="MinWidth" Value="150" />
-                    <Setter Property="MinHeight" Value="30" />
-                </Style>
-            </TabControl.Resources>
             <TabItem Header="EDDI" x:Name="eddiTab">
-                <DockPanel LastChildFill="True" Background="{DynamicResource WindowBackgroundBrush}">
-                    <DockPanel LastChildFill="True" Background="Transparent" DockPanel.Dock="Bottom" Margin="5">
-                        <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Text="{x:Static resx:Resources.EDDI_status_label}"/>
-                        <TextBlock x:Name="versionText" VerticalAlignment="Center" DockPanel.Dock="Right"/>
-                        <Label Height="28" Margin="0,0,0,0" Name="Version" DockPanel.Dock="Right" VerticalAlignment="Center">
-                            <Hyperlink Click="ChangeLog_Click">
-                                <Run Text="{x:Static resx:Resources.version_hyperlink}" />
-                            </Hyperlink>
-                        </Label>
-                        <Button x:Name="upgradeButton" VerticalAlignment="Center" DockPanel.Dock="Left" Visibility="Collapsed" Margin="10,0,10,0" Click="upgradeClicked" Content="{x:Static resx:Resources.upgrade_button}"></Button>
-                        <TextBlock x:Name="statusText" VerticalAlignment="Center" DockPanel.Dock="Left" Text="{x:Static resx:Resources.operational}"/>
-                    </DockPanel>
-                    <RichTextBox DockPanel.Dock="Top" Margin="5" IsReadOnly="True" IsDocumentEnabled="True" Background="{DynamicResource WindowBackgroundBrush}" BorderThickness="0">
-                        <FlowDocument Background="{DynamicResource WindowBackgroundBrush}">
+                <DockPanel LastChildFill="True" Background="{DynamicResource WindowBackgroundBrush}" Margin="0, 5">
+                    <RichTextBox DockPanel.Dock="Top" IsReadOnly="True" IsDocumentEnabled="True" BorderThickness="0" Padding="0">
+                        <FlowDocument PagePadding="0">
                             <Paragraph>
                                 <Hyperlink Click="EDDIClicked">EDDI</Hyperlink>
                                 <Run Text="{x:Static resx:Resources.paragraph_0}" />
@@ -57,12 +38,15 @@
                             </Paragraph>
                         </FlowDocument>
                     </RichTextBox>
+                    <TextBlock x:Name="heroText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" FontSize="18" FontStyle="Italic" FontWeight="Bold" Text="{x:Static resx:Resources.if_using_va}" VerticalAlignment="Center" TextAlignment="Center"/>
                     <Grid DockPanel.Dock="Bottom">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -70,21 +54,35 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top">
-                            <Hyperlink Click="TroubleshootClicked"><Run Text="{x:Static resx:Resources.troubleshoot_common_issues}" /></Hyperlink>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="0, 5" TextWrapping="Wrap" VerticalAlignment="Top">
+                            <Hyperlink Click="TroubleshootClicked">
+                                <Run Text="{x:Static resx:Resources.troubleshoot_common_issues}" />
+                            </Hyperlink>
                         </TextBlock>
-                        <TextBlock x:Name="chooseLanguageText" Grid.Row="1" Grid.Column="0" Margin="5" Text="{x:Static resx:Resources.choose_lang_label}" TextWrapping="Wrap" VerticalAlignment="Top"/>
-                        <ComboBox x:Name="chooseLanguageDropDown" Grid.Row="1" Grid.Column="1" Margin="5" VerticalAlignment="Center"/>
-                        <TextBlock x:Name="chooseThemeText" Grid.Row="2" Grid.Column="0" Margin="5" Text="{x:Static resx:Resources.choose_theme_label}" TextWrapping="Wrap" VerticalAlignment="Top"/>
-                        <ComboBox x:Name="chooseThemeDropDown" Grid.Row="2" Grid.Column="1" Margin="5" VerticalAlignment="Center"/>
-                        <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:Resources.verbose_logging_checkbox}" VerticalAlignment="Top"/>
-                        <CheckBox x:Name="eddiVerboseLogging" Grid.Row="3" Grid.Column="1" Margin="5" VerticalAlignment="Center" Checked="verboseLoggingEnabled" Unchecked="verboseLoggingDisabled"/>
-                        <TextBlock Grid.Row="4" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:Resources.verbose_logging_desc}"/>
-                        <Button  x:Name="githubIssueButton" Grid.Row="4" Grid.Column="1" Content="{x:Static resx:Resources.report_issue}" Margin="5" Width="auto" MinWidth="110" Click="createGithubIssueClicked"/>
-                        <TextBlock Grid.Row="5" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:Resources.access_beta}" VerticalAlignment="Top"/>
-                        <CheckBox x:Name="eddiBetaProgramme" Grid.Row="5" Grid.Column="1" Margin="5" VerticalAlignment="Center" Checked="betaProgrammeEnabled" Unchecked="betaProgrammeDisabled"/>
+                        <TextBlock x:Name="chooseLanguageText" Grid.Row="2" Grid.Column="0" Margin="0, 5" Text="{x:Static resx:Resources.choose_lang_label}" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="chooseLanguageDropDown" Grid.Row="2" Grid.Column="1" Margin="0, 5" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="chooseThemeText" Grid.Row="3" Grid.Column="0" Margin="0, 5" Text="{x:Static resx:Resources.choose_theme_label}" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="chooseThemeDropDown" Grid.Row="3" Grid.Column="1" Margin="0, 5" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="4" Grid.Column="0" Margin="0, 5" TextWrapping="Wrap" Text="{x:Static resx:Resources.verbose_logging_checkbox}" VerticalAlignment="Top"/>
+                        <CheckBox x:Name="eddiVerboseLogging" Grid.Row="4" Grid.Column="1" Margin="0, 5" VerticalAlignment="Center" Checked="verboseLoggingEnabled" Unchecked="verboseLoggingDisabled"/>
+                        <TextBlock Grid.Row="5" Grid.Column="0" Margin="0, 5" TextWrapping="Wrap" Text="{x:Static resx:Resources.verbose_logging_desc}"/>
+                        <Button  x:Name="githubIssueButton" Grid.Row="5" Grid.Column="1" Content="{x:Static resx:Resources.report_issue}" Margin="0, 5" Width="auto" MinWidth="110" Click="createGithubIssueClicked"/>
+                        <TextBlock Grid.Row="6" Grid.Column="0" Margin="0, 5" TextWrapping="Wrap" Text="{x:Static resx:Resources.access_beta}" VerticalAlignment="Top"/>
+                        <CheckBox x:Name="eddiBetaProgramme" Grid.Row="6" Grid.Column="1" Margin="0, 5" VerticalAlignment="Center" Checked="betaProgrammeEnabled" Unchecked="betaProgrammeDisabled"/>
+                        <StackPanel Grid.Row="7" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                            <TextBlock VerticalAlignment="Center" Text="{x:Static resx:Resources.EDDI_status_label}"/>
+                            <TextBlock x:Name="statusText" VerticalAlignment="Center" DockPanel.Dock="Left" Text="{x:Static resx:Resources.operational}"/>
+                            <Button x:Name="upgradeButton" VerticalAlignment="Center" Visibility="Collapsed" Margin="5,0,5,0" Click="upgradeClicked" Content="{x:Static resx:Resources.upgrade_button}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
+                            <TextBlock x:Name="Version" VerticalAlignment="Center" TextAlignment="Center">
+                                <Hyperlink Click="ChangeLog_Click">
+                                    <Run Text="{x:Static resx:Resources.version_hyperlink}" />
+                                </Hyperlink>
+                            </TextBlock>
+                            <TextBlock x:Name="versionText" VerticalAlignment="Center"/>
+                        </StackPanel>
                     </Grid>
-                    <TextBlock x:Name="heroText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" FontSize="18" FontStyle="Italic" FontWeight="Bold" Text="{x:Static resx:Resources.if_using_va}" VerticalAlignment="Center" TextAlignment="Center"/>
                 </DockPanel>
             </TabItem>
             <TabItem Header="{x:Static resx:Resources.tab_frontier_header}" x:Name="frontierTab">
