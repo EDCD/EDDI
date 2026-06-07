@@ -1,4 +1,4 @@
-using EddiConfigService.Configurations;
+﻿using EddiConfigService.Configurations;
 using EddiDataDefinitions;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
@@ -16,7 +16,7 @@ using Utilities;
 
 namespace EddiConfigService
 {
-    public sealed class ConfigService : INotifyPropertyChanged, IDisposable
+    public sealed class ConfigService : INotifyPropertyChanged
     {
         #region Configurations
 
@@ -563,7 +563,7 @@ namespace EddiConfigService
         }
 
         /// <summary>Saves a single configuration to disk synchronously (maintains compatibility with ConfigWrite.cs pattern)</summary>
-        public void SaveConfiguration ( Config config )
+        private void SaveConfiguration ( Config config )
         {
             try
             {

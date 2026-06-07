@@ -828,7 +828,7 @@ namespace EddiUI.Properties {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Select EDDI's theme (requires relaunching EDDI):.
+        ///   Looks up a localized string similar to Select EDDI's theme:.
         /// </summary>
         public static string choose_theme_label {
             get {
@@ -837,7 +837,7 @@ namespace EddiUI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select EDDI's theme (requires relaunching VoiceAttack):.
+        ///   Looks up a localized string similar to Select EDDI's theme:.
         /// </summary>
         public static string choose_theme_label_va {
             get {

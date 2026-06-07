@@ -60,7 +60,6 @@ namespace Eddi
             }
 
             var app = new App();
-            app.InitializeComponent();
             app.Exit += OnExit;
 
             try
@@ -191,7 +190,6 @@ namespace Eddi
             // Always stop the EDDI instance so monitors and services are shut down
             // cleanly before the process exits.  
             EDDI.Instance.Stop();
-            ConfigService.Instance.Dispose();
 
             Current?.Dispatcher?.InvokeAsync( () => {
                 eddiMutex.ReleaseMutex();

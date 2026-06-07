@@ -87,9 +87,6 @@
                     <TextBlock x:Name="heroText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="20, 10, 20, 10" FontSize="18" FontStyle="Italic" FontWeight="Bold" Text="{x:Static resx:Resources.if_using_va}" VerticalAlignment="Center" TextAlignment="Center"/>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="{x:Static resx:Resources.tab_responders}" x:Name="respondersTab">
-                <local:RespondersTab/>
-            </TabItem>
             <TabItem Header="{x:Static resx:Resources.tab_frontier_header}" x:Name="frontierTab">
                 <local:FrontierApiTab/>
             </TabItem>

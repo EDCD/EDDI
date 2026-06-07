@@ -380,10 +380,10 @@ Please close the other instance and try again.</value>
     <value>project wiki</value>
   </data>
   <data name="choose_theme_label" xml:space="preserve">
-    <value>Select EDDI's theme (requires relaunching EDDI):</value>
+    <value>Select EDDI's theme:</value>
   </data>
   <data name="choose_theme_label_va" xml:space="preserve">
-    <value>Select EDDI's theme (requires relaunching VoiceAttack):</value>
+    <value>Select EDDI's theme:</value>
   </data>
   <data name="theme_system" xml:space="preserve">
     <value>System</value>
