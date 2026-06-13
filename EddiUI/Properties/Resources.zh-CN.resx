@@ -200,9 +200,6 @@
   <data name="frontier_api_reset" xml:space="preserve">
     <value>关联已重置</value>
   </data>
-  <data name="if_using_va" xml:space="preserve">
-    <value>如果您要使用VoiceAttack，为了使改动生效，在启动VoiceAttack前请先关闭本窗口。您可以在 VoiceAttack中通过命令 'Configure EDDI'来访问本窗口。</value>
-  </data>
   <data name="link_ipa" xml:space="preserve">
     <value>国际音标</value>
   </data>
