@@ -202,9 +202,6 @@ Por favor, feche a outra instância e tente novamente.</value>
   <data name="frontier_api_reset" xml:space="preserve">
     <value>Conexão reiniciada.</value>
   </data>
-  <data name="if_using_va" xml:space="preserve">
-    <value>Se você estiver usando o VoiceAttack, feche esta janela antes de o iniciar, para que suas alterações entrem em vigor. Você pode acessar esta janela a partir do VoiceAttack com o comando 'Configure EDDI'.</value>
-  </data>
   <data name="link_ipa" xml:space="preserve">
     <value>Alfabeto Fonético Internacional</value>
   </data>
