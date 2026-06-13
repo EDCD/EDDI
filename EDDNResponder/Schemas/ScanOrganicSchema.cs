@@ -10,9 +10,9 @@ namespace EddiEddnResponder.Schemas
     [UsedImplicitly]
     public class ScanOrganicSchema : ISchema
     {
-        public List<string> edTypes => new List<string> { "ScanOrganic" };
+        public List<string> edTypes => new() { "ScanOrganic" };
 
-        public bool Handle ( string edType, ref IDictionary<string, object> data, EDDNState eddnState )
+        public bool Handle ( string edType, ref IDictionary<string, object> data, EDDNState eddnState, EDDNSender eddnSender )
         {
             try
             {
@@ -44,7 +44,7 @@ namespace EddiEddnResponder.Schemas
                 data = eddnState.Location.AugmentBodyLatLong( data, 60, true );
                 data = eddnState.GameVersion.AugmentVersion( data );
 
-                EDDNSender.SendToEDDN( "https://eddn.edcd.io/schemas/scanorganic/1", data, eddnState );
+                eddnSender.SendToEDDN( "https://eddn.edcd.io/schemas/scanorganic/1", data, eddnState, null );
                 return true;
             }
             catch ( Exception e )

@@ -1,4 +1,4 @@
-﻿using EddiConfigService;
+using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEddnResponder.Toolkit;
@@ -45,7 +45,7 @@ namespace EddiEddnResponder.Sender
         private static readonly List<string> invalidSchemas = [ ];
 
         public void SendToEDDN ( string schema, IDictionary<string, object> data, EDDNState eddnState,
-            string gameVersionOverride = null )
+            string gameVersionOverride = null, bool forceTestEndpoint = false )
         {
             if ( unitTesting )
             {
@@ -53,19 +53,19 @@ namespace EddiEddnResponder.Sender
                 return;
             }
 
-            SendAsync( schema, data, eddnState, gameVersionOverride )
+            SendAsync( schema, data, eddnState, gameVersionOverride, forceTestEndpoint )
                 .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
         }
 
         private async Task SendAsync(string schema, IDictionary<string, object> data, EDDNState eddnState,
-            string gameVersionOverride = null)
+            string gameVersionOverride = null, bool forceTestEndpoint = false)
         {
             try
             {
                 var body = new EDDNBody
                 {
                     header = generateHeader(eddnState.GameVersion, gameVersionOverride),
-                    schemaRef = schema + (EDDI.Instance.ShouldUseTestEndpoints() ? "/test" : ""),
+                    schemaRef = schema + (forceTestEndpoint ||EDDI.Instance.ShouldUseTestEndpoints() ? "/test" : ""),
                     message = data
                 };
                 Logging.Debug( $"EDDN schema {schema} message is: ", body );
