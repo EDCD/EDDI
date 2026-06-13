@@ -201,9 +201,6 @@ Si prega di chiudere l'altra istanza e riprovare.</value>
   <data name="frontier_api_reset" xml:space="preserve">
     <value>Connessione ristabilita.</value>
   </data>
-  <data name="if_using_va" xml:space="preserve">
-    <value>Se si sta usando VoiceAttack è necessario chiudere questa finestra PRIMA di avviare VoiceAttack per far si che i cambiamenti apportati abbiano effetto. Questa finestra è visibile dall'interno di VoiceAttack con il comando 'Configura EDDI'.</value>
-  </data>
   <data name="link_ipa" xml:space="preserve">
     <value>Alfabeto Fonetico Internazionale</value>
   </data>
