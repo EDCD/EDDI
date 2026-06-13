@@ -202,9 +202,6 @@ Prosím ukončete ostatní instance a opakujte akci.</value>
   <data name="frontier_api_reset" xml:space="preserve">
     <value>Spojení restartováno.</value>
   </data>
-  <data name="if_using_va" xml:space="preserve">
-    <value>Aby se změny promítli, musíte zavřít toto okno před spuštěním VoiceAttacku. Toto okno vyvoláte z VoiceAttacku příkazem 'Configure EDDI'.</value>
-  </data>
   <data name="link_ipa" xml:space="preserve">
     <value>Mezinárodní fonetická abeceda</value>
   </data>
