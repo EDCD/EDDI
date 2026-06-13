@@ -358,7 +358,7 @@ namespace Tests
 
             Assert.IsGreaterThanOrEqualTo(0, toggleIndex);
             Assert.IsGreaterThanOrEqualTo(0, contentHostIndex);
-            Assert.IsTrue(toggleIndex < contentHostIndex);
+            Assert.IsLessThan( contentHostIndex, toggleIndex );
             Assert.Contains("<Border x:Name=\"ContentHostBorder\"", comboBoxTemplate);
             Assert.Contains("IsHitTestVisible=\"False\"", comboBoxTemplate);
             Assert.Contains("MinWidth=\"{x:Static SystemParameters.VerticalScrollBarWidth}\"", comboBoxTemplate);
@@ -402,8 +402,8 @@ namespace Tests
             Assert.IsNotNull(editableTextBox);
             Assert.IsFalse(contentHostBorder.IsHitTestVisible);
             Assert.IsFalse(editableTextBox.IsHitTestVisible);
-            Assert.IsTrue(
-                toggleButton.ActualWidth >= comboBox.ActualWidth - 2,
+            Assert.IsGreaterThanOrEqualTo(
+                comboBox.ActualWidth - 2, toggleButton.ActualWidth,
                 $"The non-editable ComboBox toggle should span the full control width. Toggle width: {toggleButton.ActualWidth}. ComboBox width: {comboBox.ActualWidth}.");
             toggleButton.ApplyTemplate();
             toggleButton.UpdateLayout();
@@ -412,8 +412,8 @@ namespace Tests
             Assert.IsNotNull(arrow);
 
             var arrowOrigin = arrow.TransformToAncestor(comboBox).Transform(new Point(0, 0));
-            Assert.IsTrue(
-                arrowOrigin.X > comboBox.ActualWidth - SystemParameters.VerticalScrollBarWidth - 2,
+            Assert.IsGreaterThan(
+                comboBox.ActualWidth - SystemParameters.VerticalScrollBarWidth - 2, arrowOrigin.X,
                 $"ComboBox arrow should be inside the right-side drop-down region. Actual X: {arrowOrigin.X}.");
         }
 
