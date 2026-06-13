@@ -126,15 +126,6 @@ namespace EddiUI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select EDDI&apos;s theme:.
-        /// </summary>
-        public static string choose_theme_label_va {
-            get {
-                return ResourceManager.GetString("choose_theme_label_va", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Commander.
         /// </summary>
         public static string Commander {

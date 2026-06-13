@@ -224,13 +224,11 @@ namespace EddiUI
                 VaWindowStateChange += OnVaWindowStateChange;
                 heroText.Text = Properties.Resources.change_affect_va;
                 chooseLanguageText.Text = Properties.Resources.choose_lang_label_va;
-                chooseThemeText.Text = Properties.Resources.choose_theme_label_va;
             }
             else
             {
                 heroText.Text = Properties.Resources.if_using_va;
                 chooseLanguageText.Text = Properties.Resources.choose_lang_label;
-                chooseThemeText.Text = Properties.Resources.choose_theme_label;
             }
 
             var eddiConfiguration = ConfigService.Instance.eddiConfiguration;
@@ -248,6 +246,7 @@ namespace EddiUI
                 eddiConfiguration.OverrideCulture = cultureDef.ci.Name;
                 ConfigService.Instance.eddiConfiguration = eddiConfiguration;
             };
+            chooseThemeText.Text = Properties.Resources.choose_theme_label;
 
             var themes = GetThemeDefs();
             chooseThemeDropDown.ItemsSource = themes;
