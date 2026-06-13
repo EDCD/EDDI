@@ -226,3 +226,4 @@ Documentation.chw
 
 # Build Secrets
 /BuildSecrets/BuildInjectedSecrets.Local.cs
+/.agent

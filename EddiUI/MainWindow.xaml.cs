@@ -44,6 +44,47 @@ namespace EddiUI
             }
         }
 
+        internal struct ThemeDef(string name, string displayName)
+        {
+            public string name = name;
+            public string displayName { get; set; } = displayName;
+        }
+
+        internal static List<ThemeDef> GetThemeDefs()
+        {
+            return
+            [
+                new( "System", Properties.Resources.theme_system ),
+                new( "Light", Properties.Resources.theme_light ),
+                new( "Dark", Properties.Resources.theme_dark ),
+                new( "Classic", Properties.Resources.theme_classic )
+            ];
+        }
+
+        internal static ThemeDef GetSelectedThemeDef ( List<ThemeDef> themes, string overrideTheme )
+        {
+            var systemTheme = themes.Find( t => t.name == "System" );
+            if ( string.IsNullOrEmpty( overrideTheme ) )
+            {
+                return systemTheme;
+            }
+
+            var selectedTheme = themes.Find( t =>
+                string.Equals( t.name, overrideTheme, StringComparison.OrdinalIgnoreCase ) );
+            return string.IsNullOrEmpty( selectedTheme.name ) ? systemTheme : selectedTheme;
+        }
+
+        internal static void ApplyMainTabSizing ( TabItem tabItem )
+        {
+            if ( tabItem == null )
+            {
+                return;
+            }
+
+            tabItem.MinWidth = 150;
+            tabItem.MinHeight = 30;
+        }
+
         private void SaveWindowState()
         {
             Rect savePosition;
@@ -170,7 +211,7 @@ namespace EddiUI
             // Start the EDDI instance
             EDDI.Instance.Start();
 
-            versionText.Text = Constants.EDDI_VERSION.ToString();
+            versionText.Text = $" {Constants.EDDI_VERSION}";
             Title = "EDDI v." + Constants.EDDI_VERSION;
             setStatusInfo();
             CompanionAppService.Instance.StateChanged += ( s, e ) => setStatusInfo();
@@ -183,11 +224,13 @@ namespace EddiUI
                 VaWindowStateChange += OnVaWindowStateChange;
                 heroText.Text = Properties.Resources.change_affect_va;
                 chooseLanguageText.Text = Properties.Resources.choose_lang_label_va;
+                chooseThemeText.Text = Properties.Resources.choose_theme_label_va;
             }
             else
             {
                 heroText.Text = Properties.Resources.if_using_va;
                 chooseLanguageText.Text = Properties.Resources.choose_lang_label;
+                chooseThemeText.Text = Properties.Resources.choose_theme_label;
             }
 
             var eddiConfiguration = ConfigService.Instance.eddiConfiguration;
@@ -206,12 +249,28 @@ namespace EddiUI
                 ConfigService.Instance.eddiConfiguration = eddiConfiguration;
             };
 
+            var themes = GetThemeDefs();
+            chooseThemeDropDown.ItemsSource = themes;
+            chooseThemeDropDown.DisplayMemberPath = "displayName";
+            chooseThemeDropDown.SelectedItem = GetSelectedThemeDef( themes, eddiConfiguration.OverrideTheme );
+            chooseThemeDropDown.SelectionChanged += (sender, e) =>
+            {
+                if (chooseThemeDropDown.SelectedItem is ThemeDef selectedTheme)
+                {
+                    eddiConfiguration.OverrideTheme = selectedTheme.name == "System" ? null : selectedTheme.name;
+                    ConfigService.Instance.eddiConfiguration = eddiConfiguration;
+                    Themes.ThemeManager.ApplyTheme();
+                }
+            };
+
             LoadAndSortTabs(eddiConfiguration);
             RestoreWindowState();
         }
 
         private void MainWindow_Loaded ( object sender, RoutedEventArgs e )
         {
+            Themes.ThemeManager.ApplyTheme();
+
             // Show window in standalone mode (keep hidden in VA mode, shown on demand by VA plugin)
             if ( !EDDI.Instance.FromVA )
             {
@@ -258,6 +317,7 @@ namespace EddiUI
             items.Clear();
             foreach (var item in sortedItems)
             {
+                ApplyMainTabSizing(item);
                 items.Add(item);
             }
         }
@@ -370,7 +430,6 @@ namespace EddiUI
                 var monitorConfiguration = responder.ConfigurationTabItem();
                 if (monitorConfiguration != null)
                 {
-                    monitorConfiguration.Margin = new Thickness(10);
                     skeleton.panel.Children.Add(monitorConfiguration);
                 }
 

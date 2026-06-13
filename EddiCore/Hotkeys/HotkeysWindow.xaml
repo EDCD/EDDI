@@ -1,4 +1,4 @@
-﻿<Window x:Class="EddiCore.Hotkeys.HotkeysWindow"
+<Window x:Class="EddiCore.Hotkeys.HotkeysWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -19,11 +19,11 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{x:Static resx:Resources.hotkey_hotkey_label}" MinWidth="42" Margin="5" />
-            <Border BorderThickness="0.5" Margin="5,5,5,5" BorderBrush="Black" Background="DarkGray">
+            <Border BorderThickness="1" Margin="5" BorderBrush="{DynamicResource BorderLightBrush}" Background="{DynamicResource ControlBackgroundBrush}" CornerRadius="4">
                 <TextBlock x:Name="hotkeyTextBlock" 
                     Text="{x:Static resx:Resources.hotkey_input_prompt}"
                     HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center" 
-                    Background="WhiteSmoke" 
+                    Background="{DynamicResource ControlBackgroundHoverBrush}" 
                     Margin="1" MinWidth="200" TextWrapping="Wrap" />
             </Border>
             <Button VerticalAlignment="Center" 

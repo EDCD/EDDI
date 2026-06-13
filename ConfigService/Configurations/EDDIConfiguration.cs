@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Windows;
@@ -121,6 +121,22 @@ namespace EddiConfigService.Configurations
             }
         }
 
+        [ JsonProperty( "OverrideTheme" ) ]
+        public string OverrideTheme
+        {
+            get => _overrideTheme;
+            set
+            {
+                if ( value == _overrideTheme )
+                {
+                    return;
+                }
+
+                _overrideTheme = value;
+                OnPropertyChanged();
+            }
+        }
+
         // Window Properties
 
         [ JsonProperty( "Maximized" ) ]
@@ -199,6 +215,7 @@ namespace EddiConfigService.Configurations
         private bool _disableTelemetry;
         private IDictionary<string, bool> _plugins;
         private string _overrideCulture;
+        private string _overrideTheme;
         private bool _maximized;
         private bool _minimized;
         private int _selectedTab;

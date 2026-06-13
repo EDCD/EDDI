@@ -1,4 +1,4 @@
-﻿using EddiConfigService;
+using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
@@ -465,7 +465,7 @@ namespace EddiNavigationMonitor
             if (sender is WebBrowser wb && !string.IsNullOrEmpty(wb.Tag as string))
             {
                 var html = CommonMark.CommonMarkConverter.Convert(wb.Tag as string);
-                html = "<head>  <meta charset=\"UTF-8\"> </head> " + html;
+                html = Utilities.MarkdownDecorator.Decorate(html);
                 wb.NavigateToString(html);
             }
         }

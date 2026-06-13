@@ -5,7 +5,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ## 5.0.3
   * Core
     * Add `factions` table to local SQLITE database for better tracking of faction reputation data. 
-    * Fix the Type-11 Prospector's specialty limpet controller specialty slot definition. (#2818) (thanks to @Tiberious-Sicae) 
+    * Add theme support with Light, Dark, and Classic themes, in addition to a "System" theme that matches your Windows OS preference. (thanks to @Tiberius-Sicae)
+    * Fix the Type-11 Prospector's specialty limpet controller specialty slot definition. (#2818) (thanks to @Tiberius-Sicae) 
   * Crime Monitor 
     * Reviewed and revised crime monitor logic to better handle edge cases and to more accurately track crimes and bounties.
   * Text-To-Speech
@@ -19,6 +20,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Installer revised to more gracefully handle installation over an existing installation of EDDI 4.1.9 or earlier (e.g. when installing VoiceAttack 2 over an existing VoiceAttack 1 installation).
     * Various bug fixes from telemetry.
   * Speech Responder
+    * Fixed the active personality ComboBox layout in the Speech Responder tab so the dropdown arrow doesn't overlap the personality name text.
     * Fixed copied personalities not being editable until EDDI is restarted.
     * Fixed failing lexicon schema validation (for .pls lexicon files). (#2814) (thanks to @klightspeed)
     * Fix `StopSpeaking()` function from creating unexpected "paused" speech outputs when used in a script which enqueues new speech. (#2815)

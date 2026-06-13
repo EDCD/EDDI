@@ -117,6 +117,24 @@ namespace EddiUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select EDDI&apos;s theme:.
+        /// </summary>
+        public static string choose_theme_label {
+            get {
+                return ResourceManager.GetString("choose_theme_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select EDDI&apos;s theme:.
+        /// </summary>
+        public static string choose_theme_label_va {
+            get {
+                return ResourceManager.GetString("choose_theme_label_va", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Commander.
         /// </summary>
         public static string Commander {
@@ -297,7 +315,7 @@ namespace EddiUI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If you are using VoiceAttack then please close this window before you start VoiceAttack for your changes to take effect. You can access this window from VoiceAttack with the &apos;Configure EDDI&apos; command..
+        ///   Looks up a localized string similar to You can access this window from VoiceAttack with the &apos;Configure EDDI&apos; command from the &apos;EDDI&apos; VoiceAttack profile..
         /// </summary>
         public static string if_using_va {
             get {
@@ -698,6 +716,42 @@ namespace EddiUI.Properties {
         public static string tab_tts_volume_label {
             get {
                 return ResourceManager.GetString("tab_tts_volume_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Classic.
+        /// </summary>
+        public static string theme_classic {
+            get {
+                return ResourceManager.GetString("theme_classic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dark.
+        /// </summary>
+        public static string theme_dark {
+            get {
+                return ResourceManager.GetString("theme_dark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light.
+        /// </summary>
+        public static string theme_light {
+            get {
+                return ResourceManager.GetString("theme_light", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System.
+        /// </summary>
+        public static string theme_system {
+            get {
+                return ResourceManager.GetString("theme_system", resourceCulture);
             }
         }
         
