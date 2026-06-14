@@ -1,6 +1,6 @@
 ﻿using EddiDataDefinitions;
 using Newtonsoft.Json;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace EddiConfigService.Configurations
 {
@@ -8,9 +8,9 @@ namespace EddiConfigService.Configurations
     [JsonObject(MemberSerialization.OptOut), RelativePath(@"\materialmonitor.json")]
     public class MaterialMonitorConfiguration : Config
     {
-        private ObservableCollection<MaterialAmount> _materials = [];
+        private List<MaterialAmount> _materials = [];
 
-        public ObservableCollection<MaterialAmount> materials
+        public List<MaterialAmount> materials
         {
             get => _materials;
             set

@@ -458,9 +458,10 @@ namespace EddiMaterialMonitor
             lock (inventoryLock)
             {
                 // Write material configuration with current inventory
+                var materials = inventory.Select(m => new MaterialAmount(m.edname, m.amount, m.minimum, m.desired, m.maximum)).ToList();
                 var configuration = new MaterialMonitorConfiguration
                 {
-                    materials = inventory,
+                    materials = materials,
                 };
                 ConfigService.Instance.materialMonitorConfiguration = configuration;
             }
