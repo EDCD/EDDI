@@ -52,7 +52,7 @@ namespace EddiSpeechService
 
         public async Task InitializeAsync (CancellationToken ct = default)
         {
-            Logging.Info("[InitializeAsync] SpeechManager initialization started.");
+            Logging.Debug("[InitializeAsync] SpeechManager initialization started.");
             var voiceStore = new HashSet<VoiceDetails>(); // Use a Hashset to ensure no duplicates
 
             // Windows.Media.SpeechSynthesis isn't available on older Windows versions so we must check if we have access
@@ -60,14 +60,14 @@ namespace EddiSpeechService
             {
                 if ( IsWindowsMediaSynthesizerSupported() )
                 {
-                    Logging.Info("[InitializeAsync] Windows Media Synthesizer is supported. Creating...");
+                    Logging.Debug("Windows Media Synthesizer is supported. Creating...");
                     // Prep the Windows.Media.SpeechSynthesis synthesizer
                     windowsMediaSynth = await WindowsMediaSynthesizer.CreateAsync( voiceStore, ct ).ConfigureAwait( false );
-                    Logging.Info($"[InitializeAsync] Windows Media voices loaded. Current total store count: {voiceStore.Count}");
+                    Logging.Debug($"Windows Media voices loaded. Current total store count: {voiceStore.Count}");
                 }
                 else
                 {
-                    Logging.Info("[InitializeAsync] Windows Media Synthesizer is not supported on this OS version.");
+                    Logging.Debug("Windows Media Synthesizer is not supported on this OS version.");
                 }
             }
             catch ( Exception e )
@@ -78,10 +78,10 @@ namespace EddiSpeechService
             // Prep the System.Speech synthesizer
             try
             {
-                Logging.Info("[InitializeAsync] Initializing System Speech Synthesizer...");
+                Logging.Debug("Initializing System Speech Synthesizer...");
                 systemSpeechSynth = new SystemSpeechSynthesizer();
                 systemSpeechSynth.Initialize( voiceStore );
-                Logging.Info($"[InitializeAsync] System Speech voices loaded. Current total store count: {voiceStore.Count}");
+                Logging.Debug($"System Speech voices loaded. Current total store count: {voiceStore.Count}");
             }
             catch ( ThreadAbortException )
             {
@@ -119,10 +119,7 @@ namespace EddiSpeechService
             // Sort results alphabetically by voice name
             validatedVoices.Clear();
             validatedVoices.AddRange( voiceStore.OrderBy( v => v.name ) );
-            Logging.Info($"[InitializeAsync] SpeechManager initialization completed. Total validatedVoices: {validatedVoices.Count}");
-            foreach (var v in validatedVoices)
-            {
-                Logging.Info($"  - Voice: '{v.name}', gender: {v.gender}, culture: {v.culturecode}, synthType: {v.synthType}");
+            Logging.Debug($"SpeechManager initialization completed. Total validatedVoices: {validatedVoices.Count}");
             }
 
             FetchLexiconSchemas();
@@ -335,12 +332,12 @@ namespace EddiSpeechService
         public Task EnqueueAsync ( Ship ship, string message, int priority = 3, string voice = null,
             bool radio = false, string eventType = null )
         {
-            Logging.Info($"[EnqueueAsync] Called. message='{message}', voice='{voice}', priority={priority}");
+            Logging.Debug($"voice='{voice}', priority={priority}");
             // Skip empty speech and speech containing nothing except one or more pauses / breaks.
             message = SpeechFormatter.TrimSpeech( message );
             if ( string.IsNullOrEmpty( message ) )
             {
-                Logging.Info("[EnqueueAsync] Message is empty after trimming. Skipping.");
+                Logging.Debug("Message is empty after trimming. Skipping.");
                 return Task.CompletedTask;
             }
 
@@ -348,14 +345,14 @@ namespace EddiSpeechService
             var config = ConfigService.Instance.speechServiceConfiguration;
             var queuingSpeech = new EddiSpeech( message, voice, priority, eventType, ship?.Size, ship?.health, radio,
                 config.DistortOnDamage );
-            Logging.Info($"[EnqueueAsync] Enqueuing speech object with voice='{queuingSpeech.voice}' to priority queue {queuingSpeech.priority}");
+            Logging.Debug($"Enqueuing speech object with voice='{queuingSpeech.voice}' to priority queue {queuingSpeech.priority}");
             speechQueue.Enqueue( queuingSpeech );
 
             // Check the first item in the speech queue
             // Interrupt current speech when appropriate
             if ( speechQueue.TryPeek( out var peekedSpeech ) && checkSpeechInterrupt( peekedSpeech.priority ) )
             {
-                Logging.Info( "[EnqueueAsync] Interrupting current speech" );
+                Logging.Debug( "Interrupting current speech" );
                 StopCurrentSpeech();
             }
 
@@ -412,7 +409,7 @@ namespace EddiSpeechService
 
                     try
                     {
-                        Logging.Info($"[SpeakFromQueueAsync] Dequeued next speech. message='{nextSpeech.message}', voice='{nextSpeech.voice}'");
+                        Logging.Debug($"Dequeued next speech. voice='{nextSpeech.voice}'");
                         await SpeakAsync( nextSpeech ).ConfigureAwait( false );
                     }
                     catch ( Exception ex )
@@ -447,14 +444,14 @@ namespace EddiSpeechService
         public Task SpeakAsync ( EddiSpeech speech )
         {
             var Configuration = ConfigService.Instance.speechServiceConfiguration;
-            Logging.Info($"[SpeakAsync(EddiSpeech)] Called. voice='{speech.voice}', message='{speech.message}', priority={speech.priority}");
+            Logging.Debug($"voice='{speech.voice}', priority={speech.priority}");
             return SpeakAsync( speech.message, speech.voice, Configuration.EffectsLevel, speech.distortionLevel, speech.echoDelay, speech.priority, speech.radio );
         }
 
         public async Task SpeakAsync ( string speech, string defaultVoice, int fxLevel,
             int distortionLevel = 0, int echoDelay = 0, int priority = 3, bool radio = false )
         {
-            Logging.Info($"[SpeakAsync(string)] Called. speech='{speech}', defaultVoice='{defaultVoice}', fxLevel={fxLevel}, distortionLevel={distortionLevel}, echoDelay={echoDelay}");
+            Logging.Debug($"defaultVoice='{defaultVoice}', fxLevel={fxLevel}, distortionLevel={distortionLevel}, echoDelay={echoDelay}");
             if ( speech == null || speech.Trim() == "" ) { return; }
 
             // If the user wants to disable IPA then we remove any IPA phoneme tags here
@@ -466,12 +463,12 @@ namespace EddiSpeechService
 
             discardPendingSegments = false;
             var segments = SpeechFormatter.SeparateSpeechSegments(speech);
-            Logging.Info($"[SpeakAsync(string)] Separated into {segments.Count} segments.");
+            Logging.Debug($"Separated into {segments.Count} segments.");
 
             foreach ( var segment in segments )
             {
                 if ( discardPendingSegments ) { 
-                    Logging.Info("[SpeakAsync(string)] discardPendingSegments is true. Aborting loop.");
+                    Logging.Debug("discardPendingSegments is true. Aborting loop.");
                     break; 
                 }
 
@@ -522,35 +519,35 @@ namespace EddiSpeechService
                 {
                     // This is a voice override
                     SpeechFormatter.UnpackVoiceTags( statement, out voice, out statement );
-                    Logging.Info($"[SpeakAsync(string)] Found voice override tag. Voice='{voice}', statement='{statement}'");
+                    Logging.Debug($"Found voice override tag. Voice='{voice}'");
                 }
 
                 var resolvedVoice = voice ?? defaultVoice;
-                Logging.Info($"[SpeakAsync(string)] Calling getSpeechStream for voice='{resolvedVoice}' and statement='{statement}'");
+                Logging.Debug($"Calling GetSpeechStreamAsync for voice='{resolvedVoice}'");
                 await using ( var stream = getSpeechStream( resolvedVoice, statement ) )
                 {
                     if ( stream == null )
                     {
-                        Logging.Info( "[SpeakAsync(string)] getSpeechStream() returned null; nothing to say" );
+                        Logging.Debug( "GetSpeechStreamAsync() returned null; nothing to say" );
                         return;
                     }
                     if ( stream.Length < 50 )
                     {
-                        Logging.Info( $"[SpeakAsync(string)] getSpeechStream() returned empty/short stream of length {stream.Length}; nothing to say" );
+                        Logging.Debug( $"GetSpeechStreamAsync() returned empty/short stream of length {stream.Length}; nothing to say" );
                         return;
                     }
                     else
                     {
-                        Logging.Info( "[SpeakAsync(string)] Stream length is " + stream.Length );
+                        Logging.Debug( "Stream length is " + stream.Length );
                     }
-                    Logging.Info( "[SpeakAsync(string)] Seeking back to the beginning of the stream" );
+                    Logging.Debug( "Seeking back to the beginning of the stream" );
                     stream.Seek( 0, SeekOrigin.Begin );
 
-                    Logging.Info($"[SpeakAsync(string)] Applying effects (fxLevel: {fxLevel}, distortionLevel: {distortionLevel}, echoDelay: {echoDelay}, isRadio: {isRadio})");
+                    Logging.Debug($"Applying effects (fxLevel: {fxLevel}, distortionLevel: {distortionLevel}, echoDelay: {echoDelay}, isRadio: {isRadio})");
                     var provider = SpeechFx.addEffectsToSource(stream, fxLevel, distortionLevel, echoDelay, isRadio );
-                    Logging.Info("[SpeakAsync(string)] Playing speech stream via PlaySpeechStreamAsync...");
+                    Logging.Debug("Playing speech stream via PlaySpeechStreamAsync...");
                     await PlaySpeechStreamAsync( provider, priority ).ConfigureAwait(false);
-                    Logging.Info("[SpeakAsync(string)] Playback completed.");
+                    Logging.Debug("Playback completed.");
                 }
             }
         }
@@ -558,17 +555,17 @@ namespace EddiSpeechService
         // Obtain the speech memory stream
         private Stream getSpeechStream ( string requestedVoice, string speech )
         {
-            Logging.Info($"[getSpeechStream] requestedVoice='{requestedVoice}', speech='{speech}'");
+            Logging.Debug($"RequestedVoice='{requestedVoice}'");
             try
             {
                 var stream = speak(requestedVoice, speech);
                 if ( stream is null || stream.Length == 0 )
                 {
-                    Logging.Info("[getSpeechStream] speak() returned null or empty. Retrying with stripped SSML.");
+                    Logging.Debug( "SynthesizeSpeechAsync() returned null or empty. Retrying with stripped SSML." );
                     // Try again, with speech devoid of SSML
                     stream = speak( requestedVoice, GeneratedRegex.SsmlTagRegex().Replace( speech, string.Empty ) );
                 }
-                Logging.Info($"[getSpeechStream] Returning stream of length {(stream != null ? stream.Length.ToString() : "null")} bytes.");
+                Logging.Debug($"Returning stream of length {(stream != null ? stream.Length.ToString() : "null")} bytes.");
                 return stream;
             }
             catch ( Exception ex )
@@ -768,11 +765,11 @@ namespace EddiSpeechService
 
         private Stream speak ( string requestedVoice, string speech )
         {
-            Logging.Info($"[speak(string, string)] Called. requestedVoice='{requestedVoice}'");
+            Logging.Debug($"requestedVoice='{requestedVoice}'");
             // Get the voice details we will use for speaking
             if ( TryResolveVoice( requestedVoice, out var voiceDetails ) )
             {
-                Logging.Info($"[speak(string, string)] TryResolveVoice returned true. voiceDetails.name='{voiceDetails.name}', synthType='{voiceDetails.synthType}'");
+                Logging.Debug($"TryResolveVoice returned true. voiceDetails.name='{voiceDetails.name}', synthType='{voiceDetails.synthType}'");
                 try
                 {
                     return speak( voiceDetails, speech );
@@ -795,13 +792,13 @@ namespace EddiSpeechService
         private bool TryResolveVoice ( string requestedVoice, out VoiceDetails voiceDetails )
         {
             var Configuration = ConfigService.Instance.speechServiceConfiguration;
-            Logging.Info($"[TryResolveVoice] Called. requestedVoice='{requestedVoice}', Configuration.StandardVoice='{Configuration.StandardVoice}'");
+            Logging.Debug($"requestedVoice='{requestedVoice}', Configuration.StandardVoice='{Configuration.StandardVoice}'");
             
             // If the requestedVoice is null and the saved configuration's standard voice is not null,
             // try to re-resolve this once using the voice saved to the configuration.
             if ( string.IsNullOrEmpty( requestedVoice ) && !string.IsNullOrEmpty( Configuration.StandardVoice ) )
             {
-                Logging.Info($"[TryResolveVoice] requestedVoice is null or empty. Falling back to Configuration.StandardVoice '{Configuration.StandardVoice}'");
+                Logging.Debug($"requestedVoice is null or empty. Falling back to Configuration.StandardVoice '{Configuration.StandardVoice}'");
                 return TryResolveVoice( Configuration.StandardVoice, out voiceDetails );
             }
 
@@ -813,12 +810,12 @@ namespace EddiSpeechService
                 if ( foundVoice != null )
                 {
                     voiceDetails = foundVoice;
-                    Logging.Info($"[TryResolveVoice] Found matching voice '{foundVoice.name}' in validatedVoices");
+                    Logging.Debug($"Found matching voice '{foundVoice.name}' in validatedVoices");
                     return true;
                 }
                 else
                 {
-                    Logging.Info($"[TryResolveVoice] Voice '{requestedVoice}' was not found in validatedVoices. validatedVoices count is {validatedVoices.Count}");
+                    Logging.Debug($"Voice '{requestedVoice}' was not found in validatedVoices. validatedVoices count is {validatedVoices.Count}");
                 }
             }
 
@@ -826,7 +823,7 @@ namespace EddiSpeechService
             var synthDefaultVoice = IsWindowsMediaSynthesizerSupported()
                 ? windowsMediaSynth?.currentVoice ?? systemSpeechSynth?.currentVoice
                 : systemSpeechSynth?.currentVoice;
-            Logging.Info($"[TryResolveVoice] requested voice '{requestedVoice}' not resolved. Attempting fallback to default voice '{synthDefaultVoice}'");
+            Logging.Debug($"Requested voice '{requestedVoice}' not resolved. Attempting fallback to default voice '{synthDefaultVoice}'");
             if ( !string.IsNullOrEmpty( synthDefaultVoice ) &&
                  !string.Equals( synthDefaultVoice, requestedVoice, StringComparison.InvariantCultureIgnoreCase ) )
             {
@@ -835,7 +832,7 @@ namespace EddiSpeechService
             }
 
             // If none of the above then we've failed to select a voice from our voice list
-            Logging.Info("[TryResolveVoice] Failed to resolve any voice.");
+            Logging.Debug("Failed to resolve any voice.");
             voiceDetails = null;
             return false;
         }

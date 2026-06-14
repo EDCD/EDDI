@@ -81,7 +81,7 @@ namespace EddiSpeechService
         public async Task SayAsync ( Ship ship, string message, int priority = 3, string voice = null, bool radio = false,
             string eventType = null )
         {
-            Logging.Info($"[SayAsync] Called. Message: '{message}', Voice: '{voice}', Priority: {priority}, Radio: {radio}, EventType: '{eventType}'");
+            Logging.Debug($"Voice: '{voice}', Priority: {priority}, Radio: {radio}, EventType: '{eventType}'");
             await SpeechManager.EnqueueAsync( ship, message, priority, voice, radio, eventType )
                 .ConfigureAwait( false );
         }
