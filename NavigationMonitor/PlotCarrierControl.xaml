@@ -19,7 +19,7 @@
         </ContextMenu>
     </UserControl.Resources>
     <DockPanel LastChildFill="True">
-        <Grid DockPanel.Dock="Top">
+        <Grid DockPanel.Dock="Top" Margin="20, 5, 20, 5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -105,7 +105,7 @@
                 </Button.Content>
             </Button>
         </Grid>
-        <UniformGrid DockPanel.Dock="Bottom" Rows="1" Margin="5">
+        <UniformGrid DockPanel.Dock="Bottom" Rows="1" Margin="20, 5, 20, 5">
             <Button x:Name="ClearRouteButton" HorizontalAlignment="Center" Click="ClearRouteButton_Click" Content="{x:Static resx:NavigationMonitor.clear_route_button}" ToolTip="{x:Static resx:NavigationMonitor.clear_route_button_tooltip}" MinWidth="150" />
         </UniformGrid>
         <DataGrid AutoGenerateColumns="False" x:Name="plottedRouteData" CanUserAddRows="false" CanUserDeleteRows="False" HeadersVisibility="All" LoadingRow="DataGrid_LoadingRow" SelectionUnit="Cell">

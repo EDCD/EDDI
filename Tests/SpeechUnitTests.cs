@@ -1,4 +1,4 @@
-﻿using EddiSpeechResponder;
+using EddiSpeechResponder;
 using EddiSpeechService;
 using EddiSpeechService.SpeechConversions;
 using EddiSpeechService.SpeechPreparation;

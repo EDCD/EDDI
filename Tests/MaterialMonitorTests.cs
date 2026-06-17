@@ -7,6 +7,7 @@ using EddiMaterialMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -116,6 +117,51 @@ namespace Tests
 
             // If we haven't fallen below our target, the result must be false
             Assert.IsFalse(TestDecThreshold(151, 150, 150));
+        }
+
+        [TestMethod]
+        public void TestMaterialThresholdEditsMarkConfigurationChanged()
+        {
+            ConfigService.Instance.materialMonitorConfiguration = new MaterialMonitorConfiguration
+            {
+                materials = new List<MaterialAmount>
+                {
+                    new(Material.Zirconium.edname, 13, null, 50, 100)
+                }
+            };
+
+            var materialMonitor = new MaterialMonitor();
+            materialMonitor.writeMaterials();
+
+            var materialConfigurationChanged = false;
+            void ConfigChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+            {
+                if (e.PropertyName == nameof(ConfigService.materialMonitorConfiguration))
+                {
+                    materialConfigurationChanged = true;
+                }
+            }
+
+            try
+            {
+                ConfigService.Instance.PropertyChanged += ConfigChanged;
+
+                var zirconium = materialMonitor.inventory.Single(m => m.edname == Material.Zirconium.edname);
+                zirconium.desired = 75;
+
+                materialMonitor.writeMaterials();
+
+                Assert.IsTrue(materialConfigurationChanged);
+                Assert.AreEqual(
+                    75,
+                    ConfigService.Instance.materialMonitorConfiguration.materials
+                        .Single(m => m.edname == Material.Zirconium.edname)
+                        .desired);
+            }
+            finally
+            {
+                ConfigService.Instance.PropertyChanged -= ConfigChanged;
+            }
         }
 
         [TestMethod]

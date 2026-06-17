@@ -1,4 +1,6 @@
+using EddiDataDefinitions;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace EddiConfigService.Configurations
 {
@@ -145,6 +147,19 @@ namespace EddiConfigService.Configurations
             }
         }
 
+        private List<WebSpeechProvider> _speechProviderConfigurations = [];
+
+        [ JsonProperty( "speechProviderConfigurations" ) ]
+        public List<WebSpeechProvider> SpeechProviderConfigurations
+        {
+            get => _speechProviderConfigurations ??= [];
+            set
+            {
+                _speechProviderConfigurations = value ?? [];
+                OnPropertyChanged();
+            }
+        }
+
         /// <summary>
         /// Clear the information held by speech
         /// </summary>
@@ -157,6 +172,7 @@ namespace EddiConfigService.Configurations
             DistortOnDamage = true;
             DisableIpa = false;
             EnableIcao = false;
+            SpeechProviderConfigurations = [];
         }
     }
 }

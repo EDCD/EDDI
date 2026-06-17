@@ -639,6 +639,15 @@ namespace EddiUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manage Web Voice Providers.
+        /// </summary>
+        public static string tab_tts_manage_web_voice_providers_button {
+            get {
+                return ResourceManager.GetString("tab_tts_manage_web_voice_providers_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to EDDI uses phonetic speech to pronounce various hard-to-say words, and to put pauses between speech. Some voices, often Microsoft ones, have a problem with phonetic speech and it causes EDDI to hang or crash. If you experience this then try checking the option below.
         /// </summary>
         public static string tab_tts_phonetic_speech_desc {
@@ -860,6 +869,215 @@ namespace EddiUI.Properties {
         public static string voice_test_ship {
             get {
                 return ResourceManager.GetString("voice_test_ship", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open account page.
+        /// </summary>
+        public static string web_voice_provider_account_link {
+            get {
+                return ResourceManager.GetString("web_voice_provider_account_link", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Profile.
+        /// </summary>
+        public static string web_voice_provider_add_profile_button {
+            get {
+                return ResourceManager.GetString("web_voice_provider_add_profile_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string web_voice_provider_cancel_button {
+            get {
+                return ResourceManager.GetString("web_voice_provider_cancel_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear Credentials.
+        /// </summary>
+        public static string web_voice_provider_clear_credentials_button {
+            get {
+                return ResourceManager.GetString("web_voice_provider_clear_credentials_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear saved credentials for &apos;{0}&apos;?.
+        /// </summary>
+        public static string web_voice_provider_clear_credentials_confirm {
+            get {
+                return ResourceManager.GetString("web_voice_provider_clear_credentials_confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear Provider Credentials.
+        /// </summary>
+        public static string web_voice_provider_clear_credentials_title {
+            get {
+                return ResourceManager.GetString("web_voice_provider_clear_credentials_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enabled.
+        /// </summary>
+        public static string web_voice_provider_enabled_label {
+            get {
+                return ResourceManager.GetString("web_voice_provider_enabled_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Optional. Enter one or more language or region codes, separated by commas. 
+        ///Examples: en, en-GB, de-DE. 
+        ///Voices are shown when at least one supported locale matches; multilingual voices are kept when the requested locale could be supported..
+        /// </summary>
+        public static string web_voice_provider_locale_filters_help {
+            get {
+                return ResourceManager.GetString("web_voice_provider_locale_filters_help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Locale filters.
+        /// </summary>
+        public static string web_voice_provider_locale_filters_label {
+            get {
+                return ResourceManager.GetString("web_voice_provider_locale_filters_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile name.
+        /// </summary>
+        public static string web_voice_provider_profile_name_label {
+            get {
+                return ResourceManager.GetString("web_voice_provider_profile_name_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        public static string web_voice_provider_remove_button {
+            get {
+                return ResourceManager.GetString("web_voice_provider_remove_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove provider profile &apos;{0}&apos;?.
+        /// </summary>
+        public static string web_voice_provider_remove_profile_confirm {
+            get {
+                return ResourceManager.GetString("web_voice_provider_remove_profile_confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove Web Voice Provider.
+        /// </summary>
+        public static string web_voice_provider_remove_profile_title {
+            get {
+                return ResourceManager.GetString("web_voice_provider_remove_profile_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string web_voice_provider_save_button {
+            get {
+                return ResourceManager.GetString("web_voice_provider_save_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provider settings.
+        /// </summary>
+        public static string web_voice_provider_settings_label {
+            get {
+                return ResourceManager.GetString("web_voice_provider_settings_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setup guide.
+        /// </summary>
+        public static string web_voice_provider_setup_link {
+            get {
+                return ResourceManager.GetString("web_voice_provider_setup_link", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provider type.
+        /// </summary>
+        public static string web_voice_provider_type_label {
+            get {
+                return ResourceManager.GetString("web_voice_provider_type_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verify.
+        /// </summary>
+        public static string web_voice_provider_verify_button {
+            get {
+                return ResourceManager.GetString("web_voice_provider_verify_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provider profile verification failed: {0}.
+        /// </summary>
+        public static string web_voice_provider_verify_failure {
+            get {
+                return ResourceManager.GetString("web_voice_provider_verify_failure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provider profile verified successfully..
+        /// </summary>
+        public static string web_voice_provider_verify_success {
+            get {
+                return ResourceManager.GetString("web_voice_provider_verify_success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verify Web Voice Provider.
+        /// </summary>
+        public static string web_voice_provider_verify_title {
+            get {
+                return ResourceManager.GetString("web_voice_provider_verify_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verifying....
+        /// </summary>
+        public static string web_voice_provider_verifying_button {
+            get {
+                return ResourceManager.GetString("web_voice_provider_verifying_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Web Voice Providers.
+        /// </summary>
+        public static string web_voice_providers_title {
+            get {
+                return ResourceManager.GetString("web_voice_providers_title", resourceCulture);
             }
         }
         

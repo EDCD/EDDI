@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -14,6 +15,9 @@ namespace EddiSpeechService.SpeechPreparation
     public static class SpeechFormatter
     {
         internal static readonly XmlSchemaSet lexiconSchemas = new();
+        private static readonly object lexiconSchemaLock = new();
+        private static readonly object lexiconQuarantineLock = new();
+        private static bool lexiconSchemasLoaded;
 
         // Identify any statements that need to be separated into their own speech streams (e.g. audio or special voice effects)
         private static readonly string[] separatorsList =
@@ -204,8 +208,65 @@ namespace EddiSpeechService.SpeechPreparation
 
         #region Lexicons
 
+        internal static void EnsureLexiconSchemasLoaded ( Assembly assembly = null )
+        {
+            if ( lexiconSchemasLoaded )
+            {
+                return;
+            }
+
+            lock ( lexiconSchemaLock )
+            {
+                if ( lexiconSchemasLoaded )
+                {
+                    return;
+                }
+
+                var targetAssembly = assembly ?? Assembly.GetExecutingAssembly();
+
+                void FetchSchemasFromResource ( string resourceName )
+                {
+                    using var resourceStream = targetAssembly.GetManifestResourceStream( resourceName );
+                    if ( resourceStream == null )
+                    {
+                        return;
+                    }
+
+                    try
+                    {
+                        var schema = XmlSchema.Read( resourceStream, null );
+                        if ( schema != null )
+                        {
+                            lexiconSchemas.Add( schema );
+                        }
+                    }
+                    catch ( Exception e )
+                    {
+                        Logging.Warn( "Failed to initialize lexicon schema validation", e );
+                    }
+                }
+
+                try
+                {
+                    FetchSchemasFromResource( "EddiSpeechService.Properties.pls.xsd" );
+                    FetchSchemasFromResource( "EddiSpeechService.Properties.xml.xsd" );
+                    lexiconSchemas.Compile();
+                    lexiconSchemasLoaded = true;
+                }
+                catch ( ArgumentException ae )
+                {
+                    Logging.Warn( "Unable to load lexicon validation schema.", ae );
+                }
+                catch ( XmlSchemaException xmle )
+                {
+                    Logging.Warn( $"Problem with lexicon validation schema at {xmle.SourceUri}", xmle );
+                }
+            }
+        }
+
         private static HashSet<string> GetLexicons ( VoiceDetails voice )
         {
+            EnsureLexiconSchemasLoaded();
             var result = new HashSet<string>();
 
             // When multiple lexicons are referenced, their precedence goes from lower to higher with document order (https://www.w3.org/TR/2004/REC-speech-synthesis-20040907/#S3.1.4) 
@@ -225,7 +286,7 @@ namespace EddiSpeechService.SpeechPreparation
                 // Only if not found in that lexicon, the next lexicon is searched and so on until a first match or until all lexicons have been used for lookup. (https://www.w3.org/TR/2004/REC-speech-synthesis-20040907/#S3.1.4).
 
                 if ( string.IsNullOrEmpty( directory ) || string.IsNullOrEmpty( voice.culturecode ) )
-                { return null; }
+                { return []; }
                 var dir = new DirectoryInfo(directory);
                 if ( dir.Exists )
                 {
@@ -257,7 +318,7 @@ namespace EddiSpeechService.SpeechPreparation
                 }
                 else
                 {
-                    file.MoveTo( $"{file.FullName}.malformed" );
+                    TryQuarantineInvalidLexicon( file );
                 }
             }
         }
@@ -267,8 +328,9 @@ namespace EddiSpeechService.SpeechPreparation
         /// </summary>
         /// <param name="filename"></param>
         /// <returns></returns>
-        private static bool IsValidPLS ( string filename )
+        internal static bool IsValidPLS ( string filename )
         {
+            EnsureLexiconSchemasLoaded();
             const string PlsNamespace = "http://www.w3.org/2005/01/pronunciation-lexicon";
             try
             {
@@ -319,6 +381,29 @@ namespace EddiSpeechService.SpeechPreparation
             {
                 Logging.Warn( $"Could not load lexicon file '{filename}', please review.", ex );
                 return false;
+            }
+        }
+
+        internal static bool TryQuarantineInvalidLexicon ( FileInfo file )
+        {
+            lock ( lexiconQuarantineLock )
+            {
+                try
+                {
+                    var destination = $"{file.FullName}.malformed";
+                    if ( File.Exists( destination ) )
+                    {
+                        File.Delete( destination );
+                    }
+
+                    file.MoveTo( destination );
+                    return true;
+                }
+                catch ( Exception ex ) when ( ex is IOException or UnauthorizedAccessException )
+                {
+                    Logging.Warn( $"Unable to quarantine invalid lexicon file '{file.FullName}'.", ex );
+                    return false;
+                }
             }
         }
 

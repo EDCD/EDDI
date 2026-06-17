@@ -44,6 +44,10 @@ CereProc SAPI5 voices support the addition of a user lexicon as follows:
 - The *pronunciation* may either use the [IPA](###IPA) or [Cereproc](###Cereproc) alphabets.
 - When you are done editing, save the file and then restart EDDI or any other Text to Speech applications to allow the changes to take effect.
 
+### Web voices
+
+Web voice providers currently do not support custom lexicons. 
+
 ## Alphabets
 
 ### IPA

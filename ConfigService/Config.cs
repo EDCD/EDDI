@@ -14,6 +14,44 @@ namespace EddiConfigService
         [JsonExtensionData]
         internal IDictionary<string, JToken> _additionalData = new Dictionary<string, JToken>();
 
+        public bool HasAdditionalData ( string key )
+        {
+            return !string.IsNullOrWhiteSpace( key ) &&
+                   _additionalData?.ContainsKey( key ) == true;
+        }
+
+        public bool TryGetAdditionalData<T> ( string key, out T value )
+        {
+            value = default;
+            if ( string.IsNullOrWhiteSpace( key ) ||
+                 _additionalData?.TryGetValue( key, out var token ) != true )
+            {
+                return false;
+            }
+
+            try
+            {
+                value = token.ToObject<T>();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool RemoveAdditionalData ( string key )
+        {
+            if ( string.IsNullOrWhiteSpace( key ) ||
+                 _additionalData?.Remove( key ) != true )
+            {
+                return false;
+            }
+
+            OnPropertyChanged();
+            return true;
+        }
+
         #endregion
 
         #region INotifyPropertyChanged
