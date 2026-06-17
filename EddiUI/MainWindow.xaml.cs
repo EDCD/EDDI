@@ -236,7 +236,7 @@ namespace EddiUI
             eddiBetaProgramme.IsChecked = eddiConfiguration.AcceptsBetaReleases;
             var langs = GetAvailableLangs(); // already correctly sorted
             chooseLanguageDropDown.ItemsSource = langs;
-            chooseLanguageDropDown.DisplayMemberPath = "displayName";
+            chooseLanguageDropDown.DisplayMemberPath = nameof(LanguageDef.displayName);
             chooseLanguageDropDown.SelectedItem = string.IsNullOrEmpty(eddiConfiguration.OverrideCulture) 
                 ? langs.Find(l => Equals(l.ci, CultureInfo.InvariantCulture))
                 : langs.Find(l => l.ci.Name == eddiConfiguration.OverrideCulture);
@@ -250,7 +250,7 @@ namespace EddiUI
 
             var themes = GetThemeDefs();
             chooseThemeDropDown.ItemsSource = themes;
-            chooseThemeDropDown.DisplayMemberPath = "displayName";
+            chooseThemeDropDown.DisplayMemberPath = nameof(ThemeDef.displayName);
             chooseThemeDropDown.SelectedItem = GetSelectedThemeDef( themes, eddiConfiguration.OverrideTheme );
             chooseThemeDropDown.SelectionChanged += (sender, e) =>
             {

@@ -2,6 +2,7 @@ using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiDataDefinitions;
 using EddiSpeechService.SpeechPreparation;
+using EddiSpeechService.SpeechProviders;
 using EddiSpeechService.SpeechSynthesizers;
 using JetBrains.Annotations;
 using NAudio.Wave;
@@ -10,22 +11,21 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Schema;
 using Utilities;
 
 namespace EddiSpeechService
 {
-    public class SpeechManager ( AudioManager audioManager ) : IDisposable, INotifyPropertyChanged
+    public class SpeechManager : IDisposable, INotifyPropertyChanged
     {
+        private readonly AudioManager audioManager;
+        private readonly IReadOnlyList<IWebSpeechProvider> webSpeechProviders;
         private SystemSpeechSynthesizer systemSpeechSynth;
         private WindowsMediaSynthesizer windowsMediaSynth;
 
@@ -50,9 +50,33 @@ namespace EddiSpeechService
 
         public readonly SpeechQueue speechQueue = new();
 
+        public SpeechManager ( AudioManager audioManager )
+            : this( audioManager, [ new AzureSpeechProvider() ] )
+        { }
+
+        internal SpeechManager (
+            AudioManager audioManager,
+            IEnumerable<IWebSpeechProvider> webSpeechProviders )
+        {
+            this.audioManager = audioManager;
+            this.webSpeechProviders = webSpeechProviders?.ToList() ?? [];
+        }
+
+        public IReadOnlyList<WebSpeechProviderDescriptor> WebProviderDescriptors =>
+            webSpeechProviders.Select( provider => provider.Descriptor ).ToList();
+
+        public WebSpeechProvider CreateWebProviderProfile ( string providerType )
+        {
+            var provider =  webSpeechProviders.FirstOrDefault( p => p.ProviderType == providerType )
+                ?? throw new InvalidOperationException( $"No web speech provider is available for provider type '{providerType}'." );
+
+            return provider.CreateProfile();
+        }
+
         public async Task InitializeAsync (CancellationToken ct = default)
         {
             Logging.Debug("[InitializeAsync] SpeechManager initialization started.");
+            SpeechFormatter.EnsureLexiconSchemasLoaded();
             var voiceStore = new HashSet<VoiceDetails>(); // Use a Hashset to ensure no duplicates
 
             // Windows.Media.SpeechSynthesis isn't available on older Windows versions so we must check if we have access
@@ -94,35 +118,14 @@ namespace EddiSpeechService
                     e );
             }
 
-            // Prep the Azure Speech SDK synthesizer
-            try
-            {
-                var config = ConfigService.Instance.speechServiceConfiguration;
-                Logging.Info($"[InitializeAsync] Azure Speech Config check: Key length = {config?.AzureApiKey?.Length ?? 0}, Region = '{config?.AzureRegion}'");
-                if (!string.IsNullOrWhiteSpace(config.AzureApiKey) && !string.IsNullOrWhiteSpace(config.AzureRegion))
-                {
-                    Logging.Info("[InitializeAsync] Querying Azure Speech Services for neural voices...");
-                    var azureVoices = await RetrieveAzureVoicesAsync(config.AzureApiKey, config.AzureRegion, ct).ConfigureAwait(false);
-                    Logging.Info($"[InitializeAsync] Azure Speech query returned {azureVoices.Count} voices.");
-                    foreach (var voice in azureVoices)
-                    {
-                        voiceStore.Add(voice);
-                    }
-                    Logging.Info($"[InitializeAsync] Loaded Azure voices. Current total store count: {voiceStore.Count}");
-                }
-            }
-            catch (Exception e)
-            {
-                Logging.Error("Unable to initialize Azure Speech Synthesizer", e);
-            }
+            var config = ConfigService.Instance.speechServiceConfiguration;
+            MigrateLegacyWebProviderConfigurations( config );
+            await LoadWebProviderVoicesAsync( voiceStore, config, ct ).ConfigureAwait(false);
 
             // Sort results alphabetically by voice name
             validatedVoices.Clear();
             validatedVoices.AddRange( voiceStore.OrderBy( v => v.name ) );
             Logging.Debug($"SpeechManager initialization completed. Total validatedVoices: {validatedVoices.Count}");
-            }
-
-            FetchLexiconSchemas();
         }
 
         public void Dispose ()
@@ -140,6 +143,11 @@ namespace EddiSpeechService
                 {
                     windowsMediaSynth?.Dispose();
                 }
+
+                foreach ( var provider in webSpeechProviders.OfType<IDisposable>() )
+                {
+                    provider.Dispose();
+                }
             }
         }
 
@@ -149,46 +157,93 @@ namespace EddiSpeechService
                    osVersion >= new System.Version( 10, 0, 17763, 0 );
         }
 
-        private static void FetchLexiconSchemas ()
+        internal async Task LoadWebProviderVoicesAsync (
+            HashSet<VoiceDetails> voiceStore,
+            SpeechServiceConfiguration config,
+            CancellationToken ct )
         {
-            // Try to obtain and load lexicon related schemas for lexicon schema validation
-            try
+            if ( config?.SpeechProviderConfigurations == null )
             {
-                var thisAssembly = Assembly.GetExecutingAssembly();
+                return;
+            }
 
-                void FetchSchemasFromResource ( string resourceName )
+            foreach ( var profile in config.SpeechProviderConfigurations.Where( p => p.Enabled ) )
+            {
+                var provider = webSpeechProviders.FirstOrDefault( p => p.ProviderType == profile.ProviderType );
+                if ( provider == null )
                 {
-                    using ( var resourceStream = thisAssembly.GetManifestResourceStream( resourceName ) )
-                    {
-                        if ( resourceStream != null )
-                        {
-                            try
-                            {
-                                var schema = XmlSchema.Read( resourceStream, null );
-                                if ( schema != null )
-                                {
-                                    SpeechFormatter.lexiconSchemas.Add( schema );
-                                }
-                            }
-                            catch ( Exception e )
-                            {
-                                Logging.Warn( "Failed to initialize lexicon schema validation", e );
-                            }
-                        }
-                    }
+                    Logging.Warn( $"No web speech provider is available for profile '{profile.DisplayName}' ({profile.ProviderType})." );
+                    continue;
                 }
 
-                FetchSchemasFromResource( "EddiSpeechService.Properties.pls.xsd" );
-                FetchSchemasFromResource( "EddiSpeechService.Properties.xml.xsd" );
+                if ( !provider.IsConfigured( profile ) )
+                {
+                    Logging.Debug( $"Web speech provider profile '{profile.DisplayName}' is not configured." );
+                    continue;
+                }
+
+                try
+                {
+                    var voices = await provider.GetVoicesAsync( profile, ct ).ConfigureAwait( false );
+                    foreach ( var voice in voices )
+                    {
+                        voiceStore.Add( voice );
+                    }
+                    Logging.Debug( $"Loaded {voices.Count} web voices from '{profile.DisplayName}'." );
+                }
+                catch ( OperationCanceledException )
+                {
+                    throw;
+                }
+                catch ( Exception ex )
+                {
+                    Logging.Warn( $"Failed to load web speech voices from '{profile.DisplayName}'.", ex );
+                }
             }
-            catch ( ArgumentException ae )
+        }
+
+        internal void MigrateLegacyWebProviderConfigurations ( SpeechServiceConfiguration config )
+        {
+            foreach ( var provider in webSpeechProviders )
             {
-                Logging.Warn( "Unable to load lexicon validation schema.", ae );
+                provider.MigrateLegacyConfiguration( config );
             }
-            catch ( XmlSchemaException xmle )
+        }
+
+        internal async Task<Stream> GetWebProviderSpeechStreamAsync (
+            VoiceDetails voiceDetails,
+            string speech,
+            SpeechServiceConfiguration config,
+            CancellationToken ct )
+        {
+            var profile =  config.SpeechProviderConfigurations.FirstOrDefault( p =>
+                p.Id == voiceDetails.providerProfileId &&
+                p.ProviderType == voiceDetails.synthType )  ?? throw new InvalidOperationException( $"No web speech provider profile was found for voice '{voiceDetails.name}'." );
+
+            var provider =  webSpeechProviders.FirstOrDefault( p => p.ProviderType == profile.ProviderType )
+                ?? throw new InvalidOperationException( $"No web speech provider is available for profile '{profile.DisplayName}'." );
+
+            return await provider
+                .SynthesizeAsync( profile, voiceDetails, speech, config, ct )
+                .ConfigureAwait( false );
+        }
+
+        public async Task ValidateWebProviderProfileAsync (
+            WebSpeechProvider profile,
+            CancellationToken ct = default )
+        {
+            ArgumentNullException.ThrowIfNull( profile, nameof( profile ) );
+
+            var provider =  webSpeechProviders.FirstOrDefault( p => p.ProviderType == profile.ProviderType )
+                ?? throw new InvalidOperationException( $"No web speech provider is available for profile '{profile.DisplayName}'." );
+
+            if ( !provider.IsConfigured( profile ) )
             {
-                Logging.Warn( $"Problem with lexicon validation schema at {xmle.SourceUri}", xmle );
+                throw new InvalidOperationException(
+                    $"Web speech provider profile '{profile.DisplayName}' is missing required configuration." );
             }
+
+            await provider.ValidateAsync( profile, ct ).ConfigureAwait( false );
         }
 
         private async Task PlaySpeechStreamAsync ( IWaveProvider provider, int priority )
@@ -524,7 +579,7 @@ namespace EddiSpeechService
 
                 var resolvedVoice = voice ?? defaultVoice;
                 Logging.Debug($"Calling GetSpeechStreamAsync for voice='{resolvedVoice}'");
-                await using ( var stream = getSpeechStream( resolvedVoice, statement ) )
+                await using ( var stream = await GetSpeechStreamAsync( resolvedVoice, statement ).ConfigureAwait( false ) )
                 {
                     if ( stream == null )
                     {
@@ -553,17 +608,17 @@ namespace EddiSpeechService
         }
 
         // Obtain the speech memory stream
-        private Stream getSpeechStream ( string requestedVoice, string speech )
+        private async Task<Stream> GetSpeechStreamAsync ( string requestedVoice, string speech )
         {
             Logging.Debug($"RequestedVoice='{requestedVoice}'");
             try
             {
-                var stream = speak(requestedVoice, speech);
+                var stream = await SynthesizeSpeechAsync(requestedVoice, speech).ConfigureAwait(false);
                 if ( stream is null || stream.Length == 0 )
                 {
                     Logging.Debug( "SynthesizeSpeechAsync() returned null or empty. Retrying with stripped SSML." );
                     // Try again, with speech devoid of SSML
-                    stream = speak( requestedVoice, GeneratedRegex.SsmlTagRegex().Replace( speech, string.Empty ) );
+                    stream = await SynthesizeSpeechAsync( requestedVoice, GeneratedRegex.SsmlTagRegex().Replace( speech, string.Empty ) ).ConfigureAwait(false);
                 }
                 Logging.Debug($"Returning stream of length {(stream != null ? stream.Length.ToString() : "null")} bytes.");
                 return stream;
@@ -571,18 +626,20 @@ namespace EddiSpeechService
             catch ( Exception ex )
             {
                 Logging.Warn( "Speech failed (" + Encoding.Default.EncodingName + ")", ex );
-                var voiceDetails = validatedVoices.FirstOrDefault( v => v.name == requestedVoice );
+                var voiceDetails = validatedVoices.FirstOrDefault( v =>
+                    string.Equals( v.voiceKey, requestedVoice, StringComparison.InvariantCultureIgnoreCase ) ||
+                    string.Equals( v.name, requestedVoice, StringComparison.InvariantCultureIgnoreCase ) );
                 if ( voiceDetails?.synthType is nameof( Windows.Media ) && requestedVoice != windowsMediaSynth.currentVoice )
                 {
                     // Try falling back to our Windows Media default voice.
                     Logging.Warn( $"{ex.Message}, retrying with Windows Media Synthesizer default voice.", ex );
-                    return getSpeechStream( windowsMediaSynth.currentVoice, speech );
+                    return await GetSpeechStreamAsync( windowsMediaSynth.currentVoice, speech ).ConfigureAwait(false);
                 }
                 if ( requestedVoice != systemSpeechSynth?.currentVoice )
                 {
                     // Try falling back to our System Speech default voice.
                     Logging.Warn( $"{ex.Message}, retrying with System Speech Synthesizer default voice.", ex );
-                    return getSpeechStream( systemSpeechSynth?.currentVoice, speech );
+                    return await GetSpeechStreamAsync( systemSpeechSynth?.currentVoice, speech ).ConfigureAwait(false);
                 }
             }
             return null;
@@ -599,163 +656,7 @@ namespace EddiSpeechService
             {
                 return windowsMediaSynth?.Speak( voiceDetails, speech, Configuration );
             }
-            if ( voiceDetails.synthType == "Azure" )
-            {
-                return SpeakAzure( voiceDetails, speech, Configuration );
-            }
             throw new NotImplementedException( $"{nameof( voiceDetails )} is referencing a synthType which has not been configured." );
-        }
-
-        private async Task<List<VoiceDetails>> RetrieveAzureVoicesAsync(string key, string region, CancellationToken ct)
-        {
-            Logging.Info($"[RetrieveAzureVoicesAsync] Called with key length {key?.Length ?? 0}, region '{region}'");
-            var voices = new List<VoiceDetails>();
-            try
-            {
-                var speechConfig = Microsoft.CognitiveServices.Speech.SpeechConfig.FromSubscription(key, region);
-                using var synthesizer = new Microsoft.CognitiveServices.Speech.SpeechSynthesizer(speechConfig, null);
-                Logging.Info("[RetrieveAzureVoicesAsync] Calling GetVoicesAsync...");
-                using var result = await synthesizer.GetVoicesAsync().ConfigureAwait(false);
-                Logging.Info($"[RetrieveAzureVoicesAsync] GetVoicesAsync finished. Reason: {result.Reason}");
-                if (result.Reason == Microsoft.CognitiveServices.Speech.ResultReason.VoicesListRetrieved)
-                {
-                    foreach (var voice in result.Voices)
-                    {
-                        var gender = voice.Gender.ToString(); // Male, Female, Neutral
-                        var culture = CultureInfo.GetCultureInfo(voice.Locale);
-                        voices.Add(new VoiceDetails(voice.ShortName, gender, culture, "Azure"));
-                    }
-                    Logging.Info($"[RetrieveAzureVoicesAsync] Successfully parsed {voices.Count} Azure voices.");
-                }
-                else
-                {
-                    Logging.Warn($"Failed to retrieve Azure voices. Reason: {result.Reason}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Logging.Warn("Failed to query Azure voices list.", ex);
-            }
-            return voices;
-        }
-
-        private Stream SpeakAzure(VoiceDetails voiceDetails, string speech, SpeechServiceConfiguration Configuration)
-        {
-            Logging.Info($"[SpeakAzure] voiceDetails.name='{voiceDetails.name}', speech='{speech}'");
-            
-            string key = Configuration.AzureApiKey;
-            string region = Configuration.AzureRegion;
-
-            if (string.IsNullOrWhiteSpace(key) || string.IsNullOrWhiteSpace(region))
-            {
-                Logging.Error("[SpeakAzure] Azure Speech credentials are not configured.");
-                return null;
-            }
-
-            MemoryStream stream = null;
-            var synthTask = Task.Run(async () =>
-            {
-                try
-                {
-                    Logging.Info("[SpeakAzure task] Initializing SpeechConfig...");
-                    var speechConfig = Microsoft.CognitiveServices.Speech.SpeechConfig.FromSubscription(key, region);
-                    speechConfig.SpeechSynthesisVoiceName = voiceDetails.name;
-                    
-                    // Set output format to RIFF (WAV) format compatible with WaveFileReader
-                    speechConfig.SetSpeechSynthesisOutputFormat(Microsoft.CognitiveServices.Speech.SpeechSynthesisOutputFormat.Riff24Khz16BitMonoPcm);
-                    
-                    using var synthesizer = new Microsoft.CognitiveServices.Speech.SpeechSynthesizer(speechConfig, null);
-                    
-                    string preparedSpeech = speech;
-                    SpeechFormatter.PrepareSpeech(voiceDetails, ref preparedSpeech, out var useSSML);
-                    Logging.Info($"[SpeakAzure task] PreparedSpeech: '{preparedSpeech}', useSSML: {useSSML}");
-                    
-                    Microsoft.CognitiveServices.Speech.SpeechSynthesisResult result;
-                    var ratePercent = Configuration.Rate * 10;
-                    var rateString = ratePercent >= 0 ? $"+{ratePercent}%" : $"{ratePercent}%";
-
-                    if (useSSML)
-                    {
-                        // Azure requires a <voice name="voiceName"> tag inside the <speak> element.
-                        // We will insert it after the <speak> tag and before the closing </speak> tag,
-                        // and wrap the contents in a <prosody> tag to set the volume and rate.
-                        int speakIndex = preparedSpeech.IndexOf("<speak");
-                        if (speakIndex >= 0)
-                        {
-                            int speakCloseIndex = preparedSpeech.IndexOf(">", speakIndex);
-                            if (speakCloseIndex >= 0)
-                            {
-                                int voiceInsertionIndex = speakCloseIndex + 1;
-                                int lastLexiconIndex = preparedSpeech.LastIndexOf("<lexicon");
-                                if (lastLexiconIndex > speakCloseIndex)
-                                {
-                                    int lexiconCloseIndex = preparedSpeech.IndexOf("/>", lastLexiconIndex);
-                                    if (lexiconCloseIndex >= 0)
-                                    {
-                                        voiceInsertionIndex = lexiconCloseIndex + 2;
-                                    }
-                                }
-
-                                string beforeVoice = preparedSpeech.Substring(0, voiceInsertionIndex);
-                                string afterVoice = preparedSpeech.Substring(voiceInsertionIndex);
-                                
-                                if (afterVoice.EndsWith("</speak>"))
-                                {
-                                    afterVoice = afterVoice.Substring(0, afterVoice.Length - "</speak>".Length);
-                                }
-                                
-                                preparedSpeech = beforeVoice + $"<voice name=\"{voiceDetails.name}\"><prosody volume=\"{Configuration.Volume}\" rate=\"{rateString}\">" + afterVoice + "</prosody></voice></speak>";
-                            }
-                        }
-
-                        Logging.Info("[SpeakAzure task] Calling SpeakSsmlAsync with prepared SSML...");
-                        result = await synthesizer.SpeakSsmlAsync(preparedSpeech).ConfigureAwait(false);
-                    }
-                    else
-                    {
-                        var xmlEscapedSpeech = System.Security.SecurityElement.Escape(preparedSpeech);
-                        var ssml = $"<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"{voiceDetails.culturecode ?? "en-US"}\">" +
-                                   $"<voice name=\"{voiceDetails.name}\">" +
-                                   $"<prosody volume=\"{Configuration.Volume}\" rate=\"{rateString}\">" +
-                                   $"{xmlEscapedSpeech}" +
-                                   $"</prosody></voice></speak>";
-                        Logging.Info("[SpeakAzure task] Calling SpeakSsmlAsync with prepared text-to-SSML...");
-                        result = await synthesizer.SpeakSsmlAsync(ssml).ConfigureAwait(false);
-                    }
-                    
-                    using (result)
-                    {
-                        Logging.Info($"[SpeakAzure task] result.Reason: {result.Reason}");
-                        if (result.Reason == Microsoft.CognitiveServices.Speech.ResultReason.SynthesizingAudioCompleted)
-                        {
-                            stream = new MemoryStream(result.AudioData);
-                            Logging.Info($"[SpeakAzure task] SynthesizingAudioCompleted successfully. Stream length: {stream.Length} bytes.");
-                        }
-                        else if (result.Reason == Microsoft.CognitiveServices.Speech.ResultReason.Canceled)
-                        {
-                            var cancellation = Microsoft.CognitiveServices.Speech.SpeechSynthesisCancellationDetails.FromResult(result);
-                            Logging.Error($"[SpeakAzure task] Azure synthesis canceled. Reason: {cancellation.Reason}, ErrorDetails: {cancellation.ErrorDetails}");
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logging.Error("[SpeakAzure task] Exception in Azure speech synthesis task", ex);
-                }
-            });
-
-            try
-            {
-                Logging.Info("[SpeakAzure] Waiting for synthTask...");
-                synthTask.Wait();
-                Logging.Info($"[SpeakAzure] synthTask completed. Returning stream: {(stream != null ? "length " + stream.Length : "null")}");
-            }
-            catch (AggregateException ae)
-            {
-                Logging.Error("[SpeakAzure] AggregateException in Azure speech synthesis", ae.InnerException ?? ae);
-            }
-
-            return stream;
         }
 
         public async Task ReloadVoicesAsync(CancellationToken ct = default)
@@ -763,7 +664,7 @@ namespace EddiSpeechService
             await InitializeAsync(ct).ConfigureAwait(false);
         }
 
-        private Stream speak ( string requestedVoice, string speech )
+        private async Task<Stream> SynthesizeSpeechAsync ( string requestedVoice, string speech )
         {
             Logging.Debug($"requestedVoice='{requestedVoice}'");
             // Get the voice details we will use for speaking
@@ -772,6 +673,15 @@ namespace EddiSpeechService
                 Logging.Debug($"TryResolveVoice returned true. voiceDetails.name='{voiceDetails.name}', synthType='{voiceDetails.synthType}'");
                 try
                 {
+                    if ( !string.IsNullOrEmpty( voiceDetails.providerProfileId ) )
+                    {
+                        return await GetWebProviderSpeechStreamAsync(
+                            voiceDetails,
+                            speech,
+                            ConfigService.Instance.speechServiceConfiguration,
+                            CancellationToken.None ).ConfigureAwait(false);
+                    }
+
                     return speak( voiceDetails, speech );
                 }
                 catch ( Exception e )
@@ -805,8 +715,24 @@ namespace EddiSpeechService
             // If the requested voice is not null and matches one we've previously found, return that voice.
             if ( !string.IsNullOrEmpty( requestedVoice ) )
             {
-                var foundVoice = validatedVoices
-                    .FirstOrDefault( v => string.Equals( v.name, requestedVoice, StringComparison.InvariantCultureIgnoreCase ) );
+                var foundVoice = validatedVoices.FirstOrDefault( v =>
+                    string.Equals( v.voiceKey, requestedVoice, StringComparison.InvariantCultureIgnoreCase ) );
+                if ( foundVoice == null )
+                {
+                    var legacyMatches = validatedVoices
+                        .Where( v => string.Equals( v.name, requestedVoice, StringComparison.InvariantCultureIgnoreCase ) )
+                        .Take( 2 )
+                        .ToList();
+                    if ( legacyMatches.Count == 1 )
+                    {
+                        foundVoice = legacyMatches[0];
+                    }
+                    else if ( legacyMatches.Count > 1 )
+                    {
+                        Logging.Warn( $"Voice '{requestedVoice}' matched multiple provider-qualified voices. Please select the provider-specific voice." );
+                    }
+                }
+
                 if ( foundVoice != null )
                 {
                     voiceDetails = foundVoice;

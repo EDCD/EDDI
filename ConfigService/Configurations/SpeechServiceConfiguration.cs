@@ -1,4 +1,6 @@
+using EddiDataDefinitions;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace EddiConfigService.Configurations
 {
@@ -145,37 +147,15 @@ namespace EddiConfigService.Configurations
             }
         }
 
-        private string _azureApiKey;
-        private string _azureRegion;
+        private List<WebSpeechProvider> _speechProviderConfigurations = [];
 
-        [ JsonProperty( "azureApiKey" ) ]
-        public string AzureApiKey
+        [ JsonProperty( "speechProviderConfigurations" ) ]
+        public List<WebSpeechProvider> SpeechProviderConfigurations
         {
-            get => _azureApiKey;
+            get => _speechProviderConfigurations ??= [];
             set
             {
-                if ( value == _azureApiKey )
-                {
-                    return;
-                }
-
-                _azureApiKey = value;
-                OnPropertyChanged();
-            }
-        }
-
-        [ JsonProperty( "azureRegion" ) ]
-        public string AzureRegion
-        {
-            get => _azureRegion;
-            set
-            {
-                if ( value == _azureRegion )
-                {
-                    return;
-                }
-
-                _azureRegion = value;
+                _speechProviderConfigurations = value ?? [];
                 OnPropertyChanged();
             }
         }
@@ -192,8 +172,7 @@ namespace EddiConfigService.Configurations
             DistortOnDamage = true;
             DisableIpa = false;
             EnableIcao = false;
-            AzureApiKey = null;
-            AzureRegion = null;
+            SpeechProviderConfigurations = [];
         }
     }
 }

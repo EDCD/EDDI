@@ -132,7 +132,7 @@ namespace Utilities
         [GeneratedRegex( @"\[[^\]]*\]|[^\[\]]+", RegexOptions.Compiled )]
         public static partial Regex VoiceAttackCommandPermutationsRegex ();
 
-        [GeneratedRegex( @"(?<=<voice name="")([\w|\s]*)", RegexOptions.Compiled )]
+        [GeneratedRegex( @"(?<=<voice name=\"")(.*?)(?=\"")", RegexOptions.Compiled )]
         public static partial Regex VoiceNameRegex ();
 
         [GeneratedRegex( @"(?<=>)(.+)(?=<\/voice>)", RegexOptions.Compiled )]

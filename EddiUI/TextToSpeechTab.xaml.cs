@@ -14,9 +14,12 @@ namespace EddiUI
 {
     public partial class TextToSpeechTab : UserControl
     {
+        private bool isConfiguring;
+
         public TextToSpeechTab ()
         {
             InitializeComponent();
+            manageWebVoiceProvidersButton.Content = Properties.Resources.tab_tts_manage_web_voice_providers_button;
             ConfigureTTS();
             this.Loaded += TextToSpeechTab_Loaded;
             this.Unloaded += TextToSpeechTab_Unloaded;
@@ -97,135 +100,166 @@ namespace EddiUI
 
         public void ConfigureTTS()
         {
-            var speechServiceConfiguration = ConfigService.Instance.speechServiceConfiguration;
-
-            // Populate audio devices
-            var audioDeviceOptions = new List<AudioDevice>
-            {
-                new() { Name = Properties.Resources.tts_default_audio_device, Id = null }
-            };
-            audioDeviceOptions.AddRange(AudioDeviceService.GetAudioDevices());
-            ttsAudioDeviceDropDown.ItemsSource = audioDeviceOptions;
-            var configuredDevice = speechServiceConfiguration.AudioDevice;
-            if (configuredDevice != null && audioDeviceOptions.Any(d => d.Id == configuredDevice))
-            {
-                ttsAudioDeviceDropDown.SelectedValue = configuredDevice;
-            }
-            else
-            {
-                ttsAudioDeviceDropDown.SelectedIndex = 0;
-                if (configuredDevice != null)
-                {
-                    speechServiceConfiguration.AudioDevice = null;
-                    ConfigService.Instance.speechServiceConfiguration = speechServiceConfiguration;
-                }
-            }
-
-            var speechOptions = new List<VoiceOption>
-            {
-                new VoiceOption { Value = "Windows TTS default", DisplayName = Properties.Resources.tts_default_voice }
-            };
             try
             {
-                SpeechService.Instance.SpeechManager.InitializeAsync().GetResultOrTimeout( TimeSpan.FromSeconds( 15 ) );
-                var voicesList = new List<VoiceOption>();
-                foreach (var voice in SpeechService.Instance.SpeechManager.validatedVoices)
+                isConfiguring = true;
+                var speechServiceConfiguration = ConfigService.Instance.speechServiceConfiguration;
+                _ = speechServiceConfiguration.SpeechProviderConfigurations;
+
+                // Populate audio devices
+                var audioDeviceOptions = new List<AudioDevice>
                 {
-                    if (voice.hideVoice) continue;
-                    if (voice.synthType == "System" && voice.name.IndexOf("Online", StringComparison.OrdinalIgnoreCase) >= 0)
+                    new() { Name = Properties.Resources.tts_default_audio_device, Id = null }
+                };
+                audioDeviceOptions.AddRange(AudioDeviceService.GetAudioDevices());
+                ttsAudioDeviceDropDown.ItemsSource = audioDeviceOptions;
+                var configuredDevice = speechServiceConfiguration.AudioDevice;
+                if (configuredDevice != null && audioDeviceOptions.Any(d => d.Id == configuredDevice))
+                {
+                    ttsAudioDeviceDropDown.SelectedValue = configuredDevice;
+                }
+                else
+                {
+                    ttsAudioDeviceDropDown.SelectedIndex = 0;
+                    if (configuredDevice != null)
                     {
-                        continue;
+                        speechServiceConfiguration.AudioDevice = null;
+                        ConfigService.Instance.speechServiceConfiguration = speechServiceConfiguration;
                     }
-                    voicesList.Add(new VoiceOption { Value = voice.name, DisplayName = GetFriendlyVoiceName(voice) });
                 }
 
-                // Sort the voices alphabetically by DisplayName
-                voicesList = voicesList.OrderBy(v => v.DisplayName, StringComparer.CurrentCultureIgnoreCase).ToList();
-                speechOptions.AddRange(voicesList);
-
-                if ( speechOptions.Count == 1 )
+                var speechOptions = new List<VoiceOption>
                 {
-                    Logging.Warn( "No speech synthesis voices were available." );
-                }
-                ttsVoiceDropDown.ItemsSource = speechOptions;
-                ttsVoiceDropDown.SelectedValue =  speechOptions.Any(v => v.Value == speechServiceConfiguration.StandardVoice) 
-                    ? speechServiceConfiguration.StandardVoice
-                    : Properties.Resources.tts_default_voice;
-
-                // If the prior selected voice is no longer a valid option, we revert to the system default.
-                if (speechServiceConfiguration.StandardVoice != (string)ttsVoiceDropDown.SelectedValue)
+                    new() { Value = null, DisplayName = Properties.Resources.tts_default_voice }
+                };
+                try
                 {
-                    speechServiceConfiguration.StandardVoice = (string)ttsVoiceDropDown.SelectedValue;
-                    ConfigService.Instance.speechServiceConfiguration = speechServiceConfiguration;
+                    SpeechService.Instance.SpeechManager.InitializeAsync().GetResultOrTimeout( TimeSpan.FromSeconds( 15 ) );
+                    var voicesList = new List<VoiceOption>();
+                    foreach (var voice in SpeechService.Instance.SpeechManager.validatedVoices)
+                    {
+                        if (voice.hideVoice) continue;
+                        if (voice.synthType == nameof(System) && voice.name.Contains( "Online", StringComparison.OrdinalIgnoreCase ) )
+                        {
+                            continue;
+                        }
+                        voicesList.Add(new VoiceOption
+                        {
+                            Value = voice.voiceKey,
+                            DisplayName = GetFriendlyVoiceName(voice)
+                        });
+                    }
+
+                    MakeDuplicateVoiceNamesDistinct(voicesList);
+                    voicesList = voicesList.OrderBy(v => v.DisplayName, StringComparer.CurrentCultureIgnoreCase).ToList();
+                    speechOptions.AddRange(voicesList);
+
+                    if ( speechOptions.Count == 1 )
+                    {
+                        Logging.Warn( "No speech synthesis voices were available." );
+                    }
+                    ttsVoiceDropDown.ItemsSource = speechOptions;
+                    SelectConfiguredVoice(speechOptions, speechServiceConfiguration);
                 }
+                catch (Exception e)
+                {
+                    Logging.Warn( "Failed to enumerate text-to-speech voices.", e );
+                    ttsVoiceDropDown.ItemsSource = speechOptions;
+                    ttsVoiceDropDown.SelectedIndex = 0;
+                }
+
+                ttsVolumeSlider.Value = speechServiceConfiguration.Volume;
+                ttsRateSlider.Value = speechServiceConfiguration.Rate;
+                ttsEffectsLevelSlider.Value = speechServiceConfiguration.EffectsLevel;
+                ttsDistortCheckbox.IsChecked = speechServiceConfiguration.DistortOnDamage;
+                DisableIpaCheckbox.IsChecked = speechServiceConfiguration.DisableIpa;
+                enableIcaoCheckbox.IsChecked = speechServiceConfiguration.EnableIcao;
+
+                ttsTestShipDropDown.ItemsSource = ShipDefinitions.ShipModels; // already sorted
+                ttsTestShipDropDown.Text = "Adder";
             }
-            catch (Exception e)
+            finally
             {
-                Logging.Warn( "Failed to enumerate text-to-speech voices.", e );
-                ttsVoiceDropDown.ItemsSource = speechOptions;
-                ttsVoiceDropDown.Text = Properties.Resources.tts_default_voice;
+                isConfiguring = false;
             }
-            ttsVolumeSlider.Value = speechServiceConfiguration.Volume;
-            ttsRateSlider.Value = speechServiceConfiguration.Rate;
-            ttsEffectsLevelSlider.Value = speechServiceConfiguration.EffectsLevel;
-            ttsDistortCheckbox.IsChecked = speechServiceConfiguration.DistortOnDamage;
-            DisableIpaCheckbox.IsChecked = speechServiceConfiguration.DisableIpa;
-            enableIcaoCheckbox.IsChecked = speechServiceConfiguration.EnableIcao;
+        }
 
-            ttsTestShipDropDown.ItemsSource = ShipDefinitions.ShipModels; // already sorted
-            ttsTestShipDropDown.Text = "Adder";
+        private void SelectConfiguredVoice ( List<VoiceOption> speechOptions, SpeechServiceConfiguration configuration )
+        {
+            var configuredVoice = configuration.StandardVoice;
+            var selectedOption = speechOptions.FirstOrDefault( v =>
+                string.Equals( v.Value, configuredVoice, StringComparison.InvariantCultureIgnoreCase ) );
 
-            ttsAzureApiKey.Password = speechServiceConfiguration.AzureApiKey;
-            ttsAzureRegion.Text = speechServiceConfiguration.AzureRegion;
+            if ( selectedOption == null && !string.IsNullOrWhiteSpace( configuredVoice ) )
+            {
+                var legacyMatches = SpeechService.Instance.SpeechManager.validatedVoices
+                    .Where( v => string.Equals( v.name, configuredVoice, StringComparison.InvariantCultureIgnoreCase ) )
+                    .Take( 2 )
+                    .ToList();
+                if ( legacyMatches.Count == 1 )
+                {
+                    selectedOption = speechOptions.FirstOrDefault( v =>
+                        string.Equals( v.Value, legacyMatches[0].voiceKey, StringComparison.InvariantCultureIgnoreCase ) );
+                }
+            }
+
+            if ( selectedOption != null )
+            {
+                ttsVoiceDropDown.SelectedItem = selectedOption;
+                if ( configuration.StandardVoice != selectedOption.Value )
+                {
+                    configuration.StandardVoice = selectedOption.Value;
+                    ConfigService.Instance.speechServiceConfiguration = configuration;
+                }
+                return;
+            }
+
+            ttsVoiceDropDown.SelectedIndex = 0;
+            if ( configuration.StandardVoice != null )
+            {
+                configuration.StandardVoice = null;
+                ConfigService.Instance.speechServiceConfiguration = configuration;
+            }
+        }
+
+        private static void MakeDuplicateVoiceNamesDistinct ( IReadOnlyCollection<VoiceOption> voiceOptions )
+        {
+            foreach ( var group in voiceOptions
+                         .Where( option => !string.IsNullOrWhiteSpace( option.Value ) )
+                         .GroupBy( option => option.DisplayName )
+                         .Where( group => group.Count() > 1 ) )
+            {
+                foreach ( var option in group )
+                {
+                    option.DisplayName = $"{option.DisplayName} ({option.Value})";
+                }
+            }
         }
 
         private void ttsAudioDeviceDropDownUpdated(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is FrameworkElement element && element.IsLoaded )
+            if (sender is FrameworkElement element && element.IsLoaded && !isConfiguring )
             {
                 ttsUpdated();
             }
         }
 
-        private async void ttsAzureSaveButton_Click(object sender, RoutedEventArgs e)
+        private void manageWebVoiceProvidersButton_Click(object sender, RoutedEventArgs e)
         {
-            var speechServiceConfiguration = ConfigService.Instance.speechServiceConfiguration;
-            speechServiceConfiguration.AzureApiKey = ttsAzureApiKey.Password?.Trim();
-            speechServiceConfiguration.AzureRegion = ttsAzureRegion.Text?.Trim();
-            ConfigService.Instance.speechServiceConfiguration = speechServiceConfiguration;
-            ConfigService.Instance.SaveConfiguration(speechServiceConfiguration);
-
-            ttsAzureSaveButton.IsEnabled = false;
-            ttsAzureSaveButton.Content = "Saving...";
-
-            try
+            var owner = Window.GetWindow(this);
+            var dialog = new WebVoiceProvidersWindow
             {
-                await SpeechService.Instance.SpeechManager.ReloadVoicesAsync();
+                Owner = owner
+            };
+            if ( dialog.ShowDialog() == true )
+            {
                 ConfigureTTS();
-                
-                var azureVoices = SpeechService.Instance.validatedVoices.Where(v => v.synthType == "Azure").ToList();
-                if (azureVoices.Count > 0)
-                {
-                    var testVoice = azureVoices.FirstOrDefault(v => v.name.Contains("Sonia")) ?? azureVoices.First();
-                    _ = SpeechService.Instance.SayAsync(null, "Azure Speech Services are successfully configured and verified!", 0, testVoice.name);
-                }
-
-                MessageBox.Show("Azure Speech configuration saved and voices reloaded successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Failed to reload Azure voices: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            finally
-            {
-                ttsAzureSaveButton.IsEnabled = true;
-                ttsAzureSaveButton.Content = "Save & Verify";
             }
         }
 
         private void ttsVoiceDropDownUpdated(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is FrameworkElement element && element.IsLoaded )
+            if (sender is FrameworkElement element && element.IsLoaded && !isConfiguring )
             {
                 ttsUpdated();
             }
@@ -233,7 +267,7 @@ namespace EddiUI
 
         private void ttsEffectsLevelUpdated(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (sender is FrameworkElement element && element.IsLoaded )
+            if (sender is FrameworkElement element && element.IsLoaded && !isConfiguring )
             {
                 ttsUpdated();
             }
@@ -241,7 +275,7 @@ namespace EddiUI
 
         private void ttsDistortionLevelUpdated(object sender, RoutedEventArgs e)
         {
-            if (sender is FrameworkElement element && element.IsLoaded )
+            if (sender is FrameworkElement element && element.IsLoaded && !isConfiguring )
             {
                 ttsUpdated();
             }
@@ -249,7 +283,7 @@ namespace EddiUI
 
         private void ttsRateUpdated(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (sender is FrameworkElement element && element.IsLoaded )
+            if (sender is FrameworkElement element && element.IsLoaded && !isConfiguring )
             {
                 ttsUpdated();
             }
@@ -257,7 +291,7 @@ namespace EddiUI
 
         private void ttsVolumeUpdated(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (sender is FrameworkElement element && element.IsLoaded )
+            if (sender is FrameworkElement element && element.IsLoaded && !isConfiguring )
             {
                 ttsUpdated();
             }
@@ -278,11 +312,8 @@ namespace EddiUI
                 testShip.health = 100;
                 var message = string.Format( Properties.Resources.voice_test_ship,
                     ShipDefinitions.FromModel( (string)ttsTestShipDropDown.SelectedItem ).SpokenModel() );
-                var selectedVoice = ttsVoiceDropDown.SelectedItem == null || 
-                                    ttsVoiceDropDown.SelectedItem.ToString() == "Windows TTS default" 
-                    ? null 
-                    : ttsVoiceDropDown.SelectedItem.ToString();
-                Logging.Info($"Test Voice button clicked. Selected voice: '{selectedVoice}', Ship: '{testShip?.model}'");
+                var selectedVoice = ttsVoiceDropDown.SelectedValue as string;
+                Logging.Debug($"Test Voice button clicked. Selected voice: '{selectedVoice}', Ship: '{testShip?.model}'");
                 await SpeechService.Instance.SayAsync( testShip, message, 0, selectedVoice ).ConfigureAwait( false );
             }
             catch ( Exception ex )
@@ -305,11 +336,8 @@ namespace EddiUI
                 var testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem);
                 testShip.health = 20;
                 var message = string.Format(Properties.Resources.voice_test_damage, ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem).SpokenModel());
-                var selectedVoice = ttsVoiceDropDown.SelectedItem == null || 
-                                    ttsVoiceDropDown.SelectedItem.ToString() == "Windows TTS default" 
-                    ? null 
-                    : ttsVoiceDropDown.SelectedItem.ToString();
-                Logging.Info($"Test Damaged Voice button clicked. Selected voice: '{selectedVoice}', Ship: '{testShip?.model}'");
+                var selectedVoice = ttsVoiceDropDown.SelectedValue as string;
+                Logging.Debug($"Test Damaged Voice button clicked. Selected voice: '{selectedVoice}', Ship: '{testShip?.model}'");
                 await SpeechService.Instance.SayAsync( testShip, message, 0, selectedVoice ).ConfigureAwait( false );
             }
             catch ( Exception ex )
@@ -320,12 +348,18 @@ namespace EddiUI
 
         private void disableIpaUpdated(object sender, RoutedEventArgs e)
         {
-            ttsUpdated();
+            if ( !isConfiguring )
+            {
+                ttsUpdated();
+            }
         }
 
         private void enableICAOUpdated(object sender, RoutedEventArgs e)
         {
-            ttsUpdated();
+            if ( !isConfiguring )
+            {
+                ttsUpdated();
+            }
         }
 
         /// <summary>
@@ -333,41 +367,27 @@ namespace EddiUI
         /// </summary>
         private void ttsUpdated()
         {
+            var currentConfiguration = ConfigService.Instance.speechServiceConfiguration;
             var speechConfiguration = new SpeechServiceConfiguration
             {
                 AudioDevice = ttsAudioDeviceDropDown.SelectedValue?.ToString(),
-                StandardVoice = ttsVoiceDropDown.SelectedItem == null || 
-                                ttsVoiceDropDown.SelectedItem.ToString() == Properties.Resources.tts_default_voice 
-                    ? null 
-                    : ttsVoiceDropDown.SelectedItem.ToString(),
+                StandardVoice = ttsVoiceDropDown.SelectedValue as string,
                 Volume = (int)ttsVolumeSlider.Value,
                 Rate = (int)ttsRateSlider.Value,
                 EffectsLevel = (int)ttsEffectsLevelSlider.Value,
                 DistortOnDamage = ttsDistortCheckbox.IsChecked ?? false,
                 DisableIpa = DisableIpaCheckbox.IsChecked ?? false,
                 EnableIcao = enableIcaoCheckbox.IsChecked ?? false,
-                AzureApiKey = ttsAzureApiKey.Password?.Trim(),
-                AzureRegion = ttsAzureRegion.Text?.Trim()
+                SpeechProviderConfigurations = currentConfiguration.SpeechProviderConfigurations
+                    .Select( profile => profile.Clone() )
+                    .ToList()
             };
             ConfigService.Instance.speechServiceConfiguration = speechConfiguration;
         }
 
-        private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
-        {
-            try
-            {
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
-                e.Handled = true;
-            }
-            catch (Exception ex)
-            {
-                Logging.Warn("Failed to open hyperlink: " + ex.Message, ex);
-            }
-        }
-
         private static string GetFriendlyVoiceName(VoiceDetails voice)
         {
-            if (voice.synthType == "Azure")
+            if ( !string.IsNullOrWhiteSpace( voice.providerProfileId ) )
             {
                 var cultureName = voice.cultureinvariantname ?? "Unknown Language";
                 var simpleName = voice.name;
@@ -378,25 +398,28 @@ namespace EddiUI
                 }
                 if (simpleName.EndsWith("MultilingualNeural", StringComparison.OrdinalIgnoreCase))
                 {
-                    simpleName = simpleName.Substring(0, simpleName.Length - "MultilingualNeural".Length) + " (Multilingual)";
+                    simpleName = string.Concat( simpleName.AsSpan(0, simpleName.Length - "MultilingualNeural".Length), " (Multilingual)" );
                 }
                 else if (simpleName.EndsWith("Neural", StringComparison.OrdinalIgnoreCase))
                 {
                     simpleName = simpleName.Substring(0, simpleName.Length - "Neural".Length);
                 }
-                return $"{cultureName} {simpleName} - Neural";
+                var providerName = string.IsNullOrWhiteSpace( voice.providerDisplayName )
+                    ? voice.synthType
+                    : voice.providerDisplayName;
+                return $"{cultureName} {simpleName} - Neural [{providerName}]";
             }
-            else if (voice.synthType == "System" && voice.name.StartsWith("Microsoft ", StringComparison.OrdinalIgnoreCase))
+            else if (voice.synthType == nameof(System) && voice.name.StartsWith("Microsoft ", StringComparison.OrdinalIgnoreCase))
             {
                 var cultureName = voice.cultureinvariantname ?? "Unknown Language";
                 var simpleName = voice.name.Substring("Microsoft ".Length);
                 if (simpleName.EndsWith(" Desktop", StringComparison.OrdinalIgnoreCase))
                 {
-                    simpleName = simpleName.Substring(0, simpleName.Length - " Desktop".Length) + " (Desktop)";
+                    simpleName = string.Concat( simpleName.AsSpan(0, simpleName.Length - " Desktop".Length), " (Desktop)" );
                 }
                 else if (simpleName.EndsWith(" Online", StringComparison.OrdinalIgnoreCase))
                 {
-                    simpleName = simpleName.Substring(0, simpleName.Length - " Online".Length) + " (Online)";
+                    simpleName = string.Concat( simpleName.AsSpan(0, simpleName.Length - " Online".Length), " (Online)" );
                 }
                 return $"{cultureName} {simpleName} - Local";
             }

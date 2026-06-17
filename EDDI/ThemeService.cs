@@ -6,7 +6,7 @@ namespace Eddi
 {
     public static class ThemeService
     {
-        private static readonly Uri DarkThemeUri = new Uri("/EDDI;component/Themes/DarkTheme.xaml", UriKind.Relative);
+        private static readonly Uri DarkThemeUri = new("/EDDI;component/Themes/DarkTheme.xaml", UriKind.Relative);
 
         public static void ApplyTheme()
         {

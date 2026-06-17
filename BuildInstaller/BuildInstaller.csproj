@@ -32,6 +32,7 @@
         <PreBuildEvent>
             xcopy /y "$(SolutionDir)Lexicons.md" "$(SolutionDir)bin\$(Configuration)\Wiki\"
             xcopy /y "$(SolutionDir)Lexicons.md" "$(SolutionDir)bin\$(Configuration)\Wiki\"
+            xcopy /y "$(SolutionDir)Azure Speech Services.md" "$(SolutionDir)bin\$(Configuration)\Wiki\"
             xcopy /y "$(SolutionDir)images\*.*" "$(SolutionDir)bin\$(Configuration)\Wiki\images\"
         </PreBuildEvent>
     </PropertyGroup>

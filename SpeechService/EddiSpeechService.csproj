@@ -37,6 +37,9 @@
         <ProjectReference Include="..\Utilities\Utilities.csproj" />
     </ItemGroup>
     <ItemGroup>
+        <None Include="..\Azure Speech Services.md">
+            <Link>Azure Speech Services.md</Link>
+        </None>
         <None Include="..\Lexicons.md">
             <Link>Lexicons.md</Link>
         </None>
