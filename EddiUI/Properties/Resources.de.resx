@@ -312,9 +312,6 @@ Bitte schließe die andere Instanz und versuche es noch einmal.</value>
   <data name="tab_tts_level_label" xml:space="preserve">
     <value>Level der Sprachverzerrung:</value>
   </data>
-  <data name="tab_tts_manage_web_voice_providers_button" xml:space="preserve">
-    <value>Web-Sprachanbieter verwalten...</value>
-  </data>
   <data name="tab_tts_phonetic_speech_desc" xml:space="preserve">
     <value>EDDI verwendet phonetische Sprache, um verschiedene schwer zu sagende Wörter auszusprechen und Pausen zwischen Wörtern einzufügen. Einige Stimmen, oft Microsoft-Stimmen, haben ein Problem mit phonetischer Sprache und verursachen, dass EDDI hängt oder abstürzt. Wenn dies der Fall ist, versuchen Sie die folgende Option zu aktivieren</value>
   </data>
@@ -373,75 +370,6 @@ Bitte schließe die andere Instanz und versuche es noch einmal.</value>
   </data>
   <data name="voice_test_ship" xml:space="preserve">
     <value>So werde ich in deinem Schiff {0} klingen.</value>
-  </data>
-  <data name="web_voice_providers_title" xml:space="preserve">
-    <value>Web-Sprachanbieter</value>
-  </data>
-  <data name="web_voice_provider_account_link" xml:space="preserve">
-    <value>Kontoseite öffnen</value>
-  </data>
-  <data name="web_voice_provider_add_profile_button" xml:space="preserve">
-    <value>Profil hinzufügen</value>
-  </data>
-  <data name="web_voice_provider_cancel_button" xml:space="preserve">
-    <value>Abbrechen</value>
-  </data>
-  <data name="web_voice_provider_clear_credentials_button" xml:space="preserve">
-    <value>Zugangsdaten löschen</value>
-  </data>
-  <data name="web_voice_provider_clear_credentials_confirm" xml:space="preserve">
-    <value>Gespeicherte Zugangsdaten für '{0}' löschen?</value>
-  </data>
-  <data name="web_voice_provider_clear_credentials_title" xml:space="preserve">
-    <value>Anbieter-Zugangsdaten löschen</value>
-  </data>
-  <data name="web_voice_provider_enabled_label" xml:space="preserve">
-    <value>Aktiviert</value>
-  </data>
-  <data name="web_voice_provider_locale_filters_help" xml:space="preserve">
-    <value>Optional. Verwenden Sie durch Kommas getrennte BCP-47-Sprachcodes wie en, en-GB oder de-DE. Stimmen werden angezeigt, wenn mindestens eine unterstützte Sprache passt; mehrsprachige Stimmen bleiben erhalten, wenn die angeforderte Sprache unterstützt werden könnte.</value>
-  </data>
-  <data name="web_voice_provider_locale_filters_label" xml:space="preserve">
-    <value>Sprachfilter</value>
-  </data>
-  <data name="web_voice_provider_profile_name_label" xml:space="preserve">
-    <value>Profilname</value>
-  </data>
-  <data name="web_voice_provider_remove_button" xml:space="preserve">
-    <value>Entfernen</value>
-  </data>
-  <data name="web_voice_provider_remove_profile_confirm" xml:space="preserve">
-    <value>Anbieterprofil '{0}' entfernen?</value>
-  </data>
-  <data name="web_voice_provider_remove_profile_title" xml:space="preserve">
-    <value>Web-Sprachanbieter entfernen</value>
-  </data>
-  <data name="web_voice_provider_save_button" xml:space="preserve">
-    <value>Speichern</value>
-  </data>
-  <data name="web_voice_provider_settings_label" xml:space="preserve">
-    <value>Anbietereinstellungen</value>
-  </data>
-  <data name="web_voice_provider_setup_link" xml:space="preserve">
-    <value>Einrichtungsanleitung</value>
-  </data>
-  <data name="web_voice_provider_type_label" xml:space="preserve">
-    <value>Anbietertyp</value>
-  </data>
-  <data name="web_voice_provider_verifying_button" xml:space="preserve">
-    <value>Prüfung...</value>
-  </data>
-  <data name="web_voice_provider_verify_button" xml:space="preserve">
-    <value>Prüfen</value>
-  </data>
-  <data name="web_voice_provider_verify_failure" xml:space="preserve">
-    <value>Prüfung des Anbieterprofils fehlgeschlagen: {0}</value>
-  </data>
-  <data name="web_voice_provider_verify_success" xml:space="preserve">
-    <value>Anbieterprofil erfolgreich geprüft.</value>
-  </data>
-  <data name="web_voice_provider_verify_title" xml:space="preserve">
-    <value>Web-Sprachanbieter prüfen</value>
   </data>
   <data name="wiki_hyperlink" xml:space="preserve">
     <value>Projekt Wiki</value>
