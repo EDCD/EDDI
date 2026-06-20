@@ -3,6 +3,7 @@ using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
+using EddiIPC_Service;
 using EddiIPC_Service.Client;
 using EddiIPC_Service.Messages;
 using EddiIPC_Service.Server;

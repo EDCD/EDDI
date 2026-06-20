@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using Utilities;
 
-namespace EddiVoiceAttackAdapter
+namespace EddiIPC_Service
 {
     public class VoiceAttackVariable
     {

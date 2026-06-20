@@ -4,8 +4,11 @@ using EddiVoiceAttackAdapter.Client;
 using JetBrains.Annotations;
 using Microsoft.CSharp.RuntimeBinder;
 using System;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.Loader;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -69,6 +72,19 @@ namespace EddiVoiceAttackAdapter
         [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
         public static void VA_Init1(dynamic vaProxy)
         {
+            // MUST be first - before ANY EDDI dependencies are referenced
+            var pluginDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            if ( pluginDir != null )
+            {
+                var alc = new PluginLoadContext(pluginDir);
+                alc.EnterContextualReflection();
+            }
+
+            var loaded = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName?.StartsWith("NAudio") ?? false);
+            Console.WriteLine( $"NAudio assemblies in context: {string.Join( ", ", loaded.Select( a => a.FullName ) )}" );
+            Console.ReadLine();
+            Logging.Info( $"NAudio assemblies in context: {string.Join( ", ", loaded.Select( a => a.FullName ) )}" );
+
             _isShuttingDown = false;
             _shutdownCancellationTokenSource?.Dispose();
             _shutdownCancellationTokenSource = new CancellationTokenSource();
@@ -717,5 +733,16 @@ namespace EddiVoiceAttackAdapter
         }
 
         #endregion
+
+        private sealed class PluginLoadContext ( string pluginPath ) : AssemblyLoadContext( isCollectible: true )
+        {
+            private readonly AssemblyDependencyResolver _resolver = new( pluginPath );
+
+            protected override Assembly? Load ( AssemblyName name )
+            {
+                string? path = _resolver.ResolveAssemblyToPath(name);
+                return path != null ? LoadFromAssemblyPath( path ) : null;
+            }
+        }
     }
 }

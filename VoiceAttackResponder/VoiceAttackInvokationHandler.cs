@@ -10,7 +10,6 @@ using EddiSpeechResponder;
 using EddiSpeechService;
 using EddiStarMapService;
 using EddiUI;
-using EddiVoiceAttackAdapter;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -144,18 +143,11 @@ namespace EddiVoiceAttackResponder
                     return;
                 }
 
-                var launchSuccess = await EddiProcessLauncher
-                    .LaunchEddiIfNeededAsync( true, App.VoiceAttackVersion )
+                await VoiceAttackResponderModeHandler
+                    .SetResponderModeAsync( true, App.VoiceAttackVersion )
                     .ConfigureAwait( false );
 
-                if ( launchSuccess )
-                {
-                    RuntimeWriteToLog( "EDDI initialization completed.", "green" );
-                }
-                else
-                {
-                    RuntimeWriteToLog( "Unable to initialize EDDI. Please try again.", "red" );
-                }
+                RuntimeWriteToLog( "VoiceAttack responder mode initialized.", "green" );
             }
             catch ( Exception ex )
             {
