@@ -1,7 +1,5 @@
 #nullable enable
 
-using EddiIPC_Service.Client;
-using EddiIPC_Service.Messages;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,7 +21,7 @@ namespace EddiVoiceAttackAdapter.Client
     public class VoiceAttackPluginClient ( string configFilePath ) : IDisposable
     {
         private readonly string _configFilePath = configFilePath ?? throw new ArgumentNullException(nameof(configFilePath));
-        private IPCClient? _ipcClient;
+        private AdapterIpcClient? _ipcClient;
         private bool _disposed;
         private int _port;
 
@@ -78,7 +76,7 @@ namespace EddiVoiceAttackAdapter.Client
                 }
 
                 // Create and initialize IPC client
-                _ipcClient = new IPCClient();
+                _ipcClient = new AdapterIpcClient();
                 _ipcClient.MessageReceived += OnIpcClientMessageReceived;
                 _ipcClient.ConnectionLost += OnIpcClientConnectionLost;
                 await _ipcClient.ConnectAsync("127.0.0.1", _port, cancellationToken).ConfigureAwait(false);
@@ -125,7 +123,7 @@ namespace EddiVoiceAttackAdapter.Client
                 throw new ArgumentNullException(nameof(commandName));
             }
 
-            var command = new CommandData
+            var command = new AdapterCommandData
             {
                 Command = commandName,
                 Target = "va_plugin",
@@ -134,7 +132,7 @@ namespace EddiVoiceAttackAdapter.Client
 
             try
             {
-                var response = await _ipcClient!.SendCommandAsync<object>(command, cancellationToken).ConfigureAwait(false);
+                var response = await _ipcClient!.SendCommandAsync(command, cancellationToken).ConfigureAwait(false);
                 return response;
             }
             catch (OperationCanceledException)
@@ -169,7 +167,7 @@ namespace EddiVoiceAttackAdapter.Client
                 throw new ArgumentNullException(nameof(eventName));
             }
 
-            var eventData = new EventData
+            var eventData = new AdapterEventData
             {
                 EventType = "plugin_event",
                 EventName = eventName,

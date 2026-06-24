@@ -610,8 +610,13 @@ namespace Tests
                 }
                 """ );
 
-            var envelope = MessageEnvelope.Create( MessageTypes.Event, runtimeEventPayload );
-            var eventArgs = new MessageReceivedEventArgs( MessageTypes.Event, envelope );
+            using var runtimeEventDocument = System.Text.Json.JsonDocument.Parse( runtimeEventPayload.ToString() );
+            var envelope = EddiVoiceAttackAdapter.Client.AdapterMessageEnvelope.Create(
+                EddiVoiceAttackAdapter.Client.AdapterMessageTypes.Event,
+                runtimeEventDocument.RootElement.Clone() );
+            var eventArgs = new EddiVoiceAttackAdapter.Client.MessageReceivedEventArgs(
+                EddiVoiceAttackAdapter.Client.AdapterMessageTypes.Event,
+                envelope );
 
             VoiceAttackRuntimeEventReceiver.HandleMessageReceived( null, eventArgs );
 

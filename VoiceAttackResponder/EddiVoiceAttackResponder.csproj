@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Library</OutputType>
         <UseWPF>true</UseWPF>
@@ -6,10 +6,10 @@
         <EnableDynamicLoading>true</EnableDynamicLoading>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
-        <OutputPath>..\bin\Debug\</OutputPath>
+        <OutputPath>..\bin\Debug\Application\</OutputPath>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
-        <OutputPath>..\bin\Release\</OutputPath>
+        <OutputPath>..\bin\Release\Application\</OutputPath>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj" />
@@ -59,6 +59,6 @@
         </None>
     </ItemGroup>
     <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-        <Exec Command="xcopy /y &quot;$(SolutionDir)VoiceAttack-Integration.md&quot; &quot;$(SolutionDir)bin\$(Configuration)\Wiki\&quot;" />
+        <Exec Command="xcopy /y &quot;$(SolutionDir)VoiceAttack-Integration.md&quot; &quot;$(SolutionDir)bin\$(Configuration)\Application\Wiki\&quot;" />
     </Target>
 </Project>

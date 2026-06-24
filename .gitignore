@@ -226,4 +226,7 @@ Documentation.chw
 
 # Build Secrets
 /BuildSecrets/BuildInjectedSecrets.Local.cs
+
+# AI working folders
 /.agent
+/.codex/diag

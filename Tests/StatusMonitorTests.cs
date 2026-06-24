@@ -10,7 +10,7 @@ using Utilities;
 
 namespace Tests
 {
-    [TestClass, TestCategory("UnitTests")]
+    [TestClass, TestCategory("UnitTests"), DoNotParallelize]
     public class StatusMonitorTests : TestBase
     {
         readonly StatusService statusService = new();

@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "EDDI"
-#define MyAppVersion "5.0.2"
+#define MyAppVersion "5.0.3"
 #define MyAppPublisher "Elite Dangerous Community Developers (EDCD)"
 #define MyAppURL "https://github.com/EDCD/EDDI/"
 #define MyAppExeName "EDDI.exe"
@@ -31,7 +31,7 @@ OutputBaseFilename={#MyAppName}-{#MyAppVersion}
 OutputDir="{#SourcePath}\bin\Installer"
 RestartApplications=no
 SolidCompression=yes
-SourceDir="{#SourcePath}\bin\Release"
+SourceDir="{#SourcePath}\bin\Release\Application"
 UninstallDisplayIcon={app}\{#MyAppExeName}
 UsePreviousAppDir=no
 UsePreviousTasks=no
@@ -43,7 +43,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
+Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
 Source: "*.exe"; DestDir: "{app}"
@@ -58,7 +58,7 @@ Source: "*.resources.dll"; DestDir: "{app}"; Flags: recursesubdirs createallsubd
 Source: "eddi.json"; DestDir: "{app}"
 Source: "eddi.*.json"; DestDir: "{app}"
 Source: "*.md"; DestDir: "{app}"
-Source: "*.vap"; DestDir: "{app}"
+Source: "{#SourcePath}\bin\Release\VoiceAttackPluginShim\*"; DestDir: "{code:GetVoiceAttack2EddiDir}"; Flags: recursesubdirs createallsubdirs
 
 ; Remove outdated files
 [InstallDelete]
@@ -86,6 +86,26 @@ Type: files; Name: "{app}\*.vap"
 
 ; --- Remove old resource files that may no longer be valid ---
 Type: filesandordirs; Name: "{app}\*\*.resources.dll"
+
+; --- Remove old app payload files from the VoiceAttack shim folder before copying the new shim ---
+Type: files; Name: "{code:GetVoiceAttack2EddiDir}\*.dll"
+Type: files; Name: "{code:GetVoiceAttack2EddiDir}\*.pdb"
+Type: files; Name: "{code:GetVoiceAttack2EddiDir}\*.deps.json"
+Type: files; Name: "{code:GetVoiceAttack2EddiDir}\*.runtimeconfig.json"
+Type: files; Name: "{code:GetVoiceAttack2EddiDir}\*.exe"
+Type: files; Name: "{code:GetVoiceAttack2EddiDir}\*.exe.config"
+Type: filesandordirs; Name: "{code:GetVoiceAttack2EddiDir}\runtimes"
+Type: filesandordirs; Name: "{code:GetVoiceAttack2EddiDir}\cs"
+Type: filesandordirs; Name: "{code:GetVoiceAttack2EddiDir}\de"
+Type: filesandordirs; Name: "{code:GetVoiceAttack2EddiDir}\es"
+Type: filesandordirs; Name: "{code:GetVoiceAttack2EddiDir}\fr"
+Type: filesandordirs; Name: "{code:GetVoiceAttack2EddiDir}\hu"
+Type: filesandordirs; Name: "{code:GetVoiceAttack2EddiDir}\it"
+Type: filesandordirs; Name: "{code:GetVoiceAttack2EddiDir}\ja"
+Type: filesandordirs; Name: "{code:GetVoiceAttack2EddiDir}\pt-BR"
+Type: filesandordirs; Name: "{code:GetVoiceAttack2EddiDir}\pt-PT"
+Type: filesandordirs; Name: "{code:GetVoiceAttack2EddiDir}\ru"
+Type: filesandordirs; Name: "{code:GetVoiceAttack2EddiDir}\zh-CN"
 
 ; --- Remove old config files that may no longer be valid ---
 Type: files; Name: "{app}\*.dll.config"
@@ -121,7 +141,7 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChang
 Filename: "{app}\{#MyAppExeName}"; Flags: nowait skipifnotsilent runasoriginaluser; Check: ShouldRunAfterInAppUpgrade
 
 [Messages]
-SelectDirBrowseLabel=To continue, click Next. If this is not your VoiceAttack 2 installation location, or you would like to put the EDDI files in a different location, click Browse.
+SelectDirBrowseLabel=To continue, click Next. If this is not where you want the EDDI application files installed, click Browse. Do not select a VoiceAttack Apps folder.
 
 [Registry]
 Root: "HKLM"; Subkey: "Software\Classes\eddi"; ValueType: string; ValueData: "EDDI URL Protocol"; Flags: uninsdeletekey
@@ -134,6 +154,12 @@ Root: "HKCU"; Subkey: "Software\Classes\eddi"; ValueType: string; ValueName: "UR
 Root: "HKCU"; Subkey: "Software\Classes\eddi\Default Icon"; ValueType: string; ValueData: "{app}\{#MyAppExeName},0"; Flags: uninsdeletekey
 Root: "HKCU"; Subkey: "Software\Classes\eddi\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletekey
 Root: "HKCU"; Subkey: "Software\Classes\eddi\shell\open\ddeexec"; ValueType: string; ValueData: "%1"; Flags: uninsdeletekey
+Root: "HKCU"; Subkey: "Software\EDCD\EDDI"; ValueType: string; ValueName: "ExecutablePath"; ValueData: "{app}\{#MyAppExeName}"
+Root: "HKCU"; Subkey: "Software\EDCD\EDDI"; ValueType: string; ValueName: "InstallDirectory"; ValueData: "{app}"
+Root: "HKCU"; Subkey: "Software\EDCD\EDDI"; ValueType: string; ValueName: "Version"; ValueData: "{#MyAppVersion}"
+Root: "HKLM"; Subkey: "Software\EDCD\EDDI"; ValueType: string; ValueName: "ExecutablePath"; ValueData: "{app}\{#MyAppExeName}"; Check: ShouldWriteMachineLocator
+Root: "HKLM"; Subkey: "Software\EDCD\EDDI"; ValueType: string; ValueName: "InstallDirectory"; ValueData: "{app}"; Check: ShouldWriteMachineLocator
+Root: "HKLM"; Subkey: "Software\EDCD\EDDI"; ValueType: string; ValueName: "Version"; ValueData: "{#MyAppVersion}"; Check: ShouldWriteMachineLocator
 
 [Code]
 
@@ -157,6 +183,18 @@ begin
   C := NormalizePath(Child);
   P := NormalizePath(Parent);
   Result := (C = P) or (Pos(P + '\', C) = 1);
+end;
+
+function IsUserProfilePath(const Dir: string): Boolean;
+var
+  UserProfile: string;
+begin
+  UserProfile := GetEnv('USERPROFILE');
+
+  Result :=
+    IsUnderPath(Dir, ExpandConstant('{localappdata}')) or
+    IsUnderPath(Dir, ExpandConstant('{userappdata}')) or
+    ((Trim(UserProfile) <> '') and IsUnderPath(Dir, UserProfile));
 end;
 
 function TryGetVoiceAttack2AppsDir(var Dir: string): Boolean;
@@ -187,7 +225,7 @@ begin
   end;
 end;
 
-function GetDefaultInstallDir(Param: string): string;
+function GetVoiceAttack2EddiDir(Param: string): string;
 var
   AppsFolder: string;
 begin
@@ -197,20 +235,36 @@ begin
     exit;
   end;
 
-  Result := ExpandConstant('{userappdata}\VoiceAttack2\Apps\{#MyAppName}');
+  Result := ExpandConstant('{localappdata}\VoiceAttack2\Apps\{#MyAppName}');
 end;
 
-function GetVoiceAttack2EddiDir: string;
+function IsPerUserVoiceAttackShimInstall: Boolean;
 var
-  AppsFolder: string;
+  ShimDir: string;
 begin
-  if TryGetVoiceAttack2AppsDir(AppsFolder) then
+  ShimDir := GetVoiceAttack2EddiDir('');
+  Result := IsUserProfilePath(ShimDir);
+end;
+
+function GetDefaultInstallDir(Param: string): string;
+begin
+  if IsPerUserVoiceAttackShimInstall then
   begin
-    Result := AddBackslash(RemoveBackslashUnlessRoot(AppsFolder)) + '{#MyAppName}';
+    Result := ExpandConstant('{localappdata}\EDDI\Application');
     exit;
   end;
 
-  Result := ExpandConstant('{userappdata}\VoiceAttack2\Apps\{#MyAppName}');
+  Result := ExpandConstant('{autopf}\EDDI');
+end;
+
+function GetDefaultApplicationInstallDir: string;
+begin
+  Result := GetDefaultInstallDir('');
+end;
+
+function ShouldWriteMachineLocator: Boolean;
+begin
+  Result := not IsUserProfilePath(ExpandConstant('{app}'));
 end;
 
 function GetPreviousEddiInstallDir: string;
@@ -291,6 +345,19 @@ begin
   Result := IsUnderPath(Dir, LegacyAppsDir);
 end;
 
+function IsVoiceAttack2Path(const Dir: string): Boolean;
+var
+  VoiceAttack2AppsDir: string;
+begin
+  Result := TryGetVoiceAttack2AppsDir(VoiceAttack2AppsDir) and
+            IsUnderPath(Dir, VoiceAttack2AppsDir);
+end;
+
+function IsAnyVoiceAttackAppsPath(const Dir: string): Boolean;
+begin
+  Result := IsLegacyVoiceAttackPath(Dir) or IsVoiceAttack2Path(Dir);
+end;
+
 function IsInAppUpgrade: Boolean;
 begin
   Result := ExpandConstant('{param:EDDIInAppUpgrade|0}') = '1';
@@ -351,6 +418,62 @@ begin
     RemoveDirIfOldEddiInstall(GetPreviousEddiInstallDir);
 end;
 
+procedure WriteVoiceAttackShimMarker;
+var
+  ShimDir: string;
+begin
+  ShimDir := GetVoiceAttack2EddiDir('');
+  ForceDirectories(ShimDir);
+  SaveStringToFile(
+    AddBackslash(RemoveBackslashUnlessRoot(ShimDir)) + 'eddi_app_path.txt',
+    ExpandConstant('{app}\{#MyAppExeName}'),
+    False);
+end;
+
+procedure DeleteShimFileIfExists(const FileName: string);
+begin
+  if FileExists(FileName) then
+  begin
+    DeleteFile(FileName);
+  end;
+end;
+
+procedure RemoveVoiceAttackShimFiles;
+var
+  ShimDir: string;
+begin
+  ShimDir := AddBackslash(RemoveBackslashUnlessRoot(GetVoiceAttack2EddiDir('')));
+
+  DeleteShimFileIfExists(ShimDir + 'EddiVoiceAttackAdapter.dll');
+  DeleteShimFileIfExists(ShimDir + 'EddiVoiceAttackAdapter.pdb');
+  DeleteShimFileIfExists(ShimDir + 'EddiVoiceAttackAdapter.deps.json');
+  DeleteShimFileIfExists(ShimDir + 'EddiVoiceAttackAdapter.runtimeconfig.json');
+  DeleteShimFileIfExists(ShimDir + 'EDDI.vap');
+  DeleteShimFileIfExists(ShimDir + 'eddi_app_path.txt');
+  RemoveDir(ShimDir);
+end;
+
+procedure RemoveLocatorIfMatches(RootKey: Integer);
+var
+  ExistingExecutablePath: string;
+  ExpectedExecutablePath: string;
+begin
+  ExpectedExecutablePath := ExpandConstant('{app}\{#MyAppExeName}');
+  if RegQueryStringValue(
+       RootKey,
+       'Software\EDCD\EDDI',
+       'ExecutablePath',
+       ExistingExecutablePath) and
+     SamePath(ExistingExecutablePath, ExpectedExecutablePath) then
+  begin
+    RegDeleteValue(RootKey, 'Software\EDCD\EDDI', 'ExecutablePath');
+    RegDeleteValue(RootKey, 'Software\EDCD\EDDI', 'InstallDirectory');
+    RegDeleteValue(RootKey, 'Software\EDCD\EDDI', 'Version');
+    RegDeleteKeyIfEmpty(RootKey, 'Software\EDCD\EDDI');
+    RegDeleteKeyIfEmpty(RootKey, 'Software\EDCD');
+  end;
+end;
+
 function NextButtonClick(CurPageID: Integer): Boolean;
 var
   ChosenDir: string;
@@ -362,13 +485,13 @@ begin
   begin
     ChosenDir := RemoveBackslashUnlessRoot(WizardDirValue);
 
-    if IsLegacyVoiceAttackPath(ChosenDir) then
+    if IsAnyVoiceAttackAppsPath(ChosenDir) then
     begin
       if WizardSilent then
       begin
-        TargetDir := GetVoiceAttack2EddiDir;
+        TargetDir := GetDefaultApplicationInstallDir;
 
-        Log(Format('Silent legacy in-app upgrade path detected. Replacing selected directory "%s" with "%s".', [ChosenDir, TargetDir]));
+        Log(Format('Silent VoiceAttack Apps path detected. Replacing selected application directory "%s" with "%s".', [ChosenDir, TargetDir]));
 
         WizardForm.DirEdit.Text := TargetDir;
         LegacySilentMigration := True;
@@ -377,8 +500,29 @@ begin
       end;
 
       MsgBox(
-        'Installing EDDI into the legacy VoiceAttack plugin location is no longer supported.' + #13#10#13#10 +
-        'Select the new VoiceAttack 2 Apps folder instead.',
+        'Installing the EDDI application payload into a VoiceAttack Apps folder is no longer supported.' + #13#10#13#10 +
+        'Select a normal EDDI application folder instead. The installer will maintain the VoiceAttack plugin shim separately.',
+        mbError, MB_OK);
+      Result := False;
+      exit;
+    end;
+
+    if (not IsPerUserVoiceAttackShimInstall) and IsUserProfilePath(ChosenDir) then
+    begin
+      if WizardSilent then
+      begin
+        TargetDir := GetDefaultApplicationInstallDir;
+
+        Log(Format('Silent per-user application directory detected for a shared VoiceAttack shim. Replacing selected application directory "%s" with "%s".', [ChosenDir, TargetDir]));
+
+        WizardForm.DirEdit.Text := TargetDir;
+        Result := True;
+        exit;
+      end;
+
+      MsgBox(
+        'The detected VoiceAttack Apps folder is shared or machine-wide, so the EDDI application payload cannot be installed under this user profile.' + #13#10#13#10 +
+        'Select a machine-accessible EDDI application folder instead.',
         mbError, MB_OK);
       Result := False;
     end;
@@ -397,5 +541,20 @@ begin
         mbCriticalError, MB_OK);
       Abort;
     end;
+  end;
+
+  if CurStep = ssPostInstall then
+  begin
+    WriteVoiceAttackShimMarker;
+  end;
+end;
+
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+begin
+  if CurUninstallStep = usUninstall then
+  begin
+    RemoveVoiceAttackShimFiles;
+    RemoveLocatorIfMatches(HKCU);
+    RemoveLocatorIfMatches(HKLM);
   end;
 end;

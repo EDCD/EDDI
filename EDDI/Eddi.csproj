@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <!-- Targeting and Output -->
         <OutputType>WinExe</OutputType>
@@ -23,10 +23,10 @@
     </PropertyGroup>
     <!-- Configuration-Specific Settings -->
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
-        <OutputPath>..\bin\Debug\</OutputPath>
+        <OutputPath>..\bin\Debug\Application\</OutputPath>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
-        <OutputPath>..\bin\Release\</OutputPath>
+        <OutputPath>..\bin\Release\Application\</OutputPath>
     </PropertyGroup>
     <!-- Project References -->
     <ItemGroup>
@@ -59,6 +59,6 @@
     </ItemGroup>
     <!-- Build Events -->
     <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-        <Exec Command="xcopy /y &quot;$(SolutionDir)ChangeLog.md&quot; &quot;$(SolutionDir)bin\$(Configuration)\&quot;" />
+        <Exec Command="xcopy /y &quot;$(SolutionDir)ChangeLog.md&quot; &quot;$(SolutionDir)bin\$(Configuration)\Application\&quot;" />
     </Target>
 </Project>

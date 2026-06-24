@@ -6,10 +6,10 @@
         <EnableDynamicLoading>true</EnableDynamicLoading>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
-        <OutputPath>..\bin\Debug\</OutputPath>
+        <OutputPath>..\bin\Debug\Application\</OutputPath>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
-        <OutputPath>..\bin\Release\</OutputPath>
+        <OutputPath>..\bin\Release\Application\</OutputPath>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj" />

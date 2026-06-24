@@ -1,18 +1,15 @@
 #nullable enable
 
 using EddiVoiceAttackAdapter.Client;
-using JetBrains.Annotations;
+using EddiVoiceAttackAdapter.Annotations;
+using EddiVoiceAttackAdapter.Extensions;
 using Microsoft.CSharp.RuntimeBinder;
 using System;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Runtime.Loader;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using Utilities;
+using EddiVoiceAttackAdapter.Logging;
 
 [assembly: InternalsVisibleTo( "Tests" )]
 namespace EddiVoiceAttackAdapter
@@ -23,10 +20,10 @@ namespace EddiVoiceAttackAdapter
         private static bool? _supportsVariableSaveToProfile;
 
         [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
-        public static string VA_DisplayName() => $"{Constants.EDDI_NAME} {Constants.EDDI_VERSION}";
+        public static string VA_DisplayName() => $"EDDI {AdapterVersionProvider.GetDisplayVersion()}";
 
         [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
-        public static string VA_DisplayInfo() => $"{Constants.EDDI_NAME}\r\nVersion {Constants.EDDI_VERSION}";
+        public static string VA_DisplayInfo() => $"EDDI\r\nVersion {AdapterVersionProvider.GetDisplayVersion()}";
 
         [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
         public static Guid VA_Id() => new("{4AD8E3A4-CEFA-4558-B503-1CC9B99A07C1}");
@@ -72,19 +69,6 @@ namespace EddiVoiceAttackAdapter
         [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
         public static void VA_Init1(dynamic vaProxy)
         {
-            // MUST be first - before ANY EDDI dependencies are referenced
-            var pluginDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            if ( pluginDir != null )
-            {
-                var alc = new PluginLoadContext(pluginDir);
-                alc.EnterContextualReflection();
-            }
-
-            var loaded = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName?.StartsWith("NAudio") ?? false);
-            Console.WriteLine( $"NAudio assemblies in context: {string.Join( ", ", loaded.Select( a => a.FullName ) )}" );
-            Console.ReadLine();
-            Logging.Info( $"NAudio assemblies in context: {string.Join( ", ", loaded.Select( a => a.FullName ) )}" );
-
             _isShuttingDown = false;
             _shutdownCancellationTokenSource?.Dispose();
             _shutdownCancellationTokenSource = new CancellationTokenSource();
@@ -102,7 +86,7 @@ namespace EddiVoiceAttackAdapter
             // (no need for callback; plugin is already running in VoiceAttack)
             var shutdownToken = _shutdownCancellationTokenSource.Token;
             Task.Run(async () => await LaunchEddiAndInitializeIpcAsync(shutdownToken).ConfigureAwait(false))
-                .SafeFireAndForget(ex => Logging.Error("Failed to initialize VoiceAttack plugin", ex));
+                .SafeFireAndForget(ex => AdapterLogger.Error("Failed to initialize VoiceAttack plugin", ex));
         }
 
         /// <summary>
@@ -114,13 +98,13 @@ namespace EddiVoiceAttackAdapter
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                Logging.Info("VoiceAttack plugin: Launching EDDI process");
+                AdapterLogger.Info("VoiceAttack plugin: Launching EDDI process");
 
                 // Launch EDDI as separate process or connect to existing instance
                 var launchSuccess = await EddiProcessLauncher.LaunchEddiIfNeededAsync(true, VaVersion, cancellationToken).ConfigureAwait(false);
                 if (!launchSuccess)
                 {
-                    Logging.Warn("Failed to launch or connect to EDDI standalone process");
+                    AdapterLogger.Warn("Failed to launch or connect to EDDI standalone process");
                     WriteToLog("Warning: EDDI standalone process could not be launched. Plugin may operate with reduced functionality.", "orange");
                     return;
                 }
@@ -129,7 +113,7 @@ namespace EddiVoiceAttackAdapter
                 try
                 {
                     await VoiceAttackPluginHost.Instance.InitializeAsync( cancellationToken ).ConfigureAwait(false);
-                    Logging.Debug("IPC client initialized");
+                    AdapterLogger.Debug("IPC client initialized");
 
                     RegisterRuntimeEventReceiver();
 
@@ -138,12 +122,12 @@ namespace EddiVoiceAttackAdapter
                     var responderModeEnabled = await VoiceAttackPluginHost.Instance.SendSetResponderModeAsync(true, VaVersion, cancellationToken ).ConfigureAwait(false);
                     if (!responderModeEnabled)
                     {
-                        Logging.Warn("VoiceAttack responder mode handshake was not acknowledged");
+                        AdapterLogger.Warn("VoiceAttack responder mode handshake was not acknowledged");
                         WriteToLog("Warning: EDDI IPC connection is available, but responder mode could not be enabled.", "orange");
                         return;
                     }
 
-                    Logging.Info("VoiceAttack responder mode handshake sent");
+                    AdapterLogger.Info("VoiceAttack responder mode handshake sent");
                     WriteToLog( "The EDDI plugin is connected. VoiceAttack variables are syncing.", "green" );
                     
                     // Start background task to monitor for EDDI crashes we launched ourselves
@@ -154,16 +138,16 @@ namespace EddiVoiceAttackAdapter
                 }
                 catch (Exception ex)
                 {
-                    Logging.Warn($"Failed to initialize IPC client: {ex.Message}");
+                    AdapterLogger.Warn($"Failed to initialize IPC client: {ex.Message}");
                 }
             }
             catch ( OperationCanceledException )
             {
-                Logging.Debug( "VoiceAttack plugin initialization was cancelled" );
+                AdapterLogger.Debug( "VoiceAttack plugin initialization was cancelled" );
             }
             catch (Exception e)
             {
-                Logging.Error("Failed to launch EDDI or initialize IPC", e);
+                AdapterLogger.Error("Failed to launch EDDI or initialize IPC", e);
                 WriteToLog("Unable to launch EDDI process. Plugin functions may be limited.", "red");
             }
         }
@@ -190,19 +174,19 @@ namespace EddiVoiceAttackAdapter
                         if (_isShuttingDown)
                         {
                             // User initiated shutdown, don't restart
-                            Logging.Debug("EDDI process exited during intentional shutdown");
+                            AdapterLogger.Debug("EDDI process exited during intentional shutdown");
                             break;
                         }
 
                         // EDDI crashed unexpectedly
-                        Logging.Warn("EDDI process has crashed unexpectedly");
+                        AdapterLogger.Warn("EDDI process has crashed unexpectedly");
                         WriteToLog("EDDI has crashed unexpectedly. Attempting to restart...", "red");
 
                         // Attempt restart if within limit
                         if (restartAttempts < maxRestartAttempts)
                         {
                             restartAttempts++;
-                            Logging.Info($"Attempting EDDI restart (attempt {restartAttempts}/{maxRestartAttempts})");
+                            AdapterLogger.Info($"Attempting EDDI restart (attempt {restartAttempts}/{maxRestartAttempts})");
 
                             try
                             {
@@ -215,35 +199,35 @@ namespace EddiVoiceAttackAdapter
                                     var responderModeEnabled = await VoiceAttackPluginHost.Instance.SendSetResponderModeAsync(true, VaVersion, cancellationToken ).ConfigureAwait(false);
                                     if (!responderModeEnabled)
                                     {
-                                        Logging.Warn("EDDI restart completed but responder mode handshake was not acknowledged");
+                                        AdapterLogger.Warn("EDDI restart completed but responder mode handshake was not acknowledged");
                                         WriteToLog("EDDI restarted, but responder mode could not be re-enabled.", "orange");
                                         continue;
                                     }
 
-                                    Logging.Info("EDDI process restarted successfully");
+                                    AdapterLogger.Info("EDDI process restarted successfully");
                                     WriteToLog("EDDI has been restarted successfully.", "green");
                                     restartAttempts = 0; // Reset counter on successful restart
                                 }
                                 else
                                 {
-                                    Logging.Warn($"Failed to restart EDDI (attempt {restartAttempts})");
+                                    AdapterLogger.Warn($"Failed to restart EDDI (attempt {restartAttempts})");
                                     WriteToLog($"Failed to restart EDDI (attempt {restartAttempts}/{maxRestartAttempts}). Will retry...", "orange");
                                 }
                             }
                             catch ( OperationCanceledException )
                             {
-                                Logging.Debug( "EDDI restart monitoring was cancelled" );
+                                AdapterLogger.Debug( "EDDI restart monitoring was cancelled" );
                                 break;
                             }
                             catch (Exception restartEx)
                             {
-                                Logging.Warn($"Exception during EDDI restart: {restartEx.Message}");
+                                AdapterLogger.Warn($"Exception during EDDI restart: {restartEx.Message}");
                                 WriteToLog($"Error restarting EDDI: {restartEx.Message}", "orange");
                             }
                         }
                         else
                         {
-                            Logging.Error("EDDI restart attempts exceeded maximum");
+                            AdapterLogger.Error("EDDI restart attempts exceeded maximum");
                             WriteToLog("EDDI restart attempts exceeded. Plugin may operate with reduced functionality.", "red");
                             break;
                         }
@@ -255,11 +239,11 @@ namespace EddiVoiceAttackAdapter
                 }
                 catch (Exception ex)
                 {
-                    Logging.Error($"Error in crash monitoring: {ex.Message}", ex);
+                    AdapterLogger.Error($"Error in crash monitoring: {ex.Message}", ex);
                 }
             }
 
-            Logging.Debug("EDDI crash monitoring stopped");
+            AdapterLogger.Debug("EDDI crash monitoring stopped");
         }
 
         [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
@@ -269,7 +253,7 @@ namespace EddiVoiceAttackAdapter
             _isShuttingDown = true;
             _shutdownCancellationTokenSource?.Cancel();
 
-            Logging.Info("EDDI VoiceAttack plugin exiting");
+            AdapterLogger.Info("EDDI VoiceAttack plugin exiting");
 
             // Disable responder mode in EDDI.exe through IPC
             try
@@ -277,12 +261,12 @@ namespace EddiVoiceAttackAdapter
                 var sent = VoiceAttackPluginHost.Instance.SendSetResponderModeAsync(false).GetAwaiter().GetResult();
                 if (!sent)
                 {
-                    Logging.Warn("SetResponderMode(false) command was not acknowledged during plugin shutdown");
+                    AdapterLogger.Warn("SetResponderMode(false) command was not acknowledged during plugin shutdown");
                 }
             }
             catch (Exception ex)
             {
-                Logging.Warn($"Error sending responder mode shutdown command: {ex.Message}");
+                AdapterLogger.Warn($"Error sending responder mode shutdown command: {ex.Message}");
             }
 
             UnregisterRuntimeEventReceiver();
@@ -294,7 +278,7 @@ namespace EddiVoiceAttackAdapter
             }
             catch (Exception ex)
             {
-                Logging.Warn($"Error disconnecting IPC client during shutdown: {ex.Message}");
+                AdapterLogger.Warn($"Error disconnecting IPC client during shutdown: {ex.Message}");
             }
 
             // Give background tasks a moment to gracefully shut down
@@ -309,17 +293,13 @@ namespace EddiVoiceAttackAdapter
             }
             catch (Exception ex)
             {
-                Logging.Warn($"Error disposing plugin host during shutdown: {ex.Message}");
+                AdapterLogger.Warn($"Error disposing plugin host during shutdown: {ex.Message}");
             }
 
             // Shutdown the EDDI process if it was launched by the plugin
             EddiProcessLauncher.ShutdownEddiProcess();
 
-            // Force application shutdown to ensure all threads terminate
-            Application.Current?.Dispatcher.InvokeAsync( () =>
-            {
-                Application.Current.Shutdown();
-            } );
+            // EDDI runs out-of-process in plugin mode; the shim has no WPF application to shut down.
         }
 
         [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
@@ -339,13 +319,13 @@ namespace EddiVoiceAttackAdapter
             {
                 var shutdownToken = _shutdownCancellationTokenSource?.Token ?? CancellationToken.None;
                 Task.Run( async () => await LaunchEddiAndInitializeIpcAsync(shutdownToken).ConfigureAwait(false), shutdownToken )
-                    .SafeFireAndForget( ex => Logging.Error( "Failed to run initialize eddi bootstrap", ex ) );
+                    .SafeFireAndForget( ex => AdapterLogger.Error( "Failed to run initialize eddi bootstrap", ex ) );
                 return;
             }
 
             if ( string.IsNullOrWhiteSpace( commandContext ) )
             {
-                Logging.Warn( "VoiceAttack plugin invocation skipped because command context was null or empty" );
+                AdapterLogger.Warn( "VoiceAttack plugin invocation skipped because command context was null or empty" );
                 return;
             }
 
@@ -392,7 +372,7 @@ namespace EddiVoiceAttackAdapter
 
         private static void LogException(Exception ex)
         {
-            Logging.Error(ex.Message, ex);
+            AdapterLogger.Error(ex.Message, ex);
         }
 
         private static void RegisterRuntimeEventReceiver()
@@ -733,16 +713,5 @@ namespace EddiVoiceAttackAdapter
         }
 
         #endregion
-
-        private sealed class PluginLoadContext ( string pluginPath ) : AssemblyLoadContext( isCollectible: true )
-        {
-            private readonly AssemblyDependencyResolver _resolver = new( pluginPath );
-
-            protected override Assembly? Load ( AssemblyName name )
-            {
-                string? path = _resolver.ResolveAssemblyToPath(name);
-                return path != null ? LoadFromAssemblyPath( path ) : null;
-            }
-        }
     }
 }

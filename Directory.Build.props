@@ -20,6 +20,17 @@
 
     </PropertyGroup>
 
+    <PropertyGroup>
+        <EddiOutputConfiguration Condition="'$(Configuration)' == ''">Debug</EddiOutputConfiguration>
+        <EddiOutputConfiguration Condition="'$(Configuration)' != ''">$(Configuration)</EddiOutputConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(MSBuildProjectName)' != 'EddiVoiceAttackAdapter'
+                              and '$(MSBuildProjectName)' != 'Tests'
+                              and '$(MSBuildProjectName)' != 'BuildInstaller' ">
+        <OutputPath>$(MSBuildThisFileDirectory)bin\$(EddiOutputConfiguration)\Application\</OutputPath>
+    </PropertyGroup>
+
     <!-- Ensure projects which use WPF or Windows Forms import Windows Desktop targets -->
     <PropertyGroup Condition="'$(UseWPF)' == 'true' or '$(UseWindowsForms)' == 'true'">
         <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>

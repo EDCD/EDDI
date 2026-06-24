@@ -1,10 +1,10 @@
 #nullable enable
 
+using EddiVoiceAttackAdapter.Logging;
 using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Utilities;
 
 namespace EddiVoiceAttackAdapter.Client
 {
@@ -74,11 +74,11 @@ namespace EddiVoiceAttackAdapter.Client
             try
             {
                 var configPath = DetermineConfigFilePath();
-                Logging.Debug($"VoiceAttack plugin IPC config path resolved to {configPath}");
+                AdapterLogger.Debug($"VoiceAttack plugin IPC config path resolved to {configPath}");
                 
                 if (!File.Exists(configPath))
                 {
-                    Logging.Debug($"IPC configuration file not found at {configPath}; IPC polling will retry later.");
+                    AdapterLogger.Debug($"IPC configuration file not found at {configPath}; IPC polling will retry later.");
                     return;
                 }
 
@@ -88,15 +88,15 @@ namespace EddiVoiceAttackAdapter.Client
                 _pluginClient = new VoiceAttackPluginClient(configPath);
                 await _pluginClient.InitializeAsync(cancellationToken).ConfigureAwait(false);
                 
-                Logging.Info("VoiceAttack plugin IPC client initialized successfully");
+                AdapterLogger.Info("VoiceAttack plugin IPC client initialized successfully");
             }
             catch (OperationCanceledException)
             {
-                Logging.Debug("VoiceAttack plugin IPC client initialization timed out while polling for server readiness");
+                AdapterLogger.Debug("VoiceAttack plugin IPC client initialization timed out while polling for server readiness");
             }
             catch (Exception ex)
             {
-                Logging.Debug($"VoiceAttack plugin IPC client initialization attempt failed: {ex.Message}");
+                AdapterLogger.Debug($"VoiceAttack plugin IPC client initialization attempt failed: {ex.Message}");
                 _pluginClient?.Dispose();
                 _pluginClient = null;
             }
@@ -120,7 +120,7 @@ namespace EddiVoiceAttackAdapter.Client
             }
             catch (Exception ex)
             {
-                Logging.Warn($"Error disconnecting VoiceAttack plugin IPC client: {ex.Message}");
+                AdapterLogger.Warn($"Error disconnecting VoiceAttack plugin IPC client: {ex.Message}");
             }
         }
 
@@ -139,7 +139,7 @@ namespace EddiVoiceAttackAdapter.Client
             {
                 if (_pluginClient == null || !_pluginClient.IsConnected)
                 {
-                    Logging.Warn("Cannot send responder mode - IPC client not connected");
+                    AdapterLogger.Warn("Cannot send responder mode - IPC client not connected");
                     return false;
                 }
 
@@ -154,12 +154,12 @@ namespace EddiVoiceAttackAdapter.Client
                 }
 
                 await _pluginClient.SendCommandAsync("setrespondermode", parameters, cancellationToken).ConfigureAwait(false);
-                Logging.Info($"Sent SetResponderMode({enable}) handshake to EDDI.exe");
+                AdapterLogger.Info($"Sent SetResponderMode({enable}) handshake to EDDI.exe");
                 return true;
             }
             catch (Exception ex)
             {
-                Logging.Warn($"Failed to send SetResponderMode: {ex.Message}");
+                AdapterLogger.Warn($"Failed to send SetResponderMode: {ex.Message}");
                 return false;
             }
         }
@@ -199,7 +199,7 @@ namespace EddiVoiceAttackAdapter.Client
             // Check EDDI application data directory first
             var appDataPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                Constants.EDDI_NAME,
+                "EDDI",
                 "ipc_config.json"
             );
 
