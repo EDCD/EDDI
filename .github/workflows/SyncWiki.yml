@@ -13,7 +13,7 @@ jobs:
 
     steps:
     - name: Checkout current version
-      uses: actions/checkout@v2
+      uses: actions/checkout@v7
 
     # Retrieve our zipped build from a prior workflow
     - name: Retrieve build artifacts
