@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Library</OutputType>
     </PropertyGroup>
@@ -24,16 +24,28 @@
             )
 
             if "$(Configuration)" == "Release" (
-            build-installer
+            set "buildInstaller="
+            where ISCC.exe &gt;nul 2&gt;nul
+            if not errorlevel 1 set "buildInstaller=1"
+            if not defined buildInstaller if exist "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" set "buildInstaller=1"
+            if defined buildInstaller (
+            call "$(SolutionDir)build-installer.cmd"
+            ) else (
+            @echo Inno Setup not found on PATH or at "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" - skipping installer build.
+
+            )
+
+
+
             )
         </PostBuildEvent>
     </PropertyGroup>
     <PropertyGroup>
         <PreBuildEvent>
-            xcopy /y "$(SolutionDir)Lexicons.md" "$(SolutionDir)bin\$(Configuration)\Wiki\"
-            xcopy /y "$(SolutionDir)Lexicons.md" "$(SolutionDir)bin\$(Configuration)\Wiki\"
-            xcopy /y "$(SolutionDir)Azure Speech Services.md" "$(SolutionDir)bin\$(Configuration)\Wiki\"
-            xcopy /y "$(SolutionDir)images\*.*" "$(SolutionDir)bin\$(Configuration)\Wiki\images\"
+            xcopy /y "$(SolutionDir)Lexicons.md" "$(SolutionDir)bin\$(Configuration)\Application\Wiki\"
+            xcopy /y "$(SolutionDir)Lexicons.md" "$(SolutionDir)bin\$(Configuration)\Application\Wiki\"
+            xcopy /y "$(SolutionDir)Azure Speech Services.md" "$(SolutionDir)bin\$(Configuration)\Application\Wiki\"
+            xcopy /y "$(SolutionDir)images\*.*" "$(SolutionDir)bin\$(Configuration)\Application\Wiki\images\"
         </PreBuildEvent>
     </PropertyGroup>
     <ItemGroup>

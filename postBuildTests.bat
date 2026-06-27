@@ -7,36 +7,35 @@ SETLOCAL ENABLEEXTENSIONS
 IF ERRORLEVEL 1 ECHO %this%: Unable to enable extensions
 
 :: Rename the passed parameters for clarity
-SET "buildConfiguration=%1"
+SET "buildConfiguration=%~1"
 SET "solutionDir=%~2"
 SET "outDir=%~3"
 
 :: Our build configuration
 ECHO %this%: Build configuration is %buildConfiguration%
 
-:: Find our install directory
-SET "vswhere=%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"
-SET "vswhereArgs=-latest -products * -property installationPath"
-FOR /f "usebackq tokens=*" %%i IN (
-   `CALL "%vswhere%" %vswhereArgs%`
- ) DO (
-  SET devEnvDir=%%i
+IF /I "%buildConfiguration%"=="Release" (
+  :: Release builds must run broad validation before packaging.
+  CALL :RunTests "TestCategory!=SpeechTests" "%buildConfiguration%-postBuildTests.trx"
+  EXIT /B %ERRORLEVEL%
 )
 
-:: Ref. vstest.console.exe documentation at https://docs.microsoft.com/en-us/visualstudio/test/vstest-console-options?view=vs-2019
-:: We need to apply batch file rules for escaping certain characters in our command (using "^"), ref. https://www.robvanderwoude.com/escapechars.php
-IF %buildConfiguration%=="Release" (
-  :: Run all tests except Speech tests 
-  SET "testCaseFilter=^/TestCaseFilter:""TestCategory!=SpeechTests"""
-) ELSE (
-  :: Run just our Credentials and Doc Generation tests
-  SET "testCaseFilter=^/TestCaseFilter:""TestCategory=Credentials""^|""TestCategory=DocGen"""
-)
+:: Debug builds run fast Credentials and Doc Generation smoke tests only.
+CALL :RunTests "TestCategory=Credentials" "%buildConfiguration%-credentials-postBuildTests.trx"
+IF ERRORLEVEL 1 EXIT /B %ERRORLEVEL%
 
-:: Invoke our test adapter in our install directory
-SET "testAdapter=%devEnvDir%\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"
-SET "command="%testAdapter%" "%solutionDir%Tests\%outDir%Tests.dll" %testCaseFilter%"
-:: %command%
-EXIT /B 0
+CALL :RunTests "TestCategory=DocGen" "%buildConfiguration%-docgen-postBuildTests.trx"
+EXIT /B %ERRORLEVEL%
+
+:RunTests
+SET "testCaseFilter=%~1"
+SET "trxLogFileName=%~2"
+
+ECHO %this%: Running dotnet tests for "%solutionDir%Tests\Tests.csproj"
+ECHO %this%: Test filter is "%testCaseFilter%"
+SET "testResultsDir=%solutionDir%TestResults\%buildConfiguration%"
+ECHO %this%: Test results and blame artifacts will be written to "%testResultsDir%"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "& dotnet test '%solutionDir%Tests\Tests.csproj' -c '%buildConfiguration%' --no-build --no-restore --filter '%testCaseFilter%' '-p:SolutionDir=%solutionDir%' -p:Platform=x64 --results-directory '%testResultsDir%' --logger 'console;verbosity=detailed' --logger 'trx;LogFileName=%trxLogFileName%' --blame-hang --blame-hang-timeout 5m --blame-hang-dump-type mini"
+EXIT /B %ERRORLEVEL%
 
 ECHO ****************************

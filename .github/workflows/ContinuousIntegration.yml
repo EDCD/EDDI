@@ -81,7 +81,7 @@ jobs:
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }} #hash of project files with embedded PackageReference data
     - name: Build our solution
       id: build
-      run: msbuild ${{ env.solution }} /p:Configuration=${{ env.build-config }} /p:UseSharedCompilation=false /verbosity:minimal
+      run: msbuild ${{ env.solution }} /p:Configuration=${{ env.build-config }} /p:Platform=x64 /p:UseSharedCompilation=false /verbosity:minimal
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4.5.0
       with:
@@ -90,10 +90,5 @@ jobs:
         if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
 
     # Perform unit testing
-    - name: Add VSTest.console.exe to PATH
-      uses: darenm/Setup-VSTest@d9a5dffa3f11d9c27ec42eb69515d3aaeaad9ef8
     - name: Test our solution
-      uses: ./.github/actions/Test
-      with:
-        target-path: vstest.console.exe
-        target-args: Tests\bin\Release\Tests.dll /tests:UnitTests /Parallel /InIsolation /Blame
+      run: dotnet test Tests\Tests.csproj -c ${{ env.build-config }} --no-build --no-restore --filter "TestCategory=UnitTests" -p:SolutionDir="${{ github.workspace }}\" -p:Platform=x64 --results-directory "${{ github.workspace }}\TestResults\${{ env.build-config }}" --logger:"console;verbosity=detailed" --logger:"trx;LogFileName=${{ env.build-config }}-ci-tests.trx" --blame-hang --blame-hang-timeout 5m --blame-hang-dump-type mini

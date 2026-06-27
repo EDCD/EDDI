@@ -1,9 +1,9 @@
 #nullable enable
 
+using EddiVoiceAttackAdapter.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Utilities;
 
 namespace EddiVoiceAttackAdapter.Client
 {
@@ -45,12 +45,12 @@ namespace EddiVoiceAttackAdapter.Client
 
             try
             {
-                Logging.Debug($"Routing command '{normalizedContext}' through IPC to EDDI.exe");
+                AdapterLogger.Debug($"Routing command '{normalizedContext}' through IPC to EDDI.exe");
 
                 var client = VoiceAttackPluginHost.Instance.Client;
                 if (client == null || !client.IsConnected)
                 {
-                    Logging.Warn($"Command '{commandContext}' cannot execute: IPC not available (EDDI.exe not running)");
+                    AdapterLogger.Warn($"Command '{commandContext}' cannot execute: IPC not available (EDDI.exe not running)");
                     return null;
                 }
 
@@ -64,7 +64,7 @@ namespace EddiVoiceAttackAdapter.Client
             }
             catch (Exception ex)
             {
-                Logging.Error($"Failed to route command '{commandContext}' through IPC", ex);
+                AdapterLogger.Error($"Failed to route command '{commandContext}' through IPC", ex);
                 return null;
             }
         }
@@ -89,23 +89,23 @@ namespace EddiVoiceAttackAdapter.Client
                     return null;
                 }
 
-                Logging.Debug($"Dispatching command '{normalizedContext}' through IPC");
+                AdapterLogger.Debug($"Dispatching command '{normalizedContext}' through IPC");
 
                 // Send command through IPC client  
                 var response = await client.SendCommandAsync(normalizedContext, parameters, cancellationToken).ConfigureAwait(false);
 
-                Logging.Debug($"IPC command '{normalizedContext}' returned: {response != null}");
+                AdapterLogger.Debug($"IPC command '{normalizedContext}' returned: {response != null}");
 
                 return response;
             }
             catch (OperationCanceledException)
             {
-                Logging.Debug($"IPC command '{normalizedContext}' was cancelled");
+                AdapterLogger.Debug($"IPC command '{normalizedContext}' was cancelled");
                 throw;
             }
             catch (Exception ex)
             {
-                Logging.Error($"IPC dispatch failed for command '{normalizedContext}'", ex);
+                AdapterLogger.Error($"IPC dispatch failed for command '{normalizedContext}'", ex);
                 throw;
             }
         }

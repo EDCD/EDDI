@@ -21,7 +21,7 @@ namespace Tests.EddiVoiceAttackService
     /// End-to-end integration tests validating complete plugin-to-EDDI communication flow.
     /// Tests the entire stack: VoiceAttackPluginClient → IPCClient → IPCServer → Message Handlers.
     /// </summary>
-    [TestClass, TestCategory( "UnitTests" )]
+    [TestClass, TestCategory( "UnitTests" ), DoNotParallelize]
     public class EndToEndIntegrationTests
     {
         // ReSharper disable once MemberCanBePrivate.Global
@@ -236,7 +236,7 @@ namespace Tests.EddiVoiceAttackService
                 _server.ConnectionCount,
                 "Expected at least one connected IPC client before runtime broadcast." );
             
-            var eventReceived = new TaskCompletionSource<MessageEnvelope>( TaskCreationOptions.RunContinuationsAsynchronously );
+            var eventReceived = new TaskCompletionSource<AdapterMessageEnvelope>( TaskCreationOptions.RunContinuationsAsynchronously );
             pluginClient.MessageReceived += ( _, args ) =>
             {
                 if ( args.MessageType == MessageTypes.Event )
@@ -631,6 +631,11 @@ namespace Tests.EddiVoiceAttackService
                     status = typed.Status;
                     message = typed.Message;
                     return true;
+                case JsonElement jsonElement:
+                    var responseData = jsonElement.Deserialize<CommandResponseData>();
+                    status = responseData?.Status ?? string.Empty;
+                    message = responseData?.Message ?? string.Empty;
+                    return !string.IsNullOrWhiteSpace( status );
                 case JObject json:
                     status = json[ nameof( CommandResponseData.Status ) ]?.ToString() ?? string.Empty;
                     message = json[ nameof( CommandResponseData.Message ) ]?.ToString() ?? string.Empty;
@@ -653,6 +658,7 @@ namespace Tests.EddiVoiceAttackService
             eventData = data switch
             {
                 EventData typed => typed,
+                JsonElement jsonElement => JObject.Parse( jsonElement.GetRawText() ).ToObject<EventData>(),
                 JObject json => json.ToObject<EventData>(),
                 IDictionary<string, object> dictionary => JObject.FromObject( dictionary ).ToObject<EventData>(),
                 _ => null

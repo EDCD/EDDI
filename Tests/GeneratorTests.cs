@@ -1,6 +1,6 @@
 ﻿using EddiEvents;
+using EddiIPC_Service;
 using EddiSpeechResponder.ScriptResolverService;
-using EddiVoiceAttackAdapter;
 using EddiVoiceAttackResponder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;

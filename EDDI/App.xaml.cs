@@ -38,6 +38,7 @@ namespace Eddi
             VoiceAttackVersion = ParseVoiceAttackVersion( args );
 
             Logging.IncrementLogs(); // Increment to a new log file.
+            RefreshInstallLocator();
             var configuration = ConfigService.Instance.eddiConfiguration;
 
             // Must happen before any EDDI.Instance access, responder discovery,
@@ -71,6 +72,19 @@ namespace Eddi
             {
                 CrashLogger( e );
             }
+        }
+
+        internal static bool RefreshInstallLocator (
+            IEddiInstallLocatorWriterStore store = null,
+            string executablePath = null )
+        {
+            executablePath ??= Environment.ProcessPath ??
+                               Process.GetCurrentProcess().MainModule?.FileName;
+
+            return EddiInstallLocatorWriter.TryWriteCurrentUserInstallLocation(
+                executablePath,
+                Constants.EDDI_VERSION.ToString(),
+                store );
         }
 
         /// <summary>

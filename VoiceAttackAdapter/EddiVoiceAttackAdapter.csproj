@@ -1,20 +1,75 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <UseWPF>true</UseWPF>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
-    <OutputPath>..\bin\Debug\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
-    <OutputPath>..\bin\Release\</OutputPath>
+    <OutputPath>..\bin\$(EddiOutputConfiguration)\VoiceAttackPluginShim\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\IPC_Service\EddiIPC_Service.csproj" />
-    <ProjectReference Include="..\Utilities\Utilities.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" />
     <PackageReference Include="Microsoft.CSharp" />
   </ItemGroup>
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.Versioning.SupportedOSPlatformAttribute">
+      <_Parameter1>windows</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <Target Name="CleanVoiceAttackPluginShimOutput" BeforeTargets="CopyFilesToOutputDirectory">
+    <PropertyGroup>
+      <ShimOutputDir>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\bin\$(EddiOutputConfiguration)\VoiceAttackPluginShim\'))</ShimOutputDir>
+    </PropertyGroup>
+    <RemoveDir Directories="$(ShimOutputDir)" Condition="Exists('$(ShimOutputDir)')" />
+    <MakeDir Directories="$(ShimOutputDir)" />
+  </Target>
+
+  <Target Name="PrepareVoiceAttackPluginShim" AfterTargets="CopyFilesToOutputDirectory">
+    <PropertyGroup>
+      <EddiApplicationExe>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\bin\$(EddiOutputConfiguration)\Application\Eddi.exe'))</EddiApplicationExe>
+    </PropertyGroup>
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\VoiceAttackResponder\EDDI.vap" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <WriteLinesToFile File="$(TargetDir)eddi_app_path.txt" Lines="$(EddiApplicationExe)" Overwrite="true" />
+  </Target>
+
+  <Target Name="VerifyVoiceAttackPluginShim" AfterTargets="PrepareVoiceAttackPluginShim">
+    <!-- Physical payload guard: VoiceAttack recursively scans files in the plugin tree. -->
+    <ItemGroup>
+      <ForbiddenVoiceAttackShimFile Include="$(TargetDir)Utilities*" />
+      <ForbiddenVoiceAttackShimFile Include="$(TargetDir)EddiIPC_Service*" />
+      <ForbiddenVoiceAttackShimFile Include="$(TargetDir)BuildSecrets*" />
+      <ForbiddenVoiceAttackShimFile Include="$(TargetDir)Rollbar*" />
+      <ForbiddenVoiceAttackShimFile Include="$(TargetDir)MathNet*" />
+      <ForbiddenVoiceAttackShimFile Include="$(TargetDir)Newtonsoft.Json*" />
+      <ForbiddenVoiceAttackShimFile Include="$(TargetDir)NAudio*" />
+      <ForbiddenVoiceAttackShimFile Include="$(TargetDir)EddiVoiceAttackResponder*" />
+      <ForbiddenVoiceAttackShimFile Include="$(TargetDir)EddiSpeech*" />
+      <ForbiddenVoiceAttackShimFile Include="$(TargetDir)Microsoft.CognitiveServices.Speech*" />
+      <ForbiddenVoiceAttackShimFile Include="$(TargetDir)*.exe" />
+      <ForbiddenVoiceAttackShimFile Include="$(TargetDir)runtimes\**\*" Condition="Exists('$(TargetDir)runtimes')" />
+    </ItemGroup>
+
+    <Error Condition="'@(ForbiddenVoiceAttackShimFile)' != ''" Text="VoiceAttack shim output contains forbidden app/runtime files: @(ForbiddenVoiceAttackShimFile->'%(Filename)%(Extension)', ', ')" />
+
+    <!-- Dependency metadata guard: deps.json can still advertise assemblies that were not copied. -->
+    <ReadLinesFromFile File="$(TargetDir)$(AssemblyName).deps.json" Condition="Exists('$(TargetDir)$(AssemblyName).deps.json')">
+      <Output TaskParameter="Lines" ItemName="VoiceAttackShimDepsLine" />
+    </ReadLinesFromFile>
+
+    <ItemGroup>
+      <ForbiddenVoiceAttackShimDependency Include="Utilities" Condition="$([System.String]::Copy('%(VoiceAttackShimDepsLine.Identity)').Contains('Utilities'))" />
+      <ForbiddenVoiceAttackShimDependency Include="EddiIPC_Service" Condition="$([System.String]::Copy('%(VoiceAttackShimDepsLine.Identity)').Contains('EddiIPC_Service'))" />
+      <ForbiddenVoiceAttackShimDependency Include="BuildSecrets" Condition="$([System.String]::Copy('%(VoiceAttackShimDepsLine.Identity)').Contains('BuildSecrets'))" />
+      <ForbiddenVoiceAttackShimDependency Include="Rollbar" Condition="$([System.String]::Copy('%(VoiceAttackShimDepsLine.Identity)').Contains('Rollbar'))" />
+      <ForbiddenVoiceAttackShimDependency Include="MathNet" Condition="$([System.String]::Copy('%(VoiceAttackShimDepsLine.Identity)').Contains('MathNet'))" />
+      <ForbiddenVoiceAttackShimDependency Include="Newtonsoft.Json" Condition="$([System.String]::Copy('%(VoiceAttackShimDepsLine.Identity)').Contains('Newtonsoft.Json'))" />
+      <ForbiddenVoiceAttackShimDependency Include="NAudio" Condition="$([System.String]::Copy('%(VoiceAttackShimDepsLine.Identity)').Contains('NAudio'))" />
+      <ForbiddenVoiceAttackShimDependency Include="EddiVoiceAttackResponder" Condition="$([System.String]::Copy('%(VoiceAttackShimDepsLine.Identity)').Contains('EddiVoiceAttackResponder'))" />
+      <ForbiddenVoiceAttackShimDependency Include="EddiSpeech" Condition="$([System.String]::Copy('%(VoiceAttackShimDepsLine.Identity)').Contains('EddiSpeech'))" />
+      <ForbiddenVoiceAttackShimDependency Include="Microsoft.CognitiveServices.Speech" Condition="$([System.String]::Copy('%(VoiceAttackShimDepsLine.Identity)').Contains('Microsoft.CognitiveServices.Speech'))" />
+      <ForbiddenVoiceAttackShimDependency Include="JetBrains.Annotations" Condition="$([System.String]::Copy('%(VoiceAttackShimDepsLine.Identity)').Contains('JetBrains.Annotations'))" />
+      <ForbiddenVoiceAttackShimDependency Include="runtimepack.Microsoft.Windows.SDK.NET.Ref" Condition="$([System.String]::Copy('%(VoiceAttackShimDepsLine.Identity)').Contains('runtimepack.Microsoft.Windows.SDK.NET.Ref'))" />
+      <ForbiddenVoiceAttackShimDependency Include="Microsoft.Windows.SDK.NET.dll" Condition="$([System.String]::Copy('%(VoiceAttackShimDepsLine.Identity)').Contains('Microsoft.Windows.SDK.NET.dll'))" />
+      <ForbiddenVoiceAttackShimDependency Include="WinRT.Runtime.dll" Condition="$([System.String]::Copy('%(VoiceAttackShimDepsLine.Identity)').Contains('WinRT.Runtime.dll'))" />
+    </ItemGroup>
+
+    <Error Condition="'@(ForbiddenVoiceAttackShimDependency)' != ''" Text="VoiceAttack shim deps.json contains forbidden dependencies: @(ForbiddenVoiceAttackShimDependency-&gt;Distinct(), ', ')" />
+  </Target>
 </Project>

@@ -1,12 +1,12 @@
 #nullable enable
 
-using EddiIPC_Service.Client;
-using EddiIPC_Service.Messages;
-using Newtonsoft.Json.Linq;
+using EddiVoiceAttackAdapter.Client;
+using EddiVoiceAttackAdapter.Extensions;
+using EddiVoiceAttackAdapter.Logging;
 using System;
 using System.Globalization;
+using System.Text.Json;
 using System.Threading.Tasks;
-using Utilities;
 
 namespace EddiVoiceAttackAdapter
 {
@@ -19,29 +19,30 @@ namespace EddiVoiceAttackAdapter
         public static void HandleMessageReceived( object? sender, MessageReceivedEventArgs e )
         {
             HandleMessageReceivedAsync( e )
-                .SafeFireAndForget( ex => Logging.Error( "Failed to process VoiceAttack runtime payload event", ex ) );
+                .SafeFireAndForget( ex => AdapterLogger.Error( "Failed to process VoiceAttack runtime payload event", ex ) );
         }
 
         private static async Task HandleMessageReceivedAsync( MessageReceivedEventArgs e )
         {
-            if ( e.MessageType != MessageTypes.Event )
+            if ( e.MessageType != AdapterMessageTypes.Event )
             {
                 return;
             }
 
-            if ( e.MessageEnvelope.Data is not JObject eventData )
+            if ( !TryGetObjectElement( e.MessageEnvelope.Data, out var eventData ) )
             {
                 return;
             }
 
-            var eventType = GetString( eventData, RuntimePayloadKeys.EventEnvelope.EventType );
-            var eventName = GetString( eventData, RuntimePayloadKeys.EventEnvelope.EventName );
+            var eventType = GetString( eventData, AdapterRuntimePayloadKeys.EventEnvelope.EventType );
+            var eventName = GetString( eventData, AdapterRuntimePayloadKeys.EventEnvelope.EventName );
             if ( !string.Equals( eventType, RuntimeEventType, StringComparison.OrdinalIgnoreCase ) )
             {
                 return;
             }
 
-            if ( GetToken( eventData, RuntimePayloadKeys.EventEnvelope.EventPayload ) is not JObject payload )
+            if ( !TryGetProperty( eventData, AdapterRuntimePayloadKeys.EventEnvelope.EventPayload, out var payload ) ||
+                 payload.ValueKind != JsonValueKind.Object )
             {
                 return;
             }
@@ -54,7 +55,8 @@ namespace EddiVoiceAttackAdapter
 
             if ( string.Equals( eventName, CommandActionEventName, StringComparison.OrdinalIgnoreCase ) )
             {
-                if ( GetToken( payload, RuntimePayloadKeys.CommandActionPayload.Actions ) is JArray actions )
+                if ( TryGetProperty( payload, AdapterRuntimePayloadKeys.CommandActionPayload.Actions, out var actions ) &&
+                     actions.ValueKind == JsonValueKind.Array )
                 {
                     HandleCommandActions( actions );
                     return;
@@ -64,37 +66,64 @@ namespace EddiVoiceAttackAdapter
             }
         }
 
-        private static string? GetString( JObject source, string propertyName )
+        private static bool TryGetObjectElement ( object data, out JsonElement element )
         {
-            return GetToken( source, propertyName )?.Value<string>();
+            if ( data is JsonElement { ValueKind: JsonValueKind.Object } jsonElement )
+            {
+                element = jsonElement;
+                return true;
+            }
+
+            element = default;
+            return false;
         }
 
-        private static JToken? GetToken( JObject source, string propertyName )
+        private static string? GetString( JsonElement source, string propertyName )
         {
-            return source.TryGetValue( propertyName, out var token )
-                ? token
+            return TryGetProperty( source, propertyName, out var value )
+                ? ParseText( value )
                 : null;
         }
 
-        private static void HandleCommandActions( JArray actions )
+        private static bool TryGetProperty ( JsonElement source, string propertyName, out JsonElement value )
         {
-            foreach ( var token in actions )
+            if ( source.ValueKind != JsonValueKind.Object )
             {
-                if ( token is not JObject payload )
-                {
-                    continue;
-                }
+                value = default;
+                return false;
+            }
 
-                HandleCommandAction( payload );
+            foreach ( var property in source.EnumerateObject() )
+            {
+                if ( string.Equals( property.Name, propertyName, StringComparison.OrdinalIgnoreCase ) )
+                {
+                    value = property.Value;
+                    return true;
+                }
+            }
+
+            value = default;
+            return false;
+        }
+
+        private static void HandleCommandActions( JsonElement actions )
+        {
+            foreach ( var payload in actions.EnumerateArray() )
+            {
+                if ( payload.ValueKind == JsonValueKind.Object )
+                {
+                    HandleCommandAction( payload );
+                }
             }
         }
 
-        private static async Task HandleDispatchEventAsync( JObject payload )
+        private static async Task HandleDispatchEventAsync( JsonElement payload )
         {
-            var commandName = GetString( payload, RuntimePayloadKeys.DispatchPayload.CommandName );
-            var eddiEventType = GetString( payload, RuntimePayloadKeys.DispatchPayload.EventType );
+            var commandName = GetString( payload, AdapterRuntimePayloadKeys.DispatchPayload.CommandName );
+            var eddiEventType = GetString( payload, AdapterRuntimePayloadKeys.DispatchPayload.EventType );
 
-            if ( GetToken( payload, RuntimePayloadKeys.DispatchPayload.ClearVariables ) is JArray clearVariables )
+            if ( TryGetProperty( payload, AdapterRuntimePayloadKeys.DispatchPayload.ClearVariables, out var clearVariables ) &&
+                 clearVariables.ValueKind == JsonValueKind.Array )
             {
                 ApplyVariables( clearVariables );
             }
@@ -104,7 +133,8 @@ namespace EddiVoiceAttackAdapter
                 VoiceAttackPlugin.SetText( "EDDI event", eddiEventType );
             }
 
-            if ( GetToken( payload, RuntimePayloadKeys.DispatchPayload.SetVariables ) is JArray setVariables )
+            if ( TryGetProperty( payload, AdapterRuntimePayloadKeys.DispatchPayload.SetVariables, out var setVariables ) &&
+                 setVariables.ValueKind == JsonValueKind.Array )
             {
                 ApplyVariables( setVariables );
             }
@@ -121,13 +151,13 @@ namespace EddiVoiceAttackAdapter
             }
             else
             {
-                Logging.Debug( $"Command '{commandName}' not found." );
+                AdapterLogger.Debug( $"Command '{commandName}' not found." );
             }
         }
 
-        private static void HandleCommandAction( JObject payload )
+        private static void HandleCommandAction( JsonElement payload )
         {
-            var action = GetString( payload, RuntimePayloadKeys.CommandActionPayload.Action );
+            var action = GetString( payload, AdapterRuntimePayloadKeys.CommandActionPayload.Action );
             if ( string.IsNullOrWhiteSpace( action ) )
             {
                 return;
@@ -137,55 +167,55 @@ namespace EddiVoiceAttackAdapter
             {
                 case "write_log":
                     VoiceAttackPlugin.WriteToLog(
-                        GetString( payload, RuntimePayloadKeys.CommandActionPayload.Message ) ?? string.Empty,
-                        GetString( payload, RuntimePayloadKeys.CommandActionPayload.Color ) ?? "white" );
+                        GetString( payload, AdapterRuntimePayloadKeys.CommandActionPayload.Message ) ?? string.Empty,
+                        GetString( payload, AdapterRuntimePayloadKeys.CommandActionPayload.Color ) ?? "white" );
                     break;
                 case "set_text":
-                    var textValue = GetToken( payload, RuntimePayloadKeys.CommandActionPayload.Value );
+                    TryGetProperty( payload, AdapterRuntimePayloadKeys.CommandActionPayload.Value, out var textValue );
                     VoiceAttackPlugin.SetText(
-                        GetString( payload, RuntimePayloadKeys.CommandActionPayload.Key ) ?? string.Empty,
-                        textValue?.Type == JTokenType.Null ? null : textValue?.ToString() );
+                        GetString( payload, AdapterRuntimePayloadKeys.CommandActionPayload.Key ) ?? string.Empty,
+                        textValue.ValueKind == JsonValueKind.Undefined ? null : ParseText( textValue ) );
                     break;
                 case "set_int":
                     VoiceAttackPlugin.SetInt(
-                        GetString( payload, RuntimePayloadKeys.CommandActionPayload.Key ) ?? string.Empty,
-                        ParseInt( GetToken( payload, RuntimePayloadKeys.CommandActionPayload.Value ) ) );
+                        GetString( payload, AdapterRuntimePayloadKeys.CommandActionPayload.Key ) ?? string.Empty,
+                        ParseInt( GetValueOrDefault( payload, AdapterRuntimePayloadKeys.CommandActionPayload.Value ) ) );
                     break;
                 case "set_decimal":
                     VoiceAttackPlugin.SetDecimal(
-                        GetString( payload, RuntimePayloadKeys.CommandActionPayload.Key ) ?? string.Empty,
-                        ParseDecimal( GetToken( payload, RuntimePayloadKeys.CommandActionPayload.Value ) ) );
+                        GetString( payload, AdapterRuntimePayloadKeys.CommandActionPayload.Key ) ?? string.Empty,
+                        ParseDecimal( GetValueOrDefault( payload, AdapterRuntimePayloadKeys.CommandActionPayload.Value ) ) );
                     break;
                 case "set_boolean":
                     VoiceAttackPlugin.SetBoolean(
-                        GetString( payload, RuntimePayloadKeys.CommandActionPayload.Key ) ?? string.Empty,
-                        ParseBoolean( GetToken( payload, RuntimePayloadKeys.CommandActionPayload.Value ) ) );
+                        GetString( payload, AdapterRuntimePayloadKeys.CommandActionPayload.Key ) ?? string.Empty,
+                        ParseBoolean( GetValueOrDefault( payload, AdapterRuntimePayloadKeys.CommandActionPayload.Value ) ) );
                     break;
                 case "set_date":
                     VoiceAttackPlugin.SetDate(
-                        GetString( payload, RuntimePayloadKeys.CommandActionPayload.Key ) ?? string.Empty,
-                        ParseDateTime( GetToken( payload, RuntimePayloadKeys.CommandActionPayload.Value ) ) );
+                        GetString( payload, AdapterRuntimePayloadKeys.CommandActionPayload.Key ) ?? string.Empty,
+                        ParseDateTime( GetValueOrDefault( payload, AdapterRuntimePayloadKeys.CommandActionPayload.Value ) ) );
                     break;
             }
         }
 
-        private static void ApplyVariables( JArray variables )
+        private static void ApplyVariables( JsonElement variables )
         {
-            foreach ( var token in variables )
+            foreach ( var variable in variables.EnumerateArray() )
             {
-                if ( token is not JObject variable )
+                if ( variable.ValueKind != JsonValueKind.Object )
                 {
                     continue;
                 }
 
-                var key = GetString( variable, RuntimePayloadKeys.VariablePayload.Key );
+                var key = GetString( variable, AdapterRuntimePayloadKeys.VariablePayload.Key );
                 if ( string.IsNullOrWhiteSpace( key ) )
                 {
                     continue;
                 }
 
-                var type = GetString( variable, RuntimePayloadKeys.VariablePayload.Type ) ?? "text";
-                var valueToken = GetToken( variable, RuntimePayloadKeys.VariablePayload.Value );
+                var type = GetString( variable, AdapterRuntimePayloadKeys.VariablePayload.Type ) ?? "text";
+                var valueToken = GetValueOrDefault( variable, AdapterRuntimePayloadKeys.VariablePayload.Value );
 
                 switch ( type )
                 {
@@ -208,16 +238,23 @@ namespace EddiVoiceAttackAdapter
             }
         }
 
-        private static bool? ParseBoolean( JToken? valueToken )
+        private static JsonElement GetValueOrDefault ( JsonElement source, string propertyName )
         {
-            if ( valueToken == null || valueToken.Type == JTokenType.Null )
+            return TryGetProperty( source, propertyName, out var value )
+                ? value
+                : default;
+        }
+
+        private static bool? ParseBoolean( JsonElement valueToken )
+        {
+            if ( valueToken.ValueKind is JsonValueKind.Undefined or JsonValueKind.Null )
             {
                 return null;
             }
 
-            if ( valueToken.Type == JTokenType.Boolean )
+            if ( valueToken.ValueKind is JsonValueKind.True or JsonValueKind.False )
             {
-                return valueToken.Value<bool>();
+                return valueToken.GetBoolean();
             }
 
             if ( bool.TryParse( valueToken.ToString(), out var parsed ) )
@@ -228,16 +265,16 @@ namespace EddiVoiceAttackAdapter
             return null;
         }
 
-        private static DateTime? ParseDateTime( JToken? valueToken )
+        private static DateTime? ParseDateTime( JsonElement valueToken )
         {
-            if ( valueToken == null || valueToken.Type == JTokenType.Null )
+            if ( valueToken.ValueKind is JsonValueKind.Undefined or JsonValueKind.Null )
             {
                 return null;
             }
 
-            if ( valueToken.Type == JTokenType.Date )
+            if ( valueToken.ValueKind == JsonValueKind.String && valueToken.TryGetDateTime( out var typed ) )
             {
-                return valueToken.Value<DateTime>();
+                return typed;
             }
 
             if ( DateTime.TryParse( valueToken.ToString(), CultureInfo.InvariantCulture,
@@ -249,11 +286,16 @@ namespace EddiVoiceAttackAdapter
             return null;
         }
 
-        private static decimal? ParseDecimal( JToken? valueToken )
+        private static decimal? ParseDecimal( JsonElement valueToken )
         {
-            if ( valueToken == null || valueToken.Type == JTokenType.Null )
+            if ( valueToken.ValueKind is JsonValueKind.Undefined or JsonValueKind.Null )
             {
                 return null;
+            }
+
+            if ( valueToken.ValueKind == JsonValueKind.Number && valueToken.TryGetDecimal( out var typed ) )
+            {
+                return typed;
             }
 
             if ( decimal.TryParse( valueToken.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture,
@@ -265,11 +307,16 @@ namespace EddiVoiceAttackAdapter
             return null;
         }
 
-        private static int? ParseInt( JToken? valueToken )
+        private static int? ParseInt( JsonElement valueToken )
         {
-            if ( valueToken == null || valueToken.Type == JTokenType.Null )
+            if ( valueToken.ValueKind is JsonValueKind.Undefined or JsonValueKind.Null )
             {
                 return null;
+            }
+
+            if ( valueToken.ValueKind == JsonValueKind.Number && valueToken.TryGetInt32( out var typed ) )
+            {
+                return typed;
             }
 
             if ( int.TryParse( valueToken.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture,
@@ -281,14 +328,16 @@ namespace EddiVoiceAttackAdapter
             return null;
         }
 
-        private static string? ParseText( JToken? valueToken )
+        private static string? ParseText( JsonElement valueToken )
         {
-            if ( valueToken == null || valueToken.Type == JTokenType.Null )
+            if ( valueToken.ValueKind is JsonValueKind.Undefined or JsonValueKind.Null )
             {
                 return null;
             }
 
-            return valueToken.ToString();
+            return valueToken.ValueKind == JsonValueKind.String
+                ? valueToken.GetString()
+                : valueToken.ToString();
         }
     }
 }

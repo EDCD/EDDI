@@ -9,6 +9,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Add support for Azure Speech Services. (thanks to @Tiberius-Sicae)
     * Add theme support with Light, Dark, and Classic themes, in addition to a "System" theme that matches your Windows OS preference. (thanks to @Tiberius-Sicae)
     * Fix the Type-11 Prospector's specialty limpet controller specialty slot definition. (#2818) (thanks to @Tiberius-Sicae) 
+    * The installer now splits the EDDI installation into a separate folder from the VoiceAttack installation. This removes potential conflicts with other VoiceAttack plugins.
   * Crime Monitor 
     * Reviewed and revised crime monitor logic to better handle edge cases and to more accurately track crimes and bounties.
   * Text-To-Speech

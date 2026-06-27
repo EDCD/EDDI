@@ -1,5 +1,6 @@
 #nullable enable
 
+using EddiVoiceAttackAdapter.Logging;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -7,7 +8,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using Utilities;
 
 namespace EddiVoiceAttackAdapter
 {
@@ -37,29 +37,29 @@ namespace EddiVoiceAttackAdapter
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                // Try to connect to existing EDDI server first
-                Logging.Debug("Attempting to connect to existing EDDI server...");
+                // Try to connect to existing EDDI server first. If successful, take ownership of the process.
+                AdapterLogger.Debug("Attempting to connect to existing EDDI server...");
                 var isConnected = await AttemptServerConnectionAsync(cancellationToken).ConfigureAwait(false);
                 if (isConnected)
                 {
-                    _eddiProcess = Processes.ByName("Eddi").First();
-                    _managedEddiProcess = true;
-                    Logging.Info("Connected to existing EDDI standalone instance");
+                    _eddiProcess = Process.GetProcessesByName( "Eddi" ).FirstOrDefault();
+                    _managedEddiProcess = _eddiProcess != null;
+                    AdapterLogger.Info("Connected to existing EDDI standalone instance");
                     return true;
                 }
 
                 // No server running, launch EDDI.exe
-                Logging.Info("No existing EDDI server found; launching EDDI.exe as separate process");
+                AdapterLogger.Info("No existing EDDI server found; launching EDDI.exe as separate process");
                 return await LaunchEddiProcessAsync(fromVoiceAttack, voiceAttackVersion, cancellationToken).ConfigureAwait(false);
             }
             catch (OperationCanceledException)
             {
-                Logging.Debug("EDDI process launch was cancelled");
+                AdapterLogger.Debug("EDDI process launch was cancelled");
                 throw;
             }
             catch (Exception ex)
             {
-                Logging.Error("Failed to launch EDDI process", ex);
+                AdapterLogger.Error("Failed to launch EDDI process", ex);
                 return false;
             }
         }
@@ -83,12 +83,12 @@ namespace EddiVoiceAttackAdapter
             }
             catch (OperationCanceledException) when ( !cancellationToken.IsCancellationRequested )
             {
-                Logging.Debug("Server connection attempt timed out");
+                AdapterLogger.Debug("Server connection attempt timed out");
                 return false;
             }
             catch (Exception ex)
             {
-                Logging.Debug($"Server connection attempt failed: {ex.Message}");
+                AdapterLogger.Debug($"Server connection attempt failed: {ex.Message}");
                 return false;
             }
         }
@@ -107,11 +107,11 @@ namespace EddiVoiceAttackAdapter
                 var eddiPath = GetEddiExecutablePath();
                 if (!File.Exists(eddiPath))
                 {
-                    Logging.Error($"EDDI executable not found at {eddiPath}");
+                    AdapterLogger.Error($"EDDI executable not found at {eddiPath}");
                     return false;
                 }
 
-                Logging.Info($"Launching EDDI from {eddiPath}");
+                AdapterLogger.Info($"Launching EDDI from {eddiPath}");
 
                 var startInfo = new ProcessStartInfo
                 {
@@ -134,24 +134,24 @@ namespace EddiVoiceAttackAdapter
                 if (_eddiProcess == null)
                 {
                     _managedEddiProcess = false;
-                    Logging.Error("Failed to start EDDI process");
+                    AdapterLogger.Error("Failed to start EDDI process");
                     return false;
                 }
 
                 _managedEddiProcess = true;
-                Logging.Info($"EDDI process started with PID {_eddiProcess.Id}");
+                AdapterLogger.Info($"EDDI process started with PID {_eddiProcess.Id}");
 
                 // Wait for the IPC server to be ready
                 return await WaitForServerReadyAsync(cancellationToken).ConfigureAwait(false);
             }
             catch (OperationCanceledException)
             {
-                Logging.Debug("Waiting for the EDDI IPC server was cancelled");
+                AdapterLogger.Debug("Waiting for the EDDI IPC server was cancelled");
                 throw;
             }
             catch (Exception ex)
             {
-                Logging.Error("Exception while launching EDDI process", ex);
+                AdapterLogger.Error("Exception while launching EDDI process", ex);
                 return false;
             }
         }
@@ -183,30 +183,30 @@ namespace EddiVoiceAttackAdapter
                     var client = Client.VoiceAttackPluginHost.Instance.Client;
                     if (client != null)
                     {
-                        Logging.Info($"EDDI IPC server ready after {stopwatch.ElapsedMilliseconds}ms ({attemptCount} attempts)");
+                        AdapterLogger.Info($"EDDI IPC server ready after {stopwatch.ElapsedMilliseconds}ms ({attemptCount} attempts)");
                         return true;
                     }
                 }
                 catch (OperationCanceledException) when ( !cancellationToken.IsCancellationRequested )
                 {
-                    Logging.Debug($"Server ready check timed out (attempt {attemptCount})");
+                    AdapterLogger.Debug($"Server ready check timed out (attempt {attemptCount})");
                 }
                 catch (Exception ex)
                 {
-                    Logging.Debug($"Server ready check failed (attempt {attemptCount}): {ex.Message}");
+                    AdapterLogger.Debug($"Server ready check failed (attempt {attemptCount}): {ex.Message}");
                 }
 
                 if ( _eddiProcess?.HasExited ?? false )
                 {
                     _managedEddiProcess = false;
-                    Logging.Warn($"EDDI process exited before the IPC server became ready ({attemptCount} attempts)");
+                    AdapterLogger.Warn($"EDDI process exited before the IPC server became ready ({attemptCount} attempts)");
                     return false;
                 }
 
                 var stillInInitialStartupWindow = stopwatch.ElapsedMilliseconds < LaunchTimeoutMs;
                 if ( !stillInInitialStartupWindow && !backgroundPollingLogged )
                 {
-                    Logging.Info($"EDDI IPC server was not ready within the initial {LaunchTimeoutMs}ms window ({attemptCount} attempts); continuing low-frequency polling");
+                    AdapterLogger.Info($"EDDI IPC server was not ready within the initial {LaunchTimeoutMs}ms window ({attemptCount} attempts); continuing low-frequency polling");
                     backgroundPollingLogged = true;
                 }
 
@@ -219,28 +219,23 @@ namespace EddiVoiceAttackAdapter
 
         /// <summary>
         /// Gets the path to the EDDI executable.
-        /// First checks the same directory as the current assembly, then checks Program Files.
+        /// Release installs resolve through the installer/app-maintained locator first;
+        /// same-folder fallbacks are retained for local development layouts.
         /// </summary>
         /// <returns>Full path to EDDI.exe</returns>
         private static string GetEddiExecutablePath()
         {
-            // First, try the directory where the VoiceAttack plugin is loaded from
-            var pluginDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var pluginDirPath = Path.Combine(pluginDir ?? "", "EDDI.exe");
-            if (File.Exists(pluginDirPath))
+            var pluginDir = Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location );
+            var eddiPath = EddiInstallLocator.ResolveExecutablePath(
+                pluginDir,
+                baseDirectory: AppDomain.CurrentDomain.BaseDirectory );
+            if ( eddiPath != null )
             {
-                return pluginDirPath;
+                return eddiPath;
             }
 
-            // Try the application base directory (where the assembly loaded from)
-            var baseDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "EDDI.exe");
-            if (File.Exists(baseDirPath))
-            {
-                return baseDirPath;
-            }
-
-            // Fallback: assume it's in the same directory as the plugin DLL
-            return pluginDirPath;
+            // Preserve the previous error-path behavior so callers log the expected candidate.
+            return Path.Combine( pluginDir ?? string.Empty, "EDDI.exe" );
         }
 
         /// <summary>
@@ -271,13 +266,13 @@ namespace EddiVoiceAttackAdapter
                     return;
                 }
 
-                Logging.Info("Shutting down EDDI process");
+                AdapterLogger.Info("Shutting down EDDI process");
                 _eddiProcess.CloseMainWindow();
 
                 // Give it 3 seconds to close gracefully
                 if (!_eddiProcess.WaitForExit(3000))
                 {
-                    Logging.Warn("EDDI process did not exit gracefully; forcing termination");
+                    AdapterLogger.Warn("EDDI process did not exit gracefully; forcing termination");
                     _eddiProcess.Kill();
                 }
 
@@ -287,7 +282,7 @@ namespace EddiVoiceAttackAdapter
             }
             catch (Exception ex)
             {
-                Logging.Warn("Exception while shutting down EDDI process", ex);
+                AdapterLogger.Warn("Exception while shutting down EDDI process", ex);
             }
         }
     }

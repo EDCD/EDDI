@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Tests
 {
-    [TestClass, TestCategory("UnitTests")]
+    [TestClass, TestCategory("UnitTests"), DoNotParallelize]
     public class InaraResponderTests : TestBase
     {
         private InaraResponder responder;
