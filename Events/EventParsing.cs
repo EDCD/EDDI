@@ -564,7 +564,7 @@ namespace EddiEvents
             stationName = GeneratedRegex.StrongholdCarrierRegex().Replace( stationName, "Stronghold Carrier" );
 
             // Fix known incorrectly reported StationType values.
-            if ( stationName == "Stronghold Carrier" || stationName.StartsWith( "$EXT_PANEL_ColonisationShip" ) )
+            if ( stationName == "Stronghold Carrier" || stationName.StartsWith( "$EXT_PANEL_ColonisationShip" ) || stationName.StartsWith( "$Operations_Runner" ) )
             {
                 stationTypeEdName = StationModel.Megaship.edname;
             }
