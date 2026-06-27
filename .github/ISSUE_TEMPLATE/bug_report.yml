@@ -1,0 +1,137 @@
+name: Bug report
+description: Report a bug in EDDI and help us improve
+type: Bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for bugs in EDDI. For general usage questions, Discord or the forum may be more appropriate.
+
+  - type: markdown
+    attributes:
+      value: |
+        EDDI log and configuration files are located at `%APPDATA%\EDDI` and have the `.log` extension.
+        Elite Dangerous journal files are usually located at `%USERPROFILE%\Saved Games\Frontier Developments\Elite Dangerous` and have the `.log` extension.
+        Please include screenshots, links to videos, or any other relevant information you can provide.
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect EDDI to do?
+    validations:
+      required: true
+
+  - type: textarea
+    id: observed
+    attributes:
+      label: What did EDDI actually do? 
+      description: Include screenshots, links to videos, etc. if useful.
+      placeholder: EDDI fails to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Provide the most reproducible steps possible.
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+      
+  - type: textarea
+    id: investigation
+    attributes:
+      label: Investigation notes
+      description: Include tests with default scripts/personalities, regression tests against earlier versions, relevant snippets you've found in local .log files, or any other troubleshooting you've already performed.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      description: Select the operating system on which EDDI is running.
+      options:
+        - Windows 11
+        - Windows 10
+        - Other / Unsupported
+    validations:
+      required: true
+
+  - type: input
+    id: eddi-version
+    attributes:
+      label: EDDI version
+      description: Please provide the full version number. Do not write "latest" or "current."
+      placeholder: "Example: 5.0.2"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: voiceattack-usage
+    attributes:
+      label: VoiceAttack usage
+      options:
+        - Not using VoiceAttack
+        - VoiceAttack 1
+        - VoiceAttack 2
+        - Unsure
+    validations:
+      required: true
+
+  - type: input
+    id: voiceattack-version
+    attributes:
+      label: VoiceAttack version
+      description: If applicable, provide the full VoiceAttack version.
+      placeholder: "Example: 2.x.x"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: problem-area
+    attributes:
+      label: Problem area
+      description: Pick the closest affected area(s).
+      options:
+        - label: Installer / startup
+        - label: Speech synthesis
+        - label: VoiceAttack integration
+        - label: Variables / scripts
+        - label: Event
+        - label: External connections (Frontier API, Spansh, EDSM, etc.)
+        - label: User interface
+        - label: Localization / languages
+        - label: Crash / exception
+
+  - type: input
+    id: language
+    attributes:
+      label: EDDI / operating system language
+      description: Provide EDDI's language selection. If the language selection is set to Automatic, please also provide the operating system language.
+      placeholder: "Example: English (United States)"
+    validations:
+      required: false
+
+  - type: input
+    id: voice
+    attributes:
+      label: Voice
+      description: If relevant, provide the voice name and language.
+      placeholder: "Example: Microsoft Zira - English (United States)"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: I have provided the full EDDI version number, not just "latest" or "current."
+          required: true
+        - label: I have checked for existing related issues.
+          required: true
