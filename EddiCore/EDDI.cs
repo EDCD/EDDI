@@ -2190,7 +2190,9 @@ namespace EddiCore
                                  @event.build.Contains("r121645/r0") ||
                                  @event.build.Contains("r129516/r0")
                              )
-                         );
+                         ) || 
+                         @event.build.Contains( "r330116/r0" ) || 
+                         @event.build.Contains( "r329880/r0" );
             CompanionAppService.Instance.gameIsBeta = gameIsBeta;
             if (gameIsBeta)
             {
