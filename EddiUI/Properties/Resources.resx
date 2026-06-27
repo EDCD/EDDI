@@ -463,7 +463,7 @@ Voices are shown when at least one supported locale matches; multilingual voices
     <value>Verify</value>
   </data>
   <data name="web_voice_provider_verify_failure" xml:space="preserve">
-    <value>Provider profile verification failed: {0}</value>
+    <value>Provider profile verification failed. Please check logs at %APPDATA%/EDDI for more details.</value>
   </data>
   <data name="web_voice_provider_verify_success" xml:space="preserve">
     <value>Provider profile verified successfully.</value>

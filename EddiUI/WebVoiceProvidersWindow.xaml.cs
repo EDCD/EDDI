@@ -337,9 +337,7 @@ namespace EddiUI
             {
                 MessageBox.Show(
                     this,
-                    string.Format(
-                        Properties.Resources.web_voice_provider_verify_failure,
-                        ex.Message ),
+                    Properties.Resources.web_voice_provider_verify_failure,
                     Properties.Resources.web_voice_provider_verify_title,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error );

@@ -1037,7 +1037,7 @@ namespace EddiUI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Provider profile verification failed: {0}.
+        ///   Looks up a localized string similar to Provider profile verification failed. Please check logs at %APPDATA%/EDDI for more details..
         /// </summary>
         public static string web_voice_provider_verify_failure {
             get {

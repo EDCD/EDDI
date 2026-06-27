@@ -207,8 +207,8 @@ namespace EddiSpeechService.SpeechProviders
             var voices = await GetVoicesAsync( profile, timeoutSource.Token ).ConfigureAwait( false );
             if ( voices.Count == 0 )
             {
-                throw new InvalidOperationException(
-                    $"Azure Speech Services profile '{profile.DisplayName}' did not return any voices. Check the key, region, and locale filters." );
+                Logging.Warn( $"Azure Speech Services profile '{profile.DisplayName}' did not return any voices. Check the key, region, and locale filters. If you have limited your speech resource to only be accessible from specific IP addresses, please verify that your public IP address has not changed." );
+                throw new InvalidOperationException();
             }
         }
 

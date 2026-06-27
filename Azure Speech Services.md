@@ -14,8 +14,8 @@ Azure Speech Services can provide cloud-hosted neural text-to-speech voices for 
     * Choose a **Region** near your usual location. This corresponds to a regional data center - choosing a nearby region will reduce speech synthesis latency.
     * Enter a unique resource **Name**.
     * Choose a **Pricing tier**. Typically you'll be able to choose between the free tier (F0) and standard tier (S0).
-6. (Optional) On the **Network** tab
-   * Configure network security settings if desired. By default, the resource will allow traffic from all networks. You can restrict traffic to specific virtual networks or IP address ranges if you want to limit which machines can access the resource.  
+6. On the **Network** tab
+   * (Optional) You may configure network security settings to limit access to the speech resource. Restricting access by IP address is not advised unless you know for certain that the public IP address you will be using is static.  
 7. Select **Review + create**, correct any validation issues, then select **Create**. If everything is configured correctly, the resource will be deployed. This may take a few minutes.
 8. After deployment completes, select **Go to resource**.
 
