@@ -1213,6 +1213,9 @@ namespace EddiDataDefinitions
         public static readonly Module Int_Fighterbaymk2_size7_class1_free = new( "Int_Fighterbaymk2_size7_class1_free", "VesselHangar_MkII", 7, "D", 0); // Mk II Vessel Hangar Class 7 Rating D
         public static readonly Module Int_Fighterbaymk2_size6_class1_free = new( "Int_Fighterbaymk2_size6_class1_free", "VesselHangar_MkII", 6, "D", 0); // Mk II Vessel Hangar Class 6 Rating D
         public static readonly Module Int_Fighterbaymk2_size5_class1_free = new( "Int_Fighterbaymk2_size5_class1_free", "VesselHangar_MkII", 5, "D", 0); // Mk II Vessel Hangar Class 5 Rating D
+        public static readonly Module Int_Fighterbay_size7_class1_free = new( "Int_Fighterbay_size7_class1_free", "VesselHangar", 7, "D", 0); // Vessel Hangar Class 7 Rating D
+        public static readonly Module Int_Fighterbay_size6_class1_free = new( "Int_Fighterbay_size6_class1_free", "VesselHangar", 6, "D", 0); // Vessel Hangar Class 6 Rating D
+        public static readonly Module Int_Fighterbay_size5_class1_free = new( "Int_Fighterbay_size5_class1_free", "VesselHangar", 5, "D", 0); // Vessel Hangar Class 5 Rating D
 
         // Generic modules
         public static readonly Module ModularCargoBayDoor = new( "ModularCargoBayDoor", "CargoHatch", 1, "H", 0);
