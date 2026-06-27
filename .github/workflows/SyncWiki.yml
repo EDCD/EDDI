@@ -1,60 +1,164 @@
-# Syncs our Wiki whenever we publish a new release
+# Syncs generated documentation to the EDDI wiki whenever a new release is published.
 
 name: Sync Wiki
+
 on:
   release:
     types: [published]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  build-config: Release
+  solution: EDDI.sln
+
 jobs:
   sync_docs:
     name: Sync docs
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - name: Checkout current version
-      uses: actions/checkout@v2
-
-    # Retrieve our zipped build from a prior workflow
-    - name: Retrieve build artifacts
-      uses: actions/download-artifact@v4.1.8
+      uses: actions/checkout@v7
       with:
-        # Optional, uploaded artifact name,
-        # will download all artifacts if not specified
-        # and extract them in respective subdirectories
-        # https://github.com/actions/download-artifact#download-all-artifacts
-        name: build-artifact
-        # Optional, directory where to extract artifact
-        path: ./bin/Release
+        persist-credentials: false
 
-    # Uncompress the build
-    - name: Uncompress build artifacts (may not be required if completed by the prior step)
-      run: Expand-Archive -Path build-artifact.zip -DestinationPath ./bin/Release
-
-    # Run our generator tests
-    - name: Add VSTest.console.exe to PATH
-      uses: darenm/Setup-VSTest@v1.1.1
-    - name: Generate updated wiki documentation from Tests output
-      run: vstest.console.exe Tests/bin/Release/Tests.dll /tests:GeneratorTests /Parallel /InIsolation
-
-    # Sync generated wiki files
-    - name: Sync wiki events (delete missing)
-      uses: kai-tub/external-repo-sync-action@v1
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v3
       with:
-        source-directory: "./Release/Wiki" # Required
-        include-patterns: "./events/*"     # Optional
-        delete-missing: true               # Delete all files in the repo that are not present in the source-directory. Defaults to false
-        dry-run: true                      # Optional. Defaults to false
+        msbuild-architecture: x64
+
+    - name: Add NuGet to PATH
+      uses: nuget/setup-nuget@v4.0
+      with:
+        nuget-version: 'latest'
+
+    - name: Restore dependencies
+      run: nuget restore ${{ env.solution }} -NonInteractive
+
+    - name: Build solution
+      run: msbuild ${{ env.solution }} /p:Configuration=${{ env.build-config }} /p:Platform=x64 /p:UseSharedCompilation=false /verbosity:minimal
+
+    - name: Generate updated wiki documentation
+      run: >
+        dotnet test Tests\Tests.csproj
+        -c ${{ env.build-config }}
+        --no-build
+        --no-restore
+        --filter "TestCategory=DocGen"
+        -p:SolutionDir="${{ github.workspace }}\"
+        -p:Platform=x64
+        --logger:"console;verbosity=detailed"
+
+    - name: Locate generated wiki files
+      id: wiki-output
+      shell: pwsh
+      run: |
+        $candidates = @(
+          "${{ github.workspace }}\Wiki",
+          "${{ github.workspace }}\bin\Release\Wiki",
+          "${{ github.workspace }}\bin\x64\Release\Wiki",
+          "${{ github.workspace }}\Tests\bin\Release\Wiki",
+          "${{ github.workspace }}\Tests\bin\x64\Release\Wiki"
+        )
+
+        $wikiPath = $candidates |
+          Where-Object { Test-Path "$_\Events.md" } |
+          Select-Object -First 1
+
+        if (-not $wikiPath) {
+          Write-Host "Generated wiki output was not found. Checked candidate paths:"
+          $candidates | ForEach-Object { Write-Host " - $_" }
+          throw "Generated wiki output was not found."
+        }
+
+        Write-Host "Generated wiki output found at: $wikiPath"
+        "path=$wikiPath" >> $env:GITHUB_OUTPUT
+
+    - name: Clone wiki repository
+      shell: pwsh
       env:
         GH_ACCESS_TOKEN: ${{ secrets.GH_ACTIONS_TOKEN }}
+      run: |
+        if ([string]::IsNullOrWhiteSpace($env:GH_ACCESS_TOKEN)) {
+          throw "The GH_ACTIONS_TOKEN secret is missing or empty."
+        }
 
-    # Sync new or updated root wiki files (without deleting)
-    - name: Sync root wiki docs
-      uses: kai-tub/external-repo-sync-action@v1
-      with:
-        source-directory: "./Release/Wiki" # Required
-        exclude-patterns: "./events/*"     # Optional
-        delete-missing: false              # Delete all files in the repo that are not present in the source-directory. Defaults to false
-        dry-run: true                      # Optional. Defaults to false
-      env:
-        GH_ACCESS_TOKEN: ${{ secrets.GH_ACTIONS_TOKEN }}
+        git clone "https://x-access-token:$env:GH_ACCESS_TOKEN@github.com/EDCD/EDDI.wiki.git" wiki-repo
+
+    - name: Sync generated files into wiki repo
+      shell: pwsh
+      run: |
+        $source = "${{ steps.wiki-output.outputs.path }}"
+        $target = "${{ github.workspace }}\wiki-repo"
+
+        if (-not (Test-Path $source)) {
+          throw "Generated wiki output folder was not found: $source"
+        }
+
+        if (-not (Test-Path "$source\Events.md")) {
+          throw "Generated wiki output does not look valid. Missing Events.md in: $source"
+        }
+
+        if (-not (Test-Path $target)) {
+          throw "Wiki repo folder was not found: $target"
+        }
+
+        $generatedItems = Get-ChildItem $source -Force
+
+        if (-not $generatedItems) {
+          throw "Generated wiki output folder is empty: $source"
+        }
+
+        foreach ($item in $generatedItems) {
+          $targetPath = Join-Path $target $item.Name
+
+          if ($item.PSIsContainer) {
+            # A generated top-level directory owns the matching wiki directory.
+            # Delete the existing target directory first so removed nested files/folders are purged.
+            if (Test-Path $targetPath) {
+              if (-not (Test-Path $targetPath -PathType Container)) {
+                throw "Cannot replace file '$targetPath' with generated directory '$($item.FullName)'."
+              }
+
+              Remove-Item $targetPath -Recurse -Force
+            }
+
+            Copy-Item $item.FullName $target -Recurse -Force
+            Write-Host "Mirrored generated directory: $($item.Name)"
+          }
+          else {
+            # A generated top-level file owns the matching wiki file.
+            # If a directory exists with the same name, fail rather than deleting it silently.
+            if (Test-Path $targetPath -PathType Container) {
+              throw "Cannot replace directory '$targetPath' with generated file '$($item.FullName)'."
+            }
+
+            Copy-Item $item.FullName $targetPath -Force
+            Write-Host "Copied generated file: $($item.Name)"
+          }
+        }
+
+    - name: Commit and push wiki changes
+      shell: pwsh
+      working-directory: wiki-repo
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+        git status --short
+
+        if (-not (git status --short)) {
+          Write-Host "No wiki changes to commit."
+          exit 0
+        }
+
+        git add .
+        git commit -m "Update generated wiki documentation"
+        git push
