@@ -466,15 +466,6 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fighter Hangar.
-        /// </summary>
-        public static string FighterHangar {
-            get {
-                return ResourceManager.GetString("FighterHangar", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to First Class Passenger Cabin.
         /// </summary>
         public static string FirstClassPassengerCabin {
@@ -1335,6 +1326,24 @@ namespace EddiDataDefinitions.Properties {
         public static string Turreted {
             get {
                 return ResourceManager.GetString("Turreted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vessel Hangar.
+        /// </summary>
+        public static string VesselHangar {
+            get {
+                return ResourceManager.GetString("VesselHangar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mark II Vessel Hangar.
+        /// </summary>
+        public static string VesselHangar_MkII {
+            get {
+                return ResourceManager.GetString("VesselHangar_MkII", resourceCulture);
             }
         }
         

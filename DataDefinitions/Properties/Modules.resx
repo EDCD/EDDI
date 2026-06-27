@@ -229,10 +229,6 @@
     <value>Fighter Armour</value>
     <comment>Module FighterArmour</comment>
   </data>
-  <data name="FighterHangar" xml:space="preserve">
-    <value>Fighter Hangar</value>
-    <comment>Module FighterHangar</comment>
-  </data>
   <data name="FirstClassPassengerCabin" xml:space="preserve">
     <value>First Class Passenger Cabin</value>
     <comment>Module FirstClassPassengerCabin</comment>
@@ -708,5 +704,11 @@
   <data name="EconomyClassPassengerCabin_MkII" xml:space="preserve">
     <value>Mark II Economy Class Passenger Cabin</value>
     <comment>(Presently Lynx Highliner exclusive)</comment>
+  </data>
+  <data name="VesselHangar" xml:space="preserve">
+    <value>Vessel Hangar</value>
+  </data>
+  <data name="VesselHangar_MkII" xml:space="preserve">
+    <value>Mark II Vessel Hangar</value>
   </data>
 </root>

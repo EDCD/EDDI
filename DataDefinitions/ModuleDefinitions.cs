@@ -853,9 +853,9 @@ namespace EddiDataDefinitions
         public static readonly Module Int_PassengerCabin_Size6_Class2 = new( "Int_PassengerCabin_Size6_Class2", "BusinessClassPassengerCabin", 6, "D", 184240);
         public static readonly Module Int_PassengerCabin_Size6_Class3 = new( "Int_PassengerCabin_Size6_Class3", "FirstClassPassengerCabin", 6, "C", 552700);
         public static readonly Module Int_PassengerCabin_Size6_Class4 = new( "Int_PassengerCabin_Size6_Class4", "LuxuryClassPassengerCabin", 6, "B", 4974300);
-        public static readonly Module Int_FighterBay_Size5_Class1 = new( "Int_FighterBay_Size5_Class1", "FighterHangar", 5, "D", 575660);
-        public static readonly Module Int_FighterBay_Size6_Class1 = new( "Int_FighterBay_Size6_Class1", "FighterHangar", 6, "D", 1869350);
-        public static readonly Module Int_FighterBay_Size7_Class1 = new( "Int_FighterBay_Size7_Class1", "FighterHangar", 7, "D", 2369330);
+        public static readonly Module Int_FighterBay_Size5_Class1 = new( "Int_FighterBay_Size5_Class1", "VesselHangar", 5, "D", 575660);
+        public static readonly Module Int_FighterBay_Size6_Class1 = new( "Int_FighterBay_Size6_Class1", "VesselHangar", 6, "D", 1869350);
+        public static readonly Module Int_FighterBay_Size7_Class1 = new( "Int_FighterBay_Size7_Class1", "VesselHangar", 7, "D", 2369330);
         public static readonly Module Hpt_DumbfireMissileRack_Fixed_Medium_Lasso = new( "Hpt_DumbfireMissileRack_Fixed_Medium_Lasso", "RocketPropelledFSDDisruptor", 2, "B", -1, ModuleMount.Fixed, AmmoClipCapacity: 12, AmmoHopperCapacity: 48);
         public static readonly Module Int_PassengerCabin_Size2_Class1 = new( "Int_PassengerCabin_Size2_Class1", "EconomyClassPassengerCabin", 2, "E", 4320);
         public static readonly Module Int_PassengerCabin_Size3_Class1 = new( "Int_PassengerCabin_Size3_Class1", "EconomyClassPassengerCabin", 3, "E", 8670);
@@ -1194,7 +1194,10 @@ namespace EddiDataDefinitions
         public static readonly Module Int_mkii_passengercabin_size5_class2 = new( "Int_mkii_passengercabin_size5_class2", "BusinessClassPassengerCabin_MkII", 5, "C", 123151); // Mk II Business Class Passenger Cabin Class 5 Rating C
         public static readonly Module int_mkii_passengercabin_size6_class1 = new( "int_mkii_passengercabin_size6_class1", "EconomyClassPassengerCabin_MkII", 6, "D", 123152); // Mk II Economy Passenger Cabin Class 6 Rating D
         public static readonly Module Int_mkii_passengercabin_size6_class2 = new( "Int_mkii_passengercabin_size6_class2", "BusinessClassPassengerCabin_MkII", 6, "C", 245643); // Mk II Business Class Passenger Cabin Class 6 Rating C
-        
+        public static readonly Module Int_Fighterbaymk2_size7_class1 = new( "Int_Fighterbaymk2_size7_class1", "VesselHangar_MkII", 7, "D", 29426954); // Mk II Vessel Hangar Class 7 Rating D
+        public static readonly Module Int_Fighterbaymk2_size6_class1 = new( "Int_Fighterbaymk2_size6_class1", "VesselHangar_MkII", 6, "D", 2579690); // Mk II Vessel Hangar Class 6 Rating D
+        public static readonly Module Int_Fighterbaymk2_size5_class1 = new( "Int_Fighterbaymk2_size5_class1", "VesselHangar_MkII", 5, "D", 794389); // Mk II Vessel Hangar Class 5 Rating D
+
         // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
         public static readonly Module Hpt_PulseLaser_Fixed_SmallFree = new( "Hpt_PulseLaser_Fixed_SmallFree", "PulseLaser", 1, "F", 0, ModuleMount.Fixed);
         public static readonly Module Int_PowerPlant_Size2_Class1_free = new( "Int_PowerPlant_Size2_Class1_free", "PowerPlant", 2, "E", 0);
@@ -1207,6 +1210,9 @@ namespace EddiDataDefinitions
         public static readonly Module Int_StellarBodyDiscoveryScanner_Standard_free = new( "Int_StellarBodyDiscoveryScanner_Standard_free", "BasicDiscoveryScanner", -1, "F", 0);
         public static readonly Module Int_CargoRack_Size2_Class1_free = new( "Int_CargoRack_Size2_Class1_free", "CargoRack", 2, "E", 0);
         public static readonly Module Int_FuelTank_Size1_Class3_free = new( "Int_FuelTank_Size1_Class3_free", "FuelTank", 1, "C", 0);
+        public static readonly Module Int_Fighterbaymk2_size7_class1_free = new( "Int_Fighterbaymk2_size7_class1_free", "VesselHangar_MkII", 7, "D", 0); // Mk II Vessel Hangar Class 7 Rating D
+        public static readonly Module Int_Fighterbaymk2_size6_class1_free = new( "Int_Fighterbaymk2_size6_class1_free", "VesselHangar_MkII", 6, "D", 0); // Mk II Vessel Hangar Class 6 Rating D
+        public static readonly Module Int_Fighterbaymk2_size5_class1_free = new( "Int_Fighterbaymk2_size5_class1_free", "VesselHangar_MkII", 5, "D", 0); // Mk II Vessel Hangar Class 5 Rating D
 
         // Generic modules
         public static readonly Module ModularCargoBayDoor = new( "ModularCargoBayDoor", "CargoHatch", 1, "H", 0);
