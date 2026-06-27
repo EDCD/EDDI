@@ -50,6 +50,7 @@ namespace EddiEddnResponder.Schemas
                             .Select(m => (m as Dictionary<string, object> ?? new Dictionary<string, object>())["Name"]?.ToString())
                             .Where(m => ApplyModuleNameFilter(m))
                             .Where(m => !Module.IsPowerPlay(m))
+                            .Distinct()
                             .ToList();
 
                         // Apply data augments
@@ -95,6 +96,7 @@ namespace EddiEddnResponder.Schemas
                     .Where(m => ApplyModuleSkuFilter(m))
                     .Select(m => m["name"]?.ToString())
                     .Where(m => ApplyModuleNameFilter(m))
+                    .Distinct()
                     .ToList();
 
                 // Continue if our modules list is not empty
