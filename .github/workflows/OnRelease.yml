@@ -12,6 +12,8 @@ on:
   release:
     types: [published]
 
+permissions: {}
+
 jobs:
   notifyRollbarOfRelease:
     runs-on: ubuntu-latest
@@ -19,8 +21,9 @@ jobs:
     - name: Get released version number
       id: get-released-version
       run: |
-        version=$(echo ${{ github.ref_name }} | cut -d "/" -f 2)
-        echo "version=$version" >> $GITHUB_OUTPUT
+        ref_name="${{ github.ref_name }}"
+        version="${ref_name##*/}"
+        echo "version=$version" >> "$GITHUB_OUTPUT"
     - name: Notify the Rollbar telemetry service of our latest release
       uses: rollbar/github-deploy-action@eaf2a60ea238bd273226eee0ddceecfe5611964d
       id: rollbar_deploy

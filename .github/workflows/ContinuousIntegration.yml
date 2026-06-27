@@ -5,14 +5,15 @@
 
 name: Continuous Integration
 concurrency:
-  group: ${{ github.workflow }}-${{ github.sha }}
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || github.ref }}
   cancel-in-progress: true
 env:
   build-config: Release
   solution: EDDI.sln
-
   # Build artifact variables
   build-artifact-name: build-artifact
+permissions:
+  contents: read
 
 # Define our triggers
 on: 
@@ -26,7 +27,6 @@ on:
     - docs/*        # Every file in the root docs folder
     - '**.html'     # HTML files anywhere in the repo
     - '**.md'       # Markdown files anywhere in the repo
-    - '**.resx'     # RESX files anywhere in the repo
   pull_request:
     # The branches below must be a subset of the branches above
     branches:
@@ -35,7 +35,6 @@ on:
     - docs/*        # Every file in the root docs folder
     - '**.html'     # HTML files anywhere in the repo
     - '**.md'       # Markdown files anywhere in the repo
-    - '**.resx'     # RESX files anywhere in the repo
   schedule:
     #        ┌───────────── minute (0 - 59)
     #        │  ┌───────────── hour (0 - 23)
@@ -47,6 +46,7 @@ on:
     #        │  │ │ │ │
     #        *  * * * *
     - cron: '30 2 * * 0' # Runs at 2:30 AM UTC, any day of the month, any month of the year, on Sundays
+  workflow_dispatch:
 
 jobs:
   build:
@@ -59,6 +59,8 @@ jobs:
     # Build
     - name: Add msbuild.exe to PATH
       uses: microsoft/setup-msbuild@v3
+      with:
+        msbuild-architecture: x64
     - name: Add nuget to PATH
       uses: nuget/setup-nuget@v4.0
       with:
@@ -78,3 +80,12 @@ jobs:
     # Perform unit testing
     - name: Test our solution
       run: dotnet test Tests\Tests.csproj -c ${{ env.build-config }} --no-build --no-restore --filter "TestCategory=UnitTests" -p:SolutionDir="${{ github.workspace }}\" -p:Platform=x64 --results-directory "${{ github.workspace }}\TestResults\${{ env.build-config }}" --logger:"console;verbosity=detailed" --logger:"trx;LogFileName=${{ env.build-config }}-ci-tests.trx" --blame-hang --blame-hang-timeout 5m --blame-hang-dump-type mini
+
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v7
+      with:
+        name: test-results
+        path: TestResults/**
+        if-no-files-found: warn
+        retention-days: 14
