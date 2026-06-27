@@ -12,6 +12,8 @@
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AllowUNCPath=no
+ArchitecturesAllowed=x64compatible
+ArchitecturesInstallIn64BitMode=x64compatible
 AppId={{830C0324-30D8-423C-B5B4-D7EE8D007A79}
 AppName={#MyAppName}
 AppPublisher={#MyAppPublisher}
@@ -29,6 +31,8 @@ DisableWelcomePage=no
 LicenseFile="{#SourcePath}\LicenseFile.txt"
 OutputBaseFilename={#MyAppName}-{#MyAppVersion}
 OutputDir="{#SourcePath}\bin\Installer"
+PrivilegesRequired=lowest
+PrivilegesRequiredOverridesAllowed=dialog commandline
 RestartApplications=no
 SolidCompression=yes
 SourceDir="{#SourcePath}\bin\Release\Application"
@@ -43,7 +47,6 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
 Source: "*.exe"; DestDir: "{app}"
@@ -87,7 +90,7 @@ Type: files; Name: "{app}\*.vap"
 ; --- Remove old resource files that may no longer be valid ---
 Type: filesandordirs; Name: "{app}\*\*.resources.dll"
 
-; --- Remove old app payload files from the VoiceAttack shim folder before copying the new shim ---
+; --- Remove old app payload files from the VoiceAttack plugin folder before copying the new plugin ---
 Type: files; Name: "{code:GetVoiceAttack2EddiDir}\*.dll"
 Type: files; Name: "{code:GetVoiceAttack2EddiDir}\*.pdb"
 Type: files; Name: "{code:GetVoiceAttack2EddiDir}\*.deps.json"
@@ -111,30 +114,30 @@ Type: filesandordirs; Name: "{code:GetVoiceAttack2EddiDir}\zh-CN"
 Type: files; Name: "{app}\*.dll.config"
 
 ; --- Remove old user-specific cached configs that cause runtime mismatches ---
-Type: filesandordirs; Name: "{localappdata}\Eddi\Eddi.exe_*"
-Type: files; Name: "{localappdata}\Eddi\Eddi.exe_*\*\user.config"
+Type: filesandordirs; Name: "{localappdata}\Eddi\Eddi.exe_*"; Check: ShouldModifyCurrentUserAreas
+Type: files; Name: "{localappdata}\Eddi\Eddi.exe_*\*\user.config"; Check: ShouldModifyCurrentUserAreas
 
 ; --- Remove obsolete legacy files from older EDDI versions ---
 Type: files; Name: "{app}\*.exe"
 Type: files; Name: "{app}\*.exe.config"
 Type: files; Name: "{app}\EDDI.ico"
-Type: files; Name: "{userappdata}\EDDI\credentials.json"
-Type: files; Name: "{userappdata}\EDDI\elite.json"
-Type: filesandordirs; Name: "{userappdata}\EDDI\galnet"
+Type: files; Name: "{userappdata}\EDDI\credentials.json"; Check: ShouldModifyCurrentUserAreas
+Type: files; Name: "{userappdata}\EDDI\elite.json"; Check: ShouldModifyCurrentUserAreas
+Type: filesandordirs; Name: "{userappdata}\EDDI\galnet"; Check: ShouldModifyCurrentUserAreas
 
 ; Remove sensitive data on uninstall
 [UninstallDelete]
-Type: files; Name: "{userappdata}\EDDI\CompanionAPI.json"
+Type: files; Name: "{userappdata}\EDDI\CompanionAPI.json"; Check: ShouldModifyCurrentUserAreas
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
-Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
-Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: quicklaunchicon
+Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon; Check: IsAdminInstallMode
+Name: "{userdesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon; Check: not IsAdminInstallMode
 
 [Run]
 ; Manual / non-silent installer launch option.
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent runasoriginaluser
 
 ; Silent in-app upgrade launch.
 ; This always launches the newly installed executable.
@@ -144,19 +147,19 @@ Filename: "{app}\{#MyAppExeName}"; Flags: nowait skipifnotsilent runasoriginalus
 SelectDirBrowseLabel=To continue, click Next. If this is not where you want the EDDI application files installed, click Browse. Do not select a VoiceAttack Apps folder.
 
 [Registry]
-Root: "HKLM"; Subkey: "Software\Classes\eddi"; ValueType: string; ValueData: "EDDI URL Protocol"; Flags: uninsdeletekey
-Root: "HKLM"; Subkey: "Software\Classes\eddi"; ValueType: string; ValueName: "URL Protocol"; Flags: uninsdeletekey
-Root: "HKLM"; Subkey: "Software\Classes\eddi\Default Icon"; ValueType: string; ValueData: "{app}\{#MyAppExeName},0"; Flags: uninsdeletekey
-Root: "HKLM"; Subkey: "Software\Classes\eddi\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletekey
-Root: "HKLM"; Subkey: "Software\Classes\eddi\shell\open\ddeexec"; ValueType: string; ValueData: "%1"; Flags: uninsdeletekey
-Root: "HKCU"; Subkey: "Software\Classes\eddi"; ValueType: string; ValueData: "EDDI URL Protocol"; Flags: uninsdeletekey
-Root: "HKCU"; Subkey: "Software\Classes\eddi"; ValueType: string; ValueName: "URL Protocol"; Flags: uninsdeletekey
-Root: "HKCU"; Subkey: "Software\Classes\eddi\Default Icon"; ValueType: string; ValueData: "{app}\{#MyAppExeName},0"; Flags: uninsdeletekey
-Root: "HKCU"; Subkey: "Software\Classes\eddi\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletekey
-Root: "HKCU"; Subkey: "Software\Classes\eddi\shell\open\ddeexec"; ValueType: string; ValueData: "%1"; Flags: uninsdeletekey
-Root: "HKCU"; Subkey: "Software\EDCD\EDDI"; ValueType: string; ValueName: "ExecutablePath"; ValueData: "{app}\{#MyAppExeName}"
-Root: "HKCU"; Subkey: "Software\EDCD\EDDI"; ValueType: string; ValueName: "InstallDirectory"; ValueData: "{app}"
-Root: "HKCU"; Subkey: "Software\EDCD\EDDI"; ValueType: string; ValueName: "Version"; ValueData: "{#MyAppVersion}"
+Root: "HKLM"; Subkey: "Software\Classes\eddi"; ValueType: string; ValueData: "EDDI URL Protocol"; Flags: uninsdeletekey; Check: ShouldWriteMachineRegistry
+Root: "HKLM"; Subkey: "Software\Classes\eddi"; ValueType: string; ValueName: "URL Protocol"; Flags: uninsdeletekey; Check: ShouldWriteMachineRegistry
+Root: "HKLM"; Subkey: "Software\Classes\eddi\Default Icon"; ValueType: string; ValueData: "{app}\{#MyAppExeName},0"; Flags: uninsdeletekey; Check: ShouldWriteMachineRegistry
+Root: "HKLM"; Subkey: "Software\Classes\eddi\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletekey; Check: ShouldWriteMachineRegistry
+Root: "HKLM"; Subkey: "Software\Classes\eddi\shell\open\ddeexec"; ValueType: string; ValueData: "%1"; Flags: uninsdeletekey; Check: ShouldWriteMachineRegistry
+Root: "HKCU"; Subkey: "Software\Classes\eddi"; ValueType: string; ValueData: "EDDI URL Protocol"; Flags: uninsdeletekey; Check: ShouldWriteCurrentUserRegistry
+Root: "HKCU"; Subkey: "Software\Classes\eddi"; ValueType: string; ValueName: "URL Protocol"; Flags: uninsdeletekey; Check: ShouldWriteCurrentUserRegistry
+Root: "HKCU"; Subkey: "Software\Classes\eddi\Default Icon"; ValueType: string; ValueData: "{app}\{#MyAppExeName},0"; Flags: uninsdeletekey; Check: ShouldWriteCurrentUserRegistry
+Root: "HKCU"; Subkey: "Software\Classes\eddi\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletekey; Check: ShouldWriteCurrentUserRegistry
+Root: "HKCU"; Subkey: "Software\Classes\eddi\shell\open\ddeexec"; ValueType: string; ValueData: "%1"; Flags: uninsdeletekey; Check: ShouldWriteCurrentUserRegistry
+Root: "HKCU"; Subkey: "Software\EDCD\EDDI"; ValueType: string; ValueName: "ExecutablePath"; ValueData: "{app}\{#MyAppExeName}"; Check: ShouldWriteCurrentUserRegistry
+Root: "HKCU"; Subkey: "Software\EDCD\EDDI"; ValueType: string; ValueName: "InstallDirectory"; ValueData: "{app}"; Check: ShouldWriteCurrentUserRegistry
+Root: "HKCU"; Subkey: "Software\EDCD\EDDI"; ValueType: string; ValueName: "Version"; ValueData: "{#MyAppVersion}"; Check: ShouldWriteCurrentUserRegistry
 Root: "HKLM"; Subkey: "Software\EDCD\EDDI"; ValueType: string; ValueName: "ExecutablePath"; ValueData: "{app}\{#MyAppExeName}"; Check: ShouldWriteMachineLocator
 Root: "HKLM"; Subkey: "Software\EDCD\EDDI"; ValueType: string; ValueName: "InstallDirectory"; ValueData: "{app}"; Check: ShouldWriteMachineLocator
 Root: "HKLM"; Subkey: "Software\EDCD\EDDI"; ValueType: string; ValueName: "Version"; ValueData: "{#MyAppVersion}"; Check: ShouldWriteMachineLocator
@@ -165,6 +168,12 @@ Root: "HKLM"; Subkey: "Software\EDCD\EDDI"; ValueType: string; ValueName: "Versi
 
 var
   LegacySilentMigration: Boolean;
+  VoiceAttackAppsPage: TWizardPage;
+  ApplicationDirText: TNewStaticText;
+  VoiceAttackAppsDirEdit: TNewEdit;
+  VoiceAttackPluginDirText: TNewStaticText;
+  VoiceAttackAppsBrowseButton: TNewButton;
+  SelectedVoiceAttackAppsDir: string;
 
 function NormalizePath(const S: string): string;
 begin
@@ -225,62 +234,6 @@ begin
   end;
 end;
 
-function GetVoiceAttack2EddiDir(Param: string): string;
-var
-  AppsFolder: string;
-begin
-  if TryGetVoiceAttack2AppsDir(AppsFolder) then
-  begin
-    Result := AddBackslash(RemoveBackslashUnlessRoot(AppsFolder)) + '{#MyAppName}';
-    exit;
-  end;
-
-  Result := ExpandConstant('{localappdata}\VoiceAttack2\Apps\{#MyAppName}');
-end;
-
-function IsPerUserVoiceAttackShimInstall: Boolean;
-var
-  ShimDir: string;
-begin
-  ShimDir := GetVoiceAttack2EddiDir('');
-  Result := IsUserProfilePath(ShimDir);
-end;
-
-function GetDefaultInstallDir(Param: string): string;
-begin
-  if IsPerUserVoiceAttackShimInstall then
-  begin
-    Result := ExpandConstant('{localappdata}\EDDI\Application');
-    exit;
-  end;
-
-  Result := ExpandConstant('{autopf}\EDDI');
-end;
-
-function GetDefaultApplicationInstallDir: string;
-begin
-  Result := GetDefaultInstallDir('');
-end;
-
-function ShouldWriteMachineLocator: Boolean;
-begin
-  Result := not IsUserProfilePath(ExpandConstant('{app}'));
-end;
-
-function GetPreviousEddiInstallDir: string;
-begin
-  Result := '';
-
-  RegQueryStringValue(
-    HKLM,
-    'Software\Microsoft\Windows\CurrentVersion\Uninstall\{830C0324-30D8-423C-B5B4-D7EE8D007A79}_is1',
-    'InstallLocation',
-    Result);
-
-  if Trim(Result) <> '' then
-    Result := RemoveBackslashUnlessRoot(Result);
-end;
-
 function TryGetLegacyVoiceAttackAppsDir(var Dir: string): Boolean;
 var
   VAFolder: string;
@@ -307,6 +260,137 @@ begin
     Dir := AddBackslash(RemoveBackslashUnlessRoot(VAFolder)) + 'Apps';
     Result := True;
   end;
+end;
+
+function NormalizeVoiceAttackAppsDir(const Dir: string): string;
+var
+  CleanDir: string;
+  ParentDir: string;
+begin
+  CleanDir := RemoveBackslashUnlessRoot(Dir);
+  ParentDir := RemoveBackslashUnlessRoot(ExtractFileDir(CleanDir));
+
+  if (Lowercase(ExtractFileName(CleanDir)) = Lowercase('{#MyAppName}')) and
+     (Lowercase(ExtractFileName(ParentDir)) = 'apps') then
+  begin
+    Result := ParentDir;
+    exit;
+  end;
+
+  Result := CleanDir;
+end;
+
+function GetPerUserVoiceAttackAppsDir: string;
+begin
+  Result := ExpandConstant('{localappdata}\VoiceAttack2\Apps');
+end;
+
+function ShouldUseDetectedVoiceAttackAppsDirAsDefault(const Dir: string): Boolean;
+begin
+  {
+    In current-user install mode, avoid defaulting to a shared VoiceAttack Apps
+    folder from LastRun. That creates a mixed per-user app / shared plugin install
+    which validation must reject because the shared plugin would point at one
+    user's private application directory.
+  }
+  Result := IsAdminInstallMode or IsUserProfilePath(Dir);
+end;
+
+function GetDefaultVoiceAttackAppsDir: string;
+var
+  AppsFolder: string;
+begin
+  if TryGetVoiceAttack2AppsDir(AppsFolder) and ShouldUseDetectedVoiceAttackAppsDirAsDefault(AppsFolder) then
+  begin
+    Result := RemoveBackslashUnlessRoot(AppsFolder);
+    exit;
+  end;
+
+  if TryGetLegacyVoiceAttackAppsDir(AppsFolder) and ShouldUseDetectedVoiceAttackAppsDirAsDefault(AppsFolder) then
+  begin
+    Result := RemoveBackslashUnlessRoot(AppsFolder);
+    exit;
+  end;
+
+  Result := GetPerUserVoiceAttackAppsDir;
+end;
+
+function GetSelectedVoiceAttackAppsDir: string;
+begin
+  if Trim(SelectedVoiceAttackAppsDir) <> '' then
+  begin
+    Result := NormalizeVoiceAttackAppsDir(SelectedVoiceAttackAppsDir);
+    if (not IsAdminInstallMode) and (not IsUserProfilePath(Result)) then
+      Result := GetPerUserVoiceAttackAppsDir;
+    exit;
+  end;
+
+  Result := GetDefaultVoiceAttackAppsDir;
+end;
+
+function GetVoiceAttack2EddiDir(Param: string): string;
+begin
+  Result := AddBackslash(GetSelectedVoiceAttackAppsDir) + '{#MyAppName}';
+end;
+
+function GetDefaultInstallDir(Param: string): string;
+begin
+  if not IsAdminInstallMode then
+  begin
+    Result := ExpandConstant('{localappdata}\EDDI\Application');
+    exit;
+  end;
+
+  Result := ExpandConstant('{autopf}\EDDI');
+end;
+
+function GetDefaultApplicationInstallDir: string;
+begin
+  Result := GetDefaultInstallDir('');
+end;
+
+procedure EnsureSelectedVoiceAttackAppsDirMatchesInstallMode;
+begin
+  if (not IsAdminInstallMode) and
+     ((Trim(SelectedVoiceAttackAppsDir) = '') or
+      (not IsUserProfilePath(NormalizeVoiceAttackAppsDir(SelectedVoiceAttackAppsDir)))) then
+  begin
+    SelectedVoiceAttackAppsDir := GetPerUserVoiceAttackAppsDir;
+  end;
+end;
+
+function ShouldWriteMachineLocator: Boolean;
+begin
+  Result := IsAdminInstallMode and not IsUserProfilePath(ExpandConstant('{app}'));
+end;
+
+function ShouldWriteMachineRegistry: Boolean;
+begin
+  Result := IsAdminInstallMode;
+end;
+
+function ShouldWriteCurrentUserRegistry: Boolean;
+begin
+  Result := not IsAdminInstallMode;
+end;
+
+function ShouldModifyCurrentUserAreas: Boolean;
+begin
+  Result := not IsAdminInstallMode;
+end;
+
+function GetPreviousEddiInstallDir: string;
+begin
+  Result := '';
+
+  RegQueryStringValue(
+    HKLM,
+    'Software\Microsoft\Windows\CurrentVersion\Uninstall\{830C0324-30D8-423C-B5B4-D7EE8D007A79}_is1',
+    'InstallLocation',
+    Result);
+
+  if Trim(Result) <> '' then
+    Result := RemoveBackslashUnlessRoot(Result);
 end;
 
 function GetLegacyEddiDir: string;
@@ -356,6 +440,297 @@ end;
 function IsAnyVoiceAttackAppsPath(const Dir: string): Boolean;
 begin
   Result := IsLegacyVoiceAttackPath(Dir) or IsVoiceAttack2Path(Dir);
+end;
+
+function IsKnownVoiceAttackAppsDir(const Dir: string): Boolean;
+var
+  AppsDir: string;
+begin
+  Result := False;
+
+  if TryGetVoiceAttack2AppsDir(AppsDir) and SamePath(Dir, AppsDir) then
+  begin
+    Result := True;
+    exit;
+  end;
+
+  if TryGetLegacyVoiceAttackAppsDir(AppsDir) and SamePath(Dir, AppsDir) then
+  begin
+    Result := True;
+  end;
+end;
+
+function LooksLikeVoiceAttackAppsDir(const Dir: string): Boolean;
+begin
+  Result := Lowercase(ExtractFileName(NormalizeVoiceAttackAppsDir(Dir))) = 'apps';
+end;
+
+function ValidateVoiceAttackAppsDir(const AppsDir: string; ShowMessage: Boolean): Boolean;
+begin
+  Result := True;
+
+  if Trim(AppsDir) = '' then
+  begin
+    if ShowMessage then
+      MsgBox('Select the VoiceAttack Apps folder where the EDDI plugin should be installed.', mbError, MB_OK);
+    Result := False;
+    exit;
+  end;
+
+  if not IsKnownVoiceAttackAppsDir(AppsDir) and not LooksLikeVoiceAttackAppsDir(AppsDir) then
+  begin
+    if ShowMessage then
+      MsgBox(
+        'Select the VoiceAttack Apps folder.' + #13#10#13#10 +
+        'The EDDI plugin will be installed under an EDDI subfolder inside of the selected Apps folder.',
+        mbError, MB_OK);
+    Result := False;
+  end;
+end;
+
+function SelectedLocationsRequireAdmin(const AppDir, AppsDir: string): Boolean;
+begin
+  Result := (not IsUserProfilePath(AppDir)) or (not IsUserProfilePath(AppsDir));
+end;
+
+function ValidateInstallLocations(const AppDir, AppsDir: string; ShowMessage: Boolean): Boolean;
+var
+  CleanAppDir: string;
+  CleanAppsDir: string;
+  ShimDir: string;
+begin
+  Result := True;
+  CleanAppDir := RemoveBackslashUnlessRoot(AppDir);
+  CleanAppsDir := NormalizeVoiceAttackAppsDir(AppsDir);
+  ShimDir := AddBackslash(CleanAppsDir) + '{#MyAppName}';
+
+  if not ValidateVoiceAttackAppsDir(CleanAppsDir, ShowMessage) then
+  begin
+    Result := False;
+    exit;
+  end;
+
+  if IsAnyVoiceAttackAppsPath(CleanAppDir) or IsUnderPath(CleanAppDir, CleanAppsDir) then
+  begin
+    if ShowMessage then
+      MsgBox(
+        'The installer will install the EDDI VoiceAttack plugin separately.' + #13#10#13#10 +
+        'Please select a folder outside of the VoiceAttack Apps folder path.',
+        mbError, MB_OK);
+    Result := False;
+    exit;
+  end;
+
+  if IsUnderPath(CleanAppDir, ShimDir) or IsUnderPath(ShimDir, CleanAppDir) then
+  begin
+    if ShowMessage then
+      MsgBox(
+        'The installer will install the EDDI VoiceAttack plugin separately.' + #13#10#13#10 +
+        'Please select a folder outside the VoiceAttack Apps folder tree.',
+        mbError, MB_OK);
+    Result := False;
+    exit;
+  end;
+
+  if (not IsUserProfilePath(ShimDir)) and IsUserProfilePath(CleanAppDir) then
+  begin
+    if ShowMessage then
+      MsgBox(
+        'This install mixes a per-user EDDI application folder with a shared VoiceAttack Apps folder.' + #13#10#13#10 +
+        'For a single-user install, select your per-user VoiceAttack Apps folder:' + #13#10 +
+        ExpandConstant('{localappdata}\VoiceAttack2\Apps') + #13#10#13#10 +
+        'For a shared VoiceAttack Apps folder, restart Setup as administrator and install the EDDI application files to a shared folder such as Program Files.',
+        mbError, MB_OK);
+    Result := False;
+    exit;
+  end;
+
+  if IsAdminInstallMode and
+     (IsUserProfilePath(CleanAppDir) or IsUserProfilePath(CleanAppsDir)) then
+  begin
+    if ShowMessage then
+      MsgBox(
+        'The selected locations are per-user paths, but Setup is running in administrative install mode.' + #13#10#13#10 +
+        'Restart Setup without elevation or select shared machine-wide locations.',
+        mbError, MB_OK);
+    Result := False;
+    exit;
+  end;
+
+  if SelectedLocationsRequireAdmin(CleanAppDir, CleanAppsDir) and not IsAdminInstallMode then
+  begin
+    if ShowMessage then
+      MsgBox(
+        'The selected locations are shared or machine-wide and require administrative install mode.' + #13#10#13#10 +
+        'Restart Setup as administrator or select per-user locations.',
+        mbError, MB_OK);
+    Result := False;
+  end;
+end;
+
+function GetVoiceAttackShimDirForAppsDir(const AppsDir: string): string;
+begin
+  Result := AddBackslash(NormalizeVoiceAttackAppsDir(AppsDir)) + '{#MyAppName}';
+end;
+
+procedure UpdateVoiceAttackPluginDirDisplay;
+begin
+  if VoiceAttackPluginDirText <> nil then
+    VoiceAttackPluginDirText.Caption := GetVoiceAttackShimDirForAppsDir(VoiceAttackAppsDirEdit.Text);
+end;
+
+procedure VoiceAttackAppsDirEditChange(Sender: TObject);
+begin
+  UpdateVoiceAttackPluginDirDisplay;
+end;
+
+procedure VoiceAttackAppsBrowseButtonClick(Sender: TObject);
+var
+  Dir: string;
+begin
+  Dir := VoiceAttackAppsDirEdit.Text;
+  if BrowseForFolder('Select your VoiceAttack Apps folder.', Dir, True) then
+  begin
+    VoiceAttackAppsDirEdit.Text := NormalizeVoiceAttackAppsDir(Dir);
+    UpdateVoiceAttackPluginDirDisplay;
+  end;
+end;
+
+procedure InitializeWizard;
+var
+  LabelTop: Integer;
+  AppDirLabel: TNewStaticText;
+  AppsDirLabel: TNewStaticText;
+  PluginDirLabel: TNewStaticText;
+begin
+  SelectedVoiceAttackAppsDir := GetDefaultVoiceAttackAppsDir;
+  EnsureSelectedVoiceAttackAppsDirMatchesInstallMode;
+  if not IsAdminInstallMode then
+    WizardForm.DirEdit.Text := GetDefaultApplicationInstallDir;
+
+  VoiceAttackAppsPage := CreateCustomPage(
+    wpSelectDir,
+    'VoiceAttack Plugin Location',
+    'Choose where EDDI installs its VoiceAttack plugin.');
+
+  LabelTop := 0;
+
+  AppDirLabel := TNewStaticText.Create(VoiceAttackAppsPage);
+  AppDirLabel.Parent := VoiceAttackAppsPage.Surface;
+  AppDirLabel.Left := 0;
+  AppDirLabel.Top := LabelTop;
+  AppDirLabel.Width := VoiceAttackAppsPage.SurfaceWidth;
+  AppDirLabel.Caption := 'EDDI application folder:';
+
+  ApplicationDirText := TNewStaticText.Create(VoiceAttackAppsPage);
+  ApplicationDirText.Parent := VoiceAttackAppsPage.Surface;
+  ApplicationDirText.Left := 0;
+  ApplicationDirText.Top := AppDirLabel.Top + AppDirLabel.Height + ScaleY(4);
+  ApplicationDirText.Width := VoiceAttackAppsPage.SurfaceWidth;
+  ApplicationDirText.Height := ScaleY(24);
+  ApplicationDirText.AutoSize := False;
+
+  AppsDirLabel := TNewStaticText.Create(VoiceAttackAppsPage);
+  AppsDirLabel.Parent := VoiceAttackAppsPage.Surface;
+  AppsDirLabel.Left := 0;
+  AppsDirLabel.Top := ApplicationDirText.Top + ApplicationDirText.Height + ScaleY(16);
+  AppsDirLabel.Width := VoiceAttackAppsPage.SurfaceWidth;
+  AppsDirLabel.Caption := 'VoiceAttack Apps folder:';
+
+  VoiceAttackAppsDirEdit := TNewEdit.Create(VoiceAttackAppsPage);
+  VoiceAttackAppsDirEdit.Parent := VoiceAttackAppsPage.Surface;
+  VoiceAttackAppsDirEdit.Left := 0;
+  VoiceAttackAppsDirEdit.Top := AppsDirLabel.Top + AppsDirLabel.Height + ScaleY(4);
+  VoiceAttackAppsDirEdit.Width := VoiceAttackAppsPage.SurfaceWidth - ScaleX(84);
+  VoiceAttackAppsDirEdit.Text := SelectedVoiceAttackAppsDir;
+  VoiceAttackAppsDirEdit.OnChange := @VoiceAttackAppsDirEditChange;
+
+  VoiceAttackAppsBrowseButton := TNewButton.Create(VoiceAttackAppsPage);
+  VoiceAttackAppsBrowseButton.Parent := VoiceAttackAppsPage.Surface;
+  VoiceAttackAppsBrowseButton.Left := VoiceAttackAppsDirEdit.Left + VoiceAttackAppsDirEdit.Width + ScaleX(8);
+  VoiceAttackAppsBrowseButton.Top := VoiceAttackAppsDirEdit.Top - ScaleY(1);
+  VoiceAttackAppsBrowseButton.Width := ScaleX(76);
+  VoiceAttackAppsBrowseButton.Height := VoiceAttackAppsDirEdit.Height + ScaleY(2);
+  VoiceAttackAppsBrowseButton.Caption := 'Browse...';
+  VoiceAttackAppsBrowseButton.OnClick := @VoiceAttackAppsBrowseButtonClick;
+
+  PluginDirLabel := TNewStaticText.Create(VoiceAttackAppsPage);
+  PluginDirLabel.Parent := VoiceAttackAppsPage.Surface;
+  PluginDirLabel.Left := 0;
+  PluginDirLabel.Top := VoiceAttackAppsDirEdit.Top + VoiceAttackAppsDirEdit.Height + ScaleY(16);
+  PluginDirLabel.Width := VoiceAttackAppsPage.SurfaceWidth;
+  PluginDirLabel.Caption := 'EDDI VoiceAttack plugin folder (for reference):';
+
+  VoiceAttackPluginDirText := TNewStaticText.Create(VoiceAttackAppsPage);
+  VoiceAttackPluginDirText.Parent := VoiceAttackAppsPage.Surface;
+  VoiceAttackPluginDirText.Left := 0;
+  VoiceAttackPluginDirText.Top := PluginDirLabel.Top + PluginDirLabel.Height + ScaleY(4);
+  VoiceAttackPluginDirText.Width := VoiceAttackAppsPage.SurfaceWidth;
+  VoiceAttackPluginDirText.Height := ScaleY(24);
+  VoiceAttackPluginDirText.AutoSize := False;
+
+  UpdateVoiceAttackPluginDirDisplay;
+end;
+
+procedure CurPageChanged(CurPageID: Integer);
+begin
+  if CurPageID = VoiceAttackAppsPage.ID then
+  begin
+    EnsureSelectedVoiceAttackAppsDirMatchesInstallMode;
+    if not IsAdminInstallMode then
+      WizardForm.DirEdit.Text := GetDefaultApplicationInstallDir;
+    ApplicationDirText.Caption := RemoveBackslashUnlessRoot(WizardDirValue);
+    VoiceAttackAppsDirEdit.Text := GetSelectedVoiceAttackAppsDir;
+    UpdateVoiceAttackPluginDirDisplay;
+  end;
+end;
+
+function ShouldSkipPage(PageID: Integer): Boolean;
+begin
+  Result := (PageID = wpSelectDir) and not IsAdminInstallMode;
+end;
+
+function AppendReadyMemoSection(
+  const ExistingMemo: string;
+  const Section: string;
+  const NewLine: string): string;
+begin
+  Result := ExistingMemo;
+  if Trim(Section) = '' then
+    exit;
+
+  if Result <> '' then
+    Result := Result + NewLine + NewLine;
+
+  Result := Result + Section;
+end;
+
+function UpdateReadyMemo(
+  Space: string;
+  NewLine: string;
+  MemoUserInfoInfo: string;
+  MemoDirInfo: string;
+  MemoTypeInfo: string;
+  MemoComponentsInfo: string;
+  MemoGroupInfo: string;
+  MemoTasksInfo: string): string;
+var
+  PluginDirInfo: string;
+begin
+  EnsureSelectedVoiceAttackAppsDirMatchesInstallMode;
+
+  PluginDirInfo :=
+    Space + 'EDDI VoiceAttack plugin folder:' + NewLine +
+    Space + Space + GetVoiceAttack2EddiDir('');
+
+  Result := '';
+  Result := AppendReadyMemoSection(Result, MemoUserInfoInfo, NewLine);
+  Result := AppendReadyMemoSection(Result, MemoDirInfo, NewLine);
+  Result := AppendReadyMemoSection(Result, PluginDirInfo, NewLine);
+  Result := AppendReadyMemoSection(Result, MemoTypeInfo, NewLine);
+  Result := AppendReadyMemoSection(Result, MemoComponentsInfo, NewLine);
+  Result := AppendReadyMemoSection(Result, MemoGroupInfo, NewLine);
+  Result := AppendReadyMemoSection(Result, MemoTasksInfo, NewLine);
 end;
 
 function IsInAppUpgrade: Boolean;
@@ -480,52 +855,59 @@ var
   TargetDir: string;
 begin
   Result := True;
+  EnsureSelectedVoiceAttackAppsDirMatchesInstallMode;
 
   if CurPageID = wpSelectDir then
   begin
     ChosenDir := RemoveBackslashUnlessRoot(WizardDirValue);
 
-    if IsAnyVoiceAttackAppsPath(ChosenDir) then
+    if not ValidateInstallLocations(ChosenDir, GetSelectedVoiceAttackAppsDir, False) then
     begin
       if WizardSilent then
       begin
         TargetDir := GetDefaultApplicationInstallDir;
 
-        Log(Format('Silent VoiceAttack Apps path detected. Replacing selected application directory "%s" with "%s".', [ChosenDir, TargetDir]));
+        Log(Format('Silent invalid application directory detected. Replacing selected application directory "%s" with "%s".', [ChosenDir, TargetDir]));
 
         WizardForm.DirEdit.Text := TargetDir;
-        LegacySilentMigration := True;
+        if IsAnyVoiceAttackAppsPath(ChosenDir) then
+          LegacySilentMigration := True;
         Result := True;
         exit;
       end;
 
-      MsgBox(
-        'Installing the EDDI application payload into a VoiceAttack Apps folder is no longer supported.' + #13#10#13#10 +
-        'Select a normal EDDI application folder instead. The installer will maintain the VoiceAttack plugin shim separately.',
-        mbError, MB_OK);
-      Result := False;
+      Result := ValidateInstallLocations(ChosenDir, GetSelectedVoiceAttackAppsDir, True);
       exit;
     end;
+  end;
 
-    if (not IsPerUserVoiceAttackShimInstall) and IsUserProfilePath(ChosenDir) then
-    begin
-      if WizardSilent then
-      begin
-        TargetDir := GetDefaultApplicationInstallDir;
+  if CurPageID = VoiceAttackAppsPage.ID then
+  begin
+    SelectedVoiceAttackAppsDir := NormalizeVoiceAttackAppsDir(VoiceAttackAppsDirEdit.Text);
+    VoiceAttackAppsDirEdit.Text := SelectedVoiceAttackAppsDir;
+    UpdateVoiceAttackPluginDirDisplay;
+    Result := ValidateInstallLocations(WizardDirValue, SelectedVoiceAttackAppsDir, True);
+  end;
+end;
 
-        Log(Format('Silent per-user application directory detected for a shared VoiceAttack shim. Replacing selected application directory "%s" with "%s".', [ChosenDir, TargetDir]));
+function PrepareToInstall(var NeedsRestart: Boolean): string;
+var
+  AppDir: string;
+  AppsDir: string;
+begin
+  Result := '';
+  EnsureSelectedVoiceAttackAppsDirMatchesInstallMode;
+  if not IsAdminInstallMode then
+    WizardForm.DirEdit.Text := GetDefaultApplicationInstallDir;
 
-        WizardForm.DirEdit.Text := TargetDir;
-        Result := True;
-        exit;
-      end;
+  AppDir := RemoveBackslashUnlessRoot(WizardDirValue);
+  AppsDir := GetSelectedVoiceAttackAppsDir;
 
-      MsgBox(
-        'The detected VoiceAttack Apps folder is shared or machine-wide, so the EDDI application payload cannot be installed under this user profile.' + #13#10#13#10 +
-        'Select a machine-accessible EDDI application folder instead.',
-        mbError, MB_OK);
-      Result := False;
-    end;
+  if not ValidateInstallLocations(AppDir, AppsDir, False) then
+  begin
+    Result :=
+      'The selected EDDI application and VoiceAttack plugin locations are not valid for this install mode. ' +
+      'Run Setup as administrator for shared machine-wide locations, or choose per-user locations.';
   end;
 end;
 

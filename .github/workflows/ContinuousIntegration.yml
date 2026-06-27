@@ -91,4 +91,4 @@ jobs:
 
     # Perform unit testing
     - name: Test our solution
-      run: dotnet test Tests\Tests.csproj -c ${{ env.build-config }} --no-build --no-restore --filter "TestCategory=UnitTests" -p:SolutionDir="${{ github.workspace }}\" -p:Platform=x64 --blame-hang --blame-hang-timeout 5m --blame-hang-dump-type mini
+      run: dotnet test Tests\Tests.csproj -c ${{ env.build-config }} --no-build --no-restore --filter "TestCategory=UnitTests" -p:SolutionDir="${{ github.workspace }}\" -p:Platform=x64 --results-directory "${{ github.workspace }}\TestResults\${{ env.build-config }}" --logger:"console;verbosity=detailed" --logger:"trx;LogFileName=${{ env.build-config }}-ci-tests.trx" --blame-hang --blame-hang-timeout 5m --blame-hang-dump-type mini

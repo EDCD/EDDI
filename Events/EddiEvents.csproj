@@ -2,19 +2,11 @@
     <PropertyGroup>
         <OutputType>Library</OutputType>
     </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
-        <OutputPath>..\bin\Debug\Application\</OutputPath>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
-        <OutputPath>..\bin\Release\Application\</OutputPath>
-    </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
         <OutputPath>..\bin\Debug\Application\</OutputPath>
-        <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
         <OutputPath>..\bin\Release\Application\</OutputPath>
-        <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
     <ItemGroup>
         <Compile Remove="Properties\**" />

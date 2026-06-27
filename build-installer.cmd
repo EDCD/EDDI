@@ -9,10 +9,6 @@ if not defined iscc (
     exit /b 1
 )
 
-set "sevenZip="
-for %%Z in (7z.exe) do set "sevenZip=%%~$PATH:Z"
-if not defined sevenZip if exist "C:\Program Files\7-Zip\7z.exe" set "sevenZip=C:\Program Files\7-Zip\7z.exe"
-
 set "releaseRoot=bin\Release"
 set "appOutput=%releaseRoot%\Application"
 set "shimOutput=%releaseRoot%\VoiceAttackPluginShim"
