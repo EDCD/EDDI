@@ -33,7 +33,7 @@ jobs:
 
     # Run our generator tests
     - name: Add VSTest.console.exe to PATH
-      uses: darenm/Setup-VSTest@v1.1.1
+      uses: darenm/Setup-VSTest@v1.3
     - name: Generate updated wiki documentation from Tests output
       run: vstest.console.exe Tests/bin/Release/Tests.dll /tests:GeneratorTests /Parallel /InIsolation
 
