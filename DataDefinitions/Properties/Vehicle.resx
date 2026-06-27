@@ -141,4 +141,7 @@
   <data name="CombatMulticrewSRV01" xml:space="preserve">
     <value>Scorpion SRV</value>
   </data>
+  <data name="Lander01" xml:space="preserve">
+    <value>Nomad</value>
+  </data>
 </root>

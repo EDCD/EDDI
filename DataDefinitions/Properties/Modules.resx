@@ -711,4 +711,7 @@
   <data name="VesselHangar_MkII" xml:space="preserve">
     <value>Mark II Vessel Hangar</value>
   </data>
+  <data name="BiologicalScanner_MkII" xml:space="preserve">
+    <value>Mark II Biological Scanner</value>
+  </data>
 </root>

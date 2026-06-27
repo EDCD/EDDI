@@ -1194,9 +1194,9 @@ namespace EddiDataDefinitions
         public static readonly Module Int_mkii_passengercabin_size5_class2 = new( "Int_mkii_passengercabin_size5_class2", "BusinessClassPassengerCabin_MkII", 5, "C", 123151); // Mk II Business Class Passenger Cabin Class 5 Rating C
         public static readonly Module int_mkii_passengercabin_size6_class1 = new( "int_mkii_passengercabin_size6_class1", "EconomyClassPassengerCabin_MkII", 6, "D", 123152); // Mk II Economy Passenger Cabin Class 6 Rating D
         public static readonly Module Int_mkii_passengercabin_size6_class2 = new( "Int_mkii_passengercabin_size6_class2", "BusinessClassPassengerCabin_MkII", 6, "C", 245643); // Mk II Business Class Passenger Cabin Class 6 Rating C
-        public static readonly Module Int_Fighterbaymk2_size7_class1 = new( "Int_Fighterbaymk2_size7_class1", "VesselHangar_MkII", 7, "D", 29426954); // Mk II Vessel Hangar Class 7 Rating D
+        public static readonly Module Int_Fighterbaymk2_size7_class1 = new( "Int_Fighterbaymk2_size7_class1", "VesselHangar_MkII", 7, "D", 3269661); // Mk II Vessel Hangar Class 7 Rating D
         public static readonly Module Int_Fighterbaymk2_size6_class1 = new( "Int_Fighterbaymk2_size6_class1", "VesselHangar_MkII", 6, "D", 2579690); // Mk II Vessel Hangar Class 6 Rating D
-        public static readonly Module Int_Fighterbaymk2_size5_class1 = new( "Int_Fighterbaymk2_size5_class1", "VesselHangar_MkII", 5, "D", 794389); // Mk II Vessel Hangar Class 5 Rating D
+        public static readonly Module Int_Fighterbaymk2_size5_class1 = new( "Int_Fighterbaymk2_size5_class1", "VesselHangar_MkII", 5, "D", 794388); // Mk II Vessel Hangar Class 5 Rating D
 
         // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
         public static readonly Module Hpt_PulseLaser_Fixed_SmallFree = new( "Hpt_PulseLaser_Fixed_SmallFree", "PulseLaser", 1, "F", 0, ModuleMount.Fixed);
@@ -1223,7 +1223,7 @@ namespace EddiDataDefinitions
         public static readonly Module Int_CodexScanner = new( "Int_CodexScanner", "CompositionScanner", 0, "I", -1);
         public static readonly Module Int_Colonisation = new( "Int_Colonisation", "ColonisationSuite", 1, "I", 0 );
 
-        // Fighter modules
+        // Vessel-specific modules
         public static readonly Module Hpt_BeamLaser_Fixed_Empire_Fighter = new( "Hpt_BeamLaser_Fixed_Empire_Fighter", "BeamLaser", 1, "I", 0);
         public static readonly Module Hpt_BeamLaser_Fixed_Fed_Fighter = new( "Hpt_BeamLaser_Fixed_Fed_Fighter", "BeamLaser", 1, "I", 0);
         public static readonly Module Hpt_BeamLaser_Fixed_Indie_Fighter = new( "Hpt_BeamLaser_Fixed_Indie_Fighter", "BeamLaser", 1, "I", 0);
@@ -1248,18 +1248,22 @@ namespace EddiDataDefinitions
         public static readonly Module Independent_Fighter_Armour_Standard = new( "Independent_Fighter_Armour_Standard", "FighterArmour", 1, "I", 0);
         public static readonly Module Int_ShieldGenerator_Fighter_Class1 = new( "Int_ShieldGenerator_Fighter_Class1", "ShieldGenerator", 1, "I", 0);
         public static readonly Module Ext_Emitter_Standard = new( "Ext_Emitter_Standard", "ShieldGenerator", 1, "I", 0);
-
-        // Guardian fighter stuff
-        public static readonly Module ext_emitter_guardian = new( "ext_emitter_guardian", "ShieldGenerator", 1, "I", 0);
-        public static readonly Module gdn_hybrid_fighter_v1_cockpit = new( "gdn_hybrid_fighter_v1_cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module gdn_hybrid_fighter_v2_cockpit = new( "gdn_hybrid_fighter_v2_cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module gdn_hybrid_fighter_v3_cockpit = new( "gdn_hybrid_fighter_v3_cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module gdn_hybrid_fighter_v1_armour_standard = new( "gdn_hybrid_fighter_v1_armour_standard", "FighterArmour", 1, "I", 0);
-        public static readonly Module gdn_hybrid_fighter_v2_armour_standard = new( "gdn_hybrid_fighter_v2_armour_standard", "FighterArmour", 1, "I", 0);
-        public static readonly Module gdn_hybrid_fighter_v3_armour_standard = new( "gdn_hybrid_fighter_v3_armour_standard", "FighterArmour", 1, "I", 0);
-        public static readonly Module hpt_guardiangauss_fixed_gdn_fighter = new( "hpt_guardiangauss_fixed_gdn_fighter", "GuardianGaussCannon", 1, "I", 0);
-        public static readonly Module hpt_guardianplasma_fixed_gdn_fighter = new( "hpt_guardianplasma_fixed_gdn_fighter", "GuardianPlasmaCharger", 1, "I", 0);
-        public static readonly Module hpt_guardianshard_fixed_gdn_fighter = new( "hpt_guardianshard_fixed_gdn_fighter", "ShardCannon", 1, "I", 0);
+        public static readonly Module ext_emitter_guardian = new( "ext_emitter_guardian", "ShieldGenerator", 1, "I", 0); // Guardian fighter
+        public static readonly Module gdn_hybrid_fighter_v1_cockpit = new( "gdn_hybrid_fighter_v1_cockpit", "CockpitCanopy", 1, "I", 0); // Guardian fighter
+        public static readonly Module gdn_hybrid_fighter_v2_cockpit = new( "gdn_hybrid_fighter_v2_cockpit", "CockpitCanopy", 1, "I", 0); // Guardian fighter
+        public static readonly Module gdn_hybrid_fighter_v3_cockpit = new( "gdn_hybrid_fighter_v3_cockpit", "CockpitCanopy", 1, "I", 0); // Guardian fighter
+        public static readonly Module gdn_hybrid_fighter_v1_armour_standard = new( "gdn_hybrid_fighter_v1_armour_standard", "FighterArmour", 1, "I", 0); // Guardian fighter
+        public static readonly Module gdn_hybrid_fighter_v2_armour_standard = new( "gdn_hybrid_fighter_v2_armour_standard", "FighterArmour", 1, "I", 0); // Guardian fighter
+        public static readonly Module gdn_hybrid_fighter_v3_armour_standard = new( "gdn_hybrid_fighter_v3_armour_standard", "FighterArmour", 1, "I", 0); // Guardian fighter
+        public static readonly Module hpt_guardiangauss_fixed_gdn_fighter = new( "hpt_guardiangauss_fixed_gdn_fighter", "GuardianGaussCannon", 1, "I", 0); // Guardian fighter
+        public static readonly Module hpt_guardianplasma_fixed_gdn_fighter = new( "hpt_guardianplasma_fixed_gdn_fighter", "GuardianPlasmaCharger", 1, "I", 0); // Guardian fighter
+        public static readonly Module hpt_guardianshard_fixed_gdn_fighter = new( "hpt_guardianshard_fixed_gdn_fighter", "ShardCannon", 1, "I", 0); // Guardian fighter
+        public static readonly Module vehicle_lander01_pulselaser_fixed_left = new( "vehicle_lander01_pulselaser_fixed_left", "PulseLaser", 1, "I", 0); // Nomad Exploration Vehicle
+        public static readonly Module vehicle_lander01_pulselaser_fixed_right = new( "vehicle_lander01_pulselaser_fixed_right", "PulseLaser", 1, "I", 0); // Nomad Exploration Vehicle
+        public static readonly Module lander01_cockpit = new( "lander01_cockpit", "CockpitCanopy", 1, "I", 0); // Nomad Exploration Vehicle
+        public static readonly Module int_lifesupport_size0_class1 = new( "int_lifesupport_size0_class1", "LifeSupport", 1, "I", 0); // Nomad Exploration Vehicle
+        public static readonly Module int_shieldgenerator_size0_class3 = new( "int_shieldgenerator_size0_class3", "ShieldGenerator", 1, "I", 0); // Nomad Exploration Vehicle
+        public static readonly Module hpt_mkii_biologicalscanner_class1 = new( "hpt_mkii_biologicalscanner_class1", "BiologicalScanner_MkII", 1, "I", 0); // Nomad Exploration Vehicle
 
         // Need pricing confirmed
 

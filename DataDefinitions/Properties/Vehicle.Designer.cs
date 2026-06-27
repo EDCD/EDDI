@@ -19,7 +19,7 @@ namespace EddiDataDefinitions.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Vehicle {
@@ -120,6 +120,15 @@ namespace EddiDataDefinitions.Properties {
         internal static string Independent {
             get {
                 return ResourceManager.GetString("Independent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nomad.
+        /// </summary>
+        internal static string Lander01 {
+            get {
+                return ResourceManager.GetString("Lander01", resourceCulture);
             }
         }
         

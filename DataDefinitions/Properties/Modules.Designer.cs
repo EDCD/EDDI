@@ -178,6 +178,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mark II Biological Scanner.
+        /// </summary>
+        public static string BiologicalScanner_MkII {
+            get {
+                return ResourceManager.GetString("BiologicalScanner_MkII", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Burst Laser.
         /// </summary>
         public static string BurstLaser {
