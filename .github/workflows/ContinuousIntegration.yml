@@ -54,36 +54,22 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: Check out the repository on the workflow runner
-      uses: actions/checkout
+      uses: actions/checkout@v7
 
     # Build
     - name: Add msbuild.exe to PATH
-      uses: microsoft/setup-msbuild
+      uses: microsoft/setup-msbuild@v3
     - name: Add nuget to PATH
-      uses: nuget/setup-nuget
+      uses: nuget/setup-nuget@v4.0
       with:
         nuget-version: 'latest'
-    - name: Retrieve any cached copies of dependencies (these may be stored for up to a week)
-      uses: actions/cache@main
-      with:
-        path: ~/.nuget/packages
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }} #hash of project files with embedded PackageReference data
-        restore-keys: |
-          ${{ runner.os }}-nuget
-    - name: Restore any missing dependencies
-      if: steps.cache.outputs.cache-hit != 'true'
+    - name: Restore dependencies
       run: nuget restore ${{ env.solution }} -NonInteractive
-    - name: Save our updated cache of dependencies
-      if: steps.cache.outputs.cache-hit != 'true'
-      uses: actions/cache/save
-      with:
-        path: ~/.nuget/packages
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }} #hash of project files with embedded PackageReference data
     - name: Build our solution
       id: build
       run: msbuild ${{ env.solution }} /p:Configuration=${{ env.build-config }} /p:Platform=x64 /p:UseSharedCompilation=false /verbosity:minimal
     - name: Upload build artifacts
-      uses: actions/upload-artifact
+      uses: actions/upload-artifact@v7
       with:
         name: ${{ env.build-artifact-name }}
         path: ./bin/Release/*
