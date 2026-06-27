@@ -333,7 +333,7 @@ namespace EddiUI
                     MessageBoxButton.OK,
                     MessageBoxImage.Information );
             }
-            catch ( Exception ex )
+            catch ( Exception )
             {
                 MessageBox.Show(
                     this,
