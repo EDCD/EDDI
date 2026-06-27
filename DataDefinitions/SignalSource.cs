@@ -35,6 +35,8 @@ namespace EddiDataDefinitions
             var CombatZoneThargoidLow = new SignalSource("Warzone_TG_Low");
             var CombatZoneThargoidVeryHigh = new SignalSource("Warzone_TG_VeryHigh");
 
+            var CombatZonePowerplayMedium = new SignalSource("Warzone_Powerplay_Med");
+
             var Aftermath = new SignalSource("USS_Type_Aftermath", "USS_SalvageHaulageWreckage");
             var Anomaly = new SignalSource("USS_Type_Anomaly");
             var Ceremonial = new SignalSource("USS_Type_Ceremonial", "USS_CeremonialComms");

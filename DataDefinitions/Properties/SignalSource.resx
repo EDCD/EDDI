@@ -453,4 +453,8 @@
     <value>Beacon Deployment Site</value>
     <comment>Colonization beacon deployment site signal source</comment>
   </data>
+  <data name="Warzone_Powerplay_Med" xml:space="preserve">
+    <value>Medium Intensity Powerplay Conflict Zone</value>
+    <comment>Power Conflict Zone [Medium Intensity]</comment>
+  </data>
 </root>
