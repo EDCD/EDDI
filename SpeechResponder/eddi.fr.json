@@ -1061,15 +1061,6 @@
       "name": "Fighter docked",
       "description": "Triggered when you dock a fighter with your ship"
     },
-    "Fighter launched": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "Chasseur {OneOf(\"largué\",\"déployé\")} {Occasionally(2,'{OneOf(\"de votre vaisseau\",\"de son vaisseau mère\",\"et paré au combat\")}')}",
-      "default": true,
-      "name": "Fighter launched",
-      "description": "Triggered when you launch a fighter from your ship"
-    },
     "Fighter rebuilt": {
       "enabled": true,
       "priority": 3,
@@ -2447,15 +2438,6 @@
       "name": "SRV docked",
       "description": "Triggered when you dock an SRV with your ship"
     },
-    "SRV launched": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{OneOf(\"Buggy\", \"SRV\")} {OneOf(\"largué\", \"en partance\")}.",
-      "default": true,
-      "name": "SRV launched",
-      "description": "Triggered when you launch an SRV from your ship"
-    },
     "SRV turret": {
       "enabled": true,
       "priority": 3,
@@ -2735,6 +2717,15 @@
       "default": true,
       "name": "Vessel destroyed",
       "description": "Triggered when your vessel (fighter, SRV, etc.) is destroyed"
+    },
+    "Vessel launched": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Vessel launched",
+      "description": "Triggered when you launch a vessel (fighter, SRV, etc.) from your ship"
     },
     "Zone Occupée": {
       "enabled": true,

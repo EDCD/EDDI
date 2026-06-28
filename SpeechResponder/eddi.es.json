@@ -1195,16 +1195,6 @@
       "default": true,
       "includes": null
     },
-    "Fighter launched": {
-      "name": "Fighter launched",
-      "description": "Se activa cuando lanza un caza desde su nave",
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{OneOf(\"lanzando\", \"desacoplando\")} caza {Occasionally(2, \"de la nave\")}.",
-      "default": true,
-      "includes": null
-    },
     "Fighter rebuilt": {
       "name": "Fighter rebuilt",
       "description": "Se activa cuando se ha reconstruido un caza en el hangar de su nave",
@@ -2992,16 +2982,6 @@
       "default": true,
       "includes": null
     },
-    "SRV launched": {
-      "name": "SRV launched",
-      "description": "Se activa cuando se desembarca un VRS desde su nave",
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{SetState('eddi_context_srv_deployed_id', event.id)}\r\n{OneOf(\"Bugui\", Spacialise('VRS'))} {OneOf(\"lanzado\", \"fuera\", \"desplegado\")}.\r\n",
-      "default": true,
-      "includes": null
-    },
     "SRV turret": {
       "name": "SRV turret",
       "description": "Se activa cuando despliega o repliega la torreta de armas de su VRS",
@@ -3358,6 +3338,15 @@
       "default": true,
       "name": "Vessel destroyed",
       "description": "Triggered when your vessel (fighter, SRV, etc.) is destroyed"
+    },
+    "Vessel launched": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Vessel launched",
+      "description": "Triggered when you launch a vessel (fighter, SRV, etc.) from your ship"
     }
   }
 }

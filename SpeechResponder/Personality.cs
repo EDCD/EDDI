@@ -100,6 +100,7 @@ namespace EddiSpeechResponder
             "Entered signal source", // Replaced by "Destination arrived" script
             "Exploration promotion", // Replaced by "Commander promotion" script
             "Federation promotion", // Replaced by "Commander promotion" script
+            "Fighter launched", // Replaced by "Vessel launched"
             "Jumping", // Replaced by "FSD engaged" script
             "List launchbays", // Replaced by "Launchbay report" script
             "Modification applied", // Event deprecated by FDev, no longer written. 
@@ -110,6 +111,7 @@ namespace EddiSpeechResponder
             "Power salary claimed", // Made obsolete in Powerplay 2.0 which no longer includes a weekly salary
             "Ship low fuel", // Accidental duplicate. The real event is called 'Low fuel'
             "Ship repurchased", // Replaced by "Respawned" script
+            "SRV launched", // Replaced by "Vessel launched"
             "Trade promotion", // Replaced by "Commander promotion" script
             "Vehicle destroyed", // Replaced by "Vessel destroyed"
         ];

@@ -1050,15 +1050,6 @@
       "name": "Fighter docked",
       "description": "Triggered when you dock a fighter with your ship"
     },
-    "Fighter launched": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "Fighter {OneOf(\"deploying\", \"launching\")} {Occasionally(2, \"from mothership\")}.",
-      "default": true,
-      "name": "Fighter launched",
-      "description": "Triggered when you launch a fighter from your ship"
-    },
     "Fighter rebuilt": {
       "enabled": true,
       "priority": 3,
@@ -2427,15 +2418,6 @@
       "name": "SRV docked",
       "description": "Triggered when you dock an SRV with your ship"
     },
-    "SRV launched": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{SetState('eddi_context_srv_deployed_id', event.id)}\r\n\r\n{if len(event.srvType) > 0:\r\n    {event.srvType} {OneOf(\"launched\", \"away\")}.\r\n|else: \r\n    {OneOf(\"Buggy\", \"SRV\")} {OneOf(\"launched\", \"away\")}.\r\n}",
-      "default": true,
-      "name": "SRV launched",
-      "description": "Triggered when you launch an SRV from your ship"
-    },
     "SRV turret": {
       "enabled": true,
       "priority": 3,
@@ -2714,6 +2696,15 @@
       "default": true,
       "name": "Vessel destroyed",
       "description": "Triggered when your vessel (fighter, SRV, etc.) is destroyed"
+    },
+    "Vessel launched": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{if event.vesselDescriptionInvariant:\r\n    {event.vesselDescription}\r\n|else:\r\n    Fighter\r\n}\r\n{OneOf(\"deploying\", \"launching\", \"away\")}.",
+      "default": true,
+      "name": "Vessel launched",
+      "description": "Triggered when you launch a vessel (fighter, SRV, etc.) from your ship"
     }
   }
 }

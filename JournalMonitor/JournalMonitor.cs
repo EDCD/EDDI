@@ -3207,28 +3207,10 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "LaunchFighter":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var loadout = JsonParsing.getString(data, "Loadout");
-                                    var fighterId = JsonParsing.getInt(data, "ID");
-                                    var playerControlled = JsonParsing.getBool(data, "PlayerControlled");
-                                    events.Add(new FighterLaunchedEvent(timestamp, loadout, fighterId, playerControlled) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                                handled = VesselLaunchedEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "LaunchSRV":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var loadout = JsonParsing.getString(data, "Loadout");
-                                    var playercontrolled = JsonParsing.getBool(data, "PlayerControlled");
-                                    var id = JsonParsing.getOptionalInt(data, "ID");
-                                    var vehicleDefinition = VesselDefinition.FromEDName(JsonParsing.getString(data, "SRVType"));
-                                    vehicleDefinition.fallbackLocalizedName = JsonParsing.getString(data, "SRVType_Localised");
-                                    events.Add(new SRVLaunchedEvent(timestamp, loadout, playercontrolled, vehicleDefinition, id) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                                handled = VesselLaunchedEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "ModuleInfo":
                                 {

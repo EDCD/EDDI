@@ -1060,15 +1060,6 @@
 			"description": "Triggered when you dock a fighter with your ship",
 			"default": true
 		},
-		"Fighter launched": {
-			"enabled": true,
-			"priority": 3,
-			"responder": true,
-			"script": "Caça\r\n{OneOf(\"{OneOf('saindo', 'sendo lançado')} {Occasionally(2, 'da nave')}\",\r\n       \"lançado\",\r\n       \"liberado\",\r\n       \"saindo\")}.\r\n\r\n{SetState('eddi_state_fighter_docked', false)}",
-			"name": "Fighter launched",
-			"description": "Triggered when you launch a fighter from your ship",
-			"default": true
-		},
 		"Fighter rebuilt": {
 			"enabled": true,
 			"priority": 3,
@@ -2626,15 +2617,6 @@
 			"description": "Triggered when you dock an SRV with your ship",
 			"default": true
 		},
-		"SRV launched": {
-			"enabled": true,
-			"priority": 3,
-			"responder": true,
-			"script": "{OneOf(\"Búgui\", \"V-R-S\")} {OneOf(\"liberado\",\"lançado\",\"ativado\")}.\r\n",
-			"name": "SRV launched",
-			"description": "Triggered when you launch an SRV from your ship",
-			"default": true
-		},
 		"SRV turret": {
 			"enabled": true,
 			"priority": 3,
@@ -2950,6 +2932,15 @@
 			"default": true,
 			"name": "Vessel destroyed",
 			"description": "Triggered when your vessel (fighter, SRV, etc.) is destroyed"
+		},
+		"Vessel launched": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": null,
+			"default": true,
+			"name": "Vessel launched",
+			"description": "Triggered when you launch a vessel (fighter, SRV, etc.) from your ship"
 		}
 	}
 }

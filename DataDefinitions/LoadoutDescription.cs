@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace EddiDataDefinitions
 {
-    class LoadoutDescription : ResourceBasedLocalizedEDName<LoadoutDescription>
+    public class LoadoutDescription : ResourceBasedLocalizedEDName<LoadoutDescription>
     {
         static LoadoutDescription ()
         {
@@ -34,15 +34,15 @@ namespace EddiDataDefinitions
         public static readonly LoadoutDescription Default = new("Default", VesselDefinition.SRV_Scorpion);
         public static readonly LoadoutDescription Base = new("Base", VesselDefinition.Nomad);
 
-        public readonly VesselDefinition vehicle;
+        public readonly VesselDefinition Vessel;
 
         // dummy used to ensure that the static constructor has run
         public LoadoutDescription () : this( "", null )
         { }
 
-        private LoadoutDescription ( string edname, VesselDefinition vehicle ) : base( edname, edname )
+        private LoadoutDescription ( string edname, VesselDefinition vessel ) : base( edname, edname )
         {
-            this.vehicle = vehicle;
+            this.Vessel = vessel;
         }
 
         public static LoadoutDescription FromLoadoutName ( string loadoutName )

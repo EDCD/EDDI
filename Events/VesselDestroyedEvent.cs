@@ -8,7 +8,6 @@ namespace EddiEvents
     [PublicAPI]
     public class VesselDestroyedEvent (
         DateTime timestamp,
-        string vessel,
         VesselDefinition vesselDefinition,
         int id )
         : Event( timestamp, NAME )
@@ -22,14 +21,14 @@ namespace EddiEvents
             @"{ ""timestamp"":""2026-06-23T05:02:23Z"", ""event"":""SRVDestroyed"", ""ID"":329, ""SRVType"":""lander01"", ""SRVType_Localised"":""Nomad"" }"
         };
 
-        [PublicAPI( "The vessel's id" )]
+        [PublicAPI( "The ID assigned to the vessel" )]
         public int id { get; private set; } = id;
 
         [PublicAPI( "The localized vessel description (not available for fighters)" )]
-        public string vesselDescription => vessel == "srv" ? vesselDefinition?.localizedName : null;
+        public string vesselDescription => vesselDefinition?.localizedName;
 
         [PublicAPI( "The invariant vessel description (not available for fighters)" )]
-        public string vesselDescriptionInvariant => vessel == "srv" ? vesselDefinition?.invariantName : null;
+        public string vesselDescriptionInvariant => vesselDefinition?.invariantName;
 
         [PublicAPI( "Whether the vessel is controlled via telepresence" )]
         public bool isTelepresence =>  vesselDefinition?.vesselGroup != VesselGroup.Piloted; // vesselDefinition may be null for fighters
@@ -40,20 +39,22 @@ namespace EddiEvents
         public static bool Handle ( DateTime timestamp, string edType, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {
             if ( fromLogLoad ) { return true; } // Skip handling this during log loading
-            var vessel = edType.Replace("Destroyed", "").ToLowerInvariant(); // e.g. FighterDestroyed or SRVDestroyed
-            if ( vessel == "fighter" )
+
+            var vesselGroup = edType.Replace("Destroyed", "").ToLowerInvariant(); // e.g. FighterDestroyed or SRVDestroyed
+            var id = JsonParsing.getInt(data, "ID");
+
+            if ( vesselGroup == "fighter" )
             {
-                var fighterId = JsonParsing.getInt(data, "ID");
-                events.Add( new VesselDestroyedEvent( timestamp, vessel, null, fighterId ) { raw = line, fromLoad = false } );
+                events.Add( new VesselDestroyedEvent( timestamp, null, id ) { raw = line, fromLoad = false } );
             }
 
-            if ( vessel == "srv" )
+            if ( vesselGroup == "srv" )
             {
-                var srvId = JsonParsing.getInt(data, "ID");
                 var vesselDefinition = VesselDefinition.FromEDName(JsonParsing.getString(data, "SRVType"));
                 vesselDefinition.fallbackLocalizedName = JsonParsing.getString( data, "SRVType_Localised" );
-                events.Add( new VesselDestroyedEvent( timestamp, vessel, vesselDefinition, srvId ) { raw = line, fromLoad = false } );
+                events.Add( new VesselDestroyedEvent( timestamp, vesselDefinition, id ) { raw = line, fromLoad = false } );
             }
+
             return true;
         }
     }

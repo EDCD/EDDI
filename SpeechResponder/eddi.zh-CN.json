@@ -1050,15 +1050,6 @@
       "name": "Fighter docked",
       "description": "Triggered when you dock a fighter with your ship"
     },
-    "Fighter launched": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "舰载机正在{Occasionally(2, \"从飞船\")} {OneOf(\"部署\", \"起飞\")} .",
-      "default": true,
-      "name": "Fighter launched",
-      "description": "Triggered when you launch a fighter from your ship"
-    },
     "Fighter rebuilt": {
       "enabled": true,
       "priority": 3,
@@ -2426,15 +2417,6 @@
       "name": "SRV docked",
       "description": "Triggered when you dock an SRV with your ship"
     },
-    "SRV launched": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{SetState('eddi_context_srv_deployed_id', event.id)}\r\n\r\n{OneOf(\"月球车\", \"SRV\")} {OneOf(\"已出发\", \"出发\")}.",
-      "default": true,
-      "name": "SRV launched",
-      "description": "Triggered when you launch an SRV from your ship"
-    },
     "SRV turret": {
       "enabled": true,
       "priority": 3,
@@ -2714,6 +2696,15 @@
       "default": true,
       "name": "Vessel destroyed",
       "description": "Triggered when your vessel (fighter, SRV, etc.) is destroyed"
+    },
+    "Vessel launched": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Vessel launched",
+      "description": "Triggered when you launch a vessel (fighter, SRV, etc.) from your ship"
     }
   }
 }

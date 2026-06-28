@@ -17,9 +17,12 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Add the ability to select the output audio device (rather than relying on Windows settings). (#2413) (thanks to @Tiberious-Sicae) 
   * Speech Responder
     * Scripts
+      * `Fighter launched` removed.
       * `Limpet check` revised to reference invariant controller name.  
+      * `SRV launched` removed.
       * `Vehicle destroyed` removed.
       * `Vessel destroyed` added.
+      * `Vessel launched` added.
 
 ## 5.0.2
   * Core
