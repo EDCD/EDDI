@@ -747,7 +747,7 @@ namespace EddiUI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to System.
+        ///   Looks up a localized string similar to Automatic.
         /// </summary>
         public static string theme_system {
             get {

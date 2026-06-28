@@ -358,7 +358,7 @@ Please close the other instance and try again.</value>
     <value>Light</value>
   </data>
   <data name="theme_system" xml:space="preserve">
-    <value>System</value>
+    <value>Automatic</value>
   </data>
   <data name="troubleshoot_common_issues" xml:space="preserve">
     <value>Troubleshoot common issues</value>
