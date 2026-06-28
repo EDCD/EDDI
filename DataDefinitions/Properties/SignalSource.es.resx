@@ -277,9 +277,6 @@
     <value>Ruinas Antiguas</value>
     <comment>Ancient (Guardian) Ruins</comment>
   </data>
-  
-  
-  
   <data name="FIXED_EVENT_DEBRIS" xml:space="preserve">
     <value>Campo de Escombros</value>
     <comment>Debris field</comment>
@@ -308,38 +305,4 @@
     <value>Llamada de auxilio</value>
     <comment>Distress Call</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 </root>
