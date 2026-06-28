@@ -2703,25 +2703,7 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "Disembark":
-                                {
-                                    var fromSRV = JsonParsing.getBool(data, "SRV"); // true if getting out of SRV, false if getting out of a ship 
-                                    var fromTaxi = JsonParsing.getBool(data, "Taxi"); //  true when getting out of a transport ship (e.g. Apex Taxi or Frontline Solutions dropship)
-                                    var fromMultiCrew = JsonParsing.getBool(data, "Multicrew"); //  true when getting out of another player’s vessel
-                                    var fromLocalId = JsonParsing.getOptionalInt(data, "ID"); // player’s ship ID (if player's own vessel)
-
-                                    var system = JsonParsing.getString(data, "StarSystem");
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    var body = JsonParsing.getString(data, "Body");
-                                    var bodyId = JsonParsing.getOptionalInt(data, "BodyID");
-                                    var onStation = JsonParsing.getOptionalBool(data, "OnStation");
-                                    var onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
-
-                                    var marketId = JsonParsing.getOptionalLong(data, "MarketID");
-                                    EventParsing.StationNameAndType( data, out var stationName, out _, out var stationModel );  // if at a station
-
-                                    events.Add(new DisembarkEvent(timestamp, fromSRV, fromTaxi, fromMultiCrew, fromLocalId, system, systemAddress, body, bodyId, onStation, onPlanet, stationName, marketId, stationModel) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                                handled = DisembarkEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "DropshipDeploy":
                                 {
