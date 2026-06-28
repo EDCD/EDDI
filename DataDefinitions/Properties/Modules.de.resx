@@ -229,10 +229,6 @@
     <value>Fighter-Panzerung</value>
     <comment>Module FighterArmour</comment>
   </data>
-  <data name="FighterHangar" xml:space="preserve">
-    <value>Fighter-Hangar</value>
-    <comment>Module FighterHangar</comment>
-  </data>
   <data name="FirstClassPassengerCabin" xml:space="preserve">
     <value>Erste-Klasse-Passagierkabine</value>
     <comment>Module FirstClassPassengerCabin</comment>
