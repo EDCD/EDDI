@@ -39,6 +39,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Vessel destroyed` added.
       * `Vessel docked` added.
       * `Vessel launched` added.
+  * VoiceAttack Responder
+    * Events updated as described above.
 
 ## 5.0.2
   * Core
