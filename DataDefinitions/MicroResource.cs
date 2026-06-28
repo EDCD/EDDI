@@ -184,6 +184,9 @@ namespace EddiDataDefinitions
         public static readonly MicroResource PowerResearchData = new( "PowerResearchData", MicroResourceCategory.Data, null, true ); // Power Research Data
         public static readonly MicroResource PowerSpyware = new( "PowerSpyware", MicroResourceCategory.Data, null, true ); // Power Tracker Malware (uploaded data)
 
+        // Operations Data
+        public static readonly MicroResource OperationsStrikeData = new("OperationsStrikeData", MicroResourceCategory.Data, null, false);
+
         // Items
         public static readonly MicroResource AgriculturalProcessSample = new("AgriculturalProcessSample", MicroResourceCategory.Items, 128965837);
         public static readonly MicroResource BiochemicalAgent = new("BiochemicalAgent", MicroResourceCategory.Items, 128961554);

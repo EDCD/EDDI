@@ -1177,6 +1177,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Researcher Location Data.
+        /// </summary>
+        public static string OperationsStrikeData {
+            get {
+                return ResourceManager.GetString("OperationsStrikeData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Opinion Polls.
         /// </summary>
         public static string OpinionPolls {

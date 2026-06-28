@@ -992,4 +992,7 @@
   <data name="nm_seed" xml:space="preserve">
     <value>Unica Seed</value>
   </data>
+  <data name="OperationsStrikeData" xml:space="preserve">
+    <value>Researcher Location Data</value>
+  </data>
 </root>
