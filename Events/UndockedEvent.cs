@@ -19,7 +19,7 @@ namespace EddiEvents
 
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {
-            EventParsing.StationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationModel );
+            EventParsing.StationNameAndType( data, out var stationName, out var stationLocalizedName, out var _ );
             long? marketId = JsonParsing.getLong(data, "MarketID");
             events.Add( new UndockedEvent( timestamp, stationLocalizedName ?? stationName, marketId ) { raw = line, fromLoad = fromLogLoad } );
             return true;
