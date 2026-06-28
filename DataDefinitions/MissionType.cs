@@ -114,6 +114,15 @@ namespace EddiDataDefinitions
         public static readonly MissionType Welcome = new( "Welcome" ); // Welcome missions
         public static readonly MissionType Wing = new( "Wing" ); // Wing missions
 
+        // Operations update special missions
+        public static readonly MissionType BiohazardTakedown = new ( "BiohazardTakedown" ); // Megaship Massacre (Strike): A group of researchers are developing a dangerous weapon, you need to assault the ship, obtain the location and IDs of the researchers and take them out.
+        public static readonly MissionType FirestormRescue = new ( "FirestormRescue" ); // Burning Rescue: There are hostages trapped in a burning station, break the siege and evacuate those that remain. You will need to manage the stations heat to buy enough time to complete the rescue while dealing with the hostile forces trying to stop you.
+        public static readonly MissionType RapidResponse = new( "RapidResponse" ); // Surface Rescue: A planetary port has come under attack, there are still some trapped personnel inside that need rescuing, but you can't delay, a huge hostile enemy fleet is on the way, if the evacuation isn't complete in time there will be no hope for those still trapped inside.
+        public static readonly MissionType ReclamationPoint = new ( "ReclamationPoint" ); // Megaship Massacre (Reclaim): The megaship has been hijacked, your job is to eliminate all hostile forces in and around the megaship so the client can recover it. You'll need your best gear and ship to accomplish your goal.
+        public static readonly MissionType TacticalTakedown = new( "TacticalTakedown" ); // Counter Attack: The client's megaship has been compromised by a rival faction, you will need to board the ship and fight your way through the command deck to obtain the flight records and trace the origin of the attack. Then you'll want to bring your firepower to bear on the general responsible for the attack at their home base.
+        public static readonly MissionType TerminalProsecution = new( "TerminalProsecution" ); // Pirate Hunt: A criminal element is causing trouble in the system, they've been raiding for weeks now, it's your job to clear them out.
+
+
         public bool IncludeInMissionRouting { get; set; }
 
         public bool ClaimAtOrigin { get; set; }
@@ -162,7 +171,7 @@ namespace EddiDataDefinitions
                 .Replace("salvageillegal", "salvage_illegal")
                 ;
 
-            var elements = tidiedName.Split('_').ToList();
+            var elements = tidiedName.Replace(" ", "").Split('_').ToList();
 
             // Skip various obscure mission type elements that we don't need or that we're representing some other way
             elements.RemoveAll( t => t is "mission" or "arriving" or "initial" or "leaving" or "plural" or "name" or "bs" or "ds" or "rs" or "mb" );

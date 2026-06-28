@@ -19,7 +19,7 @@ namespace EddiDataDefinitions.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class MissionType {
@@ -93,6 +93,15 @@ namespace EddiDataDefinitions.Properties {
         internal static string Assassination {
             get {
                 return ResourceManager.GetString("Assassination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Biohazard Takedown.
+        /// </summary>
+        internal static string BiohazardTakedown {
+            get {
+                return ResourceManager.GetString("BiohazardTakedown", resourceCulture);
             }
         }
         
@@ -237,6 +246,15 @@ namespace EddiDataDefinitions.Properties {
         internal static string Evacuation {
             get {
                 return ResourceManager.GetString("Evacuation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Firestorm Rescue.
+        /// </summary>
+        internal static string FirestormRescue {
+            get {
+                return ResourceManager.GetString("FirestormRescue", resourceCulture);
             }
         }
         
@@ -466,6 +484,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rapid Response.
+        /// </summary>
+        internal static string RapidResponse {
+            get {
+                return ResourceManager.GetString("RapidResponse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settlement Reactivation.
         /// </summary>
         internal static string Reboot {
@@ -480,6 +507,15 @@ namespace EddiDataDefinitions.Properties {
         internal static string RebootRestore {
             get {
                 return ResourceManager.GetString("RebootRestore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reclamation Point.
+        /// </summary>
+        internal static string ReclamationPoint {
+            get {
+                return ResourceManager.GetString("ReclamationPoint", resourceCulture);
             }
         }
         
@@ -570,6 +606,24 @@ namespace EddiDataDefinitions.Properties {
         internal static string StartZone {
             get {
                 return ResourceManager.GetString("StartZone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tactical Takedown.
+        /// </summary>
+        internal static string TacticalTakedown {
+            get {
+                return ResourceManager.GetString("TacticalTakedown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Terminal Prosecution.
+        /// </summary>
+        internal static string TerminalProsecution {
+            get {
+                return ResourceManager.GetString("TerminalProsecution", resourceCulture);
             }
         }
         

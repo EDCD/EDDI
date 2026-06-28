@@ -333,4 +333,28 @@
     <value>Colonisation</value>
     <comment>Colonisation mission type (e.g. "Construct primary port")</comment>
   </data>
+  <data name="BiohazardTakedown" xml:space="preserve">
+    <value>Biohazard Takedown</value>
+    <comment>Operations Mission: Biohazard Takedown</comment>
+  </data>
+  <data name="FirestormRescue" xml:space="preserve">
+    <value>Firestorm Rescue</value>
+    <comment>Operations Mission: Firestorm Rescue</comment>
+  </data>
+  <data name="RapidResponse" xml:space="preserve">
+    <value>Rapid Response</value>
+    <comment>Operations Mission: Rapid Response</comment>
+  </data>
+  <data name="ReclamationPoint" xml:space="preserve">
+    <value>Reclamation Point</value>
+    <comment>Operations Mission: Reclamation Point</comment>
+  </data>
+  <data name="TacticalTakedown" xml:space="preserve">
+    <value>Tactical Takedown</value>
+    <comment>Operations Mission: Tactical Takedown</comment>
+  </data>
+  <data name="TerminalProsecution" xml:space="preserve">
+    <value>Terminal Prosecution</value>
+    <comment>Operations Mission: Terminal Prosecution</comment>
+  </data>
 </root>
