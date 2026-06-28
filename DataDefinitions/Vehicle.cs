@@ -20,13 +20,13 @@ namespace EddiDataDefinitions
             get => vehicleDef?.edname;
             set
             {
-                var vDef = VehicleDefinition.FromEDName(value);
+                var vDef = VesselDefinition.FromEDName(value);
                 vehicleDef = vDef;
             }
         }
 
         [JsonIgnore]
-        private VehicleDefinition vehicleDef;
+        private VesselDefinition vehicleDef;
 
         [JsonIgnore]
         public string localizedName => vehicleDef?.localizedName;
@@ -69,7 +69,7 @@ namespace EddiDataDefinitions
                 loadout = (string)json["loadout"],
                 rebuilds = (int)json["rebuilds"],
                 subslot = subslot,
-                vehicleDef = VehicleDefinition.FromEDName(edName),
+                vehicleDef = VesselDefinition.FromEDName(edName),
                 descriptionDef = LoadoutDescription.FromLoadoutName(loadoutName)
             };
 

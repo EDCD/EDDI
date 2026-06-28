@@ -7,16 +7,40 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Add `factions` table to local SQLITE database for better tracking of faction reputation data. 
     * Add support for web speech providers on the `Text-to-Speech` tab. This will allow you to use voice providers which not installed on your local machine (such as Azure Speech Services). 
     * Add support for Azure Speech Services. (thanks to @Tiberius-Sicae)
+    * Add support for the Nomad exploration vessel - a new type type of vessel which blurs some of the distinctions between fighters and SRVs.
     * Add theme support with Light, Dark, and Classic themes, in addition to a "System" theme that matches your Windows OS preference. (thanks to @Tiberius-Sicae)
     * Fix the Type-11 Prospector's specialty limpet controller specialty slot definition. (#2818) (thanks to @Tiberius-Sicae) 
     * The installer now splits the EDDI installation into a separate folder from the VoiceAttack installation. This removes potential conflicts with other VoiceAttack plugins.
   * Crime Monitor 
     * Reviewed and revised crime monitor logic to better handle edge cases and to more accurately track crimes and bounties.
+  * Events
+      * `Embarked` updated to add new field `deployedVessels`.
+      * `Fighter docked` removed - replaced by `Vessel docked`.
+      * `Fighter launched` removed - replaced by `Vessel launched`.
+      * `SRV docked` removed - replaced by `Vessel docked`.
+      * `SRV launched` removed - replaced by `Vessel launched`.
+      * `Touchdown` updated descriptions to use "ship or vessel" rather than "ship"
+      * `Vehicle destroyed` removed - replaced by `Vessel destroyed`.
+      * `Vessel destroyed` added.
+      * `Vessel docked` added.
+      * `Vessel launched` added.
   * Text-To-Speech
     * Add the ability to select the output audio device (rather than relying on Windows settings). (#2413) (thanks to @Tiberious-Sicae) 
   * Speech Responder
     * Scripts
+      * `Embarked` updated to use the `deployedVessels` field to warn the commander if other vessels are still deployed.  
+      * `Fighter docked` removed.
+      * `Fighter launched` removed.
       * `Limpet check` revised to reference invariant controller name.  
+      * `Respawned` updated to move deployed vessel state tracking into EDDI back end. 
+      * `SRV docked` removed.
+      * `SRV launched` removed.
+      * `Vehicle destroyed` removed.
+      * `Vessel destroyed` added.
+      * `Vessel docked` added.
+      * `Vessel launched` added.
+  * VoiceAttack Responder
+    * Events updated as described above.
 
 ## 5.0.2
   * Core

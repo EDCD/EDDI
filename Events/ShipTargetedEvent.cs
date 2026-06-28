@@ -10,7 +10,7 @@ namespace EddiEvents
         DateTime timestamp,
         bool targetlocked,
         Ship shipDef,
-        VehicleDefinition fighterDef,
+        VesselDefinition fighterDef,
         int? scanstage,
         string name,
         CombatRating rank,
@@ -84,7 +84,7 @@ namespace EddiEvents
 
         public Ship ShipDef { get; } = shipDef;
 
-        public VehicleDefinition FighterDef { get; } = fighterDef;
+        public VesselDefinition FighterDef { get; } = fighterDef;
 
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {
@@ -94,14 +94,14 @@ namespace EddiEvents
 
             // Target locked
             var scanstage = JsonParsing.getOptionalInt(data, "ScanStage");
-            VehicleDefinition fighterDef = null;
+            VesselDefinition fighterDef = null;
             Ship shipDef = null;
             var vehicleEDName = JsonParsing.getString(data, "Ship");
             if ( vehicleEDName != null )
             {
                 if ( vehicleEDName.Contains( "fighter", StringComparison.InvariantCultureIgnoreCase ) )
                 {
-                    fighterDef = VehicleDefinition.FromEDName( vehicleEDName );
+                    fighterDef = VesselDefinition.FromEDName( vehicleEDName );
                     fighterDef.fallbackLocalizedName = JsonParsing.getString( data, "Ship_Localised" );
                 }
                 else

@@ -956,7 +956,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if !event.tosrv && state.eddi_context_srv_deployed_id:\r\n    您的 {Spacialise(\"SRV\")} 还没上船, {F('Honorific')}, 如果被抛弃则会被摧毁.\r\n}",
+      "script": null,
       "name": "Embark",
       "description": "Triggered when you transition from on foot to a ship or SRV"
     },
@@ -1040,24 +1040,6 @@
       "default": true,
       "name": "Exploration data sold",
       "description": "Triggered when you sell exploration data"
-    },
-    "Fighter docked": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "舰载机已 {Occasionally(2, \"与飞船\")}{OneOf(\"对接\", \"重新对接\")} .",
-      "default": true,
-      "name": "Fighter docked",
-      "description": "Triggered when you dock a fighter with your ship"
-    },
-    "Fighter launched": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "舰载机正在{Occasionally(2, \"从飞船\")} {OneOf(\"部署\", \"起飞\")} .",
-      "default": true,
-      "name": "Fighter launched",
-      "description": "Triggered when you launch a fighter from your ship"
     },
     "Fighter rebuilt": {
       "enabled": true,
@@ -2070,7 +2052,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if state.eddi_context_srv_deployed_id:\r\n    {SetState('eddi_context_srv_deployed_id', \"\")}\r\n}",
+      "script": null,
       "default": true,
       "name": "Respawned",
       "description": "Triggered when you respawn (either after injury or after handing yourself in to local authorities)"
@@ -2417,24 +2399,6 @@
       "name": "Squadron status",
       "description": "Triggered when your status with a squadron has changed"
     },
-    "SRV docked": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{if state.eddi_context_srv_deployed_id = event.id:\r\n    {SetState('eddi_context_srv_deployed_id', \"\")}\r\n}\r\n\r\n{OneOf(\"月球车\", \"SRV\")}已回收.",
-      "default": true,
-      "name": "SRV docked",
-      "description": "Triggered when you dock an SRV with your ship"
-    },
-    "SRV launched": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{SetState('eddi_context_srv_deployed_id', event.id)}\r\n\r\n{OneOf(\"月球车\", \"SRV\")} {OneOf(\"已出发\", \"出发\")}.",
-      "default": true,
-      "name": "SRV launched",
-      "description": "Triggered when you launch an SRV from your ship"
-    },
     "SRV turret": {
       "enabled": true,
       "priority": 3,
@@ -2659,7 +2623,7 @@
       "script": "{_ Touchdown _}\r\n{_ Triggered when your ship touches down on a planet's surface _}\r\n\r\n\r\n{set body to BodyDetails(state.eddi_context_body_name, state.eddi_context_system_name)}\r\n\r\n{if event.playercontrolled = true && state.eddi_context_last_subject != 'location':\r\n  成功降落 \r\n  {if body.name: 在 {P(body.name, \"body\")} 上}。\r\n|else:\r\n  {ShipName()}已降落\r\n  {if body.name: 在 {P(body.name, \"body\")} 上}。\r\n}\r\n\r\n{Pause(2000)}\r\n\r\n{if type(event.latitude) != \"void\" && type(event.longitude) != \"void\" :\r\n   降落处坐标为纬线{round(event.latitude, 2)}度, 经线{round(event.longitude, 2)}度。\r\n}\r\n\r\n{if reportTemperature && odyssey && state.eddi_context_touchdown_body_name != event.bodyname:\r\n    {_ Convert to desired temperature scale _}\r\n    {if reportTempScale = 0:\r\n        {set surfTemp to round(reportBody.temperature, 0)}\r\n        {set tempScale to \" 开尔文 \"}\r\n    |elif reportTempScale = 1:\r\n        {set surfTemp to round(reportBody.temperature - 273.15, 0)}\r\n        {set tempScale to \" 摄氏度 \"}\r\n    |elif reportTempScale = 2:\r\n        {set surfTemp to round((reportBody.temperature - 273.15) * 9 / 5 + 32, 0)}\r\n        {set tempScale to \" 华氏度 \"}\r\n    }\r\n\r\n    {_ Report dangerous surface temperatures for on-foot expeditions _}\r\n    {set hazardousHighTemp to reportBody.temperature > 426}\r\n    {set hazardousLowTemp to reportBody.temperature < 150}\r\n    {if hazardousHighTemp || hazardousLowTemp:\r\n        警告: 这个 {reportBody.bodytype} 的 {Occasionally(3, \"平均\")}\r\n 表面温度 \r\n        {OneOf(\"极度危险地\", \"危险地\")}\r\n        {if hazardousHighTemp: 高 |else: 低 }\r\n                ,为 {surfTemp} {tempScale}.\r\n    }\r\n}\r\n\r\n{_ Context }\r\n{SetState('eddi_context_last_subject', 'ship')}\r\n{SetState('eddi_context_last_action', 'land')}\r\n{SetState('eddi_context_touchdown_body_name', event.bodyname)}",
       "default": true,
       "name": "Touchdown",
-      "description": "Triggered when your ship touches down on a planet's surface"
+      "description": "Triggered when your ship or vessel touches down on a planet's surface"
     },
     "Trade data purchased": {
       "enabled": true,
@@ -2706,14 +2670,32 @@
       "name": "VA initialized",
       "description": "Triggered when the VoiceAttack plugin is initialized"
     },
-    "Vehicle destroyed": {
+    "Vessel destroyed": {
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if state.eddi_context_srv_deployed_id = event.id:\r\n    {SetState('eddi_context_srv_deployed_id', \"\")}\r\n}\r\n\r\n{Pause(2000)}\r\n{OneOf(\"神经连接\", \"连接\", \"上行链路\")} {OneOf(\"发生终断\", \"已终止\")}.",
+      "script": null,
       "default": true,
-      "name": "Vehicle destroyed",
-      "description": "Triggered when your vehicle is destroyed"
+      "name": "Vessel destroyed",
+      "description": "Triggered when your vessel (fighter, SRV, etc.) is destroyed"
+    },
+    "Vessel docked": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Vessel docked",
+      "description": "Triggered when you dock a vessel (fighter, SRV, etc) with your ship"
+    },
+    "Vessel launched": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Vessel launched",
+      "description": "Triggered when you launch a vessel (fighter, SRV, etc.) from your ship"
     }
   }
 }

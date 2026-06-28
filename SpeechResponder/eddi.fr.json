@@ -967,7 +967,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if !event.tosrv && state.eddi_context_srv_deployed_id:\r\n    Your {Spacialise(\"SRV\")} is still deployed, {F('Honorific')}, and will be destroyed if abandoned.\r\n}",
+      "script": "{if !event.tosrv:\r\n    {if len(event.deployedVessels) > 0:\r\n        {set deployedVessels to []}\r\n        {for vessel in event.deployedVessels:\r\n            {set deployedVessels to cat(deployedVessels, [vessel.name])} \r\n        }               \r\n        Your {List(deployedVessels)} \r\n        {if len(event.deployedVessels) = 1: is |else: are }\r\n        still deployed, {F('Honorific')}, and will be destroyed if abandoned.\r\n    }\r\n}",
       "name": "Embark",
       "description": "Triggered when you transition from on foot to a ship or SRV"
     },
@@ -1051,24 +1051,6 @@
       "default": true,
       "name": "Exploration data sold",
       "description": "Triggered when you sell exploration data"
-    },
-    "Fighter docked": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "Le chasseur {OneOf(\"a apponté\",\"est arrimé\")} {Occasionally(2,'{OneOf(\"à votre vaisseau\",\"à son vaisseau mère\")}')}.",
-      "default": true,
-      "name": "Fighter docked",
-      "description": "Triggered when you dock a fighter with your ship"
-    },
-    "Fighter launched": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "Chasseur {OneOf(\"largué\",\"déployé\")} {Occasionally(2,'{OneOf(\"de votre vaisseau\",\"de son vaisseau mère\",\"et paré au combat\")}')}",
-      "default": true,
-      "name": "Fighter launched",
-      "description": "Triggered when you launch a fighter from your ship"
     },
     "Fighter rebuilt": {
       "enabled": true,
@@ -2091,7 +2073,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if state.eddi_context_srv_deployed_id:\r\n    {SetState('eddi_context_srv_deployed_id', \"\")}\r\n}",
+      "script": null,
       "default": true,
       "name": "Respawned",
       "description": "Triggered when you respawn (either after injury or after handing yourself in to local authorities)"
@@ -2438,24 +2420,6 @@
       "name": "Squadron status",
       "description": "Triggered when your status with a squadron has changed"
     },
-    "SRV docked": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{OneOf(\"Buggy\", \"SRV\")} {OneOf(\"rentré\", \"parké\", \"rangé\", \"docké\")}.",
-      "default": true,
-      "name": "SRV docked",
-      "description": "Triggered when you dock an SRV with your ship"
-    },
-    "SRV launched": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{OneOf(\"Buggy\", \"SRV\")} {OneOf(\"largué\", \"en partance\")}.",
-      "default": true,
-      "name": "SRV launched",
-      "description": "Triggered when you launch an SRV from your ship"
-    },
     "SRV turret": {
       "enabled": true,
       "priority": 3,
@@ -2680,7 +2644,7 @@
       "script": "{set body to BodyDetails(state.eddi_context_body_name, state.eddi_context_system_name)}\r\n\r\n{if event.playercontrolled = true:\r\n  Attérissage sur {P(body.name)} réussi.\r\n  {Pause(2000)}\r\n|else:\r\n  {ShipName()} a attéri sur {P(body.name)}.\r\n}\r\n\r\n{if type(event.latitude) != \"void\" && type(event.longitude) != \"void\" :\r\nles coordonées sont {round(event.longitude, 2)} degrés de longitude, {round(event.latitude, 2)} degrés de latitude.\r\n}",
       "default": true,
       "name": "Touchdown",
-      "description": "Triggered when your ship touches down on a planet's surface"
+      "description": "Triggered when your ship or vessel touches down on a planet's surface"
     },
     "Trade data purchased": {
       "enabled": true,
@@ -2727,14 +2691,32 @@
       "name": "VA initialized",
       "description": "Triggered when the VoiceAttack plugin is initialized"
     },
-    "Vehicle destroyed": {
+    "Vessel destroyed": {
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Pause(2000)}\r\n {OneOf(\"Votre {event.vehicle} a été perdu\", \"{event.vehicle} détruit\", \"perte de votre {event.vehicle}\")}",
+      "script": null,
       "default": true,
-      "name": "Vehicle destroyed",
-      "description": "Triggered when your vehicle is destroyed"
+      "name": "Vessel destroyed",
+      "description": "Triggered when your vessel (fighter, SRV, etc.) is destroyed"
+    },
+    "Vessel docked": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Vessel docked",
+      "description": "Triggered when you dock a vessel (fighter, SRV, etc) with your ship"
+    },
+    "Vessel launched": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Vessel launched",
+      "description": "Triggered when you launch a vessel (fighter, SRV, etc.) from your ship"
     },
     "Zone Occupée": {
       "enabled": true,

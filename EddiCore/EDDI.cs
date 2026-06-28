@@ -973,21 +973,13 @@ namespace EddiCore
                     {
                         passEvent = eventEnteredCQC();
                     }
-                    else if ( @event is SRVLaunchedEvent )
+                    else if ( @event is VesselDockedEvent vesselDockedEvent)
                     {
-                        passEvent = eventSRVLaunched();
+                        passEvent = eventVesselDocked( vesselDockedEvent );
                     }
-                    else if ( @event is SRVDockedEvent )
+                    else if ( @event is VesselLaunchedEvent vesselLaunchedEvent )
                     {
-                        passEvent = eventSRVDocked();
-                    }
-                    else if ( @event is FighterLaunchedEvent fighterLaunchedEvent )
-                    {
-                        passEvent = eventFighterLaunched( fighterLaunchedEvent );
-                    }
-                    else if ( @event is FighterDockedEvent )
-                    {
-                        passEvent = eventFighterDocked();
+                        passEvent = eventVesselLaunched( vesselLaunchedEvent );
                     }
                     else if ( @event is StarScannedEvent starScannedEvent )
                     {
@@ -1005,9 +997,9 @@ namespace EddiCore
                     {
                         passEvent = await eventRingHotspotsAsync( ringHotspotsEvent ).ConfigureAwait( false );
                     }
-                    else if ( @event is VehicleDestroyedEvent )
+                    else if ( @event is VesselDestroyedEvent vesselDestroyedEvent )
                     {
-                        passEvent = eventVehicleDestroyed();
+                        passEvent = eventVesselDestroyed( vesselDestroyedEvent );
                     }
                     else if ( @event is NearSurfaceEvent nearSurfaceEvent )
                     {
@@ -1065,6 +1057,10 @@ namespace EddiCore
                     {
                         passEvent = eventSignalDetected( signalDetectedEvent );
                     }
+                    else if ( @event is DiedEvent )
+                    {
+                        passEvent = eventDied();
+                    }
 
                     // Additional processing is over, send to the event monitors and responders if required
                     if ( passEvent )
@@ -1085,6 +1081,12 @@ namespace EddiCore
                     await Instance.ObtainResponder( "Inara Responder" ).HandleAsync( @event ).ConfigureAwait( false );
                 }
             }
+        }
+
+        private bool eventDied ()
+        {
+            GameState.DeployedVessels.Clear();
+            return true;
         }
 
         private async Task<bool> eventRingHotspotsAsync ( RingHotspotsEvent @event )
@@ -1195,25 +1197,29 @@ namespace EddiCore
             return true;
         }
 
-        private bool eventEmbark(EmbarkEvent embarkEvent) 
+        private bool eventEmbark(EmbarkEvent @event) 
         {
-            if (embarkEvent.tomulticrew)
+            if (@event.tomulticrew)
             {
                 Vehicle = Constants.VEHICLE_MULTICREW;
             }
-            if (embarkEvent.toship)
+            if (@event.toship)
             {
                 Vehicle = Constants.VEHICLE_SHIP;
             }
-            if (embarkEvent.tosrv)
+            if (@event.tosrv)
             {
                 Vehicle = Constants.VEHICLE_SRV;
             }
-            if (embarkEvent.totransport)
+            if (@event.totransport)
             {
                 Vehicle = Constants.VEHICLE_TAXI;
             }
+
+            @event.deployedVessels = GameState.DeployedVessels.Values.RemoveNulls().ToList();
+
             Logging.Info($"Embarked to {Vehicle}");
+
             return true;
         }
 
@@ -2271,6 +2277,8 @@ namespace EddiCore
                 Vehicle = Constants.VEHICLE_SHIP;
             }
 
+            GameState.DeployedVessels.Clear();
+
             return true;
         }
 
@@ -2374,39 +2382,39 @@ namespace EddiCore
             return true;
         }
 
-        private bool eventSRVLaunched()
-        {
-            // SRV is always player-controlled, so we are in the SRV
-            Vehicle = Constants.VEHICLE_SRV;
-            return true;
-        }
-
-        private bool eventSRVDocked()
+        private bool eventVesselDocked(VesselDockedEvent @event)
         {
             // We are back in the ship
             Vehicle = Constants.VEHICLE_SHIP;
+
+            GameState.DeployedVessels.Remove( @event.id );
+            @event.deployedVessels = GameState.DeployedVessels.Values.RemoveNulls().ToList();
+
             return true;
         }
 
-        private bool eventFighterLaunched(FighterLaunchedEvent theEvent)
+        private bool eventVesselLaunched(VesselLaunchedEvent @event)
         {
-            Vehicle = theEvent.playercontrolled 
-                ? Constants.VEHICLE_FIGHTER // We are in the fighter
+            Vehicle = @event.playercontrolled 
+                ? ( @event.vesselDefinition?.vesselGroup == VesselGroup.Piloted 
+                    ? Constants.VEHICLE_SRV 
+                    : Constants.VEHICLE_FIGHTER ) // We are in a vessel (either a piloted SRV or telepresence fighter). 
                 : Constants.VEHICLE_SHIP; // We are (still) in the ship
+
+            GameState.DeployedVessels.Add( @event.id, @event.vesselDefinition );
+
             return true;
         }
 
-        private bool eventFighterDocked()
+        private bool eventVesselDestroyed(VesselDestroyedEvent @event)
         {
-            // We are back in the ship
-            Vehicle = Constants.VEHICLE_SHIP;
-            return true;
-        }
+            if ( @event.vesselDefinition.vesselGroup == VesselGroup.Telepresence )
+            {
+                // We are back in the ship
+                Vehicle = Constants.VEHICLE_SHIP;
+            }
 
-        private bool eventVehicleDestroyed()
-        {
-            // We are back in the ship
-            Vehicle = Constants.VEHICLE_SHIP;
+            GameState.DeployedVessels.Remove( @event.id );
             return true;
         }
 

@@ -288,7 +288,7 @@ namespace EddiJournalMonitor
                                 handled = ShipInterdictedEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "FighterDestroyed":
-                                handled = VehicleDestroyedEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
+                                handled = VesselDestroyedEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "HeatDamage":
                                 handled = HeatDamageEvent.Handle( timestamp, line, ref events, fromLogLoad );
@@ -306,15 +306,14 @@ namespace EddiJournalMonitor
                                 handled = KilledEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "ShieldState":
-                                // As of September 2019, this event no longer appears to be written to the Player Journal.
-                                // We still generate an event via the Status Monitor.
+                                // We generate this event via the Status Monitor.
                                 handled = true;
                                 break;
                             case "ShipTargeted":
                                 handled = ShipTargetedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "SRVDestroyed":
-                                handled = VehicleDestroyedEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
+                                handled = VesselDestroyedEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "UnderAttack":
                                 handled = UnderAttackEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
@@ -2704,25 +2703,7 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "Disembark":
-                                {
-                                    var fromSRV = JsonParsing.getBool(data, "SRV"); // true if getting out of SRV, false if getting out of a ship 
-                                    var fromTaxi = JsonParsing.getBool(data, "Taxi"); //  true when getting out of a transport ship (e.g. Apex Taxi or Frontline Solutions dropship)
-                                    var fromMultiCrew = JsonParsing.getBool(data, "Multicrew"); //  true when getting out of another player’s vessel
-                                    var fromLocalId = JsonParsing.getOptionalInt(data, "ID"); // player’s ship ID (if player's own vessel)
-
-                                    var system = JsonParsing.getString(data, "StarSystem");
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    var body = JsonParsing.getString(data, "Body");
-                                    var bodyId = JsonParsing.getOptionalInt(data, "BodyID");
-                                    var onStation = JsonParsing.getOptionalBool(data, "OnStation");
-                                    var onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
-
-                                    var marketId = JsonParsing.getOptionalLong(data, "MarketID");
-                                    EventParsing.StationNameAndType( data, out var stationName, out _, out var stationModel );  // if at a station
-
-                                    events.Add(new DisembarkEvent(timestamp, fromSRV, fromTaxi, fromMultiCrew, fromLocalId, system, systemAddress, body, bodyId, onStation, onPlanet, stationName, marketId, stationModel) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                                handled = DisembarkEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "DropshipDeploy":
                                 {
@@ -2738,25 +2719,7 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "Embark":
-                                {
-                                    var toSRV = JsonParsing.getBool(data, "SRV"); // true if getting out of SRV, false if getting out of a ship 
-                                    var toTaxi = JsonParsing.getBool(data, "Taxi"); //  true when getting out of a transport ship (e.g. Apex Taxi or Frontline Solutions dropship)
-                                    var toMultiCrew = JsonParsing.getBool(data, "Multicrew"); //  true when getting out of another player’s vessel
-                                    var toLocalId = JsonParsing.getOptionalInt(data, "ID"); // player’s ship ID (if player's own vessel)
-
-                                    var system = JsonParsing.getString(data, "StarSystem");
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    var body = JsonParsing.getString(data, "Body");
-                                    var bodyId = JsonParsing.getOptionalInt(data, "BodyID");
-                                    var onStation = JsonParsing.getOptionalBool(data, "OnStation");
-                                    var onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
-
-                                    var marketId = JsonParsing.getOptionalLong(data, "MarketID");
-                                    EventParsing.StationNameAndType( data, out var stationName, out _, out var stationModel );  // if at a station
-
-                                    events.Add(new EmbarkEvent(timestamp, toSRV, toTaxi, toMultiCrew, toLocalId, system, systemAddress, body, bodyId, onStation, onPlanet, stationName, marketId, stationModel) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                                handled = EmbarkEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "FCMaterials":
                                 {
@@ -3078,24 +3041,10 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "DockFighter":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var fighterId = JsonParsing.getInt(data, "ID");
-                                    events.Add(new FighterDockedEvent(timestamp, fighterId) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                                handled = VesselDockedEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "DockSRV":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var srvId = JsonParsing.getOptionalInt(data, "ID");
-                                    var vehicleDefinition = VehicleDefinition.FromEDName(JsonParsing.getString(data, "SRVType"));
-                                    vehicleDefinition.fallbackLocalizedName = JsonParsing.getString(data, "SRVType_Localised");
-                                    events.Add(new SRVDockedEvent(timestamp, vehicleDefinition, srvId) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                                handled = VesselDockedEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "EndCrewSession":
                                 {
@@ -3108,14 +3057,7 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "FighterRebuilt":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var loadout = JsonParsing.getString(data, "Loadout");
-                                    var fighterId = JsonParsing.getInt(data, "ID");
-                                    events.Add(new FighterRebuiltEvent(timestamp, loadout, fighterId) { raw = line, fromLoad = fromLogLoad });
-                                    handled = true;
-                                }
+                                handled = FighterRebuiltEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "Friends":
                                 {
@@ -3207,28 +3149,10 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "LaunchFighter":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var loadout = JsonParsing.getString(data, "Loadout");
-                                    var fighterId = JsonParsing.getInt(data, "ID");
-                                    var playerControlled = JsonParsing.getBool(data, "PlayerControlled");
-                                    events.Add(new FighterLaunchedEvent(timestamp, loadout, fighterId, playerControlled) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                                handled = VesselLaunchedEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "LaunchSRV":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var loadout = JsonParsing.getString(data, "Loadout");
-                                    var playercontrolled = JsonParsing.getBool(data, "PlayerControlled");
-                                    var id = JsonParsing.getOptionalInt(data, "ID");
-                                    var vehicleDefinition = VehicleDefinition.FromEDName(JsonParsing.getString(data, "SRVType"));
-                                    vehicleDefinition.fallbackLocalizedName = JsonParsing.getString(data, "SRVType_Localised");
-                                    events.Add(new SRVLaunchedEvent(timestamp, loadout, playercontrolled, vehicleDefinition, id) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                                handled = VesselLaunchedEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "ModuleInfo":
                                 {

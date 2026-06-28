@@ -1091,7 +1091,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if !event.tosrv && GetState(\"eddi_context_srv_deployed_id\"):\r\n    Tu {Spacialise(\"VRS\")} sigue fuera, {F('Honorific')}. Si lo abandonas, se destruirá.\r\n}",
+      "script": null,
       "default": true,
       "includes": null
     },
@@ -1184,26 +1184,6 @@
       "script": "{set recompensa to humaniza(event.reward)}\n{if len(event.systems) > 1:{set s to \"s\"}}\n\n{set report to cat(\"Datos de exploración de \", len(event.systems), \" sistema\", s, \" vendidos por \", recompensa, \" \", de, \" créditos\")}\n\n{if event.bonus > 0:\n    {set report to cat(report, \", con una bonificación adicional de \", event.bonus, \" créditos por primer descubrimiento\")}\n}\n\n{leeTexto(report)}.",
       "default": true,
       "includes": ".Preferencias; .Runtime"
-    },
-    "Fighter docked": {
-      "name": "Fighter docked",
-      "description": "Se activa cuando atracas el caza en tu nave.",
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "Caza {OneOf(\"embarcado\", \"acoplado\")} {Occasionally(2, \"en la nave\")}.",
-      "default": true,
-      "includes": null
-    },
-    "Fighter launched": {
-      "name": "Fighter launched",
-      "description": "Se activa cuando lanza un caza desde su nave",
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{OneOf(\"lanzando\", \"desacoplando\")} caza {Occasionally(2, \"de la nave\")}.",
-      "default": true,
-      "includes": null
     },
     "Fighter rebuilt": {
       "name": "Fighter rebuilt",
@@ -2590,7 +2570,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if GetState(\"eddi_context_srv_deployed_id\"):\r\n    {SetState('eddi_context_srv_deployed_id', \"\")}\r\n}",
+      "script": null,
       "default": true,
       "includes": null
     },
@@ -2982,26 +2962,6 @@
       "default": true,
       "includes": null
     },
-    "SRV docked": {
-      "name": "SRV docked",
-      "description": "Se activa cuando embarca un VRS en su nave",
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{if GetState(\"eddi_context_srv_deployed_id\") = event.id:\r\n    {SetState('eddi_context_srv_deployed_id', \"\")}\r\n}\r\n{OneOf(\"Bugui\", Spacialise('VRS'))} {OneOf(\"embarcado\",\"recogido\")}\r\n",
-      "default": true,
-      "includes": null
-    },
-    "SRV launched": {
-      "name": "SRV launched",
-      "description": "Se activa cuando se desembarca un VRS desde su nave",
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{SetState('eddi_context_srv_deployed_id', event.id)}\r\n{OneOf(\"Bugui\", Spacialise('VRS'))} {OneOf(\"lanzado\", \"fuera\", \"desplegado\")}.\r\n",
-      "default": true,
-      "includes": null
-    },
     "SRV turret": {
       "name": "SRV turret",
       "description": "Se activa cuando despliega o repliega la torreta de armas de su VRS",
@@ -3350,15 +3310,32 @@
       "default": true,
       "includes": null
     },
-    "Vehicle destroyed": {
-      "name": "Vehicle destroyed",
-      "description": "Se activa cuando su vehículo ha resultado destruido",
+    "Vessel destroyed": {
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if GetState(\"eddi_context_srv_deployed_id\") = event.id:\n    {SetState('eddi_context_srv_deployed_id', \"\")}\n}\n\n{Pause(2000)}\n{OneOf(\"Enlace neuronal\", \"Enlace\", \"Nexo\", \"Vínculo\")} {OneOf(\"finalizado\", \"desactivado\")}.",
+      "script": null,
       "default": true,
-      "includes": null
+      "name": "Vessel destroyed",
+      "description": "Triggered when your vessel (fighter, SRV, etc.) is destroyed"
+    },
+    "Vessel docked": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Vessel docked",
+      "description": "Triggered when you dock a vessel (fighter, SRV, etc) with your ship"
+    },
+    "Vessel launched": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Vessel launched",
+      "description": "Triggered when you launch a vessel (fighter, SRV, etc.) from your ship"
     }
   }
 }

@@ -966,7 +966,7 @@
 			"enabled": true,
 			"priority": 3,
 			"responder": true,
-			"script": "{if !event.tosrv && state.eddi_context_srv_deployed_id:\r\n    Your {Spacialise(\"SRV\")} is still deployed, {F('Honorific')}, and will be destroyed if abandoned.\r\n}",
+			"script": null,
 			"name": "Embark",
 			"description": "Triggered when you transition from on foot to a ship or SRV"
 		},
@@ -1049,24 +1049,6 @@
 			"script": "Dados de exploração de {len(event.systems)} sistema{if len(event.systems) > 1:s} vendido{if len(event.systems) > 1:s} por {Humanise(event.reward)} créditos\r\n\r\n{if len(event.firsts) > 0:\r\n    , com um bônus de {Humanise(event.bonus)} créditos por\r\n    {set N to event.firsts}\r\n    {if len(event.firsts) = 1: {set N to:uma}}\r\n    {N} primeir{if len(event.firsts) = 1:a |else:as} descobert{if len(event.firsts) = 1:a |else:as}\r\n}\r\n.\r\n",
 			"name": "Exploration data sold",
 			"description": "Triggered when you sell exploration data",
-			"default": true
-		},
-		"Fighter docked": {
-			"enabled": true,
-			"priority": 3,
-			"responder": true,
-			"script": "Caça\r\n{OneOf(\"pousado {Occasionally(2, 'na nave')}\",\"de volta a bordo\")}.\r\n\r\n{SetState('eddi_state_fighter_docked', true)}\r\n",
-			"name": "Fighter docked",
-			"description": "Triggered when you dock a fighter with your ship",
-			"default": true
-		},
-		"Fighter launched": {
-			"enabled": true,
-			"priority": 3,
-			"responder": true,
-			"script": "Caça\r\n{OneOf(\"{OneOf('saindo', 'sendo lançado')} {Occasionally(2, 'da nave')}\",\r\n       \"lançado\",\r\n       \"liberado\",\r\n       \"saindo\")}.\r\n\r\n{SetState('eddi_state_fighter_docked', false)}",
-			"name": "Fighter launched",
-			"description": "Triggered when you launch a fighter from your ship",
 			"default": true
 		},
 		"Fighter rebuilt": {
@@ -2270,7 +2252,7 @@
 			"enabled": true,
 			"priority": 3,
 			"responder": true,
-			"script": "{if state.eddi_context_srv_deployed_id:\r\n    {SetState('eddi_context_srv_deployed_id', \"\")}\r\n}",
+			"script": null,
 			"default": true,
 			"name": "Respawned",
 			"description": "Triggered when you respawn (either after injury or after handing yourself in to local authorities)"
@@ -2617,24 +2599,6 @@
 			"description": "Triggered when your status with a squadron has changed",
 			"default": true
 		},
-		"SRV docked": {
-			"enabled": true,
-			"priority": 3,
-			"responder": true,
-			"script": "{OneOf(\"Búgui\", \"V-R-S\")} {OneOf(\"atracado\",\"em segurança {Occasionally(2,'a bordo')}\")}.\r\n",
-			"name": "SRV docked",
-			"description": "Triggered when you dock an SRV with your ship",
-			"default": true
-		},
-		"SRV launched": {
-			"enabled": true,
-			"priority": 3,
-			"responder": true,
-			"script": "{OneOf(\"Búgui\", \"V-R-S\")} {OneOf(\"liberado\",\"lançado\",\"ativado\")}.\r\n",
-			"name": "SRV launched",
-			"description": "Triggered when you launch an SRV from your ship",
-			"default": true
-		},
 		"SRV turret": {
 			"enabled": true,
 			"priority": 3,
@@ -2894,7 +2858,7 @@
 			"responder": true,
 			"script": "{set body to BodyDetails(state.eddi_context_body_name, state.eddi_context_system_name)}\r\n\r\n{F(\"Body Name Tidy\")}\r\n\r\n{if state.loading = false:\r\n    {if event.playercontrolled = true:\r\n        Pousamos {if body: em {body} }.\r\n        {OneOf(\"Motores\",\"Propulsores\")} {OneOf(\"desligados\",\"desativados\")}.\r\n    |else:\r\n        {ShipName()} pousou\r\n        {if body: em {body} }.\r\n    }\r\n    {Pause(2000)}\r\n|else:\r\n    {SetState('loading', false)}\r\n}\r\n\r\n{if type(event.latitude) != \"void\" && type(event.longitude) != \"void\" && event.playercontrolled:\r\n    {Occasionally(2,\"Localização\")}\r\n    {Occasionally(2,\"Planetária\")}\r\n    {Occasionally(2,\"Atual\")}, \r\n\r\n    coordenadas {Occasionally(2,\"são\")}\r\n    {round(event.longitude,4)} graus de longitude,\r\n    {round(event.latitude,4)} graus de latitude.\r\n}\r\n",
 			"name": "Touchdown",
-			"description": "Triggered when your ship touches down on a planet's surface",
+			"description": "Triggered when your ship or vessel touches down on a planet's surface",
 			"default": true
 		},
 		"Trade data purchased": {
@@ -2942,14 +2906,32 @@
 			"description": "Triggered when the VoiceAttack plugin is initialized",
 			"default": true
 		},
-		"Vehicle destroyed": {
+		"Vessel destroyed": {
 			"enabled": true,
 			"priority": 3,
 			"responder": true,
-			"script": "{Pause(2000)}\r\n{set LINK to:{OneOf(\"Link neural\", \"Link\", \"Conecsão\")}}\r\n{LINK}\r\n{OneOf(\" terminad\", \" desativad\")}{if LINK = \"Conecsão\":a |else:o}",
-			"name": "Vehicle destroyed",
-			"description": "Triggered when your vehicle is destroyed",
-			"default": true
+			"script": null,
+			"default": true,
+			"name": "Vessel destroyed",
+			"description": "Triggered when your vessel (fighter, SRV, etc.) is destroyed"
+		},
+		"Vessel docked": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": null,
+			"default": true,
+			"name": "Vessel docked",
+			"description": "Triggered when you dock a vessel (fighter, SRV, etc) with your ship"
+		},
+		"Vessel launched": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": null,
+			"default": true,
+			"name": "Vessel launched",
+			"description": "Triggered when you launch a vessel (fighter, SRV, etc.) from your ship"
 		}
 	}
 }
