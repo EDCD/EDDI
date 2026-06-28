@@ -221,10 +221,6 @@
     <value>Blindaje de caza</value>
     <comment>Module FighterArmour</comment>
   </data>
-  <data name="FighterHangar" xml:space="preserve">
-    <value>Hangar de caza</value>
-    <comment>Module FighterHangar</comment>
-  </data>
   <data name="FirstClassPassengerCabin" xml:space="preserve">
     <value>Cabina de pasajero primera clase</value>
     <comment>Module FirstClassPassengerCabin</comment>
