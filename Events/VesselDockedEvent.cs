@@ -30,6 +30,9 @@ namespace EddiEvents
         [PublicAPI( "Whether the vessel is controlled via telepresence" )]
         public bool isTelepresence => vesselDefinition?.vesselGroup != VesselGroup.Piloted; // vesselDefinition may be null for fighters
 
+        [PublicAPI( "A list of currently deployed vessels, as objects" )]
+        public List<VesselDefinition> deployedVessels { get; set; }
+
         // Not intended to be public facing at this time
         public VesselDefinition vesselDefinition { get; private set; } = vesselDefinition;
 

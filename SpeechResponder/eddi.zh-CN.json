@@ -956,7 +956,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if !event.tosrv && state.eddi_context_srv_deployed_id:\r\n    您的 {Spacialise(\"SRV\")} 还没上船, {F('Honorific')}, 如果被抛弃则会被摧毁.\r\n}",
+      "script": null,
       "name": "Embark",
       "description": "Triggered when you transition from on foot to a ship or SRV"
     },

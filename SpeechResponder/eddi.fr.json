@@ -967,7 +967,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if !event.tosrv && state.eddi_context_srv_deployed_id:\r\n    Your {Spacialise(\"SRV\")} is still deployed, {F('Honorific')}, and will be destroyed if abandoned.\r\n}",
+      "script": "{if !event.tosrv:\r\n    {if len(event.deployedVessels) > 0:\r\n        {set deployedVessels to []}\r\n        {for vessel in event.deployedVessels:\r\n            {set deployedVessels to cat(deployedVessels, [vessel.name])} \r\n        }               \r\n        Your {List(deployedVessels)} \r\n        {if len(event.deployedVessels) = 1: is |else: are }\r\n        still deployed, {F('Honorific')}, and will be destroyed if abandoned.\r\n    }\r\n}",
       "name": "Embark",
       "description": "Triggered when you transition from on foot to a ship or SRV"
     },

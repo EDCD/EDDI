@@ -966,7 +966,7 @@
 			"enabled": true,
 			"priority": 3,
 			"responder": true,
-			"script": "{if !event.tosrv && state.eddi_context_srv_deployed_id:\r\n    Your {Spacialise(\"SRV\")} is still deployed, {F('Honorific')}, and will be destroyed if abandoned.\r\n}",
+			"script": null,
 			"name": "Embark",
 			"description": "Triggered when you transition from on foot to a ship or SRV"
 		},

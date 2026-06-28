@@ -1091,7 +1091,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if !event.tosrv && GetState(\"eddi_context_srv_deployed_id\"):\r\n    Tu {Spacialise(\"VRS\")} sigue fuera, {F('Honorific')}. Si lo abandonas, se destruirá.\r\n}",
+      "script": null,
       "default": true,
       "includes": null
     },

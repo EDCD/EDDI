@@ -152,6 +152,14 @@ namespace EddiCore.GameState
         }
         private string _vehicle = Constants.VEHICLE_SHIP;
 
+        public Dictionary<int, VesselDefinition> DeployedVessels
+        {
+            get => _DeployedVessels ?? [];
+            internal set => SetChild( ref _DeployedVessels, value, ref _deployedVesselshangedHandler, nameof( DeployedVessels ) );
+        }
+        private Dictionary<int, VesselDefinition> _DeployedVessels = [];
+        private PropertyChangedEventHandler _deployedVesselshangedHandler;
+
         private void SetValue<T> ( ref T field, T value, [CallerMemberName] string propertyName = null )
         {
             if ( EqualityComparer<T>.Default.Equals( field, value ) ) { return; }

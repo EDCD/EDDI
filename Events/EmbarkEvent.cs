@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -53,7 +54,7 @@ namespace EddiEvents
         [PublicAPI("True if embarking to your own ship")]
         public bool toship => toLocalId != null && !tosrv && !totransport && !tomulticrew;
 
-        [PublicAPI("True if embarking to an SRV")]
+        [PublicAPI("True if embarking to an SRV or Nomad")]
         public bool tosrv { get; } = toSrv;
 
         [PublicAPI("True if embarking to a transport ship (e.g. taxi or dropship)")]
@@ -65,9 +66,33 @@ namespace EddiEvents
         [PublicAPI("True if embarking from a planet")]
         public bool? onplanet { get; } = onPlanet;
 
+        [PublicAPI( "A list of currently deployed vessels, as objects" )]
+        public List<VesselDefinition> deployedVessels { get; set; }
+
         // Not intended to be user facing
         public int? toLocalId { get; } = toLocalId;
 
         public StationModel stationModel { get; } = stationModel;
+
+        public static bool Handle ( DateTime timestamp, string edType, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var toSRV = JsonParsing.getBool(data, "SRV"); // true if getting out of SRV, false if getting out of a ship 
+            var toTaxi = JsonParsing.getBool(data, "Taxi"); //  true when getting out of a transport ship (e.g. Apex Taxi or Frontline Solutions dropship)
+            var toMultiCrew = JsonParsing.getBool(data, "Multicrew"); //  true when getting out of another player’s vessel
+            var toLocalId = JsonParsing.getOptionalInt(data, "ID"); // player’s ship ID (if player's own vessel)
+
+            var system = JsonParsing.getString(data, "StarSystem");
+            var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+            var body = JsonParsing.getString(data, "Body");
+            var bodyId = JsonParsing.getOptionalInt(data, "BodyID");
+            var onStation = JsonParsing.getOptionalBool(data, "OnStation");
+            var onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
+
+            var marketId = JsonParsing.getOptionalLong(data, "MarketID");
+            EventParsing.StationNameAndType( data, out var stationName, out _, out var stationModel );  // if at a station
+
+            events.Add( new EmbarkEvent( timestamp, toSRV, toTaxi, toMultiCrew, toLocalId, system, systemAddress, body, bodyId, onStation, onPlanet, stationName, marketId, stationModel ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
+        }
     }
 }

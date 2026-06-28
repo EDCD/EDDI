@@ -14,9 +14,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Crime Monitor 
     * Reviewed and revised crime monitor logic to better handle edge cases and to more accurately track crimes and bounties.
   * Events
+      * `Embarked` updated to add new field `deployedVessels`.
       * `Fighter docked` removed - replaced by `Vessel docked`.
       * `Fighter launched` removed - replaced by `Vessel launched`.
-      * `Respawned` updated to move deployed vessel state tracking into EDDI back end. 
       * `SRV docked` removed - replaced by `Vessel docked`.
       * `SRV launched` removed - replaced by `Vessel launched`.
       * `Touchdown` updated descriptions to use "ship or vessel" rather than "ship"
@@ -28,8 +28,17 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Add the ability to select the output audio device (rather than relying on Windows settings). (#2413) (thanks to @Tiberious-Sicae) 
   * Speech Responder
     * Scripts
+      * `Embarked` updated to use the `deployedVessels` field to warn the commander if other vessels are still deployed.  
+      * `Fighter docked` removed.
+      * `Fighter launched` removed.
       * `Limpet check` revised to reference invariant controller name.  
-
+      * `Respawned` updated to move deployed vessel state tracking into EDDI back end. 
+      * `SRV docked` removed.
+      * `SRV launched` removed.
+      * `Vehicle destroyed` removed.
+      * `Vessel destroyed` added.
+      * `Vessel docked` added.
+      * `Vessel launched` added.
 
 ## 5.0.2
   * Core

@@ -1,4 +1,5 @@
 using EddiDataDefinitions;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace EddiCore.GameState
@@ -22,5 +23,6 @@ namespace EddiCore.GameState
         FleetCarrier SquadronCarrier { get; }
         Ship CurrentShip { get; }
         string Vehicle { get; }
+        Dictionary<int, VesselDefinition> DeployedVessels { get; }
     }
 }
