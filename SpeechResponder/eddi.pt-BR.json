@@ -2858,7 +2858,7 @@
 			"responder": true,
 			"script": "{set body to BodyDetails(state.eddi_context_body_name, state.eddi_context_system_name)}\r\n\r\n{F(\"Body Name Tidy\")}\r\n\r\n{if state.loading = false:\r\n    {if event.playercontrolled = true:\r\n        Pousamos {if body: em {body} }.\r\n        {OneOf(\"Motores\",\"Propulsores\")} {OneOf(\"desligados\",\"desativados\")}.\r\n    |else:\r\n        {ShipName()} pousou\r\n        {if body: em {body} }.\r\n    }\r\n    {Pause(2000)}\r\n|else:\r\n    {SetState('loading', false)}\r\n}\r\n\r\n{if type(event.latitude) != \"void\" && type(event.longitude) != \"void\" && event.playercontrolled:\r\n    {Occasionally(2,\"Localização\")}\r\n    {Occasionally(2,\"Planetária\")}\r\n    {Occasionally(2,\"Atual\")}, \r\n\r\n    coordenadas {Occasionally(2,\"são\")}\r\n    {round(event.longitude,4)} graus de longitude,\r\n    {round(event.latitude,4)} graus de latitude.\r\n}\r\n",
 			"name": "Touchdown",
-			"description": "Triggered when your ship touches down on a planet's surface",
+			"description": "Triggered when your ship or vessel touches down on a planet's surface",
 			"default": true
 		},
 		"Trade data purchased": {

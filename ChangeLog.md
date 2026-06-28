@@ -16,6 +16,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Events
       * `Fighter docked` removed - replaced by `Vessel docked`.
       * `Fighter launched` removed - replaced by `Vessel launched`.
+      * `Touchdown` updated descriptions to use "ship or vessel" rather than "ship"
       * `SRV docked` removed - replaced by `Vessel docked`.
       * `SRV launched` removed - replaced by `Vessel launched`.
       * `Vehicle destroyed` removed - replaced by `Vessel destroyed`.
