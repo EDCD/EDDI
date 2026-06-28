@@ -205,10 +205,6 @@
     <value>Vadász páncélzat</value>
     <comment>Module FighterArmour</comment>
   </data>
-  <data name="FighterHangar" xml:space="preserve">
-    <value>Vadász hangár</value>
-    <comment>Module FighterHangar</comment>
-  </data>
   <data name="FirstClassPassengerCabin" xml:space="preserve">
     <value>Első osztályú utaskabin</value>
     <comment>Module FirstClassPassengerCabin</comment>
