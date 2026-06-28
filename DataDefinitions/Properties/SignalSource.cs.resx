@@ -277,9 +277,6 @@
     <value>Ztarodávné ruiny</value>
     <comment>Ancient (Guardian) Ruins</comment>
   </data>
-  
-  
-  
   <data name="FIXED_EVENT_DEBRIS" xml:space="preserve">
     <value>Pole trosek</value>
     <comment>Debris field</comment>
@@ -292,7 +289,6 @@
     <value>Havarovaná lod thargoidů</value>
     <comment>Thargoid crash site</comment>
   </data>
-  
   <data name="FIXED_EVENT_DISTRIBUTIONCENTRE" xml:space="preserve">
     <value>Distribuční centrum</value>
     <comment>Distribution Centre</comment>
@@ -305,38 +301,4 @@
     <value>Volání v nouzi</value>
     <comment>Distress Call</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 </root>
