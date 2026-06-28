@@ -177,7 +177,6 @@
     <value>Objectif de mission</value>
     <comment>MissionTarget signal</comment>
   </data>
-  
   <data name="USS_Type_DistressSignal" xml:space="preserve">
     <value>Appel de détresse</value>
     <comment>Distress signal</comment>
@@ -274,9 +273,6 @@
     <value>Ruines Antiques</value>
     <comment>Ancient (Guardian) Ruins</comment>
   </data>
-  
-  
-  
   <data name="FIXED_EVENT_DEBRIS" xml:space="preserve">
     <value>Champ de débris</value>
     <comment>Debris field</comment>
@@ -289,7 +285,6 @@
     <value>Vaisseau Thargoïd écrasé</value>
     <comment>Thargoid crash site</comment>
   </data>
-  
   <data name="FIXED_EVENT_DISTRIBUTIONCENTRE" xml:space="preserve">
     <value>Centre de distribution</value>
     <comment>Distribution Centre</comment>
@@ -302,38 +297,4 @@
     <value>Appel de détresse</value>
     <comment>Distress Call</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 </root>
