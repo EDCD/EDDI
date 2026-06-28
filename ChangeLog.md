@@ -16,9 +16,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Events
       * `Fighter docked` removed - replaced by `Vessel docked`.
       * `Fighter launched` removed - replaced by `Vessel launched`.
-      * `Touchdown` updated descriptions to use "ship or vessel" rather than "ship"
+      * `Respawned` updated to move deployed vessel state tracking into EDDI back end. 
       * `SRV docked` removed - replaced by `Vessel docked`.
       * `SRV launched` removed - replaced by `Vessel launched`.
+      * `Touchdown` updated descriptions to use "ship or vessel" rather than "ship"
       * `Vehicle destroyed` removed - replaced by `Vessel destroyed`.
       * `Vessel destroyed` added.
       * `Vessel docked` added.

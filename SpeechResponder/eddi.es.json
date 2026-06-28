@@ -2570,7 +2570,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if GetState(\"eddi_context_srv_deployed_id\"):\r\n    {SetState('eddi_context_srv_deployed_id', \"\")}\r\n}",
+      "script": null,
       "default": true,
       "includes": null
     },
