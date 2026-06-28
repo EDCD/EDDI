@@ -2727,14 +2727,14 @@
       "name": "VA initialized",
       "description": "Triggered when the VoiceAttack plugin is initialized"
     },
-    "Vehicle destroyed": {
+    "Vessel destroyed": {
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Pause(2000)}\r\n {OneOf(\"Votre {event.vehicle} a été perdu\", \"{event.vehicle} détruit\", \"perte de votre {event.vehicle}\")}",
+      "script": null,
       "default": true,
-      "name": "Vehicle destroyed",
-      "description": "Triggered when your vehicle is destroyed"
+      "name": "Vessel destroyed",
+      "description": "Triggered when your vessel (fighter, SRV, etc.) is destroyed"
     },
     "Zone Occupée": {
       "enabled": true,

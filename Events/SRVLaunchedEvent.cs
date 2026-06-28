@@ -9,7 +9,7 @@ namespace EddiEvents
         DateTime timestamp,
         string loadout,
         bool playercontrolled,
-        VehicleDefinition vehicleDefinition,
+        VesselDefinition vehicleDefinition,
         int? id )
         : Event( timestamp, NAME )
     {
@@ -33,6 +33,6 @@ namespace EddiEvents
         public string srvTypeInvariant => vehicleDefinition?.invariantName;
 
         // Not intended to be public facing at this time
-        public VehicleDefinition vehicleDefinition { get; private set; } = vehicleDefinition;
+        public VesselDefinition vehicleDefinition { get; private set; } = vehicleDefinition;
     }
 }

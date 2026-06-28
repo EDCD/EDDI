@@ -288,7 +288,7 @@ namespace EddiJournalMonitor
                                 handled = ShipInterdictedEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "FighterDestroyed":
-                                handled = VehicleDestroyedEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
+                                handled = VesselDestroyedEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "HeatDamage":
                                 handled = HeatDamageEvent.Handle( timestamp, line, ref events, fromLogLoad );
@@ -314,7 +314,7 @@ namespace EddiJournalMonitor
                                 handled = ShipTargetedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "SRVDestroyed":
-                                handled = VehicleDestroyedEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
+                                handled = VesselDestroyedEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "UnderAttack":
                                 handled = UnderAttackEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
@@ -3091,7 +3091,7 @@ namespace EddiJournalMonitor
                                     if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
                                     var srvId = JsonParsing.getOptionalInt(data, "ID");
-                                    var vehicleDefinition = VehicleDefinition.FromEDName(JsonParsing.getString(data, "SRVType"));
+                                    var vehicleDefinition = VesselDefinition.FromEDName(JsonParsing.getString(data, "SRVType"));
                                     vehicleDefinition.fallbackLocalizedName = JsonParsing.getString(data, "SRVType_Localised");
                                     events.Add(new SRVDockedEvent(timestamp, vehicleDefinition, srvId) { raw = line, fromLoad = fromLogLoad });
                                 }
@@ -3224,7 +3224,7 @@ namespace EddiJournalMonitor
                                     var loadout = JsonParsing.getString(data, "Loadout");
                                     var playercontrolled = JsonParsing.getBool(data, "PlayerControlled");
                                     var id = JsonParsing.getOptionalInt(data, "ID");
-                                    var vehicleDefinition = VehicleDefinition.FromEDName(JsonParsing.getString(data, "SRVType"));
+                                    var vehicleDefinition = VesselDefinition.FromEDName(JsonParsing.getString(data, "SRVType"));
                                     vehicleDefinition.fallbackLocalizedName = JsonParsing.getString(data, "SRVType_Localised");
                                     events.Add(new SRVLaunchedEvent(timestamp, loadout, playercontrolled, vehicleDefinition, id) { raw = line, fromLoad = fromLogLoad });
                                 }

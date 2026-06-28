@@ -7,6 +7,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Add `factions` table to local SQLITE database for better tracking of faction reputation data. 
     * Add support for web speech providers on the `Text-to-Speech` tab. This will allow you to use voice providers which not installed on your local machine (such as Azure Speech Services). 
     * Add support for Azure Speech Services. (thanks to @Tiberius-Sicae)
+    * Add support for Nomad exploration vessels.
     * Add theme support with Light, Dark, and Classic themes, in addition to a "System" theme that matches your Windows OS preference. (thanks to @Tiberius-Sicae)
     * Fix the Type-11 Prospector's specialty limpet controller specialty slot definition. (#2818) (thanks to @Tiberius-Sicae) 
     * The installer now splits the EDDI installation into a separate folder from the VoiceAttack installation. This removes potential conflicts with other VoiceAttack plugins.
@@ -17,6 +18,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech Responder
     * Scripts
       * `Limpet check` revised to reference invariant controller name.  
+      * `Vehicle destroyed` removed.
+      * `Vessel destroyed` added.
 
 ## 5.0.2
   * Core

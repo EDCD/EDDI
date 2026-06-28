@@ -2706,14 +2706,14 @@
       "name": "VA initialized",
       "description": "Triggered when the VoiceAttack plugin is initialized"
     },
-    "Vehicle destroyed": {
+    "Vessel destroyed": {
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if state.eddi_context_srv_deployed_id = event.id:\r\n    {SetState('eddi_context_srv_deployed_id', \"\")}\r\n}\r\n\r\n{Pause(2000)}\r\n{OneOf(\"神经连接\", \"连接\", \"上行链路\")} {OneOf(\"发生终断\", \"已终止\")}.",
+      "script": null,
       "default": true,
-      "name": "Vehicle destroyed",
-      "description": "Triggered when your vehicle is destroyed"
+      "name": "Vessel destroyed",
+      "description": "Triggered when your vessel (fighter, SRV, etc.) is destroyed"
     }
   }
 }

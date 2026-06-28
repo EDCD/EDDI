@@ -3350,15 +3350,14 @@
       "default": true,
       "includes": null
     },
-    "Vehicle destroyed": {
-      "name": "Vehicle destroyed",
-      "description": "Se activa cuando su vehículo ha resultado destruido",
+    "Vessel destroyed": {
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if GetState(\"eddi_context_srv_deployed_id\") = event.id:\n    {SetState('eddi_context_srv_deployed_id', \"\")}\n}\n\n{Pause(2000)}\n{OneOf(\"Enlace neuronal\", \"Enlace\", \"Nexo\", \"Vínculo\")} {OneOf(\"finalizado\", \"desactivado\")}.",
+      "script": null,
       "default": true,
-      "includes": null
+      "name": "Vessel destroyed",
+      "description": "Triggered when your vessel (fighter, SRV, etc.) is destroyed"
     }
   }
 }

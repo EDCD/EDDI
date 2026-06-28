@@ -94,23 +94,24 @@ namespace EddiSpeechResponder
 
         private static readonly string[] obsoleteScriptKeys =
         [
-            "Entered signal source", // Replaced by "Destination arrived" script
-            "Jumping", // Replaced by "FSD engaged" script
-            "Crew member role change", // This name is mismatched to the key (should be "changed"), so EDDI couldn't match the script name to the .json key correctly. The default script has been corrected.
-            "Ship low fuel", // Accidental duplicate. The real event is called 'Low fuel'
-            "Modification applied", // Event deprecated by FDev, no longer written. 
-            "List launchbays", // Replaced by "Launchbay report" script
             "Combat promotion", // Replaced by "Commander promotion" script
+            "Crew member role change", // This name is mismatched to the key (should be "changed"), so EDDI couldn't match the script name to the .json key correctly. The default script has been corrected.
             "Empire promotion", // Replaced by "Commander promotion" script
+            "Entered signal source", // Replaced by "Destination arrived" script
             "Exploration promotion", // Replaced by "Commander promotion" script
             "Federation promotion", // Replaced by "Commander promotion" script
-            "Trade promotion", // Replaced by "Commander promotion" script
-            "Ship repurchased", // Replaced by "Respawned" script
+            "Jumping", // Replaced by "FSD engaged" script
+            "List launchbays", // Replaced by "Launchbay report" script
+            "Modification applied", // Event deprecated by FDev, no longer written. 
             "Power commodity fast tracked", // Made obsolete in Powerplay 2.0 which no longer allows fast tracking commodity allocations
             "Power defected", // Made obsolete in Powerplay 2.0 which no longer includes a defection mechanic.
             "Power expansion vote cast", // Made obsolete in Powerplay 2.0 which no longer includes a voting system
             "Power preparation vote cast", // Made obsolete in Powerplay 2.0 which no longer includes a voting system
-            "Power salary claimed" // Made obsolete in Powerplay 2.0 which no longer includes a weekly salary
+            "Power salary claimed", // Made obsolete in Powerplay 2.0 which no longer includes a weekly salary
+            "Ship low fuel", // Accidental duplicate. The real event is called 'Low fuel'
+            "Ship repurchased", // Replaced by "Respawned" script
+            "Trade promotion", // Replaced by "Commander promotion" script
+            "Vehicle destroyed", // Replaced by "Vessel destroyed"
         ];
 
         private static readonly string[] ignoredEventKeys =

@@ -2942,14 +2942,14 @@
 			"description": "Triggered when the VoiceAttack plugin is initialized",
 			"default": true
 		},
-		"Vehicle destroyed": {
+		"Vessel destroyed": {
 			"enabled": true,
 			"priority": 3,
 			"responder": true,
-			"script": "{Pause(2000)}\r\n{set LINK to:{OneOf(\"Link neural\", \"Link\", \"Conecsão\")}}\r\n{LINK}\r\n{OneOf(\" terminad\", \" desativad\")}{if LINK = \"Conecsão\":a |else:o}",
-			"name": "Vehicle destroyed",
-			"description": "Triggered when your vehicle is destroyed",
-			"default": true
+			"script": null,
+			"default": true,
+			"name": "Vessel destroyed",
+			"description": "Triggered when your vessel (fighter, SRV, etc.) is destroyed"
 		}
 	}
 }

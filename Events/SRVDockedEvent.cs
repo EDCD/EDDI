@@ -5,7 +5,7 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class SRVDockedEvent ( DateTime timestamp, VehicleDefinition vehicleDefinition, int? id )
+    public class SRVDockedEvent ( DateTime timestamp, VesselDefinition vehicleDefinition, int? id )
         : Event( timestamp, NAME )
     {
         public const string NAME = "SRV docked";
@@ -22,6 +22,6 @@ namespace EddiEvents
         public string srvTypeInvariant => vehicleDefinition?.invariantName;
 
         // Not intended to be public facing at this time
-        public VehicleDefinition vehicleDefinition { get; private set; } = vehicleDefinition;
+        public VesselDefinition vehicleDefinition { get; private set; } = vehicleDefinition;
     }
 }

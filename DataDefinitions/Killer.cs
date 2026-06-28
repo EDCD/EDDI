@@ -28,7 +28,7 @@ namespace EddiDataDefinitions
         private Ship killerShip { get; }
 
         [JsonIgnore]
-        private VehicleDefinition killerVehicle { get; }
+        private VesselDefinition killerVehicle { get; }
 
         [JsonIgnore]
         private NpcSuitLoadout killerNpcSuitLoadout { get; }
@@ -46,7 +46,7 @@ namespace EddiDataDefinitions
             if ( killerShip != null ) { return; }
 
             // Might be a SRV or Fighter
-            killerVehicle = VehicleDefinition.EDNameExists(edModel) ? VehicleDefinition.FromEDName(edModel) : null;
+            killerVehicle = VesselDefinition.EDNameExists(edModel) ? VesselDefinition.FromEDName(edModel) : null;
             if ( killerVehicle != null ) { return; }
 
             // Might be an on foot commander

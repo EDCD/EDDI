@@ -39,7 +39,7 @@ namespace EddiEvents
                 var targetShip = ShipDefinitions.FromEDModel(target, false);
 
                 // Might be a SRV or Fighter
-                var targetVehicle = VehicleDefinition.EDNameExists(target) ? VehicleDefinition.FromEDName(target) : null;
+                var targetVehicle = VesselDefinition.EDNameExists(target) ? VesselDefinition.FromEDName(target) : null;
 
                 // Might be an on foot commander
                 var targetCmdrSuit = Suit.EDNameExists(target) ? Suit.FromEDName(target) : null;

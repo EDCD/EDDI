@@ -1005,9 +1005,9 @@ namespace EddiCore
                     {
                         passEvent = await eventRingHotspotsAsync( ringHotspotsEvent ).ConfigureAwait( false );
                     }
-                    else if ( @event is VehicleDestroyedEvent )
+                    else if ( @event is VesselDestroyedEvent vesselDestroyedEvent )
                     {
-                        passEvent = eventVehicleDestroyed();
+                        passEvent = eventVesselDestroyed( vesselDestroyedEvent );
                     }
                     else if ( @event is NearSurfaceEvent nearSurfaceEvent )
                     {
@@ -2403,10 +2403,13 @@ namespace EddiCore
             return true;
         }
 
-        private bool eventVehicleDestroyed()
+        private bool eventVesselDestroyed(VesselDestroyedEvent @event)
+        {
+            if ( @event.vehicleDefinition.vesselGroup == VesselGroup.Telepresence )
         {
             // We are back in the ship
             Vehicle = Constants.VEHICLE_SHIP;
+            }
             return true;
         }
 
