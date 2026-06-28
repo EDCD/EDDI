@@ -306,8 +306,7 @@ namespace EddiJournalMonitor
                                 handled = KilledEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "ShieldState":
-                                // As of September 2019, this event no longer appears to be written to the Player Journal.
-                                // We still generate an event via the Status Monitor.
+                                // We generate this event via the Status Monitor.
                                 handled = true;
                                 break;
                             case "ShipTargeted":
@@ -3094,14 +3093,7 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "FighterRebuilt":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var loadout = JsonParsing.getString(data, "Loadout");
-                                    var fighterId = JsonParsing.getInt(data, "ID");
-                                    events.Add(new FighterRebuiltEvent(timestamp, loadout, fighterId) { raw = line, fromLoad = fromLogLoad });
-                                    handled = true;
-                                }
+                                handled = FighterRebuiltEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "Friends":
                                 {
