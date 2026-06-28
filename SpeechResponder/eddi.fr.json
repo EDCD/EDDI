@@ -1052,15 +1052,6 @@
       "name": "Exploration data sold",
       "description": "Triggered when you sell exploration data"
     },
-    "Fighter docked": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "Le chasseur {OneOf(\"a apponté\",\"est arrimé\")} {Occasionally(2,'{OneOf(\"à votre vaisseau\",\"à son vaisseau mère\")}')}.",
-      "default": true,
-      "name": "Fighter docked",
-      "description": "Triggered when you dock a fighter with your ship"
-    },
     "Fighter rebuilt": {
       "enabled": true,
       "priority": 3,
@@ -2429,15 +2420,6 @@
       "name": "Squadron status",
       "description": "Triggered when your status with a squadron has changed"
     },
-    "SRV docked": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{OneOf(\"Buggy\", \"SRV\")} {OneOf(\"rentré\", \"parké\", \"rangé\", \"docké\")}.",
-      "default": true,
-      "name": "SRV docked",
-      "description": "Triggered when you dock an SRV with your ship"
-    },
     "SRV turret": {
       "enabled": true,
       "priority": 3,
@@ -2717,6 +2699,15 @@
       "default": true,
       "name": "Vessel destroyed",
       "description": "Triggered when your vessel (fighter, SRV, etc.) is destroyed"
+    },
+    "Vessel docked": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Vessel docked",
+      "description": "Triggered when you dock a vessel (fighter, SRV, etc) with your ship"
     },
     "Vessel launched": {
       "enabled": true,

@@ -1051,15 +1051,6 @@
 			"description": "Triggered when you sell exploration data",
 			"default": true
 		},
-		"Fighter docked": {
-			"enabled": true,
-			"priority": 3,
-			"responder": true,
-			"script": "Caça\r\n{OneOf(\"pousado {Occasionally(2, 'na nave')}\",\"de volta a bordo\")}.\r\n\r\n{SetState('eddi_state_fighter_docked', true)}\r\n",
-			"name": "Fighter docked",
-			"description": "Triggered when you dock a fighter with your ship",
-			"default": true
-		},
 		"Fighter rebuilt": {
 			"enabled": true,
 			"priority": 3,
@@ -2608,15 +2599,6 @@
 			"description": "Triggered when your status with a squadron has changed",
 			"default": true
 		},
-		"SRV docked": {
-			"enabled": true,
-			"priority": 3,
-			"responder": true,
-			"script": "{OneOf(\"Búgui\", \"V-R-S\")} {OneOf(\"atracado\",\"em segurança {Occasionally(2,'a bordo')}\")}.\r\n",
-			"name": "SRV docked",
-			"description": "Triggered when you dock an SRV with your ship",
-			"default": true
-		},
 		"SRV turret": {
 			"enabled": true,
 			"priority": 3,
@@ -2932,6 +2914,15 @@
 			"default": true,
 			"name": "Vessel destroyed",
 			"description": "Triggered when your vessel (fighter, SRV, etc.) is destroyed"
+		},
+		"Vessel docked": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": null,
+			"default": true,
+			"name": "Vessel docked",
+			"description": "Triggered when you dock a vessel (fighter, SRV, etc) with your ship"
 		},
 		"Vessel launched": {
 			"enabled": true,

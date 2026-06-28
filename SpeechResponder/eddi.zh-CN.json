@@ -1041,15 +1041,6 @@
       "name": "Exploration data sold",
       "description": "Triggered when you sell exploration data"
     },
-    "Fighter docked": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "舰载机已 {Occasionally(2, \"与飞船\")}{OneOf(\"对接\", \"重新对接\")} .",
-      "default": true,
-      "name": "Fighter docked",
-      "description": "Triggered when you dock a fighter with your ship"
-    },
     "Fighter rebuilt": {
       "enabled": true,
       "priority": 3,
@@ -2408,15 +2399,6 @@
       "name": "Squadron status",
       "description": "Triggered when your status with a squadron has changed"
     },
-    "SRV docked": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{if state.eddi_context_srv_deployed_id = event.id:\r\n    {SetState('eddi_context_srv_deployed_id', \"\")}\r\n}\r\n\r\n{OneOf(\"月球车\", \"SRV\")}已回收.",
-      "default": true,
-      "name": "SRV docked",
-      "description": "Triggered when you dock an SRV with your ship"
-    },
     "SRV turret": {
       "enabled": true,
       "priority": 3,
@@ -2696,6 +2678,15 @@
       "default": true,
       "name": "Vessel destroyed",
       "description": "Triggered when your vessel (fighter, SRV, etc.) is destroyed"
+    },
+    "Vessel docked": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Vessel docked",
+      "description": "Triggered when you dock a vessel (fighter, SRV, etc) with your ship"
     },
     "Vessel launched": {
       "enabled": true,

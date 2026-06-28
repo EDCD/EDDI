@@ -3078,24 +3078,10 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "DockFighter":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var fighterId = JsonParsing.getInt(data, "ID");
-                                    events.Add(new FighterDockedEvent(timestamp, fighterId) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                                handled = VesselDockedEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "DockSRV":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var srvId = JsonParsing.getOptionalInt(data, "ID");
-                                    var vehicleDefinition = VesselDefinition.FromEDName(JsonParsing.getString(data, "SRVType"));
-                                    vehicleDefinition.fallbackLocalizedName = JsonParsing.getString(data, "SRVType_Localised");
-                                    events.Add(new SRVDockedEvent(timestamp, vehicleDefinition, srvId) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                                handled = VesselDockedEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "EndCrewSession":
                                 {

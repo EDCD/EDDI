@@ -1185,16 +1185,6 @@
       "default": true,
       "includes": ".Preferencias; .Runtime"
     },
-    "Fighter docked": {
-      "name": "Fighter docked",
-      "description": "Se activa cuando atracas el caza en tu nave.",
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "Caza {OneOf(\"embarcado\", \"acoplado\")} {Occasionally(2, \"en la nave\")}.",
-      "default": true,
-      "includes": null
-    },
     "Fighter rebuilt": {
       "name": "Fighter rebuilt",
       "description": "Se activa cuando se ha reconstruido un caza en el hangar de su nave",
@@ -2972,16 +2962,6 @@
       "default": true,
       "includes": null
     },
-    "SRV docked": {
-      "name": "SRV docked",
-      "description": "Se activa cuando embarca un VRS en su nave",
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{if GetState(\"eddi_context_srv_deployed_id\") = event.id:\r\n    {SetState('eddi_context_srv_deployed_id', \"\")}\r\n}\r\n{OneOf(\"Bugui\", Spacialise('VRS'))} {OneOf(\"embarcado\",\"recogido\")}\r\n",
-      "default": true,
-      "includes": null
-    },
     "SRV turret": {
       "name": "SRV turret",
       "description": "Se activa cuando despliega o repliega la torreta de armas de su VRS",
@@ -3338,6 +3318,15 @@
       "default": true,
       "name": "Vessel destroyed",
       "description": "Triggered when your vessel (fighter, SRV, etc.) is destroyed"
+    },
+    "Vessel docked": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Vessel docked",
+      "description": "Triggered when you dock a vessel (fighter, SRV, etc) with your ship"
     },
     "Vessel launched": {
       "enabled": true,
