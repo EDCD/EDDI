@@ -126,7 +126,6 @@
   <data name="Assassinate" xml:space="preserve">
     <value>Заказное убийство</value>
   </data>
-  
   <data name="Collect" xml:space="preserve">
     <value>Поиск товаров</value>
   </data>
@@ -154,16 +153,12 @@
   <data name="Massacre" xml:space="preserve">
     <value>Резня</value>
   </data>
-  
   <data name="Mining" xml:space="preserve">
     <value>Шахтерские</value>
   </data>
-  
-  
   <data name="Piracy" xml:space="preserve">
     <value>Пиратские</value>
   </data>
-  
   <data name="Salvage" xml:space="preserve">
     <value>Разборка</value>
   </data>
@@ -210,7 +205,6 @@
   <data name="RankEmp" xml:space="preserve">
     <value>Контракт Империи</value>
   </data>
-  
   <data name="Founder" xml:space="preserve">
     <value>Основатель</value>
   </data>
@@ -279,14 +273,4 @@
   <data name="POI" xml:space="preserve">
     <value>Точка интереса</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 </root>
