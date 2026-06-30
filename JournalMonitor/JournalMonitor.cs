@@ -2703,7 +2703,7 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "Disembark":
-                                handled = DisembarkEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
+                                handled = DisembarkEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "DropshipDeploy":
                                 {
@@ -2719,7 +2719,7 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "Embark":
-                                handled = EmbarkEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
+                                handled = EmbarkEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "FCMaterials":
                                 {
@@ -3057,7 +3057,7 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "FighterRebuilt":
-                                handled = FighterRebuiltEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
+                                handled = FighterRebuiltEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "Friends":
                                 {

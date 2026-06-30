@@ -17,7 +17,7 @@ namespace EddiEvents
         [PublicAPI("The fighter's id")]
         public int id { get; private set; } = id;
 
-        public static bool Handle ( DateTime timestamp, string edType, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {
             if ( fromLogLoad ) { return true; } // Skip handling this during log loading
 

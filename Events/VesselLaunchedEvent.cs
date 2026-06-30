@@ -63,7 +63,7 @@ namespace EddiEvents
             // The Nomad is a shipped launch SRV. Because it is launched like a fighter it doesn't have an "SRVType" field
             // but we can still look up the vessel definition from its loadout (e.g. the Nomad has a consistent loadout of "base").
             // Unfortunately, most fighters don't have a consistent loadout that is unique to them.
-            if ( vesselDefinition is null )
+            if ( vesselDefinition is null && playercontrolled )
             {
                 var loadoutDescription = LoadoutDescription.FromLoadoutName(loadout);
                 vesselDefinition = loadoutDescription?.Vessel;

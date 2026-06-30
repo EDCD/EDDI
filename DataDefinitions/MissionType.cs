@@ -122,7 +122,6 @@ namespace EddiDataDefinitions
         public static readonly MissionType TacticalTakedown = new( "TacticalTakedown" ); // Counter Attack: The client's megaship has been compromised by a rival faction, you will need to board the ship and fight your way through the command deck to obtain the flight records and trace the origin of the attack. Then you'll want to bring your firepower to bear on the general responsible for the attack at their home base.
         public static readonly MissionType TerminalProsecution = new( "TerminalProsecution" ); // Pirate Hunt: A criminal element is causing trouble in the system, they've been raiding for weeks now, it's your job to clear them out.
 
-
         public bool IncludeInMissionRouting { get; set; }
 
         public bool ClaimAtOrigin { get; set; }
