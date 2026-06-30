@@ -117,78 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
   <data name="Delivery" xml:space="preserve">
     <value>Szállítás</value>
   </data>
-  
-  
-  
   <data name="LongDistanceExpedition" xml:space="preserve">
     <value>Expedíció</value>
   </data>
-  
-  
   <data name="Mining" xml:space="preserve">
     <value>Bányászat</value>
   </data>
-  
-  
-  
-  
-  
   <data name="Scan" xml:space="preserve">
     <value>Felszíni szkennelés</value>
   </data>
   <data name="Sightseeing" xml:space="preserve">
     <value>Körutazás</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 </root>
