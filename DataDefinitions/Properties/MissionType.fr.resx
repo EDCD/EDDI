@@ -120,11 +120,9 @@
   <data name="Altruism" xml:space="preserve">
     <value>Don</value>
   </data>
-  
   <data name="Assassinate" xml:space="preserve">
     <value>Assassinat</value>
   </data>
-  
   <data name="Collect" xml:space="preserve">
     <value>Collection</value>
   </data>
@@ -140,7 +138,6 @@
   <data name="Disable" xml:space="preserve">
     <value>Désactiver installation de surface</value>
   </data>
-  
   <data name="Hack" xml:space="preserve">
     <value>Piratage</value>
   </data>
@@ -150,16 +147,12 @@
   <data name="Massacre" xml:space="preserve">
     <value>Massacre</value>
   </data>
-  
   <data name="Mining" xml:space="preserve">
     <value>Minage</value>
   </data>
-  
-  
   <data name="Piracy" xml:space="preserve">
     <value>Piraterie</value>
   </data>
-  
   <data name="Salvage" xml:space="preserve">
     <value>Récupération</value>
   </data>
@@ -178,43 +171,4 @@
   <data name="StartZone" xml:space="preserve">
     <value>Zone de départ</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 </root>
