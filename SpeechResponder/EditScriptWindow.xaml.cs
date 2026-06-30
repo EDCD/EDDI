@@ -15,7 +15,6 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using Utilities;
-using CheckBox = System.Windows.Forms.CheckBox;
 using MessageBox = System.Windows.Forms.MessageBox;
 using TextBox = System.Windows.Controls.TextBox;
 
@@ -372,7 +371,7 @@ namespace EddiSpeechResponder
 
         private void foldingButtonClick ( object sender, RoutedEventArgs e )
         {
-            if ( sender is CheckBox )
+            if ( sender is System.Windows.Controls.CheckBox _ )
             {
                 InitializeOrUpdateFolding();
             }

@@ -14,7 +14,7 @@
         >
     <DockPanel LastChildFill="True" Background="{DynamicResource WindowBackgroundBrush}">
         <ToolBarTray DockPanel.Dock="Top" Background="Transparent" IsLocked="True">
-            <ToolBar Background="Transparent">
+            <ToolBar Background="Transparent" >
                 <ToolBar.Resources>
                     <Style TargetType="{x:Type Image}">
                         <Style.Triggers>

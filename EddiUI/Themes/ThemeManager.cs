@@ -27,6 +27,8 @@ namespace EddiUI.Themes
         {
             if (isInitialized) return;
 
+            EventManager.RegisterClassHandler(typeof(Window), FrameworkElement.LoadedEvent, new RoutedEventHandler(OnWindowLoaded));
+
             // Apply theme on startup
             ApplyTheme();
 
@@ -44,6 +46,14 @@ namespace EddiUI.Themes
                 {
                     ApplyTheme();
                 });
+            }
+        }
+
+        private static void OnWindowLoaded(object sender, RoutedEventArgs e)
+        {
+            if (sender is Window window)
+            {
+                ApplyWindowFrame(window);
             }
         }
 
@@ -136,6 +146,24 @@ namespace EddiUI.Themes
         internal static bool ShouldLoadModernThemeDictionary(string overrideTheme)
         {
             return !string.Equals(overrideTheme, ClassicTheme, StringComparison.OrdinalIgnoreCase);
+        }
+
+        internal static void ApplyWindowFrame(Window window)
+        {
+            if (window == null)
+            {
+                return;
+            }
+
+            var currentResources = Application.Current?.Resources;
+            if (currentResources == null)
+            {
+                return;
+            }
+
+            var overrideTheme = EddiConfigService.ConfigService.Instance.eddiConfiguration.OverrideTheme;
+            var themeDictionaryName = ResolveThemeDictionaryName(overrideTheme, IsWindowsDarkTheme());
+            ApplyWindowFrame(window, themeDictionaryName, currentResources);
         }
 
         internal static void RemoveExistingThemeDictionaries(ResourceDictionary resources)
@@ -271,11 +299,21 @@ namespace EddiUI.Themes
 
             foreach (Window window in application.Windows)
             {
-                var handle = new WindowInteropHelper(window).Handle;
-                if (handle == IntPtr.Zero) { continue; }
-
-                ApplyWindowFrame(handle, themeDictionaryName, resources);
+                ApplyWindowFrame(window, themeDictionaryName, resources);
             }
+        }
+
+        private static void ApplyWindowFrame(Window window, string themeDictionaryName, ResourceDictionary resources)
+        {
+            if (window == null || resources == null)
+            {
+                return;
+            }
+
+            var handle = new WindowInteropHelper(window).Handle;
+            if (handle == IntPtr.Zero) { return; }
+
+            ApplyWindowFrame(handle, themeDictionaryName, resources);
         }
 
         private static void ApplyWindowFrame(IntPtr handle, string themeDictionaryName, ResourceDictionary resources)

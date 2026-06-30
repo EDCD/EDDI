@@ -191,6 +191,16 @@ namespace Tests
             Assert.IsFalse(ThemeManager.ShouldUseDarkWindowFrame("ThemeClassic.xaml"));
         }
 
+        [STATestMethod]
+        public void ApplyWindowFrameForWindow_SkipsNullAndUninitializedWindows()
+        {
+            ThemeManager.ApplyWindowFrame( null );
+
+            var window = new Window();
+
+            ThemeManager.ApplyWindowFrame( window );
+        }
+
         [TestMethod]
         public void ShouldLoadModernThemeDictionary_ReturnsFalseForClassic()
         {
@@ -468,6 +478,105 @@ namespace Tests
             Assert.Contains("<Style TargetType=\"ScrollBar\">", themeXaml);
             Assert.Contains("<Style TargetType=\"Thumb\">", themeXaml);
             Assert.Contains("PART_Track", themeXaml);
+        }
+
+        [TestMethod]
+        public void ThemeModern_ToolBarTemplateThemesOverflowChrome()
+        {
+            var themeXaml = File.ReadAllText(FindRepoFile("EddiUI", "Themes", "ThemeModern.xaml"));
+            var toolBarStyle = ExtractBetween(
+                themeXaml,
+                "<Style TargetType=\"ToolBar\">",
+                "<Style TargetType=\"ToolBarTray\">" );
+
+            Assert.Contains("<ControlTemplate TargetType=\"ToolBar\">", toolBarStyle);
+            Assert.Contains("x:Name=\"OverflowButton\"", toolBarStyle);
+            Assert.Contains("ToolBarOverflowPanel", toolBarStyle);
+            Assert.Contains("IsOpen=\"{Binding IsOverflowOpen, RelativeSource={RelativeSource TemplatedParent}}\"", toolBarStyle);
+            Assert.Contains("Background=\"{DynamicResource ControlBackgroundBrush}\"", toolBarStyle);
+            Assert.Contains("BorderBrush=\"{DynamicResource BorderMediumBrush}\"", toolBarStyle);
+            Assert.Contains("Fill=\"{DynamicResource TextPrimaryBrush}\"", toolBarStyle);
+            Assert.Contains("HasOverflowItems", toolBarStyle);
+        }
+
+        [TestMethod]
+        public void ThemeModern_DefinesToolBarItemResourceKeyStyles()
+        {
+            var themeXaml = File.ReadAllText(FindRepoFile("EddiUI", "Themes", "ThemeModern.xaml"));
+            var toolBarStyle = ExtractBetween(
+                themeXaml,
+                "<Style TargetType=\"ToolBar\">",
+                "<Style TargetType=\"ToolBarTray\">" );
+
+            Assert.Contains("x:Key=\"{x:Static ToolBar.ButtonStyleKey}\"", toolBarStyle);
+            Assert.Contains("x:Key=\"{x:Static ToolBar.ToggleButtonStyleKey}\"", toolBarStyle);
+            Assert.Contains("x:Key=\"{x:Static ToolBar.CheckBoxStyleKey}\"", toolBarStyle);
+            Assert.Contains("x:Key=\"{x:Static ToolBar.SeparatorStyleKey}\"", toolBarStyle);
+            Assert.Contains("<ControlTemplate TargetType=\"{x:Type Button}\">", toolBarStyle);
+            Assert.Contains("<ControlTemplate TargetType=\"{x:Type ToggleButton}\">", toolBarStyle);
+            Assert.Contains("<ControlTemplate TargetType=\"{x:Type CheckBox}\">", toolBarStyle);
+        }
+
+        [TestMethod]
+        public void ThemeModern_ToolBarItemStylesUseFlatThemedChrome()
+        {
+            var themeXaml = File.ReadAllText(FindRepoFile("EddiUI", "Themes", "ThemeModern.xaml"));
+            var toolBarStyle = ExtractBetween(
+                themeXaml,
+                "<Style TargetType=\"ToolBar\">",
+                "<Style TargetType=\"ToolBarTray\">" );
+            var buttonStyle = ExtractBetween(
+                toolBarStyle,
+                "<Style x:Key=\"{x:Static ToolBar.ButtonStyleKey}\"",
+                "<Style x:Key=\"{x:Static ToolBar.ToggleButtonStyleKey}\"" );
+            var toggleStyle = ExtractBetween(
+                toolBarStyle,
+                "<Style x:Key=\"{x:Static ToolBar.ToggleButtonStyleKey}\"",
+                "<Style x:Key=\"{x:Static ToolBar.CheckBoxStyleKey}\"" );
+            var checkBoxStyle = ExtractBetween(
+                toolBarStyle,
+                "<Style x:Key=\"{x:Static ToolBar.CheckBoxStyleKey}\"",
+                "<Style x:Key=\"{x:Static ToolBar.RadioButtonStyleKey}\"" );
+
+            Assert.DoesNotContain("BasedOn=", buttonStyle);
+            Assert.DoesNotContain("BasedOn=", toggleStyle);
+            Assert.DoesNotContain("BasedOn=", checkBoxStyle);
+            Assert.Contains("Background\" Value=\"Transparent\"", buttonStyle);
+            Assert.Contains("Background\" Value=\"Transparent\"", toggleStyle);
+            Assert.Contains("Background\" Value=\"Transparent\"", checkBoxStyle);
+            Assert.Contains("x:Name=\"ToolBarButtonBorder\"", buttonStyle);
+            Assert.Contains("x:Name=\"ToolBarToggleButtonBorder\"", toggleStyle);
+            Assert.Contains("x:Name=\"ToolBarCheckBoxBorder\"", checkBoxStyle);
+            Assert.Contains("Property=\"Background\" Value=\"{DynamicResource ControlBackgroundHoverBrush}\"", buttonStyle);
+            Assert.Contains("Property=\"Background\" Value=\"{DynamicResource ControlBackgroundHoverBrush}\"", toggleStyle);
+            Assert.Contains("Property=\"Background\" Value=\"{DynamicResource ControlBackgroundHoverBrush}\"", checkBoxStyle);
+            Assert.Contains("<Trigger Property=\"IsChecked\" Value=\"True\">", toggleStyle);
+            Assert.Contains("<Trigger Property=\"IsChecked\" Value=\"True\">", checkBoxStyle);
+        }
+
+        [STATestMethod]
+        public void ThemeModern_ToolBarTemplateMeasuresWithItems()
+        {
+            var resourceDictionary = (ResourceDictionary)Application.LoadComponent(
+                new Uri("/EddiUI;component/Themes/ThemeModern.xaml", UriKind.Relative));
+            var toolBar = new ToolBar
+            {
+                Style = (Style)resourceDictionary[typeof(ToolBar)]
+            };
+            toolBar.Items.Add(new Button { Content = "Cut" });
+            toolBar.Items.Add(new Button { Content = "Copy" });
+            toolBar.Items.Add(new Separator());
+            toolBar.Items.Add(new CheckBox { Content = "Line numbers" });
+            toolBar.Items.Add(new CheckBox { Content = "Word wrap" });
+
+            var toolBarTray = new ToolBarTray();
+            toolBarTray.ToolBars.Add(toolBar);
+
+            toolBarTray.Measure(new Size(120, 40));
+            toolBarTray.Arrange(new Rect(0, 0, 120, 40));
+            toolBarTray.UpdateLayout();
+
+            Assert.IsTrue(toolBar.DesiredSize.Width > 0);
         }
 
         [TestMethod]
