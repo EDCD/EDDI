@@ -21,7 +21,7 @@ namespace Tests
         {
             initialCurrentDirectory = Directory.GetCurrentDirectory();
             var newCurrentDirectory = initialCurrentDirectory.Replace(@"Tests\", "");
-            Directory.SetCurrentDirectory(newCurrentDirectory);
+            Directory.SetCurrentDirectory( Path.Combine( newCurrentDirectory, "Application" ) );
         }
 
         [TestCleanup]
