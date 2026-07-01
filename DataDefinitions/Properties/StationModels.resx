@@ -193,4 +193,8 @@
     <value>Dodec Starport</value>
     <comment>A Dodec Starport</comment>
   </data>
+  <data name="GameplayPOI" xml:space="preserve">
+    <value>Surface Outpost</value>
+    <comment>Horizons era surface outpost / hub / installation</comment>
+  </data>
 </root>

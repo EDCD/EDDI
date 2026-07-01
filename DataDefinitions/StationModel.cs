@@ -32,6 +32,7 @@ namespace EddiDataDefinitions
         public static readonly StationModel SpaceConstructionDepot = new( "SpaceConstructionDepot" );
         public static readonly StationModel PlanetaryConstructionDepot = new( "PlanetaryConstructionDepot" );
         public static readonly StationModel SquadronCarrier = new( "SquadronCarrier" );
+        public static readonly StationModel GameplayPOI = new("GameplayPOI"); // This appears to be a Horizons era non-dockable surface installation
 
         // dummy used to ensure that the static constructor has run
         public StationModel() : this("")
