@@ -90,7 +90,7 @@
         "EDID": 128816573
       },
       "canopy": {
-        "edname": "Krait_MkII_Cockpit",
+        "edname": "Cockpit",
         "basename": "CockpitCanopy",
         "class": 1,
         "grade": "I",
