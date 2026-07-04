@@ -272,32 +272,27 @@ namespace EddiDataDefinitions
 
         #region IndustrialMaterials
 
-        public static readonly CommodityDefinition Polymers = new(128049197, "Polymers", IndustrialMaterials, 171, false);
+        public static readonly CommodityDefinition CeramicComposites = new( 128672302, "CeramicComposites", IndustrialMaterials, 232, false );
 
-        public static readonly CommodityDefinition Semiconductors =
-            new( 128049199, "Semiconductors", IndustrialMaterials, 967, false );
-
-        public static readonly CommodityDefinition Superconductors =
-            new( 128049200, "Superconductors", IndustrialMaterials, 6609, false );
-
-        public static readonly CommodityDefinition MedbStarlube = new(128667690, "MedbStarlube", IndustrialMaterials, 8191, true);
-
-        public static readonly CommodityDefinition CeramicComposites =
-            new( 128672302, "CeramicComposites", IndustrialMaterials, 232, false );
-
-        public static readonly CommodityDefinition MetaAlloys =
-            new( 128672701, "MetaAlloys", IndustrialMaterials, 88148, false, true );
-
-        public static readonly CommodityDefinition InsulatingMembrane =
-            new( 128673855, "InsulatingMembrane", IndustrialMaterials, 7837, false );
-
-        public static readonly CommodityDefinition CMMComposite =
-            new( 128673856, "CMMComposite", IndustrialMaterials, 3132, false );
+        public static readonly CommodityDefinition CMMComposite = new( 128673856, "CMMComposite", IndustrialMaterials, 3132, false );
 
         public static readonly CommodityDefinition CoolingHoses = new(128673857, "CoolingHoses", IndustrialMaterials, 403, false);
 
-        public static readonly CommodityDefinition NeofabricInsulation =
-            new( 128673858, "NeofabricInsulation", IndustrialMaterials, 2769, false );
+        public static readonly CommodityDefinition CuratedCommodity = new(129045961, "CuratedCommodity", IndustrialMaterials, 525, false);
+
+        public static readonly CommodityDefinition InsulatingMembrane = new( 128673855, "InsulatingMembrane", IndustrialMaterials, 7837, false );
+
+        public static readonly CommodityDefinition MedbStarlube = new(128667690, "MedbStarlube", IndustrialMaterials, 8191, true);
+
+        public static readonly CommodityDefinition MetaAlloys = new( 128672701, "MetaAlloys", IndustrialMaterials, 88148, false, true );
+
+        public static readonly CommodityDefinition NeofabricInsulation = new( 128673858, "NeofabricInsulation", IndustrialMaterials, 2769, false );
+
+        public static readonly CommodityDefinition Polymers = new(128049197, "Polymers", IndustrialMaterials, 171, false);
+
+        public static readonly CommodityDefinition Semiconductors = new( 128049199, "Semiconductors", IndustrialMaterials, 967, false );
+
+        public static readonly CommodityDefinition Superconductors = new( 128049200, "Superconductors", IndustrialMaterials, 6609, false );
 
         #endregion
 
