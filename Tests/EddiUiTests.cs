@@ -576,7 +576,7 @@ namespace Tests
             toolBarTray.Arrange(new Rect(0, 0, 120, 40));
             toolBarTray.UpdateLayout();
 
-            Assert.IsTrue(toolBar.DesiredSize.Width > 0);
+            Assert.IsGreaterThan( 0, toolBar.DesiredSize.Width);
         }
 
         [TestMethod]

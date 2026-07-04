@@ -47,16 +47,16 @@ namespace EddiEddnResponder.Schemas
                         handledData["stationName"] = data["StationName"]?.ToString()?.TrimEnd( '+', ' ' ); // Remove any +++ at the end of the station name
                         handledData["marketId"] = data["MarketID"];
                         handledData["modules"] = modules
-                            .Select(m => (m as Dictionary<string, object> ?? new Dictionary<string, object>())["Name"]?.ToString())
-                            .Where(m => ApplyModuleNameFilter(m))
-                            .Where(m => !Module.IsPowerPlay(m))
-                            .Distinct()
+                            .Select( m => m as Dictionary<string, object> )
+                            .Where( m => ApplyModuleNameFilter( m[ "Name" ]?.ToString() ) )
+                            .Where( m => !Module.IsPowerPlay( m[ "Name" ]?.ToString() ) )
+                            .Select(AugmentBuyMercCoinsPrice)
                             .ToList();
 
                         // Apply data augments
                         handledData = eddnState.GameVersion.AugmentVersion(handledData);
 
-                        eddnSender.SendToEDDN("https://eddn.edcd.io/schemas/outfitting/2", handledData, eddnState);
+                        eddnSender.SendToEDDN("https://eddn.edcd.io/schemas/outfitting/3", handledData, eddnState);
                         data = handledData;
                         return true;
                     }
@@ -92,27 +92,38 @@ namespace EddiEddnResponder.Schemas
                 }
 
                 // Build our modules list
-                var modules = shipyardJson["modules"].Children().Values()
-                    .Where(m => ApplyModuleSkuFilter(m))
-                    .Select(m => m["name"]?.ToString())
-                    .Where(m => ApplyModuleNameFilter(m))
-                    .Distinct()
-                    .ToList();
+                var handledModules = new List<JToken>();
+                foreach ( var jToken in shipyardJson[ "modules" ].Children().ToList() )
+                {
+                    // The modules collection can contain properties keyed by module id. Handle JProperty values as the module object.
+                    var moduleToken = jToken.Type == JTokenType.Property ? ((JProperty)jToken).Value : jToken;
+                    var module = moduleToken as JObject ?? JObject.FromObject(moduleToken);
+                    var edName = module[ "name" ]?.ToString();
+                    if ( !ApplyModuleNameFilter( edName ) || !ApplyModuleSkuFilter( module[ "sku" ]?.ToString() ) ) { continue; }
+                    var handledModule = new JObject
+                    {
+                        ["id"] = module[ "id" ]?.ToObject<long>() ?? 0,
+                        ["Name"] = edName,
+                        ["BuyPrice"] = module[ "cost" ]?.ToObject<long>() ?? 0,
+                        ["BuyMercCoinsPrice"] = module[ "BuyMercCoinsPrice" ]?.ToObject<long>() ?? 0,
+                    };
+                    handledModules.Add( handledModule );
+                }
 
                 // Continue if our modules list is not empty
-                if (modules.Count > 0 )
+                if ( handledModules.Count > 0 )
                 {
                     var data = new Dictionary<string, object>() as IDictionary<string, object>;
                     data.Add("timestamp", timestamp);
                     data.Add("systemName", systemName);
                     data.Add("stationName", stationName);
                     data.Add("marketId", marketID);
-                    data.Add("modules", modules);
+                    data.Add("modules", handledModules);
 
                     // Apply data augments
                     data = eddnState.GameVersion.AugmentVersion(data);
 
-                    eddnSender.SendToEDDN("https://eddn.edcd.io/schemas/outfitting/2", data, eddnState, "CAPI-Live-shipyard" );
+                    eddnSender.SendToEDDN("https://eddn.edcd.io/schemas/outfitting/3", data, eddnState, "CAPI-Live-shipyard" );
                     lastSentMarketID = marketID;
                     lastSentDateTime = timestamp;
                     return data;
@@ -126,25 +137,31 @@ namespace EddiEddnResponder.Schemas
             return null;
         }
 
-        private static bool ApplyModuleNameFilter(string m)
+        private static bool ApplyModuleNameFilter(string edName)
         {
             // Filter items that aren't weapons/utilities (Hpt_*), standard/internal modules (Int_*) or armour (*_Armour_*)
             // and the "Int_PlanetApproachSuite" module (for historical reasons)
             return (
-                       m.StartsWith("Int_", StringComparison.InvariantCultureIgnoreCase) ||
-                       m.StartsWith("Hpt_", StringComparison.InvariantCultureIgnoreCase) ||
-                       m.Contains("_Armour_") || m.Contains("_armour_")
+                       edName.StartsWith("Int_", StringComparison.InvariantCultureIgnoreCase) ||
+                       edName.StartsWith("Hpt_", StringComparison.InvariantCultureIgnoreCase) ||
+                       edName.Contains("_Armour_") || edName.Contains("_armour_")
                    ) &&
-                   m != "Int_PlanetApproachSuite";
+                   edName != "Int_PlanetApproachSuite";
         }
 
-        private static bool ApplyModuleSkuFilter(JToken m)
+        private static bool ApplyModuleSkuFilter ( string sku )
         {
             // Filter items that have a non-null "sku" property, unless it's "ELITE_HORIZONS_V_PLANETARY_LANDINGS" (i.e. PowerPlay and tech broker items).
-            return m != null && (
-                string.IsNullOrEmpty(m["sku"]?.ToString()) || 
-                (m["sku"]?.ToString().Equals("ELITE_HORIZONS_V_PLANETARY_LANDINGS", StringComparison.InvariantCultureIgnoreCase) ?? false)
-                );
+            return string.IsNullOrEmpty( sku ) || sku.Equals( "ELITE_HORIZONS_V_PLANETARY_LANDINGS", StringComparison.InvariantCultureIgnoreCase );
+        }
+
+        private static Dictionary<string, object> AugmentBuyMercCoinsPrice ( Dictionary<string, object> moduleData )
+        {
+            if ( !moduleData.ContainsKey( "BuyMercCoinsPrice" ) )
+            {
+                moduleData.Add( "BuyMercCoinsPrice", 0 );
+            }
+            return moduleData;
         }
     }
 }

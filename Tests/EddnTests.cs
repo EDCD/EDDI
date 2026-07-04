@@ -1077,14 +1077,16 @@ namespace Tests
             Assert.AreEqual(3227934976, outfittingData["marketId"] as long?);
             Assert.AreEqual("Walker Ring", outfittingData["stationName"] as string);
             Assert.AreEqual("Gertrud", outfittingData["systemName"] as string);
-            if (outfittingData["modules"] is List<string> modules)
+            if ( outfittingData[ "modules" ] is not List<Dictionary<string, object>> modules || 
+                modules.First() is not Dictionary<string, object> module )
             {
-                Assert.HasCount( 767, modules );
-                Assert.AreEqual( "hpt_cannon_gimbal_huge", modules[ 0 ] );
+                Assert.Fail();
             }
             else
             {
-                Assert.Fail();
+                Assert.HasCount( 767, modules );
+                Assert.AreEqual( "hpt_cannon_gimbal_huge", module?[ "Name" ].ToString() );
+                Assert.IsTrue( module.ContainsKey( "BuyMercCoinsPrice" ) );
             }
         }
 
@@ -1139,14 +1141,15 @@ namespace Tests
             Assert.AreEqual(3544236032, outfittingData["marketId"] as long?);
             Assert.AreEqual("Abasheli Barracks", outfittingData["stationName"] as string);
             Assert.AreEqual("Kurigosages", outfittingData["systemName"] as string);
-            if (outfittingData["modules"] is List<string> modules)
+            if ( outfittingData[ "modules" ] is not List<JToken> modules || modules.First() is not JObject module )
             {
-                Assert.HasCount( 164, modules );
-                Assert.AreEqual( "Hpt_ATDumbfireMissile_Fixed_Large", modules[ 0 ] );
+                Assert.Fail();
             }
             else
             {
-                Assert.Fail();
+                Assert.HasCount( 164, modules );
+                Assert.AreEqual( "Hpt_ATDumbfireMissile_Fixed_Large", module[ "Name" ]?.ToString() );
+                Assert.IsTrue( module.ContainsKey( "BuyMercCoinsPrice" ) );
             }
         }
 
