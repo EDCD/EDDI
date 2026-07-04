@@ -24,6 +24,8 @@ namespace EddiEddnResponder.Sender
     public class EDDNSender
     {
         internal bool unitTesting;
+        internal readonly List<(string schema, IDictionary<string, object> data, EDDNState eddnState, string gameVersionOverride)> sentMessages =
+            [ ];
         private const string baseUrl = "https://eddn.edcd.io:4430/";
         private const int shortRetryDelaySeconds = 30;
         private const int longRetryDelaySeconds = 120;
@@ -45,6 +47,12 @@ namespace EddiEddnResponder.Sender
         public void SendToEDDN ( string schema, IDictionary<string, object> data, EDDNState eddnState,
             string gameVersionOverride = null )
         {
+            if ( unitTesting )
+            {
+                sentMessages.Add( (schema, data, eddnState, gameVersionOverride) );
+                return;
+            }
+
             SendAsync( schema, data, eddnState, gameVersionOverride )
                 .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
         }

@@ -1,4 +1,5 @@
 ﻿using EddiEddnResponder.Sender;
+using EddiEddnResponder.Toolkit;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace EddiEddnResponder.Schemas
         private readonly List<IDictionary<string, object>> signals =
             [ ];
 
-        private readonly List<EDDNState> eddnStates = [ ];
+        private readonly Dictionary<ulong, EDDNState> eddnStates = [ ];
 
         private static readonly object signalsLock = new();
         private static readonly object stateLock = new();
@@ -24,49 +25,12 @@ namespace EddiEddnResponder.Schemas
         {
             if (eddnState?.Location is null || eddnState.GameVersion is null) { return false; }
 
-            // Capture any changes to eddnState systemAddress after confirming that the star system location data (name, system address, and star pos) is fully set.
-            lock ( stateLock )
+            UpdateLocationSnapshot( edType, eddnState );
+
+            if ( !edTypes.Contains( edType ) )
             {
-                if ( eddnStates.All( s => s.Location?.systemAddress != eddnState.Location?.systemAddress ) &&
-                     eddnState.Location.StarSystemLocationIsSet() )
-                {
-                    // Add a deep copy of the current EDDN state
-                    eddnStates.Add( eddnState.Copy() );
-                }
-
-                if ( !edTypes.Contains( edType ) )
-                {
-                    // Send any signals with a systemAddress matching a saved good eddnState
-                    lock ( signalsLock )
-                    {
-                        if ( signals.Count > 0 )
-                        {
-                            foreach ( var state in eddnStates.Where(s => s.Location.StarSystemLocationIsSet() ) )
-                            {
-                                try
-                                {
-                                    var retrievedSignals = signals
-                                        .Where( s =>
-                                            JsonParsing.getULong( s, "SystemAddress" ) == state.Location.systemAddress )
-                                        .ToList();
-                                    if ( retrievedSignals.Count == 0 ) { continue; }
-
-                                    var handledData = PrepareSignalsData( retrievedSignals, state );
-                                    handledData = state.GameVersion.AugmentVersion( handledData );
-                                    eddnSender.SendToEDDN( "https://eddn.edcd.io/schemas/fsssignaldiscovered/1",
-                                        handledData, state );
-                                    signals.RemoveAll( s => retrievedSignals.Contains( s ) );
-                                }
-                                catch ( NullReferenceException nre )
-                                {
-                                    Logging.Error( "Failed to prepare signals for sending to EDDN", nre );
-                                }
-                            }
-                        }
-                    }
-
-                    return false;
-                }
+                SendQueuedSignals( eddnSender );
+                return false;
             }
 
             try
@@ -89,6 +53,65 @@ namespace EddiEddnResponder.Schemas
                 Logging.Error($"{GetType().Name} failed to handle {edType} journal data.", e);
             }
             return true;
+        }
+
+        private void UpdateLocationSnapshot ( string edType, EDDNState eddnState )
+        {
+            if ( !LocationAugmenter.IsFullStarSystemLocationEvent( edType ) ||
+                 !eddnState.Location.StarSystemLocationIsSet() )
+            {
+                return;
+            }
+
+            lock ( stateLock )
+            {
+                eddnStates[ eddnState.Location.systemAddress ] = eddnState.Copy();
+            }
+        }
+
+        private void SendQueuedSignals ( EDDNSender eddnSender )
+        {
+
+            lock ( signalsLock )
+            {
+                if ( signals.Count == 0 ) { return; }
+
+                var signalGroups = signals
+                    .GroupBy( s => JsonParsing.getULong( s, "SystemAddress" ) )
+                    .Where( g => g.Key > 1 )
+                    .ToList();
+
+                foreach ( var signalGroup in signalGroups )
+                {
+                    EDDNState state;
+                    lock ( stateLock )
+                    {
+                        if ( !eddnStates.TryGetValue( signalGroup.Key, out state ) ||
+                             !state.Location.StarSystemLocationIsSet() )
+                        {
+                            continue;
+                        }
+                    }
+
+                    try
+                    {
+                        var retrievedSignals = signalGroup.ToList();
+                        var handledData = PrepareSignalsData( retrievedSignals, state );
+                        handledData = state.GameVersion.AugmentVersion( handledData );
+                        eddnSender.SendToEDDN( "https://eddn.edcd.io/schemas/fsssignaldiscovered/1",
+                            handledData, state );
+                        signals.RemoveAll( s => retrievedSignals.Contains( s ) );
+                    }
+                    catch ( NullReferenceException nre )
+                    {
+                        Logging.Error( "Failed to prepare signals for sending to EDDN", nre );
+                    }
+                    catch ( ArgumentOutOfRangeException aore )
+                    {
+                        Logging.Error( "Failed to prepare signals for sending to EDDN", aore );
+                    }
+                }
+            }
         }
 
         private static IDictionary<string, object> PrepareSignalsData(List<IDictionary<string, object>> retrievedSignals, EDDNState eddnState)

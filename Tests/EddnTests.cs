@@ -41,6 +41,34 @@ namespace Tests
             return responder;
         }
 
+        private static CockpitBreachedEvent RawJournalEvent ( string raw )
+        {
+            return new CockpitBreachedEvent( DateTime.UtcNow ) { raw = raw };
+        }
+
+        private static List<IDictionary<string, object>> FssSignalMessages ( EDDNResponder responder )
+        {
+            return responder.eddnSender.sentMessages
+                .Where( m => m.schema.Contains( "fsssignaldiscovered" ) )
+                .Select( m => m.data )
+                .ToList();
+        }
+
+        private static void AssertStarPos (
+            IDictionary<string, object> data,
+            decimal expectedX,
+            decimal expectedY,
+            decimal expectedZ )
+        {
+            Assert.IsTrue( data.TryGetValue( "StarPos", out var starPosObj ) );
+            var starPos = starPosObj as IList<decimal>;
+            Assert.IsNotNull( starPos );
+            Assert.HasCount( 3, starPos );
+            Assert.AreEqual( expectedX, starPos[ 0 ] );
+            Assert.AreEqual( expectedY, starPos[ 1 ] );
+            Assert.AreEqual( expectedZ, starPos[ 2 ] );
+        }
+
         [TestMethod]
         public void TestEddnSchemaInitialization()
         {
@@ -133,6 +161,105 @@ namespace Tests
             Assert.IsNull( responder.eddnState.Location.systemY );
             Assert.IsNull( responder.eddnState.Location.systemZ );
             Assert.IsNull( responder.eddnState.Location.systemName );
+        }
+
+        [TestMethod]
+        public async Task TestFSSSignalDiscoveredBeforeLocationUsesLaterLocationStarPos ()
+        {
+            var responder = CreateEddnResponder();
+            var signal = @"{ ""timestamp"":""2026-06-28T06:30:32Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":3932277478106, ""SignalName"":""$MULTIPLAYER_SCENARIO42_TITLE;"", ""SignalName_Localised"":""Nav Beacon"", ""SignalType"":""NavBeacon"" }";
+            var location = @"{ ""timestamp"":""2026-06-28T06:30:32Z"", ""event"":""Location"", ""Docked"":false, ""StarSystem"":""Shinrarta Dezhra"", ""SystemAddress"":3932277478106, ""StarPos"":[55.71875,17.59375,27.15625], ""SystemAllegiance"":""PilotsFederation"", ""SystemEconomy"":""$economy_HighTech;"", ""SystemSecondEconomy"":""$economy_Industrial;"", ""SystemGovernment"":""$government_Democracy;"", ""SystemSecurity"":""$SYSTEM_SECURITY_high;"", ""Population"":85287324, ""Body"":""Shinrarta Dezhra A 1"", ""BodyID"":11, ""BodyType"":""Planet"" }";
+
+            await responder.HandleAsync( RawJournalEvent( signal ) ).ConfigureAwait( false );
+            Assert.IsEmpty( FssSignalMessages( responder ) );
+
+            await responder.HandleAsync( RawJournalEvent( location ) ).ConfigureAwait( false );
+
+            var fssMessages = FssSignalMessages( responder );
+            Assert.HasCount( 1, fssMessages );
+            Assert.AreEqual( "Shinrarta Dezhra", fssMessages[ 0 ][ "StarSystem" ] );
+            Assert.AreEqual( 3932277478106UL, fssMessages[ 0 ][ "SystemAddress" ] );
+            AssertStarPos( fssMessages[ 0 ], 55.71875M, 17.59375M, 27.15625M );
+        }
+
+        [TestMethod]
+        public async Task TestFSSSignalDiscoveredBeforeFSDJumpUsesLaterJumpStarPos ()
+        {
+            var responder = CreateEddnResponder();
+            var signal = @"{ ""timestamp"":""2026-06-28T23:20:31Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":676859159521, ""SignalName"":""$MULTIPLAYER_SCENARIO42_TITLE;"", ""SignalName_Localised"":""Nav Beacon"", ""SignalType"":""NavBeacon"" }";
+            var jump = @"{ ""timestamp"":""2026-06-28T23:20:31Z"", ""event"":""FSDJump"", ""StarSystem"":""Col 69 Sector NF-J b24-0"", ""SystemAddress"":676859159521, ""StarPos"":[435.09375,-276.21875,-1129.00000], ""SystemAllegiance"":""Empire"", ""SystemEconomy"":""$economy_HighTech;"", ""SystemSecondEconomy"":""$economy_None;"", ""SystemGovernment"":""$government_Corporate;"", ""SystemSecurity"":""$SYSTEM_SECURITY_low;"", ""Population"":193359, ""Body"":""Col 69 Sector NF-J b24-0"", ""BodyID"":0, ""BodyType"":""Star"" }";
+
+            await responder.HandleAsync( RawJournalEvent( signal ) ).ConfigureAwait( false );
+            Assert.IsEmpty( FssSignalMessages( responder ) );
+
+            await responder.HandleAsync( RawJournalEvent( jump ) ).ConfigureAwait( false );
+
+            var fssMessages = FssSignalMessages( responder );
+            Assert.HasCount( 1, fssMessages );
+            Assert.AreEqual( "Col 69 Sector NF-J b24-0", fssMessages[ 0 ][ "StarSystem" ] );
+            Assert.AreEqual( 676859159521UL, fssMessages[ 0 ][ "SystemAddress" ] );
+            AssertStarPos( fssMessages[ 0 ], 435.09375M, -276.21875M, -1129.00000M );
+        }
+
+        [TestMethod]
+        public async Task TestFSSSignalDiscoveredBeforeCarrierJumpUsesLaterCarrierJumpStarPos ()
+        {
+            var responder = CreateEddnResponder();
+            var signal = @"{ ""timestamp"":""2026-06-30T04:07:14Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":1184102126066, ""SignalName"":""$MULTIPLAYER_SCENARIO42_TITLE;"", ""SignalName_Localised"":""Nav Beacon"", ""SignalType"":""NavBeacon"" }";
+            var carrierJump = @"{ ""timestamp"":""2026-06-30T04:07:14Z"", ""event"":""CarrierJump"", ""Docked"":true, ""StationName"":""J9J-9KT"", ""StationType"":""FleetCarrier"", ""MarketID"":3707594240, ""StarSystem"":""Col 69 Sector TP-E c12-4"", ""SystemAddress"":1184102126066, ""StarPos"":[423.71875,-273.62500,-1130.37500], ""SystemAllegiance"":""Independent"", ""SystemEconomy"":""$economy_Industrial;"", ""SystemSecondEconomy"":""$economy_Extraction;"", ""SystemGovernment"":""$government_Anarchy;"", ""SystemSecurity"":""$GAlAXY_MAP_INFO_state_anarchy;"", ""Population"":1970748, ""Body"":""Col 69 Sector TP-E c12-4 B 1"", ""BodyID"":13, ""BodyType"":""Planet"" }";
+
+            await responder.HandleAsync( RawJournalEvent( signal ) ).ConfigureAwait( false );
+            Assert.IsEmpty( FssSignalMessages( responder ) );
+
+            await responder.HandleAsync( RawJournalEvent( carrierJump ) ).ConfigureAwait( false );
+
+            var fssMessages = FssSignalMessages( responder );
+            Assert.HasCount( 1, fssMessages );
+            Assert.AreEqual( "Col 69 Sector TP-E c12-4", fssMessages[ 0 ][ "StarSystem" ] );
+            Assert.AreEqual( 1184102126066UL, fssMessages[ 0 ][ "SystemAddress" ] );
+            AssertStarPos( fssMessages[ 0 ], 423.71875M, -273.62500M, -1130.37500M );
+        }
+
+        [TestMethod]
+        public void TestPartialStarSystemEventInvalidatesOldCoordinates ()
+        {
+            var responder = CreateEddnResponder();
+            var location = Deserializtion.DeserializeData(
+                @"{ ""timestamp"":""2026-06-28T06:30:32Z"", ""event"":""Location"", ""Docked"":false, ""StarSystem"":""Shinrarta Dezhra"", ""SystemAddress"":3932277478106, ""StarPos"":[55.71875,17.59375,27.15625] }" );
+            var partialScan = Deserializtion.DeserializeData(
+                @"{ ""timestamp"":""2026-06-28T23:20:31Z"", ""event"":""Scan"", ""ScanType"":""AutoScan"", ""StarSystem"":""Col 69 Sector NF-J b24-0"", ""SystemAddress"":676859159521, ""BodyName"":""Col 69 Sector NF-J b24-0"", ""BodyID"":0 }" );
+
+            responder.eddnState.Location.GetLocationInfo( "Location", location );
+            Assert.AreEqual( "Shinrarta Dezhra", responder.eddnState.Location.systemName );
+            Assert.AreEqual( 3932277478106UL, responder.eddnState.Location.systemAddress );
+            Assert.AreEqual( 55.71875M, responder.eddnState.Location.systemX );
+
+            responder.eddnState.Location.GetLocationInfo( "Scan", partialScan );
+
+            Assert.AreEqual( "Col 69 Sector NF-J b24-0", responder.eddnState.Location.systemName );
+            Assert.AreEqual( 676859159521UL, responder.eddnState.Location.systemAddress );
+            Assert.IsNull( responder.eddnState.Location.systemX );
+            Assert.IsNull( responder.eddnState.Location.systemY );
+            Assert.IsNull( responder.eddnState.Location.systemZ );
+        }
+
+        [TestMethod]
+        public async Task TestLaterFullLocationReplacesFssSnapshotForSameSystemAddress ()
+        {
+            var responder = CreateEddnResponder();
+            var staleLocation = @"{ ""timestamp"":""2026-06-24T17:55:00Z"", ""event"":""Location"", ""Docked"":false, ""StarSystem"":""Synuefai PD-J b55-2"", ""SystemAddress"":5066315539929, ""StarPos"":[-187.09375,-347.93750,109.12500] }";
+            var signal = @"{ ""timestamp"":""2026-06-24T17:56:43Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":5066315539929, ""SignalName"":""$MULTIPLAYER_SCENARIO42_TITLE;"", ""SignalName_Localised"":""Nav Beacon"", ""SignalType"":""NavBeacon"" }";
+            var correctedJump = @"{ ""timestamp"":""2026-06-24T17:55:40Z"", ""event"":""FSDJump"", ""StarSystem"":""Synuefai PD-J b55-2"", ""SystemAddress"":5066315539929, ""StarPos"":[-195.46875,-337.96875,117.90625], ""SystemAllegiance"":""Independent"", ""SystemEconomy"":""$economy_Industrial;"", ""SystemSecondEconomy"":""$economy_Tourism;"", ""SystemGovernment"":""$government_Cooperative;"", ""SystemSecurity"":""$SYSTEM_SECURITY_medium;"", ""Population"":1, ""Body"":""Synuefai PD-J b55-2"", ""BodyID"":0, ""BodyType"":""Star"" }";
+
+            await responder.HandleAsync( RawJournalEvent( staleLocation ) ).ConfigureAwait( false );
+            await responder.HandleAsync( RawJournalEvent( signal ) ).ConfigureAwait( false );
+            await responder.HandleAsync( RawJournalEvent( correctedJump ) ).ConfigureAwait( false );
+
+            var fssMessages = FssSignalMessages( responder );
+            Assert.HasCount( 1, fssMessages );
+            Assert.AreEqual( "Synuefai PD-J b55-2", fssMessages[ 0 ][ "StarSystem" ] );
+            Assert.AreEqual( 5066315539929UL, fssMessages[ 0 ][ "SystemAddress" ] );
+            AssertStarPos( fssMessages[ 0 ], -195.46875M, -337.96875M, 117.90625M );
         }
 
         [TestMethod]
@@ -592,10 +719,14 @@ namespace Tests
             // using the system name from our Location event and other data from our FSDJump event
             responder.eddnState.Location.systemName = "Pleiades Sector GW-W c1-4";
 
-            // Verify that a scan corrects our bad system name
+            // A partial event must not correct the system name while retaining old coordinates.
             responder.eddnState.Location.GetLocationInfo( "Scan", unhandledScan );
-            Assert.IsTrue( responder.eddnState.Location.CheckLocationData( "Scan", unhandledScan ) );
+            Assert.IsFalse( responder.eddnState.Location.CheckLocationData( "Scan", unhandledScan ) );
             Assert.AreEqual( "Pleiades Sector HR-W d1-79", responder.eddnState.Location.systemName );
+            Assert.AreEqual( 2724879894859U, responder.eddnState.Location.systemAddress );
+            Assert.IsNull( responder.eddnState.Location.systemX );
+            Assert.IsNull( responder.eddnState.Location.systemY );
+            Assert.IsNull( responder.eddnState.Location.systemZ );
 
             // Set ourselves to a new position using another `FSDJump` event
             var unhandledJump2 = Deserializtion.DeserializeData(jump2);

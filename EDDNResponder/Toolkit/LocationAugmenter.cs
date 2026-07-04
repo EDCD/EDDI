@@ -36,6 +36,11 @@ namespace EddiEddnResponder.Toolkit
             "CarrierJump"
         ];
 
+        internal static bool IsFullStarSystemLocationEvent ( string edType )
+        {
+            return fullStarSystemLocationEvents.Contains( edType );
+        }
+
         // These events must be ignored to prevent enriching events with incorrect location data
         private static readonly List<string> starSystemIgnoredEvents =
         [
@@ -59,7 +64,7 @@ namespace EddiEddnResponder.Toolkit
         internal void GetLocationInfo(string edType, IDictionary<string, object> data)
         {
             // We always start location data fresh when handling events containing complete star system location data
-            if (fullStarSystemLocationEvents.Contains(edType))
+            if (IsFullStarSystemLocationEvent(edType))
             {
                 ClearLocation();
             }
@@ -76,34 +81,69 @@ namespace EddiEddnResponder.Toolkit
                 Logging.Debug($"Extracting star system location data from {edType} event for EDDN", data);
 
                 // Ignore any events that we've blacklisted for contaminating our location data
-                if (!starSystemIgnoredEvents.Contains(edType))
+                if ( starSystemIgnoredEvents.Contains( edType ) )
                 {
-                    if ( data.ContainsKey( "StarSystem" ) )
-                    {
-                        systemName = JsonParsing.getString( data, "StarSystem" ) ?? systemName;
-                    }
+                    return;
+                }
 
-                    if ( data.ContainsKey( "SystemAddress" ) )
-                    {
-                        var SystemAddress = JsonParsing.getULong(data, "SystemAddress");
-                        // Some events are bugged and return a SystemAddress of 1, regardless of the system we are in.
-                        // We need to ignore data that matches this pattern.
-                        systemAddress = ( SystemAddress > 1 ? SystemAddress : systemAddress );
-                    }
+                var incomingSystemName = data.ContainsKey( "StarSystem" )
+                    ? JsonParsing.getString( data, "StarSystem" )
+                    : null;
+                var incomingSystemAddress = data.ContainsKey( "SystemAddress" )
+                    ? JsonParsing.getULong( data, "SystemAddress" )
+                    : 0UL;
+                // Some events are bugged and return a SystemAddress of 1, regardless of the system we are in.
+                // We need to ignore data that matches this pattern.
+                var incomingSystemAddressIsValid = incomingSystemAddress > 1;
 
-                    data.TryGetValue("StarPos", out var starpos);
-                    if (starpos != null)
+                if ( IsFullStarSystemLocationEvent( edType ) )
+                {
+                    systemName = incomingSystemName ?? systemName;
+                    systemAddress = incomingSystemAddressIsValid ? incomingSystemAddress : systemAddress;
+
+                    data.TryGetValue( "StarPos", out var starpos );
+                    if ( starpos != null )
                     {
-                        var starPos = (List<object>)starpos;
-                        systemX = Math.Round(JsonParsing.getDecimal("X", starPos[0]) * 32M) / 32M;
-                        systemY = Math.Round(JsonParsing.getDecimal("Y", starPos[1]) * 32M) / 32M;
-                        systemZ = Math.Round(JsonParsing.getDecimal("Z", starPos[2]) * 32M) / 32M;
+                        SetStarPos( starpos );
                     }
+                    return;
+                }
+
+                var nameWouldChange = !string.IsNullOrEmpty( incomingSystemName ) && incomingSystemName != systemName;
+                var addressWouldChange = incomingSystemAddressIsValid && incomingSystemAddress != systemAddress;
+                var nameConflicts = !string.IsNullOrEmpty( incomingSystemName ) && systemName != null && incomingSystemName != systemName;
+                var addressConflicts = incomingSystemAddressIsValid && systemAddress != 0 && incomingSystemAddress != systemAddress;
+                var hasCoordinates = systemX != null || systemY != null || systemZ != null;
+
+                // Partial events can confirm the current location but cannot combine a new system identity with old coordinates.
+                if ( nameConflicts || addressConflicts || ( hasCoordinates && ( nameWouldChange || addressWouldChange ) ) )
+                {
+                    ClearStarSystemLocation();
+                }
+
+                if ( !string.IsNullOrEmpty( incomingSystemName ) )
+                {
+                    systemName = incomingSystemName;
+                }
+
+                if ( incomingSystemAddressIsValid )
+                {
+                    systemAddress = incomingSystemAddress;
                 }
             }
             catch (Exception ex)
             {
                 Logging.Error("Failed to parse star system location data for EDDN", ex);
+            }
+        }
+
+        private void SetStarPos ( object starpos )
+        {
+            if ( starpos is IList<object> starPos && starPos.Count >= 3 )
+            {
+                systemX = Math.Round( JsonParsing.getDecimal( "X", starPos[ 0 ] ) * 32M ) / 32M;
+                systemY = Math.Round( JsonParsing.getDecimal( "Y", starPos[ 1 ] ) * 32M ) / 32M;
+                systemZ = Math.Round( JsonParsing.getDecimal( "Z", starPos[ 2 ] ) * 32M ) / 32M;
             }
         }
 
@@ -170,13 +210,18 @@ namespace EddiEddnResponder.Toolkit
 
         private void ClearLocation()
         {
+            ClearStarSystemLocation();
+            stationName = null;
+            marketId = null;
+        }
+
+        private void ClearStarSystemLocation ()
+        {
             systemName = null;
             systemAddress = 0;
             systemX = null;
             systemY = null;
             systemZ = null;
-            stationName = null;
-            marketId = null;
         }
 
         internal bool StarSystemLocationIsSet()
@@ -238,7 +283,7 @@ namespace EddiEddnResponder.Toolkit
         internal bool CheckLocationData ( string edType, IDictionary<string, object> data )
         {
             // Confirm the location data in memory is as accurate as possible when handling an event with partial location data
-            if ( fullStarSystemLocationEvents.Contains( edType ) && StarSystemLocationIsSet() ) { return true; }
+            if ( IsFullStarSystemLocationEvent( edType ) && StarSystemLocationIsSet() ) { return true; }
 
             // Can only send journal data if we know our current location data is correct
             // If any location data is null, data shall not be sent to EDDN.
