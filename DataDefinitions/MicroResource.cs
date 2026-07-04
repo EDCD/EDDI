@@ -186,6 +186,7 @@ namespace EddiDataDefinitions
 
         // Operations Data
         public static readonly MicroResource OperationsStrikeData = new("OperationsStrikeData", MicroResourceCategory.Data, null, false);
+        public static readonly MicroResource OperationsCounterAttackData = new("OperationsCounterAttackData", MicroResourceCategory.Data, null, false);
 
         // Items
         public static readonly MicroResource AgriculturalProcessSample = new("AgriculturalProcessSample", MicroResourceCategory.Items, 128965837);

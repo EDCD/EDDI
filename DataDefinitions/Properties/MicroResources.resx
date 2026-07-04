@@ -995,4 +995,8 @@
   <data name="OperationsStrikeData" xml:space="preserve">
     <value>Researcher Location Data</value>
   </data>
+  <data name="OperationsCounterAttackData" xml:space="preserve">
+    <value>Installation Intelligence Report</value>
+    <comment>MicroResource OperationsCounterAttackData</comment>
+  </data>
 </root>

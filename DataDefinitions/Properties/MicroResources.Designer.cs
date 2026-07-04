@@ -1177,6 +1177,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Installation Intelligence Report.
+        /// </summary>
+        public static string OperationsCounterAttackData {
+            get {
+                return ResourceManager.GetString("OperationsCounterAttackData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Researcher Location Data.
         /// </summary>
         public static string OperationsStrikeData {
