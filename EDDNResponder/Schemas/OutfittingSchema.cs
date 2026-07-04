@@ -105,7 +105,7 @@ namespace EddiEddnResponder.Schemas
                         ["id"] = module[ "id" ]?.ToObject<long>() ?? 0,
                         ["Name"] = edName,
                         ["BuyPrice"] = module[ "cost" ]?.ToObject<long>() ?? 0,
-                        ["BuyMercCoinsPrice"] = module[ "BuyMercCoinsPrice" ]?.ToObject<long>() ?? 0,
+                        ["BuyMercCoinsPrice"] = module[ "additionalCost" ]?["mercCoins"]?.ToObject<long>() ?? 0,
                     };
                     handledModules.Add( handledModule );
                 }
