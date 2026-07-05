@@ -16,6 +16,7 @@ namespace EddiDataDefinitions
         public static readonly CodexCivilizationThargoid Basilisk = new( "Basilisk", 3100402 );
         public static readonly CodexCivilizationThargoid Berserker = new( "Berserker", 3100802 );
         public static readonly CodexCivilizationThargoid Caustic_Generator = new( "Caustic_Generator", 3101300 );
+        public static readonly CodexCivilizationThargoid Coral_Root = new( "Thargoid_Coral_Root", 3100602 );
         public static readonly CodexCivilizationThargoid Cyclops = new( "Cyclops", 3100401 );
         public static readonly CodexCivilizationThargoid Glaive = new( "Glaive", 3100501 );
         public static readonly CodexCivilizationThargoid Hydra = new( "Hydra", 3100404 );

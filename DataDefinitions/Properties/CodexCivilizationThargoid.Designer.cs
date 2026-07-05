@@ -205,6 +205,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Coral Root.
+        /// </summary>
+        public static string Thargoid_Coral_Root {
+            get {
+                return ResourceManager.GetString("Thargoid_Coral_Root", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thargoid Interceptor Shipwreck.
         /// </summary>
         public static string Wrecked_Interceptor {

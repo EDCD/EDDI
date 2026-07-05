@@ -165,6 +165,9 @@
   <data name="TG_Transmitter" xml:space="preserve">
     <value>Thargoid Device</value>
   </data>
+  <data name="Thargoid_Coral_Root" xml:space="preserve">
+    <value>Coral Root</value>
+  </data>
   <data name="Wrecked_Interceptor" xml:space="preserve">
     <value>Thargoid Interceptor Shipwreck</value>
   </data>
