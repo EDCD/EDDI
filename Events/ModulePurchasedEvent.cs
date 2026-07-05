@@ -13,6 +13,7 @@ namespace EddiEvents
         string slot,
         Module buymodule,
         long buyprice,
+        long? buyMercPrice,
         Module sellmodule,
         long? sellprice,
         Module storedmodule,
@@ -40,8 +41,11 @@ namespace EddiEvents
         [PublicAPI("The module (object) purchased")]
         public Module buymodule { get; private set; } = buymodule;
 
-        [PublicAPI("The price of the module being purchased")]
+        [PublicAPI("The price of the module being purchased, in credits")]
         public long buyprice { get; private set; } = buyprice;
+
+        [PublicAPI( "The price of the module being purchased, in merc coin, when applicable" )]
+        public long? buymercprice { get; private set; } = buyMercPrice;
 
         [PublicAPI("The module (object) being sold (if replacing an existing module)")]
         public Module sellmodule { get; private set; } = sellmodule;
@@ -70,6 +74,8 @@ namespace EddiEvents
             buyModule.fallbackLocalizedName = JsonParsing.getString( data, "BuyItem_Localised" );
             var buyPrice = JsonParsing.getLong( data, "BuyPrice" );
             buyModule.price = buyPrice;
+            var buyMercPrice = JsonParsing.getOptionalLong( data, "BuyMercCoinsPrice" );
+            buyModule.mercPrice = buyMercPrice;
 
             // Set retrieved module defaults
             buyModule.enabled = true;
@@ -90,8 +96,7 @@ namespace EddiEvents
                 storedModule.fallbackLocalizedName = JsonParsing.getString( data, "StoredItem_Localised" );
             }
 
-            events.Add( new ModulePurchasedEvent( timestamp, ship, shipId, slot, buyModule, buyPrice, sellModule,
-                sellPrice, storedModule, marketId ) { raw = line, fromLoad = fromLogLoad } );
+            events.Add( new ModulePurchasedEvent( timestamp, ship, shipId, slot, buyModule, buyPrice, buyMercPrice, sellModule, sellPrice, storedModule, marketId ) { raw = line, fromLoad = fromLogLoad } );
 
             return true;
         }

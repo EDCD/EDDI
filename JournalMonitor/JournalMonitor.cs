@@ -1327,6 +1327,7 @@ namespace EddiJournalMonitor
                                             {
                                                 hot = JsonParsing.getOptionalBool(item, "Hot") ?? false,
                                                 price = JsonParsing.getOptionalLong(item, "BuyPrice") ?? 0,
+                                                mercPrice = JsonParsing.getOptionalLong(item, "BuyMercCoinsPrice") ?? 0,
                                             };
                                             item.TryGetValue("EngineerModifications", out val);
                                             module.modificationEDName = JsonParsing.getString(item, "EngineerModifications");

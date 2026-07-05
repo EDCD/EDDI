@@ -40,7 +40,10 @@ namespace EddiDataDefinitions
         // State of the module
 
         [PublicAPI, JsonProperty]
-        public long price { get; set; } // How much we actually paid for it
+        public long price { get; set; } // How much we actually paid for it in credits
+
+        [PublicAPI, JsonProperty]
+        public long? mercPrice { get; set; } // How much we actually paid for it in merc coins
 
         [PublicAPI, JsonProperty]
         public bool enabled { get; set; }
@@ -162,6 +165,7 @@ namespace EddiDataDefinitions
             {
                 fallbackLocalizedName = frontierAPIModule.fallbackLocalizedName;
                 price = frontierAPIModule.price;
+                mercPrice = frontierAPIModule.mercPrice;
                 enabled = frontierAPIModule.enabled;
                 priority = frontierAPIModule.priority;
                 health = frontierAPIModule.health;

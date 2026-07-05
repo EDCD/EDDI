@@ -17,6 +17,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Embarked` updated to add new field `deployedVessels`.
       * `Fighter docked` removed - replaced by `Vessel docked`.
       * `Fighter launched` removed - replaced by `Vessel launched`.
+      * `Module purchased` updated with new field `buymercprice`.
+      * `Module purchased to storage` updated with new field `buymercprice`.
       * `SRV docked` removed - replaced by `Vessel docked`.
       * `SRV launched` removed - replaced by `Vessel launched`.
       * `Touchdown` updated descriptions to use "ship or vessel" rather than "ship"
@@ -32,6 +34,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Fighter docked` removed.
       * `Fighter launched` removed.
       * `Limpet check` revised to reference invariant controller name.  
+      * `Module purchased` updated to utilize new field `buymercprice`.
+      * `Module purchased to storage` updated to utilize new field `buymercprice`.
       * `Respawned` updated to move deployed vessel state tracking into EDDI back end. 
       * `SRV docked` removed.
       * `SRV launched` removed.
