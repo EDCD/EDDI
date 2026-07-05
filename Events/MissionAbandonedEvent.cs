@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -19,5 +20,24 @@ namespace EddiEvents
 
         [PublicAPI("The fine levied")]
         public long fine { get; private set; } = fine;
+
+        public static bool Handle ( DateTime timestamp, string edType, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            switch ( edType )
+            {
+                case "CommunityGoalDiscard":
+                    var cgid = JsonParsing.getULong(data, "CGID");
+                    events.Add( new MissionAbandonedEvent( timestamp, cgid, "MISSION_CommunityGoal", 0 ) { raw = line, fromLoad = fromLogLoad } );
+                    return true;
+                case "MissionAbandoned":
+                    var missionid = JsonParsing.getULong(data, "MissionID");
+                    var name = JsonParsing.getString(data, "Name");
+                    var fine = JsonParsing.getOptionalLong(data, "Fine") ?? 0;
+                    events.Add( new MissionAbandonedEvent( timestamp, missionid, name, fine ) { raw = line, fromLoad = fromLogLoad } );
+                    return true;
+                default:
+                    return false;
+            }
+        }
     }
 }

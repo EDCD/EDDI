@@ -1,6 +1,8 @@
 ﻿using EddiDataDefinitions;
 using JetBrains.Annotations;
 using System;
+using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -57,5 +59,26 @@ namespace EddiEvents
         // Not intended to be user facing
         [CanBeNull]
         public CommodityDefinition commodityDefinition { get; private set; } = commodity;
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var missionid = JsonParsing.getULong(data, "MissionID");
+            var updatetype = JsonParsing.getString(data, "UpdateType");
+            var startmarketid = JsonParsing.getLong(data, "StartMarketID");
+            var endmarketid = JsonParsing.getLong(data, "EndMarketID");
+            var collected = JsonParsing.getInt(data, "ItemsCollected");
+            var delivered = JsonParsing.getInt(data, "ItemsDelivered");
+            var totaltodeliver = JsonParsing.getInt(data, "TotalItemsToDeliver");
+
+            // Not available in 'WingUpdate'
+            var commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "CargoType"));
+            var amount = JsonParsing.getOptionalInt(data, "Count");
+
+            // The Progress value represents pending progress for goods in transit: (ItemsCollected-ItemsDelivered)/TotalItemsToDeliver
+
+            events.Add( new CargoDepotEvent( timestamp, missionid, updatetype, commodity, amount, startmarketid, endmarketid, collected, delivered, totaltodeliver ) { raw = line, fromLoad = fromLogLoad } );
+
+            return true;
+        }
     }
 }

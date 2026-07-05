@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection.Metadata;
 using Utilities;
 
 namespace EddiEvents
@@ -15,5 +17,17 @@ namespace EddiEvents
 
         [PublicAPI("The price of the purchase")]
         public long price { get; private set; } = price;
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
+            var system = JsonParsing.getString(data, "System");
+            data.TryGetValue( "Cost", out var val );
+            var price = (long)val;
+
+            events.Add( new TradeDataPurchasedEvent( timestamp, system, price ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
+        }
     }
 }

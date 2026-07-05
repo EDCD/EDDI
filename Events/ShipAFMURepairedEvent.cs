@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -23,5 +25,47 @@ namespace EddiEvents
 
         [PublicAPI("The health of the module (1.000000 = fully repaired)")]
         public decimal health { get; private set; } = health;
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var item = JsonParsing.getString(data, "Module");
+            // Item might be a module
+            var module = Module.FromEDName(item);
+            if ( module != null )
+            {
+                if ( module.Mount != null )
+                {
+                    // This is a weapon so provide a bit more information
+                    string mount;
+                    if ( module.Mount == ModuleMount.Fixed )
+                    {
+                        mount = "fixed";
+                    }
+                    else if ( module.Mount == ModuleMount.Gimballed )
+                    {
+                        mount = "gimballed";
+                    }
+                    else
+                    {
+                        mount = "turreted";
+                    }
+                    item = "" + module.@class.ToString() + module.grade + " " + mount + " " + module.localizedName;
+                }
+                else
+                {
+                    item = module.localizedName;
+                }
+            }
+
+            // There is an FDev bug that can set `FullyRepaired` to false even when the module health is full,
+            // so we work around this by relying on the `Health` property rather than the `FullyRepaired` property.
+            // This appears to be a unique problem with Module Reinforcement Packages.
+
+            var health = JsonParsing.getDecimal(data, "Health");
+            var repairedfully = health == 1M;
+
+            events.Add( new ShipAfmuRepairedEvent( timestamp, item, repairedfully, health ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
+        }
     }
 }

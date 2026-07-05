@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -62,6 +63,44 @@ namespace EddiEvents
                 contribution = definition?.localizedName;
                 category = definition?.Category?.localizedName;
             }
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var name = JsonParsing.getString(data, "Engineer");
+            var engineerId = JsonParsing.getLong(data, "EngineerID");
+            var engineer = Engineer.FromNameOrId(name, engineerId);
+
+            var contributionType = JsonParsing.getString(data, "Type"); // (Commodity, materials, Credits, Bond, Bounty)
+            var amount = JsonParsing.getInt(data, "Quantity");
+            var total = JsonParsing.getInt(data, "TotalQuantity");
+            switch ( contributionType )
+            {
+                case "Commodity":
+                    {
+                        var edname = JsonParsing.getString(data, "Commodity");
+                        var commodityDef = CommodityDefinition.FromEDName( edname );
+                        var commodity = new CommodityAmount(commodityDef, amount);
+                        events.Add( new EngineerContributedEvent( timestamp, engineer, contributionType, amount, total, commodity, null ) { raw = line, fromLoad = fromLogLoad } );
+                    }
+                    break;
+                case "Materials":
+                    {
+                        var edname = JsonParsing.getString(data, "Material");
+                        var materialDef = Material.FromEDName( edname );
+                        var material = new MaterialAmount(materialDef, amount);
+                        events.Add( new EngineerContributedEvent( timestamp, engineer, contributionType, amount, total, null, material ) { raw = line, fromLoad = fromLogLoad } );
+                    }
+                    break;
+                case "Credits":
+                case "Bond":
+                case "Bounty":
+                    {
+                        // We don't currently need to handle these types.
+                    }
+                    break;
+            }
+            return true;
         }
     }
 }

@@ -84,5 +84,29 @@ namespace EddiEvents
 
         [PublicAPI("The mission object")]
         public Mission Mission { get; } = mission;
+
+        public static bool Handle ( DateTime timestamp, string edType, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            switch ( edType )
+            {
+                case "CommunityGoalJoin":
+                    var cgid = JsonParsing.getULong(data, "CGID");
+                    var name = JsonParsing.getString(data, "Name");
+                    var system = JsonParsing.getString(data, "System");
+
+                    var mission = new Mission(cgid, "MISSION_CommunityGoal", null, MissionStatus.Active)
+                    {
+                        localisedname = name,
+                        destinationsystem = system,
+                        originsystem = system,
+                        communal = true
+                    };
+
+                    events.Add( new MissionAcceptedEvent( timestamp, mission ) { raw = line, fromLoad = fromLogLoad } );
+                    return true;
+                default:
+                    return false;
+            }
+        }
     }
 }

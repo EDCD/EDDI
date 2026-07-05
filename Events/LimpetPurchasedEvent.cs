@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -15,5 +16,15 @@ namespace EddiEvents
 
         [PublicAPI("The price paid per limpet")]
         public int price { get; } = price;
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            data.TryGetValue( "Count", out var val );
+            var amount = (int)(long)val;
+            data.TryGetValue( "BuyPrice", out val );
+            var price = (int)(long)val;
+            events.Add( new LimpetPurchasedEvent( timestamp, amount, price ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
+        }
     }
 }

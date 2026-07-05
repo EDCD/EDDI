@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -12,5 +13,15 @@ namespace EddiEvents
 
         [PublicAPI("The price of restocking")]
         public long price { get; private set; } = price;
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
+            data.TryGetValue( "Cost", out var val );
+            var price = (long)val;
+            events.Add( new ShipRestockedEvent( timestamp, price ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
+        }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -35,5 +36,17 @@ namespace EddiEvents
 
         [PublicAPI("The old destination system for the mission")]
         public string olddestinationsystem { get; private set; } = olddestinationsystem;
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var missionid = JsonParsing.getULong(data, "MissionID");
+            var name = JsonParsing.getString(data, "Name");
+            var newdestinationstation = JsonParsing.getString(data, "NewDestinationStation");
+            var olddestinationstation = JsonParsing.getString(data, "OldDestinationStation");
+            var newdestinationsystem = JsonParsing.getString(data, "NewDestinationSystem");
+            var olddestinationsystem = JsonParsing.getString(data, "OldDestinationSystem");
+            events.Add( new MissionRedirectedEvent( timestamp, missionid, name, newdestinationstation, olddestinationstation, newdestinationsystem, olddestinationsystem ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
+        }
     }
 }

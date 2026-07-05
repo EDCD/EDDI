@@ -1,4 +1,5 @@
 ﻿using EddiDataDefinitions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -15,5 +16,15 @@ namespace EddiEvents
         // Not intended to be user facing
 
         public List<CommunityGoal> goals { get; } = goals;
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            // There may be multiple goals in each event.
+            data.TryGetValue( "CurrentGoals", out var goalsVal );
+            var goalsJson = JsonConvert.SerializeObject(goalsVal);
+            var goals = JsonConvert.DeserializeObject<List<CommunityGoal>>(goalsJson);
+            events.Add( new CommunityGoalsEvent( timestamp, goals ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
+        }
     }
 }

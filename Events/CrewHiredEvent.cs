@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -32,5 +33,16 @@ namespace EddiEvents
 
         [PublicAPI("The combat rating of the crewmember being hired")]
         public string combatrating { get; private set; } = combatrating.localizedName;
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var name = JsonParsing.getString(data, "Name");
+            var crewid = JsonParsing.getLong(data, "CrewID");
+            var faction = EventParsing.FactionName(data, "Faction");
+            var price = JsonParsing.getLong(data, "Cost");
+            var rating = CombatRating.FromRank(JsonParsing.getInt(data, "CombatRank"));
+            events.Add( new CrewHiredEvent( timestamp, name, crewid, faction, price, rating ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
+        }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Metadata;
 using Utilities;
 
 namespace EddiEvents
@@ -58,5 +60,60 @@ namespace EddiEvents
         public string slot { get; private set; } = slot;
 
         public Module Module { get; private set; } = module;
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
+            var engineer = JsonParsing.getString(data, "Engineer");
+            var engineerId = JsonParsing.getLong(data, "EngineerID");
+            var blueprintpEdName = JsonParsing.getString(data, "BlueprintName");
+            var blueprintId = JsonParsing.getLong(data, "BlueprintID");
+
+            data.TryGetValue( "Level", out var val );
+            var level = (int)(long)val;
+
+            var quality = JsonParsing.getOptionalDecimal(data, "Quality");
+            var experimentalEffect = JsonParsing.getString(data, "ApplyExperimentalEffect");
+
+            var slot = JsonParsing.getString( data, "Slot" );
+            var module = Module.FromEDName( JsonParsing.getString( data, "Module" ) );
+
+            var commodities = new List<CommodityAmount>();
+            var materials = new List<MaterialAmount>();
+            if ( data.TryGetValue( "Ingredients", out val ) )
+            {
+                // 2.2 style
+                if ( val is Dictionary<string, object> usedData )
+                {
+                    foreach ( var used in usedData )
+                    {
+                        // Used could be a material or a commodity
+                        var commodity = CommodityDefinition.FromEDName(used.Key);
+                        if ( commodity.Category != null )
+                        {
+                            // This is a real commodity
+                            commodities.Add( new CommodityAmount( commodity, (int)(long)used.Value ) );
+                        }
+                        else
+                        {
+                            // Probably a material then
+                            var material = Material.FromEDName(used.Key);
+                            materials.Add( new MaterialAmount( material, (int)(long)used.Value ) );
+                        }
+                    }
+                }
+                else if ( val is List<object> materialsJson ) // 2.3 style
+                {
+                    foreach ( var materialJson in materialsJson.Cast<IDictionary<string, object>>() )
+                    {
+                        var material = Material.FromEDName(JsonParsing.getString(materialJson, "Name"));
+                        materials.Add( new MaterialAmount( material, (int)(long)materialJson[ "Count" ] ) );
+                    }
+                }
+            }
+            events.Add( new ModificationCraftedEvent( timestamp, engineer, engineerId, blueprintpEdName, blueprintId, level, quality, experimentalEffect, materials, commodities, slot, module ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
+        }
     }
 }

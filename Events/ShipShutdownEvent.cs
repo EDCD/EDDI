@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Shapes;
 using Utilities;
 
 namespace EddiEvents
@@ -14,6 +17,22 @@ namespace EddiEvents
 
         [PublicAPI( "True if shutdown is momentary, with flickering power which does not fully disable the ship" )]
         public bool partialshutdown { get; set; }
+
+        public static bool Handle ( DateTime timestamp, string line, ref List<Event> events, bool fromLogLoad, CancellationTokenSource ShipShutdownCancellationTokenSource )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
+            if ( ShipShutdownCancellationTokenSource != null )
+            {
+                // Ignore repetitions when the ship is already in a shut-down state. 
+            }
+            else
+            {
+                events.Add( new ShipShutdownEvent( timestamp ) { raw = line, fromLoad = fromLogLoad } );
+            }
+
+            return true;
+        }
 
         public async Task ScheduleRebootAsync (
             Func<Event, Task> enqueueEvent,

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -31,5 +32,28 @@ namespace EddiEvents
 
         [PublicAPI("The ship id of the ship associated with the fine (if any)")]
         public int shipid { get; private set; } = shipId;
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            data.TryGetValue( "Amount", out var val );
+            var amount = (long)val;
+            var brokerpercentage = JsonParsing.getOptionalDecimal(data, "BrokerPercentage");
+            var allBounties = JsonParsing.getOptionalBool(data, "AllFines") ?? false;
+            var faction = EventParsing.FactionName(data, "Faction");
+            int shipId;
+            var shipIdLong = JsonParsing.getLong(data, "ShipID");
+            if ( shipIdLong > 4293000000 )
+            {
+                // This is a suit loadout ID. Use a null value since bounties associated with the commander, rather than the ship, are being paid.
+                shipId = -1;
+            }
+            else
+            {
+                shipId = (int)shipIdLong;
+            }
+
+            events.Add( new BountyPaidEvent( timestamp, amount, brokerpercentage, allBounties, faction, shipId ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
+        }
     }
 }

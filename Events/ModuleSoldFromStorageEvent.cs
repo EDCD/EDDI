@@ -1,5 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
+using System.Reflection.Metadata;
 using Utilities;
 
 namespace EddiEvents
@@ -36,5 +38,27 @@ namespace EddiEvents
         public int storageslot { get; private set; } = storageslot;
 
         public long serverid { get; private set; } = serverid;
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
+            data.TryGetValue( "ShipID", out var val );
+            var shipId = (int)(long)val;
+            var ship = JsonParsing.getString(data, "Ship");
+
+            var module = Module.FromEDName(JsonParsing.getString(data, "SellItem"));
+            data.TryGetValue( "SellPrice", out val );
+            var price = (long)val;
+
+            // Probably not useful. We'll get these but we won't tell the end user about them
+            data.TryGetValue( "StorageSlot", out val );
+            var storageSlot = (int)(long)val;
+            data.TryGetValue( "ServerId", out val );
+            var serverId = (long)val;
+
+            events.Add( new ModuleSoldFromStorageEvent( timestamp, ship, shipId, storageSlot, serverId, module, price ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
+        }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Utilities;
 
 namespace EddiEvents
@@ -30,5 +32,43 @@ namespace EddiEvents
 
         // Omitted, only written at startup and for an array of engineers rather than for a single engineer.
         public int? rankprogress => Engineer?.rankprogress;
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            data.TryGetValue( "Engineers", out var val );
+            if ( val != null )
+            {
+                // This is a startup entry. 
+                // Update engineer progress / status data
+                var engineers = (List<object>)val;
+                foreach ( var engineerData in engineers.Cast<IDictionary<string, object>>() )
+                {
+                    var engineer = EventParsing.Engineer(engineerData);
+                    if ( !string.IsNullOrEmpty( engineer?.name ) )
+                    {
+                        Engineer.AddOrUpdate( engineer );
+                    }
+                }
+                // Generate an event to pass the data
+                events.Add( new EngineerProgressedEvent( timestamp, null, null ) { raw = line, fromLoad = fromLogLoad } );
+            }
+            else
+            {
+                // This is a progress entry.
+                var engineer = EventParsing.Engineer(data);
+                var lastEngineer = Engineer.FromNameOrId(engineer.name, engineer.id).Copy();
+                Engineer.AddOrUpdate( engineer );
+                if ( engineer.stage != null && engineer.stage != lastEngineer?.stage )
+                {
+                    events.Add( new EngineerProgressedEvent( timestamp, engineer, "Stage" ) { raw = line, fromLoad = fromLogLoad } );
+                }
+                if ( engineer.rank != null && engineer.rank != lastEngineer?.rank )
+                {
+                    events.Add( new EngineerProgressedEvent( timestamp, engineer, "Rank" ) { raw = line, fromLoad = fromLogLoad } );
+                }
+            }
+
+            return true;
+        }
     }
 }
