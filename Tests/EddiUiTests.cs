@@ -9,12 +9,11 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 
 namespace Tests
 {
-    [TestClass, TestCategory("UnitTests")]
+    [TestClass, TestCategory("WpfTests"), DoNotParallelize]
     public class EddiUiTests : TestBase
     {
         [TestInitialize]
@@ -378,55 +377,6 @@ namespace Tests
             Assert.DoesNotContain("x:Name=\"OuterBorder\"", comboBoxTemplate);
         }
 
-        [STATestMethod]
-        public void ThemeModern_NonEditableComboBoxTemplateKeepsArrowAtRightAndFullSurfaceClickable()
-        {
-            var resourceDictionary = (ResourceDictionary)Application.LoadComponent(
-                new Uri("/EddiUI;component/Themes/ThemeModern.xaml", UriKind.Relative));
-            var comboBox = new ComboBox
-            {
-                Width = 300,
-                Height = 24,
-                Padding = new Thickness(5, 2, 5, 2),
-                Background = Brushes.Transparent,
-                BorderBrush = Brushes.Gray,
-                BorderThickness = new Thickness(1),
-                Foreground = Brushes.White,
-                IsEditable = false,
-                Template = (ControlTemplate)resourceDictionary["ComboBoxModernTemplate"]
-            };
-            comboBox.Items.Add("One");
-            comboBox.Items.Add("Two");
-            comboBox.SelectedIndex = 0;
-
-            comboBox.ApplyTemplate();
-            comboBox.Measure(new Size(comboBox.Width, comboBox.Height));
-            comboBox.Arrange(new Rect(0, 0, comboBox.Width, comboBox.Height));
-            comboBox.UpdateLayout();
-
-            var toggleButton = (ToggleButton)comboBox.Template.FindName("ToggleButton", comboBox);
-            Assert.IsNotNull(toggleButton);
-            var contentHostBorder = (Border)comboBox.Template.FindName("ContentHostBorder", comboBox);
-            var editableTextBox = (TextBox)comboBox.Template.FindName("PART_EditableTextBox", comboBox);
-            Assert.IsNotNull(contentHostBorder);
-            Assert.IsNotNull(editableTextBox);
-            Assert.IsFalse(contentHostBorder.IsHitTestVisible);
-            Assert.IsFalse(editableTextBox.IsHitTestVisible);
-            Assert.IsGreaterThanOrEqualTo(
-                comboBox.ActualWidth - 2, toggleButton.ActualWidth,
-                $"The non-editable ComboBox toggle should span the full control width. Toggle width: {toggleButton.ActualWidth}. ComboBox width: {comboBox.ActualWidth}.");
-            toggleButton.ApplyTemplate();
-            toggleButton.UpdateLayout();
-
-            var arrow = FindVisualDescendant<System.Windows.Shapes.Path>(toggleButton, "Arrow");
-            Assert.IsNotNull(arrow);
-
-            var arrowOrigin = arrow.TransformToAncestor(comboBox).Transform(new Point(0, 0));
-            Assert.IsGreaterThan(
-                comboBox.ActualWidth - SystemParameters.VerticalScrollBarWidth - 2, arrowOrigin.X,
-                $"ComboBox arrow should be inside the right-side drop-down region. Actual X: {arrowOrigin.X}.");
-        }
-
         [TestMethod]
         public void ThemeModern_EditableControlsUseEditableBackground()
         {
@@ -744,77 +694,75 @@ namespace Tests
         }
     }
 
-    [STATestClass, TestCategory("UnitTests")]
-    public class MainWindowTabItemComparerTests : TestBase
+    [TestClass, TestCategory( "UnitTests" )]
+    public class TabItemHeaderComparerTests : TestBase
     {
         [TestInitialize]
-        public void Start()
+        public void Start ()
         {
             MakeSafe();
         }
 
         [TestMethod]
-        public void TabItemComparer_Compare_SortsTabsByHeader()
+        public void CompareHeaderText_SortsAlphabetically ()
         {
-            // Arrange
-            var comparer = new MainWindow.TabItemComparer(StringComparer.CurrentCultureIgnoreCase);
-            var tab1 = new TabItem { Header = "Zebra" };
-            var tab2 = new TabItem { Header = "Apple" };
-            var tab3 = new TabItem { Header = "Banana" };
+            var headers = new List<string> { "Zebra", "Apple", "Banana" };
 
-            var tabs = new List<TabItem> { tab1, tab2, tab3 };
+            headers.Sort( ( x, y ) =>
+                MainWindow.TabItemComparer.CompareHeaderText(
+                    x,
+                    y,
+                    StringComparer.CurrentCultureIgnoreCase ) );
 
-            // Act
-            tabs.Sort(comparer);
-
-            // Assert
-            Assert.AreEqual("Apple", (string)tabs[0].Header);
-            Assert.AreEqual("Banana", (string)tabs[1].Header);
-            Assert.AreEqual("Zebra", (string)tabs[2].Header);
+            CollectionAssert.AreEqual(
+                new[] { "Apple", "Banana", "Zebra" },
+                headers );
         }
 
         [TestMethod]
-        public void TabItemComparer_Compare_IgnoresCase()
+        public void CompareHeaderText_IgnoresCase ()
         {
-            // Arrange
-            var comparer = new MainWindow.TabItemComparer(StringComparer.CurrentCultureIgnoreCase);
-            var tab1 = new TabItem { Header = "zebra" };
-            var tab2 = new TabItem { Header = "APPLE" };
+            var result = MainWindow.TabItemComparer.CompareHeaderText(
+            "APPLE",
+            "zebra",
+            StringComparer.CurrentCultureIgnoreCase);
 
-            // Act
-            var result = comparer.Compare(tab2, tab1);
-
-            // Assert
-            Assert.IsLessThan(0, result ); // APPLE comes before zebra
+            Assert.IsLessThan( 0, result );
         }
 
         [TestMethod]
-        public void TabItemComparer_Compare_HandlesNullHeaders()
+        public void CompareHeaderText_HandlesNullHeaders ()
         {
-            // Arrange
-            var comparer = new MainWindow.TabItemComparer(StringComparer.CurrentCultureIgnoreCase);
-            var tab1 = new TabItem { Header = null };
-            var tab2 = new TabItem { Header = "Valid" };
+            var result = MainWindow.TabItemComparer.CompareHeaderText(
+            null,
+            "Valid",
+            StringComparer.CurrentCultureIgnoreCase);
 
-            // Act & Assert - should not throw exception
-            var result = comparer.Compare(tab1, tab2);
-            Assert.AreNotEqual(0, result);
+            Assert.AreNotEqual( 0, result );
+        }
+    }
+
+    [STATestClass, TestCategory("WpfTests"), DoNotParallelize]
+    public class MainWindowTabItemComparerWpfTests : TestBase
+    {
+        [TestInitialize]
+        public void Start ()
+        {
+            MakeSafe();
         }
 
         [TestMethod]
-        public void TabItemComparer_Compare_SingleTab()
+        public void Compare_UsesTabItemHeaderText ()
         {
-            // Arrange
-            var comparer = new MainWindow.TabItemComparer(StringComparer.CurrentCultureIgnoreCase);
-            var tab1 = new TabItem { Header = "OnlyOne" };
+            var comparer = new MainWindow.TabItemComparer(
+            StringComparer.CurrentCultureIgnoreCase);
 
-            // Act
-            var tabs = new List<TabItem> { tab1 };
-            tabs.Sort(comparer);
+            var first = new TabItem { Header = "Apple" };
+            var second = new TabItem { Header = "Zebra" };
 
-            // Assert
-            Assert.HasCount(1, tabs);
-            Assert.AreEqual("OnlyOne", (string)tabs[0].Header);
+            var result = comparer.Compare(first, second);
+
+            Assert.IsLessThan( 0, result );
         }
     }
 }

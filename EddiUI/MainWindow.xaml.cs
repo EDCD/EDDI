@@ -287,11 +287,32 @@ namespace EddiUI
 
         internal class TabItemComparer ( StringComparer stringComparer ) : Comparer<TabItem>
         {
-            public StringComparer stringComparer { get; } = stringComparer;
+            private readonly StringComparer _stringComparer = stringComparer ?? StringComparer.CurrentCultureIgnoreCase;
 
-            public override int Compare(TabItem x, TabItem y)
+            public override int Compare ( TabItem x, TabItem y )
             {
-                return stringComparer.Compare(x?.Header, y?.Header);
+                return CompareHeaderText(
+                    GetHeaderText( x?.Header, nameof( x ) ),
+                    GetHeaderText( y?.Header, nameof( y ) ),
+                    _stringComparer );
+            }
+
+            internal static int CompareHeaderText (
+                string xHeader,
+                string yHeader,
+                StringComparer comparer )
+            {
+                return ( comparer ?? StringComparer.CurrentCultureIgnoreCase ).Compare( xHeader, yHeader );
+            }
+
+            private static string GetHeaderText ( object header, string parameterName )
+            {
+                if ( header == null ) { return null; }
+                if ( header is string text ) { return text; }
+
+                throw new ArgumentException(
+                    $"TabItem headers must be strings. Actual header type: {header.GetType().FullName}.",
+                    parameterName );
             }
         }
 
