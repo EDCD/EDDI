@@ -125,5 +125,4 @@
     <value>false</value>
     <comment>For developer use for TTS voices that don't like the locale's thousands separator. Leave as false unless otherwise instructed.</comment>
   </data>
-  
 </root>
