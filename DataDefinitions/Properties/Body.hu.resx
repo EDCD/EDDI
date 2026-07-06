@@ -137,18 +137,12 @@
     <value>Csillag</value>
     <comment>Body Type "Star"</comment>
   </data>
-  
-  
   <data name="Station" xml:space="preserve">
     <value>Állomás</value>
     <comment>BodyType "Station"</comment>
   </data>
-  
   <data name="PlanetaryRing" xml:space="preserve">
     <value>Bolygó gyűrű</value>
     <comment>Body Type PlanetaryRing</comment>
   </data>
-  
-  
-  
 </root>
