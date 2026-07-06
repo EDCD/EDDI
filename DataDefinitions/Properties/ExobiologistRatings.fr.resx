@@ -129,7 +129,6 @@
     <value>Compilateur</value>
     <comment>Exobiologist rating Compiler</comment>
   </data>
-  
   <data name="Ecologist" xml:space="preserve">
     <value>Écologiste</value>
     <comment>Exobiologist rating Ecologist</comment>
@@ -142,7 +141,6 @@
     <value>Généticien</value>
     <comment>Exobiologist rating Geneticist</comment>
   </data>
-  
   <data name="Taxonomist" xml:space="preserve">
     <value>Taxonomiste</value>
     <comment>Exobiologist rating Taxonomist</comment>
