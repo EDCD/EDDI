@@ -156,7 +156,6 @@
   <data name="header_originstation" xml:space="preserve">
     <value>Начальная станция:</value>
   </data>
-  
   <data name="header_cg_tier" xml:space="preserve">
     <value>Уровень:</value>
   </data>
@@ -170,5 +169,4 @@
   <data name="extra_details_tooltip" xml:space="preserve">
     <value>Показать/Спрятать дополнительную информацию о выбранной миссии</value>
   </data>
-  
 </root>
