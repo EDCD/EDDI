@@ -117,27 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
   <data name="Armour" xml:space="preserve">
     <value>Obrnění</value>
   </data>
   <data name="Cannons" xml:space="preserve">
     <value>Děla</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
   <data name="Lasers" xml:space="preserve">
     <value>Lasery</value>
   </data>
   <data name="LifeSupportSystems" xml:space="preserve">
     <value>Systémy podpory života</value>
   </data>
-  
   <data name="Mines" xml:space="preserve">
     <value>Miny</value>
   </data>
@@ -159,7 +150,6 @@
   <data name="PowerPlants" xml:space="preserve">
     <value>Elektrárny</value>
   </data>
-  
   <data name="Refineries" xml:space="preserve">
     <value>Rafinérie</value>
   </data>
@@ -172,7 +162,6 @@
   <data name="ShieldBoosters" xml:space="preserve">
     <value>Posilovače štítů</value>
   </data>
-  
   <data name="ShieldGenerators" xml:space="preserve">
     <value>Generátory štítů</value>
   </data>
