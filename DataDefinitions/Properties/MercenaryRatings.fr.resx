@@ -117,18 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
   <data name="Elite" xml:space="preserve">
     <value>Élite</value>
     <comment>Mercenary rank Elite</comment>
   </data>
-  
-  
-  
-  
-  
-  
   <data name="EliteI" xml:space="preserve">
     <value>Élite 1</value>
     <comment>Mercenary rating Elite I</comment>
