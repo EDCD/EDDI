@@ -150,7 +150,6 @@
   <data name="link_ipa" xml:space="preserve">
     <value>Nemzetközi fonetikus ábécé</value>
   </data>
-  
   <data name="p1" xml:space="preserve">
     <value>Itt láthatja a hajóit és megadhatja egyedi szerepkörüket. Az információt látják a reagálók valamint szükség van rá a kívánt akciókhoz rendelt szkriptekhez is.</value>
   </data>
@@ -166,11 +165,4 @@
   <data name="ship_ready" xml:space="preserve">
     <value>{0} készen áll.</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
 </root>
