@@ -183,7 +183,6 @@
   <data name="PowersPirate" xml:space="preserve">
     <value>Agent du pouvoir rival</value>
   </data>
-  
   <data name="Propagandist" xml:space="preserve">
     <value>Propagandiste</value>
   </data>
@@ -213,5 +212,4 @@ The Federation presidential flagship, like "Airforce One" in real life.</comment
   <data name="ConflictZone" xml:space="preserve">
     <value>Zone de conflit</value>
   </data>
-  
 </root>
