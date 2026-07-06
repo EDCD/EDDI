@@ -1,7 +1,6 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
-using System.Reflection.Metadata;
 using Utilities;
 
 namespace EddiEvents

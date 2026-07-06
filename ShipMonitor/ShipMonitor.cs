@@ -2,7 +2,6 @@ using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
-using MathNet.Numerics.RootFinding;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
