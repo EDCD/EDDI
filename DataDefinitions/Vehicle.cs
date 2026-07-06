@@ -28,6 +28,9 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         private VesselDefinition vehicleDef;
 
+        [PublicAPI]
+        public bool isRemotePiloted => vehicleDef?.vesselGroup == VesselGroup.Telepresence;
+
         [JsonIgnore]
         public string localizedName => vehicleDef?.localizedName;
 
@@ -52,6 +55,9 @@ namespace EddiDataDefinitions
 
         [JsonIgnore]
         public string localizedDescription => descriptionDef?.localizedName;
+
+        [PublicAPI, JsonIgnore]
+        public string invariantDescription => descriptionDef?.invariantName;
 
         [PublicAPI, JsonIgnore]
         [Obsolete("Please be explicit and use localizedDescription")]

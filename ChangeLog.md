@@ -11,6 +11,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Add theme support with Light, Dark, and Classic themes, in addition to a "System" theme that matches your Windows OS preference. (thanks to @Tiberius-Sicae)
     * Fix the Type-11 Prospector's specialty limpet controller specialty slot definition. (#2818) (thanks to @Tiberius-Sicae) 
     * The installer now splits the EDDI installation into a separate folder from the VoiceAttack installation. This removes potential conflicts with other VoiceAttack plugins.
+    * `Vehicle` object definition updated with `description`, `invariantDescription`, and `isRemotePiloted` fields. 
   * Crime Monitor 
     * Reviewed and revised crime monitor logic to better handle edge cases and to more accurately track crimes and bounties.
   * Events
@@ -30,6 +31,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Add the ability to select the output audio device (rather than relying on Windows settings). (#2413) (thanks to @Tiberious-Sicae) 
   * Speech Responder
     * Scripts
+      * `Crew check` updated to distinguish the Nomad from remote piloted fighters launched via the Vessel Hangar.  
       * `Embarked` updated to use the `deployedVessels` field to warn the commander if other vessels are still deployed.  
       * `Fighter docked` removed.
       * `Fighter launched` removed.

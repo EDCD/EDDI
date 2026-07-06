@@ -449,11 +449,15 @@ A compartment, which may or may not contain a module.
 
 ### Vehicle
 
-An SRV or Fighter, within an associated launchbay.
+A vessel within an associated launchbay.
 
-  - *name* - the name of the vehicle, for example 'F63 Condor'
+  - *description* - the localized description of the vehicle's loadout
+  - *invariantDescription* - the invariant description of the vehicle's loadout
+  - *invariantName* - the invariant name of the vehicle, for example 'F63 Condor'
+  - *isRemotePiloted* - true if the vehicle is remotely piloted via telepresence
   - *loadout* - the loadout of the vehicle, for example 'Starter' for SRV or 'Gelid' for Fighter
   - *mount* - only for Fighters, this defines the type of mount ('F' = fixed, 'G' = gimballed)
+  - *name* - the localized name of the vehicle, for example 'F63 Condor'
   - *rebuilds* - the number of rebuilds remaining for the vehicle
 
 ### Launchbay
