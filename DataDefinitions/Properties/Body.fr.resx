@@ -149,7 +149,6 @@
     <value>Station</value>
     <comment>BodyType "Station"</comment>
   </data>
-  
   <data name="PlanetaryRing" xml:space="preserve">
     <value>Anneau planétaire</value>
     <comment>Body Type PlanetaryRing</comment>
@@ -162,5 +161,4 @@
     <value>Anneau Stellaire</value>
     <comment>Body Type StellarRing</comment>
   </data>
-  
 </root>
