@@ -121,7 +121,6 @@
     <value>Администратор</value>
     <comment>An on foot NPC loadout</comment>
   </data>
-  
   <data name="assaultsuitai" xml:space="preserve">
     <value>Коммандо</value>
     <comment>An on foot NPC loadout</comment>
@@ -138,7 +137,4 @@
     <value>Штурмовик</value>
     <comment>An on foot NPC loadout</comment>
   </data>
-  
-  
-  
 </root>
