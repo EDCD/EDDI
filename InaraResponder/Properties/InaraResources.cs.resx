@@ -126,14 +126,10 @@
   <data name="name" xml:space="preserve">
     <value>Inara odpovídač</value>
   </data>
-  
   <data name="p2" xml:space="preserve">
     <value>Jakmile vložíte svůj klíč pro API, EDDI začne přenášet data z hraní na Inaru.</value>
   </data>
   <data name="invalidKeyErr" xml:space="preserve">
     <value>Prosím zadejte platný klič k Inara API.</value>
   </data>
-  
-  
-  
 </root>
