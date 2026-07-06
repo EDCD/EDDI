@@ -183,7 +183,6 @@
   <data name="PowersPirate" xml:space="preserve">
     <value>Agente de potencia rival</value>
   </data>
-  
   <data name="Propagandist" xml:space="preserve">
     <value>Propagandista</value>
   </data>
@@ -193,7 +192,6 @@
   <data name="Refugee" xml:space="preserve">
     <value>refugiado</value>
   </data>
-  
   <data name="SearchandRescue" xml:space="preserve">
     <value>Búsqueda y rescate</value>
   </data>
@@ -209,5 +207,4 @@
   <data name="ConflictZone" xml:space="preserve">
     <value>Zona de conflicto</value>
   </data>
-  
 </root>
