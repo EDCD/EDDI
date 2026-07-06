@@ -1,15 +1,15 @@
 #nullable enable
 
-using EddiVoiceAttackAdapter.Client;
 using EddiVoiceAttackAdapter.Annotations;
+using EddiVoiceAttackAdapter.Client;
 using EddiVoiceAttackAdapter.Extensions;
+using EddiVoiceAttackAdapter.Logging;
 using Microsoft.CSharp.RuntimeBinder;
 using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using EddiVoiceAttackAdapter.Logging;
 
 [assembly: InternalsVisibleTo( "Tests" )]
 namespace EddiVoiceAttackAdapter

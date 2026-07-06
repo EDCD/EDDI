@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -26,5 +27,19 @@ namespace EddiEvents
         public string system { get; private set; } = system;
 
         public OutfittingInfo info { get; private set; } = info;
+
+        public static bool Handle ( DateTime timestamp, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
+            var marketId = JsonParsing.getLong(data, "MarketID");
+            var station = JsonParsing.getString(data, "StationName");
+            var system = JsonParsing.getString(data, "StarSystem");
+            if ( OutfittingInfo.TryFromFile( timestamp, system, station, marketId, out var info, out var raw ) )
+            {
+                events.Add( new OutfittingEvent( timestamp, marketId, station, system, info ) { raw = raw, fromLoad = fromLogLoad } );
+            }
+            return true;
+        }
     }
 }

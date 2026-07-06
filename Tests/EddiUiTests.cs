@@ -707,6 +707,7 @@ namespace Tests
         public void CompareHeaderText_SortsAlphabetically ()
         {
             var headers = new List<string> { "Zebra", "Apple", "Banana" };
+            var expected = new[] { "Apple", "Banana", "Zebra" };
 
             headers.Sort( ( x, y ) =>
                 MainWindow.TabItemComparer.CompareHeaderText(
@@ -715,7 +716,7 @@ namespace Tests
                     StringComparer.CurrentCultureIgnoreCase ) );
 
             CollectionAssert.AreEqual(
-                new[] { "Apple", "Banana", "Zebra" },
+                expected,
                 headers );
         }
 

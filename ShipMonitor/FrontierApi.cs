@@ -226,7 +226,8 @@ namespace EddiShipMonitor
             }
 
             module.fallbackLocalizedName = (string)json["module"]["locName"];
-            module.price = (long)json["module"]["value"]; // How much we actually paid for it
+            module.price = (long)json["module"]["value"]; // How much we actually paid for it in credits
+            module.mercPrice = (long?)json[ "module" ][ "additionalCost" ]?[ "mercCoins" ]; // How much we actually paid for it in merc coins
             module.enabled = (bool)json["module"]["on"];
             module.priority = (int)json["module"]["priority"];
             module.health = (decimal)json["module"]["health"] / 10_000M;
@@ -300,8 +301,8 @@ namespace EddiShipMonitor
                         case "PlanetaryVehicleHangar":
                             launchbay.type = "SRV";
                             break;
-                        case "FighterHangar":
-                            launchbay.type = "Fighter";
+                        case "VesselHangar":
+                            launchbay.type = "Vessel";
                             break;
                     }
                 }

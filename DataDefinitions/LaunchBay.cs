@@ -13,7 +13,7 @@ namespace EddiDataDefinitions
         [PublicAPI]
         public int size { get; set; }
 
-        // The type of the launchbay ("SRV" or "Fighter")
+        // The type of the launchbay ("SRV" or "Vessel")
         [PublicAPI]
         public string type { get; set; }
 

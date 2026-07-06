@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -15,5 +16,13 @@ namespace EddiEvents
 
         [PublicAPI("The ID of the crewmember being assigned")]
         public long crewid { get; private set; } = crewid;
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var name = JsonParsing.getString(data, "Name");
+            var crewid = JsonParsing.getLong(data, "CrewID");
+            events.Add( new CrewFiredEvent( timestamp, name, crewid ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
+        }
     }
 }

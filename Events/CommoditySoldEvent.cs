@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -52,5 +53,29 @@ namespace EddiEvents
         // Not intended to be user facing
 
         public CommodityDefinition commodityDefinition { get; } = commodity;
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var marketId = JsonParsing.getLong(data, "MarketID");
+            var commodityName = JsonParsing.getString(data, "Type");
+            var commodity = CommodityDefinition.FromEDName(commodityName);
+            if ( commodity == null )
+            {
+                Logging.Error( "Failed to map cargo type " + commodityName + " to commodity definition", line );
+            }
+            var amount = JsonParsing.getInt(data, "Count");
+            var sellPrice = JsonParsing.getLong(data, "SellPrice");
+
+            var buyPrice = JsonParsing.getLong(data, "AvgPricePaid");
+            // We don't care about buy price, we care about profit per unit
+            var profit = sellPrice - buyPrice;
+
+            var illegal = JsonParsing.getOptionalBool(data, "IllegalGoods") ?? false;
+            var stolen = JsonParsing.getOptionalBool(data, "StolenGoods") ?? false;
+            var blackmarket = JsonParsing.getOptionalBool(data, "BlackMarket") ?? false;
+
+            events.Add( new CommoditySoldEvent( timestamp, marketId, commodity, amount, sellPrice, profit, illegal, stolen, blackmarket ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
+        }
     }
 }

@@ -1,5 +1,6 @@
-using EddiConfigService.Configurations;
 using EddiConfigService;
+using EddiConfigService.Configurations;
+using EddiDataDefinitions;
 using EddiSpeechService;
 using EddiSpeechService.SpeechPreparation;
 using EddiSpeechService.SpeechProviders;
@@ -12,7 +13,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using EddiDataDefinitions;
 
 namespace Tests
 {

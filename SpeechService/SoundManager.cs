@@ -1,6 +1,6 @@
-using NAudio.Wave;
-using NAudio.CoreAudioApi;
 using EddiConfigService;
+using NAudio.CoreAudioApi;
+using NAudio.Wave;
 using System;
 using System.Runtime.InteropServices;
 using Utilities;

@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -41,5 +42,21 @@ namespace EddiEvents
         // Not intended to be user facing
 
         public long marketId { get; private set; } = marketId;
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var marketId = JsonParsing.getLong(data, "MarketID");
+            data.TryGetValue( "ShipID", out var val );
+            var shipId = (int)(long)val;
+            var ship = JsonParsing.getString(data, "Ship");
+
+            var fromSlot = JsonParsing.getString(data, "FromSlot");
+            var fromModule = Module.FromEDName(JsonParsing.getString(data, "FromItem"));
+            var toSlot = JsonParsing.getString(data, "ToSlot");
+            var toModule = Module.FromEDName(JsonParsing.getString(data, "ToItem"));
+
+            events.Add( new ModuleSwappedEvent( timestamp, ship, shipId, fromSlot, fromModule, toSlot, toModule, marketId ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
+        }
     }
 }

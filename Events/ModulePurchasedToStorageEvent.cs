@@ -6,7 +6,7 @@ using Utilities;
 namespace EddiEvents
 {
     [PublicAPI]
-    public class ModulePurchasedToStorageEvent ( DateTime timestamp, Module buymodule, long buyprice, long marketId )
+    public class ModulePurchasedToStorageEvent ( DateTime timestamp, Module buymodule, long buyprice, long? buyMercPrice, long marketId )
         : Event( timestamp, NAME )
     {
         public const string NAME = "Module purchased to storage";
@@ -21,8 +21,11 @@ namespace EddiEvents
         [PublicAPI("The module (object) purchased")]
         public Module buymodule { get; private set; } = buymodule;
 
-        [PublicAPI("The price of the module being purchased")]
+        [PublicAPI("The price of the module being purchased, in credits")]
         public long buyprice { get; private set; } = buyprice;
+
+        [PublicAPI( "The price of the module being purchased, in merc coin, when applicable" )]
+        public long? buymercprice { get; private set; } = buyMercPrice;
 
         // Not intended to be user facing
 
@@ -36,6 +39,8 @@ namespace EddiEvents
             buyModule.fallbackLocalizedName = JsonParsing.getString( data, "BuyItem_Localised" );
             var buyPrice = JsonParsing.getLong( data, "BuyPrice" );
             buyModule.price = buyPrice;
+            var buyMercPrice = JsonParsing.getLong( data, "BuyMercCoinsPrice" );
+            buyModule.mercPrice = buyMercPrice;
 
             // Set retrieved module defaults
             buyModule.enabled = true;
@@ -43,7 +48,7 @@ namespace EddiEvents
             buyModule.health = 100;
             buyModule.modified = false;
 
-            events.Add( new ModulePurchasedToStorageEvent( timestamp, buyModule, buyPrice, marketId ) { raw = line, fromLoad = fromLogLoad } );
+            events.Add( new ModulePurchasedToStorageEvent( timestamp, buyModule, buyPrice, buyMercPrice, marketId ) { raw = line, fromLoad = fromLogLoad } );
 
             return true;
         }

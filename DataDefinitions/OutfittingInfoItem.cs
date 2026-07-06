@@ -16,6 +16,9 @@ namespace EddiDataDefinitions
         [JsonProperty("BuyPrice")]
         public long buyPrice { get; set; }
 
+        [JsonProperty( "BuyMercCoinsPrice" )]
+        public long? buyMercPrice { get; set; }
+
         // The Frontier API uses `cost` rather than `BuyPrice`, we normalize that here.
         [JsonProperty] // As a private property, it shall not be serialized.
         private protected long cost { set => buyPrice = value; }
@@ -50,6 +53,7 @@ namespace EddiDataDefinitions
             else
             {
                 module.price = buyPrice;
+                module.mercPrice = buyMercPrice;
             }
             return module;
         }

@@ -11,12 +11,15 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Add theme support with Light, Dark, and Classic themes, in addition to a "System" theme that matches your Windows OS preference. (thanks to @Tiberius-Sicae)
     * Fix the Type-11 Prospector's specialty limpet controller specialty slot definition. (#2818) (thanks to @Tiberius-Sicae) 
     * The installer now splits the EDDI installation into a separate folder from the VoiceAttack installation. This removes potential conflicts with other VoiceAttack plugins.
+    * `Vehicle` object definition updated with `description`, `invariantDescription`, and `isRemotePiloted` fields. 
   * Crime Monitor 
     * Reviewed and revised crime monitor logic to better handle edge cases and to more accurately track crimes and bounties.
   * Events
       * `Embarked` updated to add new field `deployedVessels`.
       * `Fighter docked` removed - replaced by `Vessel docked`.
       * `Fighter launched` removed - replaced by `Vessel launched`.
+      * `Module purchased` updated with new field `buymercprice`.
+      * `Module purchased to storage` updated with new field `buymercprice`.
       * `SRV docked` removed - replaced by `Vessel docked`.
       * `SRV launched` removed - replaced by `Vessel launched`.
       * `Touchdown` updated descriptions to use "ship or vessel" rather than "ship"
@@ -28,10 +31,13 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Add the ability to select the output audio device (rather than relying on Windows settings). (#2413) (thanks to @Tiberious-Sicae) 
   * Speech Responder
     * Scripts
+      * `Crew check` updated to distinguish the Nomad from remote piloted fighters launched via the Vessel Hangar.  
       * `Embarked` updated to use the `deployedVessels` field to warn the commander if other vessels are still deployed.  
       * `Fighter docked` removed.
       * `Fighter launched` removed.
       * `Limpet check` revised to reference invariant controller name.  
+      * `Module purchased` updated to utilize new field `buymercprice`.
+      * `Module purchased to storage` updated to utilize new field `buymercprice`.
       * `Respawned` updated to move deployed vessel state tracking into EDDI back end. 
       * `SRV docked` removed.
       * `SRV launched` removed.

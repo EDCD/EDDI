@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -19,5 +20,16 @@ namespace EddiEvents
 
         [PublicAPI("The role to which the crewmember is being assigned")]
         public string role { get; private set; } = role;
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
+            var name = JsonParsing.getString(data, "Name");
+            var crewid = JsonParsing.getLong(data, "CrewID");
+            var role = EventParsing.CrewRole(data, "Role");
+            events.Add( new CrewAssignedEvent( timestamp, name, crewid, role ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
+        }
     }
 }

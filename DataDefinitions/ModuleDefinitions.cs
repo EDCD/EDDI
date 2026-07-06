@@ -1349,6 +1349,7 @@ namespace EddiDataDefinitions
                     module = new Module( item.edName, item.edName, -1, "", item.buyPrice );
                 }
                 module.price = item.buyPrice;
+                module.mercPrice = item.buyMercPrice;
 
                 return module;
             }
