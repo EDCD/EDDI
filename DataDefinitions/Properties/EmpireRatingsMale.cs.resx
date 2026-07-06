@@ -138,7 +138,6 @@
     <value>Hrabě</value>
     <comment>Empire rank Count</comment>
   </data>
-  
   <data name="Marquis" xml:space="preserve">
     <value>Markýz</value>
     <comment>Empire rank Marquis</comment>
