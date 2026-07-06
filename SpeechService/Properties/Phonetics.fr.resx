@@ -145,7 +145,6 @@
     <value>alʁai</value>
     <comment>Optional phonetic pronunciation for Alrai</comment>
   </data>
-  
   <data name="antal" xml:space="preserve">
     <value>a~tal</value>
     <comment>Optional phonetic pronunciation for antal</comment>
@@ -158,7 +157,6 @@
     <value>apwajɔta</value>
     <comment>Optional phonetic pronunciation for apoyota</comment>
   </data>
-  
   <data name="archon" xml:space="preserve">
     <value>aʁkɔ̃ </value>
     <comment>Optional phonetic pronunciation for archon</comment>
@@ -295,7 +293,6 @@
     <value>delɛn</value>
     <comment>Optional phonetic pronunciation for delaine</comment>
   </data>
-  
   <data name="dezhra" xml:space="preserve">
     <value>dɛzʁa</value>
     <comment>Optional phonetic pronunciation for dezhra</comment>
@@ -324,7 +321,6 @@
     <value>ɛdmund</value>
     <comment>Optional phonetic pronunciation for edmund</comment>
   </data>
-  
   <data name="eranin" xml:space="preserve">
     <value>eʁanɛ̃</value>
     <comment>Optional phonetic pronunciation for eranin</comment>
@@ -333,17 +329,14 @@
     <value>eʁavat</value>
     <comment>Optional phonetic pronunciation for eravate</comment>
   </data>
-  
   <data name="EtaCarina_Carina" xml:space="preserve">
     <value>kaʁina</value>
     <comment>Optional phonetic pronunciation for EtaCarina_Carina</comment>
   </data>
-  
   <data name="Euq" xml:space="preserve">
     <value>øk</value>
     <comment>Optional phonetic pronunciation for Euq</comment>
   </data>
-  
   <data name="felicia" xml:space="preserve">
     <value>felisja</value>
     <comment>Optional phonetic pronunciation for felicia</comment>
@@ -460,7 +453,6 @@
     <value>lu</value>
     <comment>Optional phonetic pronunciation for Lupus</comment>
   </data>
-  
   <data name="Lyncis" xml:space="preserve">
     <value>lɛ̃ks</value>
     <comment>Optional phonetic pronunciation for Lyncis</comment>
@@ -509,7 +501,6 @@
     <value>ɔfjyʃy</value>
     <comment>Optional phonetic pronunciation for Ophiuchi</comment>
   </data>
-  
   <data name="orrere" xml:space="preserve">
     <value>ɔʁeʁe</value>
     <comment>Optional phonetic pronunciation for orrere</comment>
@@ -602,8 +593,6 @@
     <value>saʒitɛʁ</value>
     <comment>Optional phonetic pronunciation for Sagittarius</comment>
   </data>
-  
-  
   <data name="sakti" xml:space="preserve">
     <value>sakti</value>
     <comment>Optional phonetic pronunciation for sakti</comment>
@@ -624,10 +613,6 @@
     <value>ʃinʁaʁta</value>
     <comment>Optional phonetic pronunciation for shinrartadezhra_shinrarta</comment>
   </data>
-  
-  
-  
-  
   <data name="surya" xml:space="preserve">
     <value>syʁja</value>
     <comment>Optional phonetic pronunciation for surya</comment>
@@ -636,7 +621,6 @@
     <value>szu</value>
     <comment>Optional phonetic pronunciation for szu</comment>
   </data>
-  
   <data name="Tau" xml:space="preserve">
     <value>to</value>
     <comment>Optional phonetic pronunciation for Tau</comment>
@@ -649,7 +633,6 @@
     <value>to</value>
     <comment>Optional phonetic pronunciation for TauCeti_Tau</comment>
   </data>
-  
   <data name="Thaa" xml:space="preserve">
     <value>taa</value>
     <comment>Optional phonetic pronunciation for Thaa</comment>
@@ -666,7 +649,6 @@
     <value>tʁijɑ̃ɡl</value>
     <comment>Optional phonetic pronunciation for Trianguli</comment>
   </data>
-  
   <data name="tse" xml:space="preserve">
     <value>tse</value>
     <comment>Optional phonetic pronunciation for tse</comment>
@@ -675,8 +657,6 @@
     <value>tykana</value>
     <comment>Optional phonetic pronunciation for Tucanae</comment>
   </data>
-  
-  
   <data name="Wredguia" xml:space="preserve">
     <value>wʁedɡja</value>
     <comment>Optional phonetic pronunciation for Wredguia</comment>
@@ -709,19 +689,4 @@
     <value>zaɔ̃s</value>
     <comment>Optional phonetic pronunciation for zaonce</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 </root>
