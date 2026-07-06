@@ -156,7 +156,6 @@
   <data name="header_originstation" xml:space="preserve">
     <value>Původní stanice:</value>
   </data>
-  
   <data name="header_cg_tier" xml:space="preserve">
     <value>Třída:</value>
   </data>
@@ -167,6 +166,4 @@
   <data name="header_cg_reward" xml:space="preserve">
     <value>Odměna (kredity):</value>
   </data>
-  
-  
 </root>
