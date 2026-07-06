@@ -125,7 +125,6 @@
     <value>Корабельный узел связи</value>
     <comment>Data scan type ShipUplink</comment>
   </data>
-  
   <data name="SettlementUnknown" xml:space="preserve">
     <value>Неизвестное поселение</value>
     <comment>Data scan type SettlementUnknown</comment>
