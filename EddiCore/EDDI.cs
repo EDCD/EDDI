@@ -1823,14 +1823,7 @@ namespace EddiCore
             {
                 Vehicle = Constants.VEHICLE_MULTICREW;
             }
-            else if (theEvent.playercontrolled)
-            {
-                Vehicle = Constants.VEHICLE_SHIP;
-            }
-            else
-            {
-                Vehicle = Constants.VEHICLE_SRV;
-            }
+
             Logging.Info($"Liftoff in {Vehicle}");
             return true;
         }
@@ -2341,7 +2334,7 @@ namespace EddiCore
             {
                 Vehicle = Constants.VEHICLE_LEGS;
             }
-            else if (theEvent.shipEDModel == "TestBuggy" || theEvent.shipEDModel.Contains("SRV"))
+            else if (theEvent.shipEDModel == "TestBuggy" || theEvent.shipEDModel.Contains("SRV") || theEvent.shipEDModel.Contains( "Lander" ) )
             {
                 Vehicle = Constants.VEHICLE_SRV;
             }

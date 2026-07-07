@@ -27,6 +27,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Vessel destroyed` added.
       * `Vessel docked` added.
       * `Vessel launched` added.
+  * EDDN Responder
+    * Add support for new `ScanOrganic` schema.
+    * Updated to latest `Outfitting` schema (for merc gear).
   * Text-To-Speech
     * Add the ability to select the output audio device (rather than relying on Windows settings). (#2413) (thanks to @Tiberious-Sicae) 
   * Speech Responder
