@@ -125,7 +125,6 @@
     <value>Émission de vaisseau</value>
     <comment>Data scan type ShipUplink</comment>
   </data>
-  
   <data name="SettlementUnknown" xml:space="preserve">
     <value>Installation inconnu</value>
     <comment>Data scan type SettlementUnknown</comment>

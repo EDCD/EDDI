@@ -105,7 +105,6 @@
     <value>Fejvadászat</value>
     <comment>Ship role Bounty hunting</comment>
   </data>
-  
   <data name="Combatsupport" xml:space="preserve">
     <value>Harci támogató</value>
     <comment>Ship role Combat support</comment>
@@ -114,7 +113,6 @@
     <value>Felfedező</value>
     <comment>Ship role Exploration</comment>
   </data>
-  
   <data name="Mining" xml:space="preserve">
     <value>Bányászat</value>
     <comment>Ship role Mining</comment>
@@ -135,9 +133,6 @@
     <value>Versenyzés</value>
     <comment>Ship role Racing</comment>
   </data>
-  
-  
-  
   <data name="Searchandrescue" xml:space="preserve">
     <value>Keresés és mentés</value>
     <comment>Ship role Search and rescue</comment>
@@ -154,9 +149,4 @@
     <value>Kerskedés</value>
     <comment>Ship role Trading</comment>
   </data>
-  
-  
-  
-  
-  
 </root>

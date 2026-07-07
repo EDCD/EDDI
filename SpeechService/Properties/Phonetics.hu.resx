@@ -117,44 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
   <data name="Alrai" xml:space="preserve">
     <value>Alrai</value>
     <comment>Optional phonetic pronunciation for Alrai</comment>
   </data>
-  
-  
   <data name="Antliae" xml:space="preserve">
     <value>Antili</value>
     <comment>Optional phonetic pronunciation for Antliae</comment>
   </data>
-  
   <data name="Aquarii" xml:space="preserve">
     <value>akvari</value>
     <comment>Optional phonetic pronunciation for Aquarii</comment>
   </data>
-  
   <data name="Arietis" xml:space="preserve">
     <value>árietisz</value>
     <comment>Optional phonetic pronunciation for Arietis</comment>
   </data>
-  
-  
-  
-  
-  
-  
   <data name="Bei" xml:space="preserve">
     <value>bei</value>
     <comment>Optional phonetic pronunciation for Bei</comment>
   </data>
-  
-  
   <data name="Blanco" xml:space="preserve">
     <value>blankó</value>
     <comment>Optional phonetic pronunciation for Blanco</comment>
@@ -171,9 +153,6 @@
     <value>ble a e tha a tha a</value>
     <comment>Optional phonetic pronunciation for BleaeThaa_Thaa</comment>
   </data>
-  
-  
-  
   <data name="Capricorni" xml:space="preserve">
     <value>Kapikorni</value>
     <comment>Optional phonetic pronunciation for Capricorni</comment>
@@ -182,9 +161,6 @@
     <value>karina</value>
     <comment>Optional phonetic pronunciation for Carina</comment>
   </data>
-  
-  
-  
   <data name="Cephei" xml:space="preserve">
     <value>Cefi</value>
     <comment>Optional phonetic pronunciation for Cephei</comment>
@@ -201,7 +177,6 @@
     <value>csi</value>
     <comment>Optional phonetic pronunciation for Chi</comment>
   </data>
-  
   <data name="ChiPersei_Persei" xml:space="preserve">
     <value>Csiperszej perszej</value>
     <comment>Optional phonetic pronunciation for ChiPersei_Persei</comment>
@@ -214,21 +189,10 @@
     <value>cigni</value>
     <comment>Optional phonetic pronunciation for Cygni</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
   <data name="Dou" xml:space="preserve">
     <value>Dú</value>
     <comment>Optional phonetic pronunciation for Dou</comment>
   </data>
-  
-  
-  
-  
   <data name="eranin" xml:space="preserve">
     <value>Eranin</value>
     <comment>Optional phonetic pronunciation for eranin</comment>
@@ -241,9 +205,6 @@
     <value>eta</value>
     <comment>Optional phonetic pronunciation for Eta</comment>
   </data>
-  
-  
-  
   <data name="fei" xml:space="preserve">
     <value>fei</value>
     <comment>Optional phonetic pronunciation for fei</comment>
@@ -268,7 +229,6 @@
     <value>Grúm</value>
     <comment>Optional phonetic pronunciation for grom</comment>
   </data>
-  
   <data name="Herculis" xml:space="preserve">
     <value>herkulisz</value>
     <comment>Optional phonetic pronunciation for Herculis</comment>
@@ -289,7 +249,6 @@
     <value>Hájdrí</value>
     <comment>Optional phonetic pronunciation for Hydrae</comment>
   </data>
-  
   <data name="ibootis_bootis" xml:space="preserve">
     <value>í bútisz</value>
     <comment>Optional phonetic pronunciation for ibootis_bootis</comment>
@@ -306,39 +265,18 @@
     <value>Kájá</value>
     <comment>Optional phonetic pronunciation for kaia</comment>
   </data>
-  
-  
   <data name="kigana" xml:space="preserve">
     <value>kigáná</value>
     <comment>Optional phonetic pronunciation for kigana</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="Lupus" xml:space="preserve">
     <value>Lupusz</value>
     <comment>Optional phonetic pronunciation for Lupus</comment>
   </data>
-  
   <data name="Lyncis" xml:space="preserve">
     <value>Linsziz</value>
     <comment>Optional phonetic pronunciation for Lyncis</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="Omega" xml:space="preserve">
     <value>Omega</value>
     <comment>Optional phonetic pronunciation for Omega</comment>
@@ -351,11 +289,6 @@
     <value>opfhijucsiusz</value>
     <comment>Optional phonetic pronunciation for Ophiuchus</comment>
   </data>
-  
-  
-  
-  
-  
   <data name="Pegasi" xml:space="preserve">
     <value>Pegazi</value>
     <comment>Optional phonetic pronunciation for Pegasi</comment>
@@ -372,48 +305,26 @@
     <value>Plejádesz</value>
     <comment>Optional phonetic pronunciation for Pleiades</comment>
   </data>
-  
-  
-  
-  
   <data name="Pru" xml:space="preserve">
     <value>pru</value>
     <comment>Optional phonetic pronunciation for Pru</comment>
   </data>
-  
-  
   <data name="Puppis" xml:space="preserve">
     <value>Puppisz</value>
     <comment>Optional phonetic pronunciation for Puppis</comment>
   </data>
-  
   <data name="Rho" xml:space="preserve">
     <value>rho</value>
     <comment>Optional phonetic pronunciation for Rho</comment>
   </data>
-  
-  
-  
   <data name="Sagittarius" xml:space="preserve">
     <value>Szaggitáriusz</value>
     <comment>Optional phonetic pronunciation for Sagittarius</comment>
   </data>
-  
-  
-  
   <data name="Scorpii" xml:space="preserve">
     <value>Szkórpí</value>
     <comment>Optional phonetic pronunciation for Scorpii</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="Tascheter" xml:space="preserve">
     <value>Tasihiter</value>
     <comment>Optional phonetic pronunciation for Tascheter</comment>
@@ -422,39 +333,4 @@
     <value>tau</value>
     <comment>Optional phonetic pronunciation for Tau</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 </root>

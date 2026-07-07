@@ -149,7 +149,6 @@
     <value>Станция</value>
     <comment>BodyType "Station"</comment>
   </data>
-  
   <data name="PlanetaryRing" xml:space="preserve">
     <value>Кольцо планеты</value>
     <comment>Body Type PlanetaryRing</comment>
@@ -162,5 +161,4 @@
     <value>Кольца</value>
     <comment>Body Type StellarRing</comment>
   </data>
-  
 </root>

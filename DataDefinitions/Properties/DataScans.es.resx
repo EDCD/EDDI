@@ -125,7 +125,6 @@
     <value>Transmisión de nave</value>
     <comment>Data scan type ShipUplink</comment>
   </data>
-  
   <data name="SettlementUnknown" xml:space="preserve">
     <value>Establecimiento Desconocido</value>
     <comment>Data scan type SettlementUnknown</comment>

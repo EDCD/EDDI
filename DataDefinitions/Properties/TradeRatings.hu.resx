@@ -105,8 +105,6 @@
     <value>Többnyire pénztelen</value>
     <comment>Trade rating MostlyPenniless</comment>
   </data>
-  
-  
   <data name="Merchant" xml:space="preserve">
     <value>Kereskedő</value>
     <comment>Trade rating Merchant</comment>
@@ -127,9 +125,4 @@
     <value>Elit</value>
     <comment>Trade rating Elite</comment>
   </data>
-  
-  
-  
-  
-  
 </root>

@@ -645,7 +645,6 @@
     <value>Реактивные элементы</value>
     <comment>Material tg_propulsionelement</comment>
   </data>
-  
   <data name="tg_weaponparts" xml:space="preserve">
     <value>Детали вооружения</value>
     <comment>Material tg_weaponparts</comment>
@@ -654,20 +653,8 @@
     <value>Обломки кораблекрушений</value>
     <comment>Material tg_wreckagecomponents</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="tg_shutdowndata" xml:space="preserve">
     <value>Параметры сильного энергетического импульса</value>
     <comment>Material tg_shutdowndata</comment>
   </data>
-  
-  
-  
 </root>

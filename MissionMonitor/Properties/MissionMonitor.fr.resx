@@ -129,7 +129,6 @@
   <data name="header_status" xml:space="preserve">
     <value>Statut</value>
   </data>
-  
   <data name="mission_monitor_desc" xml:space="preserve">
     <value>Surveille les informations de vos missions.</value>
   </data>
@@ -145,13 +144,4 @@
   <data name="tab_mission_warning" xml:space="preserve">
     <value>Seuil d'alerte d'expiration de mission (Minutes):</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
 </root>

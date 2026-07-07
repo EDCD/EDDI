@@ -126,14 +126,10 @@
   <data name="name" xml:space="preserve">
     <value>Inara 响应器</value>
   </data>
-  
   <data name="p2" xml:space="preserve">
     <value>输入 API 密钥后，EDDI 会开始将游戏客户端数据传输到 Inara。</value>
   </data>
   <data name="invalidKeyErr" xml:space="preserve">
     <value>请输入一个有效的 Inara API 秘钥.</value>
   </data>
-  
-  
-  
 </root>

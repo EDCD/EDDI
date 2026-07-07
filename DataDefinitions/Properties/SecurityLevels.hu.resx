@@ -97,8 +97,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
   <data name="SYSTEM_SECURITY_high" xml:space="preserve">
     <value>Magas</value>
     <comment>Security level SYSTEM_SECURITY_high</comment>
@@ -115,5 +113,4 @@
     <value>Közepes</value>
     <comment>Security level SYSTEM_SECURITY_medium</comment>
   </data>
-  
 </root>

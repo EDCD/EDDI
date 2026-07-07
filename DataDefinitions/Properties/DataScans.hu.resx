@@ -105,7 +105,6 @@
     <value>Adat pont</value>
     <comment>Data scan type DataPoint</comment>
   </data>
-  
   <data name="AbandonedDataLog" xml:space="preserve">
     <value>Elhagyatott bejegyzés</value>
     <comment>Data scan type AbandonedDataLog</comment>
@@ -122,7 +121,6 @@
     <value>Hajó kapcsolat</value>
     <comment>Data scan type ShipUplink</comment>
   </data>
-  
   <data name="SettlementUnknown" xml:space="preserve">
     <value>Ismeretlen telep</value>
     <comment>Data scan type SettlementUnknown</comment>

@@ -120,8 +120,6 @@
   <data name="AislingDuval" xml:space="preserve">
     <value>Aisling Duval</value>
   </data>
-  
-  
   <data name="DentonPatreus" xml:space="preserve">
     <value>Denton Patreus</value>
   </data>
@@ -131,16 +129,10 @@
   <data name="FeliciaWinters" xml:space="preserve">
     <value>Felicia Winters</value>
   </data>
-  
-  
   <data name="YuriGrom" xml:space="preserve">
     <value>Yuri Grom</value>
   </data>
-  
   <data name="ZeminaTorval" xml:space="preserve">
     <value>Zemina Torval</value>
   </data>
-  
-  
-  
 </root>

@@ -97,8 +97,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
   <data name="Celebrity" xml:space="preserve">
     <value>Celeb</value>
   </data>
@@ -114,25 +112,18 @@
   <data name="Explorer" xml:space="preserve">
     <value>Felfedező</value>
   </data>
-  
   <data name="HeadOfState" xml:space="preserve">
     <value>Államfő</value>
   </data>
   <data name="Medical" xml:space="preserve">
     <value>Orvosi csoport</value>
   </data>
-  
   <data name="PrisonerOfWar" xml:space="preserve">
     <value>Hadifogoly</value>
   </data>
-  
-  
-  
   <data name="Scientist" xml:space="preserve">
     <value>Tudományos kutatócsoport</value>
   </data>
-  
-  
   <data name="Tourist" xml:space="preserve">
     <value>Gazdag turista</value>
   </data>

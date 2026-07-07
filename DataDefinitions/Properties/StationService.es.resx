@@ -133,7 +133,6 @@
     <value>Mercado negro</value>
     <comment>Station Service: BlackMarket</comment>
   </data>
-  
   <data name="Contacts" xml:space="preserve">
     <value>Contactos</value>
     <comment>Station Service: Contacts</comment>
@@ -246,7 +245,6 @@
     <value>Diseño</value>
     <comment>Station Service: Livery</comment>
   </data>
-  
   <data name="VoucherRedemption" xml:space="preserve">
     <value>Oficina de Reembolso</value>
     <comment>Station Service: VoucherRedemption</comment>
@@ -255,16 +253,4 @@
     <value>Espacio social</value>
     <comment>Station Service SocialSpace</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 </root>

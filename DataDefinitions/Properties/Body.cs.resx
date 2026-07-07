@@ -149,7 +149,6 @@
     <value>Stanice</value>
     <comment>BodyType "Station"</comment>
   </data>
-  
   <data name="PlanetaryRing" xml:space="preserve">
     <value>Planetární prstenec</value>
     <comment>Body Type PlanetaryRing</comment>
@@ -162,5 +161,4 @@
     <value>Hvězdný prstenec</value>
     <comment>Body Type StellarRing</comment>
   </data>
-  
 </root>

@@ -132,7 +132,6 @@
   <data name="add_button" xml:space="preserve">
     <value>Добавить закладку</value>
   </data>
-  
   <data name="find_text" xml:space="preserve">
     <value>Найти:</value>
   </data>
@@ -172,7 +171,6 @@
   <data name="remove_button" xml:space="preserve">
     <value>Удалить</value>
   </data>
-  
   <data name="remove_caption" xml:space="preserve">
     <value>Удалить закладку</value>
   </data>
@@ -182,7 +180,6 @@
   <data name="search" xml:space="preserve">
     <value>Поиск</value>
   </data>
-  
   <data name="search_distance" xml:space="preserve">
     <value>Максимальное расстояние поиска от главной звезды (с. с.):</value>
   </data>
@@ -217,7 +214,6 @@
   <data name="bm_nearby_radius_tooltip" xml:space="preserve">
     <value>Радиус (в метрах), который вызывает события "Ближайшая закладка"</value>
   </data>
-  
   <data name="use_straight_path" xml:space="preserve">
     <value>Использовать прямой путь?</value>
   </data>
@@ -235,41 +231,4 @@
     <value>Все</value>
     <comment>Import or export all</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 </root>

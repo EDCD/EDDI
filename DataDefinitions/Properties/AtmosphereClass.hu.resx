@@ -141,27 +141,22 @@
     <value>Szén dioxid</value>
     <comment>Atmosphere class "Carbon dioxide"</comment>
   </data>
-  
   <data name="Helium" xml:space="preserve">
     <value>Hélium</value>
     <comment>Atmosphere class "Helium"</comment>
   </data>
-  
   <data name="Methane" xml:space="preserve">
     <value>Metán</value>
     <comment>Atmosphere class "Methane"</comment>
   </data>
-  
   <data name="Neon" xml:space="preserve">
     <value>Neon</value>
     <comment>Atmosphere class "Neon"</comment>
   </data>
-  
   <data name="Nitrogen" xml:space="preserve">
     <value>Nitrogén</value>
     <comment>Atmosphere class "Nitrogen"</comment>
   </data>
-  
   <data name="Oxygen" xml:space="preserve">
     <value>Oxigén</value>
     <comment>Atmosphere class "Oxygen"</comment>
@@ -194,5 +189,4 @@
     <value>Gázóriás</value>
     <comment>Atmosphere class "Gas giant"</comment>
   </data>
-  
 </root>

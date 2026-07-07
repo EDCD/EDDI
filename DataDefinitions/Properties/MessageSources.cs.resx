@@ -168,7 +168,6 @@
   <data name="PassengerHunter" xml:space="preserve">
     <value>Lovec cestujících</value>
   </data>
-  
   <data name="Pirate" xml:space="preserve">
     <value>Pirát</value>
   </data>
@@ -181,7 +180,6 @@
   <data name="PowersPirate" xml:space="preserve">
     <value>Agent Soupeřící mocnosti</value>
   </data>
-  
   <data name="Propagandist" xml:space="preserve">
     <value>Propagandista</value>
   </data>
