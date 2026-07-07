@@ -1961,10 +1961,10 @@ namespace EddiShipMonitor
             return model.Contains("Fighter");
         }
 
-        /// <summary> See if we're in a buggy / SRV </summary>
+        /// <summary> See if we're in a buggy / SRV / Lander</summary>
         private static bool inBuggy(string edModel)
         {
-            return edModel.Contains("Buggy") || edModel.Contains("SRV");
+            return edModel.Contains("Buggy") || edModel.Contains("SRV") || edModel.Contains("Lander");
         }
 
         /// <summary> See if we're on foot </summary>
