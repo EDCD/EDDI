@@ -21,10 +21,16 @@ namespace EddiEddnResponder.Toolkit
         public string stationName { get; private set; }
         public long? marketId { get; private set; }
 
-        // Body
+        // Journal Body Info
         public string journalBodyName { get; private set; }
         public int? journalBodyId { get; private set; }
+
+        // Status Info
         public string statusBodyName { get; private set; }
+        public bool statusOnFootOnPlanet { get; private set; }
+        public decimal? statusLatitude { get; private set; }
+        public decimal? statusLongitude { get; private set; }
+        public DateTime? statusTimeStamp { get; private set; }
 
         private bool invalidState { get; set; } // Are we in an invalid state?
 
@@ -58,7 +64,12 @@ namespace EddiEddnResponder.Toolkit
 
         internal void GetLocationInfo(Status status)
         {
-            statusBodyName = !string.IsNullOrEmpty(status?.bodyname) ? status.bodyname : null;
+            if ( status is null ) { return; }
+            statusBodyName = !string.IsNullOrEmpty(status.bodyname) ? status.bodyname : null;
+            statusOnFootOnPlanet = status.on_foot_on_planet;
+            statusLatitude = status.latitude;
+            statusLongitude = status.longitude;
+            statusTimeStamp = status.timestamp;
         }
 
         internal void GetLocationInfo(string edType, IDictionary<string, object> data)
@@ -266,16 +277,34 @@ namespace EddiEddnResponder.Toolkit
             return data;
         }
 
-        internal IDictionary<string, object> AugmentBody(IDictionary<string, object> data)
+        internal IDictionary<string, object> AugmentBodyNameID(IDictionary<string, object> data)
         {
             // Ref. https://github.com/EDCD/EDDN/blob/master/schemas/codexentry-README.md#bodyid-and-bodyname
-            if (!data.ContainsKey("BodyName") && !string.IsNullOrEmpty(statusBodyName))
+            if ( !data.ContainsKey( "BodyName" ) && !string.IsNullOrEmpty( statusBodyName ) )
             {
-                data.Add("BodyName", statusBodyName);
-                if (!data.ContainsKey("BodyID") && statusBodyName == journalBodyName)
+                data.Add( "BodyName", statusBodyName );
+
+                if ( !data.ContainsKey( "BodyID" ) && statusBodyName.Equals( journalBodyName, StringComparison.InvariantCultureIgnoreCase ) )
                 {
-                    data.Add("BodyID", journalBodyId);
+                    data.Add( "BodyID", journalBodyId );
                 }
+            }
+
+            return data;
+        }
+
+        internal IDictionary<string, object> AugmentBodyLatLong(IDictionary<string, object> data, int timestampThresholdSeconds = 60, bool onlyIfOnFoot = false)
+        {
+            // Ref. https://github.com/EDCD/EDDN/blob/master/schemas/scanorganic-README.md
+            var timestamp = JsonParsing.getDateTime( "timestamp", data );
+            if ( !data.ContainsKey( "Latitude" ) && statusLatitude != null &&
+                 !data.ContainsKey( "Longitude" ) && statusLongitude != null &&
+                 ( !onlyIfOnFoot || statusOnFootOnPlanet ) && 
+                 statusTimeStamp != null && Math.Abs(((DateTime)statusTimeStamp - timestamp).TotalSeconds) <= timestampThresholdSeconds &&
+                 journalBodyName.Equals(statusBodyName, StringComparison.InvariantCultureIgnoreCase))
+            {
+                data.Add( "Latitude", statusLatitude );
+                data.Add( "Longitude", statusLongitude );
             }
             return data;
         }

@@ -1,0 +1,57 @@
+﻿using EddiEddnResponder.Sender;
+using EddiEddnResponder.Toolkit;
+using JetBrains.Annotations;
+using System;
+using System.Collections.Generic;
+using Utilities;
+
+namespace EddiEddnResponder.Schemas
+{
+    [UsedImplicitly]
+    public class ScanOrganicSchema : ISchema
+    {
+        public List<string> edTypes => new() { "ScanOrganic" };
+
+        public bool Handle ( string edType, ref IDictionary<string, object> data, EDDNState eddnState, EDDNSender eddnSender )
+        {
+            try
+            {
+                if ( !edTypes.Contains( edType ) ) { return false; }
+                if ( eddnState?.Location is null || eddnState.GameVersion is null ) { return false; }
+                if ( !eddnState.Location.CheckLocationData( edType, data ) ) { return false; }
+
+                // Remove personal data
+                data = PersonalDataStripper.Strip( data );
+                data.Remove( "WasLogged" );
+
+                // Omit the `Analyse` scan type
+                if ( data.TryGetValue( "ScanType", out var scanType ) && scanType.ToString() == "Analyse" )
+                {
+                    return false;
+                }
+
+                // Rename `Body` to `BodyID` to match EDDN and most event conventions
+                if ( data.TryGetValue( "Body", out var bodyId ) )
+                {
+                    data.Remove( "Body" );
+                    data.Add( "BodyID", Convert.ToInt32( bodyId ) );
+                }
+
+                // Apply data augments
+                data = eddnState.Location.AugmentStarSystemName( data );
+                data = eddnState.Location.AugmentStarPos( data );
+                data = eddnState.Location.AugmentBodyNameID( data );
+                data = eddnState.Location.AugmentBodyLatLong( data, 60, true );
+                data = eddnState.GameVersion.AugmentVersion( data );
+
+                eddnSender.SendToEDDN( "https://eddn.edcd.io/schemas/scanorganic/1", data, eddnState, null );
+                return true;
+            }
+            catch ( Exception e )
+            {
+                Logging.Error( $"{GetType().Name} failed to handle journal data.", e );
+                return false;
+            }
+        }
+    }
+}
