@@ -18,11 +18,6 @@ namespace EddiSpeechService.SpeechProviders
                 return true;
             }
 
-            if ( voice.isMultilingual )
-            {
-                return true;
-            }
-
             var locales = voice.supportedLocales?.Count > 0
                 ? voice.supportedLocales
                 : [ voice.culturecode ];

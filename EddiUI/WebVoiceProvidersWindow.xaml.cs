@@ -29,8 +29,12 @@ namespace EddiUI
             InitializeComponent();
             ApplyLocalizedText();
             providerDescriptors = SpeechService.Instance.SpeechManager.WebProviderDescriptors;
+            var defaultProviderDescriptor = providerDescriptors.Count > 0 ? providerDescriptors[0] : null;
+            newProviderTypeDropDown.ItemsSource = providerDescriptors;
+            newProviderTypeDropDown.SelectedItem = defaultProviderDescriptor;
+            newProviderTypeDropDown.IsEnabled = providerDescriptors.Count > 0;
             providerTypeDropDown.ItemsSource = providerDescriptors;
-            providerTypeDropDown.SelectedItem = providerDescriptors.Count > 0 ? providerDescriptors[0] : null;
+            providerTypeDropDown.SelectedItem = defaultProviderDescriptor;
             addProfileButton.IsEnabled = providerDescriptors.Count > 0;
 
             profiles = ConfigService.Instance.speechServiceConfiguration.SpeechProviderConfigurations
@@ -73,8 +77,8 @@ namespace EddiUI
             {
                 if ( providerProfilesList.SelectedItem is not WebSpeechProvider profile )
                 {
-                    providerTypeDropDown.SelectedItem = providerDescriptors.Count > 0 ? providerDescriptors[0] : null;
-                    providerTypeDropDown.IsEnabled = providerDescriptors.Count > 0;
+                    providerTypeDropDown.SelectedItem = newProviderTypeDropDown.SelectedItem ?? (providerDescriptors.Count > 0 ? providerDescriptors[0] : null);
+                    providerTypeDropDown.IsEnabled = false;
                     profileNameTextBox.Text = string.Empty;
                     profileEnabledCheckBox.IsChecked = false;
                     profileLocaleFiltersTextBox.Text = string.Empty;
@@ -238,6 +242,17 @@ namespace EddiUI
             UpdateProviderInfoLinks( providerTypeDropDown.SelectedItem as WebSpeechProviderDescriptor );
         }
 
+        private void newProviderTypeDropDown_SelectionChanged ( object sender, SelectionChangedEventArgs e )
+        {
+            if ( loadingProfile || providerProfilesList.SelectedItem != null )
+            {
+                return;
+            }
+
+            providerTypeDropDown.SelectedItem = newProviderTypeDropDown.SelectedItem;
+            UpdateProviderInfoLinks( newProviderTypeDropDown.SelectedItem as WebSpeechProviderDescriptor );
+        }
+
         private void providerInfoLink_RequestNavigate ( object sender, RequestNavigateEventArgs e )
         {
             Process.Start( new ProcessStartInfo( e.Uri.AbsoluteUri ) { UseShellExecute = true } );
@@ -291,7 +306,8 @@ namespace EddiUI
         private void addProfileButton_Click ( object sender, RoutedEventArgs e )
         {
             SaveCurrentProfileFromFields();
-            var descriptor = providerTypeDropDown.SelectedItem as WebSpeechProviderDescriptor
+            var descriptor = newProviderTypeDropDown.SelectedItem as WebSpeechProviderDescriptor
+                             ?? providerTypeDropDown.SelectedItem as WebSpeechProviderDescriptor
                              ?? (providerDescriptors.Count > 0 ? providerDescriptors[0] : null);
             if ( descriptor == null )
             {

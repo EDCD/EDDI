@@ -34,6 +34,10 @@ namespace EddiSpeechService
 
         public string providerDisplayName { get; }
 
+        public string providerVoiceId { get; }
+
+        public string friendlyName { get; }
+
         public IReadOnlyList<string> supportedLocales { get; }
 
         public bool isMultilingual { get; }
@@ -49,7 +53,9 @@ namespace EddiSpeechService
             string providerProfileId = null,
             string providerDisplayName = null,
             bool isMultilingual = false,
-            IEnumerable<string> supportedLocales = null )
+            IEnumerable<string> supportedLocales = null,
+            string providerVoiceId = null,
+            string friendlyName = null )
         {
             name = displayName;
             this.gender = gender;
@@ -60,6 +66,8 @@ namespace EddiSpeechService
             this.synthType = synthType;
             this.providerProfileId = providerProfileId;
             this.providerDisplayName = providerDisplayName;
+            this.providerVoiceId = providerVoiceId;
+            this.friendlyName = friendlyName;
             this.isMultilingual = isMultilingual;
 
             culturecode = BestGuessCulture( Culture );
@@ -67,9 +75,10 @@ namespace EddiSpeechService
                 .Where( locale => !string.IsNullOrWhiteSpace( locale ) )
                 .Distinct( StringComparer.InvariantCultureIgnoreCase )
                 .ToList();
+            var providerVoiceKey = string.IsNullOrWhiteSpace( providerVoiceId ) ? name : providerVoiceId;
             voiceKey = string.IsNullOrWhiteSpace( providerProfileId )
                 ? name
-                : $"{synthType}:{providerProfileId}:{name}";
+                : $"{synthType}:{providerProfileId}:{providerVoiceKey}";
         }
 
         private string BestGuessCulture ( CultureInfo Culture )

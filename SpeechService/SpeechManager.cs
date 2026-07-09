@@ -51,7 +51,7 @@ namespace EddiSpeechService
         public readonly SpeechQueue speechQueue = new();
 
         public SpeechManager ( AudioManager audioManager )
-            : this( audioManager, [ new AzureSpeechProvider() ] )
+            : this( audioManager, [ new AzureSpeechProvider(), new AmazonPollySpeechProvider() ] )
         { }
 
         internal SpeechManager (
@@ -222,6 +222,9 @@ namespace EddiSpeechService
 
             var provider =  webSpeechProviders.FirstOrDefault( p => p.ProviderType == profile.ProviderType )
                 ?? throw new InvalidOperationException( $"No web speech provider is available for profile '{profile.DisplayName}'." );
+
+            Logging.Info(
+                $"Using web speech provider '{profile.DisplayName}' ({profile.ProviderType}) for voice '{voiceDetails.name}' with key '{voiceDetails.voiceKey}'." );
 
             return await provider
                 .SynthesizeAsync( profile, voiceDetails, speech, config, ct )

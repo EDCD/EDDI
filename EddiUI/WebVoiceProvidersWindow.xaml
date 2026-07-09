@@ -19,7 +19,10 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <DockPanel Grid.Column="0" Margin="0,0,10,0" LastChildFill="True">
-                <Button x:Name="addProfileButton" DockPanel.Dock="Bottom" Margin="0,10,0,0" Click="addProfileButton_Click" />
+                <StackPanel DockPanel.Dock="Bottom" Margin="0,10,0,0">
+                    <ComboBox x:Name="newProviderTypeDropDown" Margin="0,0,0,6" DisplayMemberPath="DisplayName" SelectedValuePath="ProviderType" SelectionChanged="newProviderTypeDropDown_SelectionChanged" />
+                    <Button x:Name="addProfileButton" Click="addProfileButton_Click" />
+                </StackPanel>
                 <ListBox x:Name="providerProfilesList" SelectionChanged="providerProfilesList_SelectionChanged" />
             </DockPanel>
             <Grid Grid.Column="1">

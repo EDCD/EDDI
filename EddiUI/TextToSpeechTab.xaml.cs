@@ -190,19 +190,6 @@ namespace EddiUI
             var selectedOption = speechOptions.FirstOrDefault( v =>
                 string.Equals( v.Value, configuredVoice, StringComparison.InvariantCultureIgnoreCase ) );
 
-            if ( selectedOption == null && !string.IsNullOrWhiteSpace( configuredVoice ) )
-            {
-                var legacyMatches = SpeechService.Instance.SpeechManager.validatedVoices
-                    .Where( v => string.Equals( v.name, configuredVoice, StringComparison.InvariantCultureIgnoreCase ) )
-                    .Take( 2 )
-                    .ToList();
-                if ( legacyMatches.Count == 1 )
-                {
-                    selectedOption = speechOptions.FirstOrDefault( v =>
-                        string.Equals( v.Value, legacyMatches[0].voiceKey, StringComparison.InvariantCultureIgnoreCase ) );
-                }
-            }
-
             if ( selectedOption != null )
             {
                 ttsVoiceDropDown.SelectedItem = selectedOption;
@@ -387,27 +374,18 @@ namespace EddiUI
 
         private static string GetFriendlyVoiceName(VoiceDetails voice)
         {
+            if ( !string.IsNullOrWhiteSpace( voice.friendlyName ) )
+            {
+                return voice.friendlyName;
+            }
+
             if ( !string.IsNullOrWhiteSpace( voice.providerProfileId ) )
             {
                 var cultureName = voice.cultureinvariantname ?? "Unknown Language";
-                var simpleName = voice.name;
-                var lastDashIndex = voice.name.LastIndexOf('-');
-                if (lastDashIndex >= 0 && lastDashIndex < voice.name.Length - 1)
-                {
-                    simpleName = voice.name.Substring(lastDashIndex + 1);
-                }
-                if (simpleName.EndsWith("MultilingualNeural", StringComparison.OrdinalIgnoreCase))
-                {
-                    simpleName = string.Concat( simpleName.AsSpan(0, simpleName.Length - "MultilingualNeural".Length), " (Multilingual)" );
-                }
-                else if (simpleName.EndsWith("Neural", StringComparison.OrdinalIgnoreCase))
-                {
-                    simpleName = simpleName.Substring(0, simpleName.Length - "Neural".Length);
-                }
                 var providerName = string.IsNullOrWhiteSpace( voice.providerDisplayName )
                     ? voice.synthType
                     : voice.providerDisplayName;
-                return $"{cultureName} {simpleName} - Neural [{providerName}]";
+                return $"{cultureName} {voice.name} [{providerName}]";
             }
             else if (voice.synthType == nameof(System) && voice.name.StartsWith("Microsoft ", StringComparison.OrdinalIgnoreCase))
             {

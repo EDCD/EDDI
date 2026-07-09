@@ -6,6 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="AvalonEdit" Version="6.3.1.120" />
+    <PackageVersion Include="AWSSDK.Polly" Version="3.7.506.4" />
     <PackageVersion Include="CommonMark.NET" Version="0.15.1" />
     <PackageVersion Include="Cottle" Version="2.1.0" />
     <PackageVersion Include="JetBrains.Annotations" Version="2025.2.4" />

@@ -1,5 +1,7 @@
 using EddiUI;
 using EddiUI.Themes;
+using EddiSpeechService;
+using EddiSpeechService.SpeechProviders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32;
 using System;
@@ -7,6 +9,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -630,6 +633,28 @@ namespace Tests
             Assert.Contains("<Setter Property=\"Padding\" Value=\"4,0\" />", classicXaml);
             Assert.Contains("Style=\"{DynamicResource ScriptGridButtonStyle}\"", speechResponderXaml);
             Assert.Contains("Padding=\"4,0\"", speechResponderXaml);
+        }
+
+        [TestMethod]
+        public void GetFriendlyVoiceName_WebProviderVoice_UsesProviderSuppliedFriendlyName()
+        {
+            var voice = new VoiceDetails(
+                "Salli (Standard)",
+                "Female",
+                CultureInfo.GetCultureInfo("en-US"),
+                AmazonPollySpeechProvider.ProviderTypeId,
+                providerProfileId: "amazon-polly-main",
+                providerDisplayName: "Amazon Polly",
+                supportedLocales: ["en-US"],
+                friendlyName: "English (United States) Salli (Standard) [Amazon Polly]");
+            var method = typeof(TextToSpeechTab).GetMethod(
+                "GetFriendlyVoiceName",
+                BindingFlags.NonPublic | BindingFlags.Static);
+
+            Assert.IsNotNull(method);
+            var friendlyName = (string)method.Invoke(null, [voice]);
+
+            Assert.AreEqual("English (United States) Salli (Standard) [Amazon Polly]", friendlyName);
         }
 
         private static string FindRepoFile(params string[] pathParts)

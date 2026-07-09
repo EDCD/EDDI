@@ -226,7 +226,32 @@ namespace EddiSpeechService.SpeechProviders
                 profile.Id,
                 profile.DisplayName,
                 isMultilingual,
-                [ voice.Locale ] );
+                [ voice.Locale ],
+                friendlyName: CreateFriendlyVoiceName( voice.ShortName, culture, profile.DisplayName ) );
+        }
+
+        private static string CreateFriendlyVoiceName (
+            string voiceName,
+            CultureInfo culture,
+            string providerDisplayName )
+        {
+            var simpleName = voiceName ?? string.Empty;
+            var lastDashIndex = voiceName?.LastIndexOf( '-' ) ?? -1;
+            if ( lastDashIndex >= 0 && lastDashIndex < voiceName.Length - 1 )
+            {
+                simpleName = voiceName.Substring( lastDashIndex + 1 );
+            }
+
+            if ( simpleName.EndsWith( "MultilingualNeural", StringComparison.OrdinalIgnoreCase ) )
+            {
+                simpleName = string.Concat( simpleName.AsSpan( 0, simpleName.Length - "MultilingualNeural".Length ), " (Multilingual)" );
+            }
+            else if ( simpleName.EndsWith( "Neural", StringComparison.OrdinalIgnoreCase ) )
+            {
+                simpleName = simpleName.Substring( 0, simpleName.Length - "Neural".Length );
+            }
+
+            return $"{culture.EnglishName} {simpleName} - Neural [{providerDisplayName}]";
         }
 
         private static string PrepareAzureSsml (

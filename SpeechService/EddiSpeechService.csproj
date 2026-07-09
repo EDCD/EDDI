@@ -40,6 +40,9 @@
         <None Include="..\Azure Speech Services.md">
             <Link>Azure Speech Services.md</Link>
         </None>
+        <None Include="..\Amazon Polly.md">
+            <Link>Amazon Polly.md</Link>
+        </None>
         <None Include="..\Lexicons.md">
             <Link>Lexicons.md</Link>
         </None>
@@ -59,6 +62,7 @@
         </EmbeddedResource>
     </ItemGroup>
     <ItemGroup>
+        <PackageReference Include="AWSSDK.Polly" />
         <PackageReference Include="JetBrains.Annotations" />
         <PackageReference Include="Microsoft.CSharp" />
         <PackageReference Include="NAudio" />
