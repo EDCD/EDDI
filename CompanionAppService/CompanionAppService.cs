@@ -297,8 +297,9 @@ namespace EddiCompanionAppService
                     }
                 }
             }
-            catch ( Exception )
+            catch ( Exception ex)
             {
+                Logging.Warn( ex.Message, ex );
                 CurrentState = State.LoggedOut;
             }
         }
