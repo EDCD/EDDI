@@ -50,7 +50,6 @@
             <Pack>True</Pack>
             <PackagePath>\</PackagePath>
         </None>
-        <None Remove="MainWindow.xaml" />
         <AppDesigner Include="Properties\" />
     </ItemGroup>
     <!-- NuGet Packages -->
