@@ -6,7 +6,9 @@ using EddiConfigService.Configurations;
 using EddiDataDefinitions;
 using EddiSpeechService.SpeechPreparation;
 using NAudio.Wave;
-using NAudio.Wave.SampleProviders;
+using NWaves.Operations;
+using NWaves.Operations.Tsm;
+using NWaves.Signals;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -26,27 +28,33 @@ namespace EddiSpeechService.SpeechProviders
         internal const string ProviderTypeId = "AmazonPolly";
         internal const string StandardEngine = "standard";
         internal const string NeuralEngine = "neural";
-        internal const string PcmOutputFormat = "pcm";
+        internal const string Mp3OutputFormat = "mp3";
         private const string ProviderDisplayName = "Amazon Polly";
         private const string RegionSetting = "region";
         private const string AccessKeyIdSetting = "accessKeyId";
         private const string SecretAccessKeySetting = "secretAccessKey";
         private const string SetupUrl = "https://github.com/EDCD/EDDI/wiki/Amazon-Polly";
         private const string AccountUrl = "https://console.aws.amazon.com/";
-        private const int PcmSampleRate = 16000;
-        private const int OutputSampleRate = 44100;
+        private const int Mp3SampleRate = 24000;
         private const short PcmBitsPerSample = 16;
-        private const short PcmChannels = 1;
+        private const double DefaultTempoStretchFactor = 2.2;
         private static readonly IReadOnlyList<string> Engines = [ StandardEngine, NeuralEngine ];
         private readonly Func<WebSpeechProvider, IAmazonPollyClient> createClient;
+        private readonly Func<Stream, Stream> decodeAudioToWave;
+        private readonly double tempoStretchFactor;
 
         public AmazonPollySpeechProvider()
             : this( profile => new AmazonPollySdkClient( profile ) )
         { }
 
-        internal AmazonPollySpeechProvider ( Func<WebSpeechProvider, IAmazonPollyClient> createClient )
+        internal AmazonPollySpeechProvider (
+            Func<WebSpeechProvider, IAmazonPollyClient> createClient,
+            Func<Stream, Stream> decodeAudioToWave = null,
+            double tempoStretchFactor = DefaultTempoStretchFactor )
         {
             this.createClient = createClient ?? throw new ArgumentNullException( nameof( createClient ) );
+            this.decodeAudioToWave = decodeAudioToWave ?? DecodeMp3ToWave;
+            this.tempoStretchFactor = Math.Max( 1.0, tempoStretchFactor );
         }
 
         public string ProviderType => ProviderTypeId;
@@ -146,18 +154,21 @@ namespace EddiSpeechService.SpeechProviders
             var languageCode = SelectSynthesisLanguageCode( profile, voice, voiceSelection.LanguageCode );
             var preparedSpeech = speech;
             SpeechFormatter.PrepareSpeech( voice, ref preparedSpeech, out _ );
-            var pollySpeech = PreparePollySsml( preparedSpeech, languageCode, configuration );
+            var effectiveConfiguration = configuration ?? new SpeechServiceConfiguration();
+            var normalizedRate = NormalizeRate( effectiveConfiguration.Rate );
+            var normalizedVolume = NormalizeVolume( effectiveConfiguration.Volume );
+            var pollySpeech = PreparePollySsml( preparedSpeech, languageCode, normalizedRate, normalizedVolume );
             var request = new AmazonPollySynthesisRequest(
                 voiceSelection.VoiceId,
                 voiceSelection.Engine,
                 pollySpeech,
                 "ssml",
-                PcmOutputFormat,
-                PcmSampleRate.ToString( CultureInfo.InvariantCulture ),
+                Mp3OutputFormat,
+                Mp3SampleRate.ToString( CultureInfo.InvariantCulture ),
                 languageCode );
 
             Logging.Info(
-                $"Amazon Polly synthesis request voice='{voice?.name}', voiceId='{request.VoiceId}', engine='{request.Engine}', language='{request.LanguageCode}', outputFormat='{request.OutputFormat}', sampleRate='{request.SampleRate}'.");
+                $"Amazon Polly synthesis request voice='{voice?.name}', voiceId='{request.VoiceId}', engine='{request.Engine}', language='{request.LanguageCode}', outputFormat='{request.OutputFormat}', requestedSampleRate='{request.SampleRate}', configuredRate={effectiveConfiguration.Rate}, normalizedRate='{normalizedRate}', configuredVolume={effectiveConfiguration.Volume}, normalizedVolume='{normalizedVolume}', ssmlLength={pollySpeech.Length}.");
 
             try
             {
@@ -165,17 +176,19 @@ namespace EddiSpeechService.SpeechProviders
                 await using var audioStream = await client.SynthesizeSpeechAsync( request, ct ).ConfigureAwait( false ) 
                     ?? throw new InvalidOperationException( $"Amazon Polly did not return audio for voice '{voice?.name}'." );
 
-                using var pcmStream = new MemoryStream();
-                await audioStream.CopyToAsync( pcmStream, ct ).ConfigureAwait( false );
-                if ( pcmStream.Length == 0 )
+                using var encodedStream = new MemoryStream();
+                await audioStream.CopyToAsync( encodedStream, ct ).ConfigureAwait( false );
+                if ( encodedStream.Length == 0 )
                 {
                     throw new InvalidOperationException( $"Amazon Polly returned empty audio for voice '{voice?.name}'." );
                 }
 
-                var outputStream = ConvertPcmToWave( pcmStream.ToArray(), PcmSampleRate, OutputSampleRate );
+                encodedStream.Position = 0;
+                using var decodedStream = decodeAudioToWave( encodedStream );
+                var outputStream = ApplyTempoStretch( decodedStream, tempoStretchFactor );
                 var outputMetadata = GetWaveMetadata( outputStream );
                 Logging.Info(
-                    $"Amazon Polly synthesis response voice='{voice?.name}', pcmBytes={pcmStream.Length}, sourceSampleRate={PcmSampleRate}, outputSampleRate={outputMetadata.SampleRate}, outputBits={outputMetadata.BitsPerSample}, outputChannels={outputMetadata.Channels}, outputBytes={outputStream.Length}, outputDurationMs={outputMetadata.Duration.TotalMilliseconds:0}." );
+                    $"Amazon Polly synthesis response voice='{voice?.name}', encodedBytes={encodedStream.Length}, outputFormat='{request.OutputFormat}', requestedSampleRate={request.SampleRate}, tempoStretchFactor={tempoStretchFactor:0.###}, outputSampleRate={outputMetadata.SampleRate}, outputBits={outputMetadata.BitsPerSample}, outputChannels={outputMetadata.Channels}, outputBytes={outputStream.Length}, outputDurationMs={outputMetadata.Duration.TotalMilliseconds:0}." );
                 outputStream.Position = 0;
                 return outputStream;
             }
@@ -290,7 +303,7 @@ namespace EddiSpeechService.SpeechProviders
                    locale.StartsWith( $"{filter}-", StringComparison.InvariantCultureIgnoreCase );
         }
 
-        private static IReadOnlyList<string> GetVoiceLanguageCodes ( AmazonPollyVoice voice )
+        private static List<string> GetVoiceLanguageCodes ( AmazonPollyVoice voice )
         {
             return new[] { voice.LanguageCode }
                 .Concat( voice.AdditionalLanguageCodes ?? [] )
@@ -312,12 +325,9 @@ namespace EddiSpeechService.SpeechProviders
         private static string PreparePollySsml (
             string preparedSpeech,
             string languageCode,
-            SpeechServiceConfiguration configuration )
+            string rate,
+            string volume )
         {
-            var effectiveConfiguration = configuration ?? new SpeechServiceConfiguration();
-            var volume = NormalizeVolume( effectiveConfiguration.Volume );
-            var rate = NormalizeRate( effectiveConfiguration.Rate );
-
             if ( IsSpeakDocument( preparedSpeech ) )
             {
                 try
@@ -361,7 +371,7 @@ namespace EddiSpeechService.SpeechProviders
         private static string NormalizeRate ( int rate )
         {
             var normalizedRate = Math.Clamp( rate, -10, 10 );
-            var ratePercent = 50 + (normalizedRate * 5);
+            var ratePercent = 100 + (normalizedRate * 5);
             return $"{Math.Clamp( ratePercent, 20, 200 )}%";
         }
 
@@ -393,39 +403,11 @@ namespace EddiSpeechService.SpeechProviders
             }
         }
 
-        private static MemoryStream ConvertPcmToWave (
-            byte[] pcmData,
-            int sourceSampleRate,
-            int outputSampleRate )
+        private static MemoryStream DecodeMp3ToWave ( Stream mp3Stream )
         {
-            using var source = new RawSourceWaveStream(
-                new MemoryStream( pcmData ),
-                new WaveFormat( sourceSampleRate, PcmBitsPerSample, PcmChannels ) );
-            ISampleProvider sampleProvider = source.ToSampleProvider();
-            if ( sourceSampleRate != outputSampleRate )
-            {
-                sampleProvider = new WdlResamplingSampleProvider( sampleProvider, outputSampleRate );
-            }
-
+            using var reader = new Mp3FileReader( mp3Stream );
             var stream = new MemoryStream();
-            using ( var writer = new WaveFileWriter( stream, WaveFormat.CreateIeeeFloatWaveFormat( outputSampleRate, PcmChannels ) ) )
-            {
-                var buffer = new float[ outputSampleRate * PcmChannels ];
-                int read;
-                while ( ( read = sampleProvider.Read( buffer, 0, buffer.Length ) ) > 0 )
-                {
-                    writer.WriteSamples( buffer, 0, read );
-                }
-            }
-
-            return ConvertFloatWaveToPcmWave( new MemoryStream( stream.ToArray() ) );
-        }
-
-        private static MemoryStream ConvertFloatWaveToPcmWave ( Stream floatWaveStream )
-        {
-            using var reader = new WaveFileReader( floatWaveStream );
-            var stream = new MemoryStream();
-            using ( var writer = new WaveFileWriter( stream, new WaveFormat( reader.WaveFormat.SampleRate, PcmBitsPerSample, PcmChannels ) ) )
+            using ( var writer = new WaveFileWriter( stream, new WaveFormat( reader.WaveFormat.SampleRate, PcmBitsPerSample, reader.WaveFormat.Channels ) ) )
             {
                 var buffer = new float[ reader.WaveFormat.SampleRate * reader.WaveFormat.Channels ];
                 var sampleProvider = reader.ToSampleProvider();
@@ -437,6 +419,80 @@ namespace EddiSpeechService.SpeechProviders
             }
 
             return new MemoryStream( stream.ToArray() );
+        }
+
+        private static MemoryStream ApplyTempoStretch ( Stream waveStream, double stretchFactor )
+        {
+            if ( stretchFactor <= 1.0 )
+            {
+                return CopyToMemoryStream( waveStream );
+            }
+
+            using var reader = new WaveFileReader( waveStream );
+            if ( reader.WaveFormat.Encoding != WaveFormatEncoding.Pcm ||
+                 reader.WaveFormat.BitsPerSample != PcmBitsPerSample )
+            {
+                return CopyToMemoryStream( waveStream );
+            }
+
+            var sampleRate = reader.WaveFormat.SampleRate;
+            var channels = reader.WaveFormat.Channels;
+            var samplesByChannel = ReadPcm16SamplesByChannel( reader );
+            var stretchedByChannel = samplesByChannel
+                .Select( samples => Operation
+                    .TimeStretch( new DiscreteSignal( sampleRate, samples, true ), stretchFactor, TsmAlgorithm.Wsola )
+                    .Samples )
+                .ToList();
+            var frameCount = stretchedByChannel.Min( samples => samples.Length );
+            var outputStream = new MemoryStream();
+            using ( var writer = new WaveFileWriter( outputStream, new WaveFormat( sampleRate, PcmBitsPerSample, channels ) ) )
+            {
+                var buffer = new byte[ channels * sizeof( short ) ];
+                for ( var frame = 0; frame < frameCount; frame++ )
+                {
+                    for ( var channel = 0; channel < channels; channel++ )
+                    {
+                        var sample = Math.Clamp( stretchedByChannel[ channel ][ frame ], -1.0f, 1.0f );
+                        var pcm = (short)Math.Round( sample * short.MaxValue );
+                        BitConverter.GetBytes( pcm ).CopyTo( buffer, channel * sizeof( short ) );
+                    }
+                    writer.Write( buffer, 0, buffer.Length );
+                }
+            }
+
+            return new MemoryStream( outputStream.ToArray() );
+        }
+
+        private static List<float[]> ReadPcm16SamplesByChannel ( WaveFileReader reader )
+        {
+            var channels = reader.WaveFormat.Channels;
+            var samplesByChannel = Enumerable.Range( 0, channels )
+                .Select( _ => new List<float>() )
+                .ToList();
+            var buffer = new byte[ reader.WaveFormat.BlockAlign * reader.WaveFormat.SampleRate ];
+            int bytesRead;
+            while ( ( bytesRead = reader.Read( buffer, 0, buffer.Length ) ) > 0 )
+            {
+                for ( var offset = 0; offset + reader.WaveFormat.BlockAlign <= bytesRead; offset += reader.WaveFormat.BlockAlign )
+                {
+                    for ( var channel = 0; channel < channels; channel++ )
+                    {
+                        var pcm = BitConverter.ToInt16( buffer, offset + channel * sizeof( short ) );
+                        samplesByChannel[ channel ].Add( pcm / (float)short.MaxValue );
+                    }
+                }
+            }
+
+            return samplesByChannel.Select( samples => samples.ToArray() ).ToList();
+        }
+
+        private static MemoryStream CopyToMemoryStream ( Stream stream )
+        {
+            var copy = new MemoryStream();
+            stream.Position = 0;
+            stream.CopyTo( copy );
+            copy.Position = 0;
+            return copy;
         }
 
         private static (int SampleRate, int BitsPerSample, int Channels, TimeSpan Duration) GetWaveMetadata ( Stream stream )
@@ -481,48 +537,32 @@ namespace EddiSpeechService.SpeechProviders
     internal sealed class AmazonPollySdkClient : IAmazonPollyClient
     {
         private readonly AmazonPollyClient client;
+        private readonly string region;
 
         public AmazonPollySdkClient ( WebSpeechProvider profile )
         {
+            region = AmazonPollySpeechProvider.GetRegion( profile );
             client = new AmazonPollyClient(
                 new BasicAWSCredentials(
                     AmazonPollySpeechProvider.GetAccessKeyId( profile ),
                     AmazonPollySpeechProvider.GetSecretAccessKey( profile ) ),
-                RegionEndpoint.GetBySystemName( AmazonPollySpeechProvider.GetRegion( profile ) ) );
+                RegionEndpoint.GetBySystemName( region ) );
         }
 
         public async Task<IReadOnlyList<AmazonPollyVoice>> DescribeVoicesAsync ( CancellationToken ct )
         {
-            var voices = new List<AmazonPollyVoice>();
-            foreach ( var engine in new[] { Engine.Standard, Engine.Neural } )
-            {
-                string nextToken = null;
-                do
-                {
-                    var response = await client.DescribeVoicesAsync(
-                        new DescribeVoicesRequest
-                        {
-                            Engine = engine,
-                            IncludeAdditionalLanguageCodes = true,
-                            NextToken = nextToken
-                        },
-                        ct ).ConfigureAwait( false );
-
-                    voices.AddRange( response.Voices.Select( voice => new AmazonPollyVoice(
-                        ConstantValue( voice.Id ),
-                        voice.Name,
-                        ConstantValue( voice.Gender ),
-                        ConstantValue( voice.LanguageCode ),
-                        ConstantValue( engine ),
-                        voice.AdditionalLanguageCodes?.Select( ConstantValue ).ToList() ?? [] ) ) );
-                    nextToken = response.NextToken;
-                } while ( !string.IsNullOrWhiteSpace( nextToken ) );
-            }
-
-            return voices
-                .GroupBy( voice => (voice.VoiceId, voice.Engine), StringTupleComparer.Instance )
-                .Select( group => group.First() )
-                .ToList();
+            return await DescribeVoicesByEngineAsync(
+                new[] { Engine.Standard, Engine.Neural },
+                async ( engine, nextToken, cancellationToken ) => await client.DescribeVoicesAsync(
+                    new DescribeVoicesRequest
+                    {
+                        Engine = engine,
+                        IncludeAdditionalLanguageCodes = true,
+                        NextToken = nextToken
+                    },
+                    cancellationToken ).ConfigureAwait( false ),
+                region,
+                ct ).ConfigureAwait( false );
         }
 
         public async Task<Stream> SynthesizeSpeechAsync ( AmazonPollySynthesisRequest request, CancellationToken ct )
@@ -531,7 +571,7 @@ namespace EddiSpeechService.SpeechProviders
                 new SynthesizeSpeechRequest
                 {
                     Engine = Engine.FindValue( request.Engine ),
-                    OutputFormat = OutputFormat.Pcm,
+                    OutputFormat = OutputFormat.FindValue( request.OutputFormat ),
                     SampleRate = request.SampleRate,
                     Text = request.Text,
                     TextType = TextType.FindValue( request.TextType ),
@@ -548,7 +588,74 @@ namespace EddiSpeechService.SpeechProviders
             client.Dispose();
         }
 
+        internal static async Task<IReadOnlyList<AmazonPollyVoice>> DescribeVoicesByEngineAsync (
+            IEnumerable<Engine> engines,
+            Func<Engine, string, CancellationToken, Task<DescribeVoicesResponse>> describeVoicesAsync,
+            string region,
+            CancellationToken ct )
+        {
+            var voices = new List<AmazonPollyVoice>();
+            foreach ( var engine in engines )
+            {
+                try
+                {
+                    string nextToken = null;
+                    do
+                    {
+                        var response = await describeVoicesAsync( engine, nextToken, ct ).ConfigureAwait( false );
+                        var voiceVariants = response.Voices.SelectMany( voice => CreateVoiceVariants( voice, engine ) ).ToList();
+                        Logging.Info(
+                            $"Amazon Polly DescribeVoices region='{region}', requestedEngine='{ConstantValue( engine )}', returnedVoices={response.Voices.Count}, mappedVoices={voiceVariants.Count}, hasNextPage={!string.IsNullOrWhiteSpace( response.NextToken )}." );
+                        voices.AddRange( voiceVariants );
+                        nextToken = response.NextToken;
+                    } while ( !string.IsNullOrWhiteSpace( nextToken ) );
+                }
+                catch ( OperationCanceledException )
+                {
+                    throw;
+                }
+                catch ( Exception ex )
+                {
+                    Logging.Warn(
+                        $"Amazon Polly DescribeVoices failed for region='{region}', requestedEngine='{ConstantValue( engine )}'. Continuing with voices returned by other engines.",
+                        ex );
+                }
+            }
+
+            var uniqueVoices = voices
+                .GroupBy( voice => (voice.VoiceId, voice.Engine), StringTupleComparer.Instance )
+                .Select( group => group.First() )
+                .ToList();
+            Logging.Info(
+                $"Amazon Polly returned {uniqueVoices.Count} voices ({uniqueVoices.Count( voice => string.Equals( voice.Engine, AmazonPollySpeechProvider.StandardEngine, StringComparison.InvariantCultureIgnoreCase ) )} standard, {uniqueVoices.Count( voice => string.Equals( voice.Engine, AmazonPollySpeechProvider.NeuralEngine, StringComparison.InvariantCultureIgnoreCase ) )} neural) for region '{region}'." );
+            return uniqueVoices;
+        }
+
         private static string ConstantValue ( object value ) => value?.ToString() ?? string.Empty;
+
+        internal static IEnumerable<AmazonPollyVoice> CreateVoiceVariants ( Voice voice, Engine requestedEngine )
+        {
+            foreach ( var engine in GetSelectableEngines( voice, requestedEngine ) )
+            {
+                yield return new AmazonPollyVoice(
+                    ConstantValue( voice.Id ),
+                    voice.Name,
+                    ConstantValue( voice.Gender ),
+                    ConstantValue( voice.LanguageCode ),
+                    ConstantValue( engine ),
+                    voice.AdditionalLanguageCodes?.Select( ConstantValue ).ToList() ?? [] );
+            }
+        }
+
+        private static IReadOnlyList<string> GetSelectableEngines ( Voice voice, Engine requestedEngine )
+        {
+            var supportedEngines = voice.SupportedEngines?
+                .Where( engine => string.Equals( engine, AmazonPollySpeechProvider.StandardEngine, StringComparison.InvariantCultureIgnoreCase ) ||
+                                  string.Equals( engine, AmazonPollySpeechProvider.NeuralEngine, StringComparison.InvariantCultureIgnoreCase ) )
+                .Distinct( StringComparer.InvariantCultureIgnoreCase )
+                .ToList();
+            return supportedEngines?.Count > 0 ? supportedEngines : [ ConstantValue( requestedEngine ) ];
+        }
 
         private sealed class StringTupleComparer : IEqualityComparer<(string First, string Second)>
         {

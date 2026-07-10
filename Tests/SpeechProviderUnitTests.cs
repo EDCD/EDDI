@@ -1,3 +1,8 @@
+using Amazon.Polly.Model;
+using AwsEngine = Amazon.Polly.Engine;
+using AwsGender = Amazon.Polly.Gender;
+using AwsLanguageCode = Amazon.Polly.LanguageCode;
+using AwsVoiceId = Amazon.Polly.VoiceId;
 using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiDataDefinitions;
@@ -12,6 +17,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -188,6 +194,69 @@ namespace Tests
         }
 
         [TestMethod]
+        public void AmazonPollySdkClient_CreateVoiceVariants_ExpandsSupportedEngines()
+        {
+            var voice = new Voice
+            {
+                Id = AwsVoiceId.Joanna,
+                Name = "Joanna",
+                Gender = AwsGender.Female,
+                LanguageCode = AwsLanguageCode.EnUS,
+                SupportedEngines = [ AwsEngine.Standard, AwsEngine.Neural ]
+            };
+
+            var voices = AmazonPollySdkClient.CreateVoiceVariants( voice, AwsEngine.Standard ).ToList();
+
+            Assert.HasCount(2, voices);
+            CollectionAssert.AreEquivalent(
+                new[] { AmazonPollySpeechProvider.StandardEngine, AmazonPollySpeechProvider.NeuralEngine },
+                voices.Select( v => v.Engine ).ToArray());
+            CollectionAssert.AreEquivalent(
+                new[]
+                {
+                    "Joanna:standard",
+                    "Joanna:neural"
+                },
+                voices.Select( v => $"{v.VoiceId}:{v.Engine}" ).ToArray());
+        }
+
+        [TestMethod]
+        public async Task AmazonPollySdkClient_DescribeVoicesByEngineAsync_ReturnsStandardVoicesWhenNeuralLookupFails()
+        {
+            var voices = await AmazonPollySdkClient.DescribeVoicesByEngineAsync(
+                [AwsEngine.Standard, AwsEngine.Neural],
+                (engine, _, _) =>
+                {
+                    if (engine == AwsEngine.Neural)
+                    {
+                        throw new InvalidOperationException("Neural voices are unavailable in this test region.");
+                    }
+
+                    return Task.FromResult(new DescribeVoicesResponse
+                    {
+                        Voices =
+                        [
+                            new Voice
+                            {
+                                Id = AwsVoiceId.Salli,
+                                Name = "Salli",
+                                Gender = AwsGender.Female,
+                                LanguageCode = AwsLanguageCode.EnUS,
+                                SupportedEngines = [ AwsEngine.Standard ]
+                            }
+                        ]
+                    });
+                },
+                "test-region",
+                CancellationToken.None);
+
+            Assert.HasCount(1, voices);
+            var voice = voices.Single();
+            Assert.AreEqual("Salli", voice.VoiceId);
+            Assert.AreEqual(AmazonPollySpeechProvider.StandardEngine, voice.Engine);
+        }
+
+        [TestMethod]
         public async Task AmazonPollySpeechProvider_GetVoicesAsync_RepresentsBilingualVoicesAsSingleMultilingualVoice()
         {
             var client = new FakeAmazonPollyClient
@@ -266,13 +335,15 @@ namespace Tests
         }
 
         [TestMethod]
-        public async Task AmazonPollySpeechProvider_SynthesizeAsync_RequestsPcmAndWrapsAudioAsWave()
+        public async Task AmazonPollySpeechProvider_SynthesizeAsync_RequestsMp3AndDecodesAudioAsWave()
         {
             var client = new FakeAmazonPollyClient
             {
-                SynthesisStream = CreateRawPcmSilenceStream(16000, TimeSpan.FromSeconds(1))
+                SynthesisStream = CreateMp3SineStream(24000, TimeSpan.FromSeconds(1))
             };
-            var provider = new AmazonPollySpeechProvider(_ => client);
+            var provider = new AmazonPollySpeechProvider(
+                _ => client,
+                tempoStretchFactor: 1.0);
             var profile = CreateConfiguredAmazonPollyProfile();
             var voice = new VoiceDetails(
                 "Joanna (Neural)",
@@ -281,7 +352,8 @@ namespace Tests
                 AmazonPollySpeechProvider.ProviderTypeId,
                 providerProfileId: profile.Id,
                 providerDisplayName: profile.DisplayName,
-                supportedLocales: ["en-US"]);
+                supportedLocales: ["en-US"],
+                providerVoiceId: "Joanna:neural");
             var configuration = new SpeechServiceConfiguration { Volume = 80, Rate = 0 };
 
             using var stream = await provider.SynthesizeAsync(
@@ -296,12 +368,12 @@ namespace Tests
             Assert.AreEqual(AmazonPollySpeechProvider.NeuralEngine, client.LastSynthesisRequest.Engine);
             Assert.Contains( "hello", client.LastSynthesisRequest.Text);
             Assert.AreEqual("ssml", client.LastSynthesisRequest.TextType);
-            Assert.AreEqual(AmazonPollySpeechProvider.PcmOutputFormat, client.LastSynthesisRequest.OutputFormat);
-            Assert.AreEqual("16000", client.LastSynthesisRequest.SampleRate);
+            Assert.AreEqual(AmazonPollySpeechProvider.Mp3OutputFormat, client.LastSynthesisRequest.OutputFormat);
+            Assert.AreEqual("24000", client.LastSynthesisRequest.SampleRate);
             Assert.AreEqual("en-US", client.LastSynthesisRequest.LanguageCode);
 
             using var reader = new WaveFileReader(stream);
-            Assert.AreEqual(44100, reader.WaveFormat.SampleRate);
+            Assert.AreEqual(24000, reader.WaveFormat.SampleRate);
             Assert.AreEqual(16, reader.WaveFormat.BitsPerSample);
             Assert.AreEqual(1, reader.WaveFormat.Channels);
             Assert.IsTrue(
@@ -311,13 +383,52 @@ namespace Tests
         }
 
         [TestMethod]
+        public async Task AmazonPollySpeechProvider_SynthesizeAsync_AppliesBaselineTempoStretchAfterDecode()
+        {
+            var client = new FakeAmazonPollyClient
+            {
+                SynthesisStream = new MemoryStream([1, 2, 3])
+            };
+            var provider = new AmazonPollySpeechProvider(
+                _ => client,
+                _ => CreateSineWaveStream(24000, TimeSpan.FromSeconds(1)),
+                tempoStretchFactor: 2.0);
+            var profile = CreateConfiguredAmazonPollyProfile();
+            var voice = new VoiceDetails(
+                "Amy (Standard)",
+                "Female",
+                CultureInfo.GetCultureInfo("en-GB"),
+                AmazonPollySpeechProvider.ProviderTypeId,
+                providerProfileId: profile.Id,
+                providerDisplayName: profile.DisplayName,
+                supportedLocales: ["en-GB"],
+                providerVoiceId: "Amy:standard");
+
+            using var stream = await provider.SynthesizeAsync(
+                profile,
+                voice,
+                "hello",
+                new SpeechServiceConfiguration { Volume = 80, Rate = 0 },
+                CancellationToken.None);
+
+            using var reader = new WaveFileReader(stream);
+            Assert.AreEqual(24000, reader.WaveFormat.SampleRate);
+            Assert.AreEqual(16, reader.WaveFormat.BitsPerSample);
+            Assert.AreEqual(1, reader.WaveFormat.Channels);
+            Assert.IsTrue(
+                reader.TotalTime > TimeSpan.FromMilliseconds(1800) &&
+                reader.TotalTime < TimeSpan.FromMilliseconds(2300),
+                $"Expected approximately two seconds of tempo-stretched Polly audio but got {reader.TotalTime.TotalMilliseconds} ms.");
+        }
+
+        [TestMethod]
         public async Task AmazonPollySpeechProvider_SynthesizeAsync_AppliesConfiguredRateAndVolume()
         {
             var client = new FakeAmazonPollyClient
             {
                 SynthesisStream = new MemoryStream([0, 0, 255, 127])
             };
-            var provider = new AmazonPollySpeechProvider(_ => client);
+            var provider = CreateAmazonPollyProvider(client);
             var profile = CreateConfiguredAmazonPollyProfile();
             var voice = new VoiceDetails(
                 "Joanna (Neural)",
@@ -339,18 +450,18 @@ namespace Tests
             Assert.IsNotNull(stream);
             Assert.IsNotNull(client.LastSynthesisRequest);
             Assert.AreEqual( "ssml", client.LastSynthesisRequest.TextType);
-            Assert.Contains( "<prosody volume=\"-6dB\" rate=\"75%\">", client.LastSynthesisRequest.Text);
+            Assert.Contains( "<prosody volume=\"-6dB\" rate=\"125%\">", client.LastSynthesisRequest.Text);
             Assert.Contains( "hello", client.LastSynthesisRequest.Text);
         }
 
         [TestMethod]
-        public async Task AmazonPollySpeechProvider_SynthesizeAsync_MapsNeutralRateToSlowerPollyRate()
+        public async Task AmazonPollySpeechProvider_SynthesizeAsync_UsesNoOpPollyRateForNeutralRate()
         {
             var client = new FakeAmazonPollyClient
             {
                 SynthesisStream = new MemoryStream([0, 0, 255, 127])
             };
-            var provider = new AmazonPollySpeechProvider(_ => client);
+            var provider = CreateAmazonPollyProvider(client);
             var profile = CreateConfiguredAmazonPollyProfile();
             var voice = new VoiceDetails(
                 "Amy (Standard)",
@@ -371,7 +482,7 @@ namespace Tests
 
             Assert.IsNotNull(stream);
             Assert.IsNotNull(client.LastSynthesisRequest);
-            Assert.Contains( "rate=\"50%\"", client.LastSynthesisRequest.Text);
+            Assert.Contains( "rate=\"100%\"", client.LastSynthesisRequest.Text);
         }
 
         [TestMethod]
@@ -381,7 +492,7 @@ namespace Tests
             {
                 SynthesisStream = new MemoryStream([0, 0, 255, 127])
             };
-            var provider = new AmazonPollySpeechProvider(_ => client);
+            var provider = CreateAmazonPollyProvider(client);
             var profile = CreateConfiguredAmazonPollyProfile();
             var voice = new VoiceDetails(
                 "Joanna (Neural)",
@@ -402,7 +513,7 @@ namespace Tests
 
             Assert.IsNotNull(stream);
             Assert.IsNotNull(client.LastSynthesisRequest);
-            Assert.Contains( "<prosody volume=\"-1.9dB\" rate=\"100%\">", client.LastSynthesisRequest.Text);
+            Assert.Contains( "<prosody volume=\"-1.9dB\" rate=\"150%\">", client.LastSynthesisRequest.Text);
         }
 
         [TestMethod]
@@ -412,7 +523,7 @@ namespace Tests
             {
                 SynthesisStream = new MemoryStream([0, 0, 255, 127])
             };
-            var provider = new AmazonPollySpeechProvider(_ => client);
+            var provider = CreateAmazonPollyProvider(client);
             var profile = CreateConfiguredAmazonPollyProfile(localeFilters: ["hi-IN"]);
             var voice = new VoiceDetails(
                 "Aditi (Standard)",
@@ -446,7 +557,7 @@ namespace Tests
             {
                 SynthesisStream = new MemoryStream([0, 0, 255, 127])
             };
-            var provider = new AmazonPollySpeechProvider(_ => client);
+            var provider = CreateAmazonPollyProvider(client);
             var profile = CreateConfiguredAmazonPollyProfile(localeFilters: ["hi-IN", "en"]);
             var voice = new VoiceDetails(
                 "Aditi (Standard)",
@@ -479,7 +590,7 @@ namespace Tests
             {
                 SynthesisStream = new MemoryStream([0, 0, 255, 127])
             };
-            var provider = new AmazonPollySpeechProvider(_ => client);
+            var provider = CreateAmazonPollyProvider(client);
             var profile = CreateConfiguredAmazonPollyProfile();
             var voice = new VoiceDetails(
                 "Joanna (Neural)",
@@ -500,16 +611,16 @@ namespace Tests
 
             Assert.IsNotNull(stream);
             Assert.IsNotNull(client.LastSynthesisRequest);
-            Assert.Contains( "<prosody volume=\"silent\" rate=\"20%\">", client.LastSynthesisRequest.Text);
+            Assert.Contains( "<prosody volume=\"silent\" rate=\"50%\">", client.LastSynthesisRequest.Text);
         }
 
         [TestMethod]
-        public void SpeechFx_AddEffectsToSource_PreservesAmazonPollySixteenKhzDuration()
+        public void SpeechFx_AddEffectsToSource_PreservesWebProviderWaveDuration()
         {
-            using var pollyStream = CreateSilenceWaveStream(16000, TimeSpan.FromSeconds(1));
+            using var webProviderStream = CreateSilenceWaveStream(24000, TimeSpan.FromSeconds(1));
 
             var provider = SpeechFx.addEffectsToSource(
-                pollyStream,
+                webProviderStream,
                 fxLevel: 0,
                 distortionLevel: 0,
                 echoDelay: 0,
@@ -574,20 +685,48 @@ namespace Tests
             return profile;
         }
 
+        private static AmazonPollySpeechProvider CreateAmazonPollyProvider(FakeAmazonPollyClient client)
+        {
+            return new AmazonPollySpeechProvider(
+                _ => client,
+                _ => CreateSilenceWaveStream(24000, TimeSpan.FromSeconds(1)),
+                tempoStretchFactor: 1.0);
+        }
+
         private static MemoryStream CreateSilenceWaveStream(int sampleRate, TimeSpan duration)
         {
             const short channels = 1;
             const short bitsPerSample = 16;
             var bytes = new byte[(int)(sampleRate * duration.TotalSeconds) * channels * bitsPerSample / 8];
+            return CreatePcmWaveStream(sampleRate, channels, bitsPerSample, bytes);
+        }
+
+        private static MemoryStream CreateSineWaveStream(int sampleRate, TimeSpan duration)
+        {
+            const short channels = 1;
+            const short bitsPerSample = 16;
+            var frames = (int)(sampleRate * duration.TotalSeconds);
+            var bytes = new byte[frames * channels * bitsPerSample / 8];
+            for (var frame = 0; frame < frames; frame++)
+            {
+                var sample = (short)(Math.Sin(2 * Math.PI * 440 * frame / sampleRate) * short.MaxValue * 0.25);
+                BitConverter.GetBytes(sample).CopyTo(bytes, frame * sizeof(short));
+            }
+
+            return CreatePcmWaveStream(sampleRate, channels, bitsPerSample, bytes);
+        }
+
+        private static MemoryStream CreatePcmWaveStream(int sampleRate, short channels, short bitsPerSample, byte[] bytes)
+        {
             var stream = new MemoryStream();
-            using (var writer = new BinaryWriter(stream, System.Text.Encoding.ASCII, true))
+            using (var writer = new BinaryWriter(stream, Encoding.ASCII, true))
             {
                 var byteRate = sampleRate * channels * bitsPerSample / 8;
                 var blockAlign = (short)(channels * bitsPerSample / 8);
-                writer.Write(System.Text.Encoding.ASCII.GetBytes("RIFF"));
+                writer.Write(Encoding.ASCII.GetBytes("RIFF"));
                 writer.Write(36 + bytes.Length);
-                writer.Write(System.Text.Encoding.ASCII.GetBytes("WAVE"));
-                writer.Write(System.Text.Encoding.ASCII.GetBytes("fmt "));
+                writer.Write(Encoding.ASCII.GetBytes("WAVE"));
+                writer.Write(Encoding.ASCII.GetBytes("fmt "));
                 writer.Write(16);
                 writer.Write((short)1);
                 writer.Write(channels);
@@ -595,7 +734,7 @@ namespace Tests
                 writer.Write(byteRate);
                 writer.Write(blockAlign);
                 writer.Write(bitsPerSample);
-                writer.Write(System.Text.Encoding.ASCII.GetBytes("data"));
+                writer.Write(Encoding.ASCII.GetBytes("data"));
                 writer.Write(bytes.Length);
                 writer.Write(bytes);
             }
@@ -604,12 +743,26 @@ namespace Tests
             return stream;
         }
 
-        private static MemoryStream CreateRawPcmSilenceStream(int sampleRate, TimeSpan duration)
+        private static MemoryStream CreateMp3SineStream(int sampleRate, TimeSpan duration)
         {
-            const short channels = 1;
-            const short bitsPerSample = 16;
-            var bytes = new byte[(int)(sampleRate * duration.TotalSeconds) * channels * bitsPerSample / 8];
-            return new MemoryStream(bytes);
+            var file = Path.Combine(Path.GetTempPath(), $"eddi-polly-decode-{Guid.NewGuid():N}.mp3");
+            try
+            {
+                using (var source = CreateSineWaveStream(sampleRate, duration))
+                using (var reader = new WaveFileReader(source))
+                {
+                    MediaFoundationEncoder.EncodeToMp3(reader, file, 48000);
+                }
+
+                return new MemoryStream(File.ReadAllBytes(file));
+            }
+            finally
+            {
+                if (File.Exists(file))
+                {
+                    File.Delete(file);
+                }
+            }
         }
 
         private static byte[] ReadAllBytes(IWaveProvider provider)

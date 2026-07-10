@@ -17,8 +17,9 @@ You are responsible for any AWS costs incurred by Amazon Polly usage. Review the
 ## Choose a Region
 
 1. In the AWS Management Console, use the region selector in the top-right corner.
-2. Choose a region near your usual location to reduce speech synthesis latency, such as `us-east-1`, `eu-west-1`, or another region where Amazon Polly is available.
-3. Note the region code. EDDI needs the region code, not the display name.
+2. Choose a region near your usual location to reduce speech synthesis latency, such as `us-east-1`, `us-west-2`, `eu-west-1`, or another region where Amazon Polly is available.
+3. If you want neural voices, choose a region where Amazon Polly returns neural voices for the languages you use. Some valid Polly regions may return only standard voices.
+4. Note the region code. EDDI needs the region code, not the display name.
 
 ## Create Limited IAM Permissions
 
