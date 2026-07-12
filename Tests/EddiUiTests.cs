@@ -1,7 +1,7 @@
+using EddiDataDefinitions;
+using EddiSpeechService.SpeechProviders;
 using EddiUI;
 using EddiUI.Themes;
-using EddiSpeechService;
-using EddiSpeechService.SpeechProviders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32;
 using System;
@@ -655,6 +655,54 @@ namespace Tests
             var friendlyName = (string)method.Invoke(null, [voice]);
 
             Assert.AreEqual("English (United States) Salli (Standard) [Amazon Polly]", friendlyName);
+        }
+
+        [TestMethod]
+        public void GetVoiceName_AllVoiceSources_UsesVoiceDetailsName()
+        {
+            var voices = new[]
+            {
+                new VoiceDetails(
+                    "Microsoft Zira Desktop",
+                    "Female",
+                    CultureInfo.GetCultureInfo("en-US"),
+                    nameof(System)),
+                new VoiceDetails(
+                    "Microsoft Jenny Online",
+                    "Female",
+                    CultureInfo.GetCultureInfo("en-US"),
+                    "Windows.Media"),
+                new VoiceDetails(
+                    "en-US-JennyNeural",
+                    "Female",
+                    CultureInfo.GetCultureInfo("en-US"),
+                    AzureSpeechProvider.ProviderTypeId,
+                    providerProfileId: "azure-main",
+                    providerDisplayName: "Azure Speech Services",
+                    supportedLocales: ["en-US"],
+                    friendlyName: "English (United States) Jenny - Neural [Azure Speech Services]"),
+                new VoiceDetails(
+                    "Salli (Standard)",
+                    "Female",
+                    CultureInfo.GetCultureInfo("en-US"),
+                    AmazonPollySpeechProvider.ProviderTypeId,
+                    providerProfileId: "amazon-polly-main",
+                    providerDisplayName: "Amazon Polly",
+                    supportedLocales: ["en-US"],
+                    providerVoiceId: "Salli:standard",
+                    friendlyName: "English (United States) Salli (Standard) [Amazon Polly]")
+            };
+            var method = typeof(TextToSpeechTab).GetMethod(
+                "GetVoiceName",
+                BindingFlags.NonPublic | BindingFlags.Static);
+
+            Assert.IsNotNull(method);
+            foreach ( var voice in voices )
+            {
+                var voiceName = (string)method.Invoke(null, [voice]);
+
+                Assert.AreEqual(voice.name, voiceName);
+            }
         }
 
         private static string FindRepoFile(params string[] pathParts)

@@ -330,6 +330,12 @@ Please close the other instance and try again.</value>
   <data name="tab_tts_rate_label" xml:space="preserve">
     <value>Speed of speech:</value>
   </data>
+  <data name="tab_tts_voice_name_label" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="tab_tts_voice_name_tooltip" xml:space="preserve">
+    <value>Use this name when referencing the selected voice from speech responder scripts or VoiceAttack commands.</value>
+  </data>
   <data name="tab_tts_test_button" xml:space="preserve">
     <value>Test voice</value>
   </data>

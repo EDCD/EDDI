@@ -4,27 +4,38 @@ using System.Globalization;
 using System.Linq;
 using Utilities;
 
-namespace EddiSpeechService
+namespace EddiDataDefinitions
 {
     [PublicAPI]
     public class VoiceDetails : IEquatable<VoiceDetails>
     {
-        [PublicAPI]
+        [PublicAPI( "the name of the voice" )]
         public string name { get; }
 
-        [PublicAPI]
+        [PublicAPI( "the friendly name of the voice" )]
+        public string friendlyName { get; }
+
+        [PublicAPI( "the gender of the voice" )]
         public string gender { get; }
 
-        [PublicAPI]
+        [PublicAPI( "the two letter language code and two letter region code of the voice culture" )]
         public string culturecode { get; }
 
-        public string synthType { get; }
-
-        [PublicAPI]
+        [PublicAPI( "the invariant name of the culture" )]
         public string cultureinvariantname { get; }
 
-        [PublicAPI]
+        [PublicAPI( "the localized name of the culture (as recognized by a native speaker)" )]
         public string culturename { get; }
+
+        [PublicAPI( "the list of locales supported by the voice" )]
+        public IReadOnlyList<string> supportedLocales { get; }
+
+        [PublicAPI( "true if the voice is multilingual" )]
+        public bool isMultilingual { get; }
+
+        // Not intended to be user facing
+
+        public string synthType { get; }
 
         public bool hideVoice { get; set; }
 
@@ -36,16 +47,10 @@ namespace EddiSpeechService
 
         public string providerVoiceId { get; }
 
-        public string friendlyName { get; }
+        public string cultureTwoLetterISOLanguageName;
+        public string cultureIetfLanguageTag;
 
-        public IReadOnlyList<string> supportedLocales { get; }
-
-        public bool isMultilingual { get; }
-
-        internal string cultureTwoLetterISOLanguageName;
-        internal string cultureIetfLanguageTag;
-
-        internal VoiceDetails (
+        public VoiceDetails (
             string displayName,
             string gender,
             CultureInfo Culture,

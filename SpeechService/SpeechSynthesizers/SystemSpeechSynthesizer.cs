@@ -1,4 +1,5 @@
 ﻿using EddiConfigService.Configurations;
+using EddiDataDefinitions;
 using EddiSpeechService.SpeechPreparation;
 using System;
 using System.Collections.Generic;

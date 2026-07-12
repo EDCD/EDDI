@@ -697,7 +697,7 @@ Transmit() takes one argument: the text to speak. For example:
   <data name="Voice" xml:space="preserve">
     <value>This function allows you to include a different voice in your script than then one currently selected. This function uses SSML tags.
 
-Voice() takes two mandatory arguments: the text to speak and the voice to speak it (legal values for the voice should match one of the voices listed by EDDI's `Text-to-Speech` tab."). For Example:
+Voice() takes two mandatory arguments: the text to speak and the voice to speak it. The voice name should match the Name shown for the selected voice on EDDI's `Text-to-Speech` tab. For Example:
 
     {Voice("Now I can speak", "Microsoft Zira Desktop")}
     {Voice("And I can listen", "Microsoft David Desktop")}</value>

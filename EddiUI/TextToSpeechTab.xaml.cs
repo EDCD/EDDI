@@ -146,7 +146,8 @@ namespace EddiUI
                         voicesList.Add(new VoiceOption
                         {
                             Value = voice.voiceKey,
-                            DisplayName = GetFriendlyVoiceName(voice)
+                            DisplayName = GetFriendlyVoiceName(voice),
+                            Name = GetVoiceName(voice)
                         });
                     }
 
@@ -166,6 +167,7 @@ namespace EddiUI
                     Logging.Warn( "Failed to enumerate text-to-speech voices.", e );
                     ttsVoiceDropDown.ItemsSource = speechOptions;
                     ttsVoiceDropDown.SelectedIndex = 0;
+                    UpdateVoiceName();
                 }
 
                 ttsVolumeSlider.Value = speechServiceConfiguration.Volume;
@@ -188,11 +190,13 @@ namespace EddiUI
         {
             var configuredVoice = configuration.StandardVoice;
             var selectedOption = speechOptions.FirstOrDefault( v =>
-                string.Equals( v.Value, configuredVoice, StringComparison.InvariantCultureIgnoreCase ) );
+                string.Equals( v.Value, configuredVoice, StringComparison.InvariantCultureIgnoreCase ) ||
+                string.Equals( v.Name, configuredVoice, StringComparison.InvariantCultureIgnoreCase ) );
 
             if ( selectedOption != null )
             {
                 ttsVoiceDropDown.SelectedItem = selectedOption;
+                UpdateVoiceName();
                 if ( configuration.StandardVoice != selectedOption.Value )
                 {
                     configuration.StandardVoice = selectedOption.Value;
@@ -202,6 +206,7 @@ namespace EddiUI
             }
 
             ttsVoiceDropDown.SelectedIndex = 0;
+            UpdateVoiceName();
             if ( configuration.StandardVoice != null )
             {
                 configuration.StandardVoice = null;
@@ -246,10 +251,19 @@ namespace EddiUI
 
         private void ttsVoiceDropDownUpdated(object sender, SelectionChangedEventArgs e)
         {
+            UpdateVoiceName();
             if (sender is FrameworkElement element && element.IsLoaded && !isConfiguring )
             {
                 ttsUpdated();
             }
+        }
+
+        private void UpdateVoiceName()
+        {
+            var voiceName = ttsVoiceDropDown.SelectedItem is VoiceOption option
+                ? option.Name
+                : null;
+            ttsVoiceNameText.Text = voiceName ?? string.Empty;
         }
 
         private void ttsEffectsLevelUpdated(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -404,10 +418,16 @@ namespace EddiUI
             return voice.name;
         }
 
+        private static string GetVoiceName(VoiceDetails voice)
+        {
+            return voice?.name ?? string.Empty;
+        }
+
         public class VoiceOption
         {
             public string Value { get; set; }
             public string DisplayName { get; set; }
+            public string Name { get; set; }
             public override string ToString() => Value;
         }
     }

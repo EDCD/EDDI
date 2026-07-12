@@ -1,8 +1,4 @@
 using Amazon.Polly.Model;
-using AwsEngine = Amazon.Polly.Engine;
-using AwsGender = Amazon.Polly.Gender;
-using AwsLanguageCode = Amazon.Polly.LanguageCode;
-using AwsVoiceId = Amazon.Polly.VoiceId;
 using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiDataDefinitions;
@@ -20,6 +16,10 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using AwsEngine = Amazon.Polly.Engine;
+using AwsGender = Amazon.Polly.Gender;
+using AwsLanguageCode = Amazon.Polly.LanguageCode;
+using AwsVoiceId = Amazon.Polly.VoiceId;
 
 namespace Tests
 {
@@ -104,6 +104,44 @@ namespace Tests
         }
 
         [TestMethod]
+        [DataRow(
+            "en-US-JennyNeural",
+            "en-US",
+            "English (United States) Jenny - Neural [Azure Speech Services]")]
+        [DataRow(
+            "en-US-AvaMultilingualNeural",
+            "en-US",
+            "English (United States) Ava (Multilingual) - Neural [Azure Speech Services]")]
+        [DataRow(
+            "en-US-Ava-Preview:DragonHDLatestNeural",
+            "en-US",
+            "English (United States) Ava Preview - DragonHDLatest [Azure Speech Services]")]
+        [DataRow(
+            "en-Multitalker:DragonHDLatestNeural",
+            "en-US",
+            "English (United States) Multitalker - DragonHDLatest [Azure Speech Services]")]
+        [DataRow(
+            "en-US-June:MAI-Voice-1",
+            "en-US",
+            "English (United States) June - MAI Voice 1 [Azure Speech Services]")]
+        public void AzureSpeechProvider_CreateFriendlyVoiceName_FormatsAzureShortNames (
+            string voiceName,
+            string cultureName,
+            string expected )
+        {
+            var method = typeof(AzureSpeechProvider).GetMethod(
+                "CreateFriendlyVoiceName",
+                BindingFlags.NonPublic | BindingFlags.Static);
+
+            Assert.IsNotNull(method);
+            var friendlyName = (string)method.Invoke(
+                null,
+                [voiceName, CultureInfo.GetCultureInfo(cultureName), "Azure Speech Services"]);
+
+            Assert.AreEqual(expected, friendlyName);
+        }
+
+        [TestMethod]
         public void AmazonPollySpeechProvider_CreateProfile_StoresAmazonSettingsInGenericProviderSettings()
         {
             var provider = new AmazonPollySpeechProvider();
@@ -148,8 +186,9 @@ namespace Tests
                 "https://github.com/EDCD/EDDI/wiki/Amazon-Polly",
                 descriptor.SetupUrl);
             Assert.AreEqual("https://console.aws.amazon.com/", descriptor.AccountUrl);
+            var expected = new[] { "region", "accessKeyId", "secretAccessKey" };
             CollectionAssert.AreEqual(
-                new[] { "region", "accessKeyId", "secretAccessKey" },
+                expected,
                 descriptor.ProfileFields.Select(field => field.Key).ToArray());
         }
 
@@ -211,12 +250,13 @@ namespace Tests
             CollectionAssert.AreEquivalent(
                 new[] { AmazonPollySpeechProvider.StandardEngine, AmazonPollySpeechProvider.NeuralEngine },
                 voices.Select( v => v.Engine ).ToArray());
-            CollectionAssert.AreEquivalent(
-                new[]
+            var expected = new[]
                 {
                     "Joanna:standard",
                     "Joanna:neural"
-                },
+                };
+            CollectionAssert.AreEquivalent(
+                expected,
                 voices.Select( v => $"{v.VoiceId}:{v.Engine}" ).ToArray());
         }
 
@@ -283,7 +323,8 @@ namespace Tests
             Assert.AreEqual("en-IN", voice.culturecode);
             Assert.IsTrue(voice.isMultilingual);
             Assert.AreEqual("AmazonPolly:amazon-polly-main:Aditi:standard", voice.voiceKey);
-            CollectionAssert.AreEqual(new[] { "en-IN", "hi-IN" }, voice.supportedLocales.ToArray());
+            var expected = new[] { "en-IN", "hi-IN" };
+            CollectionAssert.AreEqual(expected, voice.supportedLocales.ToArray());
         }
 
         [TestMethod]

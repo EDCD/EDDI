@@ -186,9 +186,9 @@ namespace EddiSpeechService.SpeechProviders
                 encodedStream.Position = 0;
                 using var decodedStream = decodeAudioToWave( encodedStream );
                 var outputStream = ApplyTempoStretch( decodedStream, tempoStretchFactor );
-                var outputMetadata = GetWaveMetadata( outputStream );
+                var (SampleRate, BitsPerSample, Channels, Duration) = GetWaveMetadata( outputStream );
                 Logging.Info(
-                    $"Amazon Polly synthesis response voice='{voice?.name}', encodedBytes={encodedStream.Length}, outputFormat='{request.OutputFormat}', requestedSampleRate={request.SampleRate}, tempoStretchFactor={tempoStretchFactor:0.###}, outputSampleRate={outputMetadata.SampleRate}, outputBits={outputMetadata.BitsPerSample}, outputChannels={outputMetadata.Channels}, outputBytes={outputStream.Length}, outputDurationMs={outputMetadata.Duration.TotalMilliseconds:0}." );
+                    $"Amazon Polly synthesis response voice='{voice?.name}', encodedBytes={encodedStream.Length}, outputFormat='{request.OutputFormat}', requestedSampleRate={request.SampleRate}, tempoStretchFactor={tempoStretchFactor:0.###}, outputSampleRate={SampleRate}, outputBits={BitsPerSample}, outputChannels={Channels}, outputBytes={outputStream.Length}, outputDurationMs={Duration.TotalMilliseconds:0}." );
                 outputStream.Position = 0;
                 return outputStream;
             }
@@ -477,7 +477,7 @@ namespace EddiSpeechService.SpeechProviders
                 {
                     for ( var channel = 0; channel < channels; channel++ )
                     {
-                        var pcm = BitConverter.ToInt16( buffer, offset + channel * sizeof( short ) );
+                        var pcm = BitConverter.ToInt16( buffer, offset + ( channel * sizeof( short ) ) );
                         samplesByChannel[ channel ].Add( pcm / (float)short.MaxValue );
                     }
                 }
@@ -495,7 +495,7 @@ namespace EddiSpeechService.SpeechProviders
             return copy;
         }
 
-        private static (int SampleRate, int BitsPerSample, int Channels, TimeSpan Duration) GetWaveMetadata ( Stream stream )
+        private static (int SampleRate, int BitsPerSample, int Channels, TimeSpan Duration) GetWaveMetadata ( MemoryStream stream )
         {
             var originalPosition = stream.Position;
             stream.Position = 0;
@@ -647,7 +647,7 @@ namespace EddiSpeechService.SpeechProviders
             }
         }
 
-        private static IReadOnlyList<string> GetSelectableEngines ( Voice voice, Engine requestedEngine )
+        private static List<string> GetSelectableEngines ( Voice voice, Engine requestedEngine )
         {
             var supportedEngines = voice.SupportedEngines?
                 .Where( engine => string.Equals( engine, AmazonPollySpeechProvider.StandardEngine, StringComparison.InvariantCultureIgnoreCase ) ||

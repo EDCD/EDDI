@@ -879,8 +879,11 @@ An object returned from the *VoiceDetails* function.
 Any values might be missing, depending on the information available about the voice.
 
   - *name* - the name of the voice
-  - *culturename* - the local / native name of the voice culture (as recognized by a native speaker)
-  - *cultureinvariantname* - the invariant name of the voice culture (English)
-  - *culturecode* - the two letter language code and two letter region code of the voice culture
+  - *friendlyName* - the friendly name of the voice
   - *gender* - the gender of the voice
+  - *culturecode* - the two letter language code and two letter region code of the voice culture
+  - *cultureinvariantname* - the invariant name of the voice culture (English)
+  - *culturename* - the local / native name of the voice culture (as recognized by a native speaker)
+  - *supportedLocales* - the list of locales supported by the voice
+  - *isMultilingual* - true if the voice is multilingual
 ---

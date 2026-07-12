@@ -711,6 +711,24 @@ namespace EddiUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name:.
+        /// </summary>
+        public static string tab_tts_voice_name_label {
+            get {
+                return ResourceManager.GetString("tab_tts_voice_name_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use this name when referencing the selected voice from speech responder scripts or VoiceAttack commands..
+        /// </summary>
+        public static string tab_tts_voice_name_tooltip {
+            get {
+                return ResourceManager.GetString("tab_tts_voice_name_tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Volume of speech:.
         /// </summary>
         public static string tab_tts_volume_label {
