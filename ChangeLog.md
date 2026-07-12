@@ -35,6 +35,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Add the ability to select the output audio device (rather than relying on Windows settings). (#2413) (thanks to @Tiberious-Sicae) 
     * Add support for web speech providers on the `Text-to-Speech` tab. This will allow you to use voice providers which not installed on your local machine 
       * Add support for Azure and AWS Speech Services.
+      * Add support for OpenAI-compatible TTS servers (e.g. Chatterbox, Kobold). (#2691)
   * Speech Responder
     * Scripts
       * `Crew check` updated to distinguish the Nomad from remote piloted fighters launched via the Vessel Hangar.  

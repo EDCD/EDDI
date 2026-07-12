@@ -51,7 +51,7 @@ namespace EddiSpeechService
         public readonly SpeechQueue speechQueue = new();
 
         public SpeechManager ( AudioManager audioManager )
-            : this( audioManager, [ new AzureSpeechProvider(), new AmazonPollySpeechProvider() ] )
+            : this( audioManager, [ new AzureSpeechProvider(), new AmazonPollySpeechProvider(), new OpenAISpeechProvider() ] )
         { }
 
         internal SpeechManager (
