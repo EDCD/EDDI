@@ -949,7 +949,7 @@ namespace EddiSpeechResponder.Properties {
         /// <summary>
         ///   Looks up a localized string similar to This function allows you to include a different voice in your script than then one currently selected. This function uses SSML tags.
         ///
-        ///Voice() takes two mandatory arguments: the text to speak and the voice to speak it (legal values for the voice should match one of the voices listed by EDDI&apos;s `Text-to-Speech` tab.&quot;). For Example:
+        ///Voice() takes two mandatory arguments: the text to speak and the voice to speak it. The voice name should match the Name shown for the selected voice on EDDI&apos;s `Text-to-Speech` tab. For Example:
         ///
         ///    {Voice(&quot;Now I can speak&quot;, &quot;Microsoft Zira Desktop&quot;)}
         ///    {Voice(&quot;And I can listen&quot;, &quot;Microsoft David Desktop&quot;)}.

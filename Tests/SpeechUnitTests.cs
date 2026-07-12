@@ -1,7 +1,6 @@
-using EddiSpeechResponder;
-using EddiSpeechService;
 using EddiSpeechService.SpeechConversions;
 using EddiSpeechService.SpeechPreparation;
+using EddiSpeechResponder;
 using EddiVoiceAttackResponder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -11,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using Utilities;
+using EddiSpeechService;
 
 namespace Tests
 {

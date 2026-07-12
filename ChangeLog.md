@@ -12,6 +12,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fix the Type-11 Prospector's specialty limpet controller specialty slot definition. (#2818) (thanks to @Tiberius-Sicae) 
     * The installer now splits the EDDI installation into a separate folder from the VoiceAttack installation. This removes potential conflicts with other VoiceAttack plugins.
     * `Vehicle` object definition updated with `description`, `invariantDescription`, and `isRemotePiloted` fields. 
+    * `VoiceDetail` object definition updated with `friendlyName`, `supportedLocales`, and `isMultilingual` fields.
   * Crime Monitor 
     * Reviewed and revised crime monitor logic to better handle edge cases and to more accurately track crimes and bounties.
   * Events
@@ -32,6 +33,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Updated to latest `Outfitting` schema (for merc gear).
   * Text-To-Speech
     * Add the ability to select the output audio device (rather than relying on Windows settings). (#2413) (thanks to @Tiberious-Sicae) 
+    * Add support for web speech providers on the `Text-to-Speech` tab. This will allow you to use voice providers which not installed on your local machine 
+      * Add support for Azure and AWS Speech Services.
   * Speech Responder
     * Scripts
       * `Crew check` updated to distinguish the Nomad from remote piloted fighters launched via the Vessel Hangar.  

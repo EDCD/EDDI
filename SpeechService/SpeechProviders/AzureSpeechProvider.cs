@@ -226,7 +226,64 @@ namespace EddiSpeechService.SpeechProviders
                 profile.Id,
                 profile.DisplayName,
                 isMultilingual,
-                [ voice.Locale ] );
+                [ voice.Locale ],
+                friendlyName: CreateFriendlyVoiceName( voice.ShortName, culture, profile.DisplayName ) );
+        }
+
+        private static string CreateFriendlyVoiceName (
+            string voiceName,
+            CultureInfo culture,
+            string providerDisplayName )
+        {
+            var voiceNameParts = (voiceName ?? string.Empty).Split( ':', 2 );
+            var simpleName = StripLocalePrefix( voiceNameParts[0], culture );
+            if ( voiceNameParts.Length == 2 )
+            {
+                return $"{culture.EnglishName} {FormatAzureVoicePart( simpleName )} - {FormatAzureModelPart( voiceNameParts[1] )} [{providerDisplayName}]";
+            }
+
+            if ( simpleName.EndsWith( "MultilingualNeural", StringComparison.OrdinalIgnoreCase ) )
+            {
+                simpleName = string.Concat( simpleName.AsSpan( 0, simpleName.Length - "MultilingualNeural".Length ), " (Multilingual)" );
+            }
+            else if ( simpleName.EndsWith( "Neural", StringComparison.OrdinalIgnoreCase ) )
+            {
+                simpleName = simpleName.Substring( 0, simpleName.Length - "Neural".Length );
+            }
+
+            return $"{culture.EnglishName} {simpleName} - Neural [{providerDisplayName}]";
+        }
+
+        private static string StripLocalePrefix ( string voiceName, CultureInfo culture )
+        {
+            foreach ( var locale in new[] { culture?.Name, culture?.TwoLetterISOLanguageName } )
+            {
+                if ( string.IsNullOrWhiteSpace( locale ) )
+                {
+                    continue;
+                }
+
+                var prefix = $"{locale}-";
+                if ( voiceName?.StartsWith( prefix, StringComparison.OrdinalIgnoreCase ) ?? false )
+                {
+                    return voiceName.Substring( prefix.Length );
+                }
+            }
+
+            return voiceName ?? string.Empty;
+        }
+
+        private static string FormatAzureVoicePart ( string value )
+        {
+            return (value ?? string.Empty).Replace( "-", " " );
+        }
+
+        private static string FormatAzureModelPart ( string value )
+        {
+            var result = (value ?? string.Empty).Replace( "-", " " );
+            return result.EndsWith( "Neural", StringComparison.OrdinalIgnoreCase )
+                ? result.Substring( 0, result.Length - "Neural".Length )
+                : result;
         }
 
         private static string PrepareAzureSsml (

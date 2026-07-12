@@ -1,3 +1,5 @@
+using EddiDataDefinitions;
+using EddiSpeechService.SpeechProviders;
 using EddiUI;
 using EddiUI.Themes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -7,6 +9,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -630,6 +633,76 @@ namespace Tests
             Assert.Contains("<Setter Property=\"Padding\" Value=\"4,0\" />", classicXaml);
             Assert.Contains("Style=\"{DynamicResource ScriptGridButtonStyle}\"", speechResponderXaml);
             Assert.Contains("Padding=\"4,0\"", speechResponderXaml);
+        }
+
+        [TestMethod]
+        public void GetFriendlyVoiceName_WebProviderVoice_UsesProviderSuppliedFriendlyName()
+        {
+            var voice = new VoiceDetails(
+                "Salli (Standard)",
+                "Female",
+                CultureInfo.GetCultureInfo("en-US"),
+                AmazonPollySpeechProvider.ProviderTypeId,
+                providerProfileId: "amazon-polly-main",
+                providerDisplayName: "Amazon Polly",
+                supportedLocales: ["en-US"],
+                friendlyName: "English (United States) Salli (Standard) [Amazon Polly]");
+            var method = typeof(TextToSpeechTab).GetMethod(
+                "GetFriendlyVoiceName",
+                BindingFlags.NonPublic | BindingFlags.Static);
+
+            Assert.IsNotNull(method);
+            var friendlyName = (string)method.Invoke(null, [voice]);
+
+            Assert.AreEqual("English (United States) Salli (Standard) [Amazon Polly]", friendlyName);
+        }
+
+        [TestMethod]
+        public void GetVoiceName_AllVoiceSources_UsesVoiceDetailsName()
+        {
+            var voices = new[]
+            {
+                new VoiceDetails(
+                    "Microsoft Zira Desktop",
+                    "Female",
+                    CultureInfo.GetCultureInfo("en-US"),
+                    nameof(System)),
+                new VoiceDetails(
+                    "Microsoft Jenny Online",
+                    "Female",
+                    CultureInfo.GetCultureInfo("en-US"),
+                    "Windows.Media"),
+                new VoiceDetails(
+                    "en-US-JennyNeural",
+                    "Female",
+                    CultureInfo.GetCultureInfo("en-US"),
+                    AzureSpeechProvider.ProviderTypeId,
+                    providerProfileId: "azure-main",
+                    providerDisplayName: "Azure Speech Services",
+                    supportedLocales: ["en-US"],
+                    friendlyName: "English (United States) Jenny - Neural [Azure Speech Services]"),
+                new VoiceDetails(
+                    "Salli (Standard)",
+                    "Female",
+                    CultureInfo.GetCultureInfo("en-US"),
+                    AmazonPollySpeechProvider.ProviderTypeId,
+                    providerProfileId: "amazon-polly-main",
+                    providerDisplayName: "Amazon Polly",
+                    supportedLocales: ["en-US"],
+                    providerVoiceId: "Salli:standard",
+                    friendlyName: "English (United States) Salli (Standard) [Amazon Polly]")
+            };
+            var method = typeof(TextToSpeechTab).GetMethod(
+                "GetVoiceName",
+                BindingFlags.NonPublic | BindingFlags.Static);
+
+            Assert.IsNotNull(method);
+            foreach ( var voice in voices )
+            {
+                var voiceName = (string)method.Invoke(null, [voice]);
+
+                Assert.AreEqual(voice.name, voiceName);
+            }
         }
 
         private static string FindRepoFile(params string[] pathParts)

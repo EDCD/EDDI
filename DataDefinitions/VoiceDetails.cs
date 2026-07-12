@@ -4,27 +4,38 @@ using System.Globalization;
 using System.Linq;
 using Utilities;
 
-namespace EddiSpeechService
+namespace EddiDataDefinitions
 {
     [PublicAPI]
     public class VoiceDetails : IEquatable<VoiceDetails>
     {
-        [PublicAPI]
+        [PublicAPI( "the name of the voice" )]
         public string name { get; }
 
-        [PublicAPI]
+        [PublicAPI( "the friendly name of the voice" )]
+        public string friendlyName { get; }
+
+        [PublicAPI( "the gender of the voice" )]
         public string gender { get; }
 
-        [PublicAPI]
+        [PublicAPI( "the two letter language code and two letter region code of the voice culture" )]
         public string culturecode { get; }
 
-        public string synthType { get; }
-
-        [PublicAPI]
+        [PublicAPI( "the invariant name of the culture" )]
         public string cultureinvariantname { get; }
 
-        [PublicAPI]
+        [PublicAPI( "the localized name of the culture (as recognized by a native speaker)" )]
         public string culturename { get; }
+
+        [PublicAPI( "the list of locales supported by the voice" )]
+        public IReadOnlyList<string> supportedLocales { get; }
+
+        [PublicAPI( "true if the voice is multilingual" )]
+        public bool isMultilingual { get; }
+
+        // Not intended to be user facing
+
+        public string synthType { get; }
 
         public bool hideVoice { get; set; }
 
@@ -34,14 +45,12 @@ namespace EddiSpeechService
 
         public string providerDisplayName { get; }
 
-        public IReadOnlyList<string> supportedLocales { get; }
+        public string providerVoiceId { get; }
 
-        public bool isMultilingual { get; }
+        public string cultureTwoLetterISOLanguageName;
+        public string cultureIetfLanguageTag;
 
-        internal string cultureTwoLetterISOLanguageName;
-        internal string cultureIetfLanguageTag;
-
-        internal VoiceDetails (
+        public VoiceDetails (
             string displayName,
             string gender,
             CultureInfo Culture,
@@ -49,7 +58,9 @@ namespace EddiSpeechService
             string providerProfileId = null,
             string providerDisplayName = null,
             bool isMultilingual = false,
-            IEnumerable<string> supportedLocales = null )
+            IEnumerable<string> supportedLocales = null,
+            string providerVoiceId = null,
+            string friendlyName = null )
         {
             name = displayName;
             this.gender = gender;
@@ -60,6 +71,8 @@ namespace EddiSpeechService
             this.synthType = synthType;
             this.providerProfileId = providerProfileId;
             this.providerDisplayName = providerDisplayName;
+            this.providerVoiceId = providerVoiceId;
+            this.friendlyName = friendlyName;
             this.isMultilingual = isMultilingual;
 
             culturecode = BestGuessCulture( Culture );
@@ -67,9 +80,10 @@ namespace EddiSpeechService
                 .Where( locale => !string.IsNullOrWhiteSpace( locale ) )
                 .Distinct( StringComparer.InvariantCultureIgnoreCase )
                 .ToList();
+            var providerVoiceKey = string.IsNullOrWhiteSpace( providerVoiceId ) ? name : providerVoiceId;
             voiceKey = string.IsNullOrWhiteSpace( providerProfileId )
                 ? name
-                : $"{synthType}:{providerProfileId}:{name}";
+                : $"{synthType}:{providerProfileId}:{providerVoiceKey}";
         }
 
         private string BestGuessCulture ( CultureInfo Culture )

@@ -14,7 +14,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "VoiceDetails";
         public FunctionCategory Category => FunctionCategory.Details;
         public string description => Properties.CustomFunctions_Untranslated.VoiceDetails;
-        public Type ReturnType => typeof( EddiSpeechService.VoiceDetails );
+        public Type ReturnType => typeof( EddiDataDefinitions.VoiceDetails );
         public IFunction function => Function.CreateNativeMinMax( ( runtime, values, writer ) =>
         {
             if (values.Count == 0)
@@ -23,7 +23,8 @@ namespace EddiSpeechResponder.CustomFunctions
                 {
                     var configuration = ConfigService.Instance.speechServiceConfiguration;
                     var result = SpeechService.Instance.validatedVoices.FirstOrDefault( v =>
-                        v.name == configuration.StandardVoice );
+                        string.Equals( v.voiceKey, configuration.StandardVoice, StringComparison.InvariantCultureIgnoreCase ) ||
+                        string.Equals( v.name, configuration.StandardVoice, StringComparison.InvariantCultureIgnoreCase ) );
                     return result is null
                         ? Value.EmptyMap
                         : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );

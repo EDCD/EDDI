@@ -1,3 +1,4 @@
+using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +15,6 @@ namespace EddiSpeechService.SpeechProviders
                 .ToList() ?? [];
 
             if ( filters.Count == 0 )
-            {
-                return true;
-            }
-
-            if ( voice.isMultilingual )
             {
                 return true;
             }

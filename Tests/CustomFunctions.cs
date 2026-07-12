@@ -1,10 +1,15 @@
 ﻿using Cottle;
+using EddiConfigService;
 using EddiDataDefinitions;
+using EddiSpeechService.SpeechProviders;
 using EddiSpeechResponder.CustomFunctions;
 using EddiSpeechResponder.ScriptResolverService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using EddiSpeechService;
 
 namespace Tests
 {
@@ -64,6 +69,42 @@ namespace Tests
                     var resolvedModel = ResolveScript("{ShipDetails('" + spokenModel + "').model}");
                     Assert.AreEqual(model, resolvedModel);
                 }
+            }
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void VoiceDetails_NoArgs_ResolvesConfiguredProviderVoiceKey()
+        {
+            var voices = SpeechService.Instance.validatedVoices;
+            var originalVoices = voices.ToList();
+            var configuration = ConfigService.Instance.speechServiceConfiguration;
+            var originalStandardVoice = configuration.StandardVoice;
+            var voice = new EddiDataDefinitions.VoiceDetails(
+                "Joanna (Neural)",
+                "Female",
+                CultureInfo.GetCultureInfo( "en-US" ),
+                AmazonPollySpeechProvider.ProviderTypeId,
+                providerProfileId: "amazon-polly-main",
+                providerDisplayName: "Amazon Polly",
+                supportedLocales: [ "en-US" ],
+                providerVoiceId: "Joanna:neural",
+                friendlyName: "English (United States) Joanna (Neural) [Amazon Polly]" );
+
+            try
+            {
+                voices.Clear();
+                voices.Add( voice );
+                configuration.StandardVoice = voice.voiceKey;
+
+                var actual = ResolveScript( "{VoiceDetails().name}" );
+
+                Assert.AreEqual( "Joanna (Neural)", actual );
+            }
+            finally
+            {
+                voices.Clear();
+                voices.AddRange( originalVoices );
+                configuration.StandardVoice = originalStandardVoice;
             }
         }
     }

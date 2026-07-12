@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,6 +15,8 @@ namespace EddiSpeechService.SpeechPreparation
 {
     public static class SpeechFormatter
     {
+        private const string AmazonPollyProviderTypeId = "AmazonPolly";
+        private const string LegacyAmazonPollyVoicePrefix = "Amazon Polly ";
         internal static readonly XmlSchemaSet lexiconSchemas = new();
         private static readonly object lexiconSchemaLock = new();
         private static readonly object lexiconQuarantineLock = new();
@@ -48,6 +51,7 @@ namespace EddiSpeechService.SpeechPreparation
         internal static void PrepareSpeech(VoiceDetails voice, ref string speech, out bool useSSML)
         {
             var lexicons = GetLexicons(voice);
+            var isAmazonPollyVoice = IsAmazonPollyVoice( voice );
             if (speech.Contains('<') || lexicons.Count > 0 )
             {
                 // Keep XML version at 1.0. Version 1.1 is not recommended for general use. https://en.wikipedia.org/wiki/XML#Versions
@@ -58,7 +62,7 @@ namespace EddiSpeechService.SpeechPreparation
                 var speakFooter = @"</speak>";
 
                 // Lexicons are applied as a child element to the `speak` element. For Amazon Polly voices, the lexicon must be managed via the AWS Management Console.
-                var lexiconString = lexicons.Count > 0 && !voice.name.StartsWith("Amazon Polly ") 
+                var lexiconString = lexicons.Count > 0 && !isAmazonPollyVoice
                     ? lexicons.Aggregate(string.Empty, (current, lexiconFile) => current + $"<lexicon uri=\"{lexiconFile}\" type=\"application/pls+xml\"/>") 
                     : string.Empty;
 
@@ -67,7 +71,7 @@ namespace EddiSpeechService.SpeechPreparation
                 // Put it all together
                 speech = xmlHeader + speakHeader + speakBody + speakFooter;
 
-                if (voice.name.StartsWith("Amazon Polly "))
+                if (isAmazonPollyVoice)
                 {
                     // Amazon Polly voices do not respect `SpeakSsml` (particularly for IPA), but they do handle SSML via the `Speak` method.
                     Logging.Debug("Working around Amazon Polly SSML support");
@@ -88,6 +92,12 @@ namespace EddiSpeechService.SpeechPreparation
             {
                 useSSML = false;
             }
+        }
+
+        private static bool IsAmazonPollyVoice ( VoiceDetails voice )
+        {
+            return string.Equals( voice?.synthType, AmazonPollyProviderTypeId, StringComparison.InvariantCultureIgnoreCase ) ||
+                   ( voice?.name?.StartsWith( LegacyAmazonPollyVoicePrefix, StringComparison.InvariantCultureIgnoreCase ) ?? false );
         }
 
         public static string EscapeSSML(string text)
