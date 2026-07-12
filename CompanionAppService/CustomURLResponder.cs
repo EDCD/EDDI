@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace EddiCompanionAppService
 {
-    public class CustomURLResponder : IDisposable
+    public partial class CustomURLResponder : IDisposable
     {
         public delegate Task UrlHandler(string url);
         public delegate void Logger(string message);
@@ -286,33 +286,33 @@ namespace EddiCompanionAppService
             XTYP_WILDCONNECT = (0x00E0 | XCLASS_DATA | XTYPF_NOBLOCK),
         }
 
-        private static class NativeMethods
+        private static partial class NativeMethods
         {
-            [DllImport("User32.dll")]
-            internal static extern uint DdeInitializeW(ref uint DDEInstance, DdeDelegate pfnCallback, uint afCmd, uint ulRes);
+            [LibraryImport("User32.dll")]
+            internal static partial uint DdeInitializeW(ref uint DDEInstance, DdeDelegate pfnCallback, uint afCmd, uint ulRes);
 
-            [DllImport("User32.dll")]
+            [LibraryImport("User32.dll")]
             [return: MarshalAs(UnmanagedType.Bool)]
-            internal static extern bool DdeUninitialize(uint DDEInstance);
+            internal static partial bool DdeUninitialize(uint DDEInstance);
 
-            [DllImport("User32.dll")]
-            internal static extern uint DdeGetLastError(uint DDEInstance);
+            [LibraryImport("User32.dll")]
+            internal static partial uint DdeGetLastError(uint DDEInstance);
 
-            [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-            internal static extern IntPtr DdeCreateStringHandleW(uint DDEInstance, string text, int codePage);
+            [LibraryImport("user32.dll", StringMarshalling = StringMarshalling.Utf16)]
+            internal static partial IntPtr DdeCreateStringHandleW(uint DDEInstance, string text, int codePage);
 
-            [DllImport("User32.dll")]
-            internal static extern int DdeCmpStringHandles(IntPtr left, IntPtr right);
+            [LibraryImport("User32.dll")]
+            internal static partial int DdeCmpStringHandles(IntPtr left, IntPtr right);
 
-            [DllImport("User32.dll")]
+            [LibraryImport("User32.dll")]
             [return: MarshalAs(UnmanagedType.Bool)]
-            internal static extern bool DdeFreeStringHandle(uint DDEInstance, IntPtr stringHandle);
+            internal static partial bool DdeFreeStringHandle(uint DDEInstance, IntPtr stringHandle);
 
-            [DllImport("user32.dll")]
-            internal static extern IntPtr DdeNameService(uint DDEInstance, IntPtr serviceStringHandle, IntPtr reservedZero, uint afCmd);
+            [LibraryImport("user32.dll")]
+            internal static partial IntPtr DdeNameService(uint DDEInstance, IntPtr serviceStringHandle, IntPtr reservedZero, uint afCmd);
 
-            [DllImport("user32.dll")]
-            internal static extern uint DdeGetData(IntPtr hData, [Out] byte[] pDst, uint cbMax, uint cbOff);
+            [LibraryImport("user32.dll")]
+            internal static partial uint DdeGetData(IntPtr hData, [Out] byte[] pDst, uint cbMax, uint cbOff);
         }
     }
 }

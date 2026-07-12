@@ -8,7 +8,7 @@ using System.Windows.Media;
 
 namespace EddiUI.Themes
 {
-    public static class ThemeManager
+    public static partial class ThemeManager
     {
         private static bool isInitialized = false;
         private const string ClassicTheme = "Classic";
@@ -322,23 +322,23 @@ namespace EddiUI.Themes
             {
                 var useDarkFrame = ShouldUseDarkWindowFrame(themeDictionaryName);
                 var useDarkFrameValue = useDarkFrame ? 1 : 0;
-                _ = DwmSetWindowAttribute(handle, DwmwaUseImmersiveDarkMode, ref useDarkFrameValue, sizeof(int));
-                _ = DwmSetWindowAttribute(handle, DwmwaUseImmersiveDarkModeBefore20H1, ref useDarkFrameValue, sizeof(int));
+                _ = NativeMethods.DwmSetWindowAttribute( handle, DwmwaUseImmersiveDarkMode, ref useDarkFrameValue, sizeof(int));
+                _ = NativeMethods.DwmSetWindowAttribute(handle, DwmwaUseImmersiveDarkModeBefore20H1, ref useDarkFrameValue, sizeof(int));
 
                 if (useDarkFrame)
                 {
                     var captionColor = ToColorRef(GetBrushColor(resources, "WindowBackgroundBrush", Colors.Black));
                     var textColor = ToColorRef(GetBrushColor(resources, "TextPrimaryBrush", Colors.White));
-                    _ = DwmSetWindowAttribute(handle, DwmwaCaptionColor, ref captionColor, sizeof(int));
-                    _ = DwmSetWindowAttribute(handle, DwmwaBorderColor, ref captionColor, sizeof(int));
-                    _ = DwmSetWindowAttribute(handle, DwmwaTextColor, ref textColor, sizeof(int));
+                    _ = NativeMethods.DwmSetWindowAttribute(handle, DwmwaCaptionColor, ref captionColor, sizeof(int));
+                    _ = NativeMethods.DwmSetWindowAttribute(handle, DwmwaBorderColor, ref captionColor, sizeof(int));
+                    _ = NativeMethods.DwmSetWindowAttribute(handle, DwmwaTextColor, ref textColor, sizeof(int));
                 }
                 else
                 {
                     var defaultColor = DwmColorDefault;
-                    _ = DwmSetWindowAttribute(handle, DwmwaCaptionColor, ref defaultColor, sizeof(int));
-                    _ = DwmSetWindowAttribute(handle, DwmwaBorderColor, ref defaultColor, sizeof(int));
-                    _ = DwmSetWindowAttribute(handle, DwmwaTextColor, ref defaultColor, sizeof(int));
+                    _ = NativeMethods.DwmSetWindowAttribute(handle, DwmwaCaptionColor, ref defaultColor, sizeof(int));
+                    _ = NativeMethods.DwmSetWindowAttribute(handle, DwmwaBorderColor, ref defaultColor, sizeof(int));
+                    _ = NativeMethods.DwmSetWindowAttribute(handle, DwmwaTextColor, ref defaultColor, sizeof(int));
                 }
             }
             catch
@@ -357,7 +357,10 @@ namespace EddiUI.Themes
             return resources[key] is SolidColorBrush brush ? brush.Color : fallback;
         }
 
-        [DllImport("dwmapi.dll", PreserveSig = true)]
-        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int dwAttribute, ref int pvAttribute, int cbAttribute);
+        private partial class NativeMethods
+        {
+            [LibraryImport("dwmapi.dll", SetLastError = true)]
+            internal static partial int DwmSetWindowAttribute(IntPtr hwnd, int dwAttribute, ref int pvAttribute, int cbAttribute);
+        }
     }
 }

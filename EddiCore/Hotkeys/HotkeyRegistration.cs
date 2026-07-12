@@ -9,7 +9,7 @@ using Utilities;
 
 namespace EddiCore.Hotkeys
 {
-    public class HotkeyRegistration : IDisposable
+    public partial class HotkeyRegistration : IDisposable
     {
         public HotkeyActionCollection Collection { get; }
 
@@ -225,7 +225,7 @@ namespace EddiCore.Hotkeys
                     {
                         if ( curModule != null )
                         {
-                            moduleHandle = GetModuleHandle( curModule.ModuleName );
+                            moduleHandle = NativeMethods.GetModuleHandle( curModule.ModuleName );
                         }
                     }
                 }
@@ -235,7 +235,7 @@ namespace EddiCore.Hotkeys
                 // Best-effort. If module handle is IntPtr.Zero, SetWindowsHookEx may still succeed for WH_KEYBOARD_LL.
             }
 
-            hookHandle = SetWindowsHookEx( WH_KEYBOARD_LL, hookProc, moduleHandle, 0 );
+            hookHandle = NativeMethods.SetWindowsHookEx( WH_KEYBOARD_LL, hookProc, moduleHandle, 0 );
             if ( hookHandle == IntPtr.Zero )
             {
                 Logging.Error( $"Failed to install keyboard hook. Win32Error={Marshal.GetLastWin32Error()}" );
@@ -248,7 +248,7 @@ namespace EddiCore.Hotkeys
             {
                 return;
             }
-            UnhookWindowsHookEx( hookHandle );
+            NativeMethods.UnhookWindowsHookEx( hookHandle );
             hookHandle = IntPtr.Zero;
 
             keysDown.Clear();
@@ -260,7 +260,7 @@ namespace EddiCore.Hotkeys
             // Must CallNextHookEx if nCode < 0
             if ( nCode < 0 )
             {
-                return CallNextHookEx( hookHandle, nCode, wParam, lParam );
+                return NativeMethods.CallNextHookEx( hookHandle, nCode, wParam, lParam );
             }
 
             var msg = wParam.ToInt32();
@@ -283,7 +283,7 @@ namespace EddiCore.Hotkeys
                     // Debounce repeats
                     if ( !keysDown.Add( vk ) )
                     {
-                        return CallNextHookEx( hookHandle, nCode, wParam, lParam );
+                        return NativeMethods.CallNextHookEx( hookHandle, nCode, wParam, lParam );
                     }
 
                     // Only evaluate for non-modifier key presses
@@ -305,7 +305,7 @@ namespace EddiCore.Hotkeys
             }
 
             // Always pass through: do NOT block other apps / hooks
-            return CallNextHookEx( hookHandle, nCode, wParam, lParam );
+            return NativeMethods.CallNextHookEx( hookHandle, nCode, wParam, lParam );
         }
 
         internal void TestTrigger ( Key key, ModifierKeys modifiers )
@@ -334,6 +334,7 @@ namespace EddiCore.Hotkeys
         private const int VK_LWIN = 0x5B;
         private const int VK_RWIN = 0x5C;
 
+        [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
         private delegate IntPtr LowLevelKeyboardProc ( int nCode, IntPtr wParam, IntPtr lParam );
 
         [StructLayout( LayoutKind.Sequential )]
@@ -346,16 +347,33 @@ namespace EddiCore.Hotkeys
             public UIntPtr dwExtraInfo;
         }
 
-        [DllImport( "user32.dll", SetLastError = true )]
-        private static extern IntPtr SetWindowsHookEx ( int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId );
+        private partial class NativeMethods
+        {
+            [DllImport("user32.dll", SetLastError = true, EntryPoint = "SetWindowsHookEx")]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage( "Interoperability", "SYSLIB1054:Use 'LibraryImportAttribute' instead of 'DllImportAttribute' to generate P/Invoke marshalling code at compile time", Justification = "Code generation fails." )]
+            private static extern IntPtr SetWindowsHookExImpl(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
 
-        [DllImport( "user32.dll", SetLastError = true )]
-        private static extern bool UnhookWindowsHookEx ( IntPtr hhk );
+            internal static IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId)
+                => SetWindowsHookExImpl(idHook, lpfn, hMod, dwThreadId);
 
-        [DllImport( "user32.dll" )]
-        private static extern IntPtr CallNextHookEx ( IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam );
+            [LibraryImport("user32.dll", SetLastError = true, EntryPoint = "UnhookWindowsHookEx")]
+            [return: MarshalAs(UnmanagedType.Bool)]
+            private static partial bool UnhookWindowsHookExImpl(IntPtr hhk);
 
-        [DllImport( "kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true )]
-        private static extern IntPtr GetModuleHandle ( string lpModuleName );
+            internal static bool UnhookWindowsHookEx(IntPtr hhk)
+                => UnhookWindowsHookExImpl(hhk);
+
+            [LibraryImport("user32.dll", EntryPoint = "CallNextHookEx")]
+            private static partial IntPtr CallNextHookExImpl(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
+
+            internal static IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam)
+                => CallNextHookExImpl(hhk, nCode, wParam, lParam);
+
+            [LibraryImport("kernel32.dll", StringMarshalling = StringMarshalling.Utf16, SetLastError = true, EntryPoint = "GetModuleHandle")]
+            private static partial IntPtr GetModuleHandleImpl(string lpModuleName);
+
+            internal static IntPtr GetModuleHandle(string lpModuleName)
+                => GetModuleHandleImpl(lpModuleName);
+        }
     }
 }
