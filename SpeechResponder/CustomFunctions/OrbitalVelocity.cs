@@ -15,7 +15,8 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Utility;
         public string description => Properties.CustomFunctions_Untranslated.OrbitalVelocity;
         public Type ReturnType => typeof( decimal? );
-        public static decimal? currentAltitudeMeters = null;
+
+        public static decimal? currentAltitudeMeters { get; set; } = null;
         public IFunction function => Function.CreateNativeMinMax( ( runtime, values, writer ) =>
         {
             Body body;
