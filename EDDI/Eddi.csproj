@@ -37,6 +37,10 @@
     </ItemGroup>
     <!-- Resources and Content -->
     <ItemGroup>
+        <Page Update="App.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <SubType>Designer</SubType>
+        </Page>        
         <Resource Include="EDDI.ico" />
         <SplashScreen Include="..\graphics\logo-with-alpha.png" />
         <None Update="ChangeLog.md">
