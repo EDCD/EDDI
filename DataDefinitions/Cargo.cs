@@ -47,7 +47,7 @@ namespace EddiDataDefinitions
         private int _stolen;
 
         // The number of items related to a mission currently on-board
-        [JsonIgnore]
+        [JsonIgnore, PublicAPI( "number of units currently on-board and related to a mission" )]
         public int haulage
         {
             get => _haulage;

@@ -15,7 +15,7 @@ namespace EddiDataDefinitions
         // Parameters obtained from the Frontier API
 
         /// <summary>The commander's name</summary>
-        [ PublicAPI ]
+        [ PublicAPI("the commander's name" ) ]
         public string name
         {
             get => _name;
@@ -32,7 +32,7 @@ namespace EddiDataDefinitions
         }
         
         /// <summary>The number of credits the commander holds</summary>
-        [PublicAPI]
+        [PublicAPI( "the number of credits the commander holds" )]
         public long credits
         {
             get => _credits;
@@ -49,7 +49,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The amount of debt the commander owes</summary>
-        [PublicAPI]
+        [PublicAPI( "the amount of debt the commander owes" )]
         public long debt
         {
             get => _debt;
@@ -66,7 +66,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The commander's combat rating</summary>
-        [ PublicAPI ]
+        [ PublicAPI( "the commander's combat rating" ) ]
         public CombatRating combatrating
         {
             get => _combatrating;
@@ -83,7 +83,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The commander's trade rating</summary>
-        [ PublicAPI ]
+        [ PublicAPI( "the commander's trade rating, as an object" ) ]
         public TradeRating traderating
         {
             get => _traderating;
@@ -100,7 +100,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The commander's exploration rating</summary>
-        [ PublicAPI ]
+        [ PublicAPI( "the commander's exploration rating, as an object" ) ]
         public ExplorationRating explorationrating
         {
             get => _explorationrating;
@@ -117,7 +117,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The commander's CQC rating</summary>
-        [ PublicAPI ]
+        [ PublicAPI( "the commander's CQC rating, as an object" ) ]
         public CQCRating cqcrating
         {
             get => _cqcrating;
@@ -134,7 +134,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The commander's empire rating</summary>
-        [ PublicAPI ]
+        [ PublicAPI( "the commander's empire rating, as an object" ) ]
         public EmpireRating empirerating
         {
             get => _empirerating;
@@ -151,7 +151,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The commander's federation rating</summary>
-        [ PublicAPI ]
+        [ PublicAPI( "the commander's federation rating, as an object" ) ]
         public FederationRating federationrating
         {
             get => _federationrating;
@@ -168,7 +168,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The commander's mercenary rating</summary>
-        [ PublicAPI ]
+        [ PublicAPI( "the commander's mercenary rating, as an object" ) ]
         public MercenaryRating mercenaryrating
         {
             get => _mercenaryrating;
@@ -185,7 +185,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The commander's exobiologist rating</summary>
-        [ PublicAPI ]
+        [ PublicAPI( "the commander's exobiologist rating, as an object" ) ]
         public ExobiologistRating exobiologistrating
         {
             get => _exobiologistrating;
@@ -250,7 +250,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The commander's squadron name</summary>
-        [PublicAPI]
+        [PublicAPI( "the commander's squadron name" )]
         public string squadronname
         {
             get => _squadronname;
@@ -258,7 +258,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The commander's squadron tag</summary>
-        [PublicAPI]
+        [PublicAPI( "the commander's squadron tag" )]
         public string squadrontag
         {
             get => _squadrontag;

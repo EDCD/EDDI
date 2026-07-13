@@ -348,13 +348,13 @@ namespace EddiDataDefinitions
         [Utilities.PublicAPI( "market ID of the station in which the ship is stored" ), JsonIgnore]
         public long? marketid => StoredLocation?.marketId;
 
-        [JsonIgnore]
+        [Utilities.PublicAPI( "true if the ship is already in transit" ), JsonIgnore]
         public bool intransit { get; set; }
 
-        [JsonIgnore]
+        [Utilities.PublicAPI( "the price of transferring the ship to the current location" ), JsonIgnore]
         public long? transferprice { get; set; }
 
-        [JsonIgnore]
+        [Utilities.PublicAPI( "the time to transfer ship to current location (0 if in transit), in seconds" ), JsonIgnore]
         public long? transfertime { get; set; }
 
         [Utilities.PublicAPI ("The distance to the ship in light years" ) ]
@@ -374,7 +374,7 @@ namespace EddiDataDefinitions
         }
         private decimal _health = 100M;
 
-        [Utilities.PublicAPI( "details of the ship's cargo hatch (this is a Module object)" )]]
+        [Utilities.PublicAPI( "details of the ship's cargo hatch (this is a Module object)" )]
         public Module cargohatch
         {
             get => _cargohatch;
@@ -390,7 +390,7 @@ namespace EddiDataDefinitions
         }
         private Module _bulkheads = new();
 
-        [Utilities.PublicAPI( "details of the ship's canopy (this is a Module object)" )]]
+        [Utilities.PublicAPI( "details of the ship's canopy (this is a Module object)" )]
         public Module canopy
         {
             get => _canopy;

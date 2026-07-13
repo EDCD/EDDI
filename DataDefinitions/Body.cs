@@ -237,6 +237,7 @@ namespace EddiDataDefinitions
         public int? stellarsubclass { get; set; }
 
         /// <summary>The Luminosity Class of the Star (since 2.4)</summary>
+        [PublicAPI( "the luminosity class of the star" )]
         public string luminosityclass { get; set; }
 
         [PublicAPI( "The mass of the star expressed relative to the mass of Sol" )]
