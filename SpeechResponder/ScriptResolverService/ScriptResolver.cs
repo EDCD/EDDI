@@ -234,18 +234,10 @@ namespace EddiSpeechResponder.ScriptResolverService
                     [ "false" ] = new( typeof(bool), false ),
 
                     // Standard simple variables
-                    [ "capi_active" ] = new( typeof(bool), CompanionAppService.Instance?.active ?? false ),
-                    [ "destinationdistance" ] = new( typeof(decimal), EDDI.Instance.GameState.DestinationDistanceLy ),
-                    [ "searchdistance" ] = new( typeof(decimal), NavigationService.Instance.SearchDistanceLy ),
-                    [ "environment" ] = new( typeof(string), EDDI.Instance.GameState.Environment ),
-                    [ "horizons" ] = new( typeof(bool), EDDI.Instance.GameState.inHorizons ),
-                    [ "odyssey" ] = new( typeof(bool), EDDI.Instance.GameState.inOdyssey ),
-                    [ "va_active" ] = new( typeof(bool), EDDI.Instance.FromVA ),
-                    [ "vehicle" ] = new( typeof(string), EDDI.Instance.GameState.Vehicle ),
-                    [ "icao_active" ] = new( typeof(bool), ConfigService.Instance.speechServiceConfiguration.EnableIcao ),
-                    [ "ipa_active" ] = new( typeof(bool), !ConfigService.Instance.speechServiceConfiguration.DisableIpa ),
-                    [ "version" ] = new( typeof(string), Constants.EDDI_VERSION.ShortString )
+                    [ "va_active" ] = new( typeof(bool), EDDI.Instance.FromVA )
                 };
+
+                AddRuntimeVariables( dict, RuntimeVariableCatalog.TopLevelVariables );
 
                 // Standard objects
 
@@ -321,23 +313,7 @@ namespace EddiSpeechResponder.ScriptResolverService
                 // Obtain additional variables from each monitor
                 foreach ( var monitor in EDDI.Instance.monitors )
                 {
-                    var monitorVariables = monitor.GetVariables();
-                    if ( monitorVariables != null )
-                    {
-                        foreach ( var key in monitorVariables.Keys )
-                        {
-                            if ( monitorVariables[ key ].Item2 == null )
-                            {
-                                dict.Remove( key );
-                            }
-                            else
-                            {
-                                dict[ key ] = new Tuple<Type, Value>( monitorVariables[ key ].Item1,
-                                    Value.FromReflection( (dynamic)monitorVariables[ key ]?.Item2,
-                                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
-                            }
-                        }
-                    }
+                    AddRuntimeVariables( dict, monitor.GetVariables() );
                 }
 
                 return dict;
@@ -353,6 +329,40 @@ namespace EddiSpeechResponder.ScriptResolverService
                 // Fail as gracefully as possible: return an empty variable set.
                 return new Dictionary<string, Tuple<Type, Value>>();
             }
+        }
+
+        private static void AddRuntimeVariables (
+            IDictionary<string, Tuple<Type, Value>> dict,
+            IEnumerable<RuntimeVariableDefinition> definitions )
+        {
+            foreach ( var definition in definitions )
+            {
+                var value = definition.GetValue();
+                if ( value == null )
+                {
+                    dict.Remove( definition.Name );
+                    continue;
+                }
+
+                dict[ definition.Name ] = new Tuple<Type, Value>( definition.Type, ToCottleValue( value ) );
+            }
+        }
+
+        private static Value ToCottleValue ( object value )
+        {
+            return value switch
+            {
+                bool boolValue => boolValue,
+                decimal decimalValue => decimalValue,
+                double doubleValue => doubleValue,
+                float floatValue => (decimal)floatValue,
+                int intValue => intValue,
+                long longValue => longValue,
+                string stringValue => stringValue,
+                _ => Value.FromReflection(
+                    (dynamic)value,
+                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic )
+            };
         }
 
         /// <summary>

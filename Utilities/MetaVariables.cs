@@ -1,83 +1,114 @@
-﻿using JetBrains.Annotations;
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 
 namespace Utilities
 {
     public class MetaVariables
     {
-        public MetaVariables(Type reflectionObjectType, object reflectionObject = null, int? maxRecursionLevel = null)
+        public MetaVariables(
+            Type reflectionObjectType,
+            object reflectionObject = null,
+            int? maxRecursionLevel = null,
+            MetaVariableDiscoveryOptions options = null )
         {
-            if (reflectionObjectType is null) 
-            { 
-                Results = [ ]; 
-            }
-            else
+            DiscoveryOptions = options ?? MetaVariableDiscoveryOptions.Runtime;
+            Results = [];
+
+            if ( reflectionObjectType is not null )
             {
-                Results = GetVariables(reflectionObjectType, maxRecursionLevel, reflectionObject);
+                GetVariables( reflectionObjectType, maxRecursionLevel, reflectionObject );
             }
+
+            Descriptors = Results.Select( v => v.Descriptor ).ToList().AsReadOnly();
+            ValidateDescriptors( Descriptors );
+        }
+
+        public MetaVariables(
+            IEnumerable<RuntimeVariableDeclaration> runtimeVariableDeclarations,
+            int? maxRecursionLevel = null,
+            MetaVariableDiscoveryOptions options = null )
+        {
+            DiscoveryOptions = options ?? MetaVariableDiscoveryOptions.Runtime;
+            Results = [];
+
+            foreach ( var declaration in runtimeVariableDeclarations ?? [] )
+            {
+                GetVariable(
+                    [],
+                    declaration.Definition.Name,
+                    declaration.Definition.Type,
+                    declaration.Description,
+                    null,
+                    maxRecursionLevel,
+                    declaration.SourceType,
+                    declaration.SourceMemberName,
+                    declaration.ObsoleteAttribute );
+            }
+
+            Descriptors = Results.Select( v => v.Descriptor ).ToList().AsReadOnly();
+            ValidateDescriptors( Descriptors );
         }
 
         public List<MetaVariable> Results { get; private set; }
 
-        // Some types don't need to be decomposed further - we'll stop reflecting when we hit these types
+        public IReadOnlyList<VariableDescriptor> Descriptors { get; private set; }
+
+        private MetaVariableDiscoveryOptions DiscoveryOptions { get; }
+
         private static readonly HashSet<Type> undecomposedTypes =
         [
-            typeof(string),
-            typeof(bool),
-            typeof(int),
-            typeof(decimal),
-            typeof(long),
-            typeof(ulong),
-            typeof(double),
-            typeof(float),
-            typeof(DateTime),
-            typeof(TimeSpan)
+            typeof( string ),
+            typeof( bool ),
+            typeof( int ),
+            typeof( uint ),
+            typeof( decimal ),
+            typeof( long ),
+            typeof( ulong ),
+            typeof( double ),
+            typeof( float ),
+            typeof( DateTime ),
+            typeof( TimeSpan )
         ];
 
-        // Apply a placeholder symbol for collection indices - to be formatted
-        // differently according to the end variable type (Cottle or VoiceAttack) 
         public const string indexMarker = @"<index\>";
 
-        /// <summary> Cache for type members to avoid reflection overhead </summary>
         private static readonly ConcurrentDictionary<Type, (PropertyInfo[], FieldInfo[])> typeCache = new();
 
-        /// <summary> Get the properties and fields of a type, caching the results </summary>
-        private static (PropertyInfo[], FieldInfo[]) GetTypeMembers(Type type)
+        private static (PropertyInfo[], FieldInfo[]) GetTypeMembers ( Type type )
         {
-            return typeCache.GetOrAdd(type, t => (
-                t.GetProperties(BindingFlags.Public | BindingFlags.Instance),
-                t.GetFields(BindingFlags.Public | BindingFlags.Instance)
-            ));
+            return typeCache.GetOrAdd( type, t => (
+                t.GetProperties( BindingFlags.Public | BindingFlags.Instance ),
+                t.GetFields( BindingFlags.Public | BindingFlags.Instance )
+            ) );
         }
 
-        /// <summary> Walk an object and write out all of the possible fields </summary>
-        /// <param name="reflectionObjectType">The Type property of the object that we're walking, specified independent from the actual object in case the actual object value is null</param>
-        /// <param name="maxRecursionLevel">The maximum number of recursion levels to walk while obtaining our metavariables</param>
-        /// <param name="reflectionObject">(Optional) The object that we're walking to obtain values. At the top level, this should be an `Event` class object</param>
-        /// <param name="keysPath">(Used internally, do not set) The path to the specific key</param>
-        private List<MetaVariable> GetVariables(Type reflectionObjectType, int? maxRecursionLevel, object reflectionObject = null, List<string> keysPath = null)
+        private List<MetaVariable> GetVariables (
+            Type reflectionObjectType,
+            int? maxRecursionLevel,
+            object reflectionObject = null,
+            List<string> keysPath = null )
         {
-            keysPath ??= [ ];
-            Results ??= [ ];
+            keysPath ??= [];
 
             if ( reflectionObjectType is null )
             {
                 return Results;
             }
 
-            // If the type is optionally nullable, get the underlying non-nullable type.
             if ( reflectionObjectType.IsGenericType &&
                  reflectionObjectType.GetGenericTypeDefinition() == typeof( Nullable<> ) )
             {
                 reflectionObjectType = Nullable.GetUnderlyingType( reflectionObjectType );
             }
 
-            // Some types don't need to be decomposed further.
             if ( undecomposedTypes.Contains( reflectionObjectType ) )
             {
                 GetVariable(
@@ -90,8 +121,6 @@ namespace Utilities
                 return Results;
             }
 
-            // When MetaVariables are constructed directly from a collection,
-            // reflect the collection element type rather than the collection type itself.
             if ( IsEnumerableType( reflectionObjectType ) )
             {
                 GetEnumerableVariables(
@@ -105,116 +134,153 @@ namespace Utilities
                 return Results;
             }
 
-            var (objectProperties, objectFields) = GetTypeMembers(reflectionObjectType);
+            var (objectProperties, objectFields) = GetTypeMembers( reflectionObjectType );
 
-            foreach (var eventProperty in objectProperties)
+            foreach ( var eventProperty in objectProperties )
             {
-                // We ignore some keys which we've marked in advance
-                var passProperty = false;
-                foreach (var attribute in eventProperty.GetCustomAttributes())
+                var publicAPIAttribute = eventProperty.GetCustomAttribute<PublicAPIAttribute>();
+                if ( publicAPIAttribute is null )
                 {
-                    if (attribute is PublicAPIAttribute publicAPIAttribute)
-                    {
-                        passProperty = true;
-                        GetVariable(keysPath.ToList(), eventProperty.Name, eventProperty.PropertyType, publicAPIAttribute.Description, eventProperty.CanRead && reflectionObject != null ? eventProperty.GetValue(reflectionObject) : null, maxRecursionLevel );
-                        break;
-                    }
+                    continue;
                 }
-                if (!passProperty)
-                {
-                    // Ignored Key
-                }
+
+                GetVariable(
+                    keysPath.ToList(),
+                    eventProperty.Name,
+                    eventProperty.PropertyType,
+                    publicAPIAttribute.Description,
+                    eventProperty.CanRead && reflectionObject != null
+                        ? ReadMemberValue( eventProperty, reflectionObject )
+                        : null,
+                    maxRecursionLevel,
+                    eventProperty.DeclaringType,
+                    eventProperty.Name,
+                    eventProperty.GetCustomAttribute<ObsoleteAttribute>() );
             }
 
-            foreach (var eventField in objectFields)
+            foreach ( var eventField in objectFields )
             {
-                // We ignore some keys which we've marked in advance
-                var passField = false;
-                foreach (var attribute in eventField.GetCustomAttributes())
+                var publicAPIAttribute = eventField.GetCustomAttribute<PublicAPIAttribute>();
+                if ( publicAPIAttribute is null )
                 {
-                    if (attribute is PublicAPIAttribute publicAPIAttribute)
-                    {
-                        passField = true;
-                        GetVariable(keysPath.ToList(), eventField.Name, eventField.FieldType, publicAPIAttribute.Description, reflectionObject != null ? eventField.GetValue(reflectionObject) : null, maxRecursionLevel );
-                        break;
-                    }
+                    continue;
                 }
-                if (!passField)
-                {
-                    // Ignored Key
-                }
+
+                GetVariable(
+                    keysPath.ToList(),
+                    eventField.Name,
+                    eventField.FieldType,
+                    publicAPIAttribute.Description,
+                    reflectionObject != null ? ReadMemberValue( eventField, reflectionObject ) : null,
+                    maxRecursionLevel,
+                    eventField.DeclaringType,
+                    eventField.Name,
+                    eventField.GetCustomAttribute<ObsoleteAttribute>() );
             }
 
             return Results;
         }
 
-        private void GetVariable(List<string> keysPath, string key, Type type, string description, object value, int? maxRecursionLevel )
+        private object ReadMemberValue ( MemberInfo memberInfo, object reflectionObject )
+        {
+            try
+            {
+                return memberInfo switch
+                {
+                    PropertyInfo propertyInfo => propertyInfo.GetValue( reflectionObject ),
+                    FieldInfo fieldInfo => fieldInfo.GetValue( reflectionObject ),
+                    _ => null
+                };
+            }
+            catch ( Exception ex )
+            {
+                HandleDiscoveryError(
+                    $"Failed to read variable member '{memberInfo.DeclaringType?.FullName}.{memberInfo.Name}'.",
+                    ex );
+                return null;
+            }
+        }
+
+        private void GetVariable (
+            List<string> keysPath,
+            string key,
+            Type type,
+            string description,
+            object value,
+            int? maxRecursionLevel,
+            Type sourceType = null,
+            string sourceMemberName = null,
+            ObsoleteAttribute obsoleteAttribute = null )
         {
             try
             {
                 var oldKeysPath = keysPath.ToList();
-                keysPath.Add(key);
+                keysPath.Add( key );
 
-                // We ignore any key paths that we have already set elsewhere
-                foreach (var v in Results)
+                if ( Results.Any( v => v.keysPath.SequenceEqual( keysPath ) ) )
                 {
-                    if (v.keysPath.SequenceEqual(keysPath))
-                    {
-                        return;
-                    }
+                    return;
                 }
 
-                if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+                if ( type != null &&
+                     type.IsGenericType &&
+                     type.GetGenericTypeDefinition() == typeof( Nullable<> ) )
                 {
-                    // Get the underlying type for nullable types
-                    type = Nullable.GetUnderlyingType(type);
+                    type = Nullable.GetUnderlyingType( type );
                 }
 
-                if (type == typeof(bool))
+                if ( type == typeof( bool ) )
                 {
-                    Results.Add(new MetaVariable(keysPath, type, description, (bool?)value));
+                    AddDescriptor( keysPath, type, description, value as bool?, sourceType, sourceMemberName, obsoleteAttribute );
                 }
-                else if (type == typeof(string))
+                else if ( type == typeof( string ) )
                 {
-                    Results.Add(new MetaVariable(keysPath, type, description, (string)value));
+                    AddDescriptor( keysPath, type, description, value as string, sourceType, sourceMemberName, obsoleteAttribute );
                 }
-                else if (type == typeof(int))
+                else if ( type == typeof( int ) )
                 {
-                    Results.Add(new MetaVariable(keysPath, type, description, (int?)value));
+                    AddDescriptor( keysPath, type, description, value as int?, sourceType, sourceMemberName, obsoleteAttribute );
                 }
-                else if (type == typeof(long) || type == typeof(uint))
+                else if ( type == typeof( uint ) ||
+                          type == typeof( long ) )
                 {
-                    Results.Add(new MetaVariable(keysPath, type, description, (long?)value));
+                    AddDescriptor( keysPath, type, description, value is null ? null : Convert.ToInt64( value, CultureInfo.InvariantCulture ), sourceType, sourceMemberName, obsoleteAttribute );
                 }
-                else if (type == typeof(ulong))
+                else if ( type == typeof( ulong ) )
                 {
-                    Results.Add(new MetaVariable(keysPath, type, description, (ulong?)value));
+                    AddDescriptor( keysPath, type, description, value is null ? null : Convert.ToUInt64( value, CultureInfo.InvariantCulture ), sourceType, sourceMemberName, obsoleteAttribute );
                 }
-                else if (type == typeof(double))
+                else if ( type == typeof( double ) )
                 {
-                    Results.Add(new MetaVariable(keysPath, type, description, (double?)value));
+                    AddDescriptor( keysPath, type, description, value is null ? null : Convert.ToDouble( value, CultureInfo.InvariantCulture ), sourceType, sourceMemberName, obsoleteAttribute );
                 }
-                else if (type == typeof(float))
+                else if ( type == typeof( float ) )
                 {
-                    Results.Add(new MetaVariable(keysPath, type, description, (float?)value));
+                    AddDescriptor( keysPath, type, description, value is null ? null : Convert.ToSingle( value, CultureInfo.InvariantCulture ), sourceType, sourceMemberName, obsoleteAttribute );
                 }
-                else if (type == typeof(decimal))
+                else if ( type == typeof( decimal ) )
                 {
-                    Results.Add(new MetaVariable(keysPath, type, description, value is null ? null : (decimal?)Convert.ToDecimal(value)));
+                    AddDescriptor( keysPath, type, description, value is null ? null : Convert.ToDecimal( value, CultureInfo.InvariantCulture ), sourceType, sourceMemberName, obsoleteAttribute );
                 }
-                else if (type == typeof(DateTime))
+                else if ( type == typeof( DateTime ) )
                 {
-                    Results.Add(new MetaVariable(keysPath, type, description, (DateTime?)value));
+                    AddDescriptor(
+                        keysPath,
+                        type,
+                        description,
+                        value is null ? null : Convert.ToDateTime( value, CultureInfo.InvariantCulture ),
+                        sourceType,
+                        sourceMemberName,
+                        obsoleteAttribute );
                 }
-                else if (type is null)
+                else if ( type is null )
                 {
-                    Results.Add(new MetaVariable(keysPath, null, description, null));
+                    AddDescriptor( keysPath, null, description, null, sourceType, sourceMemberName, obsoleteAttribute );
                 }
-                else if (!type.IsGenericType && type.IsEnum)
+                else if ( !type.IsGenericType && type.IsEnum )
                 {
-                    var fieldsArray = type?.GetFields(BindingFlags.Public | BindingFlags.Static);
-                    var enumName = value != null ? fieldsArray[(int)value].Name : null;
-                    Results.Add(new MetaVariable(keysPath, typeof(string), description, enumName));
+                    var enumName = value != null ? Enum.GetName( type, value ) : null;
+                    AddDescriptor( keysPath, typeof( string ), description, enumName, sourceType, sourceMemberName, obsoleteAttribute );
                 }
                 else if ( IsEnumerableType( type ) )
                 {
@@ -227,28 +293,47 @@ namespace Utilities
                 }
                 else
                 {
-                    if (undecomposedTypes.Contains(type)) { return; }
-
-                    if ((type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>)) || 
-                        type.GetInterfaces().Contains(typeof(IDictionary)))
+                    if ( undecomposedTypes.Contains( type ) )
                     {
-                        if (value != null)
+                        return;
+                    }
+
+                    if ( (type.IsGenericType && type.GetGenericTypeDefinition() == typeof( Dictionary<,> )) ||
+                         type.GetInterfaces().Contains( typeof( IDictionary ) ) )
+                    {
+                        if ( value != null )
                         {
-                            foreach (DictionaryEntry kvp in (IDictionary)value)
+                            foreach ( DictionaryEntry kvp in (IDictionary)value )
                             {
                                 if ( kvp.Value != null )
                                 {
-                                    GetVariable( oldKeysPath, kvp.Key.ToString(), kvp.Value.GetType(), description, kvp.Value, maxRecursionLevel );
+                                    GetVariable(
+                                        oldKeysPath,
+                                        kvp.Key.ToString(),
+                                        kvp.Value.GetType(),
+                                        description,
+                                        kvp.Value,
+                                        maxRecursionLevel,
+                                        sourceType,
+                                        sourceMemberName,
+                                        obsoleteAttribute );
                                 }
                             }
                         }
                     }
-                    else if ((type.IsClass || type.IsInterface) && !type.IsGenericType)
+                    else if ( ( type.IsClass || type.IsInterface ) && !type.IsGenericType )
                     {
-                        // Add an object to represent the root name for the object in our docs
-                        Results.Add(new MetaVariable(keysPath, typeof(object), description));
+                        AddDescriptor(
+                            keysPath,
+                            typeof( object ),
+                            description,
+                            null,
+                            sourceType,
+                            sourceMemberName,
+                            obsoleteAttribute,
+                            isObjectRoot: true,
+                            declaredType: type );
 
-                        // Get the object's child properties
                         if ( maxRecursionLevel is null || keysPath.Count < maxRecursionLevel )
                         {
                             GetVariables( type, maxRecursionLevel, value, keysPath );
@@ -256,13 +341,13 @@ namespace Utilities
                     }
                     else
                     {
-                        throw new ArgumentException($"Unexpected variable type '{type.FullName}'.");
+                        throw new MetaVariableDiscoveryException( $"Unexpected variable type '{type.FullName}'." );
                     }
                 }
             }
-            catch (Exception ex)
+            catch ( Exception ex )
             {
-                Logging.Error("Failed to obtain variable metadata by reflection.", ex);
+                HandleDiscoveryError( "Failed to obtain variable metadata by reflection.", ex );
             }
         }
 
@@ -308,12 +393,109 @@ namespace Utilities
 
             if ( addCollectionRoot && keysPath.Count > 0 )
             {
-                Results.Add( new MetaVariable(
+                AddDescriptor(
                     keysPath.ToList(),
                     typeof( IEnumerable<> ),
                     description,
-                    i ) );
+                    i,
+                    isCollectionRoot: true );
             }
+        }
+
+        private void AddDescriptor (
+            List<string> keysPath,
+            Type type,
+            string description,
+            object value,
+            Type sourceType = null,
+            string sourceMemberName = null,
+            ObsoleteAttribute obsoleteAttribute = null,
+            bool isCollectionRoot = false,
+            bool isObjectRoot = false,
+            Type declaredType = null )
+        {
+            var descriptor = VariableDescriptor.Create(
+                keysPath,
+                type,
+                description,
+                value,
+                sourceType,
+                sourceMemberName,
+                obsoleteAttribute,
+                isCollectionRoot,
+                isObjectRoot,
+                declaredType,
+                DiscoveryOptions );
+
+            Results.Add( new MetaVariable( descriptor ) );
+        }
+
+        private void ValidateDescriptors ( IReadOnlyList<VariableDescriptor> descriptors )
+        {
+            if ( DiscoveryOptions.Strict != true )
+            {
+                return;
+            }
+
+            var duplicateCottlePaths = descriptors
+                .Where( d => d.KeysPath.Count > 0 &&
+                             d.KeysPath[  d.KeysPath.Count  -  1  ] != indexMarker )
+                .GroupBy( d => d.CottlePath )
+                .Where( g => !string.IsNullOrEmpty( g.Key ) && g.Count() > 1 )
+                .Select( g => g.Key )
+                .ToList();
+
+            if ( duplicateCottlePaths.Count > 0 )
+            {
+                throw new MetaVariableDiscoveryException(
+                    "Duplicate Cottle variable paths discovered: " +
+                    string.Join( ", ", duplicateCottlePaths ) );
+            }
+
+            var duplicateVoiceAttackPaths = descriptors
+                .Where( d => d.VariableType != typeof( object ) )
+                .GroupBy( d => d.RenderVoiceAttackName( string.Empty ) )
+                .Where( g => !string.IsNullOrEmpty( g.Key ) && g.Count() > 1 )
+                .Select( g => g.Key )
+                .ToList();
+
+            if ( duplicateVoiceAttackPaths.Count > 0 )
+            {
+                throw new MetaVariableDiscoveryException(
+                    "Duplicate VoiceAttack variable paths discovered: " +
+                    string.Join( ", ", duplicateVoiceAttackPaths ) );
+            }
+
+            if ( DiscoveryOptions.RequireDescriptions )
+            {
+                var missingDescriptions = descriptors
+                    .Where( d => !string.IsNullOrEmpty( d.SourceMemberName ) )
+                    .Where( d => string.IsNullOrWhiteSpace( d.Description ) )
+                    .Where( d => !DiscoveryOptions.MissingDescriptionAllowlist.Contains( d.SourceId ) )
+                    .Select( d => d.SourceId )
+                    .Distinct()
+                    .OrderBy( id => id )
+                    .ToList();
+
+                if ( missingDescriptions.Count > 0 )
+                {
+                    throw new MetaVariableDiscoveryException(
+                        "User-facing PublicAPI variables are missing descriptions: " +
+                        string.Join( ", ", missingDescriptions ) );
+                }
+            }
+        }
+
+        private void HandleDiscoveryError ( string message, Exception exception )
+        {
+            if ( DiscoveryOptions.Strict )
+            {
+                throw exception is MetaVariableDiscoveryException
+                    ? exception
+                    : new MetaVariableDiscoveryException( message, exception );
+            }
+
+            Logging.Error( message, exception );
         }
 
         private static bool IsEnumerableType ( Type type )
@@ -357,52 +539,387 @@ namespace Utilities
         }
     }
 
-    public class MetaVariable ( List<string> keysPath, Type type, string description = null, object value = null )
+    public class MetaVariable ( VariableDescriptor descriptor )
     {
-        /// <summary> The full path to access the key </summary>
-        public List<string> keysPath { get; set; } = keysPath;
+        public MetaVariable ( List<string> keysPath, Type type, string description = null, object value = null )
+            : this( VariableDescriptor.Create( keysPath, type, description, value ) )
+        { }
 
-        /// <summary> The variable's type </summary>
-        public Type type { get; } = type;
+        public VariableDescriptor Descriptor { get; } = descriptor;
 
-        /// <summary> The variable's description (if any) </summary>
-        public string description { get; } = description;
+        public List<string> keysPath { get; set; } = descriptor.KeysPath.ToList();
 
-        /// <summary> The variable's value (if any) </summary>
-        public object value { get; set;  } = value;
+        public Type type { get; } = descriptor.VariableType;
+
+        public string description { get; } = descriptor.Description;
+
+        public object value { get; set; } = descriptor.Value;
     }
 
-    public class CottleVariable
+    public class CottleVariable ( List<string> keysPath, string description, object value )
     {
-        /// <summary> The full key used to access the variable </summary>
-        public string key { get; }
+        public string key { get; } = VariablePathFormatter.RenderCottlePath( keysPath );
 
-        /// <summary> The variable's description (if any) </summary>
-        public string description { get; }
+        public string description { get; } = description;
 
-        /// <summary> The value to write (if any) </summary>
-        public object value { get; }
+        public object value { get; } = value;
 
-        public CottleVariable(List<string> keysPath, string description, object value)
-        {
-            keysPath.RemoveAll(k => k == ""); // Remove any empty keys from the path
-            this.key = string
-                .Join(".", keysPath) // Format separators as points
-                .Replace($".{MetaVariables.indexMarker}", @"[\<index\>]"); // Format index values for Cottle
-            this.description = description;
-            this.value = value;
-        }
+        public CottleVariable ( VariableDescriptor descriptor )
+            : this( descriptor.KeysPath.ToList(), descriptor.Description, descriptor.Value )
+        { }
     }
 
     [UsedImplicitly]
     public static class MetaVariablesExtensions
     {
-        public static List<CottleVariable> AsCottleVariables(this List<MetaVariable> source)
+        public static List<CottleVariable> AsCottleVariables ( this List<MetaVariable> source )
         {
             return source
-                .Where(v => v.keysPath.Last() != MetaVariables.indexMarker) // Exclude index values in Cottle
-                .Select(v => new CottleVariable(v.keysPath, v.description, v.value))
+                .Where( v => v.keysPath.Last() != MetaVariables.indexMarker )
+                .Select( v => new CottleVariable( v.Descriptor ) )
                 .ToList();
+        }
+    }
+
+    public sealed class MetaVariableDiscoveryOptions
+    {
+        public static MetaVariableDiscoveryOptions Runtime { get; } = new();
+
+        public static MetaVariableDiscoveryOptions StrictDocumentation { get; } = new()
+        {
+            Strict = true,
+            RequireDescriptions = true
+        };
+
+        public bool Strict { get; init; }
+
+        public bool RequireDescriptions { get; init; }
+
+        public int MaxInlineAllowedValues { get; init; } = 64;
+
+        public ISet<string> MissingDescriptionAllowlist { get; init; } =
+            new HashSet<string>( StringComparer.Ordinal );
+    }
+
+    public class MetaVariableDiscoveryException : Exception
+    {
+        public MetaVariableDiscoveryException ( string message )
+            : base( message )
+        { }
+
+        public MetaVariableDiscoveryException ( string message, Exception innerException )
+            : base( message, innerException )
+        { }
+    }
+
+    public sealed record VariableDescriptor
+    {
+        private VariableDescriptor (
+            IReadOnlyList<string> keysPath,
+            Type variableType,
+            Type declaredType,
+            string description,
+            object value,
+            Type sourceType,
+            string sourceMemberName,
+            bool isCollectionRoot,
+            bool isObjectRoot,
+            bool isObsolete,
+            string obsoleteMessage,
+            IReadOnlyList<VariableAllowedValue> allowedValues,
+            string allowedValuesOmittedReason )
+        {
+            KeysPath = keysPath;
+            VariableType = variableType;
+            DeclaredType = declaredType;
+            Description = description;
+            Value = value;
+            SourceType = sourceType;
+            SourceMemberName = sourceMemberName;
+            IsCollectionRoot = isCollectionRoot;
+            IsObjectRoot = isObjectRoot;
+            IsObsolete = isObsolete;
+            ObsoleteMessage = obsoleteMessage;
+            AllowedValues = allowedValues;
+            AllowedValuesOmittedReason = allowedValuesOmittedReason;
+        }
+
+        public IReadOnlyList<string> KeysPath { get; }
+
+        public Type VariableType { get; }
+
+        public Type DeclaredType { get; }
+
+        public string Description { get; }
+
+        public object Value { get; }
+
+        public Type SourceType { get; }
+
+        public string SourceMemberName { get; }
+
+        public string SourceId => SourceType is null || string.IsNullOrEmpty( SourceMemberName )
+            ? string.Empty
+            : $"{SourceType.FullName}.{SourceMemberName}";
+
+        public bool IsCollectionRoot { get; }
+
+        public bool IsObjectRoot { get; }
+
+        public bool IsIndexed => KeysPath.Any( k => k == MetaVariables.indexMarker );
+
+        public bool IsObsolete { get; }
+
+        public string ObsoleteMessage { get; }
+
+        public IReadOnlyList<VariableAllowedValue> AllowedValues { get; }
+
+        public string AllowedValuesOmittedReason { get; }
+
+        public string CottlePath => VariablePathFormatter.RenderCottlePath( KeysPath );
+
+        public string VoiceAttackTypeName => VariablePathFormatter.RenderVoiceAttackTypeName( VariableType );
+
+        public string RenderVoiceAttackName ( string startingPrefix, string eventType = null )
+            => VariablePathFormatter.RenderVoiceAttackName( startingPrefix, eventType, KeysPath );
+
+        public static VariableDescriptor Create (
+            IEnumerable<string> keysPath,
+            Type variableType,
+            string description = null,
+            object value = null,
+            Type sourceType = null,
+            string sourceMemberName = null,
+            ObsoleteAttribute obsoleteAttribute = null,
+            bool isCollectionRoot = false,
+            bool isObjectRoot = false,
+            Type declaredType = null,
+            MetaVariableDiscoveryOptions options = null )
+        {
+            options ??= MetaVariableDiscoveryOptions.Runtime;
+
+            var path = new ReadOnlyCollection<string>(
+                ( keysPath ?? [] )
+                .Select( k => k ?? string.Empty )
+                .ToList() );
+
+            var (allowedValues, omittedReason) = VariableAllowedValue.Discover(
+                declaredType ?? variableType,
+                options.MaxInlineAllowedValues );
+
+            return new VariableDescriptor(
+                path,
+                variableType,
+                declaredType ?? variableType,
+                description,
+                value,
+                sourceType,
+                sourceMemberName,
+                isCollectionRoot,
+                isObjectRoot,
+                obsoleteAttribute != null,
+                obsoleteAttribute?.Message,
+                allowedValues,
+                omittedReason );
+        }
+    }
+
+    public sealed record VariableAllowedValue (
+        string EdName,
+        string InvariantName,
+        string LocalizedName )
+    {
+        public static (IReadOnlyList<VariableAllowedValue> Values, string OmittedReason) Discover (
+            Type type,
+            int maxInlineAllowedValues )
+        {
+            if ( type is null )
+            {
+                return ([], null);
+            }
+
+            var localizedEdNameType = FindResourceBasedLocalizedEDNameType( type );
+            if ( localizedEdNameType is null )
+            {
+                return ([], null);
+            }
+
+            var allOfThemProperty = localizedEdNameType.GetProperty(
+                "AllOfThem",
+                BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy );
+
+            if ( allOfThemProperty?.GetValue( null ) is not IEnumerable allOfThem )
+            {
+                return ([], null);
+            }
+
+            var values = allOfThem
+                .Cast<object>()
+                .Select( item => new VariableAllowedValue(
+                    ReadStringMember( item, "edname" ),
+                    ReadStringMember( item, "invariantName" ),
+                    ReadStringMember( item, "localizedName" ) ) )
+                .Where( v => !string.IsNullOrEmpty( v.EdName ) ||
+                             !string.IsNullOrEmpty( v.InvariantName ) ||
+                             !string.IsNullOrEmpty( v.LocalizedName ) )
+                .OrderBy( v => v.InvariantName, StringComparer.InvariantCulture )
+                .ThenBy( v => v.EdName, StringComparer.InvariantCulture )
+                .ToList();
+
+            if ( values.Count > maxInlineAllowedValues )
+            {
+                return ([], $"{values.Count} values omitted by the inline value-list size policy.");
+            }
+
+            return (values.AsReadOnly(), null);
+        }
+
+        private static Type FindResourceBasedLocalizedEDNameType ( Type type )
+        {
+            while ( type != null )
+            {
+                if ( type.IsGenericType &&
+                     type.GetGenericTypeDefinition().FullName == "EddiDataDefinitions.ResourceBasedLocalizedEDName`1" )
+                {
+                    return type;
+                }
+
+                type = type.BaseType;
+            }
+
+            return null;
+        }
+
+        private static string ReadStringMember ( object item, string memberName )
+        {
+            var type = item.GetType();
+            var property = type.GetProperty( memberName, BindingFlags.Public | BindingFlags.Instance );
+            if ( property != null )
+            {
+                return property.GetValue( item ) as string;
+            }
+
+            var field = type.GetField( memberName, BindingFlags.Public | BindingFlags.Instance );
+            return field?.GetValue( item ) as string;
+        }
+    }
+
+    public static class VariablePathFormatter
+    {
+        public static string RenderCottlePath ( IEnumerable<string> keysPath )
+        {
+            var path = ( keysPath ?? [] )
+                .Where( k => !string.IsNullOrEmpty( k ) )
+                .ToList();
+
+            return string
+                .Join( ".", path )
+                .Replace( $".{MetaVariables.indexMarker}", @"[\<index\>]" );
+        }
+
+        public static string RenderVoiceAttackName (
+            string startingPrefix,
+            string eventType,
+            IEnumerable<string> keysPath )
+        {
+            var key = startingPrefix ?? string.Empty;
+            var path = ( keysPath ?? [] )
+                .Prepend( eventType?.ToLowerInvariant() )
+                .Where( k => !string.IsNullOrEmpty( k ) )
+                .ToList();
+
+            foreach ( var keySegment in path )
+            {
+                var childKey = AddSpacesToTitleCasedName( keySegment )
+                    .Replace( "_", " " )
+                    .ToLowerInvariant();
+
+                key = ConcatOverlappingNames( key, childKey );
+            }
+
+            return key.Replace( MetaVariables.indexMarker, @"\<index\>" );
+        }
+
+        public static string RenderVoiceAttackTypeName ( Type type )
+        {
+            if ( type == typeof( string ) )
+            {
+                return "TXT";
+            }
+
+            if ( type == typeof( int ) )
+            {
+                return "INT";
+            }
+
+            if ( type == typeof( bool ) )
+            {
+                return "BOOL";
+            }
+
+            if ( type == typeof( decimal ) ||
+                 type == typeof( double ) ||
+                 type == typeof( float ) ||
+                 type == typeof( long ) ||
+                 type == typeof( ulong ) ||
+                 type == typeof( uint ) )
+            {
+                return "DEC";
+            }
+
+            if ( type == typeof( DateTime ) )
+            {
+                return "DATE";
+            }
+
+            if ( type != typeof( string ) &&
+                 type != null &&
+                 typeof( IEnumerable ).IsAssignableFrom( type ) )
+            {
+                return "INT";
+            }
+
+            return string.Empty;
+        }
+
+        private static string AddSpacesToTitleCasedName ( string text )
+        {
+            if ( string.IsNullOrWhiteSpace( text ) )
+            {
+                return string.Empty;
+            }
+
+            var newText = new StringBuilder( text.Length * 2 );
+            newText.Append( text[ 0 ] );
+            for ( var i = 1; i < text.Length; i++ )
+            {
+                if ( char.IsUpper( text[ i ] ) &&
+                     text[ i - 1 ] != ' ' &&
+                     !char.IsUpper( text[ i - 1 ] ) )
+                {
+                    newText.Append( ' ' );
+                }
+                newText.Append( text[ i ] );
+            }
+            return newText.ToString();
+        }
+
+        private static string ConcatOverlappingNames ( string prefix, string childKey )
+        {
+            var skip = 0;
+            if ( !prefix.EndsWith( ' ' ) )
+            {
+                prefix += " ";
+            }
+
+            while ( skip < childKey.Length ||
+                    prefix.Skip( skip ).Count() - 1 > childKey.Length ||
+                    (prefix.Skip( skip ).Zip( childKey, ( a, b ) => a.Equals( b ) ).Any( x => !x ) && skip < prefix.Length) )
+            {
+                skip++;
+            }
+
+            return string.Concat( prefix.Take( skip ).Concat( childKey ) );
         }
     }
 }

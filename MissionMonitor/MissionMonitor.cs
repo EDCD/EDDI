@@ -962,19 +962,43 @@ namespace EddiMissionMonitor
             return false;
         }
 
-        public IDictionary<string, Tuple<Type, object>> GetVariables()
+        [Utilities.PublicAPI( "The number of community goals you are engaged in." )]
+        public RuntimeVariableDefinition GoalsCountVariable => new( "goalsCount", typeof(int), () =>
         {
             lock (missionsLock)
             {
-                return new Dictionary<string, Tuple<Type, object>>
-                {
-                    ["goalsCount"] = new(typeof(int), missions.Count(m => m.communal)),
-                    ["missions"] = new(typeof(List<Mission>), missions.ToList()),
-                    ["missionsCount"] = new(typeof(int), missions.Count(m => !m.shared && !m.communal)),
-                    ["missionWarning"] = new(typeof(int), missionWarning)
-                };
+                return missions.Count( m => m.communal );
             }
-        }
+        } );
+
+        [Utilities.PublicAPI( "A list of active missions." )]
+        public RuntimeVariableDefinition MissionsVariable => new( "missions", typeof(List<Mission>), () =>
+        {
+            lock (missionsLock)
+            {
+                return missions.ToList();
+            }
+        } );
+
+        [Utilities.PublicAPI( "The number of active non-shared missions." )]
+        public RuntimeVariableDefinition MissionsCountVariable => new( "missionsCount", typeof(int), () =>
+        {
+            lock (missionsLock)
+            {
+                return missions.Count( m => !m.shared && !m.communal );
+            }
+        } );
+
+        [Utilities.PublicAPI( "You will receive a warning when a mission is within this many minutes from expiring." )]
+        public RuntimeVariableDefinition MissionWarningVariable => new( "missionWarning", typeof(int), () => missionWarning );
+
+        public IReadOnlyList<RuntimeVariableDefinition> GetVariables () =>
+        [
+            GoalsCountVariable,
+            MissionsVariable,
+            MissionsCountVariable,
+            MissionWarningVariable
+        ];
 
         public void writeMissions()
         {

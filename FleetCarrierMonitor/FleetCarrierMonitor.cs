@@ -735,17 +735,17 @@ namespace EddiFleetCarrierMonitor
             return Task.CompletedTask;
         }
         
-        public IDictionary<string, Tuple<Type, object>> GetVariables ()
-        {
-            lock ( carrierLock )
-            {
-                return new Dictionary<string, Tuple<Type, object>>
-                {
-                    [ "carrier" ] = new( typeof( FleetCarrier ), FleetCarrier ),
-                    [ "squadronCarrier" ] = new( typeof( FleetCarrier ), SquadronCarrier ),
-                };
-            }
-        }
+        [Utilities.PublicAPI( "Details about the commander's fleet carrier." )]
+        public RuntimeVariableDefinition CarrierVariable => new( "carrier", typeof(FleetCarrier), () => FleetCarrier );
+
+        [Utilities.PublicAPI( "Details about the commander's squadron fleet carrier." )]
+        public RuntimeVariableDefinition SquadronCarrierVariable => new( "squadronCarrier", typeof(FleetCarrier), () => SquadronCarrier );
+
+        public IReadOnlyList<RuntimeVariableDefinition> GetVariables () =>
+        [
+            CarrierVariable,
+            SquadronCarrierVariable
+        ];
 
         private void OnCompanionAppServiceStateChanged ( CompanionAppService.State oldstate, CompanionAppService.State newstate )
         {

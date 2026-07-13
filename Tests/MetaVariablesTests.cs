@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using EddiEvents;
+using EddiSpeechResponder.ScriptResolverService;
 using EddiVoiceAttackResponder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -19,6 +20,48 @@ namespace Tests
 
             [PublicAPI( "Speech priority." )]
             public int Priority { get; set; }
+        }
+
+        [PublicAPI]
+        private sealed class TypeLevelPublicApiOnly
+        {
+            public string Hidden { get; set; }
+        }
+
+        private sealed class MissingDescription
+        {
+            [PublicAPI]
+            public string Text { get; set; }
+        }
+
+        private sealed class ObsoleteVariable
+        {
+            [PublicAPI( "Old text." ), Obsolete( "Use NewText instead." )]
+            public string OldText { get; set; }
+        }
+
+        private sealed class UnsupportedVariableType
+        {
+            [PublicAPI( "Unsupported tuple." )]
+            public Tuple<string, string> TupleValue { get; set; }
+        }
+
+        private sealed class BodyTypeVariable
+        {
+            [PublicAPI( "The body type." )]
+            public BodyType BodyType { get; set; }
+        }
+
+        private sealed class RuntimeVariableProvider
+        {
+            [PublicAPI( "A runtime test variable." )]
+            public RuntimeVariableDefinition TestRuntimeVariable => new( "runtime", typeof(string), () => "value" );
+        }
+
+        private sealed class RuntimeVariableProviderMissingDescription
+        {
+            [PublicAPI]
+            public RuntimeVariableDefinition TestRuntimeVariable => new( "runtime", typeof(string), () => "value" );
         }
         
         [TestInitialize]
@@ -327,6 +370,160 @@ namespace Tests
                     nameof( TestSpeech.Priority )
                 ] ) &&
                 Equals( v.value, 2 ) ) );
+        }
+
+        [TestMethod]
+        public void MetaVariables_DescriptorsExposeRenderedPathsWithoutChangingCompatibilityResults ()
+        {
+            var entry = new KeyValuePair<string, Type>( "Commodity ejected", typeof( CommodityEjectedEvent ) );
+            var metaVariables = new MetaVariables( entry.Value, null );
+
+            var descriptor = metaVariables.Descriptors.First( d => d.KeysPath[  d.KeysPath.Count  -  1  ] == "commodity" );
+
+            Assert.AreEqual( "commodity", descriptor.CottlePath );
+            Assert.AreEqual( "EDDI commodity ejected commodity", descriptor.RenderVoiceAttackName( "EDDI", entry.Key ) );
+            Assert.AreEqual( "TXT", descriptor.VoiceAttackTypeName );
+            Assert.AreEqual( typeof( string ), descriptor.VariableType );
+            Assert.AreEqual( "The name of the commodity ejected", descriptor.Description );
+            CollectionAssert.AreEqual(
+                descriptor.KeysPath.ToList(),
+                metaVariables.Results.First( v => v.keysPath.Last() == "commodity" ).keysPath );
+        }
+
+        [TestMethod]
+        public void CottleVariable_DoesNotMutateInputPath ()
+        {
+            var path = new List<string> { "items", MetaVariables.indexMarker, "name" };
+
+            _ = new CottleVariable( path, "Item name.", null );
+
+            CollectionAssert.AreEqual(
+                new List<string> { "items", MetaVariables.indexMarker, "name" },
+                path );
+        }
+
+        [TestMethod]
+        public void MetaVariables_StrictDocumentation_FailsForMissingMemberDescriptions ()
+        {
+            Assert.ThrowsExactly<MetaVariableDiscoveryException>( () =>
+                _ = new MetaVariables(
+                    typeof( MissingDescription ),
+                    null,
+                    null,
+                    MetaVariableDiscoveryOptions.StrictDocumentation ) );
+        }
+
+        [TestMethod]
+        public void MetaVariables_StrictDocumentation_HonorsMissingDescriptionAllowlist ()
+        {
+            var options = new MetaVariableDiscoveryOptions
+            {
+                Strict = true,
+                RequireDescriptions = true,
+                MissingDescriptionAllowlist = new HashSet<string>
+                {
+                    $"{typeof( MissingDescription ).FullName}.{nameof( MissingDescription.Text )}"
+                }
+            };
+
+            var metaVariables = new MetaVariables( typeof( MissingDescription ), null, null, options );
+
+            Assert.HasCount( 1, metaVariables.Results );
+        }
+
+        [TestMethod]
+        public void MetaVariables_TypeLevelPublicApi_IsNotVariableDocumentationInput ()
+        {
+            var metaVariables = new MetaVariables(
+                typeof( TypeLevelPublicApiOnly ),
+                null,
+                null,
+                MetaVariableDiscoveryOptions.StrictDocumentation );
+
+            Assert.HasCount( 0, metaVariables.Results );
+        }
+
+        [TestMethod]
+        public void MetaVariables_StrictDocumentation_FailsForUnsupportedTypes ()
+        {
+            Assert.ThrowsExactly<MetaVariableDiscoveryException>( () =>
+                _ = new MetaVariables(
+                    typeof( UnsupportedVariableType ),
+                    new UnsupportedVariableType(),
+                    null,
+                    MetaVariableDiscoveryOptions.StrictDocumentation ) );
+        }
+
+        [TestMethod]
+        public void MetaVariables_DescriptorsExposeObsoleteMetadata ()
+        {
+            var descriptor = new MetaVariables( typeof( ObsoleteVariable ), null )
+                .Descriptors
+                .Single();
+
+            Assert.IsTrue( descriptor.IsObsolete );
+            Assert.AreEqual( "Use NewText instead.", descriptor.ObsoleteMessage );
+        }
+
+        [TestMethod]
+        public void MetaVariables_DescriptorsIncludeSmallLocalizedEdNameValueSets ()
+        {
+            var descriptor = new MetaVariables( typeof( BodyTypeVariable ), null )
+                .Descriptors
+                .Single( d => d.KeysPath.SequenceEqual( [ nameof( BodyTypeVariable.BodyType ) ] ) );
+
+            Assert.IsTrue( descriptor.AllowedValues.Any( v => v.InvariantName == "Planet" ) );
+            Assert.IsTrue( descriptor.AllowedValues.Any( v => v.InvariantName == "Star" ) );
+            Assert.IsNull( descriptor.AllowedValuesOmittedReason );
+        }
+
+        [TestMethod]
+        public void VariableDescriptor_OmitsLargeLocalizedEdNameValueSetsByPolicy ()
+        {
+            var descriptor = VariableDescriptor.Create(
+                [ "commodity" ],
+                typeof( CommodityDefinition ),
+                "Commodity.",
+                options: new MetaVariableDiscoveryOptions { MaxInlineAllowedValues = 2 } );
+
+            Assert.HasCount( 0, descriptor.AllowedValues );
+            Assert.IsTrue( descriptor.AllowedValuesOmittedReason?.Contains( "omitted" ) );
+        }
+
+        [TestMethod]
+        public void MetaVariables_DescriptorsCanBeBuiltFromRuntimeVariableDeclarations ()
+        {
+            var declarations = RuntimeVariableDefinitionExtensions.DiscoverDeclarations(
+                typeof( RuntimeVariableProvider ),
+                new RuntimeVariableProvider() );
+            var metaVariables = new MetaVariables( declarations, options: MetaVariableDiscoveryOptions.StrictDocumentation );
+
+            var descriptor = metaVariables.Descriptors.Single();
+            Assert.AreEqual( "runtime", descriptor.CottlePath );
+            Assert.AreEqual( typeof(string), descriptor.VariableType );
+            Assert.AreEqual( "A runtime test variable.", descriptor.Description );
+        }
+
+        [TestMethod]
+        public void MetaVariables_DescriptorsCanBeBuiltFromTopLevelRuntimeVariableCatalog ()
+        {
+            var declarations = RuntimeVariableDefinitionExtensions.DiscoverDeclarations( typeof( RuntimeVariableCatalog ) );
+            var metaVariables = new MetaVariables( declarations, options: MetaVariableDiscoveryOptions.StrictDocumentation );
+
+            Assert.IsTrue( metaVariables.Descriptors.Any( d => d.CottlePath == "environment" ) );
+            Assert.IsTrue( metaVariables.Descriptors.Any( d => d.CottlePath == "destinationdistance" ) );
+            Assert.IsTrue( metaVariables.Descriptors.All( d => !string.IsNullOrWhiteSpace( d.Description ) ) );
+        }
+
+        [TestMethod]
+        public void MetaVariables_StrictDocumentation_FailsForRuntimeVariablesMissingDescriptions ()
+        {
+            var declarations = RuntimeVariableDefinitionExtensions.DiscoverDeclarations(
+                typeof( RuntimeVariableProviderMissingDescription ),
+                new RuntimeVariableProviderMissingDescription() );
+
+            Assert.ThrowsExactly<MetaVariableDiscoveryException>( () =>
+                _ = new MetaVariables( declarations, options: MetaVariableDiscoveryOptions.StrictDocumentation ) );
         }
 
 #pragma warning restore MSTEST0037

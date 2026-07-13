@@ -1408,18 +1408,33 @@ namespace EddiShipMonitor
             return Task.CompletedTask;
         }
         
-        public IDictionary<string, Tuple<Type, object>> GetVariables()
+        [PublicAPI( "Details about the current ship." )]
+        public RuntimeVariableDefinition ShipVariable => new( "ship", typeof(Ship), () => GetCurrentShip() );
+
+        [PublicAPI( "A list of the commander's stored modules." )]
+        public RuntimeVariableDefinition StoredModulesVariable => new( "storedmodules", typeof(List<StoredModule>), () =>
         {
             lock ( shipyardLock )
             {
-                return new Dictionary<string, Tuple<Type, object>>
-                {
-                    ["ship"] = new(typeof(Ship), GetCurrentShip() ),
-                    ["storedmodules"] = new(typeof(List<StoredModule>), storedmodules.ToList() ),
-                    ["shipyard"] = new( typeof( List<Ship> ), shipyard.ToList() )
-                };
+                return storedmodules.ToList();
             }
-        }
+        } );
+
+        [PublicAPI( "A list of the commander's stored ships." )]
+        public RuntimeVariableDefinition ShipyardVariable => new( "shipyard", typeof(List<Ship>), () =>
+        {
+            lock ( shipyardLock )
+            {
+                return shipyard.ToList();
+            }
+        } );
+
+        public IReadOnlyList<RuntimeVariableDefinition> GetVariables () =>
+        [
+            ShipVariable,
+            StoredModulesVariable,
+            ShipyardVariable
+        ];
 
         private void writeShips ()
         {

@@ -378,16 +378,25 @@ namespace EddiCommanderMonitor
             Logging.Info( $"Reloaded {MonitorName()}" );
         }
 
-        public IDictionary<string, Tuple<Type, object>> GetVariables ()
-        {
-            return new Dictionary<string, Tuple<Type, object>>
-            {
-                { "cmdr", new Tuple<Type, object>( typeof(Commander), Cmdr ) },
-                { "homesystem", new Tuple<Type, object>( typeof(StarSystem), HomeStarSystem ) },
-                { "homestation", new Tuple<Type, object>( typeof(Station), HomeStation ) },
-                { "squadronsystem", new Tuple<Type, object>( typeof(StarSystem), SquadronStarSystem ) }
-            };
-        }
+        [Utilities.PublicAPI( "Details about the current commander." )]
+        public RuntimeVariableDefinition CommanderVariable => new( "cmdr", typeof(Commander), () => Cmdr );
+
+        [Utilities.PublicAPI( "Details about the commander's home system." )]
+        public RuntimeVariableDefinition HomeSystemVariable => new( "homesystem", typeof(StarSystem), () => HomeStarSystem );
+
+        [Utilities.PublicAPI( "Details about the commander's home station." )]
+        public RuntimeVariableDefinition HomeStationVariable => new( "homestation", typeof(Station), () => HomeStation );
+
+        [Utilities.PublicAPI( "Details about the current squadron's star system." )]
+        public RuntimeVariableDefinition SquadronSystemVariable => new( "squadronsystem", typeof(StarSystem), () => SquadronStarSystem );
+
+        public IReadOnlyList<RuntimeVariableDefinition> GetVariables () =>
+        [
+            CommanderVariable,
+            HomeSystemVariable,
+            HomeStationVariable,
+            SquadronSystemVariable
+        ];
 
         public UserControl ConfigurationTabItem ()
         {

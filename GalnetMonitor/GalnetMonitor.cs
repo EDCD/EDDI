@@ -283,10 +283,7 @@ namespace EddiGalnetMonitor
             return Task.CompletedTask;
         }
         
-        public IDictionary<string, Tuple<Type, object>> GetVariables ()
-        {
-            return null;
-        }
+        public IReadOnlyList<RuntimeVariableDefinition> GetVariables () => [];
 
         /// <summary>
         /// Pick a category for the news item given its title

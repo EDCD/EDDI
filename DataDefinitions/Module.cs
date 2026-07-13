@@ -16,7 +16,7 @@ namespace EddiDataDefinitions
         [PublicAPI( "letter grade of the module" ), JsonProperty]
         public string grade { get; set; }
 
-        [PublicAPI( "base value of the module" ), JsonProperty]
+        [PublicAPI( "base value of the module, in credits" ), JsonProperty]
         public long value { get; set; } // The undiscounted value
 
         // Additional definition for some items

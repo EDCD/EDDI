@@ -530,17 +530,23 @@ namespace EddiCargoMonitor
             return false;
         }
 
-        public IDictionary<string, Tuple<Type, object>> GetVariables ()
+        [Utilities.PublicAPI( "A list of the cargo currently held by the ship." )]
+        public RuntimeVariableDefinition InventoryVariable => new( "inventory", typeof(List<Cargo>), () =>
         {
             lock ( inventoryLock )
             {
-                return new Dictionary<string, Tuple<Type, object>>
-                {
-                    ["inventory"] = new(typeof(List<Cargo>), inventory.ToList() ),
-                    ["cargoCarried"] = new(typeof(int), cargoCarried)
-                };                
+                return inventory.ToList();
             }
-        }
+        } );
+
+        [Utilities.PublicAPI( "The total tons of cargo currently held." )]
+        public RuntimeVariableDefinition CargoCarriedVariable => new( "cargoCarried", typeof(int), () => cargoCarried );
+
+        public IReadOnlyList<RuntimeVariableDefinition> GetVariables () =>
+        [
+            InventoryVariable,
+            CargoCarriedVariable
+        ];
 
         public void writeInventory()
         {

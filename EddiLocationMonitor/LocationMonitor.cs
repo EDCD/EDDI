@@ -152,7 +152,7 @@ namespace EddiLocationMonitor
             return Task.CompletedTask;
         }
 
-        public IDictionary<string, Tuple<Type, object>> GetVariables () => null;
+        public IReadOnlyList<RuntimeVariableDefinition> GetVariables () => [];
 
         public UserControl ConfigurationTabItem () => null;
     }

@@ -1,10 +1,10 @@
 ﻿using EddiDataDefinitions;
 using EddiEvents;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using Utilities;
 
 namespace EddiCore
 {
@@ -74,9 +74,9 @@ namespace EddiCore
         Task HandleStatusAsync ( Status status );
 
         /// <summary>
-        /// Provide any local variables
+        /// Provide any local variable declarations.
         /// </summary>
-        IDictionary<string, Tuple<Type, object>> GetVariables ();
+        IReadOnlyList<RuntimeVariableDefinition> GetVariables ();
 
         UserControl ConfigurationTabItem();
     }

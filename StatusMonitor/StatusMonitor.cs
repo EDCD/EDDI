@@ -430,16 +430,27 @@ namespace EddiStatusMonitor
             return Task.CompletedTask;
         }
 
-        public IDictionary<string, Tuple<Type, object>> GetVariables()
+        [Utilities.PublicAPI( "The commander's current status." )]
+        public RuntimeVariableDefinition StatusVariable => new( "status", typeof(Status), () =>
         {
             lock ( statusLock )
             {
-                return new Dictionary<string, Tuple<Type, object>>
-                {
-                    { "status", new Tuple<Type, object>(typeof(Status), currentStatus ) },
-                    { "lastStatus", new Tuple < Type, object >(typeof(Status), lastStatus ) }
-                };
+                return currentStatus;
             }
+        } );
+
+        [Utilities.PublicAPI( "The commander's previous status." )]
+        public RuntimeVariableDefinition LastStatusVariable => new( "lastStatus", typeof(Status), () =>
+        {
+            lock ( statusLock )
+            {
+                return lastStatus;
+            }
+        } );
+
+        public IReadOnlyList<RuntimeVariableDefinition> GetVariables ()
+        {
+            return [ StatusVariable, LastStatusVariable ];
         }
     }
 }

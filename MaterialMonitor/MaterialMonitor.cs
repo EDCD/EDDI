@@ -442,16 +442,16 @@ namespace EddiMaterialMonitor
             }
         }
 
-        public IDictionary<string, Tuple<Type, object>> GetVariables()
+        [PublicAPI( "A list of all materials currently held by the commander." )]
+        public RuntimeVariableDefinition MaterialsVariable => new( "materials", typeof(List<MaterialAmount>), () =>
         {
             lock ( inventoryLock )
             {
-                return new Dictionary<string, Tuple<Type, object>>
-                {
-                    [ "materials" ] = new(typeof(List<MaterialAmount>), inventory.ToList() )
-                };
+                return inventory.ToList();
             }
-        }
+        } );
+
+        public IReadOnlyList<RuntimeVariableDefinition> GetVariables () => [ MaterialsVariable ];
 
         public void writeMaterials()
         {

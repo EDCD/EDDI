@@ -3027,9 +3027,6 @@ namespace EddiJournalMonitor
             return Task.CompletedTask;
         }
         
-        public IDictionary<string, Tuple<Type, object>> GetVariables()
-        {
-            return null;
-        }
+        public IReadOnlyList<RuntimeVariableDefinition> GetVariables () => [];
     }
 }

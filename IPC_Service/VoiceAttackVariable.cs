@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Utilities;
 
 namespace EddiIPC_Service
@@ -25,28 +24,24 @@ namespace EddiIPC_Service
         /// <summary> The value to write (if any) </summary>
         public object value { get; set; }
 
+        public VoiceAttackVariable ( string startingPrefix, string eventType, VariableDescriptor descriptor )
+            : this(
+                startingPrefix,
+                eventType,
+                descriptor.KeysPath.ToList(),
+                descriptor.VariableType,
+                descriptor.Description,
+                descriptor.Value )
+        { }
+
         public VoiceAttackVariable(string startingPrefix, string eventType, List<string> keysPath, Type variableType, string description, object value = null)
         {
-            // Build the full key
-            this.key = startingPrefix; // Set our starting prefix
-            keysPath = keysPath.Prepend(eventType?.ToLowerInvariant()).ToList();
-            keysPath.RemoveAll(string.IsNullOrEmpty); // Remove any empty keys from the path
-            foreach (var keySegment in keysPath)
-            {
-                // Generate a variable name from the prefix and key. 
-                var childKey = AddSpacesToTitleCasedName(keySegment).Replace("_", " ").ToLowerInvariant();
-
-                // Only append the portion of the formatted key which isn't redundant with the current prefix.
-                this.key = ConcatOverlappingNames(this.key, childKey);
-            }
-            this.key = key
-                .Replace(MetaVariables.indexMarker, @"\<index\>"); // Format index values for VoiceAttack
-
+            this.key = VariablePathFormatter.RenderVoiceAttackName( startingPrefix, eventType, keysPath );
             this.eventType = eventType;
             this.description = description;
 
             // Convert doubles, floats, and longs to decimals
-            if (value is null && (variableType == typeof(double) || variableType == typeof(float) || variableType == typeof(long) || variableType == typeof(ulong)))
+            if (value is null && (variableType == typeof(double) || variableType == typeof(float) || variableType == typeof(long) || variableType == typeof(ulong) || variableType == typeof(uint)))
             {
                 this.value = null;
                 this.variableType = typeof(decimal);
@@ -83,45 +78,16 @@ namespace EddiIPC_Service
                 this.value = Convert.ToDecimal(ul);
                 this.variableType = typeof(decimal);
             }
+            else if (value is uint ui)
+            {
+                this.value = Convert.ToDecimal(ui);
+                this.variableType = typeof(decimal);
+            }
             else
             {
                 this.value = value;
                 this.variableType = variableType;
             }
-        }
-
-        private static string AddSpacesToTitleCasedName(string text)
-        {
-            if (string.IsNullOrWhiteSpace(text))
-            {
-                return "";
-            }
-
-            var newText = new StringBuilder(text.Length * 2);
-            newText.Append(text[0]);
-            for (var i = 1; i < text.Length; i++)
-            {
-                if (char.IsUpper(text[i]) && text[i - 1] != ' ' && !char.IsUpper(text[i - 1]))
-                {
-                    newText.Append(' ');
-                }
-                newText.Append(text[i]);
-            }
-            return newText.ToString();
-        }
-
-        private static string ConcatOverlappingNames(string prefix, string childKey)
-        {
-            // For a prefix of "AA BB CC" and a childKey of "BB CC DD", return "AA BB CC DD"
-            var skip = 0;
-            if (!prefix.EndsWith(' ')) { prefix += " "; }
-            while (skip < childKey.Length
-                   || (prefix.Skip(skip).Count() - 1) > childKey.Length
-                   || (prefix.Skip(skip).Zip(childKey, (a, b) => a.Equals(b)).Any(x => !x) && skip < prefix.Length))
-            {
-                skip++;
-            }
-            return string.Concat(prefix.Take(skip).Concat(childKey));
         }
 
         public void Set()

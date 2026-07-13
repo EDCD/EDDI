@@ -452,28 +452,45 @@ namespace EddiNavigationMonitor
             }
         }
 
-        public IDictionary<string, Tuple<Type, object>> GetVariables()
+        [Utilities.PublicAPI( "A list of saved navigation bookmarks." )]
+        public RuntimeVariableDefinition BookmarksVariable => new( "bookmarks", typeof(List<NavBookmark>), () =>
         {
             lock ( navConfigLock )
             {
-                var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-                return new Dictionary<string, Tuple<Type, object>>
-                {
-                    // Bookmark info
-                    ["bookmarks"] = new(typeof(List<NavBookmark>), Bookmarks.ToList() ),
-                    ["galacticPOIs"] = new(typeof(NavBookmark), GalacticPOIs ),
-
-                    // Route plotting info
-                    ["navRoute"] = new(typeof(NavWaypointCollection), NavRoute ),
-                    ["carrierPlottedRoute"] = new(typeof(NavWaypointCollection), CarrierPlottedRoute ),
-                    ["shipPlottedRoute"] = new(typeof(NavWaypointCollection), PlottedRoute ),
-
-                    // NavConfig info
-                    ["orbitalpriority"] = new(typeof(bool), navConfig.prioritizeOrbitalStations ),
-                    ["maxStationDistance"] = new(typeof(int?), navConfig.maxSearchDistanceFromStarLs )
-                };                
+                return Bookmarks.ToList();
             }
-        }
+        } );
+
+        [Utilities.PublicAPI( "A list of nearby points of interest, ordered by distance." )]
+        public RuntimeVariableDefinition GalacticPOIsVariable => new( "galacticPOIs", typeof(NavBookmark), () => GalacticPOIs );
+
+        [Utilities.PublicAPI( "The current in-game route." )]
+        public RuntimeVariableDefinition NavRouteVariable => new( "navRoute", typeof(NavWaypointCollection), () => NavRoute );
+
+        [Utilities.PublicAPI( "The currently plotted fleet carrier route." )]
+        public RuntimeVariableDefinition CarrierPlottedRouteVariable => new( "carrierPlottedRoute", typeof(NavWaypointCollection), () => CarrierPlottedRoute );
+
+        [Utilities.PublicAPI( "The currently plotted ship route." )]
+        public RuntimeVariableDefinition ShipPlottedRouteVariable => new( "shipPlottedRoute", typeof(NavWaypointCollection), () => PlottedRoute );
+
+        [Utilities.PublicAPI( "True if orbital stations are prioritized in station searches." )]
+        public RuntimeVariableDefinition OrbitalPriorityVariable => new( "orbitalpriority", typeof(bool),
+            () => ConfigService.Instance.navigationMonitorConfiguration.prioritizeOrbitalStations );
+
+        [Utilities.PublicAPI( "The maximum station distance from the arrival star, in light seconds." )]
+        public RuntimeVariableDefinition MaxStationDistanceVariable => new( "maxStationDistance", typeof(int?),
+            () => ConfigService.Instance.navigationMonitorConfiguration.maxSearchDistanceFromStarLs );
+
+        public IReadOnlyList<RuntimeVariableDefinition> GetVariables () =>
+        [
+            BookmarksVariable,
+            GalacticPOIsVariable,
+            NavRouteVariable,
+            CarrierPlottedRouteVariable,
+            ShipPlottedRouteVariable,
+            OrbitalPriorityVariable,
+            MaxStationDistanceVariable
+        ];
 
         public void WriteNavConfig()
         {
