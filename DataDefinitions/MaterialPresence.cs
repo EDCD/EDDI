@@ -9,16 +9,16 @@ namespace EddiDataDefinitions
     /// </summary>
     public class MaterialPresence ( Material definition, decimal percentage )
     {
-        [PublicAPI, JsonProperty("material")]
+        [PublicAPI( "the material's localized name" ), JsonProperty("material")]
         public string name { get; private set; } = definition?.localizedName;
 
-        [PublicAPI]
+        [PublicAPI( "the material's localized category" )]
         public string category => definition?.category;
 
-        [PublicAPI]
+        [PublicAPI( "the material's localized rarity" )]
         public string rarity => definition?.Rarity.localizedName;   
 
-        [PublicAPI]
+        [PublicAPI( "the percentage of the material" )]
         public decimal percentage { get; private set; } = percentage;
 
         // Not intended to be user facing

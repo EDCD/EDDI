@@ -855,12 +855,12 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public string templateInvariantName => blueprintTemplate?.invariantName;
 
-        [PublicAPI]
+        [PublicAPI("the grade of the blueprint")]
         public int grade { get; private set; }
 
         public long? blueprintId { get; private set; }
 
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "the materials required to produce the blueprint (a list of items with *material* and *amount* keys for each item)" ), JsonIgnore]
         public List<MaterialAmount> materials => grade > 0 && grade <= blueprintTemplate?.byGrade?.Count ? blueprintTemplate?.byGrade[grade] : [ ];
 
         // Not intended to be user facing

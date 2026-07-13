@@ -4,13 +4,13 @@ namespace EddiDataDefinitions
 {
     public class Traffic
     {
-        [PublicAPI]
+        [PublicAPI( "traffic over all time" )]
         public decimal total { get; set; }
 
-        [PublicAPI]
+        [PublicAPI( "traffic over the past week" )]
         public decimal week { get; set; }
 
-        [PublicAPI]
+        [PublicAPI( "traffic over the past day" )]
         public decimal day { get; set; }
 
         public Traffic() { }

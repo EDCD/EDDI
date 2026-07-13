@@ -9,11 +9,11 @@ namespace EddiDataDefinitions
         public string name { get; set; }
 
         /// <summary>The size of the compartment</summary>
-        [PublicAPI]
+        [PublicAPI( "the numeric size of the compartment, from 1 to 8" )]
         public int size { get; set; }
 
         /// <summary>The module residing in the compartment (can be null)</summary>
-        [PublicAPI]
+        [PublicAPI( "the module in the compartment, as an object" )]
         public Module module { get; set; }
     }
 }

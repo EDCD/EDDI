@@ -15,7 +15,7 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         private string _material;
 
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "the material's localized name" ), JsonIgnore]
         public string material
         {
             get => _material;
@@ -35,7 +35,7 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         private int _amount;
 
-        [PublicAPI]
+        [PublicAPI( "the amount" )]
         public int amount
         {
             get => _amount;
@@ -52,7 +52,7 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         private int? _minimum;
 
-        [PublicAPI]
+        [PublicAPI( "your minimum amount" )]
         public int? minimum
         {
             get => _minimum;
@@ -69,7 +69,7 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         private int? _desired;
 
-        [PublicAPI]
+        [PublicAPI( "your desired amount" )]
         public int? desired
         {
             get => _desired;
@@ -86,7 +86,7 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         private int? _maximum;
 
-        [PublicAPI]
+        [PublicAPI( "your maximum amount" )]
         public int? maximum
         {
             get => _maximum;
@@ -103,7 +103,7 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         private string _Category;
         
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "the material's localized category" ), JsonIgnore]
         public string category
         {
             get => _Category;
@@ -120,7 +120,7 @@ namespace EddiDataDefinitions
         [JsonIgnore] 
         private Rarity _Rarity;
 
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "the material's rarity, as an object" ), JsonIgnore]
         public Rarity Rarity
         {
             get => _Rarity;

@@ -51,7 +51,7 @@ namespace EddiDataDefinitions
             get => definition?.localizedName;
         }
 
-        [Utilities.PublicAPI, Obsolete("deprecated for UI usage but retained for JSON conversion from the cAPI")]
+        [Utilities.PublicAPI("the localized name of the commodity"), Obsolete("deprecated for UI usage but retained for JSON conversion from the cAPI")]
         public string name
         {
             get => definition?.localizedName;
@@ -67,20 +67,20 @@ namespace EddiDataDefinitions
 
         // Per-station information (prices are usually integers but not always)
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "the price to purchase the commodity from the market" )]
         public decimal buyprice { get; set; }
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "the amount of the commodity available from the market" )]
         public int stock { get; set; }
 
         // StockBracket can contain the values 0, 1, 2, 3 or "" (yes, really) so we use an optional enum
 
         public CommodityBracket? stockbracket { get; set; }
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "the price being offered for the commodity in the market" )]
         public decimal sellprice { get; set; }
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "the demand for the commodity from the market" )]
         public int demand { get; set; }
 
         // DemandBracket can contain the values 0, 1, 2, 3 or "" (yes, really) so we use an optional enum
@@ -89,7 +89,7 @@ namespace EddiDataDefinitions
 
         public long? EliteID => definition?.EliteID;
 
-        [Utilities.PublicAPI, Obsolete("Please use localizedName or InvariantName")]
+        [Utilities.PublicAPI( "the category of the commodity (e.g. Foods, Machinery, Technology)" ), Obsolete("Please use localizedName or InvariantName")]
         public string category => definition?.Category.localizedName;
 
         // Update the definition with the new galactic average price whenever this is set.
@@ -109,7 +109,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "the rarity of the commodity (boolean true or false)" )]
         public bool rare => definition?.rare ?? false;
         
         public HashSet<string> StatusFlags { get; set; }

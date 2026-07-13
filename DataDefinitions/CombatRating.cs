@@ -44,7 +44,7 @@ namespace EddiDataDefinitions
         public static readonly CombatRating EliteIV;
         public static readonly CombatRating EliteV;
 
-        [PublicAPI]
+        [PublicAPI( "rank, as an integer from 0 to 13" )]
         public int rank { get; private set; }
 
         // dummy used to ensure that the static constructor has run

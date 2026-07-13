@@ -9,10 +9,10 @@ namespace EddiDataDefinitions
         // Definition of the vehicle
         public int subslot { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("the short name of the vehicle's loadout")]
         public string loadout { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI("the number of times the vehicle may be rebuilt")]
         public int rebuilds { get; private set; }
 
         public string vehicleDefinition
@@ -28,16 +28,16 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         private VesselDefinition vehicleDef;
 
-        [PublicAPI]
+        [PublicAPI( "true if the vehicle is remotely piloted via telepresence" )]
         public bool isRemotePiloted => vehicleDef?.vesselGroup == VesselGroup.Telepresence;
 
         [JsonIgnore]
         public string localizedName => vehicleDef?.localizedName;
 
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "the invariant name of the vehicle, for example 'F63 Condor'" ), JsonIgnore]
         public string invariantName => vehicleDef?.invariantName;
 
-        [PublicAPI, JsonIgnore, Obsolete("Please be explicit and use localizedName or invariantName")]
+        [PublicAPI( "the localized name of the vehicle, for example 'F63 Condor'" ), JsonIgnore, Obsolete("Please be explicit and use localizedName or invariantName")]
         public string name => localizedName ?? string.Empty;
 
         public string loadoutDescription
@@ -50,16 +50,16 @@ namespace EddiDataDefinitions
             }
         }
 
-        [PublicAPI, JsonIgnore]
+        [PublicAPI("the description of the vehicle's loadout, as an object"), JsonIgnore]
         private LoadoutDescription descriptionDef;
 
         [JsonIgnore]
         public string localizedDescription => descriptionDef?.localizedName;
 
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "the invariant description of the vehicle's loadout" ), JsonIgnore]
         public string invariantDescription => descriptionDef?.invariantName;
 
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "the localized description of the vehicle's loadout" ), JsonIgnore]
         [Obsolete("Please be explicit and use localizedDescription")]
         public string description => localizedDescription ?? string.Empty;
 

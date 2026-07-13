@@ -12,7 +12,7 @@ namespace EddiDataDefinitions
     public class FactionRecord : INotifyPropertyChanged
     {
         /// <summary> The faction associated with the claim, fine, or bounty </summary>
-        [PublicAPI]
+        [PublicAPI( "name of the minor faction" )]
         public string faction
         {
             get => _faction;
@@ -26,7 +26,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        [PublicAPI, JsonProperty("allegiance")]
+        [PublicAPI( "the superpower to which the minor faction is aligned, if any" ), JsonProperty("allegiance")]
         public string allegiance
         {
 
@@ -42,7 +42,7 @@ namespace EddiDataDefinitions
         public Superpower Allegiance { get; set; } = Superpower.None;
 
         /// <summary> The home system of the faction </summary>
-        [PublicAPI]
+        [PublicAPI( "faction presence determined by minor faction name or highest influence" )]
         public string system
         {
             get => _system;
@@ -57,7 +57,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary> The home station of the faction </summary>
-        [PublicAPI]
+        [PublicAPI( "station nearest to main star, filtered by landing pad & ship size" )]
         public string station
         {
             get => _station;
@@ -72,7 +72,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary> The final estimated credit value of claims (bounty vouchers and bonds), including any final-value discrepancy report </summary>
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "estimated final credits for minor faction's uncollected bounty voucher and combat bond rewards, after known current voucher modifiers. Pending claim values do not subtract NPC crew wages." ), JsonIgnore]
         public long claims
         {
             get => _finalClaims ?? ( _baseclaims + finalClaimDiscrepancy );
@@ -91,7 +91,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary> The journal credit value of claims before non-journal modifiers and final-value discrepancy reports are applied </summary>
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "journal credits for minor faction's uncollected bounty voucher and combat bond rewards before known current voucher modifiers" ), JsonIgnore]
         public long baseclaims
         {
             get => _baseclaims;
@@ -110,7 +110,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary> The final estimated credit value of bounty voucher claims only </summary>
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "estimated final credits for the minor faction's uncollected bounty voucher rewards only, after known current voucher modifiers" ), JsonIgnore]
         public long bountyclaims
         {
             get => _finalBountyClaims ?? basebountyclaims;
@@ -127,11 +127,11 @@ namespace EddiDataDefinitions
         }
 
         /// <summary> The journal credit value of bounty voucher claims before non-journal modifiers are applied </summary>
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "journal credits for the minor faction's uncollected bounty voucher rewards only before known current voucher modifiers" ), JsonIgnore]
         public long basebountyclaims => basebountiesAmount;
 
         /// <summary> The total credit value of fines incurred (including any discrepancy report) </summary>
-        [PublicAPI]
+        [PublicAPI( "total journal credits for minor faction's unpaid fines incurred, including any reductions already applied by the game" )]
         public long fines
         {
             get => _fines;
@@ -143,11 +143,11 @@ namespace EddiDataDefinitions
         }
 
         /// <summary> The journal credit value of fines incurred </summary>
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "journal credits for minor faction's unpaid fines incurred" ), JsonIgnore]
         public long basefines => finesIncurred.Sum(ReportBaseAmount);
 
         /// <summary> The total credit value of bounties incurred (including any discrepancy report) </summary>
-        [PublicAPI]
+        [PublicAPI( "total journal credits for minor faction's unpaid bounties incurred, including any reductions already applied by the game" )]
         public long bounties
         {
             get => _bounties;
@@ -159,7 +159,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary> The journal credit value of bounties incurred </summary>
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "journal credits for minor faction's unpaid bounties incurred" ), JsonIgnore]
         public long basebounties => bountiesIncurred.Sum(ReportBaseAmount);
 
         public List<string> factionSystems { get; set; } = [ ];
@@ -212,7 +212,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary> All bond vouchers awarded, excluding the discrepancy report </summary>
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "list of individual faction reports for uncollected bonds awarded" ), JsonIgnore]
         public List<FactionReport> bondsAwarded => factionReports
             .Where(r => !r.bounty && r.crimeDef == Crime.None && r.claimtype == FactionReport.BondClaimType)
             .ToList();
@@ -224,7 +224,7 @@ namespace EddiDataDefinitions
         public long basebondsAmount => bondsAwarded.Sum(ReportBaseAmount);
 
         /// <summary> All bounty vouchers awarded, excluding the discrepancy report </summary>
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "list of individual faction reports for uncollected bounties awarded" ), JsonIgnore]
         public List<FactionReport> bountiesAwarded => factionReports
             .Where(r => r.bounty && r.crimeDef == Crime.None && r.claimtype == FactionReport.BountyClaimType)
             .ToList();
@@ -236,13 +236,13 @@ namespace EddiDataDefinitions
         public long basebountiesAmount => bountiesAwarded.Sum(ReportBaseAmount);
 
         /// <summary> All fines incurred, including the discrepancy report </summary>
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "list of individual faction reports for unpaid fines incurred" ), JsonIgnore]
         public List<FactionReport> finesIncurred => factionReports
             .Where(r => !r.bounty && r.crimeDef != Crime.None)
             .ToList();
 
         /// <summary> All bounties incurred, including the discrepancy report </summary>
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "list of individual faction reports for unpaid bounties incurred" ), JsonIgnore]
         public List<FactionReport> bountiesIncurred => factionReports
             .Where(r => r.bounty && r.crimeDef != Crime.None)
             .ToList();

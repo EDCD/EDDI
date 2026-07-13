@@ -47,16 +47,16 @@ namespace EddiDataDefinitions
 
         // Included for consistency with other `Rating` type object definitions as defined by Variables.md
 
-        [PublicAPI]
+        [PublicAPI("the localized masculine name")]
         public string name => maleRank.localizedName;
 
-        [PublicAPI]
+        [PublicAPI("the invariant masculine name")]
         public string invariantName => maleRank.invariantName;
 
-        [PublicAPI]
+        [PublicAPI("the localized feminine name")]
         public string femininename => femaleRank.localizedName;
 
-        [PublicAPI]
+        [PublicAPI("the invariant feminine name")]
         public string feminineInvariantName => femaleRank.invariantName;
 
         private EmpireRating(string edname, int rank)

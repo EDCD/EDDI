@@ -232,13 +232,13 @@ namespace EddiDataDefinitions
 
         #endregion
 
-        [PublicAPI]
+        [PublicAPI( "the category of the material (Element, Data or Manufactured)" )]
         public string category => Category.localizedName;
 
         [JsonProperty("category")]
         public MaterialCategory Category { get; }
 
-        [PublicAPI]
+        [PublicAPI( "the rarity of the material" )]
         public string rarity => Rarity.localizedName;
 
         [JsonProperty("rarity")]
@@ -246,35 +246,35 @@ namespace EddiDataDefinitions
 
         // Only for elements
 
-        [PublicAPI]
+        [PublicAPI( "the standardized abbreviation for the material from the periodic table" )]
         public string symbol { get; }
 
-        [PublicAPI]
+        [PublicAPI ( "top 25th percentile relative to the top value ever recorded" )]
         public decimal? goodpctbody { get; }
 
-        [PublicAPI]
+        [PublicAPI( "top 10th percentile relative to the top value ever recorded" )]
         public decimal? greatpctbody { get; }
 
         // The body with the greatest percent concentration (for the MaterialDetails() function).
 
-        [PublicAPI]
+        [PublicAPI( "(MaterialDetails() function only) the name of the body with the greatest percent concentration in the star system" )]
         public string bodyname { get; set; }
 
-        [PublicAPI]
+        [PublicAPI( "(MaterialDetails() function only) the short name of the body with the greatest percent concentration in the star system" )]
         public string bodyshortname { get; set; }
 
         public static ImmutableHashSet<Material> surfaceElements { get; } // Elements which are available at a planetary surface and not just in space
         public static ImmutableHashSet<Material> jumponiumElements { get; } // Elements which are used for FSD injection
 
         // Blueprints for the material; 
-        [PublicAPI]
+        [PublicAPI( "the blueprints for which the material is used (this is an array of blueprint objects)" )]
         public List<Blueprint> blueprints => Blueprint.AllOfThem.ToList().Distinct()
             .Where(bp => bp.materials?.Any(ma => ma.edname == this.edname) ?? false)
             .ToList();
 
         // Location of the material (localized)
 
-        [PublicAPI]
+        [PublicAPI( "typical locations where the material can be found" )]
         public string location => Properties.MaterialLocations.ResourceManager.GetString(edname);
 
         // dummy used to ensure that the static constructor has run
@@ -286,8 +286,8 @@ namespace EddiDataDefinitions
             this.Category = category;
             this.symbol = symbol;
             this.Rarity = rarity;
-            this.goodpctbody = goodpctbody; // top 25% from top value ever recorded
-            this.greatpctbody = greatpctbody; // top 10% from top value ever recorded
+            this.goodpctbody = goodpctbody;
+            this.greatpctbody = greatpctbody;
         }
 
         public static Material FromSymbol(string from)

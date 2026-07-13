@@ -4,10 +4,10 @@ namespace EddiDataDefinitions
 {
     public class CommodityPresence ( CommodityDefinition commodity, decimal percentage )
     {
-        [PublicAPI]
+        [PublicAPI( "localized commodity name" )]
         public string commodity => commodityDefinition.localizedName;
 
-        [PublicAPI]
+        [PublicAPI( "percentage present" )]
         public decimal percentage { get; } = percentage; // Out of 100
 
         // Not intended to be user facing

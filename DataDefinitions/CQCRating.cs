@@ -44,7 +44,7 @@ namespace EddiDataDefinitions
         public static readonly CQCRating EliteIV;
         public static readonly CQCRating EliteV;
 
-        [PublicAPI]
+        [PublicAPI( "the numeric rank, from 0 to 13" )]
         public int rank { get; private set; }
 
         // dummy used to ensure that the static constructor has run

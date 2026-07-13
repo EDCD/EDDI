@@ -9,21 +9,20 @@ namespace EddiDataDefinitions
     public class Target
     {
         // The name of the target
-        [PublicAPI]
+        [PublicAPI("the name of the target")]
         public string name { get; set; } = string.Empty;
 
         // The model of the ship
-        [PublicAPI]
+        [PublicAPI("the model of the ship")]
         public string ship { get; set; }
 
         // The rank of the target
         public CombatRating CombatRank { get; set; }
 
-        [PublicAPI]
+        [PublicAPI( "rank of the pilot" )]
         public string rank => CombatRank?.localizedName ?? "unknown combat rank";
 
-        // The faction in which the target is aligned
-        [PublicAPI]
+        [PublicAPI("the faction to which the pilot is aligned")]
         public string faction { get; set; }
 
         // The superpower in which the target is aligned
@@ -35,23 +34,23 @@ namespace EddiDataDefinitions
         }
         private Superpower _Allegiance;
 
-        [PublicAPI]
+        [PublicAPI( "superpower to which the minor faction is aligned" )]
         public string allegiance => ( Allegiance ?? Superpower.None ).localizedName;
 
         // The power in which the target is pledged
         public Power Power { get; set; }
 
-        [PublicAPI]
+        [PublicAPI( "power ( Aisling Duval, Yuri Grom, Denton Patreus, etc) to which the pilot is pledged" )]
         public string power => (Power ?? Power.None).localizedName;
 
         // The legal status of the target
         public LegalStatus LegalStatus { get; set; }
 
-        [PublicAPI]
+        [PublicAPI( "the legal status (clean, enemy, wanted, warrant, etc) of the pilot" )]
         public string legalstatus => (LegalStatus ?? LegalStatus.None).localizedName;
 
         // Any bounties assigned to the target
-        [PublicAPI]
+        [PublicAPI("the bounty assigned to the target")]
         public int? bounty { get; set; }
 
         // Default Constructor

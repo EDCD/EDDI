@@ -26,7 +26,7 @@ namespace EddiDataDefinitions
         public static readonly CodexGeologyOrAnomolyType L_TypeAnomaly = new( "L_TypeAnomaly" );
         public static readonly CodexGeologyOrAnomolyType E_TypeAnomaly = new( "E_TypeAnomaly" );
 
-        [PublicAPI]
+        [PublicAPI( "localized description" )]
         public string description => Properties.CodexGeologyOrAnomolyTypeDesc.ResourceManager.GetString( edname );
 
         // dummy used to ensure that the static constructor has run

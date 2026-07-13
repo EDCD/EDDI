@@ -11,7 +11,7 @@ namespace EddiDataDefinitions
 
         public DateTime timestamp { get; set; }
 
-        [PublicAPI]
+        [PublicAPI("true if the report is for a bounty (false indicates a bond)")]
         public bool bounty { get; set; }
 
         public string crimeEDName
@@ -29,7 +29,7 @@ namespace EddiDataDefinitions
         public string localizedCrime => (crimeDef ?? Crime.None).localizedName;
 
         // deprecated crime description (exposed to Cottle and VA)
-        [PublicAPI, JsonIgnore, Obsolete("Please use localizedCrime instead")]
+        [PublicAPI( "localized type of crime committed, 'None' when report is a claim" ), JsonIgnore, Obsolete("Please use localizedCrime instead")]
         public string crime => localizedCrime;
 
         [JsonIgnore]
@@ -37,31 +37,32 @@ namespace EddiDataDefinitions
 
         private string _claimtype;
 
-        [PublicAPI, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [PublicAPI( "type of voucher claim: 'bond' or 'bounty'" ), JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string claimtype
         {
             get => _claimtype ?? (crimeDef == Crime.None ? (bounty ? BountyClaimType : BondClaimType) : null);
             set => _claimtype = value;
         }
 
-        [PublicAPI, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [PublicAPI( "the vehicle in which the voucher was claimed" ), JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string claimvehicle { get; set; }
 
-        [PublicAPI]
+        [PublicAPI( "the system in which the voucher was claimed" )]
         public string system { get; set; }
 
-        [PublicAPI]
+        [PublicAPI( "the station near which the voucher was claimed" )]
         public string station { get; set; }
 
-        [PublicAPI]
+        [PublicAPI( "the body near which the voucher was claimed" )]
         public string body { get; set; }
 
-        [PublicAPI]
+        [PublicAPI( "the victim of the voucher" )]
         public string victim { get; set; }
 
+        [PublicAPI( "the allegiance of the victim" )]   
         public string victimAllegiance { get; set; }
 
-        [PublicAPI]
+        [PublicAPI( "the amount of credits associated with the voucher" )]
         public long amount { get; set; }
 
         public FactionReport() { }

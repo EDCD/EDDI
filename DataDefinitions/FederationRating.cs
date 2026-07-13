@@ -46,7 +46,7 @@ namespace EddiDataDefinitions
         public static readonly FederationRating ViceAdmiral;
         public static readonly FederationRating Admiral;
         
-        [PublicAPI]
+        [PublicAPI( "the numeric rank, from 0 to 14" )]
         public int rank { get; private set; }
 
         // dummy used to ensure that the static constructor has run

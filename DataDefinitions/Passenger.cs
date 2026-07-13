@@ -4,16 +4,16 @@ namespace EddiDataDefinitions
 {
     public class Passenger
     {
-        [PublicAPI]
+        [PublicAPI( "the passenger's type" )]
         public string type { get; set; }
 
-        [PublicAPI]
+        [PublicAPI( "whether the passenger is a VIP" )]
         public bool vip { get; set; }
 
-        [PublicAPI]
+        [PublicAPI( "whether the passenger is wanted" )]
         public bool wanted { get; set; }
 
-        [PublicAPI]
+        [PublicAPI( "the number of passengers" )]
         public int amount { get; set; }
 
         // Not intended to be user facing

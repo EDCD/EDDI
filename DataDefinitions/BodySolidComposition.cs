@@ -20,14 +20,13 @@ namespace EddiDataDefinitions
             var Metal = new SolidComposition("metal");
         }
 
-        [PublicAPI, JsonIgnore, Obsolete("Please use localizedComposition or invariantComposition")]
+        [PublicAPI( "an solid type in the composition of the body (Ice, Rock, or Metal)" ), JsonIgnore, Obsolete("Please use localizedComposition or invariantComposition")]
         public string composition => localizedName;
 
-        [PublicAPI, JsonProperty]
-        public decimal percent { get; set; } = percent; // Percent share of the solid body
+        [PublicAPI( "percent share of the element in the solid body" ), JsonProperty]
+        public decimal percent { get; set; } = percent;
 
         // Not intended to be user facing
-
         
         [JsonIgnore]
         public string localizedComposition => localizedName;

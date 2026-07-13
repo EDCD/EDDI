@@ -189,37 +189,37 @@ namespace EddiDataDefinitions
 
         // Additional calculated statistics
 
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "the cumulative probability describing the body's mass, relative to other bodies of the same planet type or stellar class." ), JsonIgnore]
         public decimal? massprobability => Probability.CumulativeP(starClass == null ? planetClass.massdistribution : starClass.massdistribution, starClass == null ? earthmass : solarmass);
         
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "the cumulative probability describing the body's radius, relative to other bodies of the same planet type or stellar class." ), JsonIgnore]
         public decimal? radiusprobability => Probability.CumulativeP(starClass == null ? planetClass.radiusdistribution : starClass.radiusdistribution, starClass == null ? radius : solarradius);
         
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "the cumulative probability describing the body's temperature, relative to other bodies of the same planet type or stellar class." ), JsonIgnore]
         public decimal? tempprobability => Probability.CumulativeP(starClass == null ? planetClass.tempdistribution : starClass.tempdistribution, temperature);
         
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "the cumulative probability describing the body's orbital period, relative to other bodies of the same planet type or stellar class." ), JsonIgnore]
         public decimal? orbitalperiodprobability => Probability.CumulativeP(starClass == null ? planetClass.orbitalperioddistribution : starClass.orbitalperioddistribution, orbitalperiod);
         
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "the cumulative probability describing the body's semi-major axis, relative to other bodies of the same planet type or stellar class." ), JsonIgnore]
         public decimal? semimajoraxisprobability => Probability.CumulativeP(starClass == null ? planetClass.semimajoraxisdistribution : starClass.semimajoraxisdistribution, semimajoraxis);
         
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "the cumulative probability describing the body's orbital eccentricity, relative to other bodies of the same planet type or stellar class." ), JsonIgnore]
         public decimal? eccentricityprobability => Probability.CumulativeP(starClass == null ? planetClass.eccentricitydistribution : starClass.eccentricitydistribution, eccentricity);
         
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "the cumulative probability describing the body's orbital inclination, relative to other bodies of the same planet type or stellar class." ), JsonIgnore]
         public decimal? inclinationprobability => Probability.CumulativeP(starClass == null ? planetClass.inclinationdistribution : starClass.inclinationdistribution, inclination);
         
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "the cumulative probability describing the body's argument of periapsis, relative to other bodies of the same planet type or stellar class." ), JsonIgnore]
         public decimal? periapsisprobability => Probability.CumulativeP(starClass == null ? planetClass.periapsisdistribution : starClass.periapsisdistribution, periapsis);
         
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "the cumulative probability describing the body's rotational period, relative to other bodies of the same planet type or stellar class." ), JsonIgnore]
         public decimal? rotationalperiodprobability => Probability.CumulativeP(starClass == null ? planetClass.rotationalperioddistribution : starClass.rotationalperioddistribution, rotationalperiod);
         
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "the cumulative probability describing the body's orbital tilt, relative to other bodies of the same planet type or stellar class." ), JsonIgnore]
         public decimal? tiltprobability => Probability.CumulativeP(starClass == null ? planetClass.tiltdistribution : starClass.tiltdistribution, tilt);
         
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "the cumulative probability describing the body's density, relative to other bodies of the same planet type or stellar class." ), JsonIgnore]
         public decimal? densityprobability => Probability.CumulativeP(starClass == null ? planetClass.densitydistribution : starClass.densitydistribution, density);
 
         // Star-specific items
@@ -313,10 +313,10 @@ namespace EddiDataDefinitions
         }
 
         // Additional calculated star statistics
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "the cumulative probability describing the star's age, relative to other stars of the same stellar class." ), JsonIgnore]
         public decimal? ageprobability => starClass == null ? null : Probability.CumulativeP(starClass.agedistribution, age);
 
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "the cumulative probability describing the star's absolute magnitude, relative to other stars of the same stellar class." ), JsonIgnore]
         public decimal? absolutemagnitudeprobability => starClass == null ? null : Probability.CumulativeP(starClass.absolutemagnitudedistribution, absolutemagnitude);
 
         private long estimateStarValue ()
@@ -457,10 +457,10 @@ namespace EddiDataDefinitions
         }
 
         // Additional calculated planet and moon statistics
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "the cumulative probability describing the body's gravity, relative to other bodies of the same planet type." ), JsonIgnore]
         public decimal? gravityprobability => Probability.CumulativeP(starClass == null ? planetClass.gravitydistribution : null, gravity);
 
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "the cumulative probability describing the body's atmospheric pressure, relative to other bodies of the same planet type." ), JsonIgnore]
         public decimal? pressureprobability => Probability.CumulativeP(starClass == null ? planetClass.pressuredistribution : null, pressure);
 
         [PublicAPI( "The duration of a solar day on the body, in Earth days" ), JsonIgnore]

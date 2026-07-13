@@ -10,15 +10,15 @@ namespace EddiDataDefinitions
         public string name { get; set; }
 
         /// <summary>The size of the launchbay</summary>
-        [PublicAPI]
+        [PublicAPI( "the numeric size of the launchbay" )]
         public int size { get; set; }
 
         // The type of the launchbay ("SRV" or "Vessel")
-        [PublicAPI]
+        [PublicAPI( "the type of launchbay, 'SRV' or 'Vessel'" )]
         public string type { get; set; }
 
         /// <summary>The vehicles residing in the launchbay (can be null)</summary>
-        [PublicAPI]
+        [PublicAPI( "the vehicles within the launchbay (this is an array of vehicle objects)" )]
         public List<Vehicle> vehicles { get; set; } = [ ];
     }
 }

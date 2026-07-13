@@ -44,7 +44,7 @@ namespace EddiDataDefinitions
         public static readonly TradeRating EliteIV;
         public static readonly TradeRating EliteV;
 
-        [PublicAPI]
+        [PublicAPI( "the numeric rank of the trade rating, from 0 to 13" )]
         public int rank { get; private set; }
 
         // dummy used to ensure that the static constructor has run

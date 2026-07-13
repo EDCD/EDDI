@@ -10,71 +10,71 @@ namespace EddiDataDefinitions
     {
         // Definition of the module
 
-        [PublicAPI, JsonProperty]
+        [PublicAPI( "numeric class of the module" ), JsonProperty]
         public int @class { get; set; }
 
-        [PublicAPI, JsonProperty]
+        [PublicAPI( "letter grade of the module" ), JsonProperty]
         public string grade { get; set; }
 
-        [PublicAPI, JsonProperty]
+        [PublicAPI( "base value of the module" ), JsonProperty]
         public long value { get; set; } // The undiscounted value
 
         // Additional definition for some items
 
         ///<summary>The localized name of the weapon mount</summary>
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "only for weapons, this defines the type of mount (fixed, gimballed, turreted)" ), JsonIgnore]
         public string mount => Mount != null ? Properties.Modules.ResourceManager.GetString(Mount.ToString()) : "";
 
-        [PublicAPI, JsonProperty]
+        [PublicAPI( "only for weapons, this defines the maximum amount of ammunition the clip can hold" ), JsonProperty]
         public int? clipcapacity { get; set; } // Only for weapons
 
-        [PublicAPI, JsonProperty]
+        [PublicAPI( "only for weapons, this defines the maximum amount of ammunition the hopper can store" ), JsonProperty]
         public int? hoppercapacity { get; set; } // Only for weapons
 
-        [PublicAPI, JsonProperty]
+        [PublicAPI( "only for weapons, this defines the amount of ammunition present in the clip during the last `Loadout` event" ), JsonProperty]
         public int? ammoinclip { get; set; } // Only for weapons
 
-        [PublicAPI, JsonProperty]
+        [PublicAPI( "only for weapons, this defines the amount of ammunition present in the hopper during the last `Loadout` event" ), JsonProperty]
         public int? ammoinhopper { get; set; } // Only for weapons
 
         // State of the module
 
-        [PublicAPI, JsonProperty]
+        [PublicAPI( "the price paid for the module, in credits" ), JsonProperty]
         public long price { get; set; } // How much we actually paid for it in credits
 
-        [PublicAPI, JsonProperty]
+        [PublicAPI( "the price paid for the module, in merc coins" ), JsonProperty]
         public long? mercPrice { get; set; } // How much we actually paid for it in merc coins
 
-        [PublicAPI, JsonProperty]
+        [PublicAPI( "whether the module is enabled" ), JsonProperty]
         public bool enabled { get; set; }
 
-        [PublicAPI, JsonProperty]
+        [PublicAPI( "the power priority of the module" ), JsonProperty]
         public int priority { get; set; }
 
-        [PublicAPI, JsonProperty]
+        [PublicAPI( "the position of the module in the `Modules` panel, sorted according to power usage" ), JsonProperty]
         public int position { get; set; }
 
-        [PublicAPI, JsonProperty]
+        [PublicAPI( "the power consumption of the module, measured in MegaWatts (MW)" ), JsonProperty]
         public decimal power { get; set; }
 
-        [PublicAPI, JsonProperty]
+        [PublicAPI( "the last reported health of the module, as a percentage" ), JsonProperty]
         public decimal health { get; set; } = 100M;
 
-        [PublicAPI, JsonProperty]
+        [PublicAPI( "whether the module is legally 'hot'" ), JsonProperty]
         public bool hot { get; set; } // False = `clean', true = `hot`
 
         // Engineering modification properties
-        [PublicAPI, JsonProperty]
+        [PublicAPI( "whether the module has been modified" ), JsonProperty]
         public bool modified { get; set; } // If the module has been modified
 
-        [PublicAPI, JsonProperty]
+        [PublicAPI( "the level of the engineering modification" ), JsonProperty]
         public int engineerlevel { get; set; }
 
-        [PublicAPI, JsonProperty]
+        [PublicAPI( "the percent quality of the engineering modification" ), JsonProperty]
         public decimal engineerquality { get; set; }
 
         // deprecated commodity category (exposed to Cottle and VA)
-        [PublicAPI, JsonIgnore, Obsolete("Please use localizedModification instead")]
+        [PublicAPI( "the localized name of the engineering modification" ), JsonIgnore, Obsolete("Please use localizedModification instead")]
         public string modification => localizedModification;
 
         // Not intended to be user facing

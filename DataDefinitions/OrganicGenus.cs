@@ -80,7 +80,7 @@ namespace EddiDataDefinitions
         [JsonProperty]
         public int minimumDistanceMeters { get; private set; }
 
-        [JsonIgnore, PublicAPI]
+        [JsonIgnore, PublicAPI( "the organic genus's localized description" )]
         public string localizedDescription => Properties.OrganicGenusDesc.ResourceManager.GetString( NormalizeGenus( edname ) );
         
         public OrganicGroup organicGroup { get; private set; }
