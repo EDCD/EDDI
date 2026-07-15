@@ -1,5 +1,4 @@
-﻿using CommanderMonitor;
-using EddiConfigService;
+﻿using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
