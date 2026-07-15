@@ -54,10 +54,10 @@ namespace EddiDataDefinitions
 
     public class FactionTrendingState ( FactionState factionState, int? trend )
     {
-        [PublicAPI]
+        [PublicAPI( "The faction state being tracked." )]
         public FactionState factionState { get; private set; } = factionState;
 
-        [PublicAPI]
+        [PublicAPI( "The recent trend for the faction state." )]
         public int? trend { get; private set; } = trend;
     }
 

@@ -95,7 +95,7 @@ namespace EddiDataDefinitions
         // Update the definition with the new galactic average price whenever this is set.
         // Fleet carriers return zero and do not display the true average price. We must disregard that information so preserve the true average price.
         // The average pricing data is the only data which may reference our internal definition, and even then only to obtain an average price.
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "the average price offered for this commodity in a legal market" )]
         public decimal avgprice
         {
             get => definition?.avgprice ?? 0;
