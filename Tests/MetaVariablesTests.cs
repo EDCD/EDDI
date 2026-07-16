@@ -55,13 +55,13 @@ namespace Tests
         private sealed class RuntimeVariableProvider
         {
             [PublicAPI( "A runtime test variable." )]
-            public RuntimeVariableDefinition TestRuntimeVariable => new( "runtime", typeof(string), () => "value" );
+            public static RuntimeVariableDefinition TestRuntimeVariable => new( "runtime", typeof(string), () => "value" );
         }
 
         private sealed class RuntimeVariableProviderMissingDescription
         {
             [PublicAPI]
-            public RuntimeVariableDefinition TestRuntimeVariable => new( "runtime", typeof(string), () => "value" );
+            public static RuntimeVariableDefinition TestRuntimeVariable => new( "runtime", typeof(string), () => "value" );
         }
         
         [TestInitialize]
@@ -494,8 +494,7 @@ namespace Tests
         public void MetaVariables_DescriptorsCanBeBuiltFromRuntimeVariableDeclarations ()
         {
             var declarations = RuntimeVariableDefinitionExtensions.DiscoverDeclarations(
-                typeof( RuntimeVariableProvider ),
-                new RuntimeVariableProvider() );
+                typeof( RuntimeVariableProvider ) );
             var metaVariables = new MetaVariables( declarations, options: MetaVariableDiscoveryOptions.StrictDocumentation );
 
             var descriptor = metaVariables.Descriptors.Single();
@@ -519,8 +518,7 @@ namespace Tests
         public void MetaVariables_StrictDocumentation_FailsForRuntimeVariablesMissingDescriptions ()
         {
             var declarations = RuntimeVariableDefinitionExtensions.DiscoverDeclarations(
-                typeof( RuntimeVariableProviderMissingDescription ),
-                new RuntimeVariableProviderMissingDescription() );
+                typeof( RuntimeVariableProviderMissingDescription ) );
 
             Assert.ThrowsExactly<MetaVariableDiscoveryException>( () =>
                 _ = new MetaVariables( declarations, options: MetaVariableDiscoveryOptions.StrictDocumentation ) );

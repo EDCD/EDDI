@@ -148,7 +148,7 @@ namespace Utilities
                     keysPath.ToList(),
                     eventProperty.Name,
                     eventProperty.PropertyType,
-                    publicAPIAttribute.Description,
+                    GetPublicAPIDescription( publicAPIAttribute, eventProperty ),
                     eventProperty.CanRead && reflectionObject != null
                         ? ReadMemberValue( eventProperty, reflectionObject )
                         : null,
@@ -170,7 +170,7 @@ namespace Utilities
                     keysPath.ToList(),
                     eventField.Name,
                     eventField.FieldType,
-                    publicAPIAttribute.Description,
+                    GetPublicAPIDescription( publicAPIAttribute, eventField ),
                     reflectionObject != null ? ReadMemberValue( eventField, reflectionObject ) : null,
                     maxRecursionLevel,
                     eventField.DeclaringType,
@@ -179,6 +179,44 @@ namespace Utilities
             }
 
             return Results;
+        }
+
+        private static string GetPublicAPIDescription ( PublicAPIAttribute publicAPIAttribute, MemberInfo memberInfo )
+        {
+            if ( !string.IsNullOrWhiteSpace( publicAPIAttribute.Description ) )
+            {
+                return publicAPIAttribute.Description;
+            }
+
+            if ( IsResourceBasedLocalizedEDNameMember( memberInfo ) )
+            {
+                return memberInfo.Name switch
+                {
+                    "name" => "The localized name.",
+                    "invariantName" => "The invariant English name.",
+                    _ => publicAPIAttribute.Description
+                };
+            }
+
+            return publicAPIAttribute.Description;
+        }
+
+        private static bool IsResourceBasedLocalizedEDNameMember ( MemberInfo memberInfo )
+        {
+            var declaringType = memberInfo.DeclaringType;
+            while ( declaringType != null )
+            {
+                if ( declaringType.IsGenericType &&
+                     declaringType.GetGenericTypeDefinition().FullName ==
+                     "EddiDataDefinitions.ResourceBasedLocalizedEDName`1" )
+                {
+                    return true;
+                }
+
+                declaringType = declaringType.BaseType;
+            }
+
+            return false;
         }
 
         private object ReadMemberValue ( MemberInfo memberInfo, object reflectionObject )
@@ -753,8 +791,24 @@ namespace Utilities
                 return ([], null);
             }
 
-            var values = allOfThem
-                .Cast<object>()
+            var resourceLockField = localizedEdNameType.GetField(
+                "resourceLock",
+                BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy );
+            var resourceLock = resourceLockField?.GetValue( null );
+            List<object> allOfThemSnapshot;
+            if ( resourceLock != null )
+            {
+                lock ( resourceLock )
+                {
+                    allOfThemSnapshot = allOfThem.Cast<object>().ToList();
+                }
+            }
+            else
+            {
+                allOfThemSnapshot = allOfThem.Cast<object>().ToList();
+            }
+
+            var values = allOfThemSnapshot
                 .Select( item => new VariableAllowedValue(
                     ReadStringMember( item, "edname" ),
                     ReadStringMember( item, "invariantName" ),
@@ -762,13 +816,15 @@ namespace Utilities
                 .Where( v => !string.IsNullOrEmpty( v.EdName ) ||
                              !string.IsNullOrEmpty( v.InvariantName ) ||
                              !string.IsNullOrEmpty( v.LocalizedName ) )
+                .GroupBy( v => new { v.EdName, v.InvariantName, v.LocalizedName } )
+                .Select( g => g.First() )
                 .OrderBy( v => v.InvariantName, StringComparer.InvariantCulture )
                 .ThenBy( v => v.EdName, StringComparer.InvariantCulture )
                 .ToList();
 
             if ( values.Count > maxInlineAllowedValues )
             {
-                return ([], $"{values.Count} values omitted by the inline value-list size policy.");
+                return ([], "Values omitted by the inline value-list size policy.");
             }
 
             return (values.AsReadOnly(), null);

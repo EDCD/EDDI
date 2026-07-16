@@ -659,26 +659,26 @@ namespace Tests
         {
             var report = VoiceAttackVariables.GetRuntimeVariableParityReport();
 
-            Assert.IsTrue( report.Any( variable =>
+            Assert.Contains( variable =>
                 variable.CottlePath == "environment" &&
                 variable.VoiceAttackKey == "Environment" &&
                 variable.IntendedForBoth &&
-                variable.CurrentlyEmittedByVoiceAttack ) );
-            Assert.IsTrue( report.Any( variable =>
+                variable.CurrentlyEmittedByVoiceAttack, report );
+            Assert.Contains( variable =>
                 variable.CottlePath == "vehicle" &&
                 variable.VoiceAttackKey == "Vehicle" &&
                 variable.IntendedForBoth &&
-                variable.CurrentlyEmittedByVoiceAttack ) );
-            Assert.IsTrue( report.Any( variable =>
+                variable.CurrentlyEmittedByVoiceAttack, report );
+            Assert.Contains( variable =>
                 variable.CottlePath == "version" &&
                 variable.VoiceAttackKey == "EDDI version" &&
                 variable.IntendedForBoth &&
-                variable.CurrentlyEmittedByVoiceAttack ) );
-            Assert.IsTrue( report.Any( variable =>
+                variable.CurrentlyEmittedByVoiceAttack, report );
+            Assert.Contains( variable =>
                 variable.CottlePath == "capi_active" &&
                 variable.VoiceAttackKey == "cAPI active" &&
                 variable.IntendedForBoth &&
-                variable.CurrentlyEmittedByVoiceAttack ) );
+                variable.CurrentlyEmittedByVoiceAttack, report );
         }
 
         [TestMethod, DoNotParallelize]
@@ -691,12 +691,12 @@ namespace Tests
             VoiceAttackVariables.setCAPIState( true );
 
             Assert.HasCount( 1, _runtimeEvents );
-            Assert.AreEqual( true, mockVAProxy.GetBoolean( "cAPI active" ) );
+            Assert.IsTrue( mockVAProxy.GetBoolean( "cAPI active" ) );
 
             var action = EnumerateRuntimeActions( _runtimeEvents[ 0 ] ).Single();
             Assert.AreEqual( "set_boolean", action[ RuntimePayloadKeys.CommandActionPayload.Action ] );
             Assert.AreEqual( "cAPI active", action[ RuntimePayloadKeys.CommandActionPayload.Key ] );
-            Assert.AreEqual( true, action[ RuntimePayloadKeys.CommandActionPayload.Value ] );
+            Assert.IsTrue( (bool?)action[ RuntimePayloadKeys.CommandActionPayload.Value ]  );
         }
 
         [TestMethod, DoNotParallelize]
@@ -710,18 +710,18 @@ namespace Tests
             Assert.HasCount( 1, _runtimeEvents );
             var actions = EnumerateRuntimeActions( _runtimeEvents[ 0 ] ).ToList();
 
-            Assert.IsTrue( actions.Any( action =>
+            Assert.Contains( action =>
                 Equals( action[ RuntimePayloadKeys.CommandActionPayload.Action ], "set_boolean" ) &&
-                Equals( action[ RuntimePayloadKeys.CommandActionPayload.Key ], "cAPI active" ) ) );
-            Assert.IsTrue( actions.Any( action =>
+                Equals( action[ RuntimePayloadKeys.CommandActionPayload.Key ], "cAPI active" ), actions );
+            Assert.Contains( action =>
                 Equals( action[ RuntimePayloadKeys.CommandActionPayload.Action ], "set_boolean" ) &&
-                Equals( action[ RuntimePayloadKeys.CommandActionPayload.Key ], "ipa active" ) ) );
-            Assert.IsTrue( actions.Any( action =>
+                Equals( action[ RuntimePayloadKeys.CommandActionPayload.Key ], "ipa active" ), actions );
+            Assert.Contains( action =>
                 Equals( action[ RuntimePayloadKeys.CommandActionPayload.Action ], "set_boolean" ) &&
-                Equals( action[ RuntimePayloadKeys.CommandActionPayload.Key ], "icao active" ) ) );
-            Assert.IsTrue( actions.Any( action =>
+                Equals( action[ RuntimePayloadKeys.CommandActionPayload.Key ], "icao active" ), actions );
+            Assert.Contains( action =>
                 Equals( action[ RuntimePayloadKeys.CommandActionPayload.Action ], "set_decimal" ) &&
-                Equals( action[ RuntimePayloadKeys.CommandActionPayload.Key ], "Search system distance" ) ) );
+                Equals( action[ RuntimePayloadKeys.CommandActionPayload.Key ], "Search system distance" ), actions );
         }
 
         [TestMethod, DoNotParallelize]

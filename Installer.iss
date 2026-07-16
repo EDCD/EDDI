@@ -49,12 +49,12 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "*.exe"; DestDir: "{app}"
+Source: "*.exe"; DestDir: "{app}"; Excludes: "DocumentationGenerator.exe"
 Source: "*.exe.config"; DestDir: "{app}"; Flags: skipifsourcedoesntexist
 
 Source: "runtimes\*.*"; DestDir: "{app}\runtimes"; Flags: recursesubdirs createallsubdirs
 
-Source: "*.dll"; DestDir: "{app}"; Excludes: "Tests.dll"
+Source: "*.dll"; DestDir: "{app}"; Excludes: "Tests.dll,DocumentationGenerator.dll"
 Source: "*.dll.config"; DestDir: "{app}"; Flags: skipifsourcedoesntexist
 
 Source: "*.resources.dll"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs

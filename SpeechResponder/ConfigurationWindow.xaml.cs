@@ -124,24 +124,9 @@ namespace EddiSpeechResponder
 
         private void GetStandardVariables ()
         {
-            // Get MetaVariables for standard object variables available from the script resolver
-            var metaVars = new HashSet<MetaVariable>();
-            var varsLock = new object();
+            // Get MetaVariables for standard variables available from the script resolver
             var standardVars = SpeechResponder.ScriptResolver.CompileVariables();
-            standardVars.AsParallel().ForAll( kvp =>
-            {
-                if ( kvp.Value.Item1 is null ) { return; }
-                var vars = new MetaVariables ( kvp.Value.Item1 ).Results;
-                foreach ( var v in vars )
-                {
-                    v.keysPath = v.keysPath.Prepend ( kvp.Key ).ToList ();
-                }
-                lock ( varsLock )
-                {
-                    metaVars.UnionWith ( vars );
-                }
-            } );
-            standardMetaVariables = metaVars;
+            standardMetaVariables = StandardVariableInventory.GetStandardMetaVariables( standardVars );
         }
 
         private void PersonalitiesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

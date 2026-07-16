@@ -232,9 +232,6 @@ namespace EddiSpeechResponder.ScriptResolverService
                     // Boolean constants
                     [ "true" ] = new( typeof(bool), true ),
                     [ "false" ] = new( typeof(bool), false ),
-
-                    // Standard simple variables
-                    [ "va_active" ] = new( typeof(bool), EDDI.Instance.FromVA )
                 };
 
                 AddRuntimeVariables( dict, RuntimeVariableCatalog.TopLevelVariables );
@@ -332,7 +329,7 @@ namespace EddiSpeechResponder.ScriptResolverService
         }
 
         private static void AddRuntimeVariables (
-            IDictionary<string, Tuple<Type, Value>> dict,
+            Dictionary<string, Tuple<Type, Value>> dict,
             IEnumerable<RuntimeVariableDefinition> definitions )
         {
             foreach ( var definition in definitions )

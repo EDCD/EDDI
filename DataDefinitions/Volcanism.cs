@@ -29,22 +29,22 @@ namespace EddiDataDefinitions
             COMPOSITIONS.Add("water", "Water");
         }
         
-        [PublicAPI( "the localized type of volcanism: either \"Geysers\" or \"Magma\"" ), JsonIgnore, Obsolete("Please use localizedType or invariantType")]
+        [PublicAPI( "the localized type of volcanism: either \"Geysers\" or \"Magma\"" ), JsonIgnore, Obsolete("Please use localizedType")]
         public string type => localizedType;
 
-        [PublicAPI( "the invariant type of volcanism: either \"Geysers\" or \"Magma\"" ), JsonIgnore, Obsolete( "Please use localizedType or invariantType" )]
+        [PublicAPI( "the invariant type of volcanism: either \"Geysers\" or \"Magma\"" ), JsonIgnore]
         public string invariantType => GetInvariantString( edType );
 
-        [PublicAPI( "the localized composition of the volcanism (Iron, Carbon dioxide, Nitrogen etc.)" ), JsonIgnore, Obsolete("Please use localizedComposition or invariantComposition")]
+        [PublicAPI( "the localized composition of the volcanism (Iron, Carbon dioxide, Nitrogen etc.)" ), JsonIgnore, Obsolete("Please use localizedComposition")]
         public string composition => localizedComposition;
 
-        [PublicAPI( "the invariant composition of the volcanism (Iron, Carbon dioxide, Nitrogen etc.)" ), JsonIgnore, Obsolete( "Please use localizedComposition or invariantComposition" )]
+        [PublicAPI( "the invariant composition of the volcanism (Iron, Carbon dioxide, Nitrogen etc.)" ), JsonIgnore]
         public string invariantComposition => GetInvariantString( edComposition );
 
-        [PublicAPI( "the localized amount of volcanism (\"Major\", \"Minor\" or nothing)" ), JsonIgnore, Obsolete("Please use localizedAmount or invariantAmount")]
+        [PublicAPI( "the localized amount of volcanism (\"Major\", \"Minor\" or nothing)" ), JsonIgnore, Obsolete("Please use localizedAmount")]
         public string amount => localizedAmount;
 
-        [PublicAPI( "the invariant amount of volcanism (\"Major\", \"Minor\" or nothing)" ), JsonIgnore, Obsolete( "Please use localizedAmount or invariantAmount" )]
+        [PublicAPI( "the invariant amount of volcanism (\"Major\", \"Minor\" or nothing)" ), JsonIgnore]
         public string invariantAmount => GetInvariantString( edAmount );
 
         // Not intended to be user facing

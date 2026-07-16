@@ -17,6 +17,7 @@ namespace EddiSpeechResponder.ScriptResolverService
         public const string IpaActiveVariable = "ipa_active";
         public const string OdysseyVariable = "odyssey";
         public const string SearchDistanceLyVariable = "searchdistance";
+        public const string VaActiveVariable = "va_active";
         public const string VehicleVariable = "vehicle";
         public const string VersionVariable = "version";
 
@@ -92,6 +93,13 @@ namespace EddiSpeechResponder.ScriptResolverService
             "Search system distance",
             true );
 
+        [PublicAPI( "True if the VoiceAttack plug-in is active." )]
+        public static RuntimeVariableDefinition VaActive => new(
+            VaActiveVariable,
+            typeof(bool),
+            () => EDDI.Instance.FromVA,
+            RuntimeVariableSourceKind.TopLevelRuntime );
+
         [PublicAPI( "The commander's current vehicle." )]
         public static RuntimeVariableDefinition Vehicle => new(
             VehicleVariable,
@@ -121,6 +129,7 @@ namespace EddiSpeechResponder.ScriptResolverService
             IpaActive,
             Odyssey,
             SearchDistanceLy,
+            VaActive,
             Vehicle,
             Version
         ];

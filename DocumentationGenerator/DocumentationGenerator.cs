@@ -1,3 +1,4 @@
+using EddiCore;
 using EddiEvents;
 using EddiIPC_Service;
 using EddiSpeechResponder.ScriptResolverService;
@@ -6,13 +7,27 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using Utilities;
 
-namespace EddiDocumentationGenerator
+namespace DocumentationGenerator
 {
     public static class DocumentationGenerator
     {
         private const string NewLine = "\r\n";
+
+        private sealed record ObjectShape (
+            Type Type,
+            string DisplayName,
+            IReadOnlyList<string> UsedByPaths,
+            IReadOnlyList<ObjectOccurrence> Occurrences,
+            IReadOnlyList<VariableDescriptor> Descriptors );
+
+        private sealed record ObjectOccurrence (
+            Type Type,
+            IReadOnlyList<string> KeysPath,
+            string CottlePath );
 
         public static IReadOnlyDictionary<string, string> RenderWikiEventPages ()
         {
@@ -56,6 +71,71 @@ namespace EddiDocumentationGenerator
             }
 
             return "      <Word>" + string.Join( "</Word>\r\n      <Word>", eventVars ) + " </Word>\r\n";
+        }
+
+        public static string RenderVariablesPage ()
+        {
+            var monitorDeclarations = GetDocumentationMonitorRuntimeDeclarations();
+            var variables = StandardVariableInventory
+                .GetStaticStandardMetaVariables( monitorDeclarations, MetaVariableDiscoveryOptions.StrictDocumentation )
+                .Select( v => v.Descriptor )
+                .Where( d => !string.IsNullOrWhiteSpace( d.CottlePath ) )
+                .OrderBy( d => d.CottlePath, StringComparer.OrdinalIgnoreCase )
+                .ToList();
+
+            var output = new List<string>
+            {
+                "# EDDI Variables",
+                "",
+                "EDDI provides variables that can be used by Speech Responder scripts.",
+                "",
+                "A variable can be a simple value, such as `environment`, or an object root, such as `cmdr`. Object properties are accessed from the root with a period, for example `cmdr.name`. Array / list object values can be accessed using an index between square brackets, for example `inventory[<index\\>].name`.",
+                "",
+                "The variable list below identifies the roots available to scripts. The object reference documents each object shape once and lists the roots that use it, so shared object types such as `system`, `lastsystem`, and `nextsystem` do not repeat the same property descriptions.",
+                "",
+                "Event-specific variables are available under the `event` object while editing an event script and are documented on each event page.",
+                "",
+                "---",
+                "",
+                "## Variables",
+                ""
+            };
+
+            foreach ( var descriptor in variables
+                         .Where( d => d.KeysPath.Count == 1 )
+                         .OrderBy( d => d.CottlePath, StringComparer.OrdinalIgnoreCase ) )
+            {
+                output.Add( RenderCottleDescriptor( descriptor ) );
+            }
+
+            var objectShapes = BuildObjectShapes( variables );
+            if ( objectShapes.Count > 0 )
+            {
+                output.Add( "" );
+                output.Add( "---" );
+                output.Add( "" );
+                output.Add( "## Object reference" );
+                output.Add( "" );
+            }
+
+            var documentedTypes = objectShapes.Select( s => s.Type ).ToHashSet();
+            var objectOccurrences = objectShapes.SelectMany( s => s.Occurrences ).ToList();
+            foreach ( var shape in objectShapes )
+            {
+                output.Add( $"### {shape.DisplayName}" );
+                output.Add( "" );
+                output.Add( "Used by: " + string.Join( ", ", shape.UsedByPaths.Select( path => $"`{path}`" ) ) );
+                output.Add( "" );
+
+                foreach ( var descriptor in shape.Descriptors )
+                {
+                    output.Add( RenderRelativeCottleDescriptor( descriptor, shape.Occurrences, objectOccurrences, documentedTypes ) );
+                }
+
+                output.Add( "" );
+            }
+
+            return JoinLines( output );
         }
 
         public static (string Help, string Functions) RenderFunctionsHelp ()
@@ -105,6 +185,8 @@ namespace EddiDocumentationGenerator
             }
 
             WriteText( outputDirectory, @"Wiki\Events.md", RenderWikiEventsList() );
+            WriteText( outputDirectory, "Variables.md", RenderVariablesPage() );
+            WriteText( outputDirectory, @"Wiki\Variables.md", RenderVariablesPage() );
 
             var (help, functions) = RenderFunctionsHelp();
             WriteText( outputDirectory, "Help.md", help );
@@ -193,6 +275,351 @@ namespace EddiDocumentationGenerator
                 Type type when type == typeof( IEnumerable<> ) => $"  - *{{INT:{variable.key}}}* {description}",
                 _ => string.Empty
             };
+        }
+
+        private static List<ObjectShape> BuildObjectShapes ( IReadOnlyList<VariableDescriptor> descriptors )
+        {
+            var occurrences = BuildObjectOccurrences( descriptors );
+
+            return occurrences
+                .GroupBy( occurrence => occurrence.Type )
+                .Select( g =>
+                {
+                    var shapeOccurrences = g
+                        .OrderBy( occurrence => occurrence.CottlePath, StringComparer.OrdinalIgnoreCase )
+                        .ToList();
+
+                    var directDescriptors = shapeOccurrences
+                        .SelectMany( occurrence => descriptors
+                            .Where( descriptor => IsDirectChildOfOccurrence( descriptor, occurrence ) ) )
+                        .GroupBy( descriptor => RenderRelativeCottlePath( descriptor, shapeOccurrences ), StringComparer.OrdinalIgnoreCase )
+                        .Select( group => group.OrderBy( d => d.CottlePath, StringComparer.OrdinalIgnoreCase ).First() )
+                        .Where( d => !string.IsNullOrWhiteSpace( RenderRelativeCottlePath( d, shapeOccurrences ) ) )
+                        .OrderBy( d => RenderRelativeCottlePath( d, shapeOccurrences ), StringComparer.OrdinalIgnoreCase )
+                        .ToList();
+
+                    return new ObjectShape(
+                        g.Key,
+                        RenderTypeName( g.Key ),
+                        shapeOccurrences
+                            .Select( occurrence => RenderOccurrenceReference( occurrence, occurrences ) )
+                            .Distinct( StringComparer.OrdinalIgnoreCase )
+                            .OrderBy( path => path, StringComparer.OrdinalIgnoreCase )
+                            .ToList(),
+                        shapeOccurrences,
+                        directDescriptors );
+                } )
+                .Where( shape => shape.Descriptors.Count > 0 )
+                .OrderBy( s => s.DisplayName, StringComparer.OrdinalIgnoreCase )
+                .ToList();
+        }
+
+        private static List<ObjectOccurrence> BuildObjectOccurrences ( IReadOnlyList<VariableDescriptor> descriptors )
+        {
+            var occurrencesByPath = new SortedDictionary<string, ObjectOccurrence>( StringComparer.OrdinalIgnoreCase );
+
+            foreach ( var descriptor in descriptors.Where( d => d.IsObjectRoot && d.DeclaredType is not null ) )
+            {
+                AddOccurrence( occurrencesByPath, descriptor.DeclaredType, descriptor.KeysPath );
+            }
+
+            foreach ( var group in GetCollectionElementTypeCandidates( descriptors )
+                         .GroupBy( candidate => candidate.KeysPath, new KeysPathComparer() ) )
+            {
+                var elementType = group
+                    .Where( candidate => candidate.Type is not null )
+                    .GroupBy( candidate => candidate.Type )
+                    .OrderByDescending( g => g.Count() )
+                    .ThenBy( g => g.Key.FullName, StringComparer.OrdinalIgnoreCase )
+                    .Select( g => g.Key )
+                    .FirstOrDefault();
+
+                AddOccurrence( occurrencesByPath, elementType, group.Key );
+            }
+
+            return occurrencesByPath.Values
+                .Where( occurrence => occurrence.Type is not null &&
+                                      occurrence.Type != typeof( object ) &&
+                                      !IsUndecomposedType( occurrence.Type ) )
+                .ToList();
+        }
+
+        private static IEnumerable<(IReadOnlyList<string> KeysPath, Type Type)> GetCollectionElementTypeCandidates (
+            IReadOnlyList<VariableDescriptor> descriptors )
+        {
+            foreach ( var descriptor in descriptors.Where( d => d.KeysPath.Count > 2 ) )
+            {
+                for ( var i = 0; i < descriptor.KeysPath.Count - 1; i++ )
+                {
+                    if ( descriptor.KeysPath[ i ] != MetaVariables.indexMarker )
+                    {
+                        continue;
+                    }
+
+                    if ( descriptor.KeysPath.Count != i + 2 )
+                    {
+                        continue;
+                    }
+
+                    yield return (descriptor.KeysPath.Take( i + 1 ).ToList(), descriptor.SourceType);
+                }
+            }
+        }
+
+        private static void AddOccurrence (
+            IDictionary<string, ObjectOccurrence> occurrencesByPath,
+            Type type,
+            IEnumerable<string> keysPath )
+        {
+            if ( type is null )
+            {
+                return;
+            }
+
+            var path = keysPath.ToList();
+            if ( path.Count == 0 )
+            {
+                return;
+            }
+
+            var cottlePath = VariablePathFormatter.RenderCottlePath( path );
+            occurrencesByPath.TryAdd( cottlePath, new ObjectOccurrence( type, path, cottlePath ) );
+        }
+
+        private static bool IsDirectChildOfOccurrence (
+            VariableDescriptor descriptor,
+            ObjectOccurrence occurrence )
+        {
+            return descriptor.KeysPath.Count == occurrence.KeysPath.Count + 1 &&
+                   StartsWith( descriptor.KeysPath, occurrence.KeysPath );
+        }
+
+        private static string RenderOccurrenceReference (
+            ObjectOccurrence occurrence,
+            IReadOnlyList<ObjectOccurrence> occurrences )
+        {
+            var parent = occurrences
+                .Where( candidate => !ReferenceEquals( candidate, occurrence ) )
+                .Where( candidate => candidate.KeysPath.Count < occurrence.KeysPath.Count )
+                .Where( candidate => StartsWith( occurrence.KeysPath, candidate.KeysPath ) )
+                .OrderByDescending( candidate => candidate.KeysPath.Count )
+                .FirstOrDefault();
+
+            if ( parent is null )
+            {
+                return occurrence.CottlePath;
+            }
+
+            var relativePath = VariablePathFormatter.RenderCottlePath(
+                occurrence.KeysPath.Skip( parent.KeysPath.Count ) );
+            return $"{RenderTypeName( parent.Type )}.{relativePath}";
+        }
+
+        private static bool StartsWith (
+            IReadOnlyList<string> keysPath,
+            IReadOnlyList<string> prefix )
+        {
+            return keysPath.Count >= prefix.Count &&
+                   prefix.Select( ( key, index ) => string.Equals( keysPath[ index ], key, StringComparison.OrdinalIgnoreCase ) )
+                       .All( matched => matched );
+        }
+
+        private static string RenderRelativeCottleDescriptor (
+            VariableDescriptor descriptor,
+            IReadOnlyList<ObjectOccurrence> occurrences,
+            IReadOnlyList<ObjectOccurrence> allOccurrences,
+            ISet<Type> documentedTypes )
+        {
+            var relativePath = RenderRelativeCottlePath( descriptor, occurrences );
+            var referenceType = GetReferenceType( descriptor, allOccurrences, documentedTypes );
+            var description = RenderDescriptorDescription( descriptor, includeAllowedValues: referenceType is null ).Trim();
+            if ( referenceType is not null )
+            {
+                description = string.IsNullOrWhiteSpace( description )
+                    ? $"See: `{RenderTypeName( referenceType )}`."
+                    : $"{description} See: `{RenderTypeName( referenceType )}`.";
+            }
+
+            return $"  - *{relativePath}* - {description}";
+        }
+
+        private static string RenderRelativeCottlePath (
+            VariableDescriptor descriptor,
+            IReadOnlyList<ObjectOccurrence> occurrences )
+        {
+            var occurrence = occurrences
+                .Where( o => StartsWith( descriptor.KeysPath, o.KeysPath ) )
+                .OrderByDescending( o => o.KeysPath.Count )
+                .FirstOrDefault();
+
+            return occurrence is null
+                ? string.Empty
+                : VariablePathFormatter.RenderCottlePath( descriptor.KeysPath.Skip( occurrence.KeysPath.Count ) );
+        }
+
+        private static string RenderCottleDescriptor ( VariableDescriptor descriptor )
+        {
+            return $"  - *{descriptor.CottlePath}* - {RenderDescriptorDescription( descriptor ).Trim()}";
+        }
+
+        private static Type GetReferenceType (
+            VariableDescriptor descriptor,
+            IReadOnlyList<ObjectOccurrence> occurrences,
+            ISet<Type> documentedTypes )
+        {
+            if ( descriptor.IsObjectRoot &&
+                 descriptor.DeclaredType is not null &&
+                 descriptor.DeclaredType != typeof( object ) &&
+                 documentedTypes.Contains( descriptor.DeclaredType ) )
+            {
+                return descriptor.DeclaredType;
+            }
+
+            if ( !descriptor.IsCollectionRoot )
+            {
+                return null;
+            }
+
+            var collectionElementPath = descriptor.KeysPath
+                .Append( MetaVariables.indexMarker )
+                .ToList();
+            var collectionElementCottlePath = VariablePathFormatter.RenderCottlePath( collectionElementPath );
+
+            var referenceType = occurrences
+                .FirstOrDefault( occurrence => string.Equals(
+                    occurrence.CottlePath,
+                    collectionElementCottlePath,
+                    StringComparison.OrdinalIgnoreCase ) )
+                ?.Type;
+
+            return referenceType is not null && documentedTypes.Contains( referenceType )
+                ? referenceType
+                : null;
+        }
+
+        private static string RenderDescriptorDescription ( VariableDescriptor descriptor, bool includeAllowedValues = true )
+        {
+            var description = descriptor.Description ?? string.Empty;
+            if ( descriptor.IsObsolete )
+            {
+                description = string.IsNullOrEmpty( descriptor.ObsoleteMessage )
+                    ? $"{description} Obsolete."
+                    : $"{description} Obsolete: {descriptor.ObsoleteMessage}";
+            }
+
+            if ( includeAllowedValues && descriptor.AllowedValues.Count > 0 )
+            {
+                var allowedValues = string.Join(
+                    ", ",
+                    descriptor.AllowedValues
+                        .Select( v => v.LocalizedName ?? v.InvariantName ?? v.EdName )
+                        .Where( v => !string.IsNullOrWhiteSpace( v ) ) );
+                description = $"{description} Allowed values: {allowedValues}.";
+            }
+            else if ( includeAllowedValues && !string.IsNullOrEmpty( descriptor.AllowedValuesOmittedReason ) )
+            {
+                description = $"{description} {descriptor.AllowedValuesOmittedReason}";
+            }
+
+            return description;
+        }
+
+        private static bool IsUndecomposedType ( Type type )
+        {
+            return type == typeof( string ) ||
+                   type == typeof( bool ) ||
+                   type == typeof( int ) ||
+                   type == typeof( uint ) ||
+                   type == typeof( decimal ) ||
+                   type == typeof( long ) ||
+                   type == typeof( ulong ) ||
+                   type == typeof( double ) ||
+                   type == typeof( float ) ||
+                   type == typeof( DateTime ) ||
+                   type == typeof( TimeSpan );
+        }
+
+        private static string RenderTypeName ( Type type )
+        {
+            if ( !type.IsGenericType )
+            {
+                return type.Name;
+            }
+
+            var genericName = type.Name.Split( '`' )[ 0 ];
+            var genericArguments = string.Join( ", ", type.GetGenericArguments().Select( RenderTypeName ) );
+            return $"{genericName}<{genericArguments}>";
+        }
+
+        private sealed class KeysPathComparer : IEqualityComparer<IReadOnlyList<string>>
+        {
+            public bool Equals ( IReadOnlyList<string> x, IReadOnlyList<string> y )
+            {
+                if ( ReferenceEquals( x, y ) )
+                {
+                    return true;
+                }
+
+                if ( x is null || y is null || x.Count != y.Count )
+                {
+                    return false;
+                }
+
+                return x.SequenceEqual( y, StringComparer.OrdinalIgnoreCase );
+            }
+
+            public int GetHashCode ( IReadOnlyList<string> obj )
+            {
+                unchecked
+                {
+                    return obj.Aggregate( 17, ( hash, key ) =>
+                        (hash * 31) + StringComparer.OrdinalIgnoreCase.GetHashCode( key ?? string.Empty ) );
+                }
+            }
+        }
+
+        private static List<RuntimeVariableDeclaration> GetDocumentationMonitorRuntimeDeclarations ()
+        {
+            return DiscoverMonitorTypes()
+                .SelectMany( type =>
+                {
+                    var monitor = (IEddiMonitor)RuntimeHelpers.GetUninitializedObject( type );
+                    return RuntimeVariableDefinitionExtensions.DiscoverDeclarations( type, monitor );
+                } )
+                .ToList();
+        }
+
+        private static List<Type> DiscoverMonitorTypes ()
+        {
+            var directory = Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location )
+                            ?? AppContext.BaseDirectory;
+
+            return Directory
+                .EnumerateFiles( directory, "*Monitor.dll", SearchOption.AllDirectories )
+                .OrderBy( path => path, StringComparer.OrdinalIgnoreCase )
+                .SelectMany( GetMonitorTypes )
+                .OrderBy( type => type.FullName, StringComparer.OrdinalIgnoreCase )
+                .ToList();
+        }
+
+        private static IEnumerable<Type> GetMonitorTypes ( string assemblyPath )
+        {
+            try
+            {
+                return Assembly.LoadFrom( assemblyPath )
+                    .GetTypes()
+                    .Where( type => !type.IsAbstract &&
+                                    !type.IsInterface &&
+                                    typeof(IEddiMonitor).IsAssignableFrom( type ) );
+            }
+            catch ( Exception ex ) when ( ex is BadImageFormatException or
+                                           FileLoadException or
+                                           ReflectionTypeLoadException )
+            {
+                throw new InvalidOperationException(
+                    $"Unable to discover monitor variables from '{assemblyPath}'.",
+                    ex );
+            }
         }
 
         private static string JoinLines ( IEnumerable<string> lines )

@@ -11,6 +11,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Add theme support with Light, Dark, and Classic themes, in addition to a "System" theme that matches your Windows OS preference. (thanks to @Tiberius-Sicae)
     * Fix the Type-11 Prospector's specialty limpet controller specialty slot definition. (#2818) (thanks to @Tiberius-Sicae) 
     * The installer now splits the EDDI installation into a separate folder from the VoiceAttack installation. This removes potential conflicts with other VoiceAttack plugins.
+    * Refactor and automate variable documentation generation.
     * `Vehicle` object definition updated with `description`, `invariantDescription`, and `isRemotePiloted` fields. 
     * `VoiceDetail` object definition updated with `friendlyName`, `supportedLocales`, and `isMultilingual` fields.
   * Crime Monitor 
