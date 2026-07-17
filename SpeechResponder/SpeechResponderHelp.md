@@ -21,7 +21,7 @@ EDDI's speech responder uses Cottle for scripting. Cottle has a number of great 
 
 Information on how to write Cottle scripts is available at http://r3c.github.io/cottle/#toc-2, and EDDI's default scripts use a lot of the functions available. EDDI also uses a number of custom functions, documented in-app when editing a script via the `Help` button. 
 
-Variables made available for scripting are in-app when editing a script via the `Variables` button. Standard variables appear at the top of the page. Additional event-specific variables are appended to the bottom of the page for applicable events and are documented in the wiki at https://github.com/EDCD/EDDI/wiki/Events.
+Variables made available for scripting are in-app when editing a script via the `Variables` button. For event scripts, event-specific variables appear first under the `event` object. Other variables follow below, and event variables are documented in the wiki at https://github.com/EDCD/EDDI/wiki/Events.
 
 The speech responder contains both event-based and non-event-based scripts.
 

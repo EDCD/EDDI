@@ -89,15 +89,15 @@ namespace DocumentationGenerator
                 "",
                 "EDDI provides variables that can be used by Speech Responder scripts.",
                 "",
-                "A variable can be a simple value, such as `environment`, or an object root, such as `cmdr`. Object properties are accessed from the root with a period, for example `cmdr.name`. Array / list object values can be accessed using an index between square brackets, for example `inventory[<index\\>].name`.",
+                "A variable can be a simple value, such as `environment`, or an object, such as `cmdr`. Object properties are accessed from the parent object with a period, for example `cmdr.name`. Array / list object values can be accessed using an index between square brackets, for example `inventory[<index\\>].name`.",
                 "",
-                "The variable list below identifies the roots available to scripts. The object reference documents each object shape once and lists the roots that use it, so shared object types such as `system`, `lastsystem`, and `nextsystem` do not repeat the same property descriptions.",
+                "The root variable list below identifies the roots available to scripts. The object reference documents each object shape once and lists the roots that use it, so shared object types such as `system`, `lastsystem`, and `nextsystem` do not repeat the same property descriptions.",
                 "",
                 "Event-specific variables are available under the `event` object while editing an event script and are documented on each event page.",
                 "",
                 "---",
                 "",
-                "## Variables",
+                "## Root Variables",
                 ""
             };
 
