@@ -47,14 +47,9 @@ jobs:
 
     - name: Generate updated wiki documentation
       run: >
-        dotnet test Tests\Tests.csproj
-        -c ${{ env.build-config }}
-        --no-build
-        --no-restore
-        --filter "TestCategory=DocGen"
-        -p:SolutionDir="${{ github.workspace }}\"
-        -p:Platform=x64
-        --logger:"console;verbosity=detailed"
+        dotnet
+        "${{ github.workspace }}\bin\Release\BuildTools\DocumentationGenerator\DocumentationGenerator.dll"
+        "${{ github.workspace }}\bin\Release\Application"
 
     - name: Locate generated wiki files
       id: wiki-output
@@ -62,6 +57,8 @@ jobs:
       run: |
         $candidates = @(
           "${{ github.workspace }}\Wiki",
+          "${{ github.workspace }}\bin\Release\Application\Wiki",
+          "${{ github.workspace }}\bin\x64\Release\Application\Wiki",
           "${{ github.workspace }}\bin\Release\Wiki",
           "${{ github.workspace }}\bin\x64\Release\Wiki",
           "${{ github.workspace }}\Tests\bin\Release\Wiki",

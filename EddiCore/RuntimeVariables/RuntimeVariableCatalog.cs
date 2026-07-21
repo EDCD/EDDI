@@ -1,14 +1,20 @@
 using EddiCompanionAppService;
 using EddiConfigService;
-using EddiCore;
-using EddiNavigationService;
+using System;
 using System.Collections.Generic;
 using Utilities;
 
-namespace EddiSpeechResponder.ScriptResolverService
+namespace EddiCore.RuntimeVariables
 {
+    /// <summary>
+    /// Declares top-level runtime variables, their user-facing descriptions, and their optional VoiceAttack projection.
+    /// This is the source catalog for simple live values such as `environment`; it does not compose the full script
+    /// variable inventory.
+    /// </summary>
     public static class RuntimeVariableCatalog
     {
+        private static Func<decimal> searchDistanceLyProvider;
+
         public const string CapiActiveVariable = "capi_active";
         public const string DestinationDistanceLyVariable = "destinationdistance";
         public const string EnvironmentVariable = "environment";
@@ -20,6 +26,12 @@ namespace EddiSpeechResponder.ScriptResolverService
         public const string VaActiveVariable = "va_active";
         public const string VehicleVariable = "vehicle";
         public const string VersionVariable = "version";
+
+        /// <summary>Registers the NavigationService-owned provider without adding an EDDICore dependency on NavigationService.</summary>
+        public static void RegisterSearchDistanceLyProvider ( Func<decimal> valueProvider )
+        {
+            searchDistanceLyProvider = valueProvider;
+        }
 
         [PublicAPI( "True if the Frontier companion API is active." )]
         public static RuntimeVariableDefinition CapiActive => new(
@@ -88,7 +100,7 @@ namespace EddiSpeechResponder.ScriptResolverService
         public static RuntimeVariableDefinition SearchDistanceLy => new(
             SearchDistanceLyVariable,
             typeof(decimal),
-            () => NavigationService.Instance.SearchDistanceLy,
+            () => searchDistanceLyProvider?.Invoke() ?? 0m,
             RuntimeVariableSourceKind.TopLevelRuntime,
             "Search system distance",
             true );

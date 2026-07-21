@@ -1,6 +1,7 @@
 ﻿using EddiConfigService;
 using EddiCore;
 using EddiCore.Hotkeys;
+using EddiCore.RuntimeVariables;
 using EddiEvents;
 using EddiSpeechResponder.ScriptResolverService;
 using EddiSpeechService;
@@ -126,7 +127,10 @@ namespace EddiSpeechResponder
         {
             // Get MetaVariables for standard variables available from the script resolver
             var standardVars = SpeechResponder.ScriptResolver.CompileVariables();
-            standardMetaVariables = StandardVariableInventory.GetStandardMetaVariables( standardVars );
+            var standardRoots = standardVars
+                .Where( variable => variable.Value.Item1 is not null )
+                .Select( variable => new RuntimeVariableRoot( variable.Key, variable.Value.Item1 ) );
+            standardMetaVariables = StandardVariableInventoryBuilder.BuildStandardMetaVariables( standardRoots );
         }
 
         private void PersonalitiesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

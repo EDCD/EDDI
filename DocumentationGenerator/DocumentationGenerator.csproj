@@ -11,4 +11,9 @@
         <ProjectReference Include="..\VoiceAttackResponder\EddiVoiceAttackResponder.csproj" />
         <ProjectReference Include="..\*Monitor\Eddi*Monitor.csproj" />
     </ItemGroup>
+    <ItemGroup>
+        <None Update="Templates\*.template.md">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
 </Project>

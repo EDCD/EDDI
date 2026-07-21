@@ -28,11 +28,6 @@
         <ProjectReference Include="..\Utilities\Utilities.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <None Include="..\VoiceAttack-Integration.md">
-            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </None>
-    </ItemGroup>
-    <ItemGroup>
         <WCFMetadata Include="Service References\" />
     </ItemGroup>
     <ItemGroup>
@@ -58,7 +53,4 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>
-    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-        <Exec Command="xcopy /y &quot;$(SolutionDir)VoiceAttack-Integration.md&quot; &quot;$(SolutionDir)bin\$(Configuration)\Application\Wiki\&quot;" />
-    </Target>
 </Project>

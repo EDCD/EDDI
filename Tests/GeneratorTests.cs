@@ -53,10 +53,10 @@ namespace Tests
             var secondRender = DocumentationGenerator.DocumentationGenerator.RenderVariablesPage();
 
             Assert.AreEqual( firstRender, secondRender );
-            Assert.Contains( "## Variables" , firstRender);
+            Assert.Contains( "## Root Variables" , firstRender);
             Assert.DoesNotContain( "## Top-level variables", firstRender );
             Assert.DoesNotContain( "## Standard variables", firstRender );
-            Assert.Contains( "A variable can be a simple value, such as `environment`, or an object root, such as `cmdr`." , firstRender);
+            Assert.Contains( "A variable can be a simple value, such as `environment`, or an object, such as `cmdr`." , firstRender);
             Assert.Contains( "The object reference documents each object shape once and lists the roots that use it" , firstRender);
             Assert.Contains( "*environment*" , firstRender);
             Assert.Contains( "The commander's current environment." , firstRender);
@@ -71,6 +71,53 @@ namespace Tests
             Assert.DoesNotContain( "*powerplant.class*", firstRender );
             Assert.Contains( "*name*" , firstRender);
             Assert.Contains( "*gui_focus*" , firstRender);
+        }
+
+        [TestMethod]
+        public void RenderVoiceAttackIntegrationPage_ReplacesVariableInventoryFromRuntimeCatalog ()
+        {
+            const string template = """
+                                    # Using EDDI with VoiceAttack
+
+                                    Keep this setup prose.
+
+                                    {{VoiceAttackVariables}}
+
+                                    # Running Commands on EDDI Events
+
+                                    Keep this command prose.
+                                    """;
+            const string legacyVariablesTemplate = """
+                                                   ## Commander Variables
+
+                                                     * {TXT:Name}: the name of the commander
+                                                   """;
+
+            var firstRender = DocumentationGenerator.DocumentationGenerator.RenderVoiceAttackIntegrationPage( template, legacyVariablesTemplate );
+            var secondRender = DocumentationGenerator.DocumentationGenerator.RenderVoiceAttackIntegrationPage( template, legacyVariablesTemplate );
+
+            Assert.AreEqual( firstRender, secondRender );
+            Assert.Contains( "Keep this setup prose.", firstRender );
+            Assert.Contains( "Keep this command prose.", firstRender );
+            Assert.DoesNotContain( "{{VoiceAttackVariables}}", firstRender );
+            Assert.Contains( "{TXT:Environment}", firstRender );
+            Assert.Contains( "The commander's current environment.", firstRender );
+            Assert.Contains( "{BOOL:cAPI active}", firstRender );
+            Assert.Contains( "## Legacy Standard Variables", firstRender );
+            Assert.Contains( "{TXT:Name}: the name of the commander", firstRender );
+            Assert.Contains( "## Event Variables", firstRender );
+        }
+
+        [TestMethod]
+        public void RenderVoiceAttackIntegrationPage_LoadsDocumentationGeneratorTemplate ()
+        {
+            var render = DocumentationGenerator.DocumentationGenerator.RenderVoiceAttackIntegrationPage();
+
+            Assert.Contains( "# Using EDDI with VoiceAttack", render );
+            Assert.Contains( "{TXT:Environment}", render );
+            Assert.Contains( "## Legacy Standard Variables", render );
+            Assert.Contains( "## Commander Variables", render );
+            Assert.Contains( "# Running Commands on EDDI Events", render );
         }
 
         [TestMethod]

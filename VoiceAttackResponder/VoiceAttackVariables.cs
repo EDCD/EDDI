@@ -1,13 +1,12 @@
-using EddiCompanionAppService;
 using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiCore;
+using EddiCore.RuntimeVariables;
 using EddiDataDefinitions;
 using EddiIPC_Service;
 using EddiIPC_Service.Messages;
 using EddiIPC_Service.Server;
 using EddiNavigationService;
-using EddiSpeechResponder.ScriptResolverService;
 using EddiSpeechService;
 using EddiSpeechService.SpeechConversions;
 using Newtonsoft.Json.Linq;

@@ -1,6 +1,5 @@
 ﻿using EddiDataDefinitions;
 using EddiEvents;
-using EddiSpeechResponder.ScriptResolverService;
 using EddiVoiceAttackResponder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -506,12 +505,32 @@ namespace Tests
         [TestMethod]
         public void MetaVariables_DescriptorsCanBeBuiltFromTopLevelRuntimeVariableCatalog ()
         {
-            var declarations = RuntimeVariableDefinitionExtensions.DiscoverDeclarations( typeof( RuntimeVariableCatalog ) );
+            var declarations = RuntimeVariableDefinitionExtensions.DiscoverDeclarations(
+                typeof( EddiCore.RuntimeVariables.RuntimeVariableCatalog ) );
             var metaVariables = new MetaVariables( declarations, options: MetaVariableDiscoveryOptions.StrictDocumentation );
 
             Assert.IsTrue( metaVariables.Descriptors.Any( d => d.CottlePath == "environment" ) );
             Assert.IsTrue( metaVariables.Descriptors.Any( d => d.CottlePath == "destinationdistance" ) );
             Assert.IsTrue( metaVariables.Descriptors.All( d => !string.IsNullOrWhiteSpace( d.Description ) ) );
+        }
+
+        [TestMethod]
+        public void StandardVariableInventoryBuilder_BuildsMetaVariablesFromClrRoots ()
+        {
+            var roots = new[]
+            {
+                new EddiCore.RuntimeVariables.RuntimeVariableRoot( "speech", typeof(TestSpeech) )
+            };
+
+            var metaVariables = EddiCore.RuntimeVariables.StandardVariableInventoryBuilder.BuildStandardMetaVariables(
+                roots,
+                [],
+                MetaVariableDiscoveryOptions.StrictDocumentation );
+
+            Assert.IsTrue( metaVariables.Any( v => v.Descriptor.CottlePath == "environment" ) );
+            Assert.IsTrue( metaVariables.Any( v => v.Descriptor.CottlePath == "system" ) );
+            Assert.IsTrue( metaVariables.Any( v => v.Descriptor.CottlePath == "speech.Text" ) );
+            Assert.IsTrue( metaVariables.Any( v => v.Descriptor.CottlePath == "speech.Priority" ) );
         }
 
         [TestMethod]

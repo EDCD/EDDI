@@ -1,14 +1,16 @@
-using Cottle;
-using EddiCore;
 using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Utilities;
 
-namespace EddiSpeechResponder.ScriptResolverService
+namespace EddiCore.RuntimeVariables
 {
-    public static class StandardVariableInventory
+    /// <summary>
+    /// Builds the complete standard variable metadata surface by composing the top-level <see cref="RuntimeVariableCatalog"/>,
+    /// standard object roots, monitor-provided variables, and optional runtime roots supplied by callers.
+    /// </summary>
+    public static class StandardVariableInventoryBuilder
     {
         private sealed record StandardObjectRoot (
             string Name,
@@ -39,8 +41,8 @@ namespace EddiSpeechResponder.ScriptResolverService
                 .ToList() ?? [];
         }
 
-        public static IReadOnlyList<MetaVariable> GetStandardMetaVariables (
-            Dictionary<string, Tuple<Type, Value>> compiledVariables,
+        public static IReadOnlyList<MetaVariable> BuildStandardMetaVariables (
+            IEnumerable<RuntimeVariableRoot> runtimeVariableRoots,
             IEnumerable<RuntimeVariableDeclaration> monitorRuntimeDeclarations = null,
             MetaVariableDiscoveryOptions options = null )
         {
@@ -59,20 +61,31 @@ namespace EddiSpeechResponder.ScriptResolverService
                 variablesByPath,
                 new MetaVariables( monitorRuntimeDeclarations ?? GetCurrentMonitorRuntimeDeclarations(), options: options ).Results );
 
-            if ( compiledVariables is not null )
+            if ( runtimeVariableRoots is not null )
             {
-                foreach ( var kvp in compiledVariables )
+                foreach ( var root in runtimeVariableRoots )
                 {
-                    if ( kvp.Value.Item1 is null )
+                    if ( root.Type is null )
                     {
                         continue;
                     }
 
-                    var vars = new MetaVariables( kvp.Value.Item1, null, null, options ).Results;
-                    foreach ( var variable in vars )
-                    {
-                        variable.keysPath = variable.keysPath.Prepend( kvp.Key ).ToList();
-                    }
+                    var vars = new MetaVariables( root.Type, null, null, options ).Descriptors
+                        .Select( descriptor => new MetaVariable(
+                            VariableDescriptor.Create(
+                                descriptor.KeysPath.Prepend( root.Name ),
+                                descriptor.VariableType,
+                                descriptor.Description,
+                                descriptor.Value,
+                                descriptor.SourceType,
+                                descriptor.SourceMemberName,
+                                descriptor.IsObsolete
+                                    ? new ObsoleteAttribute( descriptor.ObsoleteMessage )
+                                    : null,
+                                descriptor.IsCollectionRoot,
+                                descriptor.IsObjectRoot,
+                                descriptor.DeclaredType,
+                                options ) ) );
 
                     AddMetaVariables( variablesByPath, vars );
                 }
@@ -81,11 +94,11 @@ namespace EddiSpeechResponder.ScriptResolverService
             return variablesByPath.Values.ToList();
         }
 
-        public static IReadOnlyList<MetaVariable> GetStaticStandardMetaVariables (
+        public static IReadOnlyList<MetaVariable> BuildStaticStandardMetaVariables (
             IEnumerable<RuntimeVariableDeclaration> monitorRuntimeDeclarations = null,
             MetaVariableDiscoveryOptions options = null )
         {
-            return GetStandardMetaVariables(
+            return BuildStandardMetaVariables(
                 null,
                 monitorRuntimeDeclarations,
                 options ?? MetaVariableDiscoveryOptions.StrictDocumentation );
@@ -101,7 +114,7 @@ namespace EddiSpeechResponder.ScriptResolverService
                         () => null,
                         RuntimeVariableSourceKind.TopLevelRuntime ),
                     root.Description,
-                    typeof(StandardVariableInventory),
+                    typeof(StandardVariableInventoryBuilder),
                     root.Name,
                     null ) )
                 .ToList();

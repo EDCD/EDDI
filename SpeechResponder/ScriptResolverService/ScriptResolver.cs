@@ -1,8 +1,7 @@
 ﻿using Cottle;
 using Cottle.Exceptions;
-using EddiCompanionAppService;
-using EddiConfigService;
 using EddiCore;
+using EddiCore.RuntimeVariables;
 using EddiDataDefinitions;
 using EddiNavigationService;
 using JetBrains.Annotations;

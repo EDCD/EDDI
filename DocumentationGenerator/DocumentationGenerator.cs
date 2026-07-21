@@ -1,4 +1,5 @@
 using EddiCore;
+using EddiCore.RuntimeVariables;
 using EddiEvents;
 using EddiIPC_Service;
 using EddiSpeechResponder.ScriptResolverService;
@@ -16,6 +17,11 @@ namespace DocumentationGenerator
     public static class DocumentationGenerator
     {
         private const string NewLine = "\r\n";
+        private const string VoiceAttackIntegrationTemplateRelativePath = @"Templates\VoiceAttack-Integration.template.md";
+        private const string VoiceAttackLegacyVariablesTemplateRelativePath = @"Templates\VoiceAttack-LegacyVariables.template.md";
+        private const string VoiceAttackVariablesPlaceholder = "{{VoiceAttackVariables}}";
+        private const string VoiceAttackVariablesHeading = "# EDDI Variables in VoiceAttack";
+        private const string VoiceAttackCommandsHeading = "# Running Commands on EDDI Events";
 
         private sealed record ObjectShape (
             Type Type,
@@ -76,8 +82,8 @@ namespace DocumentationGenerator
         public static string RenderVariablesPage ()
         {
             var monitorDeclarations = GetDocumentationMonitorRuntimeDeclarations();
-            var variables = StandardVariableInventory
-                .GetStaticStandardMetaVariables( monitorDeclarations, MetaVariableDiscoveryOptions.StrictDocumentation )
+            var variables = StandardVariableInventoryBuilder
+                .BuildStaticStandardMetaVariables( monitorDeclarations, MetaVariableDiscoveryOptions.StrictDocumentation )
                 .Select( v => v.Descriptor )
                 .Where( d => !string.IsNullOrWhiteSpace( d.CottlePath ) )
                 .OrderBy( d => d.CottlePath, StringComparer.OrdinalIgnoreCase )
@@ -138,6 +144,83 @@ namespace DocumentationGenerator
             return JoinLines( output );
         }
 
+        public static string RenderVoiceAttackIntegrationPage ( string template = null, string legacyVariablesTemplate = null )
+        {
+            var source = template ?? LoadVoiceAttackIntegrationTemplate();
+            var legacyVariables = legacyVariablesTemplate ?? LoadVoiceAttackLegacyVariablesTemplate();
+            var generatedVariables = RenderVoiceAttackVariableSection( legacyVariables );
+
+            if ( source.Contains( VoiceAttackVariablesPlaceholder ) )
+            {
+                return source.Replace( VoiceAttackVariablesPlaceholder, generatedVariables.TrimEnd() );
+            }
+
+            var variablesStart = source.IndexOf( VoiceAttackVariablesHeading, StringComparison.Ordinal );
+            var nextStart = source.IndexOf( VoiceAttackCommandsHeading, StringComparison.Ordinal );
+
+            if ( variablesStart < 0 || nextStart < 0 || nextStart <= variablesStart )
+            {
+                throw new InvalidOperationException(
+                    "VoiceAttack integration template must contain the EDDI Variables and Running Commands headings." );
+            }
+
+            return source[ ..variablesStart ].TrimEnd() +
+                   NewLine +
+                   NewLine +
+                   generatedVariables.TrimEnd() +
+                   NewLine +
+                   NewLine +
+                   source[ nextStart.. ].TrimStart();
+        }
+
+        private static string RenderVoiceAttackVariableSection ( string legacyVariables )
+        {
+            var output = new List<string>
+            {
+                VoiceAttackVariablesHeading,
+                "",
+                "EDDI makes values available to VoiceAttack in two forms: standard variables that are updated while EDDI is running, and event variables that are set when an EDDI event command is invoked.",
+                "",
+                "VoiceAttack variables use VoiceAttack's typed variable syntax, for example `{TXT:Environment}` or `{BOOL:cAPI active}`. Indexed event variables use one-based indexes at runtime, while documentation uses `\\<index\\>` as a placeholder.",
+                "",
+                "The standard variables listed below are generated from EDDI's runtime. Some older standard variable families will be retained in the legacy variables section until they've been updated to match the generated variable pattern.",
+                "",
+                "## Generated Standard Variables",
+                ""
+            };
+
+            var runtimeDeclarations = RuntimeVariableDefinitionExtensions
+                .DiscoverDeclarations( typeof( RuntimeVariableCatalog ) )
+                .Where( d => d.Definition.CurrentlyEmittedByVoiceAttack )
+                .OrderBy( d => d.Definition.VoiceAttackName, StringComparer.OrdinalIgnoreCase )
+                .ToList();
+
+            foreach ( var declaration in runtimeDeclarations )
+            {
+                output.Add( RenderVoiceAttackVariable(
+                    declaration.Definition.VoiceAttackName,
+                    declaration.Definition.Type,
+                    declaration.Description ) );
+            }
+
+            if ( !string.IsNullOrWhiteSpace( legacyVariables ) )
+            {
+                output.Add( "" );
+                output.Add( "## Legacy Standard Variables" );
+                output.Add( "" );
+                output.AddRange( legacyVariables.Trim().Split( [ "\r\n", "\n" ], StringSplitOptions.None ) );
+            }
+
+            output.Add( "" );
+            output.Add( "## Event Variables" );
+            output.Add( "" );
+            output.Add( "When EDDI invokes a VoiceAttack event command, event-specific variables are generated from the same `PublicAPI` variable descriptions used by the event wiki pages. Event variables are only valid for the event command that set them; copy values into your own variables if you need them later." );
+            output.Add( "" );
+            output.Add( "For each event's VoiceAttack variables, see the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events)." );
+
+            return JoinLines( output );
+        }
+
         public static (string Help, string Functions) RenderFunctionsHelp ()
         {
             var functionsList = ScriptResolver.GetCustomFunctions()
@@ -187,6 +270,7 @@ namespace DocumentationGenerator
             WriteText( outputDirectory, @"Wiki\Events.md", RenderWikiEventsList() );
             WriteText( outputDirectory, "Variables.md", RenderVariablesPage() );
             WriteText( outputDirectory, @"Wiki\Variables.md", RenderVariablesPage() );
+            WriteText( outputDirectory, @"Wiki\VoiceAttack-Integration.md", RenderVoiceAttackIntegrationPage() );
 
             var (help, functions) = RenderFunctionsHelp();
             WriteText( outputDirectory, "Help.md", help );
@@ -264,15 +348,20 @@ namespace DocumentationGenerator
 
         private static string RenderVoiceAttackVariable ( VoiceAttackVariable variable )
         {
-            var description = !string.IsNullOrEmpty( variable.description ) ? $" - {variable.description}" : "";
-            return variable.variableType switch
+            return RenderVoiceAttackVariable( variable.key, variable.variableType, variable.description );
+        }
+
+        private static string RenderVoiceAttackVariable ( string key, Type variableType, string description )
+        {
+            var renderedDescription = !string.IsNullOrEmpty( description ) ? $" - {description}" : "";
+            return variableType switch
             {
-                Type type when type == typeof( string ) => $"  - *{{TXT:{variable.key}}}* {description}",
-                Type type when type == typeof( int ) => $"  - *{{INT:{variable.key}}}* {description}",
-                Type type when type == typeof( bool ) => $"  - *{{BOOL:{variable.key}}}* {description}",
-                Type type when type == typeof( decimal ) => $"  - *{{DEC:{variable.key}}}* {description}",
-                Type type when type == typeof( DateTime ) => $"  - *{{DATE:{variable.key}}}* {description}",
-                Type type when type == typeof( IEnumerable<> ) => $"  - *{{INT:{variable.key}}}* {description}",
+                Type type when type == typeof( string ) => $"  - *{{TXT:{key}}}*{renderedDescription}",
+                Type type when type == typeof( int ) => $"  - *{{INT:{key}}}*{renderedDescription}",
+                Type type when type == typeof( bool ) => $"  - *{{BOOL:{key}}}*{renderedDescription}",
+                Type type when type == typeof( decimal ) => $"  - *{{DEC:{key}}}*{renderedDescription}",
+                Type type when type == typeof( DateTime ) => $"  - *{{DATE:{key}}}*{renderedDescription}",
+                Type type when type == typeof( IEnumerable<> ) => $"  - *{{INT:{key}}}*{renderedDescription}",
                 _ => string.Empty
             };
         }
@@ -624,6 +713,57 @@ namespace DocumentationGenerator
 
         private static string JoinLines ( IEnumerable<string> lines )
             => string.Join( NewLine, lines ) + NewLine;
+
+        private static string LoadVoiceAttackIntegrationTemplate ()
+        {
+            return LoadTemplate(
+                VoiceAttackIntegrationTemplateRelativePath,
+                "VoiceAttack integration template" );
+        }
+
+        private static string LoadVoiceAttackLegacyVariablesTemplate ()
+        {
+            return LoadTemplate(
+                VoiceAttackLegacyVariablesTemplateRelativePath,
+                "VoiceAttack legacy variables template" );
+        }
+
+        private static string LoadTemplate ( string relativePath, string templateName )
+        {
+            foreach ( var candidate in GetTemplateCandidates( relativePath ) )
+            {
+                if ( File.Exists( candidate ) )
+                {
+                    return File.ReadAllText( candidate );
+                }
+            }
+
+            throw new FileNotFoundException(
+                $"Unable to locate {templateName} '{relativePath}'." );
+        }
+
+        private static IEnumerable<string> GetTemplateCandidates ( string relativePath )
+        {
+            var basePaths = new[]
+                {
+                    AppContext.BaseDirectory,
+                    Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ),
+                    Environment.CurrentDirectory
+                }
+                .Where( path => !string.IsNullOrWhiteSpace( path ) )
+                .Distinct( StringComparer.OrdinalIgnoreCase );
+
+            foreach ( var basePath in basePaths )
+            {
+                var directory = new DirectoryInfo( basePath );
+                while ( directory is not null )
+                {
+                    yield return Path.Combine( directory.FullName, relativePath );
+                    yield return Path.Combine( directory.FullName, "DocumentationGenerator", relativePath );
+                    directory = directory.Parent;
+                }
+            }
+        }
 
         private static void WriteText ( string outputDirectory, string relativePath, string text )
         {
