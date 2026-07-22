@@ -709,13 +709,30 @@ namespace DocumentationGenerator
 
         private static List<Type> DiscoverMonitorTypes ()
         {
-            return GetMonitorSearchDirectories()
-                .SelectMany( directory => Directory.EnumerateFiles( directory, "*Monitor.dll", SearchOption.TopDirectoryOnly ) )
-                .Distinct( StringComparer.OrdinalIgnoreCase )
-                .OrderBy( path => path, StringComparer.OrdinalIgnoreCase )
+            return GetMonitorAssemblyPaths()
                 .SelectMany( GetMonitorTypes )
                 .OrderBy( type => type.FullName, StringComparer.OrdinalIgnoreCase )
                 .ToList();
+        }
+
+        private static IEnumerable<string> GetMonitorAssemblyPaths ()
+        {
+            return GetMonitorSearchDirectories()
+                .SelectMany( ( directory, index ) => Directory
+                    .EnumerateFiles( directory, "*Monitor.dll", SearchOption.TopDirectoryOnly )
+                    .Select( path => new
+                    {
+                        DirectoryIndex = index,
+                        Path = path,
+                        AssemblyName = AssemblyName.GetAssemblyName( path ).FullName
+                    } ) )
+                .GroupBy( candidate => candidate.AssemblyName, StringComparer.OrdinalIgnoreCase )
+                .Select( group => group
+                    .OrderBy( candidate => candidate.DirectoryIndex )
+                    .ThenBy( candidate => candidate.Path, StringComparer.OrdinalIgnoreCase )
+                    .First()
+                    .Path )
+                .OrderBy( path => path, StringComparer.OrdinalIgnoreCase );
         }
 
         private static IEnumerable<string> GetMonitorSearchDirectories ()
@@ -728,11 +745,11 @@ namespace DocumentationGenerator
 
             var candidates = new[]
             {
-                baseDirectory,
                 buildConfigurationDirectory is null ? null : Path.Combine( buildConfigurationDirectory.FullName, "Application" ),
                 buildConfigurationDirectory is null || solutionDirectory is null
                     ? null
                     : Path.Combine( solutionDirectory.FullName, "bin", buildConfigurationDirectory.Name, "Application" ),
+                baseDirectory,
                 Environment.CurrentDirectory
             };
 
@@ -775,7 +792,14 @@ namespace DocumentationGenerator
         {
             try
             {
-                return Assembly.LoadFrom( assemblyPath )
+                var assemblyName = AssemblyName.GetAssemblyName( assemblyPath );
+                var assembly = AppDomain.CurrentDomain.GetAssemblies()
+                                   .FirstOrDefault( loadedAssembly => AssemblyName.ReferenceMatchesDefinition(
+                                       loadedAssembly.GetName(),
+                                       assemblyName ) ) ??
+                               Assembly.LoadFrom( assemblyPath );
+
+                return assembly
                     .GetTypes()
                     .Where( type => !type.IsAbstract &&
                                     !type.IsInterface &&
