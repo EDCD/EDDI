@@ -1,4 +1,4 @@
-﻿using EddiConfigService;
+using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
@@ -3027,9 +3027,5 @@ namespace EddiJournalMonitor
             return Task.CompletedTask;
         }
         
-        public IDictionary<string, Tuple<Type, object>> GetVariables()
-        {
-            return null;
-        }
     }
 }

@@ -15,6 +15,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using Utilities;
+using Utilities.MetaVariables;
 using MessageBox = System.Windows.Forms.MessageBox;
 using TextBox = System.Windows.Controls.TextBox;
 
@@ -309,7 +310,7 @@ namespace EddiSpeechResponder
 
         private void helpButtonClick ( object sender, RoutedEventArgs e )
         {
-            var helpWindow = new MarkdownWindow("Help.md");
+            var helpWindow = new MarkdownWindow(@"Wiki\Help.md");
             helpWindow.Show();
         }
 

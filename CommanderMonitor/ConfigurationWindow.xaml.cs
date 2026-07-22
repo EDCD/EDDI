@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Utilities;
 
-namespace CommanderMonitor
+namespace EddiCommanderMonitor
 {
     /// <summary>
     /// Interaction logic for ConfigurationWindow.xaml

@@ -108,12 +108,12 @@ namespace EddiDataDefinitions
         }
         private static List<T> allOfThem;
 
-        protected static Func<string, T> missingEDNameHandler;
+        protected static Func<string, T> missingEDNameHandler { get; set; }
 
         // ReSharper disable StaticMemberInGenericType
         // This is as intended, with separate values for each derived type
         // rather than a single shared value across all types.
-        protected static ResourceManager resourceManager;
+        protected static ResourceManager resourceManager { get; set; }
         public static readonly object resourceLock = new();
         // ReSharper restore StaticMemberInGenericType
 

@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <OutputPath>..\bin\$(Configuration)\BuildTools\DocumentationGenerator\</OutputPath>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Events\EddiEvents.csproj" />
+        <ProjectReference Include="..\IPC_Service\EddiIPC_Service.csproj" />
+        <ProjectReference Include="..\SpeechResponder\EddiSpeechResponder.csproj" />
+        <ProjectReference Include="..\Utilities\Utilities.csproj" />
+        <ProjectReference Include="..\VoiceAttackResponder\EddiVoiceAttackResponder.csproj" />
+        <ProjectReference Include="..\*Monitor\Eddi*Monitor.csproj"
+                          ReferenceOutputAssembly="false"
+                          Private="false" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Update="Templates\*.template.md">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+</Project>

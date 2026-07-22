@@ -190,6 +190,27 @@ namespace EddiCore
             set => _gameState.Vehicle = value;
         }
 
+        // Search variables
+        [CanBeNull]
+        public StarSystem SearchStarSystem 
+        { 
+            get => _gameState.SearchStarSystem; 
+            set => _gameState.SearchStarSystem = value; 
+        }
+
+        [CanBeNull]
+        public Station SearchStation 
+        { 
+            get => _gameState.SearchStation; 
+            set => _gameState.SearchStation = value; 
+        }
+
+        public decimal SearchDistanceLy 
+        { 
+            get => _gameState.SearchDistanceLy; 
+            set => _gameState.SearchDistanceLy = value; 
+        }
+
         #endregion
 
         private readonly StarSystemSignalSourceManager signalSourceManager = new();
@@ -1435,8 +1456,8 @@ namespace EddiCore
             };
 
             // Does this friend exist in our friends list?
-            var commanderMonitorVariables = ObtainMonitor( "Commander Monitor" ).GetVariables();
-            if ( commanderMonitorVariables.TryGetValue( "cmdr", out var tuple ) && tuple.Item2 is Commander Cmdr )
+            var commanderMonitorVariables = ObtainMonitor( "Commander Monitor" ).GetVariableValues();
+            if ( commanderMonitorVariables.TryGetValue( "cmdr", out Commander Cmdr ) )
             {
                 var index = Cmdr.friends.FindIndex( f => f.name == @event.name );
                 if ( index >= 0 )

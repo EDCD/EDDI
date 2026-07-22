@@ -1,12 +1,11 @@
-using EddiCompanionAppService;
 using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiCore;
+using EddiCore.RuntimeVariables;
 using EddiDataDefinitions;
 using EddiIPC_Service;
 using EddiIPC_Service.Messages;
 using EddiIPC_Service.Server;
-using EddiNavigationService;
 using EddiSpeechService;
 using EddiSpeechService.SpeechConversions;
 using Newtonsoft.Json.Linq;
@@ -14,12 +13,20 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using Utilities;
+using Utilities.MetaVariables;
 
 namespace EddiVoiceAttackResponder
 {
+    internal sealed record VoiceAttackVariableParity (
+        string CottlePath,
+        string VoiceAttackKey,
+        bool IntendedForBoth,
+        bool CurrentlyEmittedByVoiceAttack );
+
     public static class VoiceAttackVariables
     {
         private sealed class RuntimeActionBatchState
@@ -31,9 +38,29 @@ namespace EddiVoiceAttackResponder
 
         private static readonly AsyncLocal<RuntimeActionBatchState> runtimeActionBatch = new();
 
-        // Cache for tracking last-dispatched values to prevent redundant IPC updates
-        // Key format: ""'{action}:{key}'"" (e.g., ""'set_text:Ship name'"") â†’ value
+        // Cache for tracking last-dispatched values to prevent redundant IPC updates.
+        // Key format: "{action}:{key}" (for example, "set_text:Ship name") -> value.
         private static readonly ConcurrentDictionary<string, object> lastDispatchedValues = new();
+
+        private const string DestinationDistanceLyVariable = RuntimeVariableCatalog.DestinationDistanceLyVariable;
+        private const string EnvironmentVariable = RuntimeVariableCatalog.EnvironmentVariable;
+        private const string VehicleVariable = RuntimeVariableCatalog.VehicleVariable;
+        private const string HorizonsVariable = RuntimeVariableCatalog.HorizonsVariable;
+        private const string OdysseyVariable = RuntimeVariableCatalog.OdysseyVariable;
+        private const string CapiActiveVariable = RuntimeVariableCatalog.CapiActiveVariable;
+        private const string IpaActiveVariable = RuntimeVariableCatalog.IpaActiveVariable;
+        private const string IcaoActiveVariable = RuntimeVariableCatalog.IcaoActiveVariable;
+        private const string SearchDistanceLyVariable = RuntimeVariableCatalog.SearchDistanceLyVariable;
+        private const string VersionVariable = RuntimeVariableCatalog.VersionVariable;
+
+        private static readonly IReadOnlyDictionary<string, RuntimeVariableDefinition> AllRuntimeVariableDefinitions =
+            RuntimeVariableCatalog.TopLevelVariables
+                .ToDictionary( definition => definition.Name );
+
+        private static readonly Dictionary<string, RuntimeVariableDefinition> RuntimeVariableDefinitions =
+            AllRuntimeVariableDefinitions.Values
+                .Where( definition => definition.CurrentlyEmittedByVoiceAttack )
+                .ToDictionary( definition => definition.Name );
         
         // The following variables notify changes via `PropertyChanged`
         private static readonly Dictionary<string, Action> StandardValues = new()
@@ -42,14 +69,14 @@ namespace EddiVoiceAttackResponder
             { nameof(EDDI.Instance.GameState.LastStarSystem), () => setStarSystemValues(EDDI.Instance.GameState.LastStarSystem, "Last system") },
             { nameof(EDDI.Instance.GameState.NextStarSystem), () => setStarSystemValues(EDDI.Instance.GameState.NextStarSystem, "Next system") },
             { nameof(EDDI.Instance.GameState.DestinationStarSystem), () => setStarSystemValues(EDDI.Instance.GameState.DestinationStarSystem, "Destination system") },
-            { nameof(EDDI.Instance.GameState.DestinationDistanceLy), () => RuntimeSetDecimal("Destination system distance", EDDI.Instance.GameState.DestinationDistanceLy) },
+            { nameof(EDDI.Instance.GameState.DestinationDistanceLy), () => SetDefinedRuntimeVariable( DestinationDistanceLyVariable ) },
             { nameof(EDDI.Instance.GameState.CurrentStellarBody), () => setDetailedBodyValues(EDDI.Instance.GameState.CurrentStellarBody, "Body") },
             { nameof(EDDI.Instance.GameState.CurrentStation), () => setStationValues(EDDI.Instance.GameState.CurrentStation, "Current station") },
             { nameof(EDDI.Instance.GameState.CurrentShip), () => setShipValues(ResolveCurrentShip(), "Ship") },
-            { nameof(EDDI.Instance.GameState.Environment), () => RuntimeSetText("Environment", EDDI.Instance.GameState.Environment) },
-            { nameof(EDDI.Instance.GameState.Vehicle), () => RuntimeSetText("Vehicle", EDDI.Instance.GameState.Vehicle) },
-            { nameof(EDDI.Instance.GameState.inHorizons), () => RuntimeSetBoolean("horizons", EDDI.Instance.GameState.inHorizons) },
-            { nameof(EDDI.Instance.GameState.inOdyssey), () => RuntimeSetBoolean("odyssey", EDDI.Instance.GameState.inOdyssey) },
+            { nameof(EDDI.Instance.GameState.Environment), () => SetDefinedRuntimeVariable( EnvironmentVariable ) },
+            { nameof(EDDI.Instance.GameState.Vehicle), () => SetDefinedRuntimeVariable( VehicleVariable ) },
+            { nameof(EDDI.Instance.GameState.inHorizons), () => SetDefinedRuntimeVariable( HorizonsVariable ) },
+            { nameof(EDDI.Instance.GameState.inOdyssey), () => SetDefinedRuntimeVariable( OdysseyVariable ) },
         };
 
         // Cache property names extracted from fully-qualified keys for lookups during PropertyChanged events
@@ -68,6 +95,62 @@ namespace EddiVoiceAttackResponder
                 lookup[propertyName] = kvp.Value;
             }
             return lookup;
+        }
+
+        internal static IReadOnlyList<VoiceAttackVariableParity> GetRuntimeVariableParityReport ()
+        {
+            return AllRuntimeVariableDefinitions.Values
+                .Where( definition => definition.IntendedForVoiceAttack )
+                .Select( definition => new VoiceAttackVariableParity(
+                    definition.Name,
+                    definition.VoiceAttackName,
+                    IntendedForBoth: definition.IntendedForVoiceAttack,
+                    CurrentlyEmittedByVoiceAttack: definition.CurrentlyEmittedByVoiceAttack ) )
+                .OrderBy( definition => definition.CottlePath, StringComparer.Ordinal )
+                .ToList();
+        }
+
+        private static void SetDefinedRuntimeVariable ( string definitionId )
+        {
+            var definition = RuntimeVariableDefinitions[ definitionId ];
+            var value = TopLevelRuntimeVariableValues.Get( definitionId );
+            SetDefinedRuntimeVariable( definition, value.GetVoiceAttackValue() );
+        }
+
+        private static void SetDefinedRuntimeVariable ( string definitionId, object value )
+        {
+            SetDefinedRuntimeVariable( RuntimeVariableDefinitions[ definitionId ], value );
+        }
+
+        private static void SetDefinedRuntimeVariable ( RuntimeVariableDefinition definition, object value )
+        {
+            var voiceAttackType = definition.VoiceAttackType ?? definition.Type;
+
+            if ( voiceAttackType == typeof( string ) )
+            {
+                RuntimeSetText( definition.VoiceAttackName, value as string );
+            }
+            else if ( voiceAttackType == typeof( int ) )
+            {
+                RuntimeSetInt( definition.VoiceAttackName, value is null ? null : System.Convert.ToInt32( value, CultureInfo.InvariantCulture ) );
+            }
+            else if ( voiceAttackType == typeof( bool ) )
+            {
+                RuntimeSetBoolean( definition.VoiceAttackName, value is null ? null : System.Convert.ToBoolean( value, CultureInfo.InvariantCulture ) );
+            }
+            else if ( voiceAttackType == typeof( decimal ) )
+            {
+                RuntimeSetDecimal( definition.VoiceAttackName, value is null ? null : System.Convert.ToDecimal( value, CultureInfo.InvariantCulture ) );
+            }
+            else if ( voiceAttackType == typeof( DateTime ) )
+            {
+                RuntimeSetDate( definition.VoiceAttackName, value is null ? null : System.Convert.ToDateTime( value, CultureInfo.InvariantCulture ) );
+            }
+            else
+            {
+                throw new ArgumentException(
+                    $"Unsupported VoiceAttack runtime variable type '{voiceAttackType.FullName}' for '{definition.VoiceAttackName}'." );
+            }
         }
 
         internal static void updateStandardValues(PropertyChangedEventArgs eventArgs)
@@ -93,12 +176,12 @@ namespace EddiVoiceAttackResponder
                 }
 
                 // Update values not notified by `PropertyChanged` events
-                RuntimeSetBoolean("cAPI active", CompanionAppService.Instance.active);
-                RuntimeSetBoolean("ipa active", !ConfigService.Instance.speechServiceConfiguration.DisableIpa);
-                RuntimeSetBoolean("icao active", ConfigService.Instance.speechServiceConfiguration.EnableIcao);
-                RuntimeSetDecimal("Search system distance", NavigationService.Instance.SearchDistanceLy);
-                setStarSystemValues(NavigationService.Instance.SearchStarSystem, "Search system" );
-                setStationValues(NavigationService.Instance.SearchStation, "Search station" );
+                SetDefinedRuntimeVariable( CapiActiveVariable );
+                SetDefinedRuntimeVariable( IpaActiveVariable );
+                SetDefinedRuntimeVariable( IcaoActiveVariable );
+                SetDefinedRuntimeVariable( SearchDistanceLyVariable );
+                setStarSystemValues(EDDI.Instance.SearchStarSystem, "Search system" );
+                setStationValues(EDDI.Instance.SearchStation, "Search station" );
             } );
         }
 
@@ -157,7 +240,7 @@ namespace EddiVoiceAttackResponder
                     setShipyardValues( shipConfig.shipyard.ToList() );
                 }
 
-                RuntimeSetText("EDDI version", Constants.EDDI_VERSION.ToString());
+                SetDefinedRuntimeVariable( VersionVariable );
             } );
         }
 
@@ -176,27 +259,23 @@ namespace EddiVoiceAttackResponder
 
                     if ( e.PropertyName.Equals( nameof( CommanderConfiguration ), StringComparison.InvariantCultureIgnoreCase ) )
                     {
-                        var commanderMonitorVariables = EDDI.Instance.ObtainMonitor( "Commander Monitor" ).GetVariables();
-                        if ( commanderMonitorVariables.TryGetValue( "cmdr", out var cmdrTuple ) &&
-                             cmdrTuple.Item2 is Commander Cmdr )
+                        var commanderMonitorVariables = EDDI.Instance.ObtainMonitor( "Commander Monitor" ).GetVariableValues();
+                        if ( commanderMonitorVariables.TryGetValue( "cmdr", out Commander Cmdr ) )
                         {
                             setCommanderValues( Cmdr );
                         }
 
-                        if ( commanderMonitorVariables.TryGetValue( "homesystem", out var homeSystemTuple ) &&
-                             homeSystemTuple.Item2 is StarSystem homeSystem )
+                        if ( commanderMonitorVariables.TryGetValue( "homesystem", out StarSystem homeSystem ) )
                         {
                             setStarSystemValues( homeSystem, "Home system" );
                         }
 
-                        if ( commanderMonitorVariables.TryGetValue( "homestation", out var homeStationTuple ) &&
-                             homeStationTuple.Item2 is Station homeStation )
+                        if ( commanderMonitorVariables.TryGetValue( "homestation", out Station homeStation ) )
                         {
                             setStationValues( homeStation, "Home station" );
                         }
 
-                        if ( commanderMonitorVariables.TryGetValue( "squadronsystem", out var squadronSystemTuple ) &&
-                             squadronSystemTuple.Item2 is StarSystem squadronSystem )
+                        if ( commanderMonitorVariables.TryGetValue( "squadronsystem", out StarSystem squadronSystem ) )
                         {
                             setStarSystemValues( squadronSystem, "Squadron system" );
                         }
@@ -221,8 +300,8 @@ namespace EddiVoiceAttackResponder
 
                     if ( e.PropertyName.Equals(nameof(SpeechServiceConfiguration), StringComparison.InvariantCultureIgnoreCase) )
                     {
-                        RuntimeSetBoolean( "ipa active", !ConfigService.Instance.speechServiceConfiguration.DisableIpa );
-                        RuntimeSetBoolean( "icao active", ConfigService.Instance.speechServiceConfiguration.EnableIcao );
+                        SetDefinedRuntimeVariable( IpaActiveVariable );
+                        SetDefinedRuntimeVariable( IcaoActiveVariable );
                     }
                 }
             } );
@@ -829,7 +908,7 @@ namespace EddiVoiceAttackResponder
 
         internal static void setCAPIState(bool caPIactive)
         {
-            RuntimeSetBoolean("cAPI active", caPIactive);
+            SetDefinedRuntimeVariable( CapiActiveVariable, caPIactive );
         }
 
         internal static void setSpeechState(PropertyChangedEventArgs eventArgs)
@@ -1137,7 +1216,7 @@ namespace EddiVoiceAttackResponder
         {
             return source
                 .Where( v => v.type != typeof( object ) )
-                .Select( v => new VoiceAttackVariable( startingPrefix, eventType, v.keysPath, v.type, v.description, v.value ) )
+                .Select( v => new VoiceAttackVariable( startingPrefix, eventType, v.Descriptor ) )
                 .ToList();
         }
     }

@@ -26,7 +26,7 @@ namespace EddiDataDefinitions
 
         public long? entryID;
 
-        [PublicAPI]
+        [PublicAPI( "localized description" )]
         public string localizedDescription => Properties.CodexCivilizationGuardianDesc.ResourceManager.GetString( edname );
 
         // dummy used to ensure that the static constructor has run

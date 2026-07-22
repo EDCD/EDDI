@@ -9,11 +9,11 @@ namespace EddiDataDefinitions
         public string name { get; set; }
 
         /// <summary>The size of the hardpoint</summary
-        [PublicAPI]
+        [PublicAPI( "the numeric size of the hardpoint, from 0 (utility) to 4 (huge)" )]
         public int size { get; set; }
 
         /// <summary>The module residing on the hardpoint (can be null)</summary>
-        [PublicAPI]
+        [PublicAPI( "the module in the hardpoint" )]
         public Module module { get; set; }
     }
 }

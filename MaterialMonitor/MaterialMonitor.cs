@@ -1,4 +1,4 @@
-﻿using EddiConfigService;
+using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
@@ -442,14 +442,17 @@ namespace EddiMaterialMonitor
             }
         }
 
-        public IDictionary<string, Tuple<Type, object>> GetVariables()
+        [PublicAPI( "A list of all materials currently held by the commander." )]
+        public static RuntimeVariableDefinition MaterialsVariable => new( "materials", typeof(List<MaterialAmount>) );
+
+        public IReadOnlyList<RuntimeVariableDeclaration> GetVariableDeclarations () =>
+            RuntimeVariableDefinitionExtensions.DiscoverDeclarations( typeof(MaterialMonitor) );
+
+        public IReadOnlyList<RuntimeVariableValue> GetVariableValues ()
         {
             lock ( inventoryLock )
             {
-                return new Dictionary<string, Tuple<Type, object>>
-                {
-                    [ "materials" ] = new(typeof(List<MaterialAmount>), inventory.ToList() )
-                };
+                return [ MaterialsVariable.WithValue( inventory.ToList() ) ];
             }
         }
 

@@ -1,4 +1,4 @@
-﻿using EddiConfigService;
+using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
@@ -530,15 +530,24 @@ namespace EddiCargoMonitor
             return false;
         }
 
-        public IDictionary<string, Tuple<Type, object>> GetVariables ()
+        [Utilities.PublicAPI( "A list of the cargo currently held by the ship." )]
+        public static RuntimeVariableDefinition InventoryVariable => new( "inventory", typeof(List<Cargo>) );
+
+        [Utilities.PublicAPI( "The total tons of cargo currently held." )]
+        public static RuntimeVariableDefinition CargoCarriedVariable => new( "cargoCarried", typeof(int) );
+
+        public IReadOnlyList<RuntimeVariableDeclaration> GetVariableDeclarations () =>
+            RuntimeVariableDefinitionExtensions.DiscoverDeclarations( typeof(CargoMonitor) );
+
+        public IReadOnlyList<RuntimeVariableValue> GetVariableValues ()
         {
             lock ( inventoryLock )
             {
-                return new Dictionary<string, Tuple<Type, object>>
-                {
-                    ["inventory"] = new(typeof(List<Cargo>), inventory.ToList() ),
-                    ["cargoCarried"] = new(typeof(int), cargoCarried)
-                };                
+                return
+                [
+                    InventoryVariable.WithValue( inventory.ToList() ),
+                    CargoCarriedVariable.WithValue( cargoCarried )
+                ];
             }
         }
 

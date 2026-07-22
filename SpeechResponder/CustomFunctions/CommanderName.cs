@@ -4,6 +4,7 @@ using EddiDataDefinitions;
 using EddiSpeechResponder.ScriptResolverService;
 using JetBrains.Annotations;
 using System;
+using Utilities;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -17,8 +18,8 @@ namespace EddiSpeechResponder.CustomFunctions
 
         public IFunction function => Function.CreateNative0( ( runtime, writer ) =>
         {
-            var commanderMonitorVariables = EDDI.Instance.ObtainMonitor( "Commander Monitor" ).GetVariables();
-            if ( commanderMonitorVariables.TryGetValue( "cmdr", out var tuple ) && tuple.Item2 is Commander Cmdr )
+            var commanderMonitorVariables = EDDI.Instance.ObtainMonitor( "Commander Monitor" ).GetVariableValues();
+            if ( commanderMonitorVariables.TryGetValue( "cmdr", out Commander Cmdr ) )
             {
                 return Cmdr.SpokenName();
             }

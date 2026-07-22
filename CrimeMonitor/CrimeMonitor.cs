@@ -1,4 +1,4 @@
-﻿using EddiConfigService;
+using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
@@ -1155,21 +1155,45 @@ namespace EddiCrimeMonitor
             }
         }
 
-        public IDictionary<string, Tuple<Type, object>> GetVariables()
+        [PublicAPI( "A list of active fine, bounty, and claim records by faction." )]
+        public static RuntimeVariableDefinition CriminalRecordVariable => new( "criminalrecord", typeof(List<FactionRecord>) );
+
+        [PublicAPI( "The total value of outstanding bounty claims." )]
+        public static RuntimeVariableDefinition ClaimsVariable => new( "claims", typeof(long) );
+
+        [PublicAPI( "The total value of outstanding fines." )]
+        public static RuntimeVariableDefinition FinesVariable => new( "fines", typeof(long) );
+
+        [PublicAPI( "The total value of outstanding bounties." )]
+        public static RuntimeVariableDefinition BountiesVariable => new( "bounties", typeof(long) );
+
+        [PublicAPI( "The Powerplay bounty claim bonus currently available, if any." )]
+        public static RuntimeVariableDefinition PowerplayBountyBonusVariable => new( "powerplaybountybonus", typeof(decimal?) );
+
+        [PublicAPI( "The Powerplay crime reduction currently available, if any." )]
+        public static RuntimeVariableDefinition PowerplayCrimeReductionVariable => new( "powerplaycrimereduction", typeof(decimal?) );
+
+        [PublicAPI( "A list of recently targeted ships." )]
+        public static RuntimeVariableDefinition ShipTargetsVariable => new( "shiptargets", typeof(List<Target>) );
+
+        public IReadOnlyList<RuntimeVariableDeclaration> GetVariableDeclarations () =>
+            RuntimeVariableDefinitionExtensions.DiscoverDeclarations( typeof(CrimeMonitor) );
+
+        public IReadOnlyList<RuntimeVariableValue> GetVariableValues ()
         {
             UpdateCrimeValueModifiers();
             lock ( recordLock )
             {
-                return new Dictionary<string, Tuple<Type, object>>
-                {
-                    [ "criminalrecord" ] = new( typeof(List<FactionRecord>), criminalrecord.ToList() ),
-                    [ "claims" ] = new( typeof(long), claims ),
-                    [ "fines" ] = new( typeof(long), fines ),
-                    [ "bounties" ] = new( typeof(long), bounties ),
-                    [ "powerplaybountybonus" ] = new( typeof(decimal?), PowerplayBountyBonus ),
-                    [ "powerplaycrimereduction" ] = new( typeof(decimal?), PowerplayCrimeReduction ),
-                    [ "shiptargets" ] = new( typeof(List<Target>), shipTargets.ToList() )
-                };
+                return
+                [
+                    CriminalRecordVariable.WithValue( criminalrecord.ToList() ),
+                    ClaimsVariable.WithValue( claims ),
+                    FinesVariable.WithValue( fines ),
+                    BountiesVariable.WithValue( bounties ),
+                    PowerplayBountyBonusVariable.WithValue( PowerplayBountyBonus ),
+                    PowerplayCrimeReductionVariable.WithValue( PowerplayCrimeReduction ),
+                    ShipTargetsVariable.WithValue( shipTargets.ToList() )
+                ];
             }
         }
 

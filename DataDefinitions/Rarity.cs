@@ -24,7 +24,7 @@ namespace EddiDataDefinitions
         public static readonly Rarity Rare;
         public static readonly Rarity VeryRare;
 
-        [PublicAPI]
+        [PublicAPI( "the level of the rarity (0 == Very common, 5 == Very rare)" )]
         public int level { get; }
 
         // dummy used to ensure that the static constructor has run

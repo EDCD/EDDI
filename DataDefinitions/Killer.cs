@@ -6,13 +6,13 @@ namespace EddiDataDefinitions
     // For use with the `Died` event
     public class Killer
     {
-        [PublicAPI]
+        [PublicAPI("the killer's name")]
         public string name { get; }
 
-        [PublicAPI]
+        [PublicAPI("the killer's localized combat rating")]
         public string rating => combatRating?.localizedName;
 
-        [PublicAPI]
+        [PublicAPI("the killer's equipment")]
         public string equipment => killerShip?.SpokenModel()
             ?? killerCmdrSuit?.localizedName
             ?? killerVehicle?.localizedName

@@ -14,6 +14,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -21,7 +22,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Tests.Properties;
-using Utilities;
+using Utilities.MetaVariables;
 
 namespace Tests
 {
@@ -651,6 +652,81 @@ namespace Tests
             Assert.IsNull( exception, $"initializeStandardValues should not throw exceptions during early startup. Exception: {exception?.Message}" );
             var eddiVersion = mockVAProxy.GetText("EDDI version");
             Assert.IsFalse(string.IsNullOrEmpty(eddiVersion), "EDDI version should be set after initialization");
+        }
+
+        [TestMethod]
+        public void RuntimeVariableParityReport_IncludesMigratedTopLevelVariables ()
+        {
+            var report = VoiceAttackVariables.GetRuntimeVariableParityReport();
+
+            Assert.Contains( variable =>
+                variable.CottlePath == "environment" &&
+                variable.VoiceAttackKey == "Environment" &&
+                variable.IntendedForBoth &&
+                variable.CurrentlyEmittedByVoiceAttack, report );
+            Assert.Contains( variable =>
+                variable.CottlePath == "vehicle" &&
+                variable.VoiceAttackKey == "Vehicle" &&
+                variable.IntendedForBoth &&
+                variable.CurrentlyEmittedByVoiceAttack, report );
+            Assert.Contains( variable =>
+                variable.CottlePath == "version" &&
+                variable.VoiceAttackKey == "EDDI version" &&
+                variable.IntendedForBoth &&
+                variable.CurrentlyEmittedByVoiceAttack, report );
+            Assert.Contains( variable =>
+                variable.CottlePath == "capi_active" &&
+                variable.VoiceAttackKey == "cAPI active" &&
+                variable.IntendedForBoth &&
+                variable.CurrentlyEmittedByVoiceAttack, report );
+            Assert.Contains( variable =>
+                variable.CottlePath == "va_active" &&
+                variable.VoiceAttackKey == "VA active" &&
+                variable.IntendedForBoth &&
+                !variable.CurrentlyEmittedByVoiceAttack, report );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void MigratedRuntimeVariable_SetCapiState_EmitsBooleanAndUsesDispatchCache ()
+        {
+            VoiceAttackVariables.ClearDispatchCache();
+            _runtimeEvents.Clear();
+
+            VoiceAttackVariables.setCAPIState( true );
+            VoiceAttackVariables.setCAPIState( true );
+
+            Assert.HasCount( 1, _runtimeEvents );
+            Assert.IsTrue( mockVAProxy.GetBoolean( "cAPI active" ) );
+
+            var action = EnumerateRuntimeActions( _runtimeEvents[ 0 ] ).Single();
+            Assert.AreEqual( "set_boolean", action[ RuntimePayloadKeys.CommandActionPayload.Action ] );
+            Assert.AreEqual( "cAPI active", action[ RuntimePayloadKeys.CommandActionPayload.Key ] );
+            Assert.IsTrue( (bool?)action[ RuntimePayloadKeys.CommandActionPayload.Value ]  );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void MigratedRuntimeVariables_UpdateStandardValues_EmitsSharedBatch ()
+        {
+            VoiceAttackVariables.ClearDispatchCache();
+            _runtimeEvents.Clear();
+
+            VoiceAttackVariables.updateStandardValues( new PropertyChangedEventArgs( null ) );
+
+            Assert.HasCount( 1, _runtimeEvents );
+            var actions = EnumerateRuntimeActions( _runtimeEvents[ 0 ] ).ToList();
+
+            Assert.Contains( action =>
+                Equals( action[ RuntimePayloadKeys.CommandActionPayload.Action ], "set_boolean" ) &&
+                Equals( action[ RuntimePayloadKeys.CommandActionPayload.Key ], "cAPI active" ), actions );
+            Assert.Contains( action =>
+                Equals( action[ RuntimePayloadKeys.CommandActionPayload.Action ], "set_boolean" ) &&
+                Equals( action[ RuntimePayloadKeys.CommandActionPayload.Key ], "ipa active" ), actions );
+            Assert.Contains( action =>
+                Equals( action[ RuntimePayloadKeys.CommandActionPayload.Action ], "set_boolean" ) &&
+                Equals( action[ RuntimePayloadKeys.CommandActionPayload.Key ], "icao active" ), actions );
+            Assert.Contains( action =>
+                Equals( action[ RuntimePayloadKeys.CommandActionPayload.Action ], "set_decimal" ) &&
+                Equals( action[ RuntimePayloadKeys.CommandActionPayload.Key ], "Search system distance" ), actions );
         }
 
         [TestMethod, DoNotParallelize]

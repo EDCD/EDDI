@@ -6,10 +6,10 @@ namespace EddiDataDefinitions
 {
     public class CommodityAmount ( [ JetBrains.Annotations.NotNull ] CommodityDefinition commodityDefinition, int amount )
     {
-        [PublicAPI, JsonIgnore]
+        [PublicAPI( "localized commodity name" ), JsonIgnore]
         public string commodity => commodityDefinition.localizedName;
 
-        [PublicAPI, JsonProperty]
+        [PublicAPI( "amount" ), JsonProperty]
         public int amount { get; } = amount;
 
         // Not intended to be user facing

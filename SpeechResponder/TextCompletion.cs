@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using Utilities;
+using Utilities.MetaVariables;
 
 [assembly: InternalsVisibleTo( "Tests" )]
 namespace EddiSpeechResponder

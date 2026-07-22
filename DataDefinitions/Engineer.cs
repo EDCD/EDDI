@@ -10,54 +10,58 @@ namespace EddiDataDefinitions
     /// </summary>
     public class Engineer
     {
+        [PublicAPI("the name of the engineer")]
+        public string name { get; private set; }
+
+        [PublicAPI("the name of the system where the engineer is located")]
+        public string systemname { get; private set; }
+
+        [PublicAPI("the numeric address of the system where the engineer is located")]
+        public ulong systemAddress { get; private set; }
+
+        [PublicAPI("the name of the station where the engineer is located")]
+        public string stationname { get; private set; }
+
+        [PublicAPI("the ID of the market where the engineer is located")]
+        public long marketId { get; private set; }
+
+        [PublicAPI("the name of the body where the engineer is located")]
+        public string bodyname { get; private set; }
+
+        [PublicAPI("the numeric ID of the body where the engineer is located")]
+        public int bodyId { get; private set; }
+
+        // Top tier specialties
+        [PublicAPI( "the major specialties of the engineer, as objects" )]
+        public HashSet<EngineerSpecialty> majorSpecialties { get; private set; }
+
+        [PublicAPI( "the major specialties of the engineer" )]
+        public List<string> majorspecialties => majorSpecialties?.Select(s => s.localizedName).ToList();
+
+        // Other specialties
+        [PublicAPI( "the minor specialties of the engineer, as objects" )]
+        public HashSet<EngineerSpecialty> minorSpecialties { get; private set; }
+
+        [PublicAPI( "the minor specialties of the engineer" )]
+        public List<string> minorspecialties => minorSpecialties?.Select(s => s.localizedName).ToList();
+
+        // Progress
+        [PublicAPI( "the progress stage of your relationship with the engineer" )]
+        public string stage { get; set; }
+
+        [PublicAPI( "your progress towards the next rank in your relationship with the engineer" )]
+        public int? rankprogress { get; set; }
+
+        [PublicAPI( "the current rank of your relationship with the engineer" )]
+        public int? rank { get; set; }
+
+        // Not intended to be user facing
+
         internal static List<Engineer> ENGINEERS = [ ];
 
         public long id { get; private set; }
 
-        [PublicAPI]
-        public string name { get; private set; }
-
-        [PublicAPI]
-        public string systemname { get; private set; }
-
-        [PublicAPI]
-        public ulong systemAddress { get; private set; }
-
-        [PublicAPI]
-        public string stationname { get; private set; }
-
-        [PublicAPI]
-        public long marketId { get; private set; }
-
-        [PublicAPI]
-        public string bodyname { get; private set; }
-
-        [PublicAPI]
-        public int bodyId { get; private set; }
-
-        // Top tier specialties
-        public HashSet<EngineerSpecialty> majorSpecialties { get; private set; }
-
-        [PublicAPI]
-        public List<string> majorspecialties => majorSpecialties?.Select(s => s.localizedName).ToList();
-
-        // Other specialties
-        public HashSet<EngineerSpecialty> minorSpecialties { get; private set; }
-
-        [PublicAPI]
-        public List<string> minorspecialties => minorSpecialties?.Select(s => s.localizedName).ToList();
-
-        // Progress
-        [PublicAPI]
-        public string stage { get; set; }
-
-        [PublicAPI]
-        public int? rankprogress { get; set; }
-
-        [PublicAPI]
-        public int? rank { get; set; }
-
-        public Engineer(string name, long engineerId, string progressStage, int? rankProgress, int? rank)
+        public Engineer (string name, long engineerId, string progressStage, int? rankProgress, int? rank)
         {
             this.name = name;
             this.id = engineerId;

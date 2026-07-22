@@ -20,7 +20,7 @@ namespace EddiDataDefinitions
 
         public string localizedName => commodityDef?.localizedName ?? "";
 
-        [PublicAPI, Obsolete( "Please use localizedName or invariantName" )]
+        [PublicAPI( "name of the cargo (e.g. Tea)" ), Obsolete( "Please use localizedName or invariantName" )]
         public string name => localizedName;
 
         [JsonProperty( nameof( edname ) )]
@@ -31,7 +31,7 @@ namespace EddiDataDefinitions
         }
 
         // The number of stolen items
-        [JsonProperty, PublicAPI]
+        [JsonProperty, PublicAPI( "number of units flagged as stolen" )]
         public int stolen
         {
             get => _stolen;
@@ -47,7 +47,7 @@ namespace EddiDataDefinitions
         private int _stolen;
 
         // The number of items related to a mission currently on-board
-        [JsonIgnore]
+        [JsonIgnore, PublicAPI( "number of units currently on-board and related to a mission" )]
         public int haulage
         {
             get => _haulage;
@@ -63,7 +63,7 @@ namespace EddiDataDefinitions
         private int _haulage;
 
         // The number of collected/purchased items
-        [JsonProperty, PublicAPI]
+        [JsonProperty, PublicAPI( "number of units privately purchased or collected (not stolen or mission related)" )]
         public int owned
         {
             get => _owned;
@@ -98,7 +98,7 @@ namespace EddiDataDefinitions
         }
         private Dictionary<ulong, int> _missionCargo = [ ];
 
-        [JsonProperty, PublicAPI] 
+        [JsonProperty, PublicAPI( "number of units needed to satisfy all mission requirements associated with cargo" )]
         public int need
         {
             get => _need;
@@ -115,12 +115,12 @@ namespace EddiDataDefinitions
 
         // Total amount of the commodity
 
-        [PublicAPI]
+        [PublicAPI( "total number of units" )]
         public int total => haulage + stolen + owned;
 
         // How much we actually paid for it (per unit)
 
-        [PublicAPI]
+        [PublicAPI( "price of an individual unit" )]
         public int price => decimal.ToInt32( weightedAvgPrice );
 
         [JsonProperty(nameof(price))]
@@ -130,7 +130,7 @@ namespace EddiDataDefinitions
         public string localizedCategory => commodityDef?.Category?.localizedName;
 
         // deprecated commodity category (exposed to Cottle and VA)
-        [PublicAPI, Obsolete( "Please use localizedCategory instead" )]
+        [PublicAPI( "category of the commodity (e.g. Foods, Machinery, Technology)" ), Obsolete( "Please use localizedCategory instead" )]
         public string category => localizedCategory;
 
         private CommodityDefinition _commodityDef;
@@ -146,7 +146,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        [PublicAPI, Obsolete("Please use commodityDef instead")]
+        [PublicAPI( "object containing commodity details" ), Obsolete("Please use commodityDef instead")]
         public CommodityDefinition commodity => commodityDef;
         
         [JsonExtensionData]

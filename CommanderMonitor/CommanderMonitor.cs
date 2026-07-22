@@ -1,4 +1,3 @@
-﻿using CommanderMonitor;
 using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiCore;
@@ -378,16 +377,28 @@ namespace EddiCommanderMonitor
             Logging.Info( $"Reloaded {MonitorName()}" );
         }
 
-        public IDictionary<string, Tuple<Type, object>> GetVariables ()
-        {
-            return new Dictionary<string, Tuple<Type, object>>
-            {
-                { "cmdr", new Tuple<Type, object>( typeof(Commander), Cmdr ) },
-                { "homesystem", new Tuple<Type, object>( typeof(StarSystem), HomeStarSystem ) },
-                { "homestation", new Tuple<Type, object>( typeof(Station), HomeStation ) },
-                { "squadronsystem", new Tuple<Type, object>( typeof(StarSystem), SquadronStarSystem ) }
-            };
-        }
+        [Utilities.PublicAPI( "Details about the current commander." )]
+        public static RuntimeVariableDefinition CommanderVariable => new( "cmdr", typeof(Commander) );
+
+        [Utilities.PublicAPI( "Details about the commander's home system." )]
+        public static RuntimeVariableDefinition HomeSystemVariable => new( "homesystem", typeof(StarSystem) );
+
+        [Utilities.PublicAPI( "Details about the commander's home station." )]
+        public static RuntimeVariableDefinition HomeStationVariable => new( "homestation", typeof(Station) );
+
+        [Utilities.PublicAPI( "Details about the current squadron's star system." )]
+        public static RuntimeVariableDefinition SquadronSystemVariable => new( "squadronsystem", typeof(StarSystem) );
+
+        public IReadOnlyList<RuntimeVariableDeclaration> GetVariableDeclarations () =>
+            RuntimeVariableDefinitionExtensions.DiscoverDeclarations( typeof(CommanderMonitor) );
+
+        public IReadOnlyList<RuntimeVariableValue> GetVariableValues () =>
+        [
+            CommanderVariable.WithValue( Cmdr ),
+            HomeSystemVariable.WithValue( HomeStarSystem ),
+            HomeStationVariable.WithValue( HomeStation ),
+            SquadronSystemVariable.WithValue( SquadronStarSystem )
+        ];
 
         public UserControl ConfigurationTabItem ()
         {

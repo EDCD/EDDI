@@ -205,9 +205,9 @@ namespace EddiDataDefinitions
 
         public long? entryID { get; private set; }
 
-        [ PublicAPI ] public CodexStellarBodyType type { get; private set; }
+        [ PublicAPI( "type, as an object" ) ] public CodexStellarBodyType type { get; private set; }
 
-        [ PublicAPI ] public string localizedDescription { get; private set; }
+        [ PublicAPI( "localized description" ) ] public string localizedDescription { get; private set; }
 
         // dummy used to ensure that the static constructor has run
         public CodexStellarBody () : this( "", null, null )

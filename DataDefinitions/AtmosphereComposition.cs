@@ -30,11 +30,11 @@ namespace EddiDataDefinitions
             var Iron = new AtmosphereComposition("iron");
         }
 
-        [PublicAPI, JsonIgnore, Obsolete("Please use localizedComposition or invariantComposition")]
+        [PublicAPI( "an element in the composition of the atmosphere (Ammonia, Nitrogen, Oxygen, Hydrogen, etc.)" ), JsonIgnore, Obsolete("Please use localizedComposition or invariantComposition")]
         public string composition => localizedName;
         
-        [PublicAPI, JsonProperty]
-        public decimal percent { get; set; } = percent; // Percent share of the atmosphere
+        [PublicAPI( "percent share of the element in the atmosphere" ), JsonProperty]
+        public decimal percent { get; set; } = percent;
 
         // Not intended to be user facing
 

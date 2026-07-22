@@ -1,6 +1,7 @@
 ﻿using EddiConfigService;
 using EddiCore;
 using EddiCore.Hotkeys;
+using EddiCore.RuntimeVariables;
 using EddiEvents;
 using EddiSpeechResponder.ScriptResolverService;
 using EddiSpeechService;
@@ -16,6 +17,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using Utilities;
+using Utilities.MetaVariables;
 
 namespace EddiSpeechResponder
 {
@@ -124,24 +126,12 @@ namespace EddiSpeechResponder
 
         private void GetStandardVariables ()
         {
-            // Get MetaVariables for standard object variables available from the script resolver
-            var metaVars = new HashSet<MetaVariable>();
-            var varsLock = new object();
+            // Get MetaVariables for standard variables available from the script resolver
             var standardVars = SpeechResponder.ScriptResolver.CompileVariables();
-            standardVars.AsParallel().ForAll( kvp =>
-            {
-                if ( kvp.Value.Item1 is null ) { return; }
-                var vars = new MetaVariables ( kvp.Value.Item1 ).Results;
-                foreach ( var v in vars )
-                {
-                    v.keysPath = v.keysPath.Prepend ( kvp.Key ).ToList ();
-                }
-                lock ( varsLock )
-                {
-                    metaVars.UnionWith ( vars );
-                }
-            } );
-            standardMetaVariables = metaVars;
+            var standardRoots = standardVars
+                .Where( variable => variable.Value.Item1 is not null )
+                .Select( variable => new RuntimeVariableRoot( variable.Key, variable.Value.Item1 ) );
+            standardMetaVariables = StandardVariableInventoryBuilder.BuildStandardMetaVariables( standardRoots );
         }
 
         private void PersonalitiesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

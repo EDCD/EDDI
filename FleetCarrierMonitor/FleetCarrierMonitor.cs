@@ -1,4 +1,4 @@
-﻿using EddiCompanionAppService;
+using EddiCompanionAppService;
 using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiCore;
@@ -735,17 +735,20 @@ namespace EddiFleetCarrierMonitor
             return Task.CompletedTask;
         }
         
-        public IDictionary<string, Tuple<Type, object>> GetVariables ()
-        {
-            lock ( carrierLock )
-            {
-                return new Dictionary<string, Tuple<Type, object>>
-                {
-                    [ "carrier" ] = new( typeof( FleetCarrier ), FleetCarrier ),
-                    [ "squadronCarrier" ] = new( typeof( FleetCarrier ), SquadronCarrier ),
-                };
-            }
-        }
+        [Utilities.PublicAPI( "Details about the commander's fleet carrier." )]
+        public static RuntimeVariableDefinition CarrierVariable => new( "carrier", typeof(FleetCarrier) );
+
+        [Utilities.PublicAPI( "Details about the commander's squadron fleet carrier." )]
+        public static RuntimeVariableDefinition SquadronCarrierVariable => new( "squadronCarrier", typeof(FleetCarrier) );
+
+        public IReadOnlyList<RuntimeVariableDeclaration> GetVariableDeclarations () =>
+            RuntimeVariableDefinitionExtensions.DiscoverDeclarations( typeof(FleetCarrierMonitor) );
+
+        public IReadOnlyList<RuntimeVariableValue> GetVariableValues () =>
+        [
+            CarrierVariable.WithValue( FleetCarrier ),
+            SquadronCarrierVariable.WithValue( SquadronCarrier )
+        ];
 
         private void OnCompanionAppServiceStateChanged ( CompanionAppService.State oldstate, CompanionAppService.State newstate )
         {

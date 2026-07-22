@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Library</OutputType>
         <UseWindowsForms>true</UseWindowsForms>
@@ -12,9 +12,6 @@
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
         <OutputPath>..\bin\Release\Application\</OutputPath>
     </PropertyGroup>
-    <ItemGroup>
-        <None Remove="2ziiwxwv.wui~" />
-    </ItemGroup>
     <ItemGroup>
         <Reference Include="System.Speech" />
     </ItemGroup>
@@ -66,9 +63,6 @@
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
         <None Update="SpeechResponderHelp.md">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Update="Variables.md">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>
@@ -126,9 +120,6 @@
             <LastGenOutput>Tooltips.Designer.cs</LastGenOutput>
         </EmbeddedResource>
     </ItemGroup>
-    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-        <Exec Command="xcopy /y &quot;$(SolutionDir)SpeechResponder\Variables.md&quot; &quot;$(SolutionDir)bin\$(Configuration)\Application\Wiki\&quot;" />
-    </Target>
     <ProjectExtensions>
         <VisualStudio>
             <UserProperties />

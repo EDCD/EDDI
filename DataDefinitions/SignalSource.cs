@@ -117,35 +117,35 @@ namespace EddiDataDefinitions
         public static readonly SignalSource UnidentifiedSignalSource;
         public static readonly SignalSource GenericSignalSource;
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "the type of the signal, as an object" )]
         public SignalType signalType { get; set; }
         
         public int index;
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "the faction that spawned the signal, if any" )]
         public string spawningFaction { get; set; }
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "the localized name of the power that spawned the signal, if any" )]
         public string spawningPower => SpawningPower?.localizedName ?? Power.None.localizedName;
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "the power that spawned the signal, if any, as an object" )]
         public Power SpawningPower { get; set; }
 
-        [ Utilities.PublicAPI ] 
+        [ Utilities.PublicAPI( "the localized name of the power that is opposing the signal, if any" ) ] 
         public string opposingPower => OpposingPower?.localizedName ?? Power.None.localizedName;
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "the power that is opposing the signal, if any, as an object" )]
         public Power OpposingPower { get; set; }
 
         public DateTime? expiry { get; set; }
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "the level of threat posed by the signal, if any" )]
         public int? threatLevel { get; set; }
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "whether the signal is associated with a station" )]
         public bool isStation { get; set; }
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "the faction state associated with the signal, if any, as an object" )]
         public FactionState spawningState { get; set; }
 
         public ulong systemAddress { get; set; }

@@ -100,7 +100,7 @@ namespace EddiDataDefinitions
             .ToHashSet() ?? [ ];
 
         // Not intended to be user facing - materials available from system bodies
-        [Utilities.PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI( "the elements available from bodies in this starsystem (as an array of localized material names)" ), JsonIgnore]
         public HashSet<string> surfaceelements => materialsAvailable
             .Select( m => m.localizedName ).ToHashSet();
 
@@ -303,7 +303,7 @@ namespace EddiDataDefinitions
         public string comment;
 
         // Not intended to be user facing - the last time the information present changed
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "the timestamp at which the system information was last updated, expressed as a Unix timestamp in seconds" )]
         public long? updatedat;
 
         // Not intended to be user facing - the last time the data about this system was obtained from remote repository

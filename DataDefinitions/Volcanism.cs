@@ -29,14 +29,23 @@ namespace EddiDataDefinitions
             COMPOSITIONS.Add("water", "Water");
         }
         
-        [PublicAPI, JsonIgnore, Obsolete("Please use localizedType or invariantType")]
+        [PublicAPI( "the localized type of volcanism: either \"Geysers\" or \"Magma\"" ), JsonIgnore, Obsolete("Please use localizedType")]
         public string type => localizedType;
 
-        [PublicAPI, JsonIgnore, Obsolete("Please use localizedComposition or invariantComposition")]
+        [PublicAPI( "the invariant type of volcanism: either \"Geysers\" or \"Magma\"" ), JsonIgnore]
+        public string invariantType => GetInvariantString( edType );
+
+        [PublicAPI( "the localized composition of the volcanism (Iron, Carbon dioxide, Nitrogen etc.)" ), JsonIgnore, Obsolete("Please use localizedComposition")]
         public string composition => localizedComposition;
 
-        [PublicAPI, JsonIgnore, Obsolete("Please use localizedAmount or invariantAmount")]
+        [PublicAPI( "the invariant composition of the volcanism (Iron, Carbon dioxide, Nitrogen etc.)" ), JsonIgnore]
+        public string invariantComposition => GetInvariantString( edComposition );
+
+        [PublicAPI( "the localized amount of volcanism (\"Major\", \"Minor\" or nothing)" ), JsonIgnore, Obsolete("Please use localizedAmount")]
         public string amount => localizedAmount;
+
+        [PublicAPI( "the invariant amount of volcanism (\"Major\", \"Minor\" or nothing)" ), JsonIgnore]
+        public string invariantAmount => GetInvariantString( edAmount );
 
         // Not intended to be user facing
 
@@ -44,17 +53,14 @@ namespace EddiDataDefinitions
 
         [JsonProperty("type")]
         public string edType { get; set; } = type; // Geysers/Magma
-        public string invariantType => GetInvariantString(edType);
         public string localizedType => GetLocalizedString(edType);
 
         [JsonProperty("composition")]
         public string edComposition { get; set; } = composition; // Iron, Silicate, etc.
-        public string invariantComposition => GetInvariantString(edComposition);
         public string localizedComposition => GetLocalizedString(edComposition);
 
         [JsonProperty("amount")]
         public string edAmount { get; set; } = amountEdName; // Minor, Major, null (for normal)
-        public string invariantAmount => GetInvariantString(edAmount);
         public string localizedAmount => GetLocalizedString(edAmount);
 
         // Translation of composition of volcanism 

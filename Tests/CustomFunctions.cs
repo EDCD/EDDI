@@ -1,15 +1,15 @@
 ﻿using Cottle;
 using EddiConfigService;
 using EddiDataDefinitions;
-using EddiSpeechService.SpeechProviders;
 using EddiSpeechResponder.CustomFunctions;
 using EddiSpeechResponder.ScriptResolverService;
+using EddiSpeechService;
+using EddiSpeechService.SpeechProviders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using EddiSpeechService;
 
 namespace Tests
 {

@@ -1,4 +1,4 @@
-﻿using EddiCore;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiStatusService;
@@ -430,15 +430,26 @@ namespace EddiStatusMonitor
             return Task.CompletedTask;
         }
 
-        public IDictionary<string, Tuple<Type, object>> GetVariables()
+        [Utilities.PublicAPI( "The commander's current status." )]
+        public static RuntimeVariableDefinition StatusVariable => new( "status", typeof(Status) );
+
+        [Utilities.PublicAPI( "The commander's previous status." )]
+        public static RuntimeVariableDefinition LastStatusVariable => new( "lastStatus", typeof(Status) );
+
+        public IReadOnlyList<RuntimeVariableDeclaration> GetVariableDeclarations ()
+        {
+            return RuntimeVariableDefinitionExtensions.DiscoverDeclarations( typeof(StatusMonitor) );
+        }
+
+        public IReadOnlyList<RuntimeVariableValue> GetVariableValues ()
         {
             lock ( statusLock )
             {
-                return new Dictionary<string, Tuple<Type, object>>
-                {
-                    { "status", new Tuple<Type, object>(typeof(Status), currentStatus ) },
-                    { "lastStatus", new Tuple < Type, object >(typeof(Status), lastStatus ) }
-                };
+                return
+                [
+                    StatusVariable.WithValue( currentStatus ),
+                    LastStatusVariable.WithValue( lastStatus )
+                ];
             }
         }
     }

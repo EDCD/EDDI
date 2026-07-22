@@ -29,7 +29,7 @@ namespace EddiDataDefinitions
         public static readonly MercenaryRating EliteIV = new("EliteIV", 12);
         public static readonly MercenaryRating EliteV = new("EliteV", 13);
 
-        [PublicAPI]
+        [PublicAPI( "the numeric rank, from 0 to 13" )]
         public int rank { get; private set; }
 
         // dummy used to ensure that the static constructor has run

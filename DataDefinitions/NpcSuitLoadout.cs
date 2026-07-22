@@ -22,7 +22,7 @@ namespace EddiDataDefinitions
         public static readonly NpcSuitLoadout Pilot = new( "flightsuitai" ); // Pilot
         public static readonly NpcSuitLoadout TBD = new("heavysuitai"); // Commando
 
-        [PublicAPI]
+        [PublicAPI( "the grade of the suit loadout" )]
         public int grade { get; private set; }
 
         // dummy used to ensure that the static constructor has run

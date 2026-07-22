@@ -11,11 +11,11 @@ namespace EddiDataDefinitions
     public class Mission : INotifyPropertyChanged
     {
         // The mission ID
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI("the numeric ID of the mission")]
         public ulong missionid { get; private set; }
 
         // The name of the mission
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "name of mission" )]
         public string name
         {
             get => _name;
@@ -31,7 +31,7 @@ namespace EddiDataDefinitions
         private string _name;
 
         // The localised name of the mission
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "localised name of the mission" )]
         public string localisedname 
         {
             get => _localisedname;
@@ -52,10 +52,10 @@ namespace EddiDataDefinitions
 
         #region Expiration Data
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI("the date and time when the mission expires, as a DateTime object")]
         public DateTime? expiry { get; set; }
 
-        [Utilities.PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI( "amount of seconds remaining before mission expiration" ), JsonIgnore]
         public long? expiryseconds => expiry != null ? (long?)Utilities.Dates.fromDateTimeToSeconds( (DateTime)expiry ) : null;
 
         [JsonIgnore]
@@ -115,13 +115,13 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public string localizedStatus => statusDef?.localizedName ?? "Unknown";
 
-        [Utilities.PublicAPI, JsonIgnore, Obsolete( "Please use localizedName or invariantName" )]
+        [Utilities.PublicAPI( "localized status (active, complete, failed) of the mission" ), JsonIgnore, Obsolete( "Please use localizedName or invariantName" )]
         public string status => localizedStatus;
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI("true if the mission is shared")]
         public bool shared { get; set; }
 
-        [Utilities.PublicAPI ("Notes you have recorded about the mission.")]
+        [Utilities.PublicAPI ("notes you have recorded about the mission.")]
         public string notes
         {
             get => _notes;
@@ -142,7 +142,7 @@ namespace EddiDataDefinitions
         [ JsonIgnore ] 
         public List<MissionType> tagsList => MissionTypes.FromMissionName( name );
 
-        [Utilities.PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI( "invariant tags (altruism, delivery, massacre, etc) describing the mission, as a list" ), JsonIgnore]
         public List<string> invariantTags => tagsList.Select(t => t.invariantName ?? "Unknown").ToList();
 
         [JsonIgnore, UsedImplicitly]
@@ -151,7 +151,7 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public List<string> edTags => tagsList.Select(t => t.edname ?? "Unknown").ToList();
 
-        [Utilities.PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI( "localized tags (altruism, delivery, massacre, etc) describing the mission, as a list" ), JsonIgnore]
         public List<string> tags => tagsList.Select( t => t.localizedName ?? "Unknown" ).ToList();
 
         [Utilities.PublicAPI("Obsolete: `type` has been deprecated in favor of tags"), JsonIgnore, Obsolete("`type` has been deprecated in favor of tags")]
@@ -163,27 +163,27 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public bool onfoot => tagsList.Contains( MissionType.OnFoot );
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "true if the mission is a communnity goal" ), JsonIgnore]
         public bool communal { get; set; }
 
-        [Utilities.PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI( "true if the mission is legal" ), JsonIgnore]
         public bool legal => !tagsList.Any( t =>
             t == MissionType.Hack ||
             t == MissionType.Illegal ||
             t == MissionType.Piracy ||
             t == MissionType.Smuggle );
 
-        [Utilities.PublicAPI, JsonIgnore] // On-foot missions are always shareable.
+        [Utilities.PublicAPI( "true if the mission allows wing-mates" ), JsonIgnore] // On-foot missions are always shareable.
         public bool wing => tagsList.Contains( MissionType.Wing ) || onfoot;
 
         #endregion
 
         #region Mission Rewards
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "faction influence gained upon successful completion" )]
         public string influence { get; set; }
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "faction reputation gained upon successful completion" )]
         public string reputation { get; set; }
 
         [Utilities.PublicAPI("Credits awarded upon successful completion")]
@@ -194,22 +194,22 @@ namespace EddiDataDefinitions
         #region Mission Origin and Origin Faction
 
         // The system in which the mission was accepted
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "the system in which the mission was accepted" )]
         public string originsystem { get; set; }
 
         // The station in which the mission was accepted
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "the station in which the mission was accepted" )]
         public string originstation { get; set; }
 
         // Mission returns to origin
-        [Utilities.PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI( "true if the commander must return to origin to complete the mission" ), JsonIgnore]
         public bool originreturn => tagsList.Any(t => t.ClaimAtOrigin);
 
         // Mission delivers to a cargo depot
-        [Utilities.PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI( "true if the mission delivers to a cargo depot" ), JsonIgnore]
         public bool cargodepot => tagsList.Any(t => t.ClaimAtCargoDepot);
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "the faction sponsoring the mission" )]
         public string faction { get; set; }
 
         // The state of the minor faction
@@ -243,7 +243,7 @@ namespace EddiDataDefinitions
         #region Mission Destination
 
         // The destination system of the mission
-        [ Utilities.PublicAPI ]
+        [ Utilities.PublicAPI( "destination system of the mission (if applicable)" ) ]
         public string destinationsystem
         {
             get => _destinationsystem;
@@ -260,7 +260,7 @@ namespace EddiDataDefinitions
         private string _destinationsystem;
 
         // The destination station of the mission
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "destination station of the mission (if applicable)" )]
         public string destinationstation
         {
             get => _destinationstation;
@@ -277,7 +277,7 @@ namespace EddiDataDefinitions
         private string _destinationstation;
 
         // Destination systems for chained missions
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "list of destination systems for missions with multiple destinations" )]
         public List<NavWaypoint> destinationsystems { get; set; }
 
         private static string FallbackGetDestinationStation ( string localisedName )
@@ -339,10 +339,14 @@ namespace EddiDataDefinitions
         #region Community Goal Info
 
         // Community goal details, if applicable
+        [Utilities.PublicAPI( "(for community goals) the percentile band for your current contributions" ), JsonIgnore]
+
         public int communalPercentileBand { get; set; }
 
+        [Utilities.PublicAPI( "(for community goals) the current award tier" ), JsonIgnore]
         public int communalTier { get; set; }
 
+        [Utilities.PublicAPI( "(for community goals) the amount contributed" ), JsonIgnore]
         public long communalContribution { get; set; }
 
         #endregion
@@ -351,23 +355,23 @@ namespace EddiDataDefinitions
 
         public string passengertypeEDName { get; set; }
 
-        [Utilities.PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI( "localized type of passengers (celebrity, doctor, etc) in the mission (if applicable)" ), JsonIgnore]
         public string passengertype => PassengerType.FromEDName( passengertypeEDName )?.localizedName;
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "true if the passengers are wanted" )]
         public bool? passengerwanted { get; set; }
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "true if the passengers are VIPs" )]
         public bool? passengervips { get; set; }
 
         #endregion
 
         #region Mission Target
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "the target of the mission (if applicable)" )]
         public string target { get; set; }
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "name of the faction of the target of the mission (if applicable)" )]
         public string targetfaction
         {
             get => _targetfaction;
@@ -384,7 +388,7 @@ namespace EddiDataDefinitions
 
         public string targetTypeEDName;
 
-        [Utilities.PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI( "localized type of the target (civilian, pirate, etc) of the mission (if applicable)" ), JsonIgnore]
         public string targettype => TargetType.FromEDName( targetTypeEDName )?.localizedName;
 
         private static string FallbackGetTargetFaction ( string localisedName )

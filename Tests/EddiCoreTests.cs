@@ -1,4 +1,4 @@
-﻿using EddiCore;
+using EddiCore;
 using EddiCore.GameState;
 using EddiDataDefinitions;
 using EddiEvents;
@@ -57,7 +57,6 @@ namespace Tests
             public Task PostHandleAsync ( Event @event ) => Task.CompletedTask;
             public Task HandleProfileAsync ( JObject profile ) => Task.CompletedTask;
             public Task HandleStatusAsync ( Status status ) => Task.CompletedTask;
-            IDictionary<string, Tuple<Type, object>> IEddiMonitor.GetVariables () => new Dictionary<string, Tuple<Type, object>>();
             public UserControl ConfigurationTabItem () => null;
             
             public bool WaitForStart ( TimeSpan timeout ) => startedSignal.WaitOne( timeout );

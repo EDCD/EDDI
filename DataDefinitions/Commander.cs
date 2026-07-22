@@ -15,7 +15,7 @@ namespace EddiDataDefinitions
         // Parameters obtained from the Frontier API
 
         /// <summary>The commander's name</summary>
-        [ PublicAPI ]
+        [ PublicAPI("the commander's name" ) ]
         public string name
         {
             get => _name;
@@ -32,7 +32,7 @@ namespace EddiDataDefinitions
         }
         
         /// <summary>The number of credits the commander holds</summary>
-        [PublicAPI]
+        [PublicAPI( "the number of credits the commander holds" )]
         public long credits
         {
             get => _credits;
@@ -49,7 +49,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The amount of debt the commander owes</summary>
-        [PublicAPI]
+        [PublicAPI( "the amount of debt the commander owes" )]
         public long debt
         {
             get => _debt;
@@ -66,7 +66,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The commander's combat rating</summary>
-        [ PublicAPI ]
+        [ PublicAPI( "the commander's combat rating" ) ]
         public CombatRating combatrating
         {
             get => _combatrating;
@@ -83,7 +83,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The commander's trade rating</summary>
-        [ PublicAPI ]
+        [ PublicAPI( "the commander's trade rating, as an object" ) ]
         public TradeRating traderating
         {
             get => _traderating;
@@ -100,7 +100,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The commander's exploration rating</summary>
-        [ PublicAPI ]
+        [ PublicAPI( "the commander's exploration rating, as an object" ) ]
         public ExplorationRating explorationrating
         {
             get => _explorationrating;
@@ -117,7 +117,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The commander's CQC rating</summary>
-        [ PublicAPI ]
+        [ PublicAPI( "the commander's CQC rating, as an object" ) ]
         public CQCRating cqcrating
         {
             get => _cqcrating;
@@ -134,7 +134,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The commander's empire rating</summary>
-        [ PublicAPI ]
+        [ PublicAPI( "the commander's empire rating, as an object" ) ]
         public EmpireRating empirerating
         {
             get => _empirerating;
@@ -151,7 +151,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The commander's federation rating</summary>
-        [ PublicAPI ]
+        [ PublicAPI( "the commander's federation rating, as an object" ) ]
         public FederationRating federationrating
         {
             get => _federationrating;
@@ -168,7 +168,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The commander's mercenary rating</summary>
-        [ PublicAPI ]
+        [ PublicAPI( "the commander's mercenary rating, as an object" ) ]
         public MercenaryRating mercenaryrating
         {
             get => _mercenaryrating;
@@ -185,7 +185,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The commander's exobiologist rating</summary>
-        [ PublicAPI ]
+        [ PublicAPI( "the commander's exobiologist rating, as an object" ) ]
         public ExobiologistRating exobiologistrating
         {
             get => _exobiologistrating;
@@ -250,7 +250,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The commander's squadron name</summary>
-        [PublicAPI]
+        [PublicAPI( "the commander's squadron name" )]
         public string squadronname
         {
             get => _squadronname;
@@ -258,7 +258,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The commander's squadron tag</summary>
-        [PublicAPI]
+        [PublicAPI( "the commander's squadron tag" )]
         public string squadrontag
         {
             get => _squadrontag;
@@ -323,7 +323,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The commander's spoken name (rendered using ssml and IPA)</summary>
-        [PublicAPI]
+        [PublicAPI( "the commander's name, using any phonetic pronunciation that has been set and is supported by the current voice" )]
         public string phoneticname => SpokenName();
 
         /// <summary> The commander's title.  This is dependent on the current system</summary>
@@ -335,7 +335,7 @@ namespace EddiDataDefinitions
         private string _title;
 
         /// <summary> The commander's gender.  This is set in EDDI's configuration</summary>
-        [PublicAPI]
+        [PublicAPI( "the gender of the commander, as selected in EDDI's configuration (string, either 'Male', 'Female' or 'Neither')" )]
         public string gender
         {
             get => _gender.ToString();
@@ -364,7 +364,7 @@ namespace EddiDataDefinitions
         private Power _power;
 
         /// <summary>The commander's powerplay power (localized) (if pledged)</summary>
-        [PublicAPI]
+        [PublicAPI( "(if pledged) the power which the commander serves" )]
         public string power => (Power ?? Power.None)?.localizedName;
 
         /// <summary>The commander's powerplay merits (if pledged)</summary>
@@ -429,7 +429,7 @@ namespace EddiDataDefinitions
         private decimal? _homeSystemZ;
 
         /// <summary>The commander's squadron rank</summary>
-        [PublicAPI]
+        [PublicAPI( "the current squadron rank of the commander (this is a Rating object)" )]
         public SquadronRank squadronrank
         {
             get => _squadronrank;
@@ -448,7 +448,7 @@ namespace EddiDataDefinitions
         private SquadronRank _squadronrank;
 
         /// <summary>The commander's squadron system name</summary>
-        [PublicAPI]
+        [PublicAPI ( "the system name of the star system where the commander's squadron is based" )]
         public string squadronSystemName
         {
             get => _squadronSystemName;
@@ -457,7 +457,7 @@ namespace EddiDataDefinitions
         private string _squadronSystemName;
 
         /// <summary>The commander's squadron system numeric address</summary>
-        [PublicAPI]
+        [PublicAPI ( "the numeric address of the star system where the commander's squadron is based" )]
         public ulong? squadronSystemAddress
         {
             get => _squadronSystemAddress;
@@ -466,7 +466,7 @@ namespace EddiDataDefinitions
         private ulong? _squadronSystemAddress;
 
         /// <summary>The commander's squadron superpower</summary>
-        [PublicAPI]
+        [PublicAPI( "the superpower allegiance of the commander's squadron (use squadronallegiance.name)" )]
         public Superpower squadronallegiance
         {
             get => _squadronallegiance ?? Superpower.None;
@@ -475,7 +475,7 @@ namespace EddiDataDefinitions
         private Superpower _squadronallegiance;
 
         /// <summary>The commander's squadron power</summary>
-        [PublicAPI]
+        [PublicAPI( "the power (e.g. Aisling Duval) to which the commander's squadron pledges fealty (use squadronpower.name)" )]
         public Power squadronpower
         {
             get => _squadronpower ?? Power.None;
@@ -484,7 +484,7 @@ namespace EddiDataDefinitions
         private Power _squadronpower;
 
         /// <summary>The commander's squadron faction</summary>
-        [PublicAPI]
+        [PublicAPI( "the faction within the squadron system to which the commander's squadron is aligned" )]
         public string squadronfaction
         {
             get => _squadronfaction;
@@ -496,11 +496,11 @@ namespace EddiDataDefinitions
         public decimal? insurance { get; set; } = 0.05M;
 
         /// <summary>The Commander's friends</summary>
-        [PublicAPI]
+        [PublicAPI( "the commander's friends observed during the play session (this is a list of Friend objects)" )]
         public List<Friend> friends = [ ];
 
         /// <summary>The Commander's status and progress with the various engineers</summary>
-        [PublicAPI]
+        [PublicAPI( "the commander's relations with engineers, including any ranks or progression recorded during the play session (this is a list of Engineer objects)" )]
         public List<Engineer> engineers => Engineer.ENGINEERS;
 
         public static Commander FromFrontierApiCmdr(Commander currentCmdr, FrontierApiCommander frontierApiCommander, DateTime apiTimeStamp, DateTime journalTimeStamp, out bool cmdrMatches)

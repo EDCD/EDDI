@@ -1408,16 +1408,28 @@ namespace EddiShipMonitor
             return Task.CompletedTask;
         }
         
-        public IDictionary<string, Tuple<Type, object>> GetVariables()
+        [PublicAPI( "Details about the current ship." )]
+        public static RuntimeVariableDefinition ShipVariable => new( "ship", typeof(Ship) );
+
+        [PublicAPI( "A list of the commander's stored modules." )]
+        public static RuntimeVariableDefinition StoredModulesVariable => new( "storedmodules", typeof(List<StoredModule>) );
+
+        [PublicAPI( "A list of the commander's stored ships." )]
+        public static RuntimeVariableDefinition ShipyardVariable => new( "shipyard", typeof(List<Ship>) );
+
+        public IReadOnlyList<RuntimeVariableDeclaration> GetVariableDeclarations () =>
+            RuntimeVariableDefinitionExtensions.DiscoverDeclarations( typeof(ShipMonitor) );
+
+        public IReadOnlyList<RuntimeVariableValue> GetVariableValues ()
         {
             lock ( shipyardLock )
             {
-                return new Dictionary<string, Tuple<Type, object>>
-                {
-                    ["ship"] = new(typeof(Ship), GetCurrentShip() ),
-                    ["storedmodules"] = new(typeof(List<StoredModule>), storedmodules.ToList() ),
-                    ["shipyard"] = new( typeof( List<Ship> ), shipyard.ToList() )
-                };
+                return
+                [
+                    ShipVariable.WithValue( GetCurrentShip() ),
+                    StoredModulesVariable.WithValue( storedmodules.ToList() ),
+                    ShipyardVariable.WithValue( shipyard.ToList() )
+                ];
             }
         }
 
@@ -2005,10 +2017,10 @@ namespace EddiShipMonitor
 
         public class JumpDetail
         {
-            [PublicAPI]
+            [PublicAPI( "distance of jump range" )]
             public decimal distance { get; private set; }
 
-            [PublicAPI]
+            [PublicAPI( "number of jumps for given range" )]
             public int jumps { get; private set; }
 
             public JumpDetail() { }

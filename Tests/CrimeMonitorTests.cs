@@ -1,4 +1,4 @@
-﻿using EddiConfigService;
+using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiCore;
 using EddiCrimeMonitor;
@@ -518,7 +518,7 @@ namespace Tests
             Assert.AreEqual( 100, record.basebountyclaims );
             Assert.AreEqual( 100, record.bountyclaims );
             Assert.AreEqual( 100, record.bountiesAmount );
-            var variables = crimeMonitor.GetVariables();
+            var variables = crimeMonitor.GetVariableValues().ToRuntimeValueDictionary();
             Assert.AreEqual( 100L, variables[ "claims" ].Item2 );
         }
 
@@ -563,7 +563,7 @@ namespace Tests
             } );
             crimeMonitor.criminalrecord.Add( record );
 
-            var variables = crimeMonitor.GetVariables();
+            var variables = crimeMonitor.GetVariableValues().ToRuntimeValueDictionary();
             Assert.AreEqual( 100, record.baseclaims );
             Assert.AreEqual( 100L, variables[ "claims" ].Item2 );
             Assert.AreEqual( 100, record.claims );
@@ -712,7 +712,7 @@ namespace Tests
             } );
             crimeMonitor.criminalrecord.Add( pendingRecord );
 
-            var variables = crimeMonitor.GetVariables();
+            var variables = crimeMonitor.GetVariableValues().ToRuntimeValueDictionary();
             Assert.AreEqual( 2000, pendingRecord.baseclaims );
             Assert.AreEqual( 3850L, variables[ "claims" ].Item2 );
             Assert.AreEqual( 1000, pendingRecord.basebountyclaims );
@@ -743,7 +743,7 @@ namespace Tests
             }
             crimeMonitor.criminalrecord.Add( record );
 
-            var variables = crimeMonitor.GetVariables();
+            var variables = crimeMonitor.GetVariableValues().ToRuntimeValueDictionary();
 
             Assert.AreEqual( 739070, record.baseclaims );
             Assert.AreEqual( 2106347L, record.claims );
@@ -778,7 +778,7 @@ namespace Tests
             }
             crimeMonitor.criminalrecord.Add( record );
 
-            var variables = crimeMonitor.GetVariables();
+            var variables = crimeMonitor.GetVariableValues().ToRuntimeValueDictionary();
 
             Assert.AreEqual( 114546, record.baseclaims );
             Assert.AreEqual( 486660L, record.claims );
@@ -811,7 +811,7 @@ namespace Tests
             }
             crimeMonitor.criminalrecord.Add( record );
 
-            var variables = crimeMonitor.GetVariables();
+            var variables = crimeMonitor.GetVariableValues().ToRuntimeValueDictionary();
 
             Assert.AreEqual( 962650, record.baseclaims );
             Assert.AreEqual( 2743551L, record.claims );
@@ -837,7 +837,7 @@ namespace Tests
                 Assert.HasCount( 1, events );
                 await crimeMonitor.PreHandleAsync( events[ 0 ] ).ConfigureAwait( false );
 
-                var variables = crimeMonitor.GetVariables();
+                var variables = crimeMonitor.GetVariableValues().ToRuntimeValueDictionary();
                 record = crimeMonitor.criminalrecord.FirstOrDefault( r => r.faction == "Settlement Context Only" );
 
                 Assert.IsNotNull( record );
@@ -929,7 +929,7 @@ namespace Tests
             Assert.HasCount( 1, events );
             await crimeMonitor.PreHandleAsync( events[ 0 ] ).ConfigureAwait( false );
 
-            var variables = crimeMonitor.GetVariables();
+            var variables = crimeMonitor.GetVariableValues().ToRuntimeValueDictionary();
             Assert.AreEqual( 0.10M, variables[ "powerplaybountybonus" ].Item2 );
             Assert.AreEqual( 252500L, variables[ "claims" ].Item2 );
             Assert.AreEqual( 110000L, record.bountyclaims );
@@ -958,7 +958,7 @@ namespace Tests
             Assert.HasCount( 1, events );
             await crimeMonitor.PreHandleAsync( events[ 0 ] ).ConfigureAwait( false );
 
-            var variables = crimeMonitor.GetVariables();
+            var variables = crimeMonitor.GetVariableValues().ToRuntimeValueDictionary();
             Assert.AreEqual( 0.50M, variables[ "powerplaycrimereduction" ].Item2 );
             Assert.AreEqual( 100000L, variables[ "bounties" ].Item2 );
         }
@@ -988,7 +988,7 @@ namespace Tests
             Assert.IsNotNull( report );
             Assert.AreEqual( 1000, report.amount );
 
-            var variables = crimeMonitor.GetVariables();
+            var variables = crimeMonitor.GetVariableValues().ToRuntimeValueDictionary();
             Assert.AreEqual( 1000L, variables[ "bounties" ].Item2 );
             Assert.AreEqual( 1000, record.basebounties );
 
@@ -1025,7 +1025,7 @@ namespace Tests
             Assert.IsNotNull( report );
             Assert.AreEqual( 1000, report.amount );
 
-            var variables = crimeMonitor.GetVariables();
+            var variables = crimeMonitor.GetVariableValues().ToRuntimeValueDictionary();
             Assert.AreEqual( 1000L, variables[ "fines" ].Item2 );
             Assert.AreEqual( 1000, record.basefines );
         }
@@ -1079,7 +1079,7 @@ namespace Tests
             Assert.HasCount( 1, events );
             await crimeMonitor.PreHandleAsync( events[ 0 ] ).ConfigureAwait( false );
 
-            var variables = crimeMonitor.GetVariables();
+            var variables = crimeMonitor.GetVariableValues().ToRuntimeValueDictionary();
             Assert.IsNull( variables[ "powerplaybountybonus" ].Item2 );
             Assert.AreEqual( 100000L, variables[ "claims" ].Item2 );
             Assert.AreEqual( 100000, record.claims );

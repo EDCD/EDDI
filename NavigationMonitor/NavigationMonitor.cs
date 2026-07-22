@@ -1,4 +1,4 @@
-﻿using EddiConfigService;
+using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
@@ -452,26 +452,44 @@ namespace EddiNavigationMonitor
             }
         }
 
-        public IDictionary<string, Tuple<Type, object>> GetVariables()
+        [Utilities.PublicAPI( "A list of saved navigation bookmarks." )]
+        public static RuntimeVariableDefinition BookmarksVariable => new( "bookmarks", typeof(List<NavBookmark>) );
+
+        [Utilities.PublicAPI( "A list of nearby points of interest, ordered by distance." )]
+        public static RuntimeVariableDefinition GalacticPOIsVariable => new( "galacticPOIs", typeof(NavBookmark) );
+
+        [Utilities.PublicAPI( "The current in-game route." )]
+        public static RuntimeVariableDefinition NavRouteVariable => new( "navRoute", typeof(NavWaypointCollection) );
+
+        [Utilities.PublicAPI( "The currently plotted fleet carrier route." )]
+        public static RuntimeVariableDefinition CarrierPlottedRouteVariable => new( "carrierPlottedRoute", typeof(NavWaypointCollection) );
+
+        [Utilities.PublicAPI( "The currently plotted ship route." )]
+        public static RuntimeVariableDefinition ShipPlottedRouteVariable => new( "shipPlottedRoute", typeof(NavWaypointCollection) );
+
+        [Utilities.PublicAPI( "True if orbital stations are prioritized in station searches." )]
+        public static RuntimeVariableDefinition OrbitalPriorityVariable => new( "orbitalpriority", typeof(bool) );
+
+        [Utilities.PublicAPI( "The maximum station distance from the arrival star, in light seconds." )]
+        public static RuntimeVariableDefinition MaxStationDistanceVariable => new( "maxStationDistance", typeof(int?) );
+
+        public IReadOnlyList<RuntimeVariableDeclaration> GetVariableDeclarations () =>
+            RuntimeVariableDefinitionExtensions.DiscoverDeclarations( typeof(NavigationMonitor) );
+
+        public IReadOnlyList<RuntimeVariableValue> GetVariableValues ()
         {
             lock ( navConfigLock )
             {
-                var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-                return new Dictionary<string, Tuple<Type, object>>
-                {
-                    // Bookmark info
-                    ["bookmarks"] = new(typeof(List<NavBookmark>), Bookmarks.ToList() ),
-                    ["galacticPOIs"] = new(typeof(NavBookmark), GalacticPOIs ),
-
-                    // Route plotting info
-                    ["navRoute"] = new(typeof(NavWaypointCollection), NavRoute ),
-                    ["carrierPlottedRoute"] = new(typeof(NavWaypointCollection), CarrierPlottedRoute ),
-                    ["shipPlottedRoute"] = new(typeof(NavWaypointCollection), PlottedRoute ),
-
-                    // NavConfig info
-                    ["orbitalpriority"] = new(typeof(bool), navConfig.prioritizeOrbitalStations ),
-                    ["maxStationDistance"] = new(typeof(int?), navConfig.maxSearchDistanceFromStarLs )
-                };                
+                return
+                [
+                    BookmarksVariable.WithValue( Bookmarks.ToList() ),
+                    GalacticPOIsVariable.WithValue( GalacticPOIs ),
+                    NavRouteVariable.WithValue( NavRoute ),
+                    CarrierPlottedRouteVariable.WithValue( CarrierPlottedRoute ),
+                    ShipPlottedRouteVariable.WithValue( PlottedRoute ),
+                    OrbitalPriorityVariable.WithValue( ConfigService.Instance.navigationMonitorConfiguration.prioritizeOrbitalStations ),
+                    MaxStationDistanceVariable.WithValue( ConfigService.Instance.navigationMonitorConfiguration.maxSearchDistanceFromStarLs )
+                ];
             }
         }
 
@@ -567,9 +585,9 @@ namespace EddiNavigationMonitor
             } );
 
             // Search Data
-            NavigationService.Instance.SearchDistanceLy = Functions.StellarDistanceLy(x, y, z,
-                NavigationService.Instance.SearchStarSystem?.x, NavigationService.Instance.SearchStarSystem?.y,
-                NavigationService.Instance.SearchStarSystem?.z) ?? 0;
+            EDDI.Instance.SearchDistanceLy = Functions.StellarDistanceLy(x, y, z,
+                EDDI.Instance.SearchStarSystem?.x, EDDI.Instance.SearchStarSystem?.y,
+                EDDI.Instance.SearchStarSystem?.z) ?? 0;
 
             // Save to Config
             if ( !fromLoad && timestamp >= updateDat )

@@ -20,15 +20,15 @@ namespace EddiDataDefinitions
         public int LocalId { get; set; }
 
         /// <summary>the manufacturer of the ship (Lakon, CoreDynamics etc.)</summary>
-        [Utilities.PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI( "the manufacturer of the ship (Lakon, Core Dynamics etc)" ), JsonIgnore]
         public string manufacturer { get; set; }
 
         /// <summary>the spoken manufacturer of the ship (Lakon, CoreDynamics etc.) (rendered using ssml and IPA)</summary>
-        [Utilities.PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI( "the manufacturer of the ship, using any phonetic pronunciation that has been set and is supported by the current voice" ), JsonIgnore]
         public string phoneticmanufacturer => SpokenManufacturer();
 
         /// <summary>the spoken model of the ship (Python, Anaconda, etc.) (rendered using ssml and IPA)</summary>
-        [Utilities.PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI( "the model of the ship, using any phonetic pronunciation that has been set and is supported by the current voice" ), JsonIgnore]
         public string phoneticmodel => SpokenModel();
 
         [JsonIgnore]
@@ -39,7 +39,7 @@ namespace EddiDataDefinitions
         public LandingPadSize Size { get; set; } = LandingPadSize.Small;
 
         /// <summary>the spoken size of this ship</summary>
-        [Utilities.PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI( "the size of the ship (small/medium/large)" ), JsonIgnore]
         public string size => (Size ?? LandingPadSize.Small).localizedName;
 
         /// <summary>specialty compartment slot sizes</summary>
@@ -52,7 +52,7 @@ namespace EddiDataDefinitions
         private Dictionary<string, int> _specialtySlotSizes;
 
         /// <summary>the total tonnage cargo capacity</summary>
-        [Utilities.PublicAPI, JsonIgnore ]
+        [Utilities.PublicAPI( "the total tonnage cargo capacity" ), JsonIgnore ]
         public int cargocapacity => compartments
             .Where( c => c.module != null )
             .Select( c => c.module )
@@ -81,7 +81,7 @@ namespace EddiDataDefinitions
             } );
         
         /// <summary>the value of the ship without cargo, in credits</summary>
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "the value of the ship without cargo, in credits" )]
         public long value
         {
             get => _value;
@@ -99,7 +99,7 @@ namespace EddiDataDefinitions
 
         /// <summary>the value of the ship's hull, in credits</summary>
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "The value of the ship's hull (less modules), in credits" )]
         public long? hullvalue
         {
             get => _hullvalue;
@@ -117,7 +117,7 @@ namespace EddiDataDefinitions
 
         /// <summary>the value of the ship's hull, in credits</summary>
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "The value of the ship's modules (less hull), in credits" )]
         public long? modulesvalue
         {
             get => _modulesvalue;
@@ -134,7 +134,7 @@ namespace EddiDataDefinitions
         private long _modulesvalue;
 
         /// <summary>the value of the ship's rebuy, in credits</summary>
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "The rebuy value of the ship, in credits" )]
         public long rebuy
         {
             get => _rebuy;
@@ -143,7 +143,7 @@ namespace EddiDataDefinitions
         private long _rebuy;
 
         /// <summary>the name of this ship</summary>
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "the name of the ship" )]
         public string name
         {
             get => _name;
@@ -159,7 +159,7 @@ namespace EddiDataDefinitions
         private string _name;
 
         /// <summary>the model of the ship (Python, Anaconda, Cobra Mk. III, etc.)</summary>
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "the model of the ship (Cobra Mk III, Fer-de-Lance etc)" )]
         public string model
         {
             get => _model;
@@ -177,7 +177,7 @@ namespace EddiDataDefinitions
 
         /// <summary>the identifier of this ship</summary>
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "the identifier of the ship" )]
         public string ident
         {
             get => _ident;
@@ -216,7 +216,7 @@ namespace EddiDataDefinitions
 
         /// <summary>The ship's spoken name (rendered using ssml and IPA)</summary>
 
-        [Utilities.PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI( "the name of the ship, using any phonetic pronunciation that has been set and is supported by the current voice" ), JsonIgnore]
         public string phoneticname => SpokenName();
 
         [JsonIgnore]
@@ -251,7 +251,7 @@ namespace EddiDataDefinitions
         }
         private Role _Role = Role.MultiPurpose;
 
-        [Utilities.PublicAPI, JsonIgnore, Obsolete("Please use localizedName or invariantName")]
+        [Utilities.PublicAPI( "the role of the ship" ), JsonIgnore, Obsolete("Please use localizedName or invariantName")]
         public string role => Role?.localizedName; // This string is made available for Cottle scripts that vary depending on the ship's role. 
 
         [JsonExtensionData]
@@ -299,7 +299,7 @@ namespace EddiDataDefinitions
         /// <summary>
         /// The wanted/hot status of this ship
         /// </summary>
-        [Utilities.PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI( "true if the ship is wanted" ), JsonIgnore]
         public bool hot
         {
             get => _hot;
@@ -334,7 +334,7 @@ namespace EddiDataDefinitions
         private Location _storedLocation;
 
         /// <summary>the name of the system in which this ship is stored; null if the commander is in this ship</summary>
-        [ Utilities.PublicAPI, JsonIgnore ]
+        [ Utilities.PublicAPI( "system in which the ship is stored" ), JsonIgnore ]
         public string starsystem => StoredLocation?.systemName;
 
         [Obsolete( "Please use 'starsystem' instead"), JsonIgnore ]
@@ -342,19 +342,19 @@ namespace EddiDataDefinitions
 
         /// <summary>the name of the station in which this ship is stored; null if the commander is in this ship</summary>
 
-        [Utilities.PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI( "station in which the ship is stored" ), JsonIgnore]
         public string station => StoredLocation?.stationName;
 
-        [Utilities.PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI( "market ID of the station in which the ship is stored" ), JsonIgnore]
         public long? marketid => StoredLocation?.marketId;
 
-        [JsonIgnore]
+        [Utilities.PublicAPI( "true if the ship is already in transit" ), JsonIgnore]
         public bool intransit { get; set; }
 
-        [JsonIgnore]
+        [Utilities.PublicAPI( "the price of transferring the ship to the current location" ), JsonIgnore]
         public long? transferprice { get; set; }
 
-        [JsonIgnore]
+        [Utilities.PublicAPI( "the time to transfer ship to current location (0 if in transit), in seconds" ), JsonIgnore]
         public long? transfertime { get; set; }
 
         [Utilities.PublicAPI ("The distance to the ship in light years" ) ]
@@ -366,7 +366,7 @@ namespace EddiDataDefinitions
 
         private decimal? _distance;
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "the last reported health of the hull, from 0 to 100" )]
         public decimal health
         {
             get => _health;
@@ -374,7 +374,7 @@ namespace EddiDataDefinitions
         }
         private decimal _health = 100M;
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "details of the ship's cargo hatch (this is a Module object)" )]
         public Module cargohatch
         {
             get => _cargohatch;
@@ -382,7 +382,7 @@ namespace EddiDataDefinitions
         }
         private Module _cargohatch = new();
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "details of the ship's bulkheads (this is a Module object)" )]
         public Module bulkheads
         {
             get => _bulkheads;
@@ -390,7 +390,7 @@ namespace EddiDataDefinitions
         }
         private Module _bulkheads = new();
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "details of the ship's canopy (this is a Module object)" )]
         public Module canopy
         {
             get => _canopy;
@@ -398,7 +398,7 @@ namespace EddiDataDefinitions
         }
         private Module _canopy = new();
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "details of the ship's powerplant (this is a Module object)" )]
         public Module powerplant
         {
             get => _powerplant;
@@ -406,7 +406,7 @@ namespace EddiDataDefinitions
         }
         private Module _powerplant = new();
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "details of the ship's thrusters (this is a Module object)" )]
         public Module thrusters
         {
             get => _thrusters;
@@ -414,7 +414,7 @@ namespace EddiDataDefinitions
         }
         private Module _thrusters = new();
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "details of the ship's FSD (this is a Module object)" )]
         public Module frameshiftdrive
         {
             get => _frameshiftdrive;
@@ -422,7 +422,7 @@ namespace EddiDataDefinitions
         }
         private Module _frameshiftdrive = new();
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "details of the ship's life support (this is a Module object)" )]
         public Module lifesupport
         {
             get => _lifesupport;
@@ -430,7 +430,7 @@ namespace EddiDataDefinitions
         }
         private Module _lifesupport = new();
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "details of the ship's power distributor (this is a Module object)" )]
         public Module powerdistributor
         {
             get => _powerdistributor;
@@ -438,7 +438,7 @@ namespace EddiDataDefinitions
         }
         private Module _powerdistributor = new();
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "details of the ship's sensors (this is a Module object)" )]
         public Module sensors
         {
             get => _sensors;
@@ -446,7 +446,7 @@ namespace EddiDataDefinitions
         }
         private Module _sensors = new();
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "details of the ship's fuel tank (this is a Module object)" )]
         public Module fueltank
         {
             get => _fueltank;
@@ -454,7 +454,7 @@ namespace EddiDataDefinitions
             }
         private Module _fueltank = new();
 
-        [Utilities.PublicAPI, NotNull, ItemNotNull]
+        [Utilities.PublicAPI( "the ship's hardpoints (this is an array of HardPoint objects)" ), NotNull, ItemNotNull]
         public List<Hardpoint> hardpoints
         {
             get => _hardpoints;
@@ -462,7 +462,7 @@ namespace EddiDataDefinitions
         }
         private List<Hardpoint> _hardpoints = [ ];
 
-        [Utilities.PublicAPI, NotNull, ItemNotNull]
+        [Utilities.PublicAPI( "the ship's internal compartments (this is an array of Compartment objects)" ), NotNull, ItemNotNull]
         public List<Compartment> compartments
         {
             get => _compartments;
@@ -470,7 +470,7 @@ namespace EddiDataDefinitions
         }
         private List<Compartment> _compartments = [ ];
 
-        [Utilities.PublicAPI, NotNull, ItemNotNull]
+        [Utilities.PublicAPI( "the ship's internal hangars, containing SRV or Fighter 'vehicles' (this is an array of launchbay objects)" ), NotNull, ItemNotNull]
         public List<LaunchBay> launchbays
         {
             get => _launchbays;
@@ -478,10 +478,10 @@ namespace EddiDataDefinitions
         }
         private List<LaunchBay> _launchbays = [ ];
 
-        [Utilities.PublicAPI, JsonIgnore] // Core capacity
+        [Utilities.PublicAPI( "the capacity of the main fuel tank" ), JsonIgnore] // Core capacity
         public decimal? fueltankcapacity => fueltank?.@class > 0 ? 1 << fueltank?.@class : 0; // Shift operator, equiv to 2^(fueltank.@class), calculated as an integer
 
-        [Utilities.PublicAPI, JsonIgnore] // Capacity including additional tanks (and excluding the active fuel reservoir)
+        [Utilities.PublicAPI( "the capacity of the main fuel tank plus all secondary fuel tanks" ), JsonIgnore] // Capacity including additional tanks (and excluding the active fuel reservoir)
         public decimal? fueltanktotalcapacity => fueltankcapacity + compartments
             .Where( c => c.module != null )
             .Select( c => c.module )
@@ -494,7 +494,7 @@ namespace EddiDataDefinitions
 
         // Ship jump and mass properties
 
-        [Utilities.PublicAPI]
+        [Utilities.PublicAPI( "maximum unladen jump range of the ship" )]
         public decimal maxjumprange 
         {
             get => _maxjumprange;
@@ -510,7 +510,7 @@ namespace EddiDataDefinitions
         [JsonIgnore, Obsolete("Please use maxjumprange instead")]
         public decimal maxjump => maxjumprange;
 
-        [ Utilities.PublicAPI, JsonIgnore] 
+        [ Utilities.PublicAPI( "fuel required for a maximum range jump (excluding synthesis)" ), JsonIgnore]
         public decimal maxfuelperjump => frameshiftdrive?.GetFsdMaxFuelPerJump() ?? 0;
 
         [JsonIgnore, Obsolete("Please use maxfuelperjump instead")]

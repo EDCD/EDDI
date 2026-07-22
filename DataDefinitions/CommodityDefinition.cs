@@ -1135,9 +1135,10 @@ namespace EddiDataDefinitions
 
         #endregion
 
-        [ Utilities.PublicAPI, JsonProperty( "category" ) ]
+        [ Utilities.PublicAPI( "the category of the commodity, as an object" ), JsonProperty( "category" ) ]
         public readonly CommodityCategory Category;
 
+        [Utilities.PublicAPI( "the category of the commodity (e.g. Foods, Machinery, Technology)" ), JsonIgnore]
         public string category => Category.localizedName;
 
         [ Utilities.PublicAPI( "True if the commodity is a rare market commodity" ) ]

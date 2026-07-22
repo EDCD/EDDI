@@ -1,4 +1,4 @@
-﻿using EddiCore;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiStatusMonitor;
@@ -842,7 +842,7 @@ namespace Tests
         {
             var currentStatus = statusService.ParseStatusEntry( line );
             statusMonitor.HandleStatusAsync( currentStatus );
-            var variables = statusMonitor.GetVariables();
+            var variables = statusMonitor.GetVariableValues().ToRuntimeValueDictionary();
             Assert.IsNotNull( variables[ "status" ] );
             Assert.AreEqual( typeof(Status), variables[ "status" ].Item1 );
             Assert.AreEqual( currentStatus, (Status)variables[ "status" ].Item2 );

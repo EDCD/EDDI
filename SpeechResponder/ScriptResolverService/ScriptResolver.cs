@@ -1,10 +1,8 @@
 ﻿using Cottle;
 using Cottle.Exceptions;
-using EddiCompanionAppService;
-using EddiConfigService;
 using EddiCore;
+using EddiCore.RuntimeVariables;
 using EddiDataDefinitions;
-using EddiNavigationService;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
@@ -232,20 +230,9 @@ namespace EddiSpeechResponder.ScriptResolverService
                     // Boolean constants
                     [ "true" ] = new( typeof(bool), true ),
                     [ "false" ] = new( typeof(bool), false ),
-
-                    // Standard simple variables
-                    [ "capi_active" ] = new( typeof(bool), CompanionAppService.Instance?.active ?? false ),
-                    [ "destinationdistance" ] = new( typeof(decimal), EDDI.Instance.GameState.DestinationDistanceLy ),
-                    [ "searchdistance" ] = new( typeof(decimal), NavigationService.Instance.SearchDistanceLy ),
-                    [ "environment" ] = new( typeof(string), EDDI.Instance.GameState.Environment ),
-                    [ "horizons" ] = new( typeof(bool), EDDI.Instance.GameState.inHorizons ),
-                    [ "odyssey" ] = new( typeof(bool), EDDI.Instance.GameState.inOdyssey ),
-                    [ "va_active" ] = new( typeof(bool), EDDI.Instance.FromVA ),
-                    [ "vehicle" ] = new( typeof(string), EDDI.Instance.GameState.Vehicle ),
-                    [ "icao_active" ] = new( typeof(bool), ConfigService.Instance.speechServiceConfiguration.EnableIcao ),
-                    [ "ipa_active" ] = new( typeof(bool), !ConfigService.Instance.speechServiceConfiguration.DisableIpa ),
-                    [ "version" ] = new( typeof(string), Constants.EDDI_VERSION.ShortString )
                 };
+
+                AddRuntimeVariables( dict, TopLevelRuntimeVariableValues.Build() );
 
                 // Standard objects
 
@@ -277,17 +264,17 @@ namespace EddiSpeechResponder.ScriptResolverService
                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
                 }
 
-                if ( NavigationService.Instance.SearchStarSystem != null )
+                if ( EDDI.Instance.SearchStarSystem != null )
                 {
                     dict[ "searchsystem" ] = new Tuple<Type, Value>( typeof(StarSystem),
-                        Value.FromReflection( NavigationService.Instance.SearchStarSystem,
+                        Value.FromReflection( EDDI.Instance.SearchStarSystem,
                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
                 }
 
-                if ( NavigationService.Instance.SearchStation != null )
+                if ( EDDI.Instance.SearchStation != null )
                 {
                     dict[ "searchstation" ] = new Tuple<Type, Value>( typeof(Station),
-                        Value.FromReflection( NavigationService.Instance.SearchStation,
+                        Value.FromReflection( EDDI.Instance.SearchStation,
                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
                 }
 
@@ -321,23 +308,7 @@ namespace EddiSpeechResponder.ScriptResolverService
                 // Obtain additional variables from each monitor
                 foreach ( var monitor in EDDI.Instance.monitors )
                 {
-                    var monitorVariables = monitor.GetVariables();
-                    if ( monitorVariables != null )
-                    {
-                        foreach ( var key in monitorVariables.Keys )
-                        {
-                            if ( monitorVariables[ key ].Item2 == null )
-                            {
-                                dict.Remove( key );
-                            }
-                            else
-                            {
-                                dict[ key ] = new Tuple<Type, Value>( monitorVariables[ key ].Item1,
-                                    Value.FromReflection( (dynamic)monitorVariables[ key ]?.Item2,
-                                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
-                            }
-                        }
-                    }
+                    AddRuntimeVariables( dict, monitor.GetVariableValues() );
                 }
 
                 return dict;
@@ -353,6 +324,39 @@ namespace EddiSpeechResponder.ScriptResolverService
                 // Fail as gracefully as possible: return an empty variable set.
                 return new Dictionary<string, Tuple<Type, Value>>();
             }
+        }
+
+        private static void AddRuntimeVariables (
+            Dictionary<string, Tuple<Type, Value>> dict,
+            IEnumerable<RuntimeVariableValue> values )
+        {
+            foreach ( var variableValue in values )
+            {
+                if ( variableValue.Value == null )
+                {
+                    dict.Remove( variableValue.Name );
+                    continue;
+                }
+
+                dict[ variableValue.Name ] = new Tuple<Type, Value>( variableValue.Type, ToCottleValue( variableValue.Value ) );
+            }
+        }
+
+        private static Value ToCottleValue ( object value )
+        {
+            return value switch
+            {
+                bool boolValue => boolValue,
+                decimal decimalValue => decimalValue,
+                double doubleValue => doubleValue,
+                float floatValue => (decimal)floatValue,
+                int intValue => intValue,
+                long longValue => longValue,
+                string stringValue => stringValue,
+                _ => Value.FromReflection(
+                    (dynamic)value,
+                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic )
+            };
         }
 
         /// <summary>

@@ -104,10 +104,10 @@ namespace EddiDataDefinitions
 
         public long entryID;
 
-        [PublicAPI]
+        [PublicAPI( "type, as an object" )]
         public CodexGeologyOrAnomolyType type;
 
-        [PublicAPI]
+        [PublicAPI( "localized description" )]
         public string localizedDescription => Properties.CodexGeologyOrAnomolyDesc.ResourceManager.GetString( edname );
 
         // dummy used to ensure that the static constructor has run

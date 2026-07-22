@@ -185,10 +185,10 @@ namespace EddiDataDefinitions
         public IList<string> starClass = [ ];
         public IList<string> volcanism = [ ];
 
-        [JsonIgnore, PublicAPI]
+        [JsonIgnore, PublicAPI( "the organic species's localized description" )]
         public string localizedDescription => Properties.OrganicSpeciesDesc.ResourceManager.GetString( edname );
 
-        [JsonIgnore, PublicAPI]
+        [JsonIgnore, PublicAPI( "the organic species's localized conditions" )]
         public string localizedConditions => Properties.OrganicSpeciesCond.ResourceManager.GetString( edname );
 
         [JsonIgnore]

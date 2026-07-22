@@ -962,17 +962,32 @@ namespace EddiMissionMonitor
             return false;
         }
 
-        public IDictionary<string, Tuple<Type, object>> GetVariables()
+        [Utilities.PublicAPI( "The number of community goals you are engaged in." )]
+        public static RuntimeVariableDefinition GoalsCountVariable => new( "goalsCount", typeof(int) );
+
+        [Utilities.PublicAPI( "A list of active missions." )]
+        public static RuntimeVariableDefinition MissionsVariable => new( "missions", typeof(List<Mission>) );
+
+        [Utilities.PublicAPI( "The number of active non-shared missions." )]
+        public static RuntimeVariableDefinition MissionsCountVariable => new( "missionsCount", typeof(int) );
+
+        [Utilities.PublicAPI( "You will receive a warning when a mission is within this many minutes from expiring." )]
+        public static RuntimeVariableDefinition MissionWarningVariable => new( "missionWarning", typeof(int) );
+
+        public IReadOnlyList<RuntimeVariableDeclaration> GetVariableDeclarations () =>
+            RuntimeVariableDefinitionExtensions.DiscoverDeclarations( typeof(MissionMonitor) );
+
+        public IReadOnlyList<RuntimeVariableValue> GetVariableValues ()
         {
             lock (missionsLock)
             {
-                return new Dictionary<string, Tuple<Type, object>>
-                {
-                    ["goalsCount"] = new(typeof(int), missions.Count(m => m.communal)),
-                    ["missions"] = new(typeof(List<Mission>), missions.ToList()),
-                    ["missionsCount"] = new(typeof(int), missions.Count(m => !m.shared && !m.communal)),
-                    ["missionWarning"] = new(typeof(int), missionWarning)
-                };
+                return
+                [
+                    GoalsCountVariable.WithValue( missions.Count( m => m.communal ) ),
+                    MissionsVariable.WithValue( missions.ToList() ),
+                    MissionsCountVariable.WithValue( missions.Count( m => !m.shared && !m.communal ) ),
+                    MissionWarningVariable.WithValue( missionWarning )
+                ];
             }
         }
 

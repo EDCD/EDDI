@@ -1,266 +1,264 @@
-﻿using EddiEvents;
-using EddiIPC_Service;
-using EddiSpeechResponder.ScriptResolverService;
-using EddiVoiceAttackResponder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Utilities;
+using Utilities.MetaVariables;
 
 namespace Tests
 {
-    [TestClass, TestCategory( "DocGen" )]
+    [TestClass, TestCategory( "UnitTests" )]
     public class GeneratorTests
     {
-        private string initialCurrentDirectory;
-
-        [TestInitialize]
-        public void SetOutputDirectory()
+        [TestMethod]
+        public void RenderWikiEvents_IsDeterministicAndIncludesRepresentativeVariables ()
         {
-            initialCurrentDirectory = Directory.GetCurrentDirectory();
-            var newCurrentDirectory = initialCurrentDirectory.Replace(@"Tests\", "");
-            Directory.SetCurrentDirectory( Path.Combine( newCurrentDirectory, "Application" ) );
-        }
+            var firstRender = DocumentationGenerator.DocumentationGenerator.RenderWikiEventPages();
+            var secondRender = DocumentationGenerator.DocumentationGenerator.RenderWikiEventPages();
 
-        [TestCleanup]
-        public void RestoreOutputDirectory()
-        {
-            Directory.SetCurrentDirectory(initialCurrentDirectory);
+            CollectionAssert.AreEqual( firstRender.Keys.ToList(), secondRender.Keys.ToList() );
+            foreach ( var key in firstRender.Keys )
+            {
+                Assert.AreEqual( firstRender[ key ], secondRender[ key ] );
+            }
+
+            var commodityEjectedPage = firstRender[ @"Wiki\events\Commodity-ejected-event.md" ];
+            Assert.Contains( "{event.commodity}" , commodityEjectedPage);
+            Assert.Contains( "{TXT:EDDI commodity ejected commodity}" , commodityEjectedPage);
+            Assert.Contains( "The name of the commodity ejected" , commodityEjectedPage);
         }
 
         [TestMethod]
-        public void TestGenerateWikiEvents()
+        public void RenderWikiEventsList_IsDeterministicAndLinksEvents ()
         {
-            foreach (var entry in Events.TYPES.OrderBy(i => i.Key))
+            var firstRender = DocumentationGenerator.DocumentationGenerator.RenderWikiEventsList();
+            var secondRender = DocumentationGenerator.DocumentationGenerator.RenderWikiEventsList();
+
+            Assert.AreEqual( firstRender, secondRender );
+            Assert.Contains( "## [Commodity ejected](Commodity-ejected-event)" , firstRender);
+        }
+
+        [TestMethod]
+        public void RenderEventVariableKeywords_IsDeterministicAndUsesDescriptorInventory ()
+        {
+            var firstRender = DocumentationGenerator.DocumentationGenerator.RenderEventVariableKeywords();
+            var secondRender = DocumentationGenerator.DocumentationGenerator.RenderEventVariableKeywords();
+
+            Assert.AreEqual( firstRender, secondRender );
+            Assert.Contains( "<Word>commodity</Word>" , firstRender);
+            Assert.Contains( "<Word>" + MetaVariables.indexMarker + "</Word>" , firstRender);
+        }
+
+        [TestMethod]
+        public void RenderVariablesPage_IsDeterministicAndIncludesStandardRuntimeAndMonitorVariables ()
+        {
+            var firstRender = DocumentationGenerator.DocumentationGenerator.RenderVariablesPage();
+            var secondRender = DocumentationGenerator.DocumentationGenerator.RenderVariablesPage();
+
+            Assert.AreEqual( firstRender, secondRender );
+            Assert.Contains( "## Root Variables" , firstRender);
+            Assert.DoesNotContain( "## Top-level variables", firstRender );
+            Assert.DoesNotContain( "## Standard variables", firstRender );
+            Assert.Contains( "A variable can be a simple value, such as `environment`, or an object, such as `cmdr`." , firstRender);
+            Assert.Contains( "The object reference documents each object shape once and lists the roots that use it" , firstRender);
+            Assert.Contains( "*environment*" , firstRender);
+            Assert.Contains( "The commander's current environment." , firstRender);
+            Assert.Contains( "Used by: `cmdr`" , firstRender);
+            Assert.Contains( "Used by: `inventory[\\<index\\>]`" , firstRender);
+            Assert.Contains( "### StarSystem" , firstRender);
+            Assert.Contains( "`system`" , firstRender);
+            Assert.Contains( "`lastsystem`" , firstRender);
+            Assert.Contains( "`searchsystem`" , firstRender);
+            Assert.Contains( "*powerplant* - details of the ship's powerplant (this is a Module object) See: `Module`." , firstRender);
+            Assert.Contains( "Used by: `Compartment.module`, `Hardpoint.module`, `Ship.bulkheads`" , firstRender);
+            Assert.DoesNotContain( "*powerplant.class*", firstRender );
+            Assert.Contains( "*name*" , firstRender);
+            Assert.Contains( "*gui_focus*" , firstRender);
+        }
+
+        [TestMethod]
+        public void RenderVoiceAttackIntegrationPage_ReplacesVariableInventoryFromRuntimeCatalog ()
+        {
+            const string template = """
+                                    # Using EDDI with VoiceAttack
+
+                                    Keep this setup prose.
+
+                                    {{VoiceAttackVariables}}
+
+                                    ## Legacy Standard Variables
+
+                                    ## Commander Variables
+
+                                      * {TXT:Name}: the name of the commander
+
+                                    # Running Commands on EDDI Events
+
+                                    Keep this command prose.
+                                    """;
+
+            var firstRender = DocumentationGenerator.DocumentationGenerator.RenderVoiceAttackIntegrationPage( template );
+            var secondRender = DocumentationGenerator.DocumentationGenerator.RenderVoiceAttackIntegrationPage( template );
+
+            Assert.AreEqual( firstRender, secondRender );
+            Assert.Contains( "Keep this setup prose.", firstRender );
+            Assert.Contains( "Keep this command prose.", firstRender );
+            Assert.DoesNotContain( "{{VoiceAttackVariables}}", firstRender );
+            Assert.Contains( "{TXT:Environment}", firstRender );
+            Assert.Contains( "The commander's current environment.", firstRender );
+            Assert.Contains( "{BOOL:cAPI active}", firstRender );
+            Assert.Contains( "## Legacy Standard Variables", firstRender );
+            Assert.Contains( "{TXT:Name}: the name of the commander", firstRender );
+        }
+
+        [TestMethod]
+        public void RenderVoiceAttackIntegrationPage_GeneratedVariableInventoryIsStableAndOrdered ()
+        {
+            var render = DocumentationGenerator.DocumentationGenerator.RenderVoiceAttackIntegrationPage();
+
+            CollectionAssert.AreEqual(
+                new List<string>
+                {
+                    "cAPI active",
+                    "Destination system distance",
+                    "EDDI version",
+                    "Environment",
+                    "horizons",
+                    "icao active",
+                    "ipa active",
+                    "odyssey",
+                    "Search system distance",
+                    "Vehicle"
+                },
+                ExtractVoiceAttackVariableKeys(
+                    render,
+                    "## Generated Standard Variables",
+                    "## Legacy Standard Variables" ) );
+
+            Assert.IsLessThan(
+                render.IndexOf( "## Legacy Standard Variables", StringComparison.Ordinal ), render.IndexOf( "## Generated Standard Variables", StringComparison.Ordinal ));
+            Assert.IsLessThan(
+                render.IndexOf( "# Running Commands on EDDI Events", StringComparison.Ordinal ), render.IndexOf( "## Legacy Standard Variables", StringComparison.Ordinal ));
+        }
+
+        [TestMethod]
+        public void RenderVoiceAttackIntegrationPage_DoesNotDuplicateMigratedLegacyVariables ()
+        {
+            var render = DocumentationGenerator.DocumentationGenerator.RenderVoiceAttackIntegrationPage();
+            var generatedKeys = ExtractVoiceAttackVariableKeys(
+                render,
+                "## Generated Standard Variables",
+                "## Legacy Standard Variables" );
+            var legacyKeys = ExtractVoiceAttackVariableKeys(
+                render,
+                "## Legacy Standard Variables",
+                "# Running Commands on EDDI Events" );
+
+            foreach ( var generatedKey in generatedKeys )
             {
-                var output = new List<string>
-                {
-                    Events.DESCRIPTIONS[entry.Key] + ".",
-                    ""
-                };
+                Assert.IsFalse(
+                    legacyKeys.Contains( generatedKey, StringComparer.Ordinal ),
+                    $"Generated VoiceAttack variable remains in the legacy section: {generatedKey}" );
+            }
 
-                var vars = new MetaVariables(entry.Value).Results;
-                var CottleVars = vars.AsCottleVariables();
-                var VoiceAttackVars = VoiceAttackVariables.Convert(vars, "EDDI", entry.Key);
+            Assert.Contains( "{TXT:Name}: the name of the commander", render );
+            Assert.Contains( "{TXT:EDDI uri}", render );
+            Assert.DoesNotContain( "  * {TXT:Environment}:", render );
+            Assert.DoesNotContain( "  * {BOOL:cAPI active}:", render );
+        }
 
-                if (vars.Count == 0 )
+        [TestMethod]
+        public void RenderVoiceAttackIntegrationPage_RequiresVariablePlaceholder ()
+        {
+            const string template = """
+                                    # Using EDDI with VoiceAttack
+
+                                    # Running Commands on EDDI Events
+                                    """;
+
+            Assert.ThrowsExactly<InvalidOperationException>(
+                () => DocumentationGenerator.DocumentationGenerator.RenderVoiceAttackIntegrationPage( template ) );
+        }
+
+        [TestMethod]
+        public void RenderVoiceAttackIntegrationPage_LoadsDocumentationGeneratorTemplate ()
+        {
+            var render = DocumentationGenerator.DocumentationGenerator.RenderVoiceAttackIntegrationPage();
+
+            Assert.Contains( "# Using EDDI with VoiceAttack", render );
+            Assert.Contains( "{TXT:Environment}", render );
+            Assert.Contains( "## Legacy Standard Variables", render );
+            Assert.Contains( "## Commander Variables", render );
+            Assert.Contains( "# Running Commands on EDDI Events", render );
+        }
+
+        [TestMethod]
+        public void RenderFunctionsHelp_IsDeterministicAndIncludesFunctionIndex ()
+        {
+            var (Help, Functions) = DocumentationGenerator.DocumentationGenerator.RenderFunctionsHelp();
+            var (Help2, Functions2) = DocumentationGenerator.DocumentationGenerator.RenderFunctionsHelp();
+
+            Assert.AreEqual( Help, Help2 );
+            Assert.AreEqual( Functions, Functions2 );
+            Assert.Contains( "* " , Functions);
+        }
+
+        [TestMethod]
+        public void WriteWikiOutput_RemovesObsoleteRootMarkdownOutputs ()
+        {
+            var outputDirectory = Path.Combine( Path.GetTempPath(), "eddi-docgen-test-" + Guid.NewGuid().ToString( "N" ) );
+            Directory.CreateDirectory( outputDirectory );
+            try
+            {
+                File.WriteAllText( Path.Combine( outputDirectory, "Variables.md" ), "stale variables" );
+                File.WriteAllText( Path.Combine( outputDirectory, "Help.md" ), "stale help" );
+
+                DocumentationGenerator.DocumentationGenerator.WriteWikiOutput( outputDirectory );
+
+                Assert.IsFalse( File.Exists( Path.Combine( outputDirectory, "Variables.md" ) ) );
+                Assert.IsFalse( File.Exists( Path.Combine( outputDirectory, "Help.md" ) ) );
+                Assert.IsTrue( File.Exists( Path.Combine( outputDirectory, "Wiki", "Variables.md" ) ) );
+                Assert.IsTrue( File.Exists( Path.Combine( outputDirectory, "Wiki", "Help.md" ) ) );
+                Assert.IsTrue( File.Exists( Path.Combine( outputDirectory, "Wiki", "VoiceAttack-Integration.md" ) ) );
+                Assert.IsTrue( File.Exists( Path.Combine( outputDirectory, "Wiki", "Functions.md" ) ) );
+                Assert.IsTrue( Directory.EnumerateFiles( Path.Combine( outputDirectory, "Wiki", "events" ), "*.md" ).Any() );
+
+                var variables = File.ReadAllText( Path.Combine( outputDirectory, "Wiki", "Variables.md" ) );
+                var voiceAttackIntegration = File.ReadAllText( Path.Combine( outputDirectory, "Wiki", "VoiceAttack-Integration.md" ) );
+
+                Assert.Contains( "## Root Variables", variables );
+                Assert.DoesNotContain( "{{", variables );
+                Assert.DoesNotContain( "{{", voiceAttackIntegration );
+            }
+            finally
+            {
+                if ( Directory.Exists( outputDirectory ) )
                 {
-                    output.Add("This event has no variables.");
-                    output.Add("To respond to this event in VoiceAttack, create a command entitled ((EDDI " + entry.Key.ToLowerInvariant() + ")).");
-                    output.Add("");
+                    Directory.Delete( outputDirectory, true );
                 }
-
-                if (vars.Any(v => v.keysPath.Any(k => k.Contains(@"<index"))))
-                {
-                    output.Add("Where values are indexed (the compartments on a ship for example), the index will be represented by '*\\<index\\>*'.");
-                    if (VoiceAttackVars.Any(v => v.key.Contains(@"<index")))
-                    {
-                        output.Add("For VoiceAttack, a variable with the root name of the indexed array shall identify the total number of entries in the array. For example, if compartments 1 and 2 are available then the value of the corresponding 'compartments' variable will be 2.");
-                    }
-                    output.Add("");
-                }
-
-                if (CottleVars.Count > 0)
-                {
-                    output.Add("When using this event in the [Speech responder](Speech-Responder) the information about this event is available under the `event` object.  The available variables are as follows:");
-                    output.Add("");
-                    output.Add("");
-
-                    foreach (var cottleVariable in CottleVars.OrderBy(i => i.key))
-                    {
-                        var description = !string.IsNullOrEmpty(cottleVariable.description) ? $" - {cottleVariable.description}" : "";
-                        output.Add($"  - *{{event.{cottleVariable.key}}}* {description}");
-                        output.Add("");
-                    }
-                }
-
-                if (VoiceAttackVars.Count > 0 )
-                {
-                    output.Add("");
-                    output.Add("To respond to this event in VoiceAttack, create a command entitled ((EDDI " + entry.Key.ToLowerInvariant() + ")). VoiceAttack variables will be generated to allow you to access the event information.");
-                    output.Add("");
-                    output.Add("The following VoiceAttack variables are available for this event:");
-                    output.Add("");
-                    output.Add("");
-
-                    void WriteVariableToOutput(VoiceAttackVariable variable)
-                    {
-                        var description = !string.IsNullOrEmpty(variable.description) ? $" - {variable.description}" : "";
-                        if (variable.variableType == typeof(string))
-                        {
-                            output.Add($"  - *{{TXT:{variable.key}}}* {description}");
-                        }
-                        else if (variable.variableType == typeof(int))
-                        {
-                            output.Add($"  - *{{INT:{variable.key}}}* {description}");
-                        }
-                        else if (variable.variableType == typeof(bool))
-                        {
-                            output.Add($"  - *{{BOOL:{variable.key}}}* {description}");
-                        }
-                        else if (variable.variableType == typeof(decimal))
-                        {
-                            output.Add($"  - *{{DEC:{variable.key}}}* {description}");
-                        }
-                        else if (variable.variableType == typeof(DateTime))
-                        {
-                            output.Add($"  - *{{DATE:{variable.key}}}* {description}");
-                        }
-                        else if ( variable.variableType == typeof( IEnumerable<>) )
-                        {
-                            output.Add( $"  - *{{INT:{variable.key}}}* {description}" );
-                        }
-                        output.Add("");
-                    }
-
-                    foreach (var variable in VoiceAttackVars.OrderBy(i => i.key))
-                    {
-                        WriteVariableToOutput(variable);
-                    }
-
-                    output.Add("");
-                    output.Add("For more details on VoiceAttack integration, see https://github.com/EDCD/EDDI/wiki/VoiceAttack-Integration.");
-                    output.Add("");
-                }
-                Directory.CreateDirectory(@"Wiki\events\");
-                File.WriteAllLines(@"Wiki\events\" + entry.Key.Replace(" ", "-") + "-event.md", output);
             }
         }
 
-        [TestMethod]
-        public void TestGenerateWikiEventsList()
+        private static List<string> ExtractVoiceAttackVariableKeys (
+            string render,
+            string startHeading,
+            string endHeading )
         {
-            var output = new List<string>
-            {
+            var lines = render.Split( [ "\r\n", "\n" ], StringSplitOptions.None );
+            var start = Array.FindIndex( lines, line => line.Trim() == startHeading );
+            var end = Array.FindIndex( lines, start + 1, line => line.Trim() == endHeading );
 
-                // This is the header row for the index of events
-                "EDDI generates a large number of events, triggered from changes in-game as well as from a number of external sources (e.g. Galnet RSS feed).  " +
-                "A brief description of all available events is below, along with a link to more detailed information about each event:",
-                ""
-            };
+            Assert.IsGreaterThanOrEqualTo( 0, start, $"Could not find heading '{startHeading}'." );
+            Assert.IsGreaterThan( start, end, $"Could not find heading '{endHeading}' after '{startHeading}'." );
 
-            // This is the list of events in markdown format
-            foreach (var entry in Events.TYPES.OrderBy(i => i.Key))
-            {
-                output.Add("## [" + entry.Key + "](" + entry.Key.Replace(" ", "-") + "-event)");
-                output.Add(Events.DESCRIPTIONS[entry.Key] + ".");
-                output.Add("");
-            }
-            Directory.CreateDirectory(@"Wiki\");
-            File.WriteAllLines(@"Wiki\Events.md", output);
-        }
-
-        [TestMethod]
-        // Generates the list of keywords used by the Cottle grammar "SpeechResponder\Cottle.xshd".
-        // Paste the output into the "Custom properties" section of that file.
-        public void TestGenerateEventVariables()
-        {
-            var eventVars = new SortedSet<string>();
-
-            foreach (var type in Events.TYPES)
-            {
-                var vars = new MetaVariables(type.Value).Results;
-                foreach (var key in vars.SelectMany(v => v.keysPath))
-                {
-                    eventVars.Add(key);
-                }
-            }
-
-            var output = "      <Word>" + string.Join("</Word>\r\n      <Word>", eventVars) + " </Word>\r\n";
-            Directory.CreateDirectory(@"Cottle\");
-            File.WriteAllText(@"Cottle\Custom keywords.txt", output);
-        }
-
-        // Generates a list of custom script resolver functions in the file `Help.md`.
-        [TestMethod]
-        public void TestGenerateFunctionsHelp()
-        {
-            // Prepare our functions
-            var functionsList = ScriptResolver.GetCustomFunctions();
-
-            // Organize functions in alphabetical order (except exclude functions that we've flagged as hidden)
-            functionsList = functionsList
-                .Where(f => f.Category != FunctionCategory.Hidden)
-                .OrderBy(f => f.name)
+            return lines
+                .Skip( start + 1 )
+                .Take( end - start - 1 )
+                .Select( line => GeneratedRegex.VoiceAttackVariableLineRegex().Match( line ) )
+                .Where( match => match.Success )
+                .Select( match => match.Groups[ "key" ].Value )
                 .ToList();
-
-            // Prepare Help.md
-            var help = new List<string>
-            {
-                "",
-                EddiSpeechResponder.Properties.CustomFunctions_Untranslated.HelpHeader,
-                ""
-            };
-
-            foreach (var function in functionsList)
-            {
-                help.Add($"### {function.name}()");
-                help.Add("");
-                help.Add(function.description);
-                help.Add("");
-            }
-
-            // Prepare Functions.md
-            var functions = new List<string>
-            {
-                "",
-                EddiSpeechResponder.Properties.CustomFunctions_Untranslated.FunctionsHeader,
-                ""
-            };
-
-            functionsList = functionsList.OrderBy(f => f.name).ToList();
-            foreach (var function in functionsList)
-            {
-                functions.Add($"* {function.name}()");
-            }
-
-            // Make sure that a Wiki directory exists
-            Directory.CreateDirectory(@"Wiki\");
-
-            // Write our results
-            File.WriteAllLines(@"Help.md", help);
-            File.WriteAllLines(@"Wiki\Help.md", help);
-            File.WriteAllLines(@"Wiki\Functions.md", functions);
         }
-
-        //[TestMethod]
-        //public void GenerateIvonaPronunciations()
-        //{
-        //    var output = new List<string>();
-        //    var MyResourceClass = new System.Resources.ResourceManager(typeof(EddiSpeechService.Properties.Phonetics));
-
-        //    var resourceSet = MyResourceClass
-        //        .GetResourceSet(System.Globalization.CultureInfo.InvariantCulture, true, true);
-
-        //    foreach (System.Collections.DictionaryEntry entry in resourceSet)
-        //    {
-        //        string key = entry.Key.ToString();
-        //        string value = entry.Value.ToString();
-        //        output.Add($"{key}\t\"<speak><phoneme alphabet=\\\"ipa\\\" ph=\\\"{value}\\\">{key}</phoneme></speak>\"");
-        //    }
-
-        //    File.WriteAllLines(@"C:\Ivona.lex", output);
-        //}
-
-        //[TestMethod]
-        //public void GenerateCereprocPronunciations()
-        //{
-        //    var output = new List<string>();
-        //    var MyResourceClass = new System.Resources.ResourceManager(typeof(EddiSpeechService.Properties.Phonetics));
-
-        //    var resourceSet = MyResourceClass
-        //        .GetResourceSet(System.Globalization.CultureInfo.InvariantCulture, true, true);
-
-        //    foreach (System.Collections.DictionaryEntry entry in resourceSet)
-        //    {
-        //        string key = entry.Key.ToString();
-        //        string value = entry.Value.ToString();
-        //        output.Add($"{key} {value}");
-        //    }
-
-        //    File.WriteAllLines(@"C:\user_lexicon.txt", output);
-        //}
     }
 }

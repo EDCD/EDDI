@@ -16,10 +16,19 @@ namespace EddiDataDefinitions
         private bool? _isScoopable;
         private bool _hasNeutronStar;
 
+        [Utilities.PublicAPI( "the name of the star system" )]
         public string systemName { get; set; }
+
+        [Utilities.PublicAPI( "the unique numeric address of the star system" )]
         public ulong systemAddress { get; set; }
+
+        [Utilities.PublicAPI( "the x-coordinate of the star system" )]
         public decimal x { get; set; }
+
+        [Utilities.PublicAPI( "the y-coordinate of the star system" )]
         public decimal y { get; set; }
+
+        [Utilities.PublicAPI( "the z-coordinate of the star system" )]
         public decimal z { get; set; }
 
         /// <summary>

@@ -14,7 +14,7 @@ namespace EddiDataDefinitions
         private string _invariantName;
         private int? _rankId;
 
-        [ PublicAPI ]
+        [ PublicAPI( "The numeric squadron rank ID." ) ]
         public int? rankID
         {
             get => _rankId;
@@ -30,7 +30,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        [ PublicAPI ]
+        [ PublicAPI( "The invariant name of the squadron rank." ) ]
         public string invariantName
         {
             get => _invariantName;
@@ -46,7 +46,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        [ PublicAPI ]
+        [ PublicAPI( "The localized name of the squadron rank." ) ]
         public string localizedName
         {
             get =>  _localizedName ?? _invariantName;

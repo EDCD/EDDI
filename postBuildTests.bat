@@ -17,6 +17,8 @@ ECHO %this%: Build configuration is %buildConfiguration%
 IF /I "%buildConfiguration%"=="Release" (
   :: Release builds must run broad validation before packaging.
   CALL :RunTests "TestCategory!=SpeechTests" "%buildConfiguration%-postBuildTests.trx"
+  IF ERRORLEVEL 1 EXIT /B %ERRORLEVEL%
+  CALL :GenerateDocs
   EXIT /B %ERRORLEVEL%
 )
 
@@ -24,7 +26,7 @@ IF /I "%buildConfiguration%"=="Release" (
 CALL :RunTests "TestCategory=Credentials" "%buildConfiguration%-credentials-postBuildTests.trx"
 IF ERRORLEVEL 1 EXIT /B %ERRORLEVEL%
 
-CALL :RunTests "TestCategory=DocGen" "%buildConfiguration%-docgen-postBuildTests.trx"
+CALL :GenerateDocs
 EXIT /B %ERRORLEVEL%
 
 :RunTests
@@ -36,6 +38,14 @@ ECHO %this%: Test filter is "%testCaseFilter%"
 SET "testResultsDir=%solutionDir%TestResults\%buildConfiguration%"
 ECHO %this%: Test results and blame artifacts will be written to "%testResultsDir%"
 powershell -NoProfile -ExecutionPolicy Bypass -Command "& dotnet test '%solutionDir%Tests\Tests.csproj' -c '%buildConfiguration%' --no-build --no-restore --filter '%testCaseFilter%' '-p:SolutionDir=%solutionDir%' -p:Platform=x64 --results-directory '%testResultsDir%' --logger 'console;verbosity=detailed' --logger 'trx;LogFileName=%trxLogFileName%' --blame-hang --blame-hang-timeout 5m --blame-hang-dump-type mini"
+EXIT /B %ERRORLEVEL%
+
+:GenerateDocs
+SET "docOutputDir=%solutionDir%bin\%buildConfiguration%\Application"
+SET "docGeneratorPath=%solutionDir%bin\%buildConfiguration%\BuildTools\DocumentationGenerator\DocumentationGenerator.dll"
+ECHO %this%: Generating documentation output in "%docOutputDir%"
+IF EXIST "%docOutputDir%\DocumentationGenerator.*" DEL /Q "%docOutputDir%\DocumentationGenerator.*"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "& dotnet '%docGeneratorPath%' '%docOutputDir%'"
 EXIT /B %ERRORLEVEL%
 
 ECHO ****************************
