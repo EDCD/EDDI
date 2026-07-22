@@ -6,7 +6,6 @@ using EddiDataDefinitions;
 using EddiIPC_Service;
 using EddiIPC_Service.Messages;
 using EddiIPC_Service.Server;
-using EddiNavigationService;
 using EddiSpeechService;
 using EddiSpeechService.SpeechConversions;
 using Newtonsoft.Json.Linq;
@@ -18,6 +17,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using Utilities;
+using Utilities.MetaVariables;
 
 namespace EddiVoiceAttackResponder
 {
@@ -113,7 +113,7 @@ namespace EddiVoiceAttackResponder
         private static void SetDefinedRuntimeVariable ( string definitionId )
         {
             var definition = RuntimeVariableDefinitions[ definitionId ];
-            var value = TopLevelRuntimeVariableValues.Get( definitionId, NavigationService.Instance.SearchDistanceLy );
+            var value = TopLevelRuntimeVariableValues.Get( definitionId );
             SetDefinedRuntimeVariable( definition, value.GetVoiceAttackValue() );
         }
 
@@ -180,8 +180,8 @@ namespace EddiVoiceAttackResponder
                 SetDefinedRuntimeVariable( IpaActiveVariable );
                 SetDefinedRuntimeVariable( IcaoActiveVariable );
                 SetDefinedRuntimeVariable( SearchDistanceLyVariable );
-                setStarSystemValues(NavigationService.Instance.SearchStarSystem, "Search system" );
-                setStationValues(NavigationService.Instance.SearchStation, "Search station" );
+                setStarSystemValues(EDDI.Instance.SearchStarSystem, "Search system" );
+                setStationValues(EDDI.Instance.SearchStation, "Search station" );
             } );
         }
 

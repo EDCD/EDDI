@@ -19,7 +19,11 @@ namespace Utilities
         string VoiceAttackName = null,
         bool IntendedForVoiceAttack = false,
         bool CurrentlyEmittedByVoiceAttack = false,
-        Type VoiceAttackType = null );
+        Type VoiceAttackType = null )
+    {
+        public RuntimeVariableValue WithValue ( object value, object voiceAttackValue = null )
+            => new( Name, Type, value, voiceAttackValue );
+    }
 
     public sealed record RuntimeVariableValue (
         string Name,

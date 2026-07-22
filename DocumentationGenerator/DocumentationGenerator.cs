@@ -9,8 +9,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using Utilities;
+using Utilities.MetaVariables;
 
 namespace DocumentationGenerator
 {
@@ -189,7 +189,7 @@ namespace DocumentationGenerator
             return JoinLines( output );
         }
 
-        private static IReadOnlyList<RuntimeVariableDeclaration> GetCurrentlyEmittedVoiceAttackRuntimeDeclarations ()
+        private static List<RuntimeVariableDeclaration> GetCurrentlyEmittedVoiceAttackRuntimeDeclarations ()
         {
             return RuntimeVariableDefinitionExtensions
                 .DiscoverDeclarations( typeof( RuntimeVariableCatalog ) )
@@ -242,14 +242,14 @@ namespace DocumentationGenerator
             return JoinLines( output );
         }
 
-        private static bool IsGeneratedLegacyVoiceAttackVariableLine ( string line, ISet<string> generatedKeys )
+        private static bool IsGeneratedLegacyVoiceAttackVariableLine ( string line, HashSet<string> generatedKeys )
         {
-            if ( !line.TrimStart().StartsWith( "*", StringComparison.Ordinal ) )
+            if ( !line.TrimStart().StartsWith( '*' ) )
             {
                 return false;
             }
 
-            var match = Regex.Match( line, @"\{(?:TXT|INT|DEC|BOOL|DATE):(?<key>[^}\r\n]+)\}" );
+            var match = GeneratedRegex.VoiceAttackVariableLineRegex().Match( line );
             return match.Success && generatedKeys.Contains( match.Groups[ "key" ].Value );
         }
 

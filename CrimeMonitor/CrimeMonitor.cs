@@ -1,4 +1,4 @@
-﻿using EddiConfigService;
+using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
@@ -1186,13 +1186,13 @@ namespace EddiCrimeMonitor
             {
                 return
                 [
-                    new( CriminalRecordVariable.Name, CriminalRecordVariable.Type, criminalrecord.ToList() ),
-                    new( ClaimsVariable.Name, ClaimsVariable.Type, claims ),
-                    new( FinesVariable.Name, FinesVariable.Type, fines ),
-                    new( BountiesVariable.Name, BountiesVariable.Type, bounties ),
-                    new( PowerplayBountyBonusVariable.Name, PowerplayBountyBonusVariable.Type, PowerplayBountyBonus ),
-                    new( PowerplayCrimeReductionVariable.Name, PowerplayCrimeReductionVariable.Type, PowerplayCrimeReduction ),
-                    new( ShipTargetsVariable.Name, ShipTargetsVariable.Type, shipTargets.ToList() )
+                    CriminalRecordVariable.WithValue( criminalrecord.ToList() ),
+                    ClaimsVariable.WithValue( claims ),
+                    FinesVariable.WithValue( fines ),
+                    BountiesVariable.WithValue( bounties ),
+                    PowerplayBountyBonusVariable.WithValue( PowerplayBountyBonus ),
+                    PowerplayCrimeReductionVariable.WithValue( PowerplayCrimeReduction ),
+                    ShipTargetsVariable.WithValue( shipTargets.ToList() )
                 ];
             }
         }

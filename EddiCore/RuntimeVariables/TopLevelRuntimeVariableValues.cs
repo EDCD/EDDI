@@ -8,27 +8,27 @@ namespace EddiCore.RuntimeVariables
 {
     public static class TopLevelRuntimeVariableValues
     {
-        public static IReadOnlyList<RuntimeVariableValue> Build ( decimal searchDistanceLy )
+        public static IReadOnlyList<RuntimeVariableValue> Build ()
         {
             return
             [
-                new( RuntimeVariableCatalog.CapiActiveVariable, typeof(bool), CompanionAppService.Instance?.active ?? false ),
-                new( RuntimeVariableCatalog.DestinationDistanceLyVariable, typeof(decimal), EDDI.Instance.GameState.DestinationDistanceLy ),
-                new( RuntimeVariableCatalog.EnvironmentVariable, typeof(string), EDDI.Instance.GameState.Environment ),
-                new( RuntimeVariableCatalog.HorizonsVariable, typeof(bool), EDDI.Instance.GameState.inHorizons ),
-                new( RuntimeVariableCatalog.IcaoActiveVariable, typeof(bool), ConfigService.Instance.speechServiceConfiguration.EnableIcao ),
-                new( RuntimeVariableCatalog.IpaActiveVariable, typeof(bool), !ConfigService.Instance.speechServiceConfiguration.DisableIpa ),
-                new( RuntimeVariableCatalog.OdysseyVariable, typeof(bool), EDDI.Instance.GameState.inOdyssey ),
-                new( RuntimeVariableCatalog.SearchDistanceLyVariable, typeof(decimal), searchDistanceLy ),
-                new( RuntimeVariableCatalog.VaActiveVariable, typeof(bool), EDDI.Instance.FromVA ),
-                new( RuntimeVariableCatalog.VehicleVariable, typeof(string), EDDI.Instance.GameState.Vehicle ),
-                new( RuntimeVariableCatalog.VersionVariable, typeof(string), Constants.EDDI_VERSION.ShortString, Constants.EDDI_VERSION.ToString() )
+                RuntimeVariableCatalog.CapiActive.WithValue( CompanionAppService.Instance?.active ?? false ),
+                RuntimeVariableCatalog.DestinationDistanceLy.WithValue( EDDI.Instance.GameState.DestinationDistanceLy ),
+                RuntimeVariableCatalog.Environment.WithValue( EDDI.Instance.GameState.Environment ),
+                RuntimeVariableCatalog.Horizons.WithValue( EDDI.Instance.GameState.inHorizons ),
+                RuntimeVariableCatalog.IcaoActive.WithValue( ConfigService.Instance.speechServiceConfiguration.EnableIcao ),
+                RuntimeVariableCatalog.IpaActive.WithValue( !ConfigService.Instance.speechServiceConfiguration.DisableIpa ),
+                RuntimeVariableCatalog.Odyssey.WithValue( EDDI.Instance.GameState.inOdyssey ),
+                RuntimeVariableCatalog.SearchDistanceLy.WithValue( EDDI.Instance.SearchDistanceLy ),
+                RuntimeVariableCatalog.VaActive.WithValue( EDDI.Instance.FromVA ),
+                RuntimeVariableCatalog.Vehicle.WithValue( EDDI.Instance.GameState.Vehicle ),
+                RuntimeVariableCatalog.Version.WithValue( Constants.EDDI_VERSION.ShortString, Constants.EDDI_VERSION.ToString() )
             ];
         }
 
-        public static RuntimeVariableValue Get ( string name, decimal searchDistanceLy )
+        public static RuntimeVariableValue Get ( string name )
         {
-            return Build( searchDistanceLy ).Single( value => value.Name == name );
+            return Build().Single( value => value.Name == name );
         }
     }
 }

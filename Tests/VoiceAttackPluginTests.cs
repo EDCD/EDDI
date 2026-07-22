@@ -22,7 +22,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Tests.Properties;
-using Utilities;
+using Utilities.MetaVariables;
 
 namespace Tests
 {

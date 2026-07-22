@@ -132,6 +132,9 @@ namespace Utilities
         [GeneratedRegex( @"\[[^\]]*\]|[^\[\]]+", RegexOptions.Compiled )]
         public static partial Regex VoiceAttackCommandPermutationsRegex ();
 
+        [GeneratedRegex( @"\{(?:TXT|INT|DEC|BOOL|DATE):(?<key>[^}\r\n]+)\}", RegexOptions.Compiled )]
+        public static partial Regex VoiceAttackVariableLineRegex ();
+
         [GeneratedRegex( @"(?<=<voice name=\"")(.*?)(?=\"")", RegexOptions.Compiled )]
         public static partial Regex VoiceNameRegex ();
 

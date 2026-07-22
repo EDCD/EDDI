@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Windows;
 using Utilities;
+using Utilities.MetaVariables;
 
 namespace EddiSpeechResponder
 {

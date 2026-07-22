@@ -1,4 +1,4 @@
-﻿using EddiConfigService;
+using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
@@ -3027,8 +3027,5 @@ namespace EddiJournalMonitor
             return Task.CompletedTask;
         }
         
-        public IReadOnlyList<RuntimeVariableDeclaration> GetVariableDeclarations () => [];
-
-        public IReadOnlyList<RuntimeVariableValue> GetVariableValues () => [];
     }
 }

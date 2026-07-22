@@ -97,6 +97,22 @@ namespace EddiCore.GameState
         private PropertyChangedEventHandler _nextStarSystemChangedHandler;
 
         [CanBeNull]
+        public StarSystem SearchStarSystem
+        {
+            get => _searchStarSystem;
+            internal set => SetChild( ref _searchStarSystem, value, ref _searchStarSystemChangedHandler, nameof(SearchStarSystem) );
+        }
+        private StarSystem _searchStarSystem;
+        private PropertyChangedEventHandler _searchStarSystemChangedHandler;
+
+        public decimal SearchDistanceLy
+        {
+            get => _searchDistanceLy;
+            internal set => SetValue( ref _searchDistanceLy, value );
+        }
+        private decimal _searchDistanceLy;
+
+        [CanBeNull]
         public Station CurrentStation
         {
             get => _currentStation;
@@ -104,6 +120,15 @@ namespace EddiCore.GameState
         }
         private Station _currentStation;
         private PropertyChangedEventHandler _currentStationChangedHandler;
+
+        [CanBeNull]
+        public Station SearchStation
+        {
+            get => _searchStation;
+            internal set => SetChild( ref _searchStation, value, ref _searchStationChangedHandler, nameof(SearchStation) );
+        }
+        private Station _searchStation;
+        private PropertyChangedEventHandler _searchStationChangedHandler;
 
         [CanBeNull]
         public Body CurrentStellarBody

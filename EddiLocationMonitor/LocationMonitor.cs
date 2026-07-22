@@ -1,10 +1,9 @@
-﻿using EddiCore;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Controls;
@@ -151,10 +150,6 @@ namespace EddiLocationMonitor
             
             return Task.CompletedTask;
         }
-
-        public IReadOnlyList<RuntimeVariableDeclaration> GetVariableDeclarations () => [];
-
-        public IReadOnlyList<RuntimeVariableValue> GetVariableValues () => [];
 
         public UserControl ConfigurationTabItem () => null;
     }

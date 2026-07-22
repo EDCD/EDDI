@@ -1426,9 +1426,9 @@ namespace EddiShipMonitor
             {
                 return
                 [
-                    new( ShipVariable.Name, ShipVariable.Type, GetCurrentShip() ),
-                    new( StoredModulesVariable.Name, StoredModulesVariable.Type, storedmodules.ToList() ),
-                    new( ShipyardVariable.Name, ShipyardVariable.Type, shipyard.ToList() )
+                    ShipVariable.WithValue( GetCurrentShip() ),
+                    StoredModulesVariable.WithValue( storedmodules.ToList() ),
+                    ShipyardVariable.WithValue( shipyard.ToList() )
                 ];
             }
         }

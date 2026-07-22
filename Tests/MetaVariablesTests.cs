@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Utilities;
+using Utilities.MetaVariables;
 
 namespace Tests
 {
@@ -287,8 +288,6 @@ namespace Tests
             vaVars.ForEach( v => v.Set() ); // This test is primarily to check that no exceptions are thrown when setting variables.
         }
 
-#pragma warning disable MSTEST0037 // The current Assert pattern is is best available for these tests.
-
         [TestMethod]
         public void MetaVariables_ReturnsElementMembersForRootListType ()
         {
@@ -296,23 +295,23 @@ namespace Tests
                 typeof( List<TestSpeech> ),
                 null ).Results;
 
-            Assert.IsTrue( results.Any( v =>
+            Assert.Contains( v =>
                 v.keysPath.SequenceEqual( [
                     MetaVariables.indexMarker,
                     nameof( TestSpeech.Text )
-                ] ) ) );
+                ] ), results );
 
-            Assert.IsTrue( results.Any( v =>
+            Assert.Contains( v =>
                 v.keysPath.SequenceEqual( [
                     MetaVariables.indexMarker,
                     nameof( TestSpeech.Text )
-                ] ) ) );
+                ] ), results );
 
-            Assert.IsTrue( results.Any( v =>
+            Assert.Contains( v =>
                 v.keysPath.SequenceEqual( [
                     MetaVariables.indexMarker,
                     nameof( TestSpeech.Priority )
-                ] ) ) );
+                ] ), results );
         }
 
         [TestMethod]
@@ -322,11 +321,11 @@ namespace Tests
                 typeof( TestSpeech[] ),
                 null ).Results;
 
-            Assert.IsTrue( results.Any( v =>
+            Assert.Contains( v =>
                 v.keysPath.SequenceEqual( [
                     MetaVariables.indexMarker,
                     nameof( TestSpeech.Text )
-                ] ) ) );
+                ] ), results );
         }
 
         [TestMethod]
@@ -336,11 +335,11 @@ namespace Tests
                 typeof( IEnumerable<TestSpeech> ),
                 null ).Results;
 
-            Assert.IsTrue( results.Any( v =>
+            Assert.Contains( v =>
                 v.keysPath.SequenceEqual( [
                     MetaVariables.indexMarker,
                     nameof( TestSpeech.Text )
-                ] ) ) );
+                ] ), results );
         }
 
         [TestMethod]
@@ -356,19 +355,19 @@ namespace Tests
                 typeof( List<TestSpeech> ),
                 speech ).Results;
 
-            Assert.IsTrue( results.Any( v =>
+            Assert.Contains( v =>
                 v.keysPath.SequenceEqual( [
                     "1",
                     nameof( TestSpeech.Text )
                 ] ) &&
-                Equals( v.value, "one" ) ) );
+                Equals( v.value, "one" ), results );
 
-            Assert.IsTrue( results.Any( v =>
+            Assert.Contains( v =>
                 v.keysPath.SequenceEqual( [
                     "2",
                     nameof( TestSpeech.Priority )
                 ] ) &&
-                Equals( v.value, 2 ) ) );
+                Equals( v.value, 2 ), results );
         }
 
         [TestMethod]
@@ -471,8 +470,8 @@ namespace Tests
                 .Descriptors
                 .Single( d => d.KeysPath.SequenceEqual( [ nameof( BodyTypeVariable.BodyType ) ] ) );
 
-            Assert.IsTrue( descriptor.AllowedValues.Any( v => v.InvariantName == "Planet" ) );
-            Assert.IsTrue( descriptor.AllowedValues.Any( v => v.InvariantName == "Star" ) );
+            Assert.Contains( v => v.InvariantName == "Planet", descriptor.AllowedValues);
+            Assert.Contains( v => v.InvariantName == "Star", descriptor.AllowedValues);
             Assert.IsNull( descriptor.AllowedValuesOmittedReason );
         }
 
@@ -509,8 +508,8 @@ namespace Tests
                 typeof( EddiCore.RuntimeVariables.RuntimeVariableCatalog ) );
             var metaVariables = new MetaVariables( declarations, options: MetaVariableDiscoveryOptions.StrictDocumentation );
 
-            Assert.IsTrue( metaVariables.Descriptors.Any( d => d.CottlePath == "environment" ) );
-            Assert.IsTrue( metaVariables.Descriptors.Any( d => d.CottlePath == "destinationdistance" ) );
+            Assert.Contains( d => d.CottlePath == "environment", metaVariables.Descriptors);
+            Assert.Contains( d => d.CottlePath == "destinationdistance", metaVariables.Descriptors);
             Assert.IsTrue( metaVariables.Descriptors.All( d => !string.IsNullOrWhiteSpace( d.Description ) ) );
         }
 
@@ -527,10 +526,10 @@ namespace Tests
                 [],
                 MetaVariableDiscoveryOptions.StrictDocumentation );
 
-            Assert.IsTrue( metaVariables.Any( v => v.Descriptor.CottlePath == "environment" ) );
-            Assert.IsTrue( metaVariables.Any( v => v.Descriptor.CottlePath == "system" ) );
-            Assert.IsTrue( metaVariables.Any( v => v.Descriptor.CottlePath == "speech.Text" ) );
-            Assert.IsTrue( metaVariables.Any( v => v.Descriptor.CottlePath == "speech.Priority" ) );
+            Assert.Contains( v => v.Descriptor.CottlePath == "environment", metaVariables );
+            Assert.Contains( v => v.Descriptor.CottlePath == "system", metaVariables );
+            Assert.Contains( v => v.Descriptor.CottlePath == "speech.Text", metaVariables );
+            Assert.Contains( v => v.Descriptor.CottlePath == "speech.Priority", metaVariables );
         }
 
         [TestMethod]
@@ -554,16 +553,6 @@ namespace Tests
         }
 
         [TestMethod]
-        public void TopLevelRuntimeVariableValues_UsesExplicitSearchDistance ()
-        {
-            var value = EddiCore.RuntimeVariables.TopLevelRuntimeVariableValues.Get(
-                EddiCore.RuntimeVariables.RuntimeVariableCatalog.SearchDistanceLyVariable,
-                42.5m );
-
-            Assert.AreEqual( 42.5m, value.Value );
-        }
-
-        [TestMethod]
         public void MetaVariables_StrictDocumentation_FailsForRuntimeVariablesMissingDescriptions ()
         {
             var declarations = RuntimeVariableDefinitionExtensions.DiscoverDeclarations(
@@ -572,8 +561,5 @@ namespace Tests
             Assert.ThrowsExactly<MetaVariableDiscoveryException>( () =>
                 _ = new MetaVariables( declarations, options: MetaVariableDiscoveryOptions.StrictDocumentation ) );
         }
-
-#pragma warning restore MSTEST0037
-
     }
 }

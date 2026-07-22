@@ -17,7 +17,10 @@ namespace EddiCore.GameState
         StarSystem CurrentStarSystem { get; }
         StarSystem LastStarSystem { get; }
         StarSystem NextStarSystem { get; }
+        StarSystem SearchStarSystem { get; }
+        decimal SearchDistanceLy { get; }
         Station CurrentStation { get; }
+        Station SearchStation { get; }
         Body CurrentStellarBody { get; }
         FleetCarrier FleetCarrier { get; }
         FleetCarrier SquadronCarrier { get; }

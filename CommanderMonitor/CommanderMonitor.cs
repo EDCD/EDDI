@@ -1,4 +1,4 @@
-﻿using EddiConfigService;
+using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
@@ -394,10 +394,10 @@ namespace EddiCommanderMonitor
 
         public IReadOnlyList<RuntimeVariableValue> GetVariableValues () =>
         [
-            new( CommanderVariable.Name, CommanderVariable.Type, Cmdr ),
-            new( HomeSystemVariable.Name, HomeSystemVariable.Type, HomeStarSystem ),
-            new( HomeStationVariable.Name, HomeStationVariable.Type, HomeStation ),
-            new( SquadronSystemVariable.Name, SquadronSystemVariable.Type, SquadronStarSystem )
+            CommanderVariable.WithValue( Cmdr ),
+            HomeSystemVariable.WithValue( HomeStarSystem ),
+            HomeStationVariable.WithValue( HomeStation ),
+            SquadronSystemVariable.WithValue( SquadronStarSystem )
         ];
 
         public UserControl ConfigurationTabItem ()

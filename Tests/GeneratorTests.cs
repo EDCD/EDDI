@@ -1,10 +1,10 @@
-using DocumentationGenerator;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
+using Utilities;
+using Utilities.MetaVariables;
 
 namespace Tests
 {
@@ -47,7 +47,7 @@ namespace Tests
 
             Assert.AreEqual( firstRender, secondRender );
             Assert.Contains( "<Word>commodity</Word>" , firstRender);
-            Assert.Contains( "<Word>" + Utilities.MetaVariables.indexMarker + "</Word>" , firstRender);
+            Assert.Contains( "<Word>" + MetaVariables.indexMarker + "</Word>" , firstRender);
         }
 
         [TestMethod]
@@ -136,12 +136,10 @@ namespace Tests
                     "## Generated Standard Variables",
                     "## Legacy Standard Variables" ) );
 
-            Assert.IsTrue(
-                render.IndexOf( "## Generated Standard Variables", StringComparison.Ordinal ) <
-                render.IndexOf( "## Legacy Standard Variables", StringComparison.Ordinal ) );
-            Assert.IsTrue(
-                render.IndexOf( "## Legacy Standard Variables", StringComparison.Ordinal ) <
-                render.IndexOf( "# Running Commands on EDDI Events", StringComparison.Ordinal ) );
+            Assert.IsLessThan(
+                render.IndexOf( "## Legacy Standard Variables", StringComparison.Ordinal ), render.IndexOf( "## Generated Standard Variables", StringComparison.Ordinal ));
+            Assert.IsLessThan(
+                render.IndexOf( "# Running Commands on EDDI Events", StringComparison.Ordinal ), render.IndexOf( "## Legacy Standard Variables", StringComparison.Ordinal ));
         }
 
         [TestMethod]
@@ -251,13 +249,13 @@ namespace Tests
             var start = Array.FindIndex( lines, line => line.Trim() == startHeading );
             var end = Array.FindIndex( lines, start + 1, line => line.Trim() == endHeading );
 
-            Assert.IsTrue( start >= 0, $"Could not find heading '{startHeading}'." );
-            Assert.IsTrue( end > start, $"Could not find heading '{endHeading}' after '{startHeading}'." );
+            Assert.IsGreaterThanOrEqualTo( 0, start, $"Could not find heading '{startHeading}'." );
+            Assert.IsGreaterThan( start, end, $"Could not find heading '{endHeading}' after '{startHeading}'." );
 
             return lines
                 .Skip( start + 1 )
                 .Take( end - start - 1 )
-                .Select( line => Regex.Match( line, @"\{(?:TXT|INT|DEC|BOOL|DATE):(?<key>[^}\r\n]+)\}" ) )
+                .Select( line => GeneratedRegex.VoiceAttackVariableLineRegex().Match( line ) )
                 .Where( match => match.Success )
                 .Select( match => match.Groups[ "key" ].Value )
                 .ToList();

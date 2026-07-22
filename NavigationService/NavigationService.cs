@@ -1,6 +1,5 @@
 ﻿using EddiConfigService;
 using EddiCore;
-using EddiDataDefinitions;
 using EddiEvents;
 using JetBrains.Annotations;
 using System;
@@ -20,11 +19,6 @@ namespace EddiNavigationService
         private static readonly object InstanceLock = new();
 
         private readonly Dictionary<QueryType, IQueryResolver> queryResolvers = [ ];
-
-        // Search variables
-        public StarSystem SearchStarSystem { get; private set; }
-        public Station SearchStation { get; private set; }
-        public decimal SearchDistanceLy { get; set; }
 
         // Last query variables
         public QueryType LastQuery
@@ -291,33 +285,34 @@ namespace EddiNavigationService
                 //Ignore null & empty systems
                 if (system != null)
                 {
-                    if (system.systemAddress != SearchStarSystem?.systemAddress)
+                    if (system.systemAddress != EDDI.Instance.SearchStarSystem?.systemAddress)
                     {
                         Logging.Debug("Search star system is " + system.systemname);
-                        SearchStarSystem = system;
+                        EDDI.Instance.SearchStarSystem = system;
                     }
                     // Update search system distance
-                    SearchDistanceLy = EDDI.Instance.GameState.CurrentStarSystem?.DistanceFromStarSystem(system) ?? 0;
+                    EDDI.Instance.SearchDistanceLy = EDDI.Instance.GameState.CurrentStarSystem?.DistanceFromStarSystem(system) ?? 0;
                 }
             }
             else
             {
-                SearchStarSystem = null;
+                EDDI.Instance.SearchStarSystem = null;
+                EDDI.Instance.SearchDistanceLy = 0;
             }
 
             // Update search station data
-            if ( marketID > 0 && SearchStarSystem?.stations != null )
+            if ( marketID > 0 && EDDI.Instance.SearchStarSystem?.stations != null )
             {
-                var station = SearchStarSystem.stations.FirstOrDefault(s => s.marketId == marketID);
-                if (station != null && station.marketId != SearchStation?.marketId)
+                var station = EDDI.Instance.SearchStarSystem.stations.FirstOrDefault(s => s.marketId == marketID);
+                if (station != null && station.marketId != EDDI.Instance.SearchStation?.marketId)
                 {
                     Logging.Debug("Search station is " + station.name);
-                    SearchStation = station;
+                    EDDI.Instance.SearchStation = station;
                 }
             }
             else
             {
-                SearchStation = null;
+                EDDI.Instance.SearchStation = null;
             }
         }
         public event PropertyChangedEventHandler PropertyChanged;

@@ -2,7 +2,6 @@ using Cottle;
 using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
-using EddiNavigationService;
 using EddiSpeechResponder.ScriptResolverService;
 using JetBrains.Annotations;
 using System;
@@ -98,7 +97,7 @@ namespace EddiSpeechResponder.CustomFunctions
                     gameState.LastStarSystem,
                     gameState.NextStarSystem,
                     gameState.DestinationStarSystem,
-                    NavigationService.Instance.SearchStarSystem
+                    EDDI.Instance.SearchStarSystem
                 }.FirstOrDefault( s => MatchesSystem( s, key, systemAddress ) );
             }
 

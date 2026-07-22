@@ -1,4 +1,4 @@
-﻿using EddiCore;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiStatusService;
@@ -447,8 +447,8 @@ namespace EddiStatusMonitor
             {
                 return
                 [
-                    new( StatusVariable.Name, StatusVariable.Type, currentStatus ),
-                    new( LastStatusVariable.Name, LastStatusVariable.Type, lastStatus )
+                    StatusVariable.WithValue( currentStatus ),
+                    LastStatusVariable.WithValue( lastStatus )
                 ];
             }
         }

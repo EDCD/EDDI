@@ -190,6 +190,27 @@ namespace EddiCore
             set => _gameState.Vehicle = value;
         }
 
+        // Search variables
+        [CanBeNull]
+        public StarSystem SearchStarSystem 
+        { 
+            get => _gameState.SearchStarSystem; 
+            set => _gameState.SearchStarSystem = value; 
+        }
+
+        [CanBeNull]
+        public Station SearchStation 
+        { 
+            get => _gameState.SearchStation; 
+            set => _gameState.SearchStation = value; 
+        }
+
+        public decimal SearchDistanceLy 
+        { 
+            get => _gameState.SearchDistanceLy; 
+            set => _gameState.SearchDistanceLy = value; 
+        }
+
         #endregion
 
         private readonly StarSystemSignalSourceManager signalSourceManager = new();

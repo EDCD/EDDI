@@ -3,7 +3,6 @@ using Cottle.Exceptions;
 using EddiCore;
 using EddiCore.RuntimeVariables;
 using EddiDataDefinitions;
-using EddiNavigationService;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
@@ -233,7 +232,7 @@ namespace EddiSpeechResponder.ScriptResolverService
                     [ "false" ] = new( typeof(bool), false ),
                 };
 
-                AddRuntimeVariables( dict, TopLevelRuntimeVariableValues.Build( NavigationService.Instance.SearchDistanceLy ) );
+                AddRuntimeVariables( dict, TopLevelRuntimeVariableValues.Build() );
 
                 // Standard objects
 
@@ -265,17 +264,17 @@ namespace EddiSpeechResponder.ScriptResolverService
                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
                 }
 
-                if ( NavigationService.Instance.SearchStarSystem != null )
+                if ( EDDI.Instance.SearchStarSystem != null )
                 {
                     dict[ "searchsystem" ] = new Tuple<Type, Value>( typeof(StarSystem),
-                        Value.FromReflection( NavigationService.Instance.SearchStarSystem,
+                        Value.FromReflection( EDDI.Instance.SearchStarSystem,
                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
                 }
 
-                if ( NavigationService.Instance.SearchStation != null )
+                if ( EDDI.Instance.SearchStation != null )
                 {
                     dict[ "searchstation" ] = new Tuple<Type, Value>( typeof(Station),
-                        Value.FromReflection( NavigationService.Instance.SearchStation,
+                        Value.FromReflection( EDDI.Instance.SearchStation,
                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
                 }
 

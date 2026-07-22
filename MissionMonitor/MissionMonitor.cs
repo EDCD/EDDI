@@ -983,10 +983,10 @@ namespace EddiMissionMonitor
             {
                 return
                 [
-                    new( GoalsCountVariable.Name, GoalsCountVariable.Type, missions.Count( m => m.communal ) ),
-                    new( MissionsVariable.Name, MissionsVariable.Type, missions.ToList() ),
-                    new( MissionsCountVariable.Name, MissionsCountVariable.Type, missions.Count( m => !m.shared && !m.communal ) ),
-                    new( MissionWarningVariable.Name, MissionWarningVariable.Type, missionWarning )
+                    GoalsCountVariable.WithValue( missions.Count( m => m.communal ) ),
+                    MissionsVariable.WithValue( missions.ToList() ),
+                    MissionsCountVariable.WithValue( missions.Count( m => !m.shared && !m.communal ) ),
+                    MissionWarningVariable.WithValue( missionWarning )
                 ];
             }
         }

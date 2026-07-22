@@ -1,4 +1,4 @@
-﻿using EddiConfigService;
+using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
@@ -452,7 +452,7 @@ namespace EddiMaterialMonitor
         {
             lock ( inventoryLock )
             {
-                return [ new RuntimeVariableValue( MaterialsVariable.Name, MaterialsVariable.Type, inventory.ToList() ) ];
+                return [ MaterialsVariable.WithValue( inventory.ToList() ) ];
             }
         }
 

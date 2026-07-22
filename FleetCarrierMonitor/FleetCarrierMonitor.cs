@@ -1,4 +1,4 @@
-﻿using EddiCompanionAppService;
+using EddiCompanionAppService;
 using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiCore;
@@ -746,8 +746,8 @@ namespace EddiFleetCarrierMonitor
 
         public IReadOnlyList<RuntimeVariableValue> GetVariableValues () =>
         [
-            new( CarrierVariable.Name, CarrierVariable.Type, FleetCarrier ),
-            new( SquadronCarrierVariable.Name, SquadronCarrierVariable.Type, SquadronCarrier )
+            CarrierVariable.WithValue( FleetCarrier ),
+            SquadronCarrierVariable.WithValue( SquadronCarrier )
         ];
 
         private void OnCompanionAppServiceStateChanged ( CompanionAppService.State oldstate, CompanionAppService.State newstate )

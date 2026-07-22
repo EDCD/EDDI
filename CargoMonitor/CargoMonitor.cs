@@ -1,4 +1,4 @@
-﻿using EddiConfigService;
+using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
@@ -545,8 +545,8 @@ namespace EddiCargoMonitor
             {
                 return
                 [
-                    new( InventoryVariable.Name, InventoryVariable.Type, inventory.ToList() ),
-                    new( CargoCarriedVariable.Name, CargoCarriedVariable.Type, cargoCarried )
+                    InventoryVariable.WithValue( inventory.ToList() ),
+                    CargoCarriedVariable.WithValue( cargoCarried )
                 ];
             }
         }

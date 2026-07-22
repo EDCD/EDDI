@@ -1,4 +1,4 @@
-﻿using EddiDataDefinitions;
+using EddiDataDefinitions;
 using EddiEvents;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
@@ -76,12 +76,12 @@ namespace EddiCore
         /// <summary>
         /// Provide any local variable declarations.
         /// </summary>
-        IReadOnlyList<RuntimeVariableDeclaration> GetVariableDeclarations ();
+        IReadOnlyList<RuntimeVariableDeclaration> GetVariableDeclarations () => [];
 
         /// <summary>
         /// Provide current local variable values.
         /// </summary>
-        IReadOnlyList<RuntimeVariableValue> GetVariableValues ();
+        IReadOnlyList<RuntimeVariableValue> GetVariableValues () => [];
 
         UserControl ConfigurationTabItem();
     }

@@ -283,9 +283,6 @@ namespace EddiGalnetMonitor
             return Task.CompletedTask;
         }
         
-        public IReadOnlyList<RuntimeVariableDeclaration> GetVariableDeclarations () => [];
-
-        public IReadOnlyList<RuntimeVariableValue> GetVariableValues () => [];
 
         /// <summary>
         /// Pick a category for the news item given its title

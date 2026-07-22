@@ -15,6 +15,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using Utilities;
+using Utilities.MetaVariables;
 using MessageBox = System.Windows.Forms.MessageBox;
 using TextBox = System.Windows.Controls.TextBox;
 
