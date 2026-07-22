@@ -14,8 +14,8 @@ namespace EddiSpeechResponder
     /// </summary>
     public partial class VariablesWindow : Window
     {
-        private const string EventVariablesPlaceholder = "Event-specific variables are available under the `event` root object while editing an event script and are documented on each event page.";
-        private const string VariablesHeading = "## Variables";
+        private const string EventVariablesPlaceholder = "Event-specific variables are available under the `event` object while editing an event script and are documented on each event page.";
+        private const string VariablesHeading = "## Root Variables";
         private const string ObjectReferenceHeading = "## Object reference";
 
         public VariablesWindow(Script script)
@@ -27,7 +27,7 @@ namespace EddiSpeechResponder
             try
             {
                 var dir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty);
-                markdown = Files.Read(dir.FullName + @"\Variables.md");
+                markdown = Files.Read(dir.FullName + @"\Wiki\Variables.md");
             }
             catch (Exception ex)
             {
@@ -97,7 +97,7 @@ namespace EddiSpeechResponder
                 return $"{insertion}{Environment.NewLine}{markdown}";
             }
 
-            var insertIndex = markdown.IndexOf( "\n", headingIndex + heading.Length, StringComparison.Ordinal );
+            var insertIndex = markdown.IndexOf( '\n', headingIndex + heading.Length );
             if ( insertIndex < 0 )
             {
                 return $"{markdown}{Environment.NewLine}{insertion}";

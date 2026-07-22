@@ -53,8 +53,12 @@ namespace EddiVoiceAttackResponder
         private const string SearchDistanceLyVariable = RuntimeVariableCatalog.SearchDistanceLyVariable;
         private const string VersionVariable = RuntimeVariableCatalog.VersionVariable;
 
-        private static readonly IReadOnlyDictionary<string, RuntimeVariableDefinition> RuntimeVariableDefinitions =
+        private static readonly IReadOnlyDictionary<string, RuntimeVariableDefinition> AllRuntimeVariableDefinitions =
             RuntimeVariableCatalog.TopLevelVariables
+                .ToDictionary( definition => definition.Name );
+
+        private static readonly Dictionary<string, RuntimeVariableDefinition> RuntimeVariableDefinitions =
+            AllRuntimeVariableDefinitions.Values
                 .Where( definition => definition.CurrentlyEmittedByVoiceAttack )
                 .ToDictionary( definition => definition.Name );
         
@@ -95,11 +99,12 @@ namespace EddiVoiceAttackResponder
 
         internal static IReadOnlyList<VoiceAttackVariableParity> GetRuntimeVariableParityReport ()
         {
-            return RuntimeVariableDefinitions.Values
+            return AllRuntimeVariableDefinitions.Values
+                .Where( definition => definition.IntendedForVoiceAttack )
                 .Select( definition => new VoiceAttackVariableParity(
                     definition.Name,
                     definition.VoiceAttackName,
-                    IntendedForBoth: true,
+                    IntendedForBoth: definition.IntendedForVoiceAttack,
                     CurrentlyEmittedByVoiceAttack: definition.CurrentlyEmittedByVoiceAttack ) )
                 .OrderBy( definition => definition.CottlePath, StringComparer.Ordinal )
                 .ToList();
@@ -108,7 +113,8 @@ namespace EddiVoiceAttackResponder
         private static void SetDefinedRuntimeVariable ( string definitionId )
         {
             var definition = RuntimeVariableDefinitions[ definitionId ];
-            SetDefinedRuntimeVariable( definition, definition.GetVoiceAttackValue() );
+            var value = TopLevelRuntimeVariableValues.Get( definitionId, NavigationService.Instance.SearchDistanceLy );
+            SetDefinedRuntimeVariable( definition, value.GetVoiceAttackValue() );
         }
 
         private static void SetDefinedRuntimeVariable ( string definitionId, object value )
@@ -118,30 +124,32 @@ namespace EddiVoiceAttackResponder
 
         private static void SetDefinedRuntimeVariable ( RuntimeVariableDefinition definition, object value )
         {
-            if ( definition.Type == typeof( string ) )
+            var voiceAttackType = definition.VoiceAttackType ?? definition.Type;
+
+            if ( voiceAttackType == typeof( string ) )
             {
                 RuntimeSetText( definition.VoiceAttackName, value as string );
             }
-            else if ( definition.Type == typeof( int ) )
+            else if ( voiceAttackType == typeof( int ) )
             {
                 RuntimeSetInt( definition.VoiceAttackName, value is null ? null : System.Convert.ToInt32( value, CultureInfo.InvariantCulture ) );
             }
-            else if ( definition.Type == typeof( bool ) )
+            else if ( voiceAttackType == typeof( bool ) )
             {
                 RuntimeSetBoolean( definition.VoiceAttackName, value is null ? null : System.Convert.ToBoolean( value, CultureInfo.InvariantCulture ) );
             }
-            else if ( definition.Type == typeof( decimal ) )
+            else if ( voiceAttackType == typeof( decimal ) )
             {
                 RuntimeSetDecimal( definition.VoiceAttackName, value is null ? null : System.Convert.ToDecimal( value, CultureInfo.InvariantCulture ) );
             }
-            else if ( definition.Type == typeof( DateTime ) )
+            else if ( voiceAttackType == typeof( DateTime ) )
             {
                 RuntimeSetDate( definition.VoiceAttackName, value is null ? null : System.Convert.ToDateTime( value, CultureInfo.InvariantCulture ) );
             }
             else
             {
                 throw new ArgumentException(
-                    $"Unsupported VoiceAttack runtime variable type '{definition.Type.FullName}' for '{definition.VoiceAttackName}'." );
+                    $"Unsupported VoiceAttack runtime variable type '{voiceAttackType.FullName}' for '{definition.VoiceAttackName}'." );
             }
         }
 
@@ -251,7 +259,7 @@ namespace EddiVoiceAttackResponder
 
                     if ( e.PropertyName.Equals( nameof( CommanderConfiguration ), StringComparison.InvariantCultureIgnoreCase ) )
                     {
-                        var commanderMonitorVariables = EDDI.Instance.ObtainMonitor( "Commander Monitor" ).GetVariables();
+                        var commanderMonitorVariables = EDDI.Instance.ObtainMonitor( "Commander Monitor" ).GetVariableValues();
                         if ( commanderMonitorVariables.TryGetValue( "cmdr", out Commander Cmdr ) )
                         {
                             setCommanderValues( Cmdr );

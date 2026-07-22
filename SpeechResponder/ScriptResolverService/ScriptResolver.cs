@@ -233,7 +233,7 @@ namespace EddiSpeechResponder.ScriptResolverService
                     [ "false" ] = new( typeof(bool), false ),
                 };
 
-                AddRuntimeVariables( dict, RuntimeVariableCatalog.TopLevelVariables );
+                AddRuntimeVariables( dict, TopLevelRuntimeVariableValues.Build( NavigationService.Instance.SearchDistanceLy ) );
 
                 // Standard objects
 
@@ -309,7 +309,7 @@ namespace EddiSpeechResponder.ScriptResolverService
                 // Obtain additional variables from each monitor
                 foreach ( var monitor in EDDI.Instance.monitors )
                 {
-                    AddRuntimeVariables( dict, monitor.GetVariables() );
+                    AddRuntimeVariables( dict, monitor.GetVariableValues() );
                 }
 
                 return dict;
@@ -329,18 +329,17 @@ namespace EddiSpeechResponder.ScriptResolverService
 
         private static void AddRuntimeVariables (
             Dictionary<string, Tuple<Type, Value>> dict,
-            IEnumerable<RuntimeVariableDefinition> definitions )
+            IEnumerable<RuntimeVariableValue> values )
         {
-            foreach ( var definition in definitions )
+            foreach ( var variableValue in values )
             {
-                var value = definition.GetValue();
-                if ( value == null )
+                if ( variableValue.Value == null )
                 {
-                    dict.Remove( definition.Name );
+                    dict.Remove( variableValue.Name );
                     continue;
                 }
 
-                dict[ definition.Name ] = new Tuple<Type, Value>( definition.Type, ToCottleValue( value ) );
+                dict[ variableValue.Name ] = new Tuple<Type, Value>( variableValue.Type, ToCottleValue( variableValue.Value ) );
             }
         }
 

@@ -963,42 +963,33 @@ namespace EddiMissionMonitor
         }
 
         [Utilities.PublicAPI( "The number of community goals you are engaged in." )]
-        public RuntimeVariableDefinition GoalsCountVariable => new( "goalsCount", typeof(int), () =>
-        {
-            lock (missionsLock)
-            {
-                return missions.Count( m => m.communal );
-            }
-        } );
+        public static RuntimeVariableDefinition GoalsCountVariable => new( "goalsCount", typeof(int) );
 
         [Utilities.PublicAPI( "A list of active missions." )]
-        public RuntimeVariableDefinition MissionsVariable => new( "missions", typeof(List<Mission>), () =>
-        {
-            lock (missionsLock)
-            {
-                return missions.ToList();
-            }
-        } );
+        public static RuntimeVariableDefinition MissionsVariable => new( "missions", typeof(List<Mission>) );
 
         [Utilities.PublicAPI( "The number of active non-shared missions." )]
-        public RuntimeVariableDefinition MissionsCountVariable => new( "missionsCount", typeof(int), () =>
+        public static RuntimeVariableDefinition MissionsCountVariable => new( "missionsCount", typeof(int) );
+
+        [Utilities.PublicAPI( "You will receive a warning when a mission is within this many minutes from expiring." )]
+        public static RuntimeVariableDefinition MissionWarningVariable => new( "missionWarning", typeof(int) );
+
+        public IReadOnlyList<RuntimeVariableDeclaration> GetVariableDeclarations () =>
+            RuntimeVariableDefinitionExtensions.DiscoverDeclarations( typeof(MissionMonitor) );
+
+        public IReadOnlyList<RuntimeVariableValue> GetVariableValues ()
         {
             lock (missionsLock)
             {
-                return missions.Count( m => !m.shared && !m.communal );
+                return
+                [
+                    new( GoalsCountVariable.Name, GoalsCountVariable.Type, missions.Count( m => m.communal ) ),
+                    new( MissionsVariable.Name, MissionsVariable.Type, missions.ToList() ),
+                    new( MissionsCountVariable.Name, MissionsCountVariable.Type, missions.Count( m => !m.shared && !m.communal ) ),
+                    new( MissionWarningVariable.Name, MissionWarningVariable.Type, missionWarning )
+                ];
             }
-        } );
-
-        [Utilities.PublicAPI( "You will receive a warning when a mission is within this many minutes from expiring." )]
-        public RuntimeVariableDefinition MissionWarningVariable => new( "missionWarning", typeof(int), () => missionWarning );
-
-        public IReadOnlyList<RuntimeVariableDefinition> GetVariables () =>
-        [
-            GoalsCountVariable,
-            MissionsVariable,
-            MissionsCountVariable,
-            MissionWarningVariable
-        ];
+        }
 
         public void writeMissions()
         {

@@ -1156,69 +1156,46 @@ namespace EddiCrimeMonitor
         }
 
         [PublicAPI( "A list of active fine, bounty, and claim records by faction." )]
-        public RuntimeVariableDefinition CriminalRecordVariable => new( "criminalrecord", typeof(List<FactionRecord>), () =>
-        {
-            UpdateCrimeValueModifiers();
-            lock ( recordLock )
-            {
-                return criminalrecord.ToList();
-            }
-        } );
+        public static RuntimeVariableDefinition CriminalRecordVariable => new( "criminalrecord", typeof(List<FactionRecord>) );
 
         [PublicAPI( "The total value of outstanding bounty claims." )]
-        public RuntimeVariableDefinition ClaimsVariable => new( "claims", typeof(long), () =>
-        {
-            UpdateCrimeValueModifiers();
-            return claims;
-        } );
+        public static RuntimeVariableDefinition ClaimsVariable => new( "claims", typeof(long) );
 
         [PublicAPI( "The total value of outstanding fines." )]
-        public RuntimeVariableDefinition FinesVariable => new( "fines", typeof(long), () =>
-        {
-            UpdateCrimeValueModifiers();
-            return fines;
-        } );
+        public static RuntimeVariableDefinition FinesVariable => new( "fines", typeof(long) );
 
         [PublicAPI( "The total value of outstanding bounties." )]
-        public RuntimeVariableDefinition BountiesVariable => new( "bounties", typeof(long), () =>
-        {
-            UpdateCrimeValueModifiers();
-            return bounties;
-        } );
+        public static RuntimeVariableDefinition BountiesVariable => new( "bounties", typeof(long) );
 
         [PublicAPI( "The Powerplay bounty claim bonus currently available, if any." )]
-        public RuntimeVariableDefinition PowerplayBountyBonusVariable => new( "powerplaybountybonus", typeof(decimal?), () =>
-        {
-            UpdateCrimeValueModifiers();
-            return PowerplayBountyBonus;
-        } );
+        public static RuntimeVariableDefinition PowerplayBountyBonusVariable => new( "powerplaybountybonus", typeof(decimal?) );
 
         [PublicAPI( "The Powerplay crime reduction currently available, if any." )]
-        public RuntimeVariableDefinition PowerplayCrimeReductionVariable => new( "powerplaycrimereduction", typeof(decimal?), () =>
-        {
-            UpdateCrimeValueModifiers();
-            return PowerplayCrimeReduction;
-        } );
+        public static RuntimeVariableDefinition PowerplayCrimeReductionVariable => new( "powerplaycrimereduction", typeof(decimal?) );
 
         [PublicAPI( "A list of recently targeted ships." )]
-        public RuntimeVariableDefinition ShipTargetsVariable => new( "shiptargets", typeof(List<Target>), () =>
+        public static RuntimeVariableDefinition ShipTargetsVariable => new( "shiptargets", typeof(List<Target>) );
+
+        public IReadOnlyList<RuntimeVariableDeclaration> GetVariableDeclarations () =>
+            RuntimeVariableDefinitionExtensions.DiscoverDeclarations( typeof(CrimeMonitor) );
+
+        public IReadOnlyList<RuntimeVariableValue> GetVariableValues ()
         {
+            UpdateCrimeValueModifiers();
             lock ( recordLock )
             {
-                return shipTargets.ToList();
+                return
+                [
+                    new( CriminalRecordVariable.Name, CriminalRecordVariable.Type, criminalrecord.ToList() ),
+                    new( ClaimsVariable.Name, ClaimsVariable.Type, claims ),
+                    new( FinesVariable.Name, FinesVariable.Type, fines ),
+                    new( BountiesVariable.Name, BountiesVariable.Type, bounties ),
+                    new( PowerplayBountyBonusVariable.Name, PowerplayBountyBonusVariable.Type, PowerplayBountyBonus ),
+                    new( PowerplayCrimeReductionVariable.Name, PowerplayCrimeReductionVariable.Type, PowerplayCrimeReduction ),
+                    new( ShipTargetsVariable.Name, ShipTargetsVariable.Type, shipTargets.ToList() )
+                ];
             }
-        } );
-
-        public IReadOnlyList<RuntimeVariableDefinition> GetVariables () =>
-        [
-            CriminalRecordVariable,
-            ClaimsVariable,
-            FinesVariable,
-            BountiesVariable,
-            PowerplayBountyBonusVariable,
-            PowerplayCrimeReductionVariable,
-            ShipTargetsVariable
-        ];
+        }
 
         public void writeRecord()
         {

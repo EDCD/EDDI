@@ -57,7 +57,9 @@ namespace Tests
             public Task PostHandleAsync ( Event @event ) => Task.CompletedTask;
             public Task HandleProfileAsync ( JObject profile ) => Task.CompletedTask;
             public Task HandleStatusAsync ( Status status ) => Task.CompletedTask;
-            IReadOnlyList<RuntimeVariableDefinition> IEddiMonitor.GetVariables () => [];
+            IReadOnlyList<RuntimeVariableDeclaration> IEddiMonitor.GetVariableDeclarations () => [];
+
+            IReadOnlyList<RuntimeVariableValue> IEddiMonitor.GetVariableValues () => [];
             public UserControl ConfigurationTabItem () => null;
             
             public bool WaitForStart ( TimeSpan timeout ) => startedSignal.WaitOne( timeout );

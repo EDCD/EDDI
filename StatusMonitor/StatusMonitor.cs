@@ -431,26 +431,26 @@ namespace EddiStatusMonitor
         }
 
         [Utilities.PublicAPI( "The commander's current status." )]
-        public RuntimeVariableDefinition StatusVariable => new( "status", typeof(Status), () =>
-        {
-            lock ( statusLock )
-            {
-                return currentStatus;
-            }
-        } );
+        public static RuntimeVariableDefinition StatusVariable => new( "status", typeof(Status) );
 
         [Utilities.PublicAPI( "The commander's previous status." )]
-        public RuntimeVariableDefinition LastStatusVariable => new( "lastStatus", typeof(Status), () =>
+        public static RuntimeVariableDefinition LastStatusVariable => new( "lastStatus", typeof(Status) );
+
+        public IReadOnlyList<RuntimeVariableDeclaration> GetVariableDeclarations ()
+        {
+            return RuntimeVariableDefinitionExtensions.DiscoverDeclarations( typeof(StatusMonitor) );
+        }
+
+        public IReadOnlyList<RuntimeVariableValue> GetVariableValues ()
         {
             lock ( statusLock )
             {
-                return lastStatus;
+                return
+                [
+                    new( StatusVariable.Name, StatusVariable.Type, currentStatus ),
+                    new( LastStatusVariable.Name, LastStatusVariable.Type, lastStatus )
+                ];
             }
-        } );
-
-        public IReadOnlyList<RuntimeVariableDefinition> GetVariables ()
-        {
-            return [ StatusVariable, LastStatusVariable ];
         }
     }
 }

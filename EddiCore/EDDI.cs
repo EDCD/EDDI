@@ -1435,7 +1435,7 @@ namespace EddiCore
             };
 
             // Does this friend exist in our friends list?
-            var commanderMonitorVariables = ObtainMonitor( "Commander Monitor" ).GetVariables();
+            var commanderMonitorVariables = ObtainMonitor( "Commander Monitor" ).GetVariableValues();
             if ( commanderMonitorVariables.TryGetValue( "cmdr", out Commander Cmdr ) )
             {
                 var index = Cmdr.friends.FindIndex( f => f.name == @event.name );

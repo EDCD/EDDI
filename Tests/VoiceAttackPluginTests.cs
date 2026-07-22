@@ -679,6 +679,11 @@ namespace Tests
                 variable.VoiceAttackKey == "cAPI active" &&
                 variable.IntendedForBoth &&
                 variable.CurrentlyEmittedByVoiceAttack, report );
+            Assert.Contains( variable =>
+                variable.CottlePath == "va_active" &&
+                variable.VoiceAttackKey == "VA active" &&
+                variable.IntendedForBoth &&
+                !variable.CurrentlyEmittedByVoiceAttack, report );
         }
 
         [TestMethod, DoNotParallelize]

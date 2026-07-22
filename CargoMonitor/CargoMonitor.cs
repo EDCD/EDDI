@@ -531,22 +531,25 @@ namespace EddiCargoMonitor
         }
 
         [Utilities.PublicAPI( "A list of the cargo currently held by the ship." )]
-        public RuntimeVariableDefinition InventoryVariable => new( "inventory", typeof(List<Cargo>), () =>
+        public static RuntimeVariableDefinition InventoryVariable => new( "inventory", typeof(List<Cargo>) );
+
+        [Utilities.PublicAPI( "The total tons of cargo currently held." )]
+        public static RuntimeVariableDefinition CargoCarriedVariable => new( "cargoCarried", typeof(int) );
+
+        public IReadOnlyList<RuntimeVariableDeclaration> GetVariableDeclarations () =>
+            RuntimeVariableDefinitionExtensions.DiscoverDeclarations( typeof(CargoMonitor) );
+
+        public IReadOnlyList<RuntimeVariableValue> GetVariableValues ()
         {
             lock ( inventoryLock )
             {
-                return inventory.ToList();
+                return
+                [
+                    new( InventoryVariable.Name, InventoryVariable.Type, inventory.ToList() ),
+                    new( CargoCarriedVariable.Name, CargoCarriedVariable.Type, cargoCarried )
+                ];
             }
-        } );
-
-        [Utilities.PublicAPI( "The total tons of cargo currently held." )]
-        public RuntimeVariableDefinition CargoCarriedVariable => new( "cargoCarried", typeof(int), () => cargoCarried );
-
-        public IReadOnlyList<RuntimeVariableDefinition> GetVariables () =>
-        [
-            InventoryVariable,
-            CargoCarriedVariable
-        ];
+        }
 
         public void writeInventory()
         {

@@ -9,7 +9,9 @@
         <ProjectReference Include="..\SpeechResponder\EddiSpeechResponder.csproj" />
         <ProjectReference Include="..\Utilities\Utilities.csproj" />
         <ProjectReference Include="..\VoiceAttackResponder\EddiVoiceAttackResponder.csproj" />
-        <ProjectReference Include="..\*Monitor\Eddi*Monitor.csproj" />
+        <ProjectReference Include="..\*Monitor\Eddi*Monitor.csproj"
+                          ReferenceOutputAssembly="false"
+                          Private="false" />
     </ItemGroup>
     <ItemGroup>
         <None Update="Templates\*.template.md">

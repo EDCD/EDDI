@@ -736,15 +736,18 @@ namespace EddiFleetCarrierMonitor
         }
         
         [Utilities.PublicAPI( "Details about the commander's fleet carrier." )]
-        public RuntimeVariableDefinition CarrierVariable => new( "carrier", typeof(FleetCarrier), () => FleetCarrier );
+        public static RuntimeVariableDefinition CarrierVariable => new( "carrier", typeof(FleetCarrier) );
 
         [Utilities.PublicAPI( "Details about the commander's squadron fleet carrier." )]
-        public RuntimeVariableDefinition SquadronCarrierVariable => new( "squadronCarrier", typeof(FleetCarrier), () => SquadronCarrier );
+        public static RuntimeVariableDefinition SquadronCarrierVariable => new( "squadronCarrier", typeof(FleetCarrier) );
 
-        public IReadOnlyList<RuntimeVariableDefinition> GetVariables () =>
+        public IReadOnlyList<RuntimeVariableDeclaration> GetVariableDeclarations () =>
+            RuntimeVariableDefinitionExtensions.DiscoverDeclarations( typeof(FleetCarrierMonitor) );
+
+        public IReadOnlyList<RuntimeVariableValue> GetVariableValues () =>
         [
-            CarrierVariable,
-            SquadronCarrierVariable
+            new( CarrierVariable.Name, CarrierVariable.Type, FleetCarrier ),
+            new( SquadronCarrierVariable.Name, SquadronCarrierVariable.Type, SquadronCarrier )
         ];
 
         private void OnCompanionAppServiceStateChanged ( CompanionAppService.State oldstate, CompanionAppService.State newstate )

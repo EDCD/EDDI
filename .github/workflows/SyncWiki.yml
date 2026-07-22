@@ -46,37 +46,65 @@ jobs:
       run: msbuild ${{ env.solution }} /p:Configuration=${{ env.build-config }} /p:Platform=x64 /p:UseSharedCompilation=false /verbosity:minimal
 
     - name: Generate updated wiki documentation
-      run: >
-        dotnet
-        "${{ github.workspace }}\bin\Release\BuildTools\DocumentationGenerator\DocumentationGenerator.dll"
-        "${{ github.workspace }}\bin\Release\Application"
-
-    - name: Locate generated wiki files
       id: wiki-output
       shell: pwsh
       run: |
-        $candidates = @(
-          "${{ github.workspace }}\Wiki",
-          "${{ github.workspace }}\bin\Release\Application\Wiki",
-          "${{ github.workspace }}\bin\x64\Release\Application\Wiki",
-          "${{ github.workspace }}\bin\Release\Wiki",
-          "${{ github.workspace }}\bin\x64\Release\Wiki",
-          "${{ github.workspace }}\Tests\bin\Release\Wiki",
-          "${{ github.workspace }}\Tests\bin\x64\Release\Wiki"
-        )
-
-        $wikiPath = $candidates |
-          Where-Object { Test-Path "$_\Events.md" } |
-          Select-Object -First 1
-
-        if (-not $wikiPath) {
-          Write-Host "Generated wiki output was not found. Checked candidate paths:"
-          $candidates | ForEach-Object { Write-Host " - $_" }
-          throw "Generated wiki output was not found."
+        $outputRoot = Join-Path $env:RUNNER_TEMP "eddi-generated-documentation"
+        if (Test-Path $outputRoot) {
+          Remove-Item $outputRoot -Recurse -Force
         }
 
-        Write-Host "Generated wiki output found at: $wikiPath"
+        dotnet `
+          "${{ github.workspace }}\bin\Release\BuildTools\DocumentationGenerator\DocumentationGenerator.dll" `
+          $outputRoot
+
+        $wikiPath = Join-Path $outputRoot "Wiki"
+        Write-Host "Generated wiki output at: $wikiPath"
         "path=$wikiPath" >> $env:GITHUB_OUTPUT
+
+    - name: Validate generated wiki files
+      shell: pwsh
+      run: |
+        $wikiPath = "${{ steps.wiki-output.outputs.path }}"
+
+        if (-not (Test-Path $wikiPath -PathType Container)) {
+          throw "Generated wiki output folder was not found: $wikiPath"
+        }
+
+        $requiredFiles = @(
+          "Events.md",
+          "Variables.md",
+          "VoiceAttack-Integration.md",
+          "Help.md",
+          "Functions.md"
+        )
+
+        foreach ($requiredFile in $requiredFiles) {
+          $path = Join-Path $wikiPath $requiredFile
+          if (-not (Test-Path $path -PathType Leaf)) {
+            throw "Generated wiki output is incomplete. Missing required file: $path"
+          }
+
+          if ((Get-Item $path).Length -le 0) {
+            throw "Generated wiki output file is empty: $path"
+          }
+
+          if (Select-String -Path $path -Pattern "{{" -SimpleMatch -Quiet) {
+            throw "Generated wiki output contains an unreplaced template placeholder: $path"
+          }
+        }
+
+        $eventsPath = Join-Path $wikiPath "events"
+        if (-not (Test-Path $eventsPath -PathType Container)) {
+          throw "Generated event wiki folder was not found: $eventsPath"
+        }
+
+        $eventPages = Get-ChildItem $eventsPath -Filter "*.md" -File
+        if (-not $eventPages) {
+          throw "Generated event wiki folder is empty: $eventsPath"
+        }
+
+        Write-Host "Validated generated wiki output: $($requiredFiles.Count) top-level files and $($eventPages.Count) event pages."
 
     - name: Clone wiki repository
       shell: pwsh
@@ -97,10 +125,6 @@ jobs:
 
         if (-not (Test-Path $source)) {
           throw "Generated wiki output folder was not found: $source"
-        }
-
-        if (-not (Test-Path "$source\Events.md")) {
-          throw "Generated wiki output does not look valid. Missing Events.md in: $source"
         }
 
         if (-not (Test-Path $target)) {

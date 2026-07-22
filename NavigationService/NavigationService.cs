@@ -1,6 +1,5 @@
 ﻿using EddiConfigService;
 using EddiCore;
-using EddiCore.RuntimeVariables;
 using EddiDataDefinitions;
 using EddiEvents;
 using JetBrains.Annotations;
@@ -26,11 +25,6 @@ namespace EddiNavigationService
         public StarSystem SearchStarSystem { get; private set; }
         public Station SearchStation { get; private set; }
         public decimal SearchDistanceLy { get; set; }
-
-        static NavigationService ()
-        {
-            RuntimeVariableCatalog.RegisterSearchDistanceLyProvider( () => Instance.SearchDistanceLy );
-        }
 
         // Last query variables
         public QueryType LastQuery

@@ -15,36 +15,37 @@ namespace Utilities
     public sealed record RuntimeVariableDefinition (
         string Name,
         Type Type,
-        Func<object> ValueProvider,
         RuntimeVariableSourceKind SourceKind = RuntimeVariableSourceKind.MonitorRuntime,
         string VoiceAttackName = null,
+        bool IntendedForVoiceAttack = false,
         bool CurrentlyEmittedByVoiceAttack = false,
-        Func<object> VoiceAttackValueProvider = null )
-    {
-        public object GetValue () => ValueProvider();
+        Type VoiceAttackType = null );
 
-        public object GetVoiceAttackValue () => ( VoiceAttackValueProvider ?? ValueProvider )();
+    public sealed record RuntimeVariableValue (
+        string Name,
+        Type Type,
+        object Value,
+        object VoiceAttackValue = null )
+    {
+        public object GetVoiceAttackValue () => VoiceAttackValue ?? Value;
     }
 
     public static class RuntimeVariableDefinitionExtensions
     {
-        public static IReadOnlyList<RuntimeVariableDeclaration> DiscoverDeclarations ( Type declaringType, object instance = null )
+        public static IReadOnlyList<RuntimeVariableDeclaration> DiscoverDeclarations ( Type declaringType )
         {
-            var bindingFlags = BindingFlags.Public |
-                               ( instance is null ? BindingFlags.Static : BindingFlags.Instance );
-
             return declaringType
-                .GetProperties( bindingFlags )
+                .GetProperties( BindingFlags.Public | BindingFlags.Static )
                 .Where( property => typeof(RuntimeVariableDefinition).IsAssignableFrom( property.PropertyType ) )
-                .Select( property => RuntimeVariableDeclaration.FromMember( property, instance ) )
+                .Select( RuntimeVariableDeclaration.FromMember )
                 .Where( declaration => declaration is not null )
                 .ToList();
         }
 
-        public static bool TryGetValue<T> ( this IEnumerable<RuntimeVariableDefinition> definitions, string name, out T value )
+        public static bool TryGetValue<T> ( this IEnumerable<RuntimeVariableValue> values, string name, out T value )
         {
-            var definition = definitions.FirstOrDefault( d => d.Name == name );
-            if ( definition?.GetValue() is T typedValue )
+            var variableValue = values.FirstOrDefault( d => d.Name == name );
+            if ( variableValue?.Value is T typedValue )
             {
                 value = typedValue;
                 return true;
@@ -55,11 +56,11 @@ namespace Utilities
         }
 
         public static Dictionary<string, Tuple<Type, object>> ToRuntimeValueDictionary (
-            this IEnumerable<RuntimeVariableDefinition> definitions )
+            this IEnumerable<RuntimeVariableValue> values )
         {
-            return definitions.ToDictionary(
-                definition => definition.Name,
-                definition => new Tuple<Type, object>( definition.Type, definition.GetValue() ) );
+            return values.ToDictionary(
+                value => value.Name,
+                value => new Tuple<Type, object>( value.Type, value.Value ) );
         }
     }
 
@@ -70,7 +71,7 @@ namespace Utilities
         string SourceMemberName,
         ObsoleteAttribute ObsoleteAttribute )
     {
-        public static RuntimeVariableDeclaration FromMember ( PropertyInfo propertyInfo, object instance = null )
+        public static RuntimeVariableDeclaration FromMember ( PropertyInfo propertyInfo )
         {
             var publicAPIAttribute = propertyInfo.GetCustomAttribute<PublicAPIAttribute>();
             if ( publicAPIAttribute is null )
@@ -78,7 +79,7 @@ namespace Utilities
                 return null;
             }
 
-            var definition = (RuntimeVariableDefinition)propertyInfo.GetValue( instance );
+            var definition = (RuntimeVariableDefinition)propertyInfo.GetValue( null );
             if ( definition is null )
             {
                 return null;

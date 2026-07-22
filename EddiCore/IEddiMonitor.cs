@@ -76,7 +76,12 @@ namespace EddiCore
         /// <summary>
         /// Provide any local variable declarations.
         /// </summary>
-        IReadOnlyList<RuntimeVariableDefinition> GetVariables ();
+        IReadOnlyList<RuntimeVariableDeclaration> GetVariableDeclarations ();
+
+        /// <summary>
+        /// Provide current local variable values.
+        /// </summary>
+        IReadOnlyList<RuntimeVariableValue> GetVariableValues ();
 
         UserControl ConfigurationTabItem();
     }

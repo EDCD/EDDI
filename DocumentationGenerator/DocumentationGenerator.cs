@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using Utilities;
 
 namespace DocumentationGenerator
@@ -18,7 +18,6 @@ namespace DocumentationGenerator
     {
         private const string NewLine = "\r\n";
         private const string VoiceAttackIntegrationTemplateRelativePath = @"Templates\VoiceAttack-Integration.template.md";
-        private const string VoiceAttackLegacyVariablesTemplateRelativePath = @"Templates\VoiceAttack-LegacyVariables.template.md";
         private const string VoiceAttackVariablesPlaceholder = "{{VoiceAttackVariables}}";
         private const string VoiceAttackVariablesHeading = "# EDDI Variables in VoiceAttack";
         private const string VoiceAttackCommandsHeading = "# Running Commands on EDDI Events";
@@ -144,36 +143,24 @@ namespace DocumentationGenerator
             return JoinLines( output );
         }
 
-        public static string RenderVoiceAttackIntegrationPage ( string template = null, string legacyVariablesTemplate = null )
+        public static string RenderVoiceAttackIntegrationPage ( string template = null )
         {
             var source = template ?? LoadVoiceAttackIntegrationTemplate();
-            var legacyVariables = legacyVariablesTemplate ?? LoadVoiceAttackLegacyVariablesTemplate();
-            var generatedVariables = RenderVoiceAttackVariableSection( legacyVariables );
-
-            if ( source.Contains( VoiceAttackVariablesPlaceholder ) )
+            if ( !source.Contains( VoiceAttackVariablesPlaceholder ) )
             {
-                return source.Replace( VoiceAttackVariablesPlaceholder, generatedVariables.TrimEnd() );
+                throw new InvalidOperationException( $"VoiceAttack integration template must contain {VoiceAttackVariablesPlaceholder}." );
             }
 
-            var variablesStart = source.IndexOf( VoiceAttackVariablesHeading, StringComparison.Ordinal );
-            var nextStart = source.IndexOf( VoiceAttackCommandsHeading, StringComparison.Ordinal );
+            var generatedRuntimeDeclarations = GetCurrentlyEmittedVoiceAttackRuntimeDeclarations();
+            source = RemoveGeneratedVariablesFromLegacySection( source, generatedRuntimeDeclarations );
 
-            if ( variablesStart < 0 || nextStart < 0 || nextStart <= variablesStart )
-            {
-                throw new InvalidOperationException(
-                    "VoiceAttack integration template must contain the EDDI Variables and Running Commands headings." );
-            }
-
-            return source[ ..variablesStart ].TrimEnd() +
-                   NewLine +
-                   NewLine +
-                   generatedVariables.TrimEnd() +
-                   NewLine +
-                   NewLine +
-                   source[ nextStart.. ].TrimStart();
+            return source.Replace(
+                VoiceAttackVariablesPlaceholder,
+                RenderVoiceAttackVariableSection( generatedRuntimeDeclarations ).TrimEnd() );
         }
 
-        private static string RenderVoiceAttackVariableSection ( string legacyVariables )
+        private static string RenderVoiceAttackVariableSection (
+            IReadOnlyList<RuntimeVariableDeclaration> runtimeDeclarations = null )
         {
             var output = new List<string>
             {
@@ -189,36 +176,81 @@ namespace DocumentationGenerator
                 ""
             };
 
-            var runtimeDeclarations = RuntimeVariableDefinitionExtensions
-                .DiscoverDeclarations( typeof( RuntimeVariableCatalog ) )
-                .Where( d => d.Definition.CurrentlyEmittedByVoiceAttack )
-                .OrderBy( d => d.Definition.VoiceAttackName, StringComparer.OrdinalIgnoreCase )
-                .ToList();
+            runtimeDeclarations ??= GetCurrentlyEmittedVoiceAttackRuntimeDeclarations();
 
             foreach ( var declaration in runtimeDeclarations )
             {
                 output.Add( RenderVoiceAttackVariable(
                     declaration.Definition.VoiceAttackName,
-                    declaration.Definition.Type,
+                    declaration.Definition.VoiceAttackType ?? declaration.Definition.Type,
                     declaration.Description ) );
             }
 
-            if ( !string.IsNullOrWhiteSpace( legacyVariables ) )
+            return JoinLines( output );
+        }
+
+        private static IReadOnlyList<RuntimeVariableDeclaration> GetCurrentlyEmittedVoiceAttackRuntimeDeclarations ()
+        {
+            return RuntimeVariableDefinitionExtensions
+                .DiscoverDeclarations( typeof( RuntimeVariableCatalog ) )
+                .Where( d => d.Definition.CurrentlyEmittedByVoiceAttack )
+                .OrderBy( d => d.Definition.VoiceAttackName, StringComparer.OrdinalIgnoreCase )
+                .ToList();
+        }
+
+        private static string RemoveGeneratedVariablesFromLegacySection (
+            string source,
+            IReadOnlyList<RuntimeVariableDeclaration> generatedRuntimeDeclarations )
+        {
+            var generatedKeys = generatedRuntimeDeclarations
+                .Select( declaration => declaration.Definition.VoiceAttackName )
+                .Where( key => !string.IsNullOrWhiteSpace( key ) )
+                .ToHashSet( StringComparer.Ordinal );
+
+            if ( generatedKeys.Count == 0 )
             {
-                output.Add( "" );
-                output.Add( "## Legacy Standard Variables" );
-                output.Add( "" );
-                output.AddRange( legacyVariables.Trim().Split( [ "\r\n", "\n" ], StringSplitOptions.None ) );
+                return source;
             }
 
-            output.Add( "" );
-            output.Add( "## Event Variables" );
-            output.Add( "" );
-            output.Add( "When EDDI invokes a VoiceAttack event command, event-specific variables are generated from the same `PublicAPI` variable descriptions used by the event wiki pages. Event variables are only valid for the event command that set them; copy values into your own variables if you need them later." );
-            output.Add( "" );
-            output.Add( "For each event's VoiceAttack variables, see the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events)." );
+            var lines = source.Split( [ "\r\n", "\n" ], StringSplitOptions.None );
+            var output = new List<string>( lines.Length );
+            var inLegacyVariables = false;
+
+            foreach ( var line in lines )
+            {
+                if ( line.Contains( VoiceAttackVariablesPlaceholder ) )
+                {
+                    inLegacyVariables = true;
+                    output.Add( line );
+                    continue;
+                }
+
+                if ( inLegacyVariables &&
+                     string.Equals( line.Trim(), VoiceAttackCommandsHeading, StringComparison.Ordinal ) )
+                {
+                    inLegacyVariables = false;
+                }
+
+                if ( inLegacyVariables && IsGeneratedLegacyVoiceAttackVariableLine( line, generatedKeys ) )
+                {
+                    continue;
+                }
+
+                output.Add( line );
+            }
 
             return JoinLines( output );
+        }
+
+        private static bool IsGeneratedLegacyVoiceAttackVariableLine ( string line, ISet<string> generatedKeys )
+        {
+            if ( !line.TrimStart().StartsWith( "*", StringComparison.Ordinal ) )
+            {
+                return false;
+            }
+
+            var match = Regex.Match( line, @"\{(?:TXT|INT|DEC|BOOL|DATE):(?<key>[^}\r\n]+)\}" );
+            return match.Success && generatedKeys.Contains( match.Groups[ "key" ].Value );
         }
 
         public static (string Help, string Functions) RenderFunctionsHelp ()
@@ -262,18 +294,19 @@ namespace DocumentationGenerator
         {
             ArgumentException.ThrowIfNullOrWhiteSpace( outputDirectory );
 
+            DeleteObsoleteRootOutput( outputDirectory, "Variables.md" );
+            DeleteObsoleteRootOutput( outputDirectory, "Help.md" );
+
             foreach ( var page in RenderWikiEventPages() )
             {
                 WriteText( outputDirectory, page.Key, page.Value );
             }
 
             WriteText( outputDirectory, @"Wiki\Events.md", RenderWikiEventsList() );
-            WriteText( outputDirectory, "Variables.md", RenderVariablesPage() );
             WriteText( outputDirectory, @"Wiki\Variables.md", RenderVariablesPage() );
             WriteText( outputDirectory, @"Wiki\VoiceAttack-Integration.md", RenderVoiceAttackIntegrationPage() );
 
             var (help, functions) = RenderFunctionsHelp();
-            WriteText( outputDirectory, "Help.md", help );
             WriteText( outputDirectory, @"Wiki\Help.md", help );
             WriteText( outputDirectory, @"Wiki\Functions.md", functions );
             WriteText( outputDirectory, @"Cottle\Custom keywords.txt", RenderEventVariableKeywords() );
@@ -670,25 +703,72 @@ namespace DocumentationGenerator
         private static List<RuntimeVariableDeclaration> GetDocumentationMonitorRuntimeDeclarations ()
         {
             return DiscoverMonitorTypes()
-                .SelectMany( type =>
-                {
-                    var monitor = (IEddiMonitor)RuntimeHelpers.GetUninitializedObject( type );
-                    return RuntimeVariableDefinitionExtensions.DiscoverDeclarations( type, monitor );
-                } )
+                .SelectMany( RuntimeVariableDefinitionExtensions.DiscoverDeclarations )
                 .ToList();
         }
 
         private static List<Type> DiscoverMonitorTypes ()
         {
-            var directory = Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location )
-                            ?? AppContext.BaseDirectory;
-
-            return Directory
-                .EnumerateFiles( directory, "*Monitor.dll", SearchOption.AllDirectories )
+            return GetMonitorSearchDirectories()
+                .SelectMany( directory => Directory.EnumerateFiles( directory, "*Monitor.dll", SearchOption.TopDirectoryOnly ) )
+                .Distinct( StringComparer.OrdinalIgnoreCase )
                 .OrderBy( path => path, StringComparer.OrdinalIgnoreCase )
                 .SelectMany( GetMonitorTypes )
                 .OrderBy( type => type.FullName, StringComparer.OrdinalIgnoreCase )
                 .ToList();
+        }
+
+        private static IEnumerable<string> GetMonitorSearchDirectories ()
+        {
+            var baseDirectory = Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location )
+                                ?? AppContext.BaseDirectory;
+            var buildConfigurationDirectory = GetBuildConfigurationDirectory( baseDirectory );
+            var solutionDirectory = GetSolutionDirectory( baseDirectory )
+                                    ?? GetSolutionDirectory( Environment.CurrentDirectory );
+
+            var candidates = new[]
+            {
+                baseDirectory,
+                buildConfigurationDirectory is null ? null : Path.Combine( buildConfigurationDirectory.FullName, "Application" ),
+                buildConfigurationDirectory is null || solutionDirectory is null
+                    ? null
+                    : Path.Combine( solutionDirectory.FullName, "bin", buildConfigurationDirectory.Name, "Application" ),
+                Environment.CurrentDirectory
+            };
+
+            return candidates
+                .Where( path => !string.IsNullOrWhiteSpace( path ) && Directory.Exists( path ) )
+                .Distinct( StringComparer.OrdinalIgnoreCase );
+        }
+
+        private static DirectoryInfo GetBuildConfigurationDirectory ( string baseDirectory )
+        {
+            for ( var directory = new DirectoryInfo( baseDirectory );
+                  directory is not null;
+                  directory = directory.Parent )
+            {
+                if ( string.Equals( directory.Parent?.Name, "bin", StringComparison.OrdinalIgnoreCase ) )
+                {
+                    return directory;
+                }
+            }
+
+            return null;
+        }
+
+        private static DirectoryInfo GetSolutionDirectory ( string baseDirectory )
+        {
+            for ( var directory = new DirectoryInfo( baseDirectory );
+                  directory is not null;
+                  directory = directory.Parent )
+            {
+                if ( File.Exists( Path.Combine( directory.FullName, "EDDI.sln" ) ) )
+                {
+                    return directory;
+                }
+            }
+
+            return null;
         }
 
         private static IEnumerable<Type> GetMonitorTypes ( string assemblyPath )
@@ -719,13 +799,6 @@ namespace DocumentationGenerator
             return LoadTemplate(
                 VoiceAttackIntegrationTemplateRelativePath,
                 "VoiceAttack integration template" );
-        }
-
-        private static string LoadVoiceAttackLegacyVariablesTemplate ()
-        {
-            return LoadTemplate(
-                VoiceAttackLegacyVariablesTemplateRelativePath,
-                "VoiceAttack legacy variables template" );
         }
 
         private static string LoadTemplate ( string relativePath, string templateName )
@@ -770,6 +843,15 @@ namespace DocumentationGenerator
             var path = Path.Combine( outputDirectory, relativePath );
             Directory.CreateDirectory( Path.GetDirectoryName( path ) ?? outputDirectory );
             File.WriteAllText( path, text );
+        }
+
+        private static void DeleteObsoleteRootOutput ( string outputDirectory, string fileName )
+        {
+            var path = Path.Combine( outputDirectory, fileName );
+            if ( File.Exists( path ) )
+            {
+                File.Delete( path );
+            }
         }
     }
 }

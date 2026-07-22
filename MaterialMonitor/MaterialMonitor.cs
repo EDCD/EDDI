@@ -443,15 +443,18 @@ namespace EddiMaterialMonitor
         }
 
         [PublicAPI( "A list of all materials currently held by the commander." )]
-        public RuntimeVariableDefinition MaterialsVariable => new( "materials", typeof(List<MaterialAmount>), () =>
+        public static RuntimeVariableDefinition MaterialsVariable => new( "materials", typeof(List<MaterialAmount>) );
+
+        public IReadOnlyList<RuntimeVariableDeclaration> GetVariableDeclarations () =>
+            RuntimeVariableDefinitionExtensions.DiscoverDeclarations( typeof(MaterialMonitor) );
+
+        public IReadOnlyList<RuntimeVariableValue> GetVariableValues ()
         {
             lock ( inventoryLock )
             {
-                return inventory.ToList();
+                return [ new RuntimeVariableValue( MaterialsVariable.Name, MaterialsVariable.Type, inventory.ToList() ) ];
             }
-        } );
-
-        public IReadOnlyList<RuntimeVariableDefinition> GetVariables () => [ MaterialsVariable ];
+        }
 
         public void writeMaterials()
         {

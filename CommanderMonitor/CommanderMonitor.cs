@@ -378,23 +378,26 @@ namespace EddiCommanderMonitor
         }
 
         [Utilities.PublicAPI( "Details about the current commander." )]
-        public RuntimeVariableDefinition CommanderVariable => new( "cmdr", typeof(Commander), () => Cmdr );
+        public static RuntimeVariableDefinition CommanderVariable => new( "cmdr", typeof(Commander) );
 
         [Utilities.PublicAPI( "Details about the commander's home system." )]
-        public RuntimeVariableDefinition HomeSystemVariable => new( "homesystem", typeof(StarSystem), () => HomeStarSystem );
+        public static RuntimeVariableDefinition HomeSystemVariable => new( "homesystem", typeof(StarSystem) );
 
         [Utilities.PublicAPI( "Details about the commander's home station." )]
-        public RuntimeVariableDefinition HomeStationVariable => new( "homestation", typeof(Station), () => HomeStation );
+        public static RuntimeVariableDefinition HomeStationVariable => new( "homestation", typeof(Station) );
 
         [Utilities.PublicAPI( "Details about the current squadron's star system." )]
-        public RuntimeVariableDefinition SquadronSystemVariable => new( "squadronsystem", typeof(StarSystem), () => SquadronStarSystem );
+        public static RuntimeVariableDefinition SquadronSystemVariable => new( "squadronsystem", typeof(StarSystem) );
 
-        public IReadOnlyList<RuntimeVariableDefinition> GetVariables () =>
+        public IReadOnlyList<RuntimeVariableDeclaration> GetVariableDeclarations () =>
+            RuntimeVariableDefinitionExtensions.DiscoverDeclarations( typeof(CommanderMonitor) );
+
+        public IReadOnlyList<RuntimeVariableValue> GetVariableValues () =>
         [
-            CommanderVariable,
-            HomeSystemVariable,
-            HomeStationVariable,
-            SquadronSystemVariable
+            new( CommanderVariable.Name, CommanderVariable.Type, Cmdr ),
+            new( HomeSystemVariable.Name, HomeSystemVariable.Type, HomeStarSystem ),
+            new( HomeStationVariable.Name, HomeStationVariable.Type, HomeStation ),
+            new( SquadronSystemVariable.Name, SquadronSystemVariable.Type, SquadronStarSystem )
         ];
 
         public UserControl ConfigurationTabItem ()

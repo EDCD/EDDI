@@ -3027,6 +3027,8 @@ namespace EddiJournalMonitor
             return Task.CompletedTask;
         }
         
-        public IReadOnlyList<RuntimeVariableDefinition> GetVariables () => [];
+        public IReadOnlyList<RuntimeVariableDeclaration> GetVariableDeclarations () => [];
+
+        public IReadOnlyList<RuntimeVariableValue> GetVariableValues () => [];
     }
 }

@@ -35,9 +35,7 @@ namespace EddiCore.RuntimeVariables
         public static IReadOnlyList<RuntimeVariableDeclaration> GetCurrentMonitorRuntimeDeclarations ()
         {
             return EDDI.Instance?.monitors?
-                .SelectMany( monitor => RuntimeVariableDefinitionExtensions.DiscoverDeclarations(
-                    monitor.GetType(),
-                    monitor ) )
+                .SelectMany( monitor => monitor.GetVariableDeclarations() )
                 .ToList() ?? [];
         }
 
@@ -51,15 +49,18 @@ namespace EddiCore.RuntimeVariables
 
             AddMetaVariables(
                 variablesByPath,
-                new MetaVariables( GetTopLevelRuntimeDeclarations(), options: options ).Results );
+                new MetaVariables( GetTopLevelRuntimeDeclarations(), options: options ).Results,
+                options );
 
             AddMetaVariables(
                 variablesByPath,
-                new MetaVariables( GetStandardObjectRootDeclarations(), options: options ).Results );
+                new MetaVariables( GetStandardObjectRootDeclarations(), options: options ).Results,
+                options );
 
             AddMetaVariables(
                 variablesByPath,
-                new MetaVariables( monitorRuntimeDeclarations ?? GetCurrentMonitorRuntimeDeclarations(), options: options ).Results );
+                new MetaVariables( monitorRuntimeDeclarations ?? GetCurrentMonitorRuntimeDeclarations(), options: options ).Results,
+                options );
 
             if ( runtimeVariableRoots is not null )
             {
@@ -87,7 +88,7 @@ namespace EddiCore.RuntimeVariables
                                 descriptor.DeclaredType,
                                 options ) ) );
 
-                    AddMetaVariables( variablesByPath, vars );
+                    AddMetaVariables( variablesByPath, vars, options );
                 }
             }
 
@@ -111,7 +112,6 @@ namespace EddiCore.RuntimeVariables
                     new RuntimeVariableDefinition(
                         root.Name,
                         root.Type,
-                        () => null,
                         RuntimeVariableSourceKind.TopLevelRuntime ),
                     root.Description,
                     typeof(StandardVariableInventoryBuilder),
@@ -122,17 +122,19 @@ namespace EddiCore.RuntimeVariables
 
         private static void AddMetaVariables (
             IDictionary<string, MetaVariable> variablesByPath,
-            IEnumerable<MetaVariable> variables )
+            IEnumerable<MetaVariable> variables,
+            MetaVariableDiscoveryOptions options )
         {
-            foreach ( var variable in variables )
+            foreach ( var variable in variables
+                         .Where( variable => !string.IsNullOrEmpty( variable.Descriptor.CottlePath ) )
+                         .GroupBy( variable => variable.Descriptor.CottlePath, StringComparer.OrdinalIgnoreCase )
+                         .Select( group => group.First() ) )
             {
                 var key = variable.Descriptor.CottlePath;
-                if ( string.IsNullOrEmpty( key ) )
+                if ( !variablesByPath.TryAdd( key, variable ) && options.Strict )
                 {
-                    continue;
+                    throw new MetaVariableDiscoveryException( $"Duplicate runtime variable path '{key}'." );
                 }
-
-                variablesByPath.TryAdd( key, variable );
             }
         }
     }

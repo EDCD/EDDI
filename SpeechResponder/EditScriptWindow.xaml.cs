@@ -309,7 +309,7 @@ namespace EddiSpeechResponder
 
         private void helpButtonClick ( object sender, RoutedEventArgs e )
         {
-            var helpWindow = new MarkdownWindow("Help.md");
+            var helpWindow = new MarkdownWindow(@"Wiki\Help.md");
             helpWindow.Show();
         }
 

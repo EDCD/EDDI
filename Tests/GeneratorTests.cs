@@ -1,6 +1,10 @@
 using DocumentationGenerator;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Tests
 {
@@ -83,18 +87,19 @@ namespace Tests
 
                                     {{VoiceAttackVariables}}
 
+                                    ## Legacy Standard Variables
+
+                                    ## Commander Variables
+
+                                      * {TXT:Name}: the name of the commander
+
                                     # Running Commands on EDDI Events
 
                                     Keep this command prose.
                                     """;
-            const string legacyVariablesTemplate = """
-                                                   ## Commander Variables
 
-                                                     * {TXT:Name}: the name of the commander
-                                                   """;
-
-            var firstRender = DocumentationGenerator.DocumentationGenerator.RenderVoiceAttackIntegrationPage( template, legacyVariablesTemplate );
-            var secondRender = DocumentationGenerator.DocumentationGenerator.RenderVoiceAttackIntegrationPage( template, legacyVariablesTemplate );
+            var firstRender = DocumentationGenerator.DocumentationGenerator.RenderVoiceAttackIntegrationPage( template );
+            var secondRender = DocumentationGenerator.DocumentationGenerator.RenderVoiceAttackIntegrationPage( template );
 
             Assert.AreEqual( firstRender, secondRender );
             Assert.Contains( "Keep this setup prose.", firstRender );
@@ -105,7 +110,77 @@ namespace Tests
             Assert.Contains( "{BOOL:cAPI active}", firstRender );
             Assert.Contains( "## Legacy Standard Variables", firstRender );
             Assert.Contains( "{TXT:Name}: the name of the commander", firstRender );
-            Assert.Contains( "## Event Variables", firstRender );
+        }
+
+        [TestMethod]
+        public void RenderVoiceAttackIntegrationPage_GeneratedVariableInventoryIsStableAndOrdered ()
+        {
+            var render = DocumentationGenerator.DocumentationGenerator.RenderVoiceAttackIntegrationPage();
+
+            CollectionAssert.AreEqual(
+                new List<string>
+                {
+                    "cAPI active",
+                    "Destination system distance",
+                    "EDDI version",
+                    "Environment",
+                    "horizons",
+                    "icao active",
+                    "ipa active",
+                    "odyssey",
+                    "Search system distance",
+                    "Vehicle"
+                },
+                ExtractVoiceAttackVariableKeys(
+                    render,
+                    "## Generated Standard Variables",
+                    "## Legacy Standard Variables" ) );
+
+            Assert.IsTrue(
+                render.IndexOf( "## Generated Standard Variables", StringComparison.Ordinal ) <
+                render.IndexOf( "## Legacy Standard Variables", StringComparison.Ordinal ) );
+            Assert.IsTrue(
+                render.IndexOf( "## Legacy Standard Variables", StringComparison.Ordinal ) <
+                render.IndexOf( "# Running Commands on EDDI Events", StringComparison.Ordinal ) );
+        }
+
+        [TestMethod]
+        public void RenderVoiceAttackIntegrationPage_DoesNotDuplicateMigratedLegacyVariables ()
+        {
+            var render = DocumentationGenerator.DocumentationGenerator.RenderVoiceAttackIntegrationPage();
+            var generatedKeys = ExtractVoiceAttackVariableKeys(
+                render,
+                "## Generated Standard Variables",
+                "## Legacy Standard Variables" );
+            var legacyKeys = ExtractVoiceAttackVariableKeys(
+                render,
+                "## Legacy Standard Variables",
+                "# Running Commands on EDDI Events" );
+
+            foreach ( var generatedKey in generatedKeys )
+            {
+                Assert.IsFalse(
+                    legacyKeys.Contains( generatedKey, StringComparer.Ordinal ),
+                    $"Generated VoiceAttack variable remains in the legacy section: {generatedKey}" );
+            }
+
+            Assert.Contains( "{TXT:Name}: the name of the commander", render );
+            Assert.Contains( "{TXT:EDDI uri}", render );
+            Assert.DoesNotContain( "  * {TXT:Environment}:", render );
+            Assert.DoesNotContain( "  * {BOOL:cAPI active}:", render );
+        }
+
+        [TestMethod]
+        public void RenderVoiceAttackIntegrationPage_RequiresVariablePlaceholder ()
+        {
+            const string template = """
+                                    # Using EDDI with VoiceAttack
+
+                                    # Running Commands on EDDI Events
+                                    """;
+
+            Assert.ThrowsExactly<InvalidOperationException>(
+                () => DocumentationGenerator.DocumentationGenerator.RenderVoiceAttackIntegrationPage( template ) );
         }
 
         [TestMethod]
@@ -129,6 +204,63 @@ namespace Tests
             Assert.AreEqual( Help, Help2 );
             Assert.AreEqual( Functions, Functions2 );
             Assert.Contains( "* " , Functions);
+        }
+
+        [TestMethod]
+        public void WriteWikiOutput_RemovesObsoleteRootMarkdownOutputs ()
+        {
+            var outputDirectory = Path.Combine( Path.GetTempPath(), "eddi-docgen-test-" + Guid.NewGuid().ToString( "N" ) );
+            Directory.CreateDirectory( outputDirectory );
+            try
+            {
+                File.WriteAllText( Path.Combine( outputDirectory, "Variables.md" ), "stale variables" );
+                File.WriteAllText( Path.Combine( outputDirectory, "Help.md" ), "stale help" );
+
+                DocumentationGenerator.DocumentationGenerator.WriteWikiOutput( outputDirectory );
+
+                Assert.IsFalse( File.Exists( Path.Combine( outputDirectory, "Variables.md" ) ) );
+                Assert.IsFalse( File.Exists( Path.Combine( outputDirectory, "Help.md" ) ) );
+                Assert.IsTrue( File.Exists( Path.Combine( outputDirectory, "Wiki", "Variables.md" ) ) );
+                Assert.IsTrue( File.Exists( Path.Combine( outputDirectory, "Wiki", "Help.md" ) ) );
+                Assert.IsTrue( File.Exists( Path.Combine( outputDirectory, "Wiki", "VoiceAttack-Integration.md" ) ) );
+                Assert.IsTrue( File.Exists( Path.Combine( outputDirectory, "Wiki", "Functions.md" ) ) );
+                Assert.IsTrue( Directory.EnumerateFiles( Path.Combine( outputDirectory, "Wiki", "events" ), "*.md" ).Any() );
+
+                var variables = File.ReadAllText( Path.Combine( outputDirectory, "Wiki", "Variables.md" ) );
+                var voiceAttackIntegration = File.ReadAllText( Path.Combine( outputDirectory, "Wiki", "VoiceAttack-Integration.md" ) );
+
+                Assert.Contains( "## Root Variables", variables );
+                Assert.DoesNotContain( "{{", variables );
+                Assert.DoesNotContain( "{{", voiceAttackIntegration );
+            }
+            finally
+            {
+                if ( Directory.Exists( outputDirectory ) )
+                {
+                    Directory.Delete( outputDirectory, true );
+                }
+            }
+        }
+
+        private static List<string> ExtractVoiceAttackVariableKeys (
+            string render,
+            string startHeading,
+            string endHeading )
+        {
+            var lines = render.Split( [ "\r\n", "\n" ], StringSplitOptions.None );
+            var start = Array.FindIndex( lines, line => line.Trim() == startHeading );
+            var end = Array.FindIndex( lines, start + 1, line => line.Trim() == endHeading );
+
+            Assert.IsTrue( start >= 0, $"Could not find heading '{startHeading}'." );
+            Assert.IsTrue( end > start, $"Could not find heading '{endHeading}' after '{startHeading}'." );
+
+            return lines
+                .Skip( start + 1 )
+                .Take( end - start - 1 )
+                .Select( line => Regex.Match( line, @"\{(?:TXT|INT|DEC|BOOL|DATE):(?<key>[^}\r\n]+)\}" ) )
+                .Where( match => match.Success )
+                .Select( match => match.Groups[ "key" ].Value )
+                .ToList();
         }
     }
 }

@@ -54,13 +54,13 @@ namespace Tests
         private sealed class RuntimeVariableProvider
         {
             [PublicAPI( "A runtime test variable." )]
-            public static RuntimeVariableDefinition TestRuntimeVariable => new( "runtime", typeof(string), () => "value" );
+            public static RuntimeVariableDefinition TestRuntimeVariable => new( "runtime", typeof(string) );
         }
 
         private sealed class RuntimeVariableProviderMissingDescription
         {
             [PublicAPI]
-            public static RuntimeVariableDefinition TestRuntimeVariable => new( "runtime", typeof(string), () => "value" );
+            public static RuntimeVariableDefinition TestRuntimeVariable => new( "runtime", typeof(string) );
         }
         
         [TestInitialize]
@@ -531,6 +531,36 @@ namespace Tests
             Assert.IsTrue( metaVariables.Any( v => v.Descriptor.CottlePath == "system" ) );
             Assert.IsTrue( metaVariables.Any( v => v.Descriptor.CottlePath == "speech.Text" ) );
             Assert.IsTrue( metaVariables.Any( v => v.Descriptor.CottlePath == "speech.Priority" ) );
+        }
+
+        [TestMethod]
+        public void StandardVariableInventoryBuilder_StrictDocumentation_FailsOnCrossSourceDuplicates ()
+        {
+            var duplicateMonitorDeclarations = new[]
+            {
+                new RuntimeVariableDeclaration(
+                    new RuntimeVariableDefinition( EddiCore.RuntimeVariables.RuntimeVariableCatalog.EnvironmentVariable, typeof(string) ),
+                    "Duplicate environment variable.",
+                    typeof(MetaVariablesTests),
+                    nameof(StandardVariableInventoryBuilder_StrictDocumentation_FailsOnCrossSourceDuplicates),
+                    null )
+            };
+
+            Assert.ThrowsExactly<MetaVariableDiscoveryException>( () =>
+                EddiCore.RuntimeVariables.StandardVariableInventoryBuilder.BuildStandardMetaVariables(
+                    null,
+                    duplicateMonitorDeclarations,
+                    MetaVariableDiscoveryOptions.StrictDocumentation ) );
+        }
+
+        [TestMethod]
+        public void TopLevelRuntimeVariableValues_UsesExplicitSearchDistance ()
+        {
+            var value = EddiCore.RuntimeVariables.TopLevelRuntimeVariableValues.Get(
+                EddiCore.RuntimeVariables.RuntimeVariableCatalog.SearchDistanceLyVariable,
+                42.5m );
+
+            Assert.AreEqual( 42.5m, value.Value );
         }
 
         [TestMethod]

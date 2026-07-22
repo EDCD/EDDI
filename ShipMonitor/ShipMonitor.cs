@@ -1409,32 +1409,29 @@ namespace EddiShipMonitor
         }
         
         [PublicAPI( "Details about the current ship." )]
-        public RuntimeVariableDefinition ShipVariable => new( "ship", typeof(Ship), () => GetCurrentShip() );
+        public static RuntimeVariableDefinition ShipVariable => new( "ship", typeof(Ship) );
 
         [PublicAPI( "A list of the commander's stored modules." )]
-        public RuntimeVariableDefinition StoredModulesVariable => new( "storedmodules", typeof(List<StoredModule>), () =>
-        {
-            lock ( shipyardLock )
-            {
-                return storedmodules.ToList();
-            }
-        } );
+        public static RuntimeVariableDefinition StoredModulesVariable => new( "storedmodules", typeof(List<StoredModule>) );
 
         [PublicAPI( "A list of the commander's stored ships." )]
-        public RuntimeVariableDefinition ShipyardVariable => new( "shipyard", typeof(List<Ship>), () =>
+        public static RuntimeVariableDefinition ShipyardVariable => new( "shipyard", typeof(List<Ship>) );
+
+        public IReadOnlyList<RuntimeVariableDeclaration> GetVariableDeclarations () =>
+            RuntimeVariableDefinitionExtensions.DiscoverDeclarations( typeof(ShipMonitor) );
+
+        public IReadOnlyList<RuntimeVariableValue> GetVariableValues ()
         {
             lock ( shipyardLock )
             {
-                return shipyard.ToList();
+                return
+                [
+                    new( ShipVariable.Name, ShipVariable.Type, GetCurrentShip() ),
+                    new( StoredModulesVariable.Name, StoredModulesVariable.Type, storedmodules.ToList() ),
+                    new( ShipyardVariable.Name, ShipyardVariable.Type, shipyard.ToList() )
+                ];
             }
-        } );
-
-        public IReadOnlyList<RuntimeVariableDefinition> GetVariables () =>
-        [
-            ShipVariable,
-            StoredModulesVariable,
-            ShipyardVariable
-        ];
+        }
 
         private void writeShips ()
         {
