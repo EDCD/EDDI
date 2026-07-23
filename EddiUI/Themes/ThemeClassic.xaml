@@ -76,6 +76,10 @@
     <Color x:Key="DisabledControlBorder">#A0A0A0</Color>
     <SolidColorBrush x:Key="DisabledControlBorderBrush" Color="{StaticResource DisabledControlBorder}"/>
 
+    <!-- Diff comparison backgrounds -->
+    <SolidColorBrush x:Key="DiffDeletedBackgroundBrush" Color="#F08080"/>
+    <SolidColorBrush x:Key="DiffInsertedBackgroundBrush" Color="#90EE90"/>
+
     <!-- Default WPF template brushes -->
     <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="{StaticResource ControlBackground}"/>
     <SolidColorBrush x:Key="{x:Static SystemColors.ControlLightBrushKey}" Color="{StaticResource NeutralBackground}"/>

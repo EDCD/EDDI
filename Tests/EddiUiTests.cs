@@ -336,6 +336,34 @@ namespace Tests
         }
 
         [TestMethod]
+        public void ThemeDictionaries_DefineDiffComparisonBackgrounds()
+        {
+            foreach (var themeFile in new[] { "ThemeLight.xaml", "ThemeDark.xaml", "ThemeClassic.xaml" })
+            {
+                var themeXaml = File.ReadAllText(FindRepoFile("EddiUI", "Themes", themeFile));
+
+                Assert.Contains("x:Key=\"DiffDeletedBackgroundBrush\"", themeXaml);
+                Assert.Contains("x:Key=\"DiffInsertedBackgroundBrush\"", themeXaml);
+            }
+
+            var darkTheme = File.ReadAllText(FindRepoFile("EddiUI", "Themes", "ThemeDark.xaml"));
+
+            Assert.Contains("<SolidColorBrush x:Key=\"DiffDeletedBackgroundBrush\" Color=\"#8A2F2F\"/>", darkTheme);
+            Assert.Contains("<SolidColorBrush x:Key=\"DiffInsertedBackgroundBrush\" Color=\"#1F6F3A\"/>", darkTheme);
+        }
+
+        [TestMethod]
+        public void ShowDiffWindow_UsesThemeDiffBrushes()
+        {
+            var showDiffWindowCode = File.ReadAllText(FindRepoFile("SpeechResponder", "ShowDiffWindow.xaml.cs"));
+
+            Assert.Contains("DiffDeletedBackgroundBrush", showDiffWindowCode);
+            Assert.Contains("DiffInsertedBackgroundBrush", showDiffWindowCode);
+            Assert.DoesNotContain("private readonly Brush deletedBrush = Brushes.LightCoral", showDiffWindowCode);
+            Assert.DoesNotContain("private readonly Brush addedBrush = Brushes.LightGreen", showDiffWindowCode);
+        }
+
+        [TestMethod]
         public void ThemeModern_ComboBoxTemplateCarriesDisabledForegroundIntoButton()
         {
             var themeXaml = File.ReadAllText(FindRepoFile("EddiUI", "Themes", "ThemeModern.xaml"));

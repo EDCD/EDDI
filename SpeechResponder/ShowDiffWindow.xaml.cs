@@ -18,9 +18,18 @@ namespace EddiSpeechResponder
 
         internal class DiffHighlighter : IBackgroundRenderer
         {
-            private readonly Brush deletedBrush = Brushes.LightCoral;
-            private readonly Brush addedBrush = Brushes.LightGreen;
+            internal const string DeletedBrushResourceKey = "DiffDeletedBackgroundBrush";
+            internal const string InsertedBrushResourceKey = "DiffInsertedBackgroundBrush";
+
+            private readonly Brush deletedBrush;
+            private readonly Brush insertedBrush;
             private readonly TextSegmentCollection<DiffSegment> diffSegments = new();
+
+            public DiffHighlighter(Brush deletedBrush, Brush insertedBrush)
+            {
+                this.deletedBrush = deletedBrush ?? Brushes.LightCoral;
+                this.insertedBrush = insertedBrush ?? Brushes.LightGreen;
+            }
 
             public void AddSegment(DiffSegment segment)
             {
@@ -65,7 +74,7 @@ namespace EddiSpeechResponder
                         geoBuilder.AddSegment(textView, segment);
                         break;
                     case DiffItem.DiffType.Inserted:
-                        markerBrush = addedBrush;
+                        markerBrush = insertedBrush;
                         geoBuilder.AddSegment(textView, segment);
                         break;
                     default:
@@ -81,13 +90,21 @@ namespace EddiSpeechResponder
             }
         }
 
-        private readonly DiffHighlighter diffHighlighter = new();
+        private readonly DiffHighlighter diffHighlighter;
 
         public ShowDiffWindow(string oldScript, string newScript)
         {
             InitializeComponent();
+            diffHighlighter = new DiffHighlighter(
+                ResolveBrush(DiffHighlighter.DeletedBrushResourceKey),
+                ResolveBrush(DiffHighlighter.InsertedBrushResourceKey));
             scriptView.TextArea.TextView.BackgroundRenderers.Add(diffHighlighter);
             ParseDiffs(oldScript, newScript);
+        }
+
+        private Brush ResolveBrush(string resourceKey)
+        {
+            return TryFindResource(resourceKey) as Brush;
         }
 
         private void ParseDiffs(string oldScript, string newScript)
