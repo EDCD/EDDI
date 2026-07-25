@@ -61,7 +61,7 @@ namespace Eddi
             }
 
             var app = new App();
-            app.InitializeComponent();
+            LoadApplicationResources( app );
             app.Exit += OnExit;
 
             try
@@ -72,6 +72,12 @@ namespace Eddi
             {
                 CrashLogger( e );
             }
+        }
+
+        private static void LoadApplicationResources ( App app )
+        {
+            var resourceLocator = new Uri( "/Eddi;component/app.xaml", UriKind.Relative );
+            Application.LoadComponent( app, resourceLocator );
         }
 
         internal static bool RefreshInstallLocator (
