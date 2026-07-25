@@ -45,6 +45,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Limpet check` revised to reference invariant controller name.  
       * `Module purchased` updated to utilize new field `buymercprice`.
       * `Module purchased to storage` updated to utilize new field `buymercprice`.
+      * `Nav beacon scan` updated to set revised context variables.
       * `Respawned` updated to move deployed vessel state tracking into EDDI back end. 
       * `Ship targeted` updated to ignore targeting the commander's own ship.
       * `SRV docked` removed.
