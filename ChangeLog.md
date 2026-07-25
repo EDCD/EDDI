@@ -38,6 +38,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * Add support for Azure and AWS Speech Services.
   * Speech Responder
     * Scripts
+      * `Asteroid prospected` updated to add platinum as a default spoken mineral.  
       * `Crew check` updated to distinguish the Nomad from remote piloted fighters launched via the Vessel Hangar.  
       * `Destination arrived` updated to enhance greetings from the commander's fleet carrier or from stronghold carriers. 
       * `Embarked` updated to use the `deployedVessels` field to warn the commander if other vessels are still deployed.  
