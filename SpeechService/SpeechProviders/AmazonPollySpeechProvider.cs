@@ -37,7 +37,7 @@ namespace EddiSpeechService.SpeechProviders
         private const string AccountUrl = "https://console.aws.amazon.com/";
         private const int Mp3SampleRate = 24000;
         private const short PcmBitsPerSample = 16;
-        private const double DefaultTempoStretchFactor = 2.2;
+        private const double DefaultTempoStretchFactor = 2; // Lower is faster
         private static readonly IReadOnlyList<string> Engines = [ StandardEngine, NeuralEngine ];
         private readonly Func<WebSpeechProvider, IAmazonPollyClient> createClient;
         private readonly Func<Stream, Stream> decodeAudioToWave;
