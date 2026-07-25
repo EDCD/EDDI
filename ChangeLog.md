@@ -46,6 +46,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Module purchased` updated to utilize new field `buymercprice`.
       * `Module purchased to storage` updated to utilize new field `buymercprice`.
       * `Respawned` updated to move deployed vessel state tracking into EDDI back end. 
+      * `Ship targeted` updated to ignore targeting the commander's own ship.
       * `SRV docked` removed.
       * `SRV launched` removed.
       * `Star habitable zone` updated to use revised context variables.
