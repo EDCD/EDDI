@@ -48,6 +48,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Respawned` updated to move deployed vessel state tracking into EDDI back end. 
       * `SRV docked` removed.
       * `SRV launched` removed.
+      * `Star scanned` updated to set revised context variables.
       * `Vehicle destroyed` removed.
       * `Vessel destroyed` added.
       * `Vessel docked` added.
