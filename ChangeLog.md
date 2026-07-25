@@ -42,6 +42,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Embarked` updated to use the `deployedVessels` field to warn the commander if other vessels are still deployed.  
       * `Fighter docked` removed.
       * `Fighter launched` removed.
+      * `Jumped` revised to properly invoke RouteDetails() when guidance is enabled.
       * `Limpet check` revised to reference invariant controller name and identify the type of limpet controllers currently equipped. 
       * `Message received` updated for better rendering of pirate cargo warnings.
       * `Module purchased` updated to utilize new field `buymercprice`.
