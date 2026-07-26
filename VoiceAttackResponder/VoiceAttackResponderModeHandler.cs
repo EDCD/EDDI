@@ -26,6 +26,7 @@ namespace EddiVoiceAttackResponder
             if ( voiceAttackVersion != null )
             {
                 VoiceAttackVersion = voiceAttackVersion;
+                EDDI.Instance.VoiceAttackVersion = voiceAttackVersion;
                 Logging.Info( $"Set VoiceAttackResponderModeHandler.VoiceAttackVersion = {voiceAttackVersion}" );
             }
 

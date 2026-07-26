@@ -1041,6 +1041,39 @@ namespace EddiCrimeMonitor
 
         private void _handleRespawnedEvent(RespawnedEvent @event)
         {
+            switch (@event.trigger)
+            {
+                case "rebuy": // Repurchase a destroyed ship. All fines and bounties must be paid. Claims are lost.
+                {
+                    RemoveCriminalRecords();
+                    RemoveClaimsRecords();
+                    break;
+                }
+                case "recover":  // Recover from an on-foot critical injury. All fines and bounties for the local authority faction (only) must be paid. Claims are lost.
+                {
+                    var removed = RemoveCriminalRecords(crimeAuthorityFaction);
+                    if (removed == 0)
+                    {
+                        _ = RemoveCriminalRecordsByAmount(@event.price);
+                    }
+                    RemoveClaimsRecords();
+                    break;
+                }
+                case "rejoin": // Rejoin your ship. Fines and bounties remain unpaid. Claims are lost.
+                {
+                    RemoveClaimsRecords();
+                    break;
+                }
+                case "handin": // Hand-in to authorities. Fines and bounties for the station authority faction (only) must be paid.
+                               // Claims are preserved. Fines and bounties pertaining to other factions are preserved.
+                {
+                    RemoveCriminalRecords(EDDI.Instance.GameState.CurrentStation?.Faction?.name);
+                    break;
+                }
+            }
+
+            return;
+
             long RemoveCriminalRecords(string faction = null)
             {
                 long removed = 0;
@@ -1120,37 +1153,6 @@ namespace EddiCrimeMonitor
                         record.factionReports = record.factionReports.Except(claimReports).ToList();
                         RemoveRecordIfEmpty(record);
                     }
-                }
-            }
-
-            switch (@event.trigger)
-            {
-                case "rebuy": // Repurchase a destroyed ship. All fines and bounties must be paid. Claims are lost.
-                {
-                    RemoveCriminalRecords();
-                    RemoveClaimsRecords();
-                    break;
-                }
-                case "recover":  // Recover from an on-foot critical injury. All fines and bounties for the local authority faction (only) must be paid. Claims are lost.
-                {
-                    var removed = RemoveCriminalRecords(crimeAuthorityFaction);
-                    if (removed == 0)
-                    {
-                        RemoveCriminalRecordsByAmount(@event.price);
-                    }
-                    RemoveClaimsRecords();
-                    break;
-                }
-                case "rejoin": // Rejoin your ship. Fines and bounties remain unpaid. Claims are lost.
-                {
-                    RemoveClaimsRecords();
-                    break;
-                }
-                case "handin": // Hand-in to authorities. Fines and bounties for the station authority faction (only) must be paid.
-                               // Claims are preserved. Fines and bounties pertaining to other factions are preserved.
-                {
-                    RemoveCriminalRecords(EDDI.Instance.GameState.CurrentStation?.Faction?.name);
-                    break;
                 }
             }
         }

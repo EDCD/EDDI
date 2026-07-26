@@ -871,7 +871,7 @@ namespace Tests
                 BindingFlags.NonPublic | BindingFlags.Static);
 
             Assert.IsNotNull(method);
-            var ssml = (string)method.Invoke(null, new object[] { preparedSpeech, voice, configuration });
+            var ssml = (string)method.Invoke(null, [ preparedSpeech, voice, configuration ] ) ?? string.Empty;
 
             Assert.IsFalse(ssml.Contains("<lexicon", StringComparison.InvariantCultureIgnoreCase));
             Assert.IsTrue(ssml.Contains("<voice name=\"en-GB-SoniaNeural\">", StringComparison.InvariantCultureIgnoreCase));

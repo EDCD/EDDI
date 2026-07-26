@@ -38,6 +38,9 @@ namespace EddiCore
         // True if the EDDI UI is waiting on a modal dialog window. Accessed by VoiceAttack plugin.
         public bool IsModalDialogOpen { get; set; }
 
+        // VoiceAttack host application version, if supplied by process args or IPC handshake.
+        public System.Version VoiceAttackVersion { get; set; }
+
         private static bool started;
         public bool running;
 

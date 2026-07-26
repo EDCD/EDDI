@@ -19,7 +19,7 @@ using Utilities;
 
 namespace EddiSpeechService.SpeechProviders
 {
-    internal sealed class AzureSpeechProvider : IWebSpeechProvider
+    internal sealed class AzureSpeechProvider : IWebSpeechProvider, IDisposable
     {
         internal const string ProviderTypeId = "AzureSpeechServices";
         private const string ProviderDisplayName = "Azure Speech Services";

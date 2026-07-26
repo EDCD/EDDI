@@ -142,7 +142,8 @@ namespace EddiVoiceAttackResponder
                 }
 
                 await VoiceAttackResponderModeHandler
-                    .SetResponderModeAsync( true, VoiceAttackResponderModeHandler.VoiceAttackVersion )
+                    .SetResponderModeAsync( true,
+                        VoiceAttackResponderModeHandler.VoiceAttackVersion ?? EDDI.Instance.VoiceAttackVersion )
                     .ConfigureAwait( false );
 
                 RuntimeWriteToLog( "VoiceAttack responder mode initialized.", "green" );

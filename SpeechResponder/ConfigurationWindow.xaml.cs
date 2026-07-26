@@ -231,7 +231,10 @@ namespace EddiSpeechResponder
             {
                 Logging.Warn( ex.Message, ex );
             }
-            EDDI.Instance.IsModalDialogOpen = false;
+            finally
+            {
+                EDDI.Instance.IsModalDialogOpen = false;
+            }
             if (editScriptWindow.DialogResult ?? false)
             {
                 // Non-responder scripts can be renamed, handle that here.
@@ -319,29 +322,35 @@ namespace EddiSpeechResponder
             if (SpeechResponder?.CurrentPersonality?.Scripts is null) { return; }
 
             EDDI.Instance.IsModalDialogOpen = true;
-            var script = getScriptFromContext(sender);
-            var messageBoxText = string.Format(Properties.SpeechResponder.delete_script_message, script.Name);
-            var caption = Properties.SpeechResponder.delete_script_caption;
-            var result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
-            switch (result)
+            try
             {
-                case MessageBoxResult.Yes:
-                    // Remove the script from the list
-                    SpeechResponder.CurrentPersonality.Scripts.Remove( script.Name );
+                var script = getScriptFromContext(sender);
+                var messageBoxText = string.Format(Properties.SpeechResponder.delete_script_message, script.Name);
+                var caption = Properties.SpeechResponder.delete_script_caption;
+                var result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                switch (result)
+                {
+                    case MessageBoxResult.Yes:
+                        // Remove the script from the list
+                        SpeechResponder.CurrentPersonality.Scripts.Remove( script.Name );
 
-                    // Remove any references to the removed script in the `includes` scring of other scripts
-                    SpeechResponder.CurrentPersonality.Scripts.AsParallel().ForAll( kv =>
-                        kv.Value.includes = kv.Value.includes is null
-                            ? string.Empty
-                            : string.Join( "; ",
-                                kv.Value.includes.Split( ';' ).Select( s => s.Trim() )
-                                    .Except( [ script.Name ] ) ) );
+                        // Remove any references to the removed script in the `includes` scring of other scripts
+                        SpeechResponder.CurrentPersonality.Scripts.AsParallel().ForAll( kv =>
+                            kv.Value.includes = kv.Value.includes is null
+                                ? string.Empty
+                                : string.Join( "; ",
+                                    kv.Value.includes.Split( ';' ).Select( s => s.Trim() )
+                                        .Except( [ script.Name ] ) ) );
 
-                    SpeechResponder.SavePersonality();
-                    scriptsView.Refresh();
-                    break;
+                        SpeechResponder.SavePersonality();
+                        scriptsView.Refresh();
+                        break;
+                }
             }
-            EDDI.Instance.IsModalDialogOpen = false;
+            finally
+            {
+                EDDI.Instance.IsModalDialogOpen = false;
+            }
         }
         private void resetScript(object sender, RoutedEventArgs e)
         {
@@ -387,7 +396,10 @@ namespace EddiSpeechResponder
             {
                 Logging.Warn( ex.Message, ex );
             }
-            EDDI.Instance.IsModalDialogOpen = false;
+            finally
+            {
+                EDDI.Instance.IsModalDialogOpen = false;
+            }
         }
 
         private void copyPersonalityClicked(object sender, RoutedEventArgs e)
@@ -409,23 +421,32 @@ namespace EddiSpeechResponder
             {
                 Logging.Warn( ex.Message, ex );
             }
-            EDDI.Instance.IsModalDialogOpen = false;
+            finally
+            {
+                EDDI.Instance.IsModalDialogOpen = false;
+            }
         }
 
         private void deletePersonalityClicked(object sender, RoutedEventArgs e)
         {
             if (SpeechResponder?.Personalities is null) { return; }
             EDDI.Instance.IsModalDialogOpen = true;
-            var messageBoxText = string.Format(Properties.SpeechResponder.delete_personality_message, SpeechResponder.CurrentPersonality.Name);
-            var caption = Properties.SpeechResponder.delete_personality_caption;
-            var result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
-            switch (result)
+            try
             {
-                case MessageBoxResult.Yes:
-                    SpeechResponder.RemoveCurrentPersonality();
-                    break;
+                var messageBoxText = string.Format(Properties.SpeechResponder.delete_personality_message, SpeechResponder.CurrentPersonality.Name);
+                var caption = Properties.SpeechResponder.delete_personality_caption;
+                var result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                switch (result)
+                {
+                    case MessageBoxResult.Yes:
+                        SpeechResponder.RemoveCurrentPersonality();
+                        break;
+                }
             }
-            EDDI.Instance.IsModalDialogOpen = false;
+            finally
+            {
+                EDDI.Instance.IsModalDialogOpen = false;
+            }
         }
 
         private void configureHotkeysButtonClicked ( object sender, RoutedEventArgs e )
@@ -464,7 +485,10 @@ namespace EddiSpeechResponder
             {
                 Logging.Warn( ex.Message, ex );
             }
-            EDDI.Instance.IsModalDialogOpen = false;
+            finally
+            {
+                EDDI.Instance.IsModalDialogOpen = false;
+            }
         }
 
         private void subtitlesEnabled(object sender, RoutedEventArgs e)

@@ -156,6 +156,7 @@ namespace Eddi
             }
 
             EDDI.Instance.FromVA = fromVA;
+            EDDI.Instance.VoiceAttackVersion = vaVersion;
 
             // Wait for preload to complete before MainWindow creation
             var preloadTasks = PreloadCriticalServicesAsync();

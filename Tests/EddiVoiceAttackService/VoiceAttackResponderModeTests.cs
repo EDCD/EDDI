@@ -47,6 +47,19 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod, DoNotParallelize]
+        public async Task SetResponderModeAsync_StoresVoiceAttackVersionInSharedCoreState ()
+        {
+            var version = new Version( 2, 1, 0 );
+
+            await VoiceAttackResponderModeHandler
+                .SetResponderModeAsync( false, version, TestContext.CancellationToken )
+                .ConfigureAwait( false );
+
+            Assert.AreEqual( version, VoiceAttackResponderModeHandler.VoiceAttackVersion );
+            Assert.AreEqual( version, EddiCore.EDDI.Instance.VoiceAttackVersion );
+        }
+
+        [TestMethod, DoNotParallelize]
         public async Task ReplayStandardValuesAsync_ReplaysVariablesSetsStatusAndQueuesInitializedEvent ()
         {
             VoiceAttackResponderMode.InitializeStandardValues = () => _calls.Add( "initializeStandardValues" );
@@ -114,5 +127,7 @@ namespace Tests.EddiVoiceAttackService
 
             Assert.HasCount( 0, _calls );
         }
+
+        public TestContext TestContext { get; set; }
     }
 }
