@@ -1,6 +1,5 @@
 #nullable enable
 
-using Eddi;
 using EddiCore;
 using System;
 using System.Threading;
@@ -13,6 +12,8 @@ namespace EddiVoiceAttackResponder
     {
         private const string VoiceAttackResponderName = "VoiceAttack responder";
 
+        public static System.Version? VoiceAttackVersion { get; private set; }
+
         /// <summary>
         /// Enable or disable VoiceAttack responder mode.
         /// </summary>
@@ -24,8 +25,8 @@ namespace EddiVoiceAttackResponder
             EDDI.Instance.FromVA = enable;
             if ( voiceAttackVersion != null )
             {
-                App.VoiceAttackVersion = voiceAttackVersion;
-                Logging.Info( $"Set App.VoiceAttackVersion = {voiceAttackVersion}" );
+                VoiceAttackVersion = voiceAttackVersion;
+                Logging.Info( $"Set VoiceAttackResponderModeHandler.VoiceAttackVersion = {voiceAttackVersion}" );
             }
 
             Logging.Info( $"Set EDDI.FromVA = {enable}" );

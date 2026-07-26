@@ -1,4 +1,3 @@
-using Eddi;
 using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiCore;
@@ -31,7 +30,7 @@ namespace EddiVoiceAttackResponder
         {
             // This thread is invoked from VoiceAttack and may by invoked with the system default culture
             // so make sure that we're using our assigned culture.
-            App.ApplyAnyOverrideCulture();
+            ApplicationCulture.ApplyAnyOverrideCulture();
 
             Logging.Debug( $"Invoked with context '{context}'" );
 
@@ -144,7 +143,7 @@ namespace EddiVoiceAttackResponder
                 }
 
                 await VoiceAttackResponderModeHandler
-                    .SetResponderModeAsync( true, App.VoiceAttackVersion )
+                    .SetResponderModeAsync( true, VoiceAttackResponderModeHandler.VoiceAttackVersion )
                     .ConfigureAwait( false );
 
                 RuntimeWriteToLog( "VoiceAttack responder mode initialized.", "green" );
