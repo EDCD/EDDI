@@ -26,21 +26,22 @@ namespace EddiCore.EventHandling
         }
 
         private IEddiGameState GameState => _context.GameState;
+        private IEddiGameStateMutator GameStateMutator => _context.GameStateMutator;
         private DataProviderService DataProvider => _context.DataProvider;
-        private StarSystem CurrentStarSystem { get => _context.CurrentStarSystem; set => _context.CurrentStarSystem = value; }
-        private StarSystem LastStarSystem { get => _context.LastStarSystem; set => _context.LastStarSystem = value; }
-        private StarSystem NextStarSystem { get => _context.NextStarSystem; set => _context.NextStarSystem = value; }
-        private StarSystem DestinationStarSystem { get => _context.DestinationStarSystem; set => _context.DestinationStarSystem = value; }
-        private Station CurrentStation { get => _context.CurrentStation; set => _context.CurrentStation = value; }
-        private Body CurrentStellarBody { get => _context.CurrentStellarBody; set => _context.CurrentStellarBody = value; }
-        private FleetCarrier FleetCarrier { get => _context.FleetCarrier; set => _context.FleetCarrier = value; }
-        private FleetCarrier SquadronCarrier { get => _context.SquadronCarrier; set => _context.SquadronCarrier = value; }
-        private string Environment { get => _context.Environment; set => _context.Environment = value; }
-        private string Vehicle { get => _context.Vehicle; set => _context.Vehicle = value; }
-        private bool inTelepresence { get => _context.inTelepresence; set => _context.inTelepresence = value; }
-        private bool inHorizons { get => _context.inHorizons; set => _context.inHorizons = value; }
-        private bool inOdyssey { get => _context.inOdyssey; set => _context.inOdyssey = value; }
-        private bool gameIsBeta { get => _context.gameIsBeta; set => _context.gameIsBeta = value; }
+        private StarSystem CurrentStarSystem { get => GameState.CurrentStarSystem; set => GameStateMutator.CurrentStarSystem = value; }
+        private StarSystem LastStarSystem { get => GameState.LastStarSystem; set => GameStateMutator.LastStarSystem = value; }
+        private StarSystem NextStarSystem { get => GameState.NextStarSystem; set => GameStateMutator.NextStarSystem = value; }
+        private StarSystem DestinationStarSystem { get => GameState.DestinationStarSystem; set => GameStateMutator.DestinationStarSystem = value; }
+        private Station CurrentStation { get => GameState.CurrentStation; set => GameStateMutator.CurrentStation = value; }
+        private Body CurrentStellarBody { get => GameState.CurrentStellarBody; set => GameStateMutator.CurrentStellarBody = value; }
+        private FleetCarrier FleetCarrier { get => GameState.FleetCarrier; set => GameStateMutator.FleetCarrier = value; }
+        private FleetCarrier SquadronCarrier { get => GameState.SquadronCarrier; set => GameStateMutator.SquadronCarrier = value; }
+        private string Environment { get => GameState.Environment; set => GameStateMutator.Environment = value; }
+        private string Vehicle { get => GameState.Vehicle; set => GameStateMutator.Vehicle = value; }
+        private bool inTelepresence { get => GameState.inTelepresence; set => GameStateMutator.inTelepresence = value; }
+        private bool inHorizons { get => GameState.inHorizons; set => GameStateMutator.inHorizons = value; }
+        private bool inOdyssey { get => GameState.inOdyssey; set => GameStateMutator.inOdyssey = value; }
+        private bool gameIsBeta { get => GameState.gameIsBeta; set => GameStateMutator.gameIsBeta = value; }
         private System.Collections.Concurrent.ConcurrentDictionary<string, Event> lastEventOfType => _context.EventPipeline.LastEventOfType;
 
         private IEddiMonitor ObtainMonitor ( string invariantName, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase )
@@ -1233,7 +1234,7 @@ namespace EddiCore.EventHandling
                 Logging.Info("Beta game version detected");
             }
 
-            _context.SetGameVersionDetails( @event.version, @event.build );
+            GameStateMutator.SetGameVersionDetails( @event.version, @event.build );
 
             return true;
         }
@@ -1396,7 +1397,7 @@ namespace EddiCore.EventHandling
             // Identify active game version
             inHorizons = theEvent.horizons;
             inOdyssey = theEvent.odyssey;
-            _context.SetGameVersionDetails( theEvent.gameversion, theEvent.gamebuild );
+            GameStateMutator.SetGameVersionDetails( theEvent.gameversion, theEvent.gamebuild );
 
             return true;
         }

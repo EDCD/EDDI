@@ -489,7 +489,7 @@ namespace EddiShipMonitor
 
                     // Update the local and global variables
                     ReplaceOrAddShip( ship );
-                    EDDI.Instance.CurrentShip = ship;
+                    EDDI.Instance.GameStateMutator.CurrentShip = ship;
                     SetCurrentShip( ship.LocalId, ship.EDName );
                     if (!@event.fromLoad) { writeShips(); }
                 }
@@ -1575,7 +1575,7 @@ namespace EddiShipMonitor
         public Ship GetCurrentShip()
         {
             var currentShip = GetShip(currentShipId);
-            EDDI.Instance.CurrentShip = currentShip ?? EDDI.Instance.GameState.CurrentShip;
+            EDDI.Instance.GameStateMutator.CurrentShip = currentShip ?? EDDI.Instance.GameState.CurrentShip;
             return currentShip;
         }
 
@@ -1629,7 +1629,7 @@ namespace EddiShipMonitor
                     ship.StoredLocation = null;
                     ship.distance = null;
                 }
-                EDDI.Instance.CurrentShip = ship;
+                EDDI.Instance.GameStateMutator.CurrentShip = ship;
             }
         }
 

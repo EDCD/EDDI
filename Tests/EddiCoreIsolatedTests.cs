@@ -104,6 +104,7 @@ namespace Tests
             internal EddiGameState GameStateOwner { get; } = new();
             private readonly EddiGameStateService _gameStateService;
             public IEddiGameState GameState => GameStateOwner;
+            public IEddiGameStateMutator GameStateMutator => _gameStateService;
             public DataProviderService DataProvider { get; init; }
             public EddiEventPipeline EventPipeline { get; }
             public ConcurrentDictionary<string, Event> lastEventOfType => EventPipeline.LastEventOfType;
@@ -114,21 +115,6 @@ namespace Tests
                 _gameStateService = CreateGameStateService( GameStateOwner );
                 EventPipeline = CreatePipeline( getGameVersion: () => GameStateOwner.GameVersion );
             }
-
-            public StarSystem CurrentStarSystem { get => _gameStateService.CurrentStarSystem; set => _gameStateService.CurrentStarSystem = value; }
-            public StarSystem LastStarSystem { get => _gameStateService.LastStarSystem; set => _gameStateService.LastStarSystem = value; }
-            public StarSystem NextStarSystem { get => _gameStateService.NextStarSystem; set => _gameStateService.NextStarSystem = value; }
-            public StarSystem DestinationStarSystem { get => _gameStateService.DestinationStarSystem; set => _gameStateService.DestinationStarSystem = value; }
-            public Station CurrentStation { get => _gameStateService.CurrentStation; set => _gameStateService.CurrentStation = value; }
-            public Body CurrentStellarBody { get => _gameStateService.CurrentStellarBody; set => _gameStateService.CurrentStellarBody = value; }
-            public FleetCarrier FleetCarrier { get => _gameStateService.FleetCarrier; set => _gameStateService.FleetCarrier = value; }
-            public FleetCarrier SquadronCarrier { get => _gameStateService.SquadronCarrier; set => _gameStateService.SquadronCarrier = value; }
-            public string Environment { get => _gameStateService.Environment; set => _gameStateService.Environment = value; }
-            public string Vehicle { get => _gameStateService.Vehicle; set => _gameStateService.Vehicle = value; }
-            public bool inTelepresence { get => _gameStateService.inTelepresence; set => _gameStateService.inTelepresence = value; }
-            public bool inHorizons { get => _gameStateService.inHorizons; set => _gameStateService.inHorizons = value; }
-            public bool inOdyssey { get => _gameStateService.inOdyssey; set => _gameStateService.inOdyssey = value; }
-            public bool gameIsBeta { get => _gameStateService.gameIsBeta; set => _gameStateService.gameIsBeta = value; }
 
             public IEddiMonitor ObtainMonitor ( string invariantName, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase )
             {
@@ -143,12 +129,9 @@ namespace Tests
 
             public Task updateDestinationSystemAsync ( ulong? destinationSystemAddress, string destinationSystem = null )
             {
-                DestinationStarSystem = null;
+                GameStateMutator.DestinationStarSystem = null;
                 return Task.CompletedTask;
             }
-
-            public void SetGameVersionDetails ( string version, string build ) =>
-                _gameStateService.SetGameVersionDetails( version, build );
         }
 
         [TestMethod]

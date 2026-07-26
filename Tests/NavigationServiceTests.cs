@@ -78,8 +78,8 @@ namespace Tests
         {
             // Setup
             var sol = new StarSystem { systemname = "Sol", systemAddress = 10477373803, x = 0.0M, y = 0.0M, z = 0.0M };
-            EDDI.Instance.CurrentStarSystem = sol;
-            EDDI.Instance.CurrentShip = ShipDefinitions.FromEDModel( "Anaconda" );
+            EDDI.Instance.GameStateMutator.CurrentStarSystem = sol;
+            EDDI.Instance.GameStateMutator.CurrentShip = ShipDefinitions.FromEDModel( "Anaconda" );
 
             var result = await navigationService.NavQueryAsync( query, stringArg0, stringArg1, Convert.ToDecimal( numericArg ), prioritizeOrbitalStations ).ConfigureAwait(false);
             Assert.IsNotNull(result);

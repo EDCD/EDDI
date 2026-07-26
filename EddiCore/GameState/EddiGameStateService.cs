@@ -1,11 +1,10 @@
 using EddiDataDefinitions;
 using System;
-using System.Text.RegularExpressions;
 using Utilities;
 
 namespace EddiCore.GameState
 {
-    internal sealed class EddiGameStateService
+    internal sealed class EddiGameStateService : IEddiGameStateMutator
     {
         private readonly EddiGameState _gameState;
         private readonly Func<(decimal? x, decimal? y, decimal? z)> _getHomeSystemCoordinates;
@@ -16,7 +15,7 @@ namespace EddiCore.GameState
         private string _gameVersionRaw;
         private string _gameBuild;
 
-        internal EddiGameStateService (
+        public EddiGameStateService (
             EddiGameState gameState,
             Func<(decimal? x, decimal? y, decimal? z)> getHomeSystemCoordinates,
             Action<Ship> setCurrentShip,
@@ -32,13 +31,13 @@ namespace EddiCore.GameState
             _minGameVersion = minGameVersion;
         }
 
-        internal bool inTelepresence { get => _gameState.inTelepresence; set => _gameState.inTelepresence = value; }
-        internal bool inHorizons { get => _gameState.inHorizons; set => _gameState.inHorizons = value; }
-        internal bool inOdyssey { get => _gameState.inOdyssey; set => _gameState.inOdyssey = value; }
-        internal bool gameIsBeta { get => _gameState.gameIsBeta; set => _gameState.gameIsBeta = value; }
-        internal System.Version GameVersion { get => _gameState.GameVersion; set => _gameState.GameVersion = value; }
+        public bool inTelepresence { get => _gameState.inTelepresence; set => _gameState.inTelepresence = value; }
+        public bool inHorizons { get => _gameState.inHorizons; set => _gameState.inHorizons = value; }
+        public bool inOdyssey { get => _gameState.inOdyssey; set => _gameState.inOdyssey = value; }
+        public bool gameIsBeta { get => _gameState.gameIsBeta; set => _gameState.gameIsBeta = value; }
+        public System.Version GameVersion { get => _gameState.GameVersion; set => _gameState.GameVersion = value; }
 
-        internal string GameVersionRaw
+        public string GameVersionRaw
         {
             get => _gameVersionRaw;
             set
@@ -49,7 +48,7 @@ namespace EddiCore.GameState
             }
         }
 
-        internal StarSystem DestinationStarSystem
+        public StarSystem DestinationStarSystem
         {
             get => _gameState.DestinationStarSystem;
             set
@@ -59,10 +58,10 @@ namespace EddiCore.GameState
             }
         }
 
-        internal decimal DestinationDistanceLy { get => _gameState.DestinationDistanceLy; set => _gameState.DestinationDistanceLy = value; }
-        internal string Environment { get => _gameState.Environment; set => _gameState.Environment = value; }
+        public decimal DestinationDistanceLy { get => _gameState.DestinationDistanceLy; set => _gameState.DestinationDistanceLy = value; }
+        public string Environment { get => _gameState.Environment; set => _gameState.Environment = value; }
 
-        internal StarSystem CurrentStarSystem
+        public StarSystem CurrentStarSystem
         {
             get => _gameState.CurrentStarSystem;
             set
@@ -73,7 +72,7 @@ namespace EddiCore.GameState
             }
         }
 
-        internal StarSystem LastStarSystem
+        public StarSystem LastStarSystem
         {
             get => _gameState.LastStarSystem;
             set
@@ -83,7 +82,7 @@ namespace EddiCore.GameState
             }
         }
 
-        internal StarSystem NextStarSystem
+        public StarSystem NextStarSystem
         {
             get => _gameState.NextStarSystem;
             set
@@ -93,12 +92,12 @@ namespace EddiCore.GameState
             }
         }
 
-        internal Station CurrentStation { get => _gameState.CurrentStation; set => _gameState.CurrentStation = value; }
-        internal Body CurrentStellarBody { get => _gameState.CurrentStellarBody; set => _gameState.CurrentStellarBody = value; }
-        internal FleetCarrier FleetCarrier { get => _gameState.FleetCarrier; set => _gameState.FleetCarrier = value; }
-        internal FleetCarrier SquadronCarrier { get => _gameState.SquadronCarrier; set => _gameState.SquadronCarrier = value; }
+        public Station CurrentStation { get => _gameState.CurrentStation; set => _gameState.CurrentStation = value; }
+        public Body CurrentStellarBody { get => _gameState.CurrentStellarBody; set => _gameState.CurrentStellarBody = value; }
+        public FleetCarrier FleetCarrier { get => _gameState.FleetCarrier; set => _gameState.FleetCarrier = value; }
+        public FleetCarrier SquadronCarrier { get => _gameState.SquadronCarrier; set => _gameState.SquadronCarrier = value; }
 
-        internal Ship CurrentShip
+        public Ship CurrentShip
         {
             get => _gameState.CurrentShip;
             set
@@ -109,12 +108,12 @@ namespace EddiCore.GameState
             }
         }
 
-        internal string Vehicle { get => _gameState.Vehicle; set => _gameState.Vehicle = value; }
-        internal StarSystem SearchStarSystem { get => _gameState.SearchStarSystem; set => _gameState.SearchStarSystem = value; }
-        internal Station SearchStation { get => _gameState.SearchStation; set => _gameState.SearchStation = value; }
-        internal decimal SearchDistanceLy { get => _gameState.SearchDistanceLy; set => _gameState.SearchDistanceLy = value; }
+        public string Vehicle { get => _gameState.Vehicle; set => _gameState.Vehicle = value; }
+        public StarSystem SearchStarSystem { get => _gameState.SearchStarSystem; set => _gameState.SearchStarSystem = value; }
+        public Station SearchStation { get => _gameState.SearchStation; set => _gameState.SearchStation = value; }
+        public decimal SearchDistanceLy { get => _gameState.SearchDistanceLy; set => _gameState.SearchDistanceLy = value; }
 
-        internal void SetGameVersionDetails ( string version, string build )
+        public void SetGameVersionDetails ( string version, string build )
         {
             _gameBuild = build;
             GameVersionRaw = version;

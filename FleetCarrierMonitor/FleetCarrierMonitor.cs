@@ -31,7 +31,7 @@ namespace EddiFleetCarrierMonitor
             get => EDDI.Instance.GameState.FleetCarrier;
             set
             {
-                EDDI.Instance.FleetCarrier = value;
+                EDDI.Instance.GameStateMutator.FleetCarrier = value;
                 OnPropertyChanged();
             }
         }
@@ -42,6 +42,7 @@ namespace EddiFleetCarrierMonitor
             set
             {
                 _squadronCarrier = value;
+                EDDI.Instance.GameStateMutator.SquadronCarrier = value;
                 OnPropertyChanged();
             }
         }
@@ -505,8 +506,8 @@ namespace EddiFleetCarrierMonitor
 
         private static void handleFileHeaderEvent ()
         {
-            EDDI.Instance.FleetCarrier = ConfigService.Instance.fleetCarrierConfiguration.fleetCarrier;
-            EDDI.Instance.SquadronCarrier = ConfigService.Instance.fleetCarrierConfiguration.squadronCarrier;
+            EDDI.Instance.GameStateMutator.FleetCarrier = ConfigService.Instance.fleetCarrierConfiguration.fleetCarrier;
+            EDDI.Instance.GameStateMutator.SquadronCarrier = ConfigService.Instance.fleetCarrierConfiguration.squadronCarrier;
         }
 
         private void handleLocationEvent ( LocationEvent @event )

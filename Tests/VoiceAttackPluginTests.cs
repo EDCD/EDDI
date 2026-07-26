@@ -877,7 +877,7 @@ namespace Tests
             VoiceAttackVariables.ClearDispatchCache();
             DisableDefaultRuntimeDispatcher();
 
-            EDDI.Instance.CurrentShip = null;
+            EDDI.Instance.GameStateMutator.CurrentShip = null;
 
             ConfigService.Instance.shipMonitorConfiguration.currentshipid = 123;
             ConfigService.Instance.shipMonitorConfiguration.shipyard =

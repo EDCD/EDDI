@@ -96,7 +96,7 @@ namespace EddiScriptResolverService.CustomFunctions
                     gameState.LastStarSystem,
                     gameState.NextStarSystem,
                     gameState.DestinationStarSystem,
-                    EDDI.Instance.SearchStarSystem
+                    gameState.SearchStarSystem
                 }.FirstOrDefault( s => MatchesSystem( s, key, systemAddress ) );
             }
 

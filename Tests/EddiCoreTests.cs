@@ -126,7 +126,7 @@ namespace Tests
         public void EddiFacade_ReRaisesGameStatePropertyChanged ()
         {
             var eddi = EDDI.Instance;
-            var originalVehicle = eddi.Vehicle;
+            var originalVehicle = eddi.GameState.Vehicle;
             var propertyNames = new List<string>();
             eddi.PropertyChanged += handler;
 
@@ -136,12 +136,12 @@ namespace Tests
 
                 gameState.Vehicle = "test vehicle";
 
-                Assert.Contains( nameof(EDDI.Vehicle), propertyNames );
+                Assert.Contains( nameof(EddiGameState.Vehicle), propertyNames );
             }
             finally
             {
                 eddi.PropertyChanged -= handler;
-                eddi.Vehicle = originalVehicle;
+                eddi.GameStateMutator.Vehicle = originalVehicle;
             }
 
             return;
@@ -359,7 +359,7 @@ namespace Tests
             Assert.IsNotNull(@event);
             Assert.IsInstanceOfType(@event, typeof(SystemScanComplete));
 
-            EDDI.Instance.CurrentStarSystem = new StarSystem { systemname = "TestSystem" };
+            EDDI.Instance.GameStateMutator.CurrentStarSystem = new StarSystem { systemname = "TestSystem" };
             Assert.IsFalse(EDDI.Instance.GameState.CurrentStarSystem.systemScanCompleted);
 
             // Test whether the first `SystemScanCompleted` event is accepted and passed to monitors / responders
@@ -373,7 +373,7 @@ namespace Tests
             Assert.IsFalse(eventPassed);
 
             // Switch systems and verify that the `systemScanCompleted` bool returns to it's default state
-            EDDI.Instance.CurrentStarSystem = new StarSystem { systemname = "TestSystem2" };
+            EDDI.Instance.GameStateMutator.CurrentStarSystem = new StarSystem { systemname = "TestSystem2" };
             Assert.IsFalse(EDDI.Instance.GameState.CurrentStarSystem.systemScanCompleted);
         }
 

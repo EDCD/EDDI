@@ -180,8 +180,8 @@ namespace EddiVoiceAttackResponder
                 SetDefinedRuntimeVariable( IpaActiveVariable );
                 SetDefinedRuntimeVariable( IcaoActiveVariable );
                 SetDefinedRuntimeVariable( SearchDistanceLyVariable );
-                setStarSystemValues(EDDI.Instance.SearchStarSystem, "Search system" );
-                setStationValues(EDDI.Instance.SearchStation, "Search station" );
+                setStarSystemValues(EDDI.Instance.GameState.SearchStarSystem, "Search system" );
+                setStationValues(EDDI.Instance.GameState.SearchStation, "Search station" );
             } );
         }
 

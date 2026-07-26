@@ -324,17 +324,17 @@ namespace EddiScriptResolverService
                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
                 }
 
-                if ( EDDI.Instance.SearchStarSystem != null )
+                if ( EDDI.Instance.GameState.SearchStarSystem != null )
                 {
                     dict[ "searchsystem" ] = new Tuple<Type, Value>( typeof(StarSystem),
-                        Value.FromReflection( EDDI.Instance.SearchStarSystem,
+                        Value.FromReflection( EDDI.Instance.GameState.SearchStarSystem,
                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
                 }
 
-                if ( EDDI.Instance.SearchStation != null )
+                if ( EDDI.Instance.GameState.SearchStation != null )
                 {
                     dict[ "searchstation" ] = new Tuple<Type, Value>( typeof(Station),
-                        Value.FromReflection( EDDI.Instance.SearchStation,
+                        Value.FromReflection( EDDI.Instance.GameState.SearchStation,
                             BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
                 }
 

@@ -19,7 +19,7 @@ namespace EddiCore.RuntimeVariables
                 RuntimeVariableCatalog.IcaoActive.WithValue( ConfigService.Instance.speechServiceConfiguration.EnableIcao ),
                 RuntimeVariableCatalog.IpaActive.WithValue( !ConfigService.Instance.speechServiceConfiguration.DisableIpa ),
                 RuntimeVariableCatalog.Odyssey.WithValue( EDDI.Instance.GameState.inOdyssey ),
-                RuntimeVariableCatalog.SearchDistanceLy.WithValue( EDDI.Instance.SearchDistanceLy ),
+                RuntimeVariableCatalog.SearchDistanceLy.WithValue( EDDI.Instance.GameState.SearchDistanceLy ),
                 RuntimeVariableCatalog.VaActive.WithValue( EDDI.Instance.FromVA ),
                 RuntimeVariableCatalog.Vehicle.WithValue( EDDI.Instance.GameState.Vehicle ),
                 RuntimeVariableCatalog.Version.WithValue( Constants.EDDI_VERSION.ShortString, Constants.EDDI_VERSION.ToString() )

@@ -285,7 +285,7 @@ namespace Tests
         {
             EDDI.Instance.DataProvider = CreateTestDataProvider();
             FakeSpanshHttpClient.Expect( "dump/5581611930322", Encoding.UTF8.GetString( Properties.Resources.SpanshStarSystemDumpCalenerro ) );
-            EDDI.Instance.CurrentStarSystem = await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( 5581611930322 ).ConfigureAwait(false);
+            EDDI.Instance.GameStateMutator.CurrentStarSystem = await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( 5581611930322 ).ConfigureAwait(false);
 
             line = "{ \"timestamp\":\"2019-04-24T00:13:35Z\", \"event\":\"ShipTargeted\", \"TargetLocked\":true, \"Ship\":\"federation_corvette\", \"Ship_Localised\":\"Federal Corvette\", \"ScanStage\":3, \"PilotName\":\"$npc_name_decorate:#name=Kurt Pettersen;\", \"PilotName_Localised\":\"Kurt Pettersen\", \"PilotRank\":\"Deadly\", \"ShieldHealth\":100.000000, \"HullHealth\":100.000000, \"Faction\":\"Calennero Crew\", \"LegalStatus\":\"Wanted\", \"Bounty\":295785 }";
             events = JournalMonitor.ParseJournalEntry(line);
@@ -495,7 +495,7 @@ namespace Tests
         public async Task TestBountyAwardStoresAndDisplaysJournalAmount()
         {
             crimeMonitor.readRecord( new CrimeMonitorConfiguration() );
-            EDDI.Instance.CurrentStarSystem = new StarSystem
+            EDDI.Instance.GameStateMutator.CurrentStarSystem = new StarSystem
             {
                 systemname = "Power Territory",
                 systemAddress = 1,
@@ -822,10 +822,10 @@ namespace Tests
         public async Task TestSettlementApproachDoesNotChangeInShipCombatBondEstimate()
         {
             crimeMonitor.readRecord( new CrimeMonitorConfiguration() );
-            var originalVehicle = EDDI.Instance.Vehicle;
+            var originalVehicle = EDDI.Instance.GameState.Vehicle;
             try
             {
-                EDDI.Instance.Vehicle = Constants.VEHICLE_SHIP;
+                EDDI.Instance.GameStateMutator.Vehicle = Constants.VEHICLE_SHIP;
 
                 line = @"{ ""timestamp"":""2026-06-02T06:10:00Z"", ""event"":""ApproachSettlement"", ""Name"":""Baade Prospect"", ""MarketID"":3702110464, ""SystemAddress"":670256236121, ""Latitude"":1.0, ""Longitude"":2.0 }";
                 events = JournalMonitor.ParseJournalEntry( line );
@@ -847,7 +847,7 @@ namespace Tests
             }
             finally
             {
-                EDDI.Instance.Vehicle = originalVehicle;
+                EDDI.Instance.GameStateMutator.Vehicle = originalVehicle;
             }
         }
 

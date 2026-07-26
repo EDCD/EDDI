@@ -84,7 +84,7 @@ namespace EddiNavigationService.QueryResolvers
 
             // Update Voice Attack & Cottle variables
             await EDDI.Instance.updateDestinationSystemAsync ( null ).ConfigureAwait(false);
-            EDDI.Instance.DestinationDistanceLy = 0;
+            EDDI.Instance.GameStateMutator.DestinationDistanceLy = 0;
 
             return new RouteDetailsEvent ( DateTime.UtcNow, nameof(QueryType.cancel), null, null, null, null, navConfig.plottedRouteList, navConfig.plottedRouteList.Waypoints.Count, null );
         }

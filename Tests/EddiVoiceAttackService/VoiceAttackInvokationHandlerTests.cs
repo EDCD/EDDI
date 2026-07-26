@@ -96,7 +96,7 @@ namespace Tests.EddiVoiceAttackService
         [TestMethod]
         public void SpeechFromScript_WhenShipVariableWithNoCurrentShip_PreservesPlaceholder ()
         {
-            EDDI.Instance.CurrentShip = null;
+            EDDI.Instance.GameStateMutator.CurrentShip = null;
 
             var result = VoiceAttackInvokationHandler.SpeechFromScript( "Hello $=" );
 

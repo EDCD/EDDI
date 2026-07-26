@@ -27,6 +27,11 @@ using System.Threading.Tasks;
 using Utilities;
 
 [assembly: InternalsVisibleTo( "Tests" )]
+[assembly: InternalsVisibleTo( "EddiNavigationService" )]
+[assembly: InternalsVisibleTo( "EddiShipMonitor" )]
+[assembly: InternalsVisibleTo( "EddiStatusMonitor" )]
+[assembly: InternalsVisibleTo( "EddiFleetCarrierMonitor" )]
+[assembly: InternalsVisibleTo( "EddiNavigationMonitor" )]
 namespace EddiCore
 {
     /// <summary>
@@ -51,148 +56,7 @@ namespace EddiCore
         private readonly EddiGameStateService _gameStateService;
 
         public IEddiGameState GameState => _gameState;
-
-        internal bool inTelepresence
-        {
-            get => _gameStateService.inTelepresence;
-            set => _gameStateService.inTelepresence = value;
-        }
-
-        internal bool inHorizons 
-        {
-            get => _gameStateService.inHorizons;
-            set => _gameStateService.inHorizons = value;
-        } 
-
-        internal bool inOdyssey
-        {
-            get => _gameStateService.inOdyssey;
-            set => _gameStateService.inOdyssey = value;
-        }
-
-        internal bool gameIsBeta
-        {
-            get => _gameStateService.gameIsBeta;
-            set => _gameStateService.gameIsBeta = value;
-        }
-
-        internal System.Version GameVersion
-        {
-            get => _gameStateService.GameVersion;
-            set => _gameStateService.GameVersion = value;
-        }
-
-        // Destination variables
-        [CanBeNull]
-        internal StarSystem DestinationStarSystem
-        {
-            get => _gameStateService.DestinationStarSystem;
-            set => _gameStateService.DestinationStarSystem = value;
-        }
-
-        public decimal DestinationDistanceLy
-        {
-            get => _gameStateService.DestinationDistanceLy;
-            set => _gameStateService.DestinationDistanceLy = value;
-        }
-
-        // Information obtained from the player journal
-
-        internal string Environment
-        {
-            get => _gameStateService.Environment;
-            set => _gameStateService.Environment = value;
-        }
-
-        [CanBeNull]
-        internal StarSystem CurrentStarSystem
-        {
-            get => _gameStateService.CurrentStarSystem;
-            set => _gameStateService.CurrentStarSystem = value;
-        }
-
-        [CanBeNull]
-        internal StarSystem LastStarSystem
-        {
-            get => _gameStateService.LastStarSystem;
-            set => _gameStateService.LastStarSystem = value;
-        }
-
-        [CanBeNull]
-        internal StarSystem NextStarSystem
-        {
-            get => _gameStateService.NextStarSystem;
-            set => _gameStateService.NextStarSystem = value;
-        }
-
-        /// <summary>
-        /// The currently docked station, if any
-        /// </summary>
-        [CanBeNull]
-        internal Station CurrentStation
-        {
-            get => _gameStateService.CurrentStation;
-            set => _gameStateService.CurrentStation = value;
-        }
-
-        /// <summary>
-        /// The currently nearby star system (within the gravity well), if any
-        /// </summary>
-        [CanBeNull]
-        internal Body CurrentStellarBody
-        {
-            get => _gameStateService.CurrentStellarBody;
-            set => _gameStateService.CurrentStellarBody = value;
-        }
-
-        [CanBeNull]
-        public FleetCarrier FleetCarrier
-        {
-            get => _gameStateService.FleetCarrier;
-            set => _gameStateService.FleetCarrier = value;
-        }
-
-        [CanBeNull]
-        public FleetCarrier SquadronCarrier
-        {
-            get => _gameStateService.SquadronCarrier;
-            set => _gameStateService.SquadronCarrier = value;
-        }
-
-        [CanBeNull]
-        public Ship CurrentShip
-        {
-            get => _gameStateService.CurrentShip;
-            set => _gameStateService.CurrentShip = value;
-        }
-
-        // Current vehicle of player
-        public string Vehicle
-        {
-            get => _gameStateService.Vehicle;
-            set => _gameStateService.Vehicle = value;
-        }
-
-        // Search variables
-        [CanBeNull]
-        public StarSystem SearchStarSystem 
-        { 
-            get => _gameStateService.SearchStarSystem; 
-            set => _gameStateService.SearchStarSystem = value; 
-        }
-
-        [CanBeNull]
-        public Station SearchStation 
-        { 
-            get => _gameStateService.SearchStation; 
-            set => _gameStateService.SearchStation = value; 
-        }
-
-        public decimal SearchDistanceLy 
-        { 
-            get => _gameStateService.SearchDistanceLy; 
-            set => _gameStateService.SearchDistanceLy = value; 
-        }
+        internal IEddiGameStateMutator GameStateMutator => _gameStateService;
 
         #endregion
 
@@ -200,17 +64,7 @@ namespace EddiCore
         internal EddiEventPipeline EventPipeline { get; }
 
         EddiEventPipeline IEddiEventProcessorContext.EventPipeline => EventPipeline;
-        StarSystem IEddiEventProcessorContext.CurrentStarSystem { get => CurrentStarSystem; set => CurrentStarSystem = value; }
-        StarSystem IEddiEventProcessorContext.LastStarSystem { get => LastStarSystem; set => LastStarSystem = value; }
-        StarSystem IEddiEventProcessorContext.NextStarSystem { get => NextStarSystem; set => NextStarSystem = value; }
-        StarSystem IEddiEventProcessorContext.DestinationStarSystem { get => DestinationStarSystem; set => DestinationStarSystem = value; }
-        Station IEddiEventProcessorContext.CurrentStation { get => CurrentStation; set => CurrentStation = value; }
-        Body IEddiEventProcessorContext.CurrentStellarBody { get => CurrentStellarBody; set => CurrentStellarBody = value; }
-        string IEddiEventProcessorContext.Environment { get => Environment; set => Environment = value; }
-        bool IEddiEventProcessorContext.inTelepresence { get => inTelepresence; set => inTelepresence = value; }
-        bool IEddiEventProcessorContext.inHorizons { get => inHorizons; set => inHorizons = value; }
-        bool IEddiEventProcessorContext.inOdyssey { get => inOdyssey; set => inOdyssey = value; }
-        bool IEddiEventProcessorContext.gameIsBeta { get => gameIsBeta; set => gameIsBeta = value; }
+        IEddiGameStateMutator IEddiEventProcessorContext.GameStateMutator => _gameStateService;
 
         Task IEddiEventProcessorContext.conditionallyRefreshStationProfileAsync (
             string expectedSystemName,
@@ -219,19 +73,8 @@ namespace EddiCore
             JObject profileJson ) =>
             conditionallyRefreshStationProfileAsync( expectedSystemName, expectedLastMarketID, forceUpdate, profileJson );
 
-        void IEddiEventProcessorContext.SetGameVersionDetails ( string version, string build ) =>
-            SetGameVersionDetails( version, build );
-
         // EDDI uses APIs which only return data for the "live" galaxy, game version 4.0 or later.
         private readonly System.Version minGameVersion = new(4, 0);
-
-        /// <summary>
-        /// Set this prior to setting the game version so that services requiring both receive correct data.
-        /// </summary>
-        internal void SetGameVersionDetails ( string version, string build )
-        {
-            _gameStateService.SetGameVersionDetails( version, build );
-        }
 
         static EDDI()
         {
@@ -313,7 +156,7 @@ namespace EddiCore
                 () => activeResponders,
                 name => ObtainResponder( name ),
                 () => DataProvider?.IsUnitTesting ?? false,
-                () => GameVersion,
+                () => GameState.GameVersion,
                 minGameVersion,
                 eventHandlerTS.Token );
             running = true;
@@ -326,7 +169,7 @@ namespace EddiCore
                 Logging.Verbose = configuration.VerboseLogging;
 
                 // We always start in normal space
-                Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
+                GameStateMutator.Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
 
                 var essentialAsyncTasks = new List<Task>();
                 if (running)
@@ -895,22 +738,22 @@ namespace EddiCore
 
                     var updatedCurrentStarSystem = false;
 
-                    if (CurrentStarSystem == null && 
-                        profile.docked && profile.currentStarSystem == CurrentStarSystem?.systemname && 
-                        CurrentStarSystem?.stations != null)
+                    if (GameState.CurrentStarSystem == null && 
+                        profile.docked && profile.currentStarSystem == GameState.CurrentStarSystem?.systemname && 
+                        GameState.CurrentStarSystem?.stations != null)
                     {
                         // Only set the current station if it is not present, otherwise we leave it to events
-                        CurrentStation ??= CurrentStarSystem.stations.FirstOrDefault(s => s.marketId == profile.LastStationMarketID)
-                            ?? CurrentStarSystem.stations.FirstOrDefault(s => s.name == profile.LastStationName);
-                        if (CurrentStation != null)
+                        GameStateMutator.CurrentStation ??= GameState.CurrentStarSystem.stations.FirstOrDefault(s => s.marketId == profile.LastStationMarketID)
+                            ?? GameState.CurrentStarSystem.stations.FirstOrDefault(s => s.name == profile.LastStationName);
+                        if (GameState.CurrentStation != null)
                         {
-                            Logging.Debug("Set current station to " + CurrentStation.name);
-                            CurrentStation.updatedat = Dates.fromDateTimeToSeconds(DateTime.UtcNow);
+                            Logging.Debug("Set current station to " + GameState.CurrentStation.name);
+                            GameState.CurrentStation.updatedat = Dates.fromDateTimeToSeconds(DateTime.UtcNow);
                             updatedCurrentStarSystem = true;
                         }
                     }
 
-                    if (refreshStation && CurrentStation != null && Environment == Constants.ENVIRONMENT_DOCKED)
+                    if (refreshStation && GameState.CurrentStation != null && GameState.Environment == Constants.ENVIRONMENT_DOCKED)
                     {
                         // Refresh station data
                         await conditionallyRefreshStationProfileAsync( profile.currentStarSystem, profile.LastStationMarketID ?? 0 ).ConfigureAwait(false);
@@ -919,7 +762,7 @@ namespace EddiCore
                     if (updatedCurrentStarSystem)
                     {
                         Logging.Debug( "Star system information updated from Frontier API; updating local copy" );
-                        await DataProvider.SaveStarSystemAsync(CurrentStarSystem).ConfigureAwait(false);
+                        await DataProvider.SaveStarSystemAsync(GameState.CurrentStarSystem).ConfigureAwait(false);
                     }
 
                     try
@@ -1113,7 +956,7 @@ namespace EddiCore
                 try
                 {
                     // Make sure we know where we are
-                    if (CurrentStarSystem is null || CurrentStarSystem.systemAddress == 0)
+                    if (GameState.CurrentStarSystem is null || GameState.CurrentStarSystem.systemAddress == 0)
                     {
                         Logging.Debug( "Skipping conditional station profile fetch - current location data is incomplete" );
                         return;
@@ -1129,7 +972,7 @@ namespace EddiCore
                         var profileStation = FrontierApiStation.FromJson(result["marketJson"]?.ToObject<JObject>(), result["shipyardJson"]?.ToObject<JObject>());
 
                         // We have the required station information
-                        var station = CurrentStarSystem?.stations.Find(s => s.marketId == profileStation.marketId);
+                        var station = GameState.CurrentStarSystem?.stations.Find(s => s.marketId == profileStation.marketId);
                         if ( station != null )
                         {
                             Logging.Debug( "Current station matches profile information; updating info" );
@@ -1137,7 +980,7 @@ namespace EddiCore
 
                             // Update the current station information in our backend DB
                             Logging.Debug( "Star system information updated from Frontier API server; updating local copy" );
-                            await DataProvider.SaveStarSystemAsync( CurrentStarSystem ).ConfigureAwait(false);
+                            await DataProvider.SaveStarSystemAsync( GameState.CurrentStarSystem ).ConfigureAwait(false);
                         }
                     }
                 }
@@ -1158,17 +1001,17 @@ namespace EddiCore
                 //Ignore null & empty systems
                 if (system != null)
                 {
-                    if (system.systemAddress != DestinationStarSystem?.systemAddress )
+                    if (system.systemAddress != GameState.DestinationStarSystem?.systemAddress )
                     {
                         Logging.Debug("Destination star system is " + system.systemname);
-                        DestinationStarSystem = system;
+                        GameStateMutator.DestinationStarSystem = system;
                     }
                 }
                 else { destinationSystem = null; }
             }
             else
             {
-                DestinationStarSystem = null;
+                GameStateMutator.DestinationStarSystem = null;
             }
             configuration.DestinationSystem = destinationSystem;
             configuration.DestinationSystemAddress = destinationSystemAddress;

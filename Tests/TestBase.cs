@@ -41,7 +41,7 @@ namespace Tests
             CompanionAppService.Instance.unitTesting = true;
 
             // Set ourselves as in a beta game session to stop automatic sending of data to remote systems
-            EDDI.Instance.gameIsBeta = true;
+            EDDI.Instance.GameStateMutator.gameIsBeta = true;
         }
 
         internal static DataProviderService CreateTestDataProvider ()

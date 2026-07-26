@@ -285,34 +285,34 @@ namespace EddiNavigationService
                 //Ignore null & empty systems
                 if (system != null)
                 {
-                    if (system.systemAddress != EDDI.Instance.SearchStarSystem?.systemAddress)
+                    if (system.systemAddress != EDDI.Instance.GameState.SearchStarSystem?.systemAddress)
                     {
                         Logging.Debug("Search star system is " + system.systemname);
-                        EDDI.Instance.SearchStarSystem = system;
+                        EDDI.Instance.GameStateMutator.SearchStarSystem = system;
                     }
                     // Update search system distance
-                    EDDI.Instance.SearchDistanceLy = EDDI.Instance.GameState.CurrentStarSystem?.DistanceFromStarSystem(system) ?? 0;
+                    EDDI.Instance.GameStateMutator.SearchDistanceLy = EDDI.Instance.GameState.CurrentStarSystem?.DistanceFromStarSystem(system) ?? 0;
                 }
             }
             else
             {
-                EDDI.Instance.SearchStarSystem = null;
-                EDDI.Instance.SearchDistanceLy = 0;
+                EDDI.Instance.GameStateMutator.SearchStarSystem = null;
+                EDDI.Instance.GameStateMutator.SearchDistanceLy = 0;
             }
 
             // Update search station data
-            if ( marketID > 0 && EDDI.Instance.SearchStarSystem?.stations != null )
+            if ( marketID > 0 && EDDI.Instance.GameState.SearchStarSystem?.stations != null )
             {
-                var station = EDDI.Instance.SearchStarSystem.stations.FirstOrDefault(s => s.marketId == marketID);
-                if (station != null && station.marketId != EDDI.Instance.SearchStation?.marketId)
+                var station = EDDI.Instance.GameState.SearchStarSystem.stations.FirstOrDefault(s => s.marketId == marketID);
+                if (station != null && station.marketId != EDDI.Instance.GameState.SearchStation?.marketId)
                 {
                     Logging.Debug("Search station is " + station.name);
-                    EDDI.Instance.SearchStation = station;
+                    EDDI.Instance.GameStateMutator.SearchStation = station;
                 }
             }
             else
             {
-                EDDI.Instance.SearchStation = null;
+                EDDI.Instance.GameStateMutator.SearchStation = null;
             }
         }
         public event PropertyChangedEventHandler PropertyChanged;

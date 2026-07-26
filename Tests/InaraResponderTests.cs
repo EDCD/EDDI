@@ -120,7 +120,7 @@ namespace Tests
         public void HandleAsync_WhenInTelepresence_ReturnsCompletedTask()
         {
             // Arrange
-            EDDI.Instance.inTelepresence = true;
+            EDDI.Instance.GameStateMutator.inTelepresence = true;
             var @event = new DiedEvent(DateTime.UtcNow, [ ] );
 
             // Act
@@ -130,14 +130,14 @@ namespace Tests
             Assert.IsTrue(task.IsCompleted && !task.IsFaulted );
 
             // Cleanup
-            EDDI.Instance.inTelepresence = false;
+            EDDI.Instance.GameStateMutator.inTelepresence = false;
         }
 
         [TestMethod]
         public void HandleAsync_WhenGameIsBeta_ReturnsCompletedTask()
         {
             // Arrange
-            EDDI.Instance.gameIsBeta = true;
+            EDDI.Instance.GameStateMutator.gameIsBeta = true;
             var @event = new DiedEvent(DateTime.UtcNow, [ ] );
 
             // Act
@@ -147,15 +147,15 @@ namespace Tests
             Assert.IsTrue(task.IsCompleted && !task.IsFaulted);
 
             // Cleanup
-            EDDI.Instance.gameIsBeta = false;
+            EDDI.Instance.GameStateMutator.gameIsBeta = false;
         }
 
         [TestMethod]
         public void HandleAsync_WhenGameVersionNull_ReturnsCompletedTask()
         {
             // Arrange
-            var currentVersion = EDDI.Instance.GameVersion;
-            EDDI.Instance.GameVersion = null;
+            var currentVersion = EDDI.Instance.GameState.GameVersion;
+            EDDI.Instance.GameStateMutator.GameVersion = null;
             var @event = new DiedEvent(DateTime.UtcNow, [ ] );
 
             // Act
@@ -165,17 +165,17 @@ namespace Tests
             Assert.IsTrue(task.IsCompleted && !task.IsFaulted );
 
             // Cleanup
-            EDDI.Instance.GameVersion = currentVersion;
+            EDDI.Instance.GameStateMutator.GameVersion = currentVersion;
         }
 
         [TestMethod]
         public void HandleAsync_WhenGameVersionBelowMinimum_ReturnsCompletedTask()
         {
             // Arrange
-            var currentVersion = EDDI.Instance.GameVersion;
-            EDDI.Instance.GameVersion = new Version(3, 9);
-            EDDI.Instance.inTelepresence = false;
-            EDDI.Instance.gameIsBeta = false;
+            var currentVersion = EDDI.Instance.GameState.GameVersion;
+            EDDI.Instance.GameStateMutator.GameVersion = new Version(3, 9);
+            EDDI.Instance.GameStateMutator.inTelepresence = false;
+            EDDI.Instance.GameStateMutator.gameIsBeta = false;
             var @event = new DiedEvent(DateTime.UtcNow, [ ] );
 
             // Act
@@ -185,7 +185,7 @@ namespace Tests
             Assert.IsTrue(task.IsCompleted && !task.IsFaulted );
 
             // Cleanup
-            EDDI.Instance.GameVersion = currentVersion;
+            EDDI.Instance.GameStateMutator.GameVersion = currentVersion;
         }
 
         [TestMethod]
@@ -193,9 +193,9 @@ namespace Tests
         {
             // Arrange
             var oldTimestamp = DateTime.UtcNow.AddDays(-31);
-            EDDI.Instance.inTelepresence = false;
-            EDDI.Instance.gameIsBeta = false;
-            EDDI.Instance.GameVersion = new Version(4, 0);
+            EDDI.Instance.GameStateMutator.inTelepresence = false;
+            EDDI.Instance.GameStateMutator.gameIsBeta = false;
+            EDDI.Instance.GameStateMutator.GameVersion = new Version(4, 0);
             var @event = new DiedEvent(oldTimestamp, [ ] );
 
             // Act
@@ -373,9 +373,9 @@ namespace Tests
                 new("Killer1", "Adder", CombatRating.Competent)
             };
             var @event = new DiedEvent(DateTime.UtcNow, killers);
-            EDDI.Instance.inTelepresence = false;
-            EDDI.Instance.gameIsBeta = false;
-            EDDI.Instance.GameVersion = new Version(4, 0);
+            EDDI.Instance.GameStateMutator.inTelepresence = false;
+            EDDI.Instance.GameStateMutator.gameIsBeta = false;
+            EDDI.Instance.GameStateMutator.GameVersion = new Version(4, 0);
 
             // Act
             var task = responder.HandleAsync(@event);
@@ -395,9 +395,9 @@ namespace Tests
                 new() { name = "Commodity2", count = 20 }
             };
             var @event = new CargoEvent(DateTime.UtcNow, true, "Ship", inventory, 30 );
-            EDDI.Instance.inTelepresence = false;
-            EDDI.Instance.gameIsBeta = false;
-            EDDI.Instance.GameVersion = new Version(4, 0);
+            EDDI.Instance.GameStateMutator.inTelepresence = false;
+            EDDI.Instance.GameStateMutator.gameIsBeta = false;
+            EDDI.Instance.GameStateMutator.GameVersion = new Version(4, 0);
 
             // Act
             var task = responder.HandleAsync(@event);
