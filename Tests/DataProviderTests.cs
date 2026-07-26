@@ -490,6 +490,22 @@ namespace Tests
             Assert.IsNotNull( body2 );
             Assert.AreEqual( staleSystem.bodies.First( b => b.bodyname == $"{uniqueSystemName} 2" ).scannedDateTime, body2.scannedDateTime );
         }
+
+        [TestMethod, DoNotParallelize]
+        public async Task TestGetOrFetchStarSystemByNameAsyncDoesNotFetchWaypointWhenFetchIfMissingIsFalse()
+        {
+            var dataProvider = CreateTestDataProvider();
+            var missingSystemName = $"No Spansh Lookup {Guid.NewGuid():N}";
+
+            var result = await dataProvider.GetOrFetchStarSystemAsync(
+                    missingSystemName,
+                    fetchIfMissing: false,
+                    excludeStaleResults: true )
+                .ConfigureAwait( false );
+
+            Assert.IsNull( result );
+        }
+
         private static StarSystem CloneStarSystem ( StarSystem starSystem )
         {
             return JsonConvert.DeserializeObject<StarSystem>( JsonConvert.SerializeObject( starSystem ) );

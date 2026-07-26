@@ -582,7 +582,7 @@ namespace EddiCore
                 }
 
                 signalSourceManager.Dispose();
-                DataProvider.cts.Cancel();
+                DataProvider.CancelPendingRequests();
                 Utilities.TelemetryService.Telemetry.Stop();
                 eventHandlerTS.Cancel();
                 foreach ( var responder in responders )
@@ -851,7 +851,7 @@ namespace EddiCore
                     var exponent = Math.Min(Math.Max(0, consecutiveFailures - 1), 5);
                     var backoffSeconds = Math.Min(30, 1 << exponent);
                     var jitterMs = rng.Next(0, 500);
-                    var delay = DataProvider.unitTesting 
+                    var delay = DataProvider.IsUnitTesting 
                         ? TimeSpan.Zero 
                         : TimeSpan.FromSeconds(backoffSeconds) + TimeSpan.FromMilliseconds(jitterMs);
 
@@ -894,7 +894,7 @@ namespace EddiCore
             // Start (or restart) our event handler thread (as long as we are not unit testing)
             if ( !eventHandlerTS.Token.IsCancellationRequested && 
                  ( eventConsumerThread is null || eventConsumerThread?.Status >= TaskStatus.RanToCompletion ) && 
-                 !DataProvider.unitTesting )
+                 !DataProvider.IsUnitTesting )
             {
                 eventConsumerThread?.Dispose();
                 eventConsumerThread = Task.Run(dequeueEventsAsync, eventHandlerTS.Token);
