@@ -48,103 +48,81 @@ namespace EddiCore
         #region GameState
 
         private readonly EddiGameState _gameState = new();
+        private readonly EddiGameStateService _gameStateService;
 
         public IEddiGameState GameState => _gameState;
 
         internal bool inTelepresence
         {
-            get => _gameState.inTelepresence;
-            set => _gameState.inTelepresence = value;
+            get => _gameStateService.inTelepresence;
+            set => _gameStateService.inTelepresence = value;
         }
 
         internal bool inHorizons 
         {
-            get => _gameState.inHorizons;
-            set => _gameState.inHorizons = value;
+            get => _gameStateService.inHorizons;
+            set => _gameStateService.inHorizons = value;
         } 
 
         internal bool inOdyssey
         {
-            get => _gameState.inOdyssey;
-            set => _gameState.inOdyssey = value;
+            get => _gameStateService.inOdyssey;
+            set => _gameStateService.inOdyssey = value;
         }
 
         internal bool gameIsBeta
         {
-            get => _gameState.gameIsBeta;
-            set => _gameState.gameIsBeta = value;
-        }
-
-        private string gameVersion
-        {
-            get => _gameState.GameVersionRaw;
-            set
-            {
-                _gameState.GameVersionRaw = value;
-                SetGameVersion(value);
-            }
+            get => _gameStateService.gameIsBeta;
+            set => _gameStateService.gameIsBeta = value;
         }
 
         internal System.Version GameVersion
         {
-            get => _gameState.GameVersion;
-            set => _gameState.GameVersion = value;
+            get => _gameStateService.GameVersion;
+            set => _gameStateService.GameVersion = value;
         }
 
         // Destination variables
         [CanBeNull]
         internal StarSystem DestinationStarSystem
         {
-            get => _gameState.DestinationStarSystem;
-            set => _gameState.DestinationStarSystem = value;
+            get => _gameStateService.DestinationStarSystem;
+            set => _gameStateService.DestinationStarSystem = value;
         }
 
         public decimal DestinationDistanceLy
         {
-            get => _gameState.DestinationDistanceLy;
-            set => _gameState.DestinationDistanceLy = value;
+            get => _gameStateService.DestinationDistanceLy;
+            set => _gameStateService.DestinationDistanceLy = value;
         }
 
         // Information obtained from the player journal
 
         internal string Environment
         {
-            get => _gameState.Environment;
-            set => _gameState.Environment = value;
+            get => _gameStateService.Environment;
+            set => _gameStateService.Environment = value;
         }
 
         [CanBeNull]
         internal StarSystem CurrentStarSystem
         {
-            get => _gameState.CurrentStarSystem;
-            set
-            {
-                setSystemDistanceFromHome( value );
-                setSystemDistanceFromDestination( value );
-                _gameState.CurrentStarSystem = value;
-            }
+            get => _gameStateService.CurrentStarSystem;
+            set => _gameStateService.CurrentStarSystem = value;
         }
 
         [CanBeNull]
         internal StarSystem LastStarSystem
         {
-            get => _gameState.LastStarSystem;
-            set
-            {
-                setSystemDistanceFromHome( value );
-                _gameState.LastStarSystem = value;
-            }
+            get => _gameStateService.LastStarSystem;
+            set => _gameStateService.LastStarSystem = value;
         }
 
         [CanBeNull]
         internal StarSystem NextStarSystem
         {
-            get => _gameState.NextStarSystem;
-            set
-            {
-                setSystemDistanceFromHome( value );
-                _gameState.NextStarSystem = value;
-            }
+            get => _gameStateService.NextStarSystem;
+            set => _gameStateService.NextStarSystem = value;
         }
 
         /// <summary>
@@ -153,8 +131,8 @@ namespace EddiCore
         [CanBeNull]
         internal Station CurrentStation
         {
-            get => _gameState.CurrentStation;
-            set => _gameState.CurrentStation = value;
+            get => _gameStateService.CurrentStation;
+            set => _gameStateService.CurrentStation = value;
         }
 
         /// <summary>
@@ -163,62 +141,57 @@ namespace EddiCore
         [CanBeNull]
         internal Body CurrentStellarBody
         {
-            get => _gameState.CurrentStellarBody;
-            set => _gameState.CurrentStellarBody = value;
+            get => _gameStateService.CurrentStellarBody;
+            set => _gameStateService.CurrentStellarBody = value;
         }
 
         [CanBeNull]
         public FleetCarrier FleetCarrier
         {
-            get => _gameState.FleetCarrier;
-            set => _gameState.FleetCarrier = value;
+            get => _gameStateService.FleetCarrier;
+            set => _gameStateService.FleetCarrier = value;
         }
 
         [CanBeNull]
         public FleetCarrier SquadronCarrier
         {
-            get => _gameState.SquadronCarrier;
-            set => _gameState.SquadronCarrier = value;
+            get => _gameStateService.SquadronCarrier;
+            set => _gameStateService.SquadronCarrier = value;
         }
 
         [CanBeNull]
         public Ship CurrentShip
         {
-            get => _gameState.CurrentShip;
-            set
-            {
-                if ( Equals( value, _gameState.CurrentShip ) ) { return; }
-                StatusService.Instance.CurrentShip = value;
-                _gameState.CurrentShip = value;
-            }
+            get => _gameStateService.CurrentShip;
+            set => _gameStateService.CurrentShip = value;
         }
 
         // Current vehicle of player
         public string Vehicle
         {
-            get => _gameState.Vehicle;
-            set => _gameState.Vehicle = value;
+            get => _gameStateService.Vehicle;
+            set => _gameStateService.Vehicle = value;
         }
 
         // Search variables
         [CanBeNull]
         public StarSystem SearchStarSystem 
         { 
-            get => _gameState.SearchStarSystem; 
-            set => _gameState.SearchStarSystem = value; 
+            get => _gameStateService.SearchStarSystem; 
+            set => _gameStateService.SearchStarSystem = value; 
         }
 
         [CanBeNull]
         public Station SearchStation 
         { 
-            get => _gameState.SearchStation; 
-            set => _gameState.SearchStation = value; 
+            get => _gameStateService.SearchStation; 
+            set => _gameStateService.SearchStation = value; 
         }
 
         public decimal SearchDistanceLy 
         { 
-            get => _gameState.SearchDistanceLy; 
-            set => _gameState.SearchDistanceLy = value; 
+            get => _gameStateService.SearchDistanceLy; 
+            set => _gameStateService.SearchDistanceLy = value; 
         }
 
         #endregion
@@ -252,49 +225,12 @@ namespace EddiCore
         // EDDI uses APIs which only return data for the "live" galaxy, game version 4.0 or later.
         private readonly System.Version minGameVersion = new(4, 0);
 
-        private void SetGameVersion(string v)
-        {
-            try
-            {
-                if (!string.IsNullOrEmpty(v))
-                {
-                    // The game version is typically a Semantic Version string (e.g. "4.0.0.102")
-                    // but may sometimes include additional information (e.g. "4.0.0.32 (Alpha Phase 4 Hotfix 9)")
-                    // or may be missing a Semantic Version altogether (e.g. "Fleet Carriers Update - Patch 11")
-                    GameVersion = !string.IsNullOrEmpty( v ) &&
-                                  System.Version.TryParse( GeneratedRegex.SemanticVersionRegex().Match( v ).Value,
-                                      out var versionResult )
-                        ? versionResult
-                        : null;
-
-                    // We rely on and use 3rd party APIs which only support data from the live galaxy. 
-                    if ( GameVersion != null && GameVersion < minGameVersion )
-                    {
-                        // Alert the user that we are operating in legacy mode
-                        const string msg = "Legacy game version detected. EDDI shall resume processing events after you return to the live galaxy.";
-                        Logging.Warn(msg);
-                        SpeechService.Instance.SayAsync( null, msg, 0 ).SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
-                    }
-
-                    // We need to report our game version when sending journal data to EDSM
-                    EddiStarMapService.StarMapService.SetGameVersion(GameVersion, gameVersion, gameBuild);
-                }
-            }
-            catch (Exception e)
-            {
-                Logging.Error("Failed to set game version", e);
-            }
-        }
-
         /// <summary>
         /// Set this prior to setting the game version so that services requiring both receive correct data.
         /// </summary>
-        private string gameBuild { get; set; }
-
         internal void SetGameVersionDetails ( string version, string build )
         {
-            gameBuild = build;
-            gameVersion = version;
+            _gameStateService.SetGameVersionDetails( version, build );
         }
 
         static EDDI()
@@ -358,6 +294,17 @@ namespace EddiCore
 
         private EDDI()
         {
+            _gameStateService = new EddiGameStateService(
+                _gameState,
+                () =>
+                {
+                    var commanderConfig = ConfigService.Instance.commanderConfiguration;
+                    return ( commanderConfig.homeSystemX, commanderConfig.homeSystemY, commanderConfig.homeSystemZ );
+                },
+                ship => StatusService.Instance.CurrentShip = ship,
+                msg => SpeechService.Instance.SayAsync( null, msg, 0 ).SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) ),
+                EddiStarMapService.StarMapService.SetGameVersion,
+                minGameVersion );
             _gameState.PropertyChanged += ( _, e ) => OnPropertyChanged( e.PropertyName );
             EventProcessor = new EddiEventProcessor( this );
             EventPipeline = new EddiEventPipeline(
@@ -1012,26 +959,6 @@ namespace EddiCore
                 success = false;
             }
             return success;
-        }
-
-        private static void setSystemDistanceFromHome(StarSystem system)
-        {
-            var commanderConfig = ConfigService.Instance.commanderConfiguration;
-            var homeX = commanderConfig.homeSystemX;
-            var homeY = commanderConfig.homeSystemY;
-            var homeZ = commanderConfig.homeSystemZ;
-
-            if ( system is null || homeX is null || homeY is null || homeZ is null ) { return; }
-
-            system.distancefromhome = system.DistanceFromStarSystem(homeX, homeY, homeZ) ?? 0;
-            Logging.Debug("Distance from home is " + system.distancefromhome);
-        }
-
-        private void setSystemDistanceFromDestination(StarSystem system)
-        {
-            if (DestinationStarSystem is null) { return; }
-            DestinationDistanceLy = system.DistanceFromStarSystem(DestinationStarSystem) ?? 0;
-            Logging.Debug("Distance from destination system is " + DestinationDistanceLy);
         }
 
         /// <summary>

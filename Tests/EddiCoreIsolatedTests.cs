@@ -83,9 +83,26 @@ namespace Tests
                 CancellationToken.None );
         }
 
+        private static EddiGameStateService CreateGameStateService (
+            EddiGameState gameState,
+            (decimal? x, decimal? y, decimal? z)? homeSystemCoordinates = null,
+            Action<Ship> setCurrentShip = null,
+            Action<string> sayLegacyGameVersionWarning = null,
+            Action<System.Version, string, string> setStarMapGameVersion = null )
+        {
+            return new EddiGameStateService(
+                gameState,
+                () => homeSystemCoordinates ?? ( null, null, null ),
+                setCurrentShip,
+                sayLegacyGameVersionWarning,
+                setStarMapGameVersion,
+                new System.Version( 4, 0 ) );
+        }
+
         private sealed class TestEddiEventProcessorContext : IEddiEventProcessorContext
         {
             internal EddiGameState GameStateOwner { get; } = new();
+            private readonly EddiGameStateService _gameStateService;
             public IEddiGameState GameState => GameStateOwner;
             public DataProviderService DataProvider { get; init; }
             public EddiEventPipeline EventPipeline { get; }
@@ -94,23 +111,24 @@ namespace Tests
 
             internal TestEddiEventProcessorContext ()
             {
+                _gameStateService = CreateGameStateService( GameStateOwner );
                 EventPipeline = CreatePipeline( getGameVersion: () => GameStateOwner.GameVersion );
             }
 
-            public StarSystem CurrentStarSystem { get => GameStateOwner.CurrentStarSystem; set => GameStateOwner.CurrentStarSystem = value; }
-            public StarSystem LastStarSystem { get => GameStateOwner.LastStarSystem; set => GameStateOwner.LastStarSystem = value; }
-            public StarSystem NextStarSystem { get => GameStateOwner.NextStarSystem; set => GameStateOwner.NextStarSystem = value; }
-            public StarSystem DestinationStarSystem { get => GameStateOwner.DestinationStarSystem; set => GameStateOwner.DestinationStarSystem = value; }
-            public Station CurrentStation { get => GameStateOwner.CurrentStation; set => GameStateOwner.CurrentStation = value; }
-            public Body CurrentStellarBody { get => GameStateOwner.CurrentStellarBody; set => GameStateOwner.CurrentStellarBody = value; }
-            public FleetCarrier FleetCarrier { get => GameStateOwner.FleetCarrier; set => GameStateOwner.FleetCarrier = value; }
-            public FleetCarrier SquadronCarrier { get => GameStateOwner.SquadronCarrier; set => GameStateOwner.SquadronCarrier = value; }
-            public string Environment { get => GameStateOwner.Environment; set => GameStateOwner.Environment = value; }
-            public string Vehicle { get => GameStateOwner.Vehicle; set => GameStateOwner.Vehicle = value; }
-            public bool inTelepresence { get => GameStateOwner.inTelepresence; set => GameStateOwner.inTelepresence = value; }
-            public bool inHorizons { get => GameStateOwner.inHorizons; set => GameStateOwner.inHorizons = value; }
-            public bool inOdyssey { get => GameStateOwner.inOdyssey; set => GameStateOwner.inOdyssey = value; }
-            public bool gameIsBeta { get => GameStateOwner.gameIsBeta; set => GameStateOwner.gameIsBeta = value; }
+            public StarSystem CurrentStarSystem { get => _gameStateService.CurrentStarSystem; set => _gameStateService.CurrentStarSystem = value; }
+            public StarSystem LastStarSystem { get => _gameStateService.LastStarSystem; set => _gameStateService.LastStarSystem = value; }
+            public StarSystem NextStarSystem { get => _gameStateService.NextStarSystem; set => _gameStateService.NextStarSystem = value; }
+            public StarSystem DestinationStarSystem { get => _gameStateService.DestinationStarSystem; set => _gameStateService.DestinationStarSystem = value; }
+            public Station CurrentStation { get => _gameStateService.CurrentStation; set => _gameStateService.CurrentStation = value; }
+            public Body CurrentStellarBody { get => _gameStateService.CurrentStellarBody; set => _gameStateService.CurrentStellarBody = value; }
+            public FleetCarrier FleetCarrier { get => _gameStateService.FleetCarrier; set => _gameStateService.FleetCarrier = value; }
+            public FleetCarrier SquadronCarrier { get => _gameStateService.SquadronCarrier; set => _gameStateService.SquadronCarrier = value; }
+            public string Environment { get => _gameStateService.Environment; set => _gameStateService.Environment = value; }
+            public string Vehicle { get => _gameStateService.Vehicle; set => _gameStateService.Vehicle = value; }
+            public bool inTelepresence { get => _gameStateService.inTelepresence; set => _gameStateService.inTelepresence = value; }
+            public bool inHorizons { get => _gameStateService.inHorizons; set => _gameStateService.inHorizons = value; }
+            public bool inOdyssey { get => _gameStateService.inOdyssey; set => _gameStateService.inOdyssey = value; }
+            public bool gameIsBeta { get => _gameStateService.gameIsBeta; set => _gameStateService.gameIsBeta = value; }
 
             public IEddiMonitor ObtainMonitor ( string invariantName, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase )
             {
@@ -129,14 +147,8 @@ namespace Tests
                 return Task.CompletedTask;
             }
 
-            public void SetGameVersionDetails ( string version, string build )
-            {
-                GameStateOwner.GameVersionRaw = version;
-                var semanticVersion = System.Text.RegularExpressions.Regex.Match( version ?? string.Empty, @"\d+(\.\d+){1,3}" ).Value;
-                GameStateOwner.GameVersion = System.Version.TryParse( semanticVersion, out var versionResult )
-                    ? versionResult
-                    : null;
-            }
+            public void SetGameVersionDetails ( string version, string build ) =>
+                _gameStateService.SetGameVersionDetails( version, build );
         }
 
         [TestMethod]
@@ -184,6 +196,106 @@ namespace Tests
             ship.value = 42;
 
             Assert.Contains( nameof( EddiGameState.CurrentShip ), propertyNames );
+        }
+
+        [TestMethod]
+        public void EddiGameStateService_SettingCurrentLastNextSystem_AppliesHomeDistance ()
+        {
+            var gameState = new EddiGameState();
+            var gameStateService = CreateGameStateService(
+                gameState,
+                ( 0M, 0M, 0M ) );
+            var currentSystem = new StarSystem { systemname = "Current", x = 3M, y = 4M, z = 0M };
+            var lastSystem = new StarSystem { systemname = "Last", x = 0M, y = 0M, z = 12M };
+            var nextSystem = new StarSystem { systemname = "Next", x = 8M, y = 0M, z = 15M };
+
+            gameStateService.CurrentStarSystem = currentSystem;
+            gameStateService.LastStarSystem = lastSystem;
+            gameStateService.NextStarSystem = nextSystem;
+
+            Assert.AreEqual( 5M, currentSystem.distancefromhome );
+            Assert.AreEqual( 12M, lastSystem.distancefromhome );
+            Assert.AreEqual( 17M, nextSystem.distancefromhome );
+        }
+
+        [TestMethod]
+        public void EddiGameStateService_SettingCurrentSystem_UpdatesDestinationDistance ()
+        {
+            var gameState = new EddiGameState();
+            var gameStateService = CreateGameStateService( gameState );
+            gameStateService.DestinationStarSystem = new StarSystem { systemname = "Destination", x = 0M, y = 0M, z = 0M };
+
+            gameStateService.CurrentStarSystem = new StarSystem { systemname = "Current", x = 0M, y = 3M, z = 4M };
+
+            Assert.AreEqual( 5M, gameState.DestinationDistanceLy );
+        }
+
+        [TestMethod]
+        public void EddiGameStateService_ChangingDestinationSystem_RecalculatesCurrentSystemDestinationDistance ()
+        {
+            var gameState = new EddiGameState();
+            var gameStateService = CreateGameStateService( gameState );
+            gameStateService.CurrentStarSystem = new StarSystem { systemname = "Current", x = 0M, y = 0M, z = 0M };
+
+            gameStateService.DestinationStarSystem = new StarSystem { systemname = "Destination 1", x = 3M, y = 4M, z = 0M };
+            Assert.AreEqual( 5M, gameState.DestinationDistanceLy );
+
+            gameStateService.DestinationStarSystem = new StarSystem { systemname = "Destination 2", x = 0M, y = 0M, z = 12M };
+            Assert.AreEqual( 12M, gameState.DestinationDistanceLy );
+
+            gameStateService.DestinationStarSystem = null;
+            Assert.AreEqual( 0M, gameState.DestinationDistanceLy );
+        }
+
+        [TestMethod]
+        public void EddiGameStateService_SettingCurrentShip_InvokesDelegateOnceAndSkipsDuplicate ()
+        {
+            var gameState = new EddiGameState();
+            var delegateCallCount = 0;
+            Ship delegateShip = null;
+            var gameStateService = CreateGameStateService(
+                gameState,
+                setCurrentShip: ship =>
+                {
+                    delegateCallCount++;
+                    delegateShip = ship;
+                } );
+            var ship = new Ship();
+
+            gameStateService.CurrentShip = ship;
+            gameStateService.CurrentShip = ship;
+
+            Assert.AreEqual( 1, delegateCallCount );
+            Assert.AreSame( ship, delegateShip );
+            Assert.AreSame( ship, gameState.CurrentShip );
+        }
+
+        [TestMethod]
+        public void EddiGameStateService_SetGameVersionDetails_ParsesLegacyVersionAndInvokesDelegates ()
+        {
+            var gameState = new EddiGameState();
+            var warningCount = 0;
+            System.Version reportedVersion = null;
+            string reportedRawVersion = null;
+            string reportedBuild = null;
+            var gameStateService = CreateGameStateService(
+                gameState,
+                sayLegacyGameVersionWarning: _ => warningCount++,
+                setStarMapGameVersion: ( version, rawVersion, build ) =>
+                {
+                    reportedVersion = version;
+                    reportedRawVersion = rawVersion;
+                    reportedBuild = build;
+                } );
+
+            gameStateService.SetGameVersionDetails( "3.8.0.0 Beta", "r123/r0" );
+
+            Assert.AreEqual( "3.8.0.0 Beta", gameState.GameVersionRaw );
+            Assert.AreEqual( new System.Version( 3, 8, 0, 0 ), gameState.GameVersion );
+            Assert.AreEqual( 1, warningCount );
+            Assert.AreEqual( new System.Version( 3, 8, 0, 0 ), reportedVersion );
+            Assert.AreEqual( "3.8.0.0 Beta", reportedRawVersion );
+            Assert.AreEqual( "r123/r0", reportedBuild );
         }
 
         [TestMethod, DoNotParallelize]
