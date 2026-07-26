@@ -16,20 +16,14 @@ namespace EddiSpeechResponder
             public DiffItem.DiffType type;
         }
 
-        internal class DiffHighlighter : IBackgroundRenderer
+        internal class DiffHighlighter ( Brush deletedBrush, Brush insertedBrush ) : IBackgroundRenderer
         {
             internal const string DeletedBrushResourceKey = "DiffDeletedBackgroundBrush";
             internal const string InsertedBrushResourceKey = "DiffInsertedBackgroundBrush";
 
-            private readonly Brush deletedBrush;
-            private readonly Brush insertedBrush;
+            private readonly Brush deletedBrush = deletedBrush ?? Brushes.LightCoral;
+            private readonly Brush insertedBrush = insertedBrush ?? Brushes.LightGreen;
             private readonly TextSegmentCollection<DiffSegment> diffSegments = new();
-
-            public DiffHighlighter(Brush deletedBrush, Brush insertedBrush)
-            {
-                this.deletedBrush = deletedBrush ?? Brushes.LightCoral;
-                this.insertedBrush = insertedBrush ?? Brushes.LightGreen;
-            }
 
             public void AddSegment(DiffSegment segment)
             {

@@ -26,6 +26,8 @@
         <ProjectReference Include="..\EddiStatusService\EddiStatusService.csproj" />
         <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj" />
         <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj" />
+        <ProjectReference Include="..\EddiUI\EddiUI.csproj" />
+        <ProjectReference Include="..\EDDI\Eddi.csproj" />
         <ProjectReference Include="..\EDDNResponder\EddiEddnResponder.csproj" />
         <ProjectReference Include="..\Events\EddiEvents.csproj" />
         <ProjectReference Include="..\InaraResponder\EddiInaraResponder.csproj" />

@@ -14,9 +14,7 @@
     <ItemGroup>
         <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj" />
         <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
-        <ProjectReference Include="..\EddiUI\EddiUI.csproj" />
         <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj" />
-        <ProjectReference Include="..\EddiUI\EddiUI.csproj" />
         <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj" />
         <ProjectReference Include="..\Events\EddiEvents.csproj" />
         <ProjectReference Include="..\IPC_Service\EddiIPC_Service.csproj" />

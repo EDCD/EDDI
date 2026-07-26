@@ -26,7 +26,7 @@ namespace EddiUI
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IEddiVoiceAttackAccessibleWindow
     {
         public System.Windows.Controls.TabControl MainTabControl => tabControl;
 
@@ -584,6 +584,23 @@ namespace EddiUI
             {
                 WindowState = state;
             }
+        }
+
+        public void RefreshTextToSpeechConfiguration()
+        {
+            foreach ( var tab in MainTabControl.Items )
+            {
+                if ( tab is TabItem item && item.Content is TextToSpeechTab tts )
+                {
+                    tts.ConfigureTTS();
+                }
+            }
+        }
+
+        public void ApplyVoiceAttackWindowState( WindowState state, bool minimizeCheck )
+        {
+            var handler = VaWindowStateChange ?? OnVaWindowStateChange;
+            handler( state, minimizeCheck );
         }
 
         protected override void OnClosing(CancelEventArgs e)

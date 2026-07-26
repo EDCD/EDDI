@@ -8,7 +8,6 @@ using EddiNavigationService;
 using EddiSpeechResponder;
 using EddiSpeechService;
 using EddiStarMapService;
-using EddiUI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -188,19 +187,12 @@ namespace EddiVoiceAttackResponder
                 {
                     Application.Current?.Dispatcher?.InvokeAsync( () =>
                     {
-                        var mainWindow = (MainWindow)Application.Current?.MainWindow;
-                        if ( mainWindow == null )
+                        if ( Application.Current?.MainWindow is not IEddiVoiceAttackAccessibleWindow mainWindow )
                         {
                             return;
                         }
 
-                        foreach ( var tab in mainWindow.MainTabControl.Items )
-                        {
-                            if ( tab is System.Windows.Controls.TabItem item && item.Content is TextToSpeechTab tts )
-                            {
-                                tts.ConfigureTTS();
-                            }
-                        }
+                        mainWindow.RefreshTextToSpeechConfiguration();
                     } ).Task.SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                 }
             }
@@ -316,10 +308,9 @@ namespace EddiVoiceAttackResponder
                 {
                     Application.Current?.Dispatcher?.InvokeAsync( () =>
                     {
-                        var mainwindow = (MainWindow)Application.Current?.MainWindow;
-                        if ( mainwindow == null ) { return; }
-                        var handler = mainwindow.VaWindowStateChange ?? mainwindow.OnVaWindowStateChange;
-                        handler( newState, minimizeCheck );
+                        if ( Application.Current?.MainWindow is not IEddiVoiceAttackAccessibleWindow mainWindow )
+                        { return; }
+                        mainWindow.ApplyVoiceAttackWindowState( newState, minimizeCheck );
                     } ).Task.SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                 }
             }
