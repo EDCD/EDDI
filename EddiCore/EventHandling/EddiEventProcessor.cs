@@ -16,41 +16,41 @@ namespace EddiCore.EventHandling
 {
     internal sealed class EddiEventProcessor : IDisposable
     {
-        private readonly EDDI _eddi;
+        private readonly IEddiEventProcessorContext _context;
         private readonly StarSystemSignalSourceManager signalSourceManager = new();
         private string multicrewVehicleHolder;
 
-        internal EddiEventProcessor ( EDDI eddi )
+        internal EddiEventProcessor ( IEddiEventProcessorContext context )
         {
-            _eddi = eddi;
+            _context = context;
         }
 
-        private IEddiGameState GameState => _eddi.GameState;
-        private DataProviderService DataProvider => _eddi.DataProvider;
-        private StarSystem CurrentStarSystem { get => _eddi.CurrentStarSystem; set => _eddi.CurrentStarSystem = value; }
-        private StarSystem LastStarSystem { get => _eddi.LastStarSystem; set => _eddi.LastStarSystem = value; }
-        private StarSystem NextStarSystem { get => _eddi.NextStarSystem; set => _eddi.NextStarSystem = value; }
-        private StarSystem DestinationStarSystem { get => _eddi.DestinationStarSystem; set => _eddi.DestinationStarSystem = value; }
-        private Station CurrentStation { get => _eddi.CurrentStation; set => _eddi.CurrentStation = value; }
-        private Body CurrentStellarBody { get => _eddi.CurrentStellarBody; set => _eddi.CurrentStellarBody = value; }
-        private FleetCarrier FleetCarrier { get => _eddi.FleetCarrier; set => _eddi.FleetCarrier = value; }
-        private FleetCarrier SquadronCarrier { get => _eddi.SquadronCarrier; set => _eddi.SquadronCarrier = value; }
-        private string Environment { get => _eddi.Environment; set => _eddi.Environment = value; }
-        private string Vehicle { get => _eddi.Vehicle; set => _eddi.Vehicle = value; }
-        private bool inTelepresence { get => _eddi.inTelepresence; set => _eddi.inTelepresence = value; }
-        private bool inHorizons { get => _eddi.inHorizons; set => _eddi.inHorizons = value; }
-        private bool inOdyssey { get => _eddi.inOdyssey; set => _eddi.inOdyssey = value; }
-        private bool gameIsBeta { get => _eddi.gameIsBeta; set => _eddi.gameIsBeta = value; }
-        private System.Collections.Concurrent.ConcurrentDictionary<string, Event> lastEventOfType => _eddi.EventPipeline.LastEventOfType;
+        private IEddiGameState GameState => _context.GameState;
+        private DataProviderService DataProvider => _context.DataProvider;
+        private StarSystem CurrentStarSystem { get => _context.CurrentStarSystem; set => _context.CurrentStarSystem = value; }
+        private StarSystem LastStarSystem { get => _context.LastStarSystem; set => _context.LastStarSystem = value; }
+        private StarSystem NextStarSystem { get => _context.NextStarSystem; set => _context.NextStarSystem = value; }
+        private StarSystem DestinationStarSystem { get => _context.DestinationStarSystem; set => _context.DestinationStarSystem = value; }
+        private Station CurrentStation { get => _context.CurrentStation; set => _context.CurrentStation = value; }
+        private Body CurrentStellarBody { get => _context.CurrentStellarBody; set => _context.CurrentStellarBody = value; }
+        private FleetCarrier FleetCarrier { get => _context.FleetCarrier; set => _context.FleetCarrier = value; }
+        private FleetCarrier SquadronCarrier { get => _context.SquadronCarrier; set => _context.SquadronCarrier = value; }
+        private string Environment { get => _context.Environment; set => _context.Environment = value; }
+        private string Vehicle { get => _context.Vehicle; set => _context.Vehicle = value; }
+        private bool inTelepresence { get => _context.inTelepresence; set => _context.inTelepresence = value; }
+        private bool inHorizons { get => _context.inHorizons; set => _context.inHorizons = value; }
+        private bool inOdyssey { get => _context.inOdyssey; set => _context.inOdyssey = value; }
+        private bool gameIsBeta { get => _context.gameIsBeta; set => _context.gameIsBeta = value; }
+        private System.Collections.Concurrent.ConcurrentDictionary<string, Event> lastEventOfType => _context.EventPipeline.LastEventOfType;
 
         private IEddiMonitor ObtainMonitor ( string invariantName, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase )
         {
-            return _eddi.ObtainMonitor( invariantName, stringComparison );
+            return _context.ObtainMonitor( invariantName, stringComparison );
         }
 
         private void enqueueEvent ( Event @event )
         {
-            _eddi.EventPipeline.Enqueue( @event );
+            _context.EventPipeline.Enqueue( @event );
         }
 
         private Task conditionallyRefreshStationProfileAsync (
@@ -59,7 +59,7 @@ namespace EddiCore.EventHandling
             bool forceUpdate = false,
             JObject profileJson = null )
         {
-            return _eddi.conditionallyRefreshStationProfileAsync(
+            return _context.conditionallyRefreshStationProfileAsync(
                 expectedSystemName,
                 expectedLastMarketID,
                 forceUpdate,
@@ -272,7 +272,7 @@ namespace EddiCore.EventHandling
                     StarSystemSignalSourceManager.newSignalSources.Add( @event.systemAddress, newSignalSources );
                 }
 
-                if ( !_eddi.EventPipeline.HasQueuedSignalDetectedEvents() )
+                if ( !_context.EventPipeline.HasQueuedSignalDetectedEvents() )
                 {
                     CurrentStarSystem.AddOrUpdateSignalSources( newSignalSources );
                     newSignalSources.Clear();
@@ -1134,7 +1134,7 @@ namespace EddiCore.EventHandling
                 // If we've arrived at our destination system then clear it
                 if ( DestinationStarSystem?.systemAddress == CurrentStarSystem.systemAddress )
                 {
-                    await _eddi.updateDestinationSystemAsync( null ).ConfigureAwait(false);
+                    await _context.updateDestinationSystemAsync( null ).ConfigureAwait(false);
                 }
             }
             catch ( Exception e )
@@ -1233,7 +1233,7 @@ namespace EddiCore.EventHandling
                 Logging.Info("Beta game version detected");
             }
 
-            _eddi.SetGameVersionDetails( @event.version, @event.build );
+            _context.SetGameVersionDetails( @event.version, @event.build );
 
             return true;
         }
@@ -1396,7 +1396,7 @@ namespace EddiCore.EventHandling
             // Identify active game version
             inHorizons = theEvent.horizons;
             inOdyssey = theEvent.odyssey;
-            _eddi.SetGameVersionDetails( theEvent.gameversion, theEvent.gamebuild );
+            _context.SetGameVersionDetails( theEvent.gameversion, theEvent.gamebuild );
 
             return true;
         }

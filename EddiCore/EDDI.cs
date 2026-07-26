@@ -34,7 +34,7 @@ namespace EddiCore
     /// and keep them up-to-date with changes that occur.
     /// It also acts as the switchboard for passing events through all parts of the application including both responders and monitors.
     /// </summary>
-    public class EDDI: INotifyPropertyChanged
+    public class EDDI: INotifyPropertyChanged, IEddiEventProcessorContext
     {
         // True if the EDDI UI is waiting on a modal dialog window. Accessed by VoiceAttack plugin.
         public bool IsModalDialogOpen { get; set; }
@@ -225,6 +225,29 @@ namespace EddiCore
 
         internal EddiEventProcessor EventProcessor { get; }
         internal EddiEventPipeline EventPipeline { get; }
+
+        EddiEventPipeline IEddiEventProcessorContext.EventPipeline => EventPipeline;
+        StarSystem IEddiEventProcessorContext.CurrentStarSystem { get => CurrentStarSystem; set => CurrentStarSystem = value; }
+        StarSystem IEddiEventProcessorContext.LastStarSystem { get => LastStarSystem; set => LastStarSystem = value; }
+        StarSystem IEddiEventProcessorContext.NextStarSystem { get => NextStarSystem; set => NextStarSystem = value; }
+        StarSystem IEddiEventProcessorContext.DestinationStarSystem { get => DestinationStarSystem; set => DestinationStarSystem = value; }
+        Station IEddiEventProcessorContext.CurrentStation { get => CurrentStation; set => CurrentStation = value; }
+        Body IEddiEventProcessorContext.CurrentStellarBody { get => CurrentStellarBody; set => CurrentStellarBody = value; }
+        string IEddiEventProcessorContext.Environment { get => Environment; set => Environment = value; }
+        bool IEddiEventProcessorContext.inTelepresence { get => inTelepresence; set => inTelepresence = value; }
+        bool IEddiEventProcessorContext.inHorizons { get => inHorizons; set => inHorizons = value; }
+        bool IEddiEventProcessorContext.inOdyssey { get => inOdyssey; set => inOdyssey = value; }
+        bool IEddiEventProcessorContext.gameIsBeta { get => gameIsBeta; set => gameIsBeta = value; }
+
+        Task IEddiEventProcessorContext.conditionallyRefreshStationProfileAsync (
+            string expectedSystemName,
+            long expectedLastMarketID,
+            bool forceUpdate,
+            JObject profileJson ) =>
+            conditionallyRefreshStationProfileAsync( expectedSystemName, expectedLastMarketID, forceUpdate, profileJson );
+
+        void IEddiEventProcessorContext.SetGameVersionDetails ( string version, string build ) =>
+            SetGameVersionDetails( version, build );
 
         // EDDI uses APIs which only return data for the "live" galaxy, game version 4.0 or later.
         private readonly System.Version minGameVersion = new(4, 0);
