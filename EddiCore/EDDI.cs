@@ -35,8 +35,8 @@ namespace EddiCore
     /// </summary>
     public class EDDI: INotifyPropertyChanged
     {
-        // True if the Speech Responder tab is waiting on a modal dialog window. Accessed by VoiceAttack plugin.
-        public bool SpeechResponderModalWait { get; set; }
+        // True if the EDDI UI is waiting on a modal dialog window. Accessed by VoiceAttack plugin.
+        public bool IsModalDialogOpen { get; set; }
 
         private static bool started;
         public bool running;

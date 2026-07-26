@@ -1,6 +1,5 @@
 ﻿using Cottle;
 using EddiDataDefinitions;
-using EddiGalnetMonitor;
 using EddiSpeechResponder.ScriptResolverService;
 using JetBrains.Annotations;
 using System;
@@ -22,17 +21,17 @@ namespace EddiSpeechResponder.CustomFunctions
             if (values.Count == 0)
             {
                 // Obtain all unread articles
-                results = GalnetSqLiteRepository.GetArticles();
+                results = GalnetNewsProvider.Instance?.GetArticles();
             }
             else if (values.Count == 1)
             {
                 // Obtain all unread news of a given category
-                results = GalnetSqLiteRepository.GetArticles(values[0].AsString);
+                results = GalnetNewsProvider.Instance?.GetArticles(values[0].AsString);
             }
             else if (values.Count == 2)
             {
                 // Obtain all news of a given category
-                results = GalnetSqLiteRepository.GetArticles(values[0].AsString, values[1].AsBoolean);
+                results = GalnetNewsProvider.Instance?.GetArticles(values[0].AsString, values[1].AsBoolean);
             }
             return results is null ? Value.EmptyMap : Value.FromReflection( results, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
         }, 0, 2);

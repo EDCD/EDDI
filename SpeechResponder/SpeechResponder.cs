@@ -3,7 +3,6 @@ using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
-using EddiJournalMonitor;
 using EddiSpeechResponder.ScriptResolverService;
 using EddiSpeechService;
 using System;
@@ -211,7 +210,8 @@ namespace EddiSpeechResponder
             else if (sample is string s)
             {
                 // It's a string so a journal entry.  Parse it
-                sampleEvents = JournalMonitor.ParseJournalEntry(s, false, true);
+                sampleEvents = ( EDDI.Instance.ObtainMonitor( "Journal monitor" ) as IJournalEntryParser )
+                    ?.ParseJournalEntry(s, deferSyntheticEvents: false) ?? [ ];
             }
             else if (sample is Event e)
             {

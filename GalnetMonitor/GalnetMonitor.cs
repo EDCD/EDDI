@@ -29,7 +29,7 @@ namespace EddiGalnetMonitor
     /// A sample EDDI monitor to watch The Elite: Dangerous RSS feed and generate an event for new items
     /// </summary>
     [UsedImplicitly]
-    public class GalnetMonitor : IEddiMonitor
+    public class GalnetMonitor : IEddiMonitor, IGalnetNewsProvider
     {
         private static Dictionary<string, string> locales;
         private static string locale;
@@ -70,6 +70,43 @@ namespace EddiGalnetMonitor
         public bool NeedsStart ()
         {
             return true;
+        }
+
+        public News GetArticle ( string uuid )
+        {
+            return GalnetSqLiteRepository.Instance.GetArticle( uuid );
+        }
+
+        public List<News> GetArticles ( string category = null, bool includeRead = false )
+        {
+            return GalnetSqLiteRepository.GetArticles( category, includeRead );
+        }
+
+        public void DeleteArticle ( string uuid )
+        {
+            var article = GetArticle( uuid );
+            if ( article != null )
+            {
+                GalnetSqLiteRepository.Instance.DeleteNews( article );
+            }
+        }
+
+        public void MarkArticleRead ( string uuid )
+        {
+            var article = GetArticle( uuid );
+            if ( article != null )
+            {
+                GalnetSqLiteRepository.Instance.MarkRead( article );
+            }
+        }
+
+        public void MarkArticleUnread ( string uuid )
+        {
+            var article = GetArticle( uuid );
+            if ( article != null )
+            {
+                GalnetSqLiteRepository.Instance.MarkUnread( article );
+            }
         }
 
         /// <summary>

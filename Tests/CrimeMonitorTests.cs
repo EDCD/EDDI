@@ -691,7 +691,7 @@ namespace Tests
             Assert.IsTrue( crimeMonitor._handleBondRedeemedEvent( (BondRedeemedEvent)events[ 0 ] ) );
 
             line = @"{ ""timestamp"":""2026-05-31T05:16:30Z"", ""event"":""NpcCrewPaidWage"", ""NpcCrewName"":""Arden Petersen-Quinn"", ""NpcCrewId"":105187904, ""Amount"":43799 }";
-            events = JournalMonitor.ParseJournalEntry( line, false, true );
+            events = JournalMonitor.ParseJournalEntry( line, deferSyntheticEvents: false );
             Assert.HasCount( 1, events );
             await crimeMonitor.PreHandleAsync( events[ 0 ] ).ConfigureAwait( false );
 

@@ -1,5 +1,4 @@
 ﻿using Cottle;
-using EddiGalnetMonitor;
 using EddiSpeechResponder.ScriptResolverService;
 using JetBrains.Annotations;
 using System;
@@ -15,11 +14,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public Type ReturnType => typeof( string );
         public IFunction function => Function.CreatePure1( ( runtime, uuid ) =>
         {
-            var result = GalnetSqLiteRepository.Instance.GetArticle(uuid.AsString);
-            if (result != null)
-            {
-                GalnetSqLiteRepository.Instance.MarkRead(result);
-            }
+            GalnetNewsProvider.Instance?.MarkArticleRead(uuid.AsString);
             return "";
         });
     }

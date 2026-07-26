@@ -21,8 +21,6 @@
         <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
         <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj" />
         <ProjectReference Include="..\Events\EddiEvents.csproj" />
-        <ProjectReference Include="..\GalnetMonitor\EddiGalnetMonitor.csproj" />
-        <ProjectReference Include="..\JournalMonitor\EddiJournalMonitor.csproj" />
         <ProjectReference Include="..\NavigationService\EddiNavigationService.csproj" />
         <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj" />
         <ProjectReference Include="..\Utilities\Utilities.csproj" />

@@ -21,7 +21,7 @@ namespace EddiJournalMonitor
     [UsedImplicitly]
     public class JournalMonitor () : LogMonitor( Files.GetEliteSavedGamesDir(), @"^Journal.*\.[0-9\.]+\.log$",
         ( result, isLogLoadEvent ) =>
-            ForwardJournalEntries( result.ToList(), EDDI.Instance.enqueueEvent, isLogLoadEvent ) ), IEddiMonitor
+            ForwardJournalEntries( result.ToList(), EDDI.Instance.enqueueEvent, isLogLoadEvent ) ), IEddiMonitor, IJournalEntryParser
     {
         /// <summary>
         /// Holds a delayed event until we see an event of the type specified
@@ -123,7 +123,7 @@ namespace EddiJournalMonitor
             return events;
         }
 
-        public static List<Event> ParseJournalEntry(string line, bool fromLogLoad = false, bool fromSpeechResponderTest = false )
+        public static List<Event> ParseJournalEntry(string line, bool fromLogLoad = false, bool deferSyntheticEvents = true )
         {
             var events = new List<Event>();
             try
@@ -2269,7 +2269,7 @@ namespace EddiJournalMonitor
                                     }
 
                                     var cargoTransferEvent = new CargoTransferEvent( timestamp, toShip, toSRV, toCarrier ) { raw = line, fromLoad = fromLogLoad };
-                                    if ( fromSpeechResponderTest )
+                                    if ( !deferSyntheticEvents )
                                     {
                                         events.Add( cargoTransferEvent );
                                     }
@@ -2553,7 +2553,7 @@ namespace EddiJournalMonitor
                                     if ( amount > 0 )
                                     {
                                         var crewPaidWageEvent = new CrewPaidWageEvent( timestamp, name, crewid, amount ) { raw = line, fromLoad = fromLogLoad };
-                                        if ( fromSpeechResponderTest )
+                                        if ( !deferSyntheticEvents )
                                         {
                                             events.Add( crewPaidWageEvent );
                                         }
@@ -2963,6 +2963,11 @@ namespace EddiJournalMonitor
                 Logging.Error($"Exception whilst parsing journal line {line}", ex);
             }
             return events;
+        }
+
+        List<Event> IJournalEntryParser.ParseJournalEntry ( string line, bool fromLogLoad, bool deferSyntheticEvents )
+        {
+            return ParseJournalEntry( line, fromLogLoad, deferSyntheticEvents );
         }
 
         public string MonitorName()

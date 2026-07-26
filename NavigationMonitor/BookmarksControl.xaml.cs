@@ -45,7 +45,7 @@ namespace EddiNavigationMonitor
         {
             // Select bookmarks
             var bookmarksSelector = new BookmarkSelector(bookmarksData.Items.SourceCollection as IEnumerable<NavBookmark>);
-            EDDI.Instance.SpeechResponderModalWait = true;
+            EDDI.Instance.IsModalDialogOpen = true;
             try
             {
                 bookmarksSelector.ShowDialog();
@@ -54,7 +54,7 @@ namespace EddiNavigationMonitor
             {
                 Logging.Warn(ex.Message, ex);
             }
-            EDDI.Instance.SpeechResponderModalWait = false;
+            EDDI.Instance.IsModalDialogOpen = false;
             if (bookmarksSelector.DialogResult ?? false)
             {
                 // Package up bookmarks (in .jsonl format)
@@ -140,9 +140,9 @@ namespace EddiNavigationMonitor
 
                 // Select bookmarks
                 var bookmarksSelector = new BookmarkSelector(newBookmarks);
-                EDDI.Instance.SpeechResponderModalWait = true;
+                EDDI.Instance.IsModalDialogOpen = true;
                 bookmarksSelector.ShowDialog();
-                EDDI.Instance.SpeechResponderModalWait = false;
+                EDDI.Instance.IsModalDialogOpen = false;
 
                 // Add bookmarks to Navigation Monitor (filtering out any duplicated bookmarks)
                 lock (NavigationMonitor.navConfigLock)

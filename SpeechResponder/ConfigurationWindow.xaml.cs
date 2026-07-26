@@ -222,7 +222,7 @@ namespace EddiSpeechResponder
             var metaVars = GetMetaVariables( script.Name ).ToList();
             var highlighting = GetHighlighting( metaVars );
             editScriptWindow = new EditScriptWindow(speechResponder, script, speechResponder.CurrentPersonality.Scripts, metaVars, highlighting, isRecoveredScript);
-            EDDI.Instance.SpeechResponderModalWait = true;
+            EDDI.Instance.IsModalDialogOpen = true;
             try
             {
                 editScriptWindow.ShowDialog();
@@ -231,7 +231,7 @@ namespace EddiSpeechResponder
             {
                 Logging.Warn( ex.Message, ex );
             }
-            EDDI.Instance.SpeechResponderModalWait = false;
+            EDDI.Instance.IsModalDialogOpen = false;
             if (editScriptWindow.DialogResult ?? false)
             {
                 // Non-responder scripts can be renamed, handle that here.
@@ -318,7 +318,7 @@ namespace EddiSpeechResponder
         {
             if (SpeechResponder?.CurrentPersonality?.Scripts is null) { return; }
 
-            EDDI.Instance.SpeechResponderModalWait = true;
+            EDDI.Instance.IsModalDialogOpen = true;
             var script = getScriptFromContext(sender);
             var messageBoxText = string.Format(Properties.SpeechResponder.delete_script_message, script.Name);
             var caption = Properties.SpeechResponder.delete_script_caption;
@@ -341,7 +341,7 @@ namespace EddiSpeechResponder
                     scriptsView.Refresh();
                     break;
             }
-            EDDI.Instance.SpeechResponderModalWait = false;
+            EDDI.Instance.IsModalDialogOpen = false;
         }
         private void resetScript(object sender, RoutedEventArgs e)
         {
@@ -369,7 +369,7 @@ namespace EddiSpeechResponder
         private void newScriptClicked(object sender, RoutedEventArgs e)
         {
             if (SpeechResponder?.CurrentPersonality?.Scripts is null) { return; }
-            EDDI.Instance.SpeechResponderModalWait = true;
+            EDDI.Instance.IsModalDialogOpen = true;
             var metaVars = GetMetaVariables ().ToList ();
             var highlighting = GetHighlighting( metaVars );
             editScriptWindow = new EditScriptWindow( SpeechResponder, null, SpeechResponder.CurrentPersonality.Scripts, metaVars, highlighting, true);
@@ -387,13 +387,13 @@ namespace EddiSpeechResponder
             {
                 Logging.Warn( ex.Message, ex );
             }
-            EDDI.Instance.SpeechResponderModalWait = false;
+            EDDI.Instance.IsModalDialogOpen = false;
         }
 
         private void copyPersonalityClicked(object sender, RoutedEventArgs e)
         {
             if (SpeechResponder?.Personalities is null) { return; }
-            EDDI.Instance.SpeechResponderModalWait = true;
+            EDDI.Instance.IsModalDialogOpen = true;
             var window = new CopyPersonalityWindow(SpeechResponder.Personalities)
             {
                 Owner = Window.GetWindow(this)
@@ -409,13 +409,13 @@ namespace EddiSpeechResponder
             {
                 Logging.Warn( ex.Message, ex );
             }
-            EDDI.Instance.SpeechResponderModalWait = false;
+            EDDI.Instance.IsModalDialogOpen = false;
         }
 
         private void deletePersonalityClicked(object sender, RoutedEventArgs e)
         {
             if (SpeechResponder?.Personalities is null) { return; }
-            EDDI.Instance.SpeechResponderModalWait = true;
+            EDDI.Instance.IsModalDialogOpen = true;
             var messageBoxText = string.Format(Properties.SpeechResponder.delete_personality_message, SpeechResponder.CurrentPersonality.Name);
             var caption = Properties.SpeechResponder.delete_personality_caption;
             var result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
@@ -425,12 +425,12 @@ namespace EddiSpeechResponder
                     SpeechResponder.RemoveCurrentPersonality();
                     break;
             }
-            EDDI.Instance.SpeechResponderModalWait = false;
+            EDDI.Instance.IsModalDialogOpen = false;
         }
 
         private void configureHotkeysButtonClicked ( object sender, RoutedEventArgs e )
         {
-            EDDI.Instance.SpeechResponderModalWait = true;
+            EDDI.Instance.IsModalDialogOpen = true;
             var hkm = EDDI.Instance.HotkeyManager;
 
             var window = new HotkeysWindow( hkm )
@@ -464,7 +464,7 @@ namespace EddiSpeechResponder
             {
                 Logging.Warn( ex.Message, ex );
             }
-            EDDI.Instance.SpeechResponderModalWait = false;
+            EDDI.Instance.IsModalDialogOpen = false;
         }
 
         private void subtitlesEnabled(object sender, RoutedEventArgs e)
@@ -583,3 +583,4 @@ namespace EddiSpeechResponder
         }
     }
 }
+

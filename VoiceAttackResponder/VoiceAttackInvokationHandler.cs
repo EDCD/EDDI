@@ -297,7 +297,7 @@ namespace EddiVoiceAttackResponder
         // if the main window is blocked waiting for a modal dialog to close.
         private static void setWindowState ( WindowState newState, bool minimizeCheck = false, bool warn = true )
         {
-            if ( EDDI.Instance.SpeechResponderModalWait && warn )
+            if ( EDDI.Instance.IsModalDialogOpen && warn )
             {
                 System.Media.SystemSounds.Beep.Play();
                 RuntimeWriteToLog( "The EDDI window state cannot be changed at this time.", "orange" );
