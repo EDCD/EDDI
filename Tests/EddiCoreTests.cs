@@ -1,4 +1,5 @@
 using EddiCore;
+using EddiCore.EventHandling;
 using EddiCore.GameState;
 using EddiDataDefinitions;
 using EddiEvents;
@@ -122,6 +123,69 @@ namespace Tests
             MakeSafe();
         }
 
+        private sealed class PipelineTestMonitor ( string name, IList<string> calls ) : IEddiMonitor
+        {
+            public string MonitorName () => name;
+            public string LocalizedMonitorName () => name;
+            public string MonitorDescription () => "Test monitor for event pipeline";
+            public bool IsRequired () => false;
+            public bool NeedsStart () => false;
+            public void Start () { }
+            public void Stop () { }
+            public void Reload () { }
+            public Task PreHandleAsync ( Event @event )
+            {
+                calls.Add( $"pre:{name}" );
+                return Task.CompletedTask;
+            }
+
+            public Task PostHandleAsync ( Event @event )
+            {
+                calls.Add( $"post:{name}" );
+                return Task.CompletedTask;
+            }
+
+            public Task HandleProfileAsync ( JObject profile ) => Task.CompletedTask;
+            public Task HandleStatusAsync ( Status status ) => Task.CompletedTask;
+            public UserControl ConfigurationTabItem () => null;
+        }
+
+        private sealed class PipelineTestResponder ( string name, IList<string> calls ) : IEddiResponder
+        {
+            public string ResponderName () => name;
+            public string LocalizedResponderName () => name;
+            public string ResponderDescription () => "Test responder for event pipeline";
+            public bool Start () => true;
+            public void Stop () { }
+            public void Reload () { }
+            public Task HandleAsync ( Event @event )
+            {
+                calls.Add( $"respond:{name}" );
+                return Task.CompletedTask;
+            }
+
+            public Task HandleStatusAsync ( Status status ) => Task.CompletedTask;
+            public UserControl ConfigurationTabItem () => null;
+        }
+
+        private static EddiEventPipeline CreatePipeline (
+            Func<Event, Task<bool>> processEventAsync = null,
+            IEnumerable<IEddiMonitor> monitors = null,
+            IEnumerable<IEddiResponder> responders = null,
+            Func<string, IEddiResponder> obtainResponder = null,
+            Func<System.Version> getGameVersion = null )
+        {
+            return new EddiEventPipeline(
+                processEventAsync ?? ( _ => Task.FromResult( true ) ),
+                () => monitors ?? [ ],
+                () => responders ?? [ ],
+                obtainResponder ?? ( _ => null ),
+                () => true,
+                getGameVersion ?? ( () => new System.Version( 4, 0 ) ),
+                new System.Version( 4, 0 ),
+                CancellationToken.None );
+        }
+
         [TestMethod]
         public void EddiGameState_AssigningProperty_RaisesPropertyChanged ()
         {
@@ -241,6 +305,97 @@ namespace Tests
 
             Assert.IsTrue( passEvent );
             Assert.IsEmpty( eddi.GameState.DeployedVessels );
+        }
+
+        [TestMethod]
+        public void EddiEventPipeline_EnqueueNull_IsIgnored ()
+        {
+            var pipeline = CreatePipeline();
+
+            pipeline.Enqueue( null );
+
+            Assert.IsFalse( pipeline.HasQueuedSignalDetectedEvents() );
+            Assert.IsEmpty( pipeline.LastEventOfType );
+        }
+
+        [TestMethod]
+        public async Task EddiEventPipeline_HandleEventAsync_RecordsAcceptedEvent ()
+        {
+            var pipeline = CreatePipeline();
+            var @event = new FileHeaderEvent(
+                DateTime.UtcNow,
+                "Journal.250725000000.01.log",
+                "4.2.1.0",
+                "r123/r0" );
+
+            await pipeline.HandleEventAsync( @event ).ConfigureAwait( false );
+
+            Assert.IsTrue( pipeline.LastEventOfType.TryGetValue( FileHeaderEvent.NAME, out var recordedEvent ) );
+            Assert.AreSame( @event, recordedEvent );
+        }
+
+        [TestMethod]
+        public async Task EddiEventPipeline_HandleEventAsync_SuppressesLegacyGameVersionEvents ()
+        {
+            var processCalled = false;
+            var pipeline = CreatePipeline(
+                processEventAsync: _ =>
+                {
+                    processCalled = true;
+                    return Task.FromResult( true );
+                },
+                getGameVersion: () => new System.Version( 3, 8 ) );
+
+            await pipeline.HandleEventAsync( new DiedEvent( DateTime.UtcNow, [ ] ) ).ConfigureAwait( false );
+
+            Assert.IsFalse( processCalled );
+            Assert.IsEmpty( pipeline.LastEventOfType );
+        }
+
+        [TestMethod]
+        public async Task EddiEventPipeline_HandleEventAsync_FansOutAcceptedEventsInOrder ()
+        {
+            var calls = new List<string>();
+            var monitor = new PipelineTestMonitor( "monitor", calls );
+            var responder = new PipelineTestResponder( "responder", calls );
+            var pipeline = CreatePipeline(
+                monitors: [ monitor ],
+                responders: [ responder ] );
+
+            await pipeline.HandleEventAsync( new FileHeaderEvent(
+                DateTime.UtcNow,
+                "Journal.250725000000.01.log",
+                "4.2.1.0",
+                "r123/r0" ) ).ConfigureAwait( false );
+
+            CollectionAssert.AreEqual(
+                new List<string> { "pre:monitor", "respond:responder", "post:monitor" },
+                calls );
+        }
+
+        [TestMethod]
+        public async Task EddiEventPipeline_HandleEventAsync_SendsFallbackResponderEventsWhenProcessorThrows ()
+        {
+            var calls = new List<string>();
+            var fallbackResponders = new Dictionary<string, IEddiResponder>
+            {
+                [ "EDDN Responder" ] = new PipelineTestResponder( "EDDN Responder", calls ),
+                [ "EDSM Responder" ] = new PipelineTestResponder( "EDSM Responder", calls ),
+                [ "Inara Responder" ] = new PipelineTestResponder( "Inara Responder", calls )
+            };
+            var pipeline = CreatePipeline(
+                processEventAsync: _ => throw new InvalidOperationException( "test failure" ),
+                obtainResponder: name => fallbackResponders[ name ] );
+
+            await pipeline.HandleEventAsync( new FileHeaderEvent(
+                DateTime.UtcNow,
+                "Journal.250725000000.01.log",
+                "4.2.1.0",
+                "r123/r0" ) ).ConfigureAwait( false );
+
+            CollectionAssert.AreEqual(
+                new List<string> { "respond:EDDN Responder", "respond:EDSM Responder", "respond:Inara Responder" },
+                calls );
         }
 
         [TestMethod]

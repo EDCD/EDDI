@@ -224,6 +224,7 @@ namespace EddiCore
         #endregion
 
         internal EddiEventProcessor EventProcessor { get; }
+        internal EddiEventPipeline EventPipeline { get; }
 
         // EDDI uses APIs which only return data for the "live" galaxy, game version 4.0 or later.
         private readonly System.Version minGameVersion = new(4, 0);
@@ -326,19 +327,25 @@ namespace EddiCore
         public HotkeyManager HotkeyManager { get; } = new();
 
         // Information from the last events of each type that we've received (for reference)
-        public ConcurrentDictionary<string, Event> lastEventOfType { get; } = [ ];
+        public ConcurrentDictionary<string, Event> lastEventOfType => EventPipeline.LastEventOfType;
 
         public readonly ObservableConcurrentDictionary<string, object> State = [ ];
 
-        // The event queue
-        private BlockingCollection<Event> eventQueue { get; } = [ ];
         private readonly CancellationTokenSource eventHandlerTS = new();
-        private Task eventConsumerThread;
 
         private EDDI()
         {
             _gameState.PropertyChanged += ( _, e ) => OnPropertyChanged( e.PropertyName );
             EventProcessor = new EddiEventProcessor( this );
+            EventPipeline = new EddiEventPipeline(
+                EventProcessor.ProcessEventAsync,
+                () => activeMonitors,
+                () => activeResponders,
+                name => ObtainResponder( name ),
+                () => DataProvider?.IsUnitTesting ?? false,
+                () => GameVersion,
+                minGameVersion,
+                eventHandlerTS.Token );
             running = true;
             try
             {
@@ -597,6 +604,7 @@ namespace EddiCore
                 DataProvider.CancelPendingRequests();
                 Utilities.TelemetryService.Telemetry.Stop();
                 eventHandlerTS.Cancel();
+                EventPipeline.Stop();
                 foreach ( var responder in responders )
                 {
                     DisableResponder( responder );
@@ -894,188 +902,9 @@ namespace EddiCore
             }
         }
 
-        public void enqueueEvent(Event @event)
-        {
-            if (@event is null) { return; }
+        public void enqueueEvent ( Event @event ) => EventPipeline.Enqueue( @event );
 
-            if (!eventQueue.IsAddingCompleted)
-            {
-                eventQueue.Add(@event);
-            }
-
-            // Start (or restart) our event handler thread (as long as we are not unit testing)
-            if ( !eventHandlerTS.Token.IsCancellationRequested && 
-                 ( eventConsumerThread is null || eventConsumerThread?.Status >= TaskStatus.RanToCompletion ) && 
-                 !DataProvider.IsUnitTesting )
-            {
-                eventConsumerThread?.Dispose();
-                eventConsumerThread = Task.Run(dequeueEventsAsync, eventHandlerTS.Token);
-            }
-        }
-
-        internal bool HasQueuedSignalDetectedEvents () => eventQueue.Any( e => e is SignalDetectedEvent );
-
-        private async Task dequeueEventsAsync()
-        {
-            try
-            {
-                foreach (var @event in eventQueue.GetConsumingEnumerable(eventHandlerTS.Token))
-                {
-                    await HandleEventAsync( @event ).ConfigureAwait(false);
-                    await Task.Yield();
-                }
-            }
-            catch ( TaskCanceledException )
-            {
-                // Task canceled. Mark this collection as not accepting any new items.
-                eventQueue.CompleteAdding();
-            }
-        }
-
-        internal async Task HandleEventAsync ( Event @event )
-        {
-            if ( @event != null )
-            {
-                // Event handling is disabled when running a legacy game version.
-                if ( GameVersion != null && GameVersion < minGameVersion && @event is not FileHeaderEvent ) { return; }
-
-                try
-                {
-                    Logging.Debug( $"Handling event: {@event.type}", @event );
-
-                    // We have some additional processing to do for a number of events
-                    var passEvent = await EventProcessor.ProcessEventAsync( @event ).ConfigureAwait( false );
-
-                    // Additional processing is over, send to the event monitors and responders if required
-                    if ( passEvent )
-                    {
-                        await OnEventAsync( @event ).ConfigureAwait( false );
-                    }
-
-                    lastEventOfType[ @event.type ] = @event;
-                }
-                catch ( Exception ex )
-                {
-                    Logging.Error( $"EDDI core failed to handle {@event.type} event {@event.raw}.", ex );
-
-                    // Even if an error occurs, we still need to pass the raw data 
-                    // to the EDDN responder to maintain it's integrity and to the Inara / EDSM reponders to keep external services up-to-date.
-                    await Instance.ObtainResponder( "EDDN Responder" ).HandleAsync( @event ).ConfigureAwait( false );
-                    await Instance.ObtainResponder( "EDSM Responder" ).HandleAsync( @event ).ConfigureAwait( false );
-                    await Instance.ObtainResponder( "Inara Responder" ).HandleAsync( @event ).ConfigureAwait( false );
-                }
-            }
-        }
-
-        private async Task OnEventAsync ( Event @event )
-        {
-            try
-            {
-                // We send the event to all monitors to ensure that their info is up-to-date
-                await passToMonitorPreHandlersAsync( @event ).ConfigureAwait( false );
-
-                // Now we pass the data to the responders.
-                // Responders must not change global states.
-                await passToResponders( @event ).ConfigureAwait( false );
-
-                // We also pass the event to all active monitors in case they have asynchronous follow-on work, waiting for all to complete
-                await passToMonitorPostHandlers( @event ).ConfigureAwait( false );
-            }
-            catch ( Exception ex )
-            {
-                Logging.Error( "Failed to pass event to all monitors and responders", ex );
-            }
-        }
-
-        private async Task passToMonitorPreHandlersAsync ( Event @event )
-        {
-            // All changes to state must be handled here
-            var monitorTasks = new List<Task>();
-            foreach ( var monitor in activeMonitors)
-            {
-                var monitorTask = monitor.PreHandleAsync(@event);
-                monitorTask.ContinueWith( task =>
-                    {
-                        if ( task.IsFaulted )
-                        {
-                            Logging.Error(
-                                $"{monitor.MonitorName()} failed to handle {@event.type} event {@event.raw}",
-                                task.Exception );
-                        }
-                    }, TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously )
-                    .SafeFireAndForget( e => Logging.Error( e.Message, e ) );
-                monitorTasks.Add( monitorTask );
-            }
-
-            try
-            {
-                await Task.WhenAll( monitorTasks.ToArray() );
-            }
-            catch ( TaskCanceledException )
-            {
-                // Task(s) cancelled. Nothing to do here.
-            }
-        }
-
-        private async Task passToResponders ( Event @event )
-        {
-            // Wait for all to complete
-            var responderTasks = new List<Task>();
-            foreach ( var responder in activeResponders )
-            {
-                var responderTask = responder.HandleAsync( @event );
-                responderTask.ContinueWith( task =>
-                    {
-                        if ( task.IsFaulted )
-                        {
-                            Logging.Error(
-                                $"{responder.ResponderName()} failed to handle {@event.type} event {@event.raw}",
-                                task.Exception );
-                        }
-                    }, TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously )
-                    .SafeFireAndForget( e => Logging.Error( e.Message, e ) );
-                responderTasks.Add( responderTask );
-            }
-
-            try
-            {
-                await Task.WhenAll( responderTasks.ToArray() );
-            }
-            catch ( TaskCanceledException )
-            {
-                // Task(s) cancelled. Nothing to do here.
-            }
-        }
-
-        private async Task passToMonitorPostHandlers ( Event @event )
-        {
-            // Pass back to monitors for follow-on work, wait for all to complete
-            var monitorTasks = new List<Task>();
-            foreach ( var monitor in activeMonitors )
-            {
-                var monitorTask = monitor.PostHandleAsync( @event );
-                monitorTask.ContinueWith( task =>
-                    {
-                        if ( task.IsFaulted )
-                        {
-                            Logging.Error(
-                                $"{monitor.MonitorName()} failed to post-handle {@event.type} event {@event.raw}",
-                                task.Exception );
-                        }
-                    }, TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously )
-                    .SafeFireAndForget( e => Logging.Error( e.Message, e ) );
-                monitorTasks.Add( monitorTask );
-            }
-
-            try
-            {
-                await Task.WhenAll( monitorTasks.ToArray() );
-            }
-            catch ( TaskCanceledException )
-            {
-                // Task(s) cancelled. Nothing to do here.
-            }
-        }
+        internal Task HandleEventAsync ( Event @event ) => EventPipeline.HandleEventAsync( @event );
 
         /// <summary>Obtain information from the companion API and use it to refresh our own data</summary>
         public async Task<bool> refreshProfileAsync(bool refreshStation = false)

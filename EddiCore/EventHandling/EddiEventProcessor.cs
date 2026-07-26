@@ -41,7 +41,7 @@ namespace EddiCore.EventHandling
         private bool inHorizons { get => _eddi.inHorizons; set => _eddi.inHorizons = value; }
         private bool inOdyssey { get => _eddi.inOdyssey; set => _eddi.inOdyssey = value; }
         private bool gameIsBeta { get => _eddi.gameIsBeta; set => _eddi.gameIsBeta = value; }
-        private System.Collections.Concurrent.ConcurrentDictionary<string, Event> lastEventOfType => _eddi.lastEventOfType;
+        private System.Collections.Concurrent.ConcurrentDictionary<string, Event> lastEventOfType => _eddi.EventPipeline.LastEventOfType;
 
         private IEddiMonitor ObtainMonitor ( string invariantName, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase )
         {
@@ -50,7 +50,7 @@ namespace EddiCore.EventHandling
 
         private void enqueueEvent ( Event @event )
         {
-            _eddi.enqueueEvent( @event );
+            _eddi.EventPipeline.Enqueue( @event );
         }
 
         private Task conditionallyRefreshStationProfileAsync (
@@ -272,7 +272,7 @@ namespace EddiCore.EventHandling
                     StarSystemSignalSourceManager.newSignalSources.Add( @event.systemAddress, newSignalSources );
                 }
 
-                if ( !_eddi.HasQueuedSignalDetectedEvents() )
+                if ( !_eddi.EventPipeline.HasQueuedSignalDetectedEvents() )
                 {
                     CurrentStarSystem.AddOrUpdateSignalSources( newSignalSources );
                     newSignalSources.Clear();
