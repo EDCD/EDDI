@@ -69,7 +69,7 @@ namespace EddiNavigationService.QueryResolvers
     internal class NeutronRouteResolver : IQueryResolver
     {
         public QueryType Type => QueryType.neutron;
-        public Dictionary<string, object> SpanshQueryFilter => null;
+        public static Dictionary<string, object> SpanshQueryFilter => null;
 
         public Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
             GetNeutronRouteAsync( query.StringArg0, startSystem );
@@ -117,7 +117,7 @@ namespace EddiNavigationService.QueryResolvers
     internal class CarrierRouteResolver : IQueryResolver
     {
         public QueryType Type => QueryType.carrier;
-        public Dictionary<string, object> SpanshQueryFilter => null;
+        public static Dictionary<string, object> SpanshQueryFilter => null;
 
         public Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
             GetCarrierRouteAsync( query.StringArg0, startSystem, (long)Math.Round( query.NumericArg ?? 0, 0 ) );

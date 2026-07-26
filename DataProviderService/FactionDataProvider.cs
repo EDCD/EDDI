@@ -120,7 +120,7 @@ namespace EddiDataProviderService
             factionCache.AddOrUpdate( factions );
         }
 
-        internal void NormalizeFactionReputationUpdatedAt ( StarSystem starSystem )
+        internal static void NormalizeFactionReputationUpdatedAt ( StarSystem starSystem )
         {
             if ( starSystem?.factions is null )
             {

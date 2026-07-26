@@ -570,7 +570,7 @@ namespace EddiDataProviderService
 
             foreach ( var starSystem in starSystems )
             {
-                factionDataProvider.NormalizeFactionReputationUpdatedAt( starSystem );
+                FactionDataProvider.NormalizeFactionReputationUpdatedAt( starSystem );
                 factionDataProvider.ApplyFactionCache( starSystem );
                 factionDataProvider.CacheFactionData( starSystem.factions );
                 starSystemCache.AddOrUpdate( starSystem );

@@ -14,7 +14,7 @@ namespace EddiNavigationService.QueryResolvers
     internal class SetQueryResolver : IQueryResolver
     {
         public QueryType Type => QueryType.set;
-        public Dictionary<string, object> SpanshQueryFilter => null;
+        public static Dictionary<string, object> SpanshQueryFilter => null;
 
         public Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
             SetRouteAsync( startSystem, query.StringArg0, query.StringArg1 );
@@ -68,7 +68,7 @@ namespace EddiNavigationService.QueryResolvers
     internal class CancelQueryResolver : IQueryResolver
     {
         public QueryType Type => QueryType.cancel;
-        public Dictionary<string, object> SpanshQueryFilter => null;
+        public static Dictionary<string, object> SpanshQueryFilter => null;
 
         public Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
             CancelRouteAsync();
@@ -94,7 +94,7 @@ namespace EddiNavigationService.QueryResolvers
     public class UpdateQueryResolver : IQueryResolver
     {
         public QueryType Type => QueryType.update;
-        public Dictionary<string, object> SpanshQueryFilter => null;
+        public static Dictionary<string, object> SpanshQueryFilter => null;
 
         public Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem currentSystem ) =>
             RefreshLastNavigationQueryAsync( currentSystem );

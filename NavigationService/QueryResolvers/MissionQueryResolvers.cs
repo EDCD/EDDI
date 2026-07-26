@@ -15,7 +15,7 @@ namespace EddiNavigationService.QueryResolvers
     internal class CargoSourceMissionResolver : IQueryResolver
     {
         public QueryType Type => QueryType.source;
-        public Dictionary<string, object> SpanshQueryFilter => null;
+        public static Dictionary<string, object> SpanshQueryFilter => null;
 
         public Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
             GetMissionCargoSourceRouteAsync( startSystem, query.StringArg0 );
@@ -69,7 +69,7 @@ namespace EddiNavigationService.QueryResolvers
     internal class ExpiringMissionResolver : IQueryResolver
     {
         public QueryType Type => QueryType.expiring;
-        public Dictionary<string, object> SpanshQueryFilter => null;
+        public static Dictionary<string, object> SpanshQueryFilter => null;
 
         public Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
             GetExpiringMissionRouteAsync( startSystem );
@@ -108,7 +108,7 @@ namespace EddiNavigationService.QueryResolvers
     internal class FarthestMissionResolver : IQueryResolver
     {
         public QueryType Type => QueryType.farthest;
-        public Dictionary<string, object> SpanshQueryFilter => null;
+        public static Dictionary<string, object> SpanshQueryFilter => null;
 
         public Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
             GetFarthestMissionRouteAsync( startSystem );
@@ -171,7 +171,7 @@ namespace EddiNavigationService.QueryResolvers
     internal class MostMissionsResolver : IQueryResolver
     {
         public QueryType Type => QueryType.most;
-        public Dictionary<string, object> SpanshQueryFilter => null;
+        public static Dictionary<string, object> SpanshQueryFilter => null;
 
         public Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
             GetMostMissionRouteAsync( query.StringArg0, startSystem );
@@ -238,7 +238,7 @@ namespace EddiNavigationService.QueryResolvers
     internal class NearestMissionResolver : IQueryResolver
     {
         public QueryType Type => QueryType.nearest;
-        public Dictionary<string, object> SpanshQueryFilter => null;
+        public static Dictionary<string, object> SpanshQueryFilter => null;
 
         public Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
             GetNearestMissionRouteAsync( startSystem );
@@ -301,7 +301,7 @@ namespace EddiNavigationService.QueryResolvers
     internal class RepetiveNearestNeighborMissionResolver : IQueryResolver
     {
         public QueryType Type => QueryType.route;
-        public Dictionary<string, object> SpanshQueryFilter => null;
+        public static Dictionary<string, object> SpanshQueryFilter => null;
 
         public Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
             GetRepetiveNearestNeighborMissionRouteAsync( startSystem, query.StringArg0 );
