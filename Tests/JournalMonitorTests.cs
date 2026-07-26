@@ -1,4 +1,4 @@
-﻿using EddiCore;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
@@ -1214,7 +1214,7 @@ namespace Tests
             Assert.IsNotNull(@event);
             Assert.IsInstanceOfType(@event, typeof(JumpedEvent));
 
-            var result = await EDDI.Instance.eventJumpedAsync( @event ).ConfigureAwait(false);
+            var result = await EDDI.Instance.EventProcessor.eventJumpedAsync( @event ).ConfigureAwait(false);
             Assert.IsTrue(result);
         }
 
@@ -1347,31 +1347,31 @@ namespace Tests
             var events0 = JournalMonitor.ParseJournalEntry(line0);
             var event0 = (SignalDetectedEvent)events0[0];
             Assert.AreEqual("Unregistered Comms Beacon", event0.signalSource.invariantName);
-            EDDI.Instance.eventSignalDetected( event0 );
+            EDDI.Instance.EventProcessor.eventSignalDetected( event0 );
             Assert.IsTrue(event0.unique);
 
             var events1 = JournalMonitor.ParseJournalEntry(line1);
             var event1 = (SignalDetectedEvent)events1[0];
             Assert.AreEqual("Unregistered Comms Beacon", event1.signalSource.invariantName);
-            EDDI.Instance.eventSignalDetected( event1 );
+            EDDI.Instance.EventProcessor.eventSignalDetected( event1 );
             Assert.IsFalse(event1.unique);
 
             var events2 = JournalMonitor.ParseJournalEntry(line2);
             var event2 = (SignalDetectedEvent)events2[0];
             Assert.AreEqual("Notable Stellar Phenomena", event2.signalSource.invariantName);
-            EDDI.Instance.eventSignalDetected( event2 );
+            EDDI.Instance.EventProcessor.eventSignalDetected( event2 );
             Assert.IsTrue(event2.unique);
 
             var events3 = JournalMonitor.ParseJournalEntry(line3);
             var event3 = (SignalDetectedEvent)events3[0];
             Assert.AreEqual("Notable Stellar Phenomena", event3.signalSource.invariantName);
-            EDDI.Instance.eventSignalDetected( event3 );
+            EDDI.Instance.EventProcessor.eventSignalDetected( event3 );
             Assert.IsFalse(event3.unique);
 
             var events4 = JournalMonitor.ParseJournalEntry(line4);
             var event4 = (SignalDetectedEvent)events4[0];
             Assert.AreEqual("Unregistered Comms Beacon", event4.signalSource.invariantName);
-            EDDI.Instance.eventSignalDetected( event4 );
+            EDDI.Instance.EventProcessor.eventSignalDetected( event4 );
             Assert.IsFalse(event4.unique);
         }
 
