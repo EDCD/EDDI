@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EddiScriptResolverService;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,7 +8,7 @@ using System.Runtime.Serialization;
 
 namespace EddiSpeechResponder
 {
-    public class Script : INotifyPropertyChanged
+    public class Script : IScriptDefinition, INotifyPropertyChanged
     {
         [JsonProperty("name")]
         public string Name

@@ -2,7 +2,7 @@ using EddiCore;
 using EddiCore.RuntimeVariables;
 using EddiEvents;
 using EddiIPC_Service;
-using EddiSpeechResponder.ScriptResolverService;
+using EddiScriptResolverService;
 using EddiVoiceAttackResponder;
 using System;
 using System.Collections.Generic;
@@ -263,7 +263,7 @@ namespace DocumentationGenerator
             var help = new List<string>
             {
                 "",
-                EddiSpeechResponder.Properties.CustomFunctions_Untranslated.HelpHeader,
+                EddiScriptResolverService.Properties.CustomFunctions_Untranslated.HelpHeader,
                 ""
             };
 
@@ -278,7 +278,7 @@ namespace DocumentationGenerator
             var functions = new List<string>
             {
                 "",
-                EddiSpeechResponder.Properties.CustomFunctions_Untranslated.FunctionsHeader,
+                EddiScriptResolverService.Properties.CustomFunctions_Untranslated.FunctionsHeader,
                 ""
             };
 

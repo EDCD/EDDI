@@ -3,7 +3,7 @@ using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
-using EddiSpeechResponder.ScriptResolverService;
+using EddiScriptResolverService;
 using EddiSpeechService;
 using System;
 using System.Collections.Generic;
@@ -394,7 +394,7 @@ namespace EddiSpeechResponder
 
         public Task HandleStatusAsync ( Status status )
         {
-            CustomFunctions.OrbitalVelocity.currentAltitudeMeters = status.altitude;
+            EddiScriptResolverService.CustomFunctions.OrbitalVelocity.currentAltitudeMeters = status.altitude;
             return Task.CompletedTask;
         }
 

@@ -1,0 +1,60 @@
+using Cottle;
+using EddiConfigService;
+using EddiSpeechService;
+using System;
+using System.Linq;
+using System.Reflection;
+
+namespace EddiScriptResolverService.CustomFunctions
+{
+    [JetBrains.Annotations.UsedImplicitly]
+    public class VoiceDetails : ICustomFunction
+    {
+        public string name => "VoiceDetails";
+        public FunctionCategory Category => FunctionCategory.Details;
+        public string description => Properties.CustomFunctions_Untranslated.VoiceDetails;
+        public Type ReturnType => typeof( EddiDataDefinitions.VoiceDetails );
+        public IFunction function => Function.CreateNativeMinMax( ( runtime, values, writer ) =>
+        {
+            if (values.Count == 0)
+            {
+                if (SpeechService.Instance?.validatedVoices != null)
+                {
+                    var configuration = ConfigService.Instance.speechServiceConfiguration;
+                    var result = SpeechService.Instance.validatedVoices.FirstOrDefault( v =>
+                        string.Equals( v.voiceKey, configuration.StandardVoice, StringComparison.InvariantCultureIgnoreCase ) ||
+                        string.Equals( v.name, configuration.StandardVoice, StringComparison.InvariantCultureIgnoreCase ) );
+                    return result is null
+                        ? Value.EmptyMap
+                        : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
+                }
+            }
+
+            if (values.Count == 1)
+            {
+                if (int.TryParse(values[0].AsString, out var seed) && SpeechService.Instance?.validatedVoices != null)
+                {
+                    var fromSeed = new System.Random(seed);
+                    var result = SpeechService.Instance.validatedVoices
+                        .OrderBy( o => fromSeed.Next() ).ToList();
+                    return Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
+                }
+
+                if (!string.IsNullOrEmpty(values[0].AsString) && SpeechService.Instance?.validatedVoices != null)
+                {
+                    foreach (var result in SpeechService.Instance.validatedVoices)
+                    {
+                        if (result.name.Contains(values[0].AsString, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            return Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
+                        }
+                    }
+
+                    return $"Voice \"{values[0].AsString}\" not found.";
+                }
+            }
+
+            return "The VoiceDetails function is used improperly. Please review the documentation for correct usage.";
+        }, 0, 1);
+    }
+}

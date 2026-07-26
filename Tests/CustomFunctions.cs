@@ -1,8 +1,8 @@
 ﻿using Cottle;
 using EddiConfigService;
 using EddiDataDefinitions;
-using EddiSpeechResponder.CustomFunctions;
-using EddiSpeechResponder.ScriptResolverService;
+using EddiScriptResolverService;
+using EddiScriptResolverService.CustomFunctions;
 using EddiSpeechService;
 using EddiSpeechService.SpeechProviders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

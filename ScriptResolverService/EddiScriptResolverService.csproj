@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\ConfigService\EddiConfigService.csproj" />
+        <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
+        <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj" />
+        <ProjectReference Include="..\EddiCore\EddiCore.csproj" />
+        <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj" />
+        <ProjectReference Include="..\NavigationService\EddiNavigationService.csproj" />
+        <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj" />
+        <ProjectReference Include="..\Utilities\Utilities.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Cottle" />
+        <PackageReference Include="JetBrains.Annotations" />
+        <PackageReference Include="Microsoft.CSharp" />
+        <PackageReference Include="System.Collections.Immutable" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Update="Properties\CustomFunctions.Untranslated.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>CustomFunctions.Untranslated.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\ScriptResolverResources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>ScriptResolverResources.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Update="Properties\CustomFunctions.Untranslated.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>CustomFunctions.Untranslated.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\ScriptResolverResources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>ScriptResolverResources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
+</Project>

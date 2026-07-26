@@ -1,5 +1,5 @@
-﻿using EddiSpeechResponder.AvalonEdit;
-using EddiSpeechResponder.ScriptResolverService;
+﻿using EddiScriptResolverService;
+using EddiSpeechResponder.AvalonEdit;
 using System;
 using System.Collections.Generic;
 using System.Linq;

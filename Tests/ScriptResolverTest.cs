@@ -1,6 +1,6 @@
 ﻿using Cottle;
+using EddiScriptResolverService;
 using EddiSpeechResponder;
-using EddiSpeechResponder.ScriptResolverService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

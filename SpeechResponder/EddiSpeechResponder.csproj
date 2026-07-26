@@ -22,6 +22,7 @@
         <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj" />
         <ProjectReference Include="..\Events\EddiEvents.csproj" />
         <ProjectReference Include="..\NavigationService\EddiNavigationService.csproj" />
+        <ProjectReference Include="..\ScriptResolverService\EddiScriptResolverService.csproj" />
         <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj" />
         <ProjectReference Include="..\Utilities\Utilities.csproj" />
     </ItemGroup>
@@ -88,11 +89,6 @@
         <Resource Include="Images\Folding.png" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Update="Properties\CustomFunctions.Untranslated.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>CustomFunctions.Untranslated.resx</DependentUpon>
-        </Compile>
         <Compile Update="Properties\SpeechResponder.Designer.cs">
             <DesignTime>True</DesignTime>
             <AutoGen>True</AutoGen>
@@ -105,10 +101,6 @@
         </Compile>
     </ItemGroup>
     <ItemGroup>
-        <EmbeddedResource Update="Properties\CustomFunctions.Untranslated.resx">
-            <Generator>PublicResXFileCodeGenerator</Generator>
-            <LastGenOutput>CustomFunctions.Untranslated.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
         <EmbeddedResource Update="Properties\SpeechResponder.resx">
             <Generator>PublicResXFileCodeGenerator</Generator>
             <LastGenOutput>SpeechResponder.Designer.cs</LastGenOutput>

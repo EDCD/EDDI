@@ -3,7 +3,7 @@ using EddiCore;
 using EddiCore.Hotkeys;
 using EddiCore.RuntimeVariables;
 using EddiEvents;
-using EddiSpeechResponder.ScriptResolverService;
+using EddiScriptResolverService;
 using EddiSpeechService;
 using System;
 using System.Collections.Generic;
