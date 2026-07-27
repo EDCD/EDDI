@@ -585,9 +585,11 @@ namespace EddiNavigationMonitor
             } );
 
             // Search Data
-            EDDI.Instance.GameStateMutator.SearchDistanceLy = Functions.StellarDistanceLy(x, y, z,
-                EDDI.Instance.GameState.SearchStarSystem?.x, EDDI.Instance.GameState.SearchStarSystem?.y,
-                EDDI.Instance.GameState.SearchStarSystem?.z) ?? 0;
+            EDDI.Instance.UpdateSearchSystem(
+                EDDI.Instance.GameState.SearchStarSystem,
+                Functions.StellarDistanceLy(x, y, z,
+                    EDDI.Instance.GameState.SearchStarSystem?.x, EDDI.Instance.GameState.SearchStarSystem?.y,
+                    EDDI.Instance.GameState.SearchStarSystem?.z) ?? 0 );
 
             // Save to Config
             if ( !fromLoad && timestamp >= updateDat )
@@ -602,7 +604,7 @@ namespace EddiNavigationMonitor
             if ( routeDestination is null )
             {
                 await EDDI.Instance.updateDestinationSystemAsync( null ).ConfigureAwait(false);
-                EDDI.Instance.GameStateMutator.DestinationDistanceLy = 0;
+                EDDI.Instance.UpdateDestinationDistance( 0 );
                 return;
             }
 
@@ -610,7 +612,7 @@ namespace EddiNavigationMonitor
             var distance = Functions.StellarDistanceLy(
                 routeStart?.x, routeStart?.y, routeStart?.z, 
                 routeDestination.x, routeDestination.y, routeDestination.z) ?? 0;
-            EDDI.Instance.GameStateMutator.DestinationDistanceLy = distance;
+            EDDI.Instance.UpdateDestinationDistance( distance );
         }
 
         public Task HandleStatusAsync(Status status)

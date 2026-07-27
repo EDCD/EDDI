@@ -4,38 +4,22 @@ using Utilities;
 
 namespace EddiCore.GameState
 {
-    internal sealed class EddiGameStateService : IEddiGameStateMutator
+    internal sealed class EddiGameStateService (
+        EddiGameState gameState,
+        Func<(decimal? x, decimal? y, decimal? z)> getHomeSystemCoordinates,
+        Action<Ship> setCurrentShip,
+        Action<string> sayLegacyGameVersionWarning,
+        Action<System.Version, string, string> setStarMapGameVersion,
+        System.Version minGameVersion ) : IEddiGameStateMutator
     {
-        private readonly EddiGameState _gameState;
-        private readonly Func<(decimal? x, decimal? y, decimal? z)> _getHomeSystemCoordinates;
-        private readonly Action<Ship> _setCurrentShip;
-        private readonly Action<string> _sayLegacyGameVersionWarning;
-        private readonly Action<System.Version, string, string> _setStarMapGameVersion;
-        private readonly System.Version _minGameVersion;
         private string _gameVersionRaw;
         private string _gameBuild;
 
-        public EddiGameStateService (
-            EddiGameState gameState,
-            Func<(decimal? x, decimal? y, decimal? z)> getHomeSystemCoordinates,
-            Action<Ship> setCurrentShip,
-            Action<string> sayLegacyGameVersionWarning,
-            Action<System.Version, string, string> setStarMapGameVersion,
-            System.Version minGameVersion )
-        {
-            _gameState = gameState;
-            _getHomeSystemCoordinates = getHomeSystemCoordinates;
-            _setCurrentShip = setCurrentShip;
-            _sayLegacyGameVersionWarning = sayLegacyGameVersionWarning;
-            _setStarMapGameVersion = setStarMapGameVersion;
-            _minGameVersion = minGameVersion;
-        }
-
-        public bool inTelepresence { get => _gameState.inTelepresence; set => _gameState.inTelepresence = value; }
-        public bool inHorizons { get => _gameState.inHorizons; set => _gameState.inHorizons = value; }
-        public bool inOdyssey { get => _gameState.inOdyssey; set => _gameState.inOdyssey = value; }
-        public bool gameIsBeta { get => _gameState.gameIsBeta; set => _gameState.gameIsBeta = value; }
-        public System.Version GameVersion { get => _gameState.GameVersion; set => _gameState.GameVersion = value; }
+        public bool inTelepresence { get => gameState.inTelepresence; set => gameState.inTelepresence = value; }
+        public bool inHorizons { get => gameState.inHorizons; set => gameState.inHorizons = value; }
+        public bool inOdyssey { get => gameState.inOdyssey; set => gameState.inOdyssey = value; }
+        public bool gameIsBeta { get => gameState.gameIsBeta; set => gameState.gameIsBeta = value; }
+        public System.Version GameVersion { get => gameState.GameVersion; set => gameState.GameVersion = value; }
 
         public string GameVersionRaw
         {
@@ -43,75 +27,75 @@ namespace EddiCore.GameState
             set
             {
                 _gameVersionRaw = value;
-                _gameState.GameVersionRaw = value;
+                gameState.GameVersionRaw = value;
                 SetGameVersion( value );
             }
         }
 
         public StarSystem DestinationStarSystem
         {
-            get => _gameState.DestinationStarSystem;
+            get => gameState.DestinationStarSystem;
             set
             {
-                _gameState.DestinationStarSystem = value;
-                SetSystemDistanceFromDestination( _gameState.CurrentStarSystem );
+                gameState.DestinationStarSystem = value;
+                SetSystemDistanceFromDestination( gameState.CurrentStarSystem );
             }
         }
 
-        public decimal DestinationDistanceLy { get => _gameState.DestinationDistanceLy; set => _gameState.DestinationDistanceLy = value; }
-        public string Environment { get => _gameState.Environment; set => _gameState.Environment = value; }
+        public decimal DestinationDistanceLy { get => gameState.DestinationDistanceLy; set => gameState.DestinationDistanceLy = value; }
+        public string Environment { get => gameState.Environment; set => gameState.Environment = value; }
 
         public StarSystem CurrentStarSystem
         {
-            get => _gameState.CurrentStarSystem;
+            get => gameState.CurrentStarSystem;
             set
             {
                 SetSystemDistanceFromHome( value );
                 SetSystemDistanceFromDestination( value );
-                _gameState.CurrentStarSystem = value;
+                gameState.CurrentStarSystem = value;
             }
         }
 
         public StarSystem LastStarSystem
         {
-            get => _gameState.LastStarSystem;
+            get => gameState.LastStarSystem;
             set
             {
                 SetSystemDistanceFromHome( value );
-                _gameState.LastStarSystem = value;
+                gameState.LastStarSystem = value;
             }
         }
 
         public StarSystem NextStarSystem
         {
-            get => _gameState.NextStarSystem;
+            get => gameState.NextStarSystem;
             set
             {
                 SetSystemDistanceFromHome( value );
-                _gameState.NextStarSystem = value;
+                gameState.NextStarSystem = value;
             }
         }
 
-        public Station CurrentStation { get => _gameState.CurrentStation; set => _gameState.CurrentStation = value; }
-        public Body CurrentStellarBody { get => _gameState.CurrentStellarBody; set => _gameState.CurrentStellarBody = value; }
-        public FleetCarrier FleetCarrier { get => _gameState.FleetCarrier; set => _gameState.FleetCarrier = value; }
-        public FleetCarrier SquadronCarrier { get => _gameState.SquadronCarrier; set => _gameState.SquadronCarrier = value; }
+        public Station CurrentStation { get => gameState.CurrentStation; set => gameState.CurrentStation = value; }
+        public Body CurrentStellarBody { get => gameState.CurrentStellarBody; set => gameState.CurrentStellarBody = value; }
+        public FleetCarrier FleetCarrier { get => gameState.FleetCarrier; set => gameState.FleetCarrier = value; }
+        public FleetCarrier SquadronCarrier { get => gameState.SquadronCarrier; set => gameState.SquadronCarrier = value; }
 
         public Ship CurrentShip
         {
-            get => _gameState.CurrentShip;
+            get => gameState.CurrentShip;
             set
             {
-                if ( Equals( value, _gameState.CurrentShip ) ) { return; }
-                _setCurrentShip?.Invoke( value );
-                _gameState.CurrentShip = value;
+                if ( Equals( value, gameState.CurrentShip ) ) { return; }
+                setCurrentShip?.Invoke( value );
+                gameState.CurrentShip = value;
             }
         }
 
-        public string Vehicle { get => _gameState.Vehicle; set => _gameState.Vehicle = value; }
-        public StarSystem SearchStarSystem { get => _gameState.SearchStarSystem; set => _gameState.SearchStarSystem = value; }
-        public Station SearchStation { get => _gameState.SearchStation; set => _gameState.SearchStation = value; }
-        public decimal SearchDistanceLy { get => _gameState.SearchDistanceLy; set => _gameState.SearchDistanceLy = value; }
+        public string Vehicle { get => gameState.Vehicle; set => gameState.Vehicle = value; }
+        public StarSystem SearchStarSystem { get => gameState.SearchStarSystem; set => gameState.SearchStarSystem = value; }
+        public Station SearchStation { get => gameState.SearchStation; set => gameState.SearchStation = value; }
+        public decimal SearchDistanceLy { get => gameState.SearchDistanceLy; set => gameState.SearchDistanceLy = value; }
 
         public void SetGameVersionDetails ( string version, string build )
         {
@@ -129,14 +113,14 @@ namespace EddiCore.GameState
                     ? versionResult
                     : null;
 
-                if ( GameVersion != null && GameVersion < _minGameVersion )
+                if ( GameVersion != null && GameVersion < minGameVersion )
                 {
                     const string msg = "Legacy game version detected. EDDI shall resume processing events after you return to the live galaxy.";
                     Logging.Warn( msg );
-                    _sayLegacyGameVersionWarning?.Invoke( msg );
+                    sayLegacyGameVersionWarning?.Invoke( msg );
                 }
 
-                _setStarMapGameVersion?.Invoke( GameVersion, _gameVersionRaw, _gameBuild );
+                setStarMapGameVersion?.Invoke( GameVersion, _gameVersionRaw, _gameBuild );
             }
             catch ( Exception e )
             {
@@ -146,7 +130,7 @@ namespace EddiCore.GameState
 
         private void SetSystemDistanceFromHome ( StarSystem system )
         {
-            var (homeX, homeY, homeZ) = _getHomeSystemCoordinates();
+            var (homeX, homeY, homeZ) = getHomeSystemCoordinates();
 
             if ( system is null || homeX is null || homeY is null || homeZ is null ) { return; }
 
@@ -156,13 +140,13 @@ namespace EddiCore.GameState
 
         private void SetSystemDistanceFromDestination ( StarSystem system )
         {
-            if ( _gameState.DestinationStarSystem is null || system is null )
+            if ( gameState.DestinationStarSystem is null || system is null )
             {
                 DestinationDistanceLy = 0;
                 return;
             }
 
-            DestinationDistanceLy = system.DistanceFromStarSystem( _gameState.DestinationStarSystem ) ?? 0;
+            DestinationDistanceLy = system.DistanceFromStarSystem( gameState.DestinationStarSystem ) ?? 0;
             Logging.Debug( "Distance from destination system is " + DestinationDistanceLy );
         }
     }

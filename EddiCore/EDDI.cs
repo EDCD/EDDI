@@ -27,11 +27,6 @@ using System.Threading.Tasks;
 using Utilities;
 
 [assembly: InternalsVisibleTo( "Tests" )]
-[assembly: InternalsVisibleTo( "EddiNavigationService" )]
-[assembly: InternalsVisibleTo( "EddiShipMonitor" )]
-[assembly: InternalsVisibleTo( "EddiStatusMonitor" )]
-[assembly: InternalsVisibleTo( "EddiFleetCarrierMonitor" )]
-[assembly: InternalsVisibleTo( "EddiNavigationMonitor" )]
 namespace EddiCore
 {
     /// <summary>
@@ -59,6 +54,24 @@ namespace EddiCore
         internal IEddiGameStateMutator GameStateMutator => _gameStateService;
 
         #endregion
+
+        public void UpdateCurrentShip ( Ship ship ) => _gameStateService.CurrentShip = ship;
+
+        public void UpdateVehicle ( string vehicle ) => _gameStateService.Vehicle = vehicle;
+
+        public void UpdateFleetCarrier ( FleetCarrier carrier ) => _gameStateService.FleetCarrier = carrier;
+
+        public void UpdateSquadronCarrier ( FleetCarrier carrier ) => _gameStateService.SquadronCarrier = carrier;
+
+        public void UpdateSearchSystem ( StarSystem system, decimal distanceLy )
+        {
+            _gameStateService.SearchStarSystem = system;
+            _gameStateService.SearchDistanceLy = distanceLy;
+        }
+
+        public void UpdateSearchStation ( Station station ) => _gameStateService.SearchStation = station;
+
+        public void UpdateDestinationDistance ( decimal distanceLy ) => _gameStateService.DestinationDistanceLy = distanceLy;
 
         internal EddiEventProcessor EventProcessor { get; }
         internal EddiEventPipeline EventPipeline { get; }

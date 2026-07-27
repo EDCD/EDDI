@@ -103,7 +103,7 @@ namespace EddiStatusMonitor
                 {
                     var statusSummary = new Dictionary<string, Status> { { "isStatus", status }, { "wasStatus", lastStatus } };
                     Logging.Debug( $"Status changed vehicle from {lastStatus?.vehicle ?? "<NULL>"} to {status.vehicle}", statusSummary );
-                    EDDI.Instance.GameStateMutator.Vehicle = status.vehicle;
+                    EDDI.Instance.UpdateVehicle( status.vehicle );
                 }
             }
             if ( status.vehicle == Constants.VEHICLE_SHIP && EDDI.Instance.GameState.CurrentShip != null )

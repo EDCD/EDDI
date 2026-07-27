@@ -288,16 +288,16 @@ namespace EddiNavigationService
                     if (system.systemAddress != EDDI.Instance.GameState.SearchStarSystem?.systemAddress)
                     {
                         Logging.Debug("Search star system is " + system.systemname);
-                        EDDI.Instance.GameStateMutator.SearchStarSystem = system;
                     }
                     // Update search system distance
-                    EDDI.Instance.GameStateMutator.SearchDistanceLy = EDDI.Instance.GameState.CurrentStarSystem?.DistanceFromStarSystem(system) ?? 0;
+                    EDDI.Instance.UpdateSearchSystem(
+                        system,
+                        EDDI.Instance.GameState.CurrentStarSystem?.DistanceFromStarSystem(system) ?? 0 );
                 }
             }
             else
             {
-                EDDI.Instance.GameStateMutator.SearchStarSystem = null;
-                EDDI.Instance.GameStateMutator.SearchDistanceLy = 0;
+                EDDI.Instance.UpdateSearchSystem( null, 0 );
             }
 
             // Update search station data
@@ -307,12 +307,12 @@ namespace EddiNavigationService
                 if (station != null && station.marketId != EDDI.Instance.GameState.SearchStation?.marketId)
                 {
                     Logging.Debug("Search station is " + station.name);
-                    EDDI.Instance.GameStateMutator.SearchStation = station;
+                    EDDI.Instance.UpdateSearchStation( station );
                 }
             }
             else
             {
-                EDDI.Instance.GameStateMutator.SearchStation = null;
+                EDDI.Instance.UpdateSearchStation( null );
             }
         }
         public event PropertyChangedEventHandler PropertyChanged;
