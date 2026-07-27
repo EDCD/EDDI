@@ -16,12 +16,9 @@
         <Reference Include="System.Speech" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj" />
         <ProjectReference Include="..\ConfigService\EddiConfigService.csproj" />
         <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
-        <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj" />
         <ProjectReference Include="..\Events\EddiEvents.csproj" />
-        <ProjectReference Include="..\NavigationService\EddiNavigationService.csproj" />
         <ProjectReference Include="..\ScriptResolverService\EddiScriptResolverService.csproj" />
         <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj" />
         <ProjectReference Include="..\Utilities\Utilities.csproj" />

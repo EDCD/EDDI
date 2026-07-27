@@ -6,7 +6,6 @@
     <ItemGroup>
         <ProjectReference Include="..\ConfigService\EddiConfigService.csproj" />
         <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
-        <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj" />
         <ProjectReference Include="..\EddiCore\EddiCore.csproj" />
         <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj" />
         <ProjectReference Include="..\NavigationService\EddiNavigationService.csproj" />
