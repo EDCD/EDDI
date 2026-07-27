@@ -2,9 +2,11 @@
 using EddiCore.GameState;
 using EddiDataDefinitions;
 using EddiDataProviderService;
+using EddiEvents;
 using EddiNavigationService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Tests.Properties;
@@ -34,6 +36,7 @@ namespace Tests
             }
 
             internal EddiGameStateService GameStateService { get; }
+            internal List<Event> EnqueuedEvents { get; } = [ ];
             public IEddiGameState GameState => gameState;
             public DataProviderService DataProvider { get; init; }
             public NavigationMonitorConfiguration NavigationConfiguration { get; set; } = new();
@@ -51,6 +54,7 @@ namespace Tests
                 return Task.CompletedTask;
             }
             public void UpdateDestinationDistance ( decimal distanceLy ) => GameStateService.DestinationDistanceLy = distanceLy;
+            public void EnqueueEvent ( Event @event ) => EnqueuedEvents.Add( @event );
         }
 
         [TestInitialize]
@@ -90,6 +94,8 @@ namespace Tests
 
             fakeSpanshHttpClient.Expect( "dump/1109989017963",
                 Encoding.UTF8.GetString( Resources.SpanshStarSystemDumpAlioth ) );
+            fakeSpanshHttpClient.Expect( "systems/field_values/system_names?q=Alioth",
+                @"{""min_max"":[{""id64"":1109989017963,""name"":""Alioth"",""x"":-33.65625,""y"":72.46875,""z"":4.125}],""values"":[""Alioth""]}" );
             fakeSpanshHttpClient.Expect( "dump/306253399220",
                 Encoding.UTF8.GetString( Resources.SpanshStarSystemDumpAltair ) );
             fakeSpanshHttpClient.Expect( "dump/18263140541865",
@@ -126,6 +132,48 @@ namespace Tests
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedStarSystem, result.system);
             Assert.AreEqual(expectedStationName, result.station);
+        }
+
+        [TestMethod]
+        public async Task MissionQueryUsesInjectedMissionConfiguration()
+        {
+            var sol = new StarSystem { systemname = "Sol", systemAddress = 10477373803, x = 0.0M, y = 0.0M, z = 0.0M };
+            navigationRuntimeContext.GameStateService.CurrentStarSystem = sol;
+            navigationRuntimeContext.MissionConfiguration.missions =
+            [
+                new Mission( 12345, "Mission_Delivery", DateTime.UtcNow.AddHours( 1 ), MissionStatus.Active )
+                {
+                    destinationsystem = "Alioth"
+                }
+            ];
+
+            var result = await navigationService.NavQueryAsync( QueryType.nearest ).ConfigureAwait(false);
+
+            Assert.IsNotNull( result );
+            Assert.AreEqual( "Alioth", result.system );
+            CollectionAssert.AreEqual( new List<ulong> { 12345 }, result.missionids );
+        }
+
+        [TestMethod]
+        public async Task UpdateQueryUsesInjectedDestinationGameState()
+        {
+            var sol = new StarSystem { systemname = "Sol", systemAddress = 10477373803, x = 0.0M, y = 0.0M, z = 0.0M };
+            var alioth = new StarSystem { systemname = "Alioth", systemAddress = 1109989017963, x = 10.0M, y = 0.0M, z = 0.0M };
+            navigationRuntimeContext.GameStateService.CurrentStarSystem = sol;
+            navigationRuntimeContext.GameStateService.DestinationStarSystem = alioth;
+            navigationRuntimeContext.NavigationConfiguration.plottedRouteList = new NavWaypointCollection(
+                [
+                    new NavWaypoint( alioth ) { missionids = [ 67890 ] }
+                ] )
+            {
+                GuidanceEnabled = true
+            };
+
+            var result = await navigationService.NavQueryAsync( QueryType.update ).ConfigureAwait(false);
+
+            Assert.IsNotNull( result );
+            Assert.AreEqual( "Alioth", result.system );
+            CollectionAssert.AreEqual( new List<ulong> { 67890 }, result.missionids );
         }
     }
 }

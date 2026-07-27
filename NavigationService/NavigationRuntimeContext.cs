@@ -4,6 +4,7 @@ using EddiCore;
 using EddiCore.GameState;
 using EddiDataDefinitions;
 using EddiDataProviderService;
+using EddiEvents;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
@@ -20,6 +21,7 @@ namespace EddiNavigationService
         void UpdateSearchStation ( Station station );
         Task UpdateDestinationSystemAsync ( ulong? destinationSystemAddress, string destinationSystem = null );
         void UpdateDestinationDistance ( decimal distanceLy );
+        void EnqueueEvent ( Event @event );
     }
 
     internal sealed class EddiNavigationRuntimeContext : INavigationRuntimeContext
@@ -37,5 +39,6 @@ namespace EddiNavigationService
         public Task UpdateDestinationSystemAsync ( ulong? destinationSystemAddress, string destinationSystem = null ) =>
             EDDI.Instance.updateDestinationSystemAsync( destinationSystemAddress, destinationSystem );
         public void UpdateDestinationDistance ( decimal distanceLy ) => EDDI.Instance.UpdateDestinationDistance( distanceLy );
+        public void EnqueueEvent ( Event @event ) => EDDI.Instance.enqueueEvent( @event );
     }
 }

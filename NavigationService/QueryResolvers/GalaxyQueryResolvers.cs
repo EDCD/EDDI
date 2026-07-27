@@ -1,5 +1,4 @@
 ﻿using EddiConfigService;
-using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using JetBrains.Annotations;
@@ -72,11 +71,11 @@ namespace EddiNavigationService.QueryResolvers
         public static Dictionary<string, object> SpanshQueryFilter => null;
 
         public Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
-            GetNeutronRouteAsync( query.StringArg0, startSystem );
+            GetNeutronRouteAsync( query.StringArg0, startSystem, query.RuntimeContext );
 
         /// <summary> Obtains a neutron star route between the current star system and a named star system </summary>
         /// <returns> The query result </returns>
-        private static async Task<RouteDetailsEvent> GetNeutronRouteAsync ( string targetSystemName, StarSystem startSystem, bool isSupercharged = false, bool useSupercharge = true, bool useInjections = false, bool excludeSecondary = false, bool fromUIquery = false )
+        private static async Task<RouteDetailsEvent> GetNeutronRouteAsync ( string targetSystemName, StarSystem startSystem, INavigationRuntimeContext runtimeContext, bool isSupercharged = false, bool useSupercharge = true, bool useInjections = false, bool excludeSecondary = false, bool fromUIquery = false )
         {
             if ( string.IsNullOrEmpty( targetSystemName ) )
             {
@@ -92,14 +91,14 @@ namespace EddiNavigationService.QueryResolvers
             var cargoCarriedTons = ConfigService.Instance.cargoMonitorConfiguration.cargocarried;
             var shipId = ConfigService.Instance.shipMonitorConfiguration.currentshipid;
             var ship = ConfigService.Instance.shipMonitorConfiguration.shipyard.FirstOrDefault(s => s.LocalId == shipId);
-            var plottedRouteList = await EDDI.Instance.DataProvider.FetchGalaxyRouteAsync( startSystem.systemname, targetSystemName, ship, cargoCarriedTons,
+            var plottedRouteList = await runtimeContext.DataProvider.FetchGalaxyRouteAsync( startSystem.systemname, targetSystemName, ship, cargoCarriedTons,
                 isSupercharged, useSupercharge, useInjections, excludeSecondary, fromUIquery ).ConfigureAwait(false);
             if ( plottedRouteList == null || plottedRouteList.Waypoints.Count <= 1 ) { return null; }
             plottedRouteList.UpdateLocationData( startSystem.systemAddress, startSystem.x, startSystem.y, startSystem.z );
 
             // Sanity check - if we're already navigating to the plotted route destination then the number of jumps
             // must be equal or less then the already plotted route and the total route distance must be less also.
-            var config = ConfigService.Instance.navigationMonitorConfiguration;
+            var config = runtimeContext.NavigationConfiguration;
             if ( plottedRouteList.Waypoints.LastOrDefault ()?.systemAddress ==
                 config.navRouteList.Waypoints.LastOrDefault ()?.systemAddress
                 && plottedRouteList.Waypoints.Count >= config.navRouteList.Waypoints.Count )
@@ -120,23 +119,23 @@ namespace EddiNavigationService.QueryResolvers
         public static Dictionary<string, object> SpanshQueryFilter => null;
 
         public Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
-            GetCarrierRouteAsync( query.StringArg0, startSystem, (long)Math.Round( query.NumericArg ?? 0, 0 ) );
+            GetCarrierRouteAsync( query.StringArg0, startSystem, query.RuntimeContext, (long)Math.Round( query.NumericArg ?? 0, 0 ) );
 
         /// <summary> Obtains a carrier route between the current carrier star system and a named star system </summary>
         /// <returns> The query result </returns>
-        private static async Task<RouteDetailsEvent> GetCarrierRouteAsync ( [NotNull] string targetSystemName, [NotNull] StarSystem startSystem, long? usedCarrierCapacity = 0, string[] refuelDestinations = null, bool fromUIquery = false )
+        private static async Task<RouteDetailsEvent> GetCarrierRouteAsync ( [NotNull] string targetSystemName, [NotNull] StarSystem startSystem, INavigationRuntimeContext runtimeContext, long? usedCarrierCapacity = 0, string[] refuelDestinations = null, bool fromUIquery = false )
         {
-            usedCarrierCapacity ??= EDDI.Instance.GameState.FleetCarrier?.usedCapacity;
+            usedCarrierCapacity ??= runtimeContext.GameState.FleetCarrier?.usedCapacity;
             if ( usedCarrierCapacity is null ) { return null; }
 
-            var plottedRouteList = await EDDI.Instance.DataProvider.FetchCarrierRouteAsync( startSystem.systemname,
+            var plottedRouteList = await runtimeContext.DataProvider.FetchCarrierRouteAsync( startSystem.systemname,
                 [ targetSystemName ], Convert.ToInt64( usedCarrierCapacity ), false, refuelDestinations, fromUIquery ).ConfigureAwait(false);
             if ( plottedRouteList == null || plottedRouteList.Waypoints.Count <= 1 ) { return null; }
             plottedRouteList.UpdateLocationData( startSystem.systemAddress, startSystem.x, startSystem.y, startSystem.z );
 
             // Sanity check - if we're already navigating to the plotted route destination then the number of jumps
             // must be equal or less then the already plotted route and the total route distance must be less also.
-            var config = ConfigService.Instance.navigationMonitorConfiguration;
+            var config = runtimeContext.NavigationConfiguration;
             if ( plottedRouteList.Waypoints.LastOrDefault ()?.systemAddress ==
                 config.navRouteList.Waypoints.LastOrDefault ()?.systemAddress
                 && plottedRouteList.Waypoints.Count >= config.navRouteList.Waypoints.Count )
