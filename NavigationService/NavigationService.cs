@@ -1,6 +1,4 @@
-﻿using EddiConfigService;
-using EddiCore;
-using EddiEvents;
+﻿using EddiEvents;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
@@ -19,6 +17,7 @@ namespace EddiNavigationService
         private static readonly object InstanceLock = new();
 
         private readonly Dictionary<QueryType, IQueryResolver> queryResolvers = [ ];
+        private readonly INavigationRuntimeContext runtimeContext;
 
         // Last query variables
         public QueryType LastQuery
@@ -76,13 +75,18 @@ namespace EddiNavigationService
         }
         private bool _isWorking;
 
-        public NavigationService()
+        public NavigationService() : this( new EddiNavigationRuntimeContext() )
+        { }
+
+        internal NavigationService( INavigationRuntimeContext runtimeContext )
         {
+            this.runtimeContext = runtimeContext;
+
             // Populate our query resolvers list
             GetQueryResolvers();
 
             // Remember our last query
-            var configuration = ConfigService.Instance.navigationMonitorConfiguration;
+            var configuration = runtimeContext.NavigationConfiguration;
             if (Enum.TryParse(configuration.searchQuery, true, out QueryType queryType))
             {
                 if (queryType.Group() != null)
@@ -152,7 +156,7 @@ namespace EddiNavigationService
         {
             IsWorking = true;
             RouteDetailsEvent result = null;
-            var query = new Query ( queryType, stringArg0, stringArg1, numericArg, booleanArg, fromUserInterface );
+            var query = new Query ( queryType, stringArg0, stringArg1, numericArg, booleanArg, fromUserInterface, runtimeContext );
 
             try
             {
@@ -161,7 +165,7 @@ namespace EddiNavigationService
                 // Resolve the current search query
                 if ( queryResolvers.ContainsKey( queryType ) )
                 {
-                    if ( EDDI.Instance.GameState.CurrentStarSystem == null )
+                    if ( runtimeContext.GameState.CurrentStarSystem == null )
                     {
                         Logging.Debug( "Could not resolve navigation query: current star system is unknown." );
                         return null;
@@ -172,7 +176,7 @@ namespace EddiNavigationService
                     {
                         if ( queryType == QueryType.carrier )
                         {
-                            var fleetCarrier = EDDI.Instance.GameState.FleetCarrier;
+                            var fleetCarrier = runtimeContext.GameState.FleetCarrier;
                             if ( fleetCarrier is null )
                             {
                                 Logging.Warn( "Invalid query: no fleet carrier found." );
@@ -181,10 +185,10 @@ namespace EddiNavigationService
                             else
                             {
                                 var carrierLocation = !string.IsNullOrEmpty( stringArg1 ) ? 
-                                    await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( stringArg1 ).ConfigureAwait(false) : 
+                                    await runtimeContext.DataProvider.GetOrFetchStarSystemAsync( stringArg1 ).ConfigureAwait(false) : 
                                     fleetCarrier.currentStarSystemAddress != null 
-                                        ? await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( (ulong)fleetCarrier.currentStarSystemAddress ).ConfigureAwait(false) 
-                                        : await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( fleetCarrier.currentStarSystem ).ConfigureAwait(false);
+                                        ? await runtimeContext.DataProvider.GetOrFetchStarSystemAsync( (ulong)fleetCarrier.currentStarSystemAddress ).ConfigureAwait(false) 
+                                        : await runtimeContext.DataProvider.GetOrFetchStarSystemAsync( fleetCarrier.currentStarSystem ).ConfigureAwait(false);
                                 if ( carrierLocation is null )
                                 {
                                     Logging.Warn("Invalid query: unable to find fleet carrier location.");
@@ -195,7 +199,7 @@ namespace EddiNavigationService
                         }
                         else
                         {
-                            result = await resolver.Value.ResolveAsync( query, EDDI.Instance.GameState.CurrentStarSystem ).ConfigureAwait(false);
+                            result = await resolver.Value.ResolveAsync( query, runtimeContext.GameState.CurrentStarSystem ).ConfigureAwait(false);
                         }
                         break;
                     }
@@ -220,7 +224,7 @@ namespace EddiNavigationService
             // Keep track of the query (excluding route management queries)
             if (result != null)
             {
-                var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+                var navConfig = runtimeContext.NavigationConfiguration;
 
                 // Save the route data
                 if (queryType is QueryType.carrier)
@@ -230,7 +234,7 @@ namespace EddiNavigationService
                     // Save query data
                     navConfig.carrierDestinationArg = LastCarrierDestinationArg;
                     navConfig.carrierPlottedRoute = result.Route;
-                    ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+                    runtimeContext.NavigationConfiguration = navConfig;
                 }
                 else
                 {
@@ -247,7 +251,7 @@ namespace EddiNavigationService
                     }
 
                     navConfig.plottedRouteList = result.Route;
-                    ConfigService.Instance.navigationMonitorConfiguration = navConfig;
+                    runtimeContext.NavigationConfiguration = navConfig;
 
                     // Update the global `SearchSystem` and `SearchStation` variables
                     await UpdateSearchDataAsync(result.systemAddress, result.marketId).ConfigureAwait(false);
@@ -259,7 +263,12 @@ namespace EddiNavigationService
 
         internal static List<ulong> GetSystemMissionIds(string system)
         {
-            var missionsConfig = ConfigService.Instance.missionMonitorConfiguration;
+            return GetSystemMissionIds( system, new EddiNavigationRuntimeContext() );
+        }
+
+        internal static List<ulong> GetSystemMissionIds(string system, INavigationRuntimeContext runtimeContext)
+        {
+            var missionsConfig = runtimeContext.MissionConfiguration;
             var missions = missionsConfig.missions.ToList();
             var missionids = new List<ulong>();       // List of mission IDs for the system
 
@@ -280,39 +289,39 @@ namespace EddiNavigationService
             // Update search system data
             if ( searchSystemAddress > 0 )
             {
-                var system = await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( (ulong)searchSystemAddress ).ConfigureAwait(false);
+                var system = await runtimeContext.DataProvider.GetOrFetchStarSystemAsync( (ulong)searchSystemAddress ).ConfigureAwait(false);
 
                 //Ignore null & empty systems
                 if (system != null)
                 {
-                    if (system.systemAddress != EDDI.Instance.GameState.SearchStarSystem?.systemAddress)
+                    if (system.systemAddress != runtimeContext.GameState.SearchStarSystem?.systemAddress)
                     {
                         Logging.Debug("Search star system is " + system.systemname);
                     }
                     // Update search system distance
-                    EDDI.Instance.UpdateSearchSystem(
+                    runtimeContext.UpdateSearchSystem(
                         system,
-                        EDDI.Instance.GameState.CurrentStarSystem?.DistanceFromStarSystem(system) ?? 0 );
+                        runtimeContext.GameState.CurrentStarSystem?.DistanceFromStarSystem(system) ?? 0 );
                 }
             }
             else
             {
-                EDDI.Instance.UpdateSearchSystem( null, 0 );
+                runtimeContext.UpdateSearchSystem( null, 0 );
             }
 
             // Update search station data
-            if ( marketID > 0 && EDDI.Instance.GameState.SearchStarSystem?.stations != null )
+            if ( marketID > 0 && runtimeContext.GameState.SearchStarSystem?.stations != null )
             {
-                var station = EDDI.Instance.GameState.SearchStarSystem.stations.FirstOrDefault(s => s.marketId == marketID);
-                if (station != null && station.marketId != EDDI.Instance.GameState.SearchStation?.marketId)
+                var station = runtimeContext.GameState.SearchStarSystem.stations.FirstOrDefault(s => s.marketId == marketID);
+                if (station != null && station.marketId != runtimeContext.GameState.SearchStation?.marketId)
                 {
                     Logging.Debug("Search station is " + station.name);
-                    EDDI.Instance.UpdateSearchStation( station );
+                    runtimeContext.UpdateSearchStation( station );
                 }
             }
             else
             {
-                EDDI.Instance.UpdateSearchStation( null );
+                runtimeContext.UpdateSearchStation( null );
             }
         }
         public event PropertyChangedEventHandler PropertyChanged;

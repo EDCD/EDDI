@@ -1,5 +1,7 @@
-﻿using EddiCore;
+﻿using EddiConfigService.Configurations;
+using EddiCore.GameState;
 using EddiDataDefinitions;
+using EddiDataProviderService;
 using EddiNavigationService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -13,59 +15,92 @@ namespace Tests
     public class NavigationServiceTests : TestBase
     {
         private NavigationService navigationService;
+        private TestNavigationRuntimeContext navigationRuntimeContext;
+        private FakeSpanshHttpClient fakeSpanshHttpClient;
+
+        private sealed class TestNavigationRuntimeContext : INavigationRuntimeContext
+        {
+            private readonly EddiGameState gameState = new();
+
+            internal TestNavigationRuntimeContext ()
+            {
+                GameStateService = new EddiGameStateService(
+                    gameState,
+                    () => ( null, null, null ),
+                    null,
+                    null,
+                    null,
+                    new System.Version( 4, 0 ) );
+            }
+
+            internal EddiGameStateService GameStateService { get; }
+            public IEddiGameState GameState => gameState;
+            public DataProviderService DataProvider { get; init; }
+            public NavigationMonitorConfiguration NavigationConfiguration { get; set; } = new();
+            public MissionMonitorConfiguration MissionConfiguration { get; } = new();
+            public void UpdateSearchSystem ( StarSystem system, decimal distanceLy )
+            {
+                GameStateService.SearchStarSystem = system;
+                GameStateService.SearchDistanceLy = distanceLy;
+            }
+
+            public void UpdateSearchStation ( Station station ) => GameStateService.SearchStation = station;
+        }
 
         [TestInitialize]
         public void Start()
         {
-            navigationService = new NavigationService();
-            MakeSafe();
+            var dataProvider = CreateIsolatedTestDataProvider( out fakeSpanshHttpClient, out _ );
+            navigationRuntimeContext = new TestNavigationRuntimeContext
+            {
+                DataProvider = dataProvider
+            };
+            navigationService = new NavigationService( navigationRuntimeContext );
 
-            EDDI.Instance.DataProvider = CreateTestDataProvider();
-
-            FakeSpanshHttpClient.Expect(
+            fakeSpanshHttpClient.Expect(
                 @"bodies/search?json={""filters"":{""type"":{""value"":[""Star""]},""subtype"":{""value"":[""A (Blue-White super giant) Star"",""A (Blue-White) Star"",""B (Blue-White super giant) Star"",""B (Blue-White) Star"",""F (White super giant) Star"",""F (White) Star"",""G (White-Yellow super giant) Star"",""G (White-Yellow) Star"",""K (Yellow-Orange giant) Star"",""K (Yellow-Orange) Star"",""M (Red dwarf) Star"",""M (Red giant) Star"",""M (Red super giant) Star"",""O (Blue-White) Star""]}},""sort"":[{""distance"":{""direction"":""asc""}},{""distance_to_arrival"":{""direction"":""asc""}}],""size"":10,""page"":0,""reference_coords"":{""x"":0.0,""y"":0.0,""z"":0.0}}",
                 Encoding.UTF8.GetString( Resources.SpanshQueryBodyScoopableStar ) );
-            FakeSpanshHttpClient.Expect(
+            fakeSpanshHttpClient.Expect(
                 @"stations/search?json={""filters"":{""material_trader"":{""value"":[""Encoded""]},""is_planetary"":{""value"":false},""has_large_pad"":{""value"":true},""distance_to_arrival"":{""comparison"":""<=>"",""value"":[0,10000]}},""sort"":[{""distance"":{""direction"":""asc""}},{""distance_to_arrival"":{""direction"":""asc""}}],""size"":10,""page"":0,""reference_coords"":{""x"":0.0,""y"":0.0,""z"":0.0}}",
                 Encoding.UTF8.GetString(Resources.SpanshQueryStationEncodedMtrl) );
-            FakeSpanshHttpClient.Expect(
+            fakeSpanshHttpClient.Expect(
                 @"stations/search?json={""filters"":{""material_trader"":{""value"":[""Manufactured""]},""is_planetary"":{""value"":false},""has_large_pad"":{""value"":true},""distance_to_arrival"":{""comparison"":""<=>"",""value"":[0,10000]}},""sort"":[{""distance"":{""direction"":""asc""}},{""distance_to_arrival"":{""direction"":""asc""}}],""size"":10,""page"":0,""reference_coords"":{""x"":0.0,""y"":0.0,""z"":0.0}}",
                 Encoding.UTF8.GetString( Resources.SpanshQueryStationManufacturedMtrl ) );
-            FakeSpanshHttpClient.Expect(
+            fakeSpanshHttpClient.Expect(
                 @"stations/search?json={""filters"":{""material_trader"":{""value"":[""Raw""]},""is_planetary"":{""value"":false},""has_large_pad"":{""value"":true},""distance_to_arrival"":{""comparison"":""<=>"",""value"":[0,10000]}},""sort"":[{""distance"":{""direction"":""asc""}},{""distance_to_arrival"":{""direction"":""asc""}}],""size"":10,""page"":0,""reference_coords"":{""x"":0.0,""y"":0.0,""z"":0.0}}",
                 Encoding.UTF8.GetString( Resources.SpanshQueryStationRawMtrl ) );
-            FakeSpanshHttpClient.Expect(
+            fakeSpanshHttpClient.Expect(
                 @"stations/search?json={""filters"":{""technology_broker"":{""value"":[""Guardian""]},""is_planetary"":{""value"":false},""has_large_pad"":{""value"":true},""distance_to_arrival"":{""comparison"":""<=>"",""value"":[0,10000]}},""sort"":[{""distance"":{""direction"":""asc""}},{""distance_to_arrival"":{""direction"":""asc""}}],""size"":10,""page"":0,""reference_coords"":{""x"":0.0,""y"":0.0,""z"":0.0}}",
                 Encoding.UTF8.GetString( Resources.SpanshQueryStationGuardianTechBroker ) );
-            FakeSpanshHttpClient.Expect(
+            fakeSpanshHttpClient.Expect(
                 @"stations/search?json={""filters"":{""technology_broker"":{""value"":[""Human""]},""is_planetary"":{""value"":false},""has_large_pad"":{""value"":true},""distance_to_arrival"":{""comparison"":""<=>"",""value"":[0,10000]}},""sort"":[{""distance"":{""direction"":""asc""}},{""distance_to_arrival"":{""direction"":""asc""}}],""size"":10,""page"":0,""reference_coords"":{""x"":0.0,""y"":0.0,""z"":0.0}}",
                 Encoding.UTF8.GetString( Resources.SpanshQueryStationHumanTechBroker ) );
-            FakeSpanshHttpClient.Expect(
+            fakeSpanshHttpClient.Expect(
                 @"stations/search?json={""filters"":{""services"":{""value"":[""Interstellar Factors Contact""]},""is_planetary"":{""value"":false},""has_large_pad"":{""value"":true},""distance_to_arrival"":{""comparison"":""<=>"",""value"":[0,10000]}},""sort"":[{""distance"":{""direction"":""asc""}},{""distance_to_arrival"":{""direction"":""asc""}}],""size"":10,""page"":0,""reference_coords"":{""x"":0.0,""y"":0.0,""z"":0.0}}",
                 Encoding.UTF8.GetString( Resources.SpanshQueryStationFacilitator ) );
-            FakeSpanshHttpClient.Expect(
+            fakeSpanshHttpClient.Expect(
                 @"stations/search?json={""filters"":{""system_primary_economy"":{""value"":[""Military""]},""type"":{""value"":[""Planetary Port""]},""services"":{""value"":[""Outfitting""]},""has_large_pad"":{""value"":true},""distance_to_arrival"":{""comparison"":""<=>"",""value"":[0,10000]}},""sort"":[{""distance"":{""direction"":""asc""}},{""distance_to_arrival"":{""direction"":""asc""}}],""size"":10,""page"":0,""reference_coords"":{""x"":0.0,""y"":0.0,""z"":0.0}}",
                 Encoding.UTF8.GetString( Resources.SpanshQueryStationScorpionSRV ) );
 
-            FakeSpanshHttpClient.Expect( "dump/1109989017963",
+            fakeSpanshHttpClient.Expect( "dump/1109989017963",
                 Encoding.UTF8.GetString( Resources.SpanshStarSystemDumpAlioth ) );
-            FakeSpanshHttpClient.Expect( "dump/306253399220",
+            fakeSpanshHttpClient.Expect( "dump/306253399220",
                 Encoding.UTF8.GetString( Resources.SpanshStarSystemDumpAltair ) );
-            FakeSpanshHttpClient.Expect( "dump/18263140541865",
+            fakeSpanshHttpClient.Expect( "dump/18263140541865",
                 Encoding.UTF8.GetString( Resources.SpanshStarSystemDumpBarnards_Star ) );
-            FakeSpanshHttpClient.Expect( "dump/22661186987433",
+            fakeSpanshHttpClient.Expect( "dump/22661186987433",
                 Encoding.UTF8.GetString( Resources.SpanshStarSystemDumpEZ_Aquarii ) );
-            FakeSpanshHttpClient.Expect( "dump/4717761530219",
+            fakeSpanshHttpClient.Expect( "dump/4717761530219",
                 Encoding.UTF8.GetString( Resources.SpanshStarSystemDumpGendalla ) );
-            FakeSpanshHttpClient.Expect( "dump/121569805492",
+            fakeSpanshHttpClient.Expect( "dump/121569805492",
                 Encoding.UTF8.GetString( Resources.SpanshStarSystemDumpSirius ) );
-            FakeSpanshHttpClient.Expect( "dump/10477373803",
+            fakeSpanshHttpClient.Expect( "dump/10477373803",
                 Encoding.UTF8.GetString( Resources.SpanshStarSystemDumpSol ) );
-            FakeSpanshHttpClient.Expect( "dump/5856288576210",
+            fakeSpanshHttpClient.Expect( "dump/5856288576210",
                 Encoding.UTF8.GetString( Resources.SpanshStarSystemDump61_Cyngi ) );
         }
 
-        [TestMethod, DoNotParallelize]
+        [TestMethod]
         [DataRow(QueryType.encoded, null, null, 10000.0, true, "EZ Aquarii", "Magnus Gateway")]
         [DataRow(QueryType.manufactured, null, null, 10000.0, true, "Sirius", "Patterson Enterprise")]
         [DataRow(QueryType.raw, null, null, 10000.0, true, "61 Cygni", "Broglie Terminal")]
@@ -78,8 +113,8 @@ namespace Tests
         {
             // Setup
             var sol = new StarSystem { systemname = "Sol", systemAddress = 10477373803, x = 0.0M, y = 0.0M, z = 0.0M };
-            EDDI.Instance.GameStateMutator.CurrentStarSystem = sol;
-            EDDI.Instance.GameStateMutator.CurrentShip = ShipDefinitions.FromEDModel( "Anaconda" );
+            navigationRuntimeContext.GameStateService.CurrentStarSystem = sol;
+            navigationRuntimeContext.GameStateService.CurrentShip = ShipDefinitions.FromEDModel( "Anaconda" );
 
             var result = await navigationService.NavQueryAsync( query, stringArg0, stringArg1, Convert.ToDecimal( numericArg ), prioritizeOrbitalStations ).ConfigureAwait(false);
             Assert.IsNotNull(result);

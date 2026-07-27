@@ -1,7 +1,7 @@
 using EddiCore;
 using EddiCore.GameState;
-using EddiDataProviderService;
 using EddiDataDefinitions;
+using EddiDataProviderService;
 using EddiEvents;
 using EddiJournalMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,12 +22,11 @@ namespace Tests
         private sealed class TestJournalParseContext : IJournalParseContext
         {
             private readonly EddiGameState gameState = new();
-            private readonly EddiGameStateService gameStateService;
             private readonly Dictionary<string, Event> lastEventOfType = [ ];
 
             internal TestJournalParseContext ()
             {
-                gameStateService = new EddiGameStateService(
+                GameStateService = new EddiGameStateService(
                     gameState,
                     () => ( null, null, null ),
                     null,
@@ -36,7 +35,7 @@ namespace Tests
                     new System.Version( 4, 0 ) );
             }
 
-            internal IEddiGameStateMutator GameStateMutator => gameStateService;
+            internal EddiGameStateService GameStateService { get; }
             public IEddiGameState GameState => gameState;
             public DataProviderService DataProvider { get; init; }
             public List<Event> EnqueuedEvents { get; } = [ ];
@@ -50,6 +49,8 @@ namespace Tests
             public bool TryGetLastEventOfType ( string eventName, out Event @event ) =>
                 lastEventOfType.TryGetValue( eventName, out @event );
         }
+
+        public TestContext TestContext { get; set; }
 
         [TestInitialize]
         public void start()
@@ -2720,7 +2721,7 @@ namespace Tests
                 systemAddress = 1234
             };
             currentSystem.AddOrUpdateBody( body );
-            context.GameStateMutator.CurrentStarSystem = currentSystem;
+            context.GameStateService.CurrentStarSystem = currentSystem;
 
             var line = @"{ ""timestamp"":""2026-01-01T00:00:00Z"", ""event"":""SAAScanComplete"", ""BodyName"":""Test System 1"", ""BodyID"":7, ""SystemAddress"":1234, ""ProbesUsed"":5, ""EfficiencyTarget"":6 }";
             var events = JournalMonitor.ParseJournalEntry( line, context );
@@ -2736,15 +2737,15 @@ namespace Tests
         public async Task TestShipTransferArrivalUsesExplicitParseContextAsync ()
         {
             var context = new TestJournalParseContext();
-            context.GameStateMutator.CurrentStarSystem = new StarSystem { systemname = "Arrival System" };
-            context.GameStateMutator.CurrentStation = new Station { name = "Arrival Station" };
+            context.GameStateService.CurrentStarSystem = new StarSystem { systemname = "Arrival System" };
+            context.GameStateService.CurrentStation = new Station { name = "Arrival Station" };
 
             var line = @"{ ""timestamp"":""2018-07-30T04:57:09Z"", ""event"":""ShipyardTransfer"", ""ShipType"":""TypeX"", ""ShipType_Localised"":""Alliance Chieftain"", ""ShipID"":76, ""System"":""Balante"", ""ShipMarketID"":3223259392, ""Distance"":8.017741, ""TransferPrice"":70213, ""TransferTime"":0, ""MarketID"":3223343616 }";
             var events = JournalMonitor.ParseJournalEntry( line, context );
             var @event = (ShipTransferInitiatedEvent)events[0];
 
             Assert.AreEqual( "Alliance Chieftain", @event.ship );
-            await Task.Delay( 50 ).ConfigureAwait( false );
+            await Task.Delay( 50, TestContext.CancellationToken ).ConfigureAwait( false );
             var arrived = context.EnqueuedEvents.OfType<ShipArrivedEvent>().Single();
             Assert.AreEqual( "Arrival System", arrived.system );
             Assert.AreEqual( "Arrival Station", arrived.station );

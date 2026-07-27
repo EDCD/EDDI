@@ -1,6 +1,6 @@
 using EddiCompanionAppService;
-using EddiCore.EventHandling;
 using EddiConfigService;
+using EddiCore.EventHandling;
 using EddiCore.GameState;
 using EddiCore.Hotkeys;
 using EddiDataDefinitions;

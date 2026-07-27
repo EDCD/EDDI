@@ -1,8 +1,8 @@
 using EddiConfigService;
 using EddiCore;
 using EddiCore.GameState;
-using EddiDataProviderService;
 using EddiDataDefinitions;
+using EddiDataProviderService;
 using EddiEvents;
 using JetBrains.Annotations;
 using Newtonsoft.Json;

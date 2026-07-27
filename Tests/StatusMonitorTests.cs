@@ -1,4 +1,3 @@
-using EddiCore;
 using EddiCore.GameState;
 using EddiDataDefinitions;
 using EddiEvents;
@@ -30,12 +29,11 @@ namespace Tests
         private sealed class TestStatusRuntimeContext : IStatusRuntimeContext
         {
             private readonly EddiGameState gameState = new();
-            private readonly EddiGameStateService gameStateService;
             private readonly Dictionary<string, Event> lastEventOfType = [ ];
 
             internal TestStatusRuntimeContext ()
             {
-                gameStateService = new EddiGameStateService(
+                GameStateService = new EddiGameStateService(
                     gameState,
                     () => ( null, null, null ),
                     ship => CurrentShip = ship,
@@ -44,7 +42,7 @@ namespace Tests
                     new System.Version( 4, 0 ) );
             }
 
-            internal IEddiGameStateMutator GameStateMutator => gameStateService;
+            internal EddiGameStateService GameStateService { get; }
             public IEddiGameState GameState => gameState;
             public Ship CurrentShip { get; private set; }
             public EnteredNormalSpaceEvent LastEnteredNormalSpaceEvent { get; set; }
@@ -55,7 +53,7 @@ namespace Tests
 
             public void StartStatusService () => StatusServiceStarted = true;
             public void StopStatusService () => StatusServiceStopped = true;
-            public void UpdateVehicle ( string vehicle ) => GameStateMutator.Vehicle = vehicle;
+            public void UpdateVehicle ( string vehicle ) => GameStateService.Vehicle = vehicle;
             public void ClearFuelLog () => FuelLogCleared = true;
             public void EnqueueEvent ( Event @event )
             {
@@ -910,7 +908,7 @@ namespace Tests
             var line3 = @"{ ""timestamp"":""2025-01-12T21:08:09Z"", ""event"":""Status"", ""Flags"":150995032, ""Flags2"":0, ""Pips"":[5,2,5], ""FireGroup"":1, ""GuiFocus"":0, ""Fuel"":{ ""FuelMain"":14.140745, ""FuelReservoir"":0.244791 }, ""Cargo"":31.000000, ""LegalState"":""Clean"", ""Balance"":4815532182, ""Destination"":{ ""System"":13864557094337, ""Body"":0, ""Name"":""Kremainn"" } }";
             var line4 = @"{ ""timestamp"":""2025-01-12T21:06:34Z"", ""event"":""Status"", ""Flags"":150995032, ""Flags2"":0, ""Pips"":[5,2,5], ""FireGroup"":1, ""GuiFocus"":0, ""Fuel"":{ ""FuelMain"":14.140745, ""FuelReservoir"":0.244791 }, ""Cargo"":31.000000, ""LegalState"":""Clean"", ""Balance"":4815532182, ""Destination"":{ ""System"":13864557094337, ""Body"":0, ""Name"":""Kremainn"" } }";
 
-            statusRuntimeContext.GameStateMutator.CurrentShip = ShipDefinitions.FromEDModel( "CobraMkV" );
+            statusRuntimeContext.GameStateService.CurrentShip = ShipDefinitions.FromEDModel( "CobraMkV" );
             Assert.IsNotNull(statusRuntimeContext.GameState.CurrentShip );
             statusRuntimeContext.GameState.CurrentShip.fueltank = Module.Int_FuelTank_Size4_Class3;
             Assert.AreEqual(16M, statusRuntimeContext.GameState.CurrentShip.fueltankcapacity);

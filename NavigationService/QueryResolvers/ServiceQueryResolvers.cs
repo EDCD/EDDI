@@ -1,6 +1,4 @@
-﻿using EddiConfigService;
-using EddiCore;
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
 using EddiEvents;
 using JetBrains.Annotations;
 using System;
@@ -111,6 +109,7 @@ namespace EddiNavigationService.QueryResolvers
             Dictionary<string, object> spanshQueryFilter,
             [ NotNull ] Query query,
             [ NotNull ] StarSystem startSystem ) => GetServiceSystemAsync( queryType, startSystem,
+            query.RuntimeContext,
             spanshQueryFilter, query.NumericArg is null
                 ? (int?)null
                 : Convert.ToInt32( Math.Round( (decimal)query.NumericArg ) ),
@@ -119,6 +118,7 @@ namespace EddiNavigationService.QueryResolvers
         /// <summary> Route to the nearest star system that offers a specific service </summary>
         /// <returns> The query result </returns>
         private static async Task<RouteDetailsEvent> GetServiceSystemAsync ( QueryType serviceQuery, [ NotNull ] StarSystem startSystem,
+            INavigationRuntimeContext runtimeContext,
             Dictionary<string, object> spanshQueryFilter = null, int? maxDistanceOverride = null,
             bool? prioritizeOrbitalStationsOverride = null )
         {
@@ -138,23 +138,24 @@ namespace EddiNavigationService.QueryResolvers
             var fromZ = Convert.ToDecimal( startSystem.z );
 
             // Get up-to-date configuration data
-            var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+            var navConfig = runtimeContext.NavigationConfiguration;
             var maxStationDistance = maxDistanceOverride ?? navConfig.maxSearchDistanceFromStarLs ?? 10000;
             var prioritizeOrbitalStations = prioritizeOrbitalStationsOverride ?? navConfig.prioritizeOrbitalStations;
+            spanshQueryFilter = new Dictionary<string, object>( spanshQueryFilter );
 
             // Add configured and situational search filter parameters
             if ( prioritizeOrbitalStations && serviceQuery != QueryType.scorpion )
             {
                 spanshQueryFilter.Add( "is_planetary", new { value = false } );
             }
-            var shipSize = EDDI.Instance.GameState.CurrentShip?.Size ?? LandingPadSize.Large;
+            var shipSize = runtimeContext.GameState.CurrentShip?.Size ?? LandingPadSize.Large;
             if ( shipSize.sizeIndex == 3 )
             {
                 spanshQueryFilter.Add( "has_large_pad", new { value = true } );
             }
             spanshQueryFilter.Add( "distance_to_arrival", new { comparison = "<=>", value = new[] { 0, maxStationDistance } } );
             
-            var searchResult = await EDDI.Instance.DataProvider.FetchStationWaypointAsync( fromX, fromY, fromZ, spanshQueryFilter ).ConfigureAwait(false);
+            var searchResult = await runtimeContext.DataProvider.FetchStationWaypointAsync( fromX, fromY, fromZ, spanshQueryFilter ).ConfigureAwait(false);
             if ( searchResult != null )
             {
                 searchResult.visited = searchResult.systemAddress == startSystem.systemAddress;
@@ -168,7 +169,7 @@ namespace EddiNavigationService.QueryResolvers
                 }
 
                 // Get mission IDs for 'service' system 
-                var missionids = NavigationService.GetSystemMissionIds( searchResult.systemName );
+                var missionids = NavigationService.GetSystemMissionIds( searchResult.systemName, runtimeContext );
 
                 return new RouteDetailsEvent( DateTime.UtcNow, serviceQuery.ToString(), searchResult.systemName, searchResult.systemAddress, searchResult.stationName, searchResult.marketID, navRouteList, missionids.Count, missionids );
             }

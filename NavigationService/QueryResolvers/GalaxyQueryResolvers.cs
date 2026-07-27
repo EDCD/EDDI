@@ -38,11 +38,11 @@ namespace EddiNavigationService.QueryResolvers
             };
 
         public Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
-            GetNearestScoopSystemAsync( startSystem, SpanshQueryFilter );
+            GetNearestScoopSystemAsync( startSystem, query.RuntimeContext, SpanshQueryFilter );
 
         /// <summary> Route to the nearest star system that is eligible for fuel scoop refueling </summary>
         /// <returns> The query result </returns>
-        private static async Task<RouteDetailsEvent> GetNearestScoopSystemAsync ( [ NotNull ] StarSystem startSystem, [ NotNull ] Dictionary<string, object> searchFilter )
+        private static async Task<RouteDetailsEvent> GetNearestScoopSystemAsync ( [ NotNull ] StarSystem startSystem, INavigationRuntimeContext runtimeContext, [ NotNull ] Dictionary<string, object> searchFilter )
         {
             if ( startSystem.x is null || startSystem.y is null || startSystem.z is null )
             {
@@ -58,7 +58,7 @@ namespace EddiNavigationService.QueryResolvers
             navRouteList.Waypoints.Add( new NavWaypoint( startSystem ) { visited = true } );
             if ( !startSystem.scoopable )
             {
-                var searchSystem = await EDDI.Instance.DataProvider.FetchBodyWaypointAsync( fromX, fromY, fromZ, searchFilter ).ConfigureAwait(false);
+                var searchSystem = await runtimeContext.DataProvider.FetchBodyWaypointAsync( fromX, fromY, fromZ, searchFilter ).ConfigureAwait(false);
                 navRouteList.Waypoints.Add( searchSystem );
             }
             return new RouteDetailsEvent ( DateTime.UtcNow, nameof(QueryType.scoop), navRouteList.Waypoints.LastOrDefault()?.systemName, navRouteList.Waypoints.LastOrDefault()?.systemAddress, null, null, navRouteList, navRouteList.Waypoints.Count, null );
