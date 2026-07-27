@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Tests
 {
-    [TestClass, TestCategory("UnitTests"), DoNotParallelize]
+    [TestClass, TestCategory("UnitTests")]
     public class InaraResponderTests : TestBase
     {
         private InaraResponder responder;
@@ -62,7 +62,6 @@ namespace Tests
         [TestInitialize]
         public void Setup()
         {
-            MakeSafe();
             fakeInaraService = new FakeInaraService();
             responder = new InaraResponder { inaraService = fakeInaraService };
         }
@@ -116,10 +115,11 @@ namespace Tests
             Assert.IsTrue(task.IsCompleted && !task.IsFaulted );
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public void HandleAsync_WhenInTelepresence_ReturnsCompletedTask()
         {
             // Arrange
+            MakeSafe();
             EDDI.Instance.GameStateMutator.inTelepresence = true;
             var @event = new DiedEvent(DateTime.UtcNow, [ ] );
 
@@ -133,10 +133,11 @@ namespace Tests
             EDDI.Instance.GameStateMutator.inTelepresence = false;
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public void HandleAsync_WhenGameIsBeta_ReturnsCompletedTask()
         {
             // Arrange
+            MakeSafe();
             EDDI.Instance.GameStateMutator.gameIsBeta = true;
             var @event = new DiedEvent(DateTime.UtcNow, [ ] );
 
@@ -150,10 +151,11 @@ namespace Tests
             EDDI.Instance.GameStateMutator.gameIsBeta = false;
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public void HandleAsync_WhenGameVersionNull_ReturnsCompletedTask()
         {
             // Arrange
+            MakeSafe();
             var currentVersion = EDDI.Instance.GameState.GameVersion;
             EDDI.Instance.GameStateMutator.GameVersion = null;
             var @event = new DiedEvent(DateTime.UtcNow, [ ] );
@@ -168,10 +170,11 @@ namespace Tests
             EDDI.Instance.GameStateMutator.GameVersion = currentVersion;
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public void HandleAsync_WhenGameVersionBelowMinimum_ReturnsCompletedTask()
         {
             // Arrange
+            MakeSafe();
             var currentVersion = EDDI.Instance.GameState.GameVersion;
             EDDI.Instance.GameStateMutator.GameVersion = new Version(3, 9);
             EDDI.Instance.GameStateMutator.inTelepresence = false;
@@ -188,10 +191,11 @@ namespace Tests
             EDDI.Instance.GameStateMutator.GameVersion = currentVersion;
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public void HandleAsync_WhenEventTimestampOlderThan30Days_ReturnsCompletedTask()
         {
             // Arrange
+            MakeSafe();
             var oldTimestamp = DateTime.UtcNow.AddDays(-31);
             EDDI.Instance.GameStateMutator.inTelepresence = false;
             EDDI.Instance.GameStateMutator.gameIsBeta = false;
@@ -364,10 +368,11 @@ namespace Tests
 
         #region Specific Event Handler Tests
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public void HandleDiedEvent_EnqueuesEvent()
         {
             // Arrange
+            MakeSafe();
             var killers = new List<Killer>
             {
                 new("Killer1", "Adder", CombatRating.Competent)
@@ -385,10 +390,11 @@ namespace Tests
             Assert.IsNotEmpty( fakeInaraService.EnqueuedEvents );
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public void HandleCargoEvent_WithInventory_EnqueuesEventData()
         {
             // Arrange
+            MakeSafe();
             var inventory = new List<CargoInfoItem>
             {
                 new() { name = "Commodity1", count = 10 },

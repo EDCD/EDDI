@@ -1,13 +1,22 @@
 ﻿using EddiCompanionAppService;
 using EddiConfigService;
 using EddiCore;
+using EddiCore.EventHandling;
+using EddiCore.GameState;
 using EddiDataProviderService;
+using EddiEvents;
 using EddiSpanshService;
 using EddiStarMapService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 // Number of worker threads is automatic because `Workers` is set to 0.
 // There are 3 scopes of parallelization:
@@ -52,6 +61,79 @@ namespace Tests
                 fakeStarSystemRepository, 
                 true
                 );
+        }
+
+        internal static DataProviderService CreateIsolatedTestDataProvider (
+            out FakeSpanshHttpClient fakeSpanshHttpClient,
+            out FakeEdsmHttpClient fakeEdsmHttpClient )
+        {
+            fakeSpanshHttpClient = new FakeSpanshHttpClient();
+            fakeEdsmHttpClient = new FakeEdsmHttpClient();
+            return DataProviderService.Create(
+                new StarMapService( fakeEdsmHttpClient ),
+                new SpanshService( fakeSpanshHttpClient ),
+                StarSystemSqLiteRepository.Create( true ),
+                true );
+        }
+
+        internal static IsolatedEddiEventProcessorContext CreateEventProcessorContext (
+            DataProviderService dataProvider = null )
+        {
+            return new IsolatedEddiEventProcessorContext
+            {
+                DataProvider = dataProvider ?? CreateIsolatedTestDataProvider( out _, out _ )
+            };
+        }
+
+        internal sealed class IsolatedEddiEventProcessorContext : IEddiEventProcessorContext
+        {
+            private readonly EddiGameStateService gameStateService;
+
+            internal IsolatedEddiEventProcessorContext ()
+            {
+                GameStateOwner = new EddiGameState();
+                gameStateService = new EddiGameStateService(
+                    GameStateOwner,
+                    () => ( null, null, null ),
+                    null,
+                    null,
+                    null,
+                    new Version( 4, 0 ) );
+                EventPipeline = new EddiEventPipeline(
+                    _ => Task.FromResult( true ),
+                    () => [ ],
+                    () => [ ],
+                    _ => null,
+                    () => true,
+                    () => GameStateOwner.GameVersion,
+                    new Version( 4, 0 ),
+                    CancellationToken.None );
+            }
+
+            internal EddiGameState GameStateOwner { get; }
+            public IEddiGameState GameState => GameStateOwner;
+            public IEddiGameStateMutator GameStateMutator => gameStateService;
+            public DataProviderService DataProvider { get; init; }
+            public EddiEventPipeline EventPipeline { get; }
+            public ConcurrentDictionary<string, Event> lastEventOfType => EventPipeline.LastEventOfType;
+            public Dictionary<string, IEddiMonitor> Monitors { get; } = [ ];
+
+            public IEddiMonitor ObtainMonitor ( string invariantName, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase )
+            {
+                return Monitors.FirstOrDefault( kvp => kvp.Key.Equals( invariantName, stringComparison ) ).Value;
+            }
+
+            public Task conditionallyRefreshStationProfileAsync (
+                string expectedSystemName,
+                long expectedLastMarketID,
+                bool forceUpdate = false,
+                JObject profileJson = null ) => Task.CompletedTask;
+
+            public Task updateDestinationSystemAsync ( ulong? destinationSystemAddress, string destinationSystem = null )
+            {
+                GameStateMutator.DestinationStarSystem = null;
+                return Task.CompletedTask;
+            }
         }
 
         public static T DeserializeJsonResource<T>(byte[] data, JsonSerializerSettings settings = null) where T : class
