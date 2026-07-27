@@ -1,6 +1,7 @@
 using EddiCore;
 using EddiCore.EventHandling;
 using EddiCore.GameState;
+using EddiCore.RuntimeVariables;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
@@ -134,6 +135,20 @@ namespace Tests
             }
         }
 
+        private sealed class TestRuntimeVariableContext : IRuntimeVariableContext
+        {
+            public TestRuntimeVariableContext ( IEddiGameState gameState )
+            {
+                GameState = gameState;
+            }
+
+            public IEddiGameState GameState { get; }
+            public bool FromVA { get; init; }
+            public bool CapiActive { get; init; }
+            public bool IcaoActive { get; init; }
+            public bool IpaActive { get; init; }
+        }
+
         [TestMethod]
         public void EddiGameState_AssigningProperty_RaisesPropertyChanged ()
         {
@@ -145,6 +160,42 @@ namespace Tests
 
             Assert.Contains( nameof( EddiGameState.Environment ), propertyNames );
             Assert.AreEqual( Constants.ENVIRONMENT_NORMAL_SPACE, gameState.Environment );
+        }
+
+        [TestMethod]
+        public void TopLevelRuntimeVariableValues_BuildsFromExplicitContext ()
+        {
+            var gameState = new EddiGameState();
+            var gameStateService = CreateGameStateService( gameState );
+            gameStateService.DestinationDistanceLy = 12.34M;
+            gameStateService.Environment = Constants.ENVIRONMENT_SUPERCRUISE;
+            gameStateService.inHorizons = true;
+            gameStateService.inOdyssey = false;
+            gameStateService.SearchDistanceLy = 56.78M;
+            gameStateService.Vehicle = Constants.VEHICLE_SHIP;
+            var context = new TestRuntimeVariableContext( gameState )
+            {
+                FromVA = true,
+                CapiActive = true,
+                IcaoActive = false,
+                IpaActive = true
+            };
+
+            var values = TopLevelRuntimeVariableValues.Build( context )
+                .ToDictionary( value => value.Name );
+
+            Assert.AreEqual( true, values[ RuntimeVariableCatalog.CapiActiveVariable ].Value );
+            Assert.AreEqual( 12.34M, values[ RuntimeVariableCatalog.DestinationDistanceLyVariable ].Value );
+            Assert.AreEqual( Constants.ENVIRONMENT_SUPERCRUISE, values[ RuntimeVariableCatalog.EnvironmentVariable ].Value );
+            Assert.AreEqual( true, values[ RuntimeVariableCatalog.HorizonsVariable ].Value );
+            Assert.AreEqual( false, values[ RuntimeVariableCatalog.IcaoActiveVariable ].Value );
+            Assert.AreEqual( true, values[ RuntimeVariableCatalog.IpaActiveVariable ].Value );
+            Assert.AreEqual( false, values[ RuntimeVariableCatalog.OdysseyVariable ].Value );
+            Assert.AreEqual( 56.78M, values[ RuntimeVariableCatalog.SearchDistanceLyVariable ].Value );
+            Assert.AreEqual( true, values[ RuntimeVariableCatalog.VaActiveVariable ].Value );
+            Assert.AreEqual( Constants.VEHICLE_SHIP, values[ RuntimeVariableCatalog.VehicleVariable ].Value );
+            Assert.AreEqual( Constants.EDDI_VERSION.ShortString, values[ RuntimeVariableCatalog.VersionVariable ].Value );
+            Assert.AreEqual( Constants.EDDI_VERSION.ToString(), values[ RuntimeVariableCatalog.VersionVariable ].GetVoiceAttackValue() );
         }
 
         [TestMethod]
