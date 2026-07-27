@@ -45,6 +45,12 @@ namespace Tests
             }
 
             public void UpdateSearchStation ( Station station ) => GameStateService.SearchStation = station;
+            public Task UpdateDestinationSystemAsync ( ulong? destinationSystemAddress, string destinationSystem = null )
+            {
+                GameStateService.DestinationStarSystem = null;
+                return Task.CompletedTask;
+            }
+            public void UpdateDestinationDistance ( decimal distanceLy ) => GameStateService.DestinationDistanceLy = distanceLy;
         }
 
         [TestInitialize]

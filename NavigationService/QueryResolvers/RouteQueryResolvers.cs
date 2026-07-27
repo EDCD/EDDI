@@ -71,9 +71,9 @@ namespace EddiNavigationService.QueryResolvers
         public static Dictionary<string, object> SpanshQueryFilter => null;
 
         public Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
-            CancelRouteAsync();
+            CancelRouteAsync( query.RuntimeContext );
 
-        private static async Task<RouteDetailsEvent> CancelRouteAsync ()
+        private static async Task<RouteDetailsEvent> CancelRouteAsync ( INavigationRuntimeContext runtimeContext )
         {
             // Get up-to-date configuration data
             var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
@@ -83,8 +83,8 @@ namespace EddiNavigationService.QueryResolvers
             ConfigService.Instance.navigationMonitorConfiguration = navConfig;
 
             // Update Voice Attack & Cottle variables
-            await EDDI.Instance.updateDestinationSystemAsync ( null ).ConfigureAwait(false);
-            EDDI.Instance.UpdateDestinationDistance( 0 );
+            await runtimeContext.UpdateDestinationSystemAsync( null ).ConfigureAwait(false);
+            runtimeContext.UpdateDestinationDistance( 0 );
 
             return new RouteDetailsEvent ( DateTime.UtcNow, nameof(QueryType.cancel), null, null, null, null, navConfig.plottedRouteList, navConfig.plottedRouteList.Waypoints.Count, null );
         }

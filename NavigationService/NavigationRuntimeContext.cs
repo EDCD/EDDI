@@ -5,6 +5,7 @@ using EddiCore.GameState;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 [assembly: InternalsVisibleTo( "Tests" )]
 namespace EddiNavigationService
@@ -17,6 +18,8 @@ namespace EddiNavigationService
         MissionMonitorConfiguration MissionConfiguration { get; }
         void UpdateSearchSystem ( StarSystem system, decimal distanceLy );
         void UpdateSearchStation ( Station station );
+        Task UpdateDestinationSystemAsync ( ulong? destinationSystemAddress, string destinationSystem = null );
+        void UpdateDestinationDistance ( decimal distanceLy );
     }
 
     internal sealed class EddiNavigationRuntimeContext : INavigationRuntimeContext
@@ -31,5 +34,8 @@ namespace EddiNavigationService
         public MissionMonitorConfiguration MissionConfiguration => ConfigService.Instance.missionMonitorConfiguration;
         public void UpdateSearchSystem ( StarSystem system, decimal distanceLy ) => EDDI.Instance.UpdateSearchSystem( system, distanceLy );
         public void UpdateSearchStation ( Station station ) => EDDI.Instance.UpdateSearchStation( station );
+        public Task UpdateDestinationSystemAsync ( ulong? destinationSystemAddress, string destinationSystem = null ) =>
+            EDDI.Instance.updateDestinationSystemAsync( destinationSystemAddress, destinationSystem );
+        public void UpdateDestinationDistance ( decimal distanceLy ) => EDDI.Instance.UpdateDestinationDistance( distanceLy );
     }
 }
