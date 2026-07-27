@@ -1,4 +1,6 @@
 using EddiCore;
+using EddiCore.GameState;
+using EddiDataProviderService;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
@@ -17,6 +19,38 @@ namespace Tests
     [TestClass, TestCategory("UnitTests")]
     public class JournalMonitorTests : TestBase
     {
+        private sealed class TestJournalParseContext : IJournalParseContext
+        {
+            private readonly EddiGameState gameState = new();
+            private readonly EddiGameStateService gameStateService;
+            private readonly Dictionary<string, Event> lastEventOfType = [ ];
+
+            internal TestJournalParseContext ()
+            {
+                gameStateService = new EddiGameStateService(
+                    gameState,
+                    () => ( null, null, null ),
+                    null,
+                    null,
+                    null,
+                    new System.Version( 4, 0 ) );
+            }
+
+            internal IEddiGameStateMutator GameStateMutator => gameStateService;
+            public IEddiGameState GameState => gameState;
+            public DataProviderService DataProvider { get; init; }
+            public List<Event> EnqueuedEvents { get; } = [ ];
+
+            public void EnqueueEvent ( Event @event )
+            {
+                EnqueuedEvents.Add( @event );
+                lastEventOfType[ @event.type ] = @event;
+            }
+
+            public bool TryGetLastEventOfType ( string eventName, out Event @event ) =>
+                lastEventOfType.TryGetValue( eventName, out @event );
+        }
+
         [TestInitialize]
         public void start()
         {
@@ -2667,6 +2701,53 @@ namespace Tests
             Assert.AreEqual( 70213, @event.price );
             Assert.AreEqual( 380, @event.time );
             Assert.AreEqual( 3223343616, @event.toMarketId );
+        }
+
+        [TestMethod]
+        public void TestBodyMappedEventUsesExplicitParseContext ()
+        {
+            var context = new TestJournalParseContext();
+            var body = new Body
+            {
+                bodyname = "Test System 1",
+                bodyId = 7,
+                systemname = "Test System",
+                systemAddress = 1234
+            };
+            var currentSystem = new StarSystem
+            {
+                systemname = "Test System",
+                systemAddress = 1234
+            };
+            currentSystem.AddOrUpdateBody( body );
+            context.GameStateMutator.CurrentStarSystem = currentSystem;
+
+            var line = @"{ ""timestamp"":""2026-01-01T00:00:00Z"", ""event"":""SAAScanComplete"", ""BodyName"":""Test System 1"", ""BodyID"":7, ""SystemAddress"":1234, ""ProbesUsed"":5, ""EfficiencyTarget"":6 }";
+            var events = JournalMonitor.ParseJournalEntry( line, context );
+
+            Assert.HasCount( 1, events );
+            var @event = (BodyMappedEvent)events[0];
+            Assert.AreEqual( "Test System 1", @event.bodyname );
+            Assert.AreEqual( new DateTime( 2026, 1, 1, 0, 0, 0, DateTimeKind.Utc ), body.mappedDateTime );
+            Assert.IsTrue( body.mappedEfficiently );
+        }
+
+        [TestMethod]
+        public async Task TestShipTransferArrivalUsesExplicitParseContextAsync ()
+        {
+            var context = new TestJournalParseContext();
+            context.GameStateMutator.CurrentStarSystem = new StarSystem { systemname = "Arrival System" };
+            context.GameStateMutator.CurrentStation = new Station { name = "Arrival Station" };
+
+            var line = @"{ ""timestamp"":""2018-07-30T04:57:09Z"", ""event"":""ShipyardTransfer"", ""ShipType"":""TypeX"", ""ShipType_Localised"":""Alliance Chieftain"", ""ShipID"":76, ""System"":""Balante"", ""ShipMarketID"":3223259392, ""Distance"":8.017741, ""TransferPrice"":70213, ""TransferTime"":0, ""MarketID"":3223343616 }";
+            var events = JournalMonitor.ParseJournalEntry( line, context );
+            var @event = (ShipTransferInitiatedEvent)events[0];
+
+            Assert.AreEqual( "Alliance Chieftain", @event.ship );
+            await Task.Delay( 50 ).ConfigureAwait( false );
+            var arrived = context.EnqueuedEvents.OfType<ShipArrivedEvent>().Single();
+            Assert.AreEqual( "Arrival System", arrived.system );
+            Assert.AreEqual( "Arrival Station", arrived.station );
         }
 
         [TestMethod]

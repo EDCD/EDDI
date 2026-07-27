@@ -1,5 +1,7 @@
 using EddiConfigService;
 using EddiCore;
+using EddiCore.GameState;
+using EddiDataProviderService;
 using EddiDataDefinitions;
 using EddiEvents;
 using JetBrains.Annotations;
@@ -18,6 +20,23 @@ using Utilities;
 [assembly: InternalsVisibleTo( "Tests" )]
 namespace EddiJournalMonitor
 {
+    internal interface IJournalParseContext
+    {
+        IEddiGameState GameState { get; }
+        DataProviderService DataProvider { get; }
+        void EnqueueEvent ( Event @event );
+        bool TryGetLastEventOfType ( string eventName, out Event @event );
+    }
+
+    internal sealed class EddiJournalParseContext : IJournalParseContext
+    {
+        public IEddiGameState GameState => EDDI.Instance.GameState;
+        public DataProviderService DataProvider => EDDI.Instance.DataProvider;
+        public void EnqueueEvent ( Event @event ) => EDDI.Instance.enqueueEvent( @event );
+        public bool TryGetLastEventOfType ( string eventName, out Event @event ) =>
+            EDDI.Instance.lastEventOfType.TryGetValue( eventName, out @event );
+    }
+
     [UsedImplicitly]
     public class JournalMonitor () : LogMonitor( Files.GetEliteSavedGamesDir(), @"^Journal.*\.[0-9\.]+\.log$",
         ( result, isLogLoadEvent ) =>
@@ -51,9 +70,14 @@ namespace EddiJournalMonitor
 
         public static List<Event> ParseJournalEntries(IList<string> lines, bool fromLogLoad = false)
         {
+            return ParseJournalEntries( lines, new EddiJournalParseContext(), fromLogLoad );
+        }
+
+        internal static List<Event> ParseJournalEntries(IList<string> lines, IJournalParseContext journalParseContext, bool fromLogLoad = false)
+        {
             var events = lines
                 .Where( line => !string.IsNullOrEmpty( line ) )
-                .SelectMany( line => ParseJournalEntry( line, fromLogLoad ) )
+                .SelectMany( line => ParseJournalEntry( line, journalParseContext, fromLogLoad ) )
                 .ToList();
 
             if ( fromLogLoad ) { return events; }
@@ -109,7 +133,7 @@ namespace EddiJournalMonitor
                         shipShutdownEvent
                             .ScheduleRebootAsync( e => Task.Run( () =>
                                 {
-                                    EDDI.Instance.enqueueEvent( e );
+                                    journalParseContext.EnqueueEvent( e );
                                     ShipShutdownCancellationTokenSource?.Dispose();
                                     ShipShutdownCancellationTokenSource = null;
                                 } ),
@@ -124,6 +148,11 @@ namespace EddiJournalMonitor
         }
 
         public static List<Event> ParseJournalEntry(string line, bool fromLogLoad = false, bool deferSyntheticEvents = true )
+        {
+            return ParseJournalEntry( line, new EddiJournalParseContext(), fromLogLoad, deferSyntheticEvents );
+        }
+
+        internal static List<Event> ParseJournalEntry(string line, IJournalParseContext journalParseContext, bool fromLogLoad = false, bool deferSyntheticEvents = true )
         {
             var events = new List<Event>();
             try
@@ -163,7 +192,7 @@ namespace EddiJournalMonitor
                             #region Startup Events
                               
                             case "Cargo":
-                                handled = CargoEvent.Handle( timestamp, line, data, EDDI.Instance.GameState.Vehicle, ref events, fromLogLoad );
+                                handled = CargoEvent.Handle( timestamp, line, data, journalParseContext.GameState.Vehicle, ref events, fromLogLoad );
                                 break;
                             case "ClearSavedGame":
                                 handled = ClearedSaveEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
@@ -220,7 +249,7 @@ namespace EddiJournalMonitor
                                 handled = NearSurfaceEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "Docked":
-                                handled = DockedEvent.Handle( timestamp, line, data, EDDI.Instance.GameState.CurrentStarSystem?.factions, ref events, fromLogLoad );
+                                handled = DockedEvent.Handle( timestamp, line, data, journalParseContext.GameState.CurrentStarSystem?.factions, ref events, fromLogLoad );
                                 break;
                             case "DockingCancelled":
                                 handled = DockingCancelledEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
@@ -297,7 +326,7 @@ namespace EddiJournalMonitor
                                 handled = HeatWarningEvent.Handle( timestamp, line, ref events, fromLogLoad );
                                 break;
                             case "HullDamage":
-                                handled = HullDamagedEvent.Handle( timestamp, EDDI.Instance.GameState.Vehicle, line, data, ref events, fromLogLoad );
+                                handled = HullDamagedEvent.Handle( timestamp, journalParseContext.GameState.Vehicle, line, data, ref events, fromLogLoad );
                                 break;
                             case "Interdiction":
                                 handled = ShipInterdictionEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
@@ -366,7 +395,7 @@ namespace EddiJournalMonitor
                                     var efficiencyTarget = JsonParsing.getInt(data, "EfficiencyTarget");
 
                                     // Target may be either a ring or a body
-                                    var system = EDDI.Instance.GameState.CurrentStarSystem;
+                                    var system = journalParseContext.GameState.CurrentStarSystem;
                                     Body body = null;
 
                                     if (system != null && bodyName.EndsWith(" Ring"))
@@ -714,10 +743,10 @@ namespace EddiJournalMonitor
                                         Task.Run( async () =>
                                         {
                                             // Include the station and system at which the transfer will arrive
-                                            var arrivalStation = EDDI.Instance.GameState.CurrentStation?.name ?? string.Empty;
-                                            var arrivalSystem = EDDI.Instance.GameState.CurrentStarSystem?.systemname ?? string.Empty;
+                                            var arrivalStation = journalParseContext.GameState.CurrentStation?.name ?? string.Empty;
+                                            var arrivalSystem = journalParseContext.GameState.CurrentStarSystem?.systemname ?? string.Empty;
                                             await Task.Delay( (int)transferTime * 1000 ).ConfigureAwait( true );
-                                            EDDI.Instance.enqueueEvent( new ModuleArrivedEvent( DateTime.UtcNow, ship, shipId, storageSlot, serverId, module, transferCost, transferTime, arrivalSystem, arrivalStation ) { fromLoad = fromLogLoad } );
+                                            journalParseContext.EnqueueEvent( new ModuleArrivedEvent( DateTime.UtcNow, ship, shipId, storageSlot, serverId, module, transferCost, transferTime, arrivalSystem, arrivalStation ) { fromLoad = fromLogLoad } );
                                         } );
                                     }
                                 }
@@ -903,8 +932,8 @@ namespace EddiJournalMonitor
                                             faction = faction,
 
                                             // Set mission origin to to the current system & station
-                                            originsystem = EDDI.Instance.GameState.CurrentStarSystem?.systemname,
-                                            originstation = EDDI.Instance.GameState.CurrentStation?.name,
+                                            originsystem = journalParseContext.GameState.CurrentStarSystem?.systemname,
+                                            originstation = journalParseContext.GameState.CurrentStation?.name,
 
                                             // Missions with engineering rewards
                                             CommodityDefinition = commodity,
@@ -931,7 +960,7 @@ namespace EddiJournalMonitor
                                                 .Replace("$MISSIONUTIL_MULTIPLE_FINAL_SEPARATOR;", "#")
                                                 .Split('#');
 
-                                            var starSystems = EDDI.Instance.DataProvider.GetOrFetchSystemWaypointsAsync(destinationSystems).GetAwaiter().GetResult();
+                                            var starSystems = journalParseContext.DataProvider.GetOrFetchSystemWaypointsAsync(destinationSystems).GetAwaiter().GetResult();
                                             foreach ( var dest in starSystems )
                                             {
                                                 if ( !string.IsNullOrEmpty( dest.systemName ) &&
@@ -1274,11 +1303,11 @@ namespace EddiJournalMonitor
                                         Task.Run( async () =>
                                         {
                                             // Include the station and system at which the transfer will arrive
-                                            var arrivalStation = EDDI.Instance.GameState.CurrentStation?.name ?? string.Empty;
-                                            var arrivalSystem = EDDI.Instance.GameState.CurrentStarSystem?.systemname ??
+                                            var arrivalStation = journalParseContext.GameState.CurrentStation?.name ?? string.Empty;
+                                            var arrivalSystem = journalParseContext.GameState.CurrentStarSystem?.systemname ??
                                                                 string.Empty;
                                             await Task.Delay( (int)time * 1000 ).ConfigureAwait( true );
-                                            EDDI.Instance.enqueueEvent( new ShipArrivedEvent( DateTime.UtcNow, ship,
+                                            journalParseContext.EnqueueEvent( new ShipArrivedEvent( DateTime.UtcNow, ship,
                                                 arrivalSystem, distance, price, time, arrivalStation, fromMarketId,
                                                 toMarketId ) { fromLoad = fromLogLoad } );
                                         } );
@@ -1384,12 +1413,12 @@ namespace EddiJournalMonitor
 
                                                     var shipSystemName = JsonParsing.getString(shipData, "StarSystem");
                                                     var shipMarketID = JsonParsing.getOptionalLong( shipData, "ShipMarketID" );
-                                                    var stationWaypoint = EDDI.Instance.DataProvider.GetOrFetchStationWaypointAsync(
+                                                    var stationWaypoint = journalParseContext.DataProvider.GetOrFetchStationWaypointAsync(
                                                             shipSystemName ?? system, shipMarketID ?? marketId ).GetAwaiter().GetResult();
                                                     ship.StoredLocation = stationWaypoint is null 
                                                         ? null 
                                                         : new Ship.Location( stationWaypoint );
-                                                    ship.distance = ship.DistanceLY( EDDI.Instance.GameState.CurrentStarSystem );
+                                                    ship.distance = ship.DistanceLY( journalParseContext.GameState.CurrentStarSystem );
                                                     shipyard.Add(ship);
                                                 }
                                             }
@@ -1805,7 +1834,7 @@ namespace EddiJournalMonitor
                                                    BodyType.None;
                                     if ( bodyType == BodyType.Planet )
                                     {
-                                        var starSystem = EDDI.Instance.DataProvider
+                                        var starSystem = journalParseContext.DataProvider
                                             .GetOrCreateStarSystemAsync( systemAddress, systemName ).GetAwaiter()
                                             .GetResult();
                                         bodyType = starSystem?.bodies.FirstOrDefault( b => b.bodyId != null && b.bodyId == bodyId )?.bodyType ?? bodyType;
@@ -1903,7 +1932,7 @@ namespace EddiJournalMonitor
                                     // There is a bug in the journal output where "Body" can be missing but "BodyID" can be present. Try to Work around that here.
                                     if (string.IsNullOrEmpty(bodyName) && systemAddress > 0)
                                     {
-                                        var starSystem = EDDI.Instance.DataProvider.GetOrCreateStarSystemAsync( systemAddress, systemName ).GetAwaiter().GetResult();
+                                        var starSystem = journalParseContext.DataProvider.GetOrCreateStarSystemAsync( systemAddress, systemName ).GetAwaiter().GetResult();
                                         bodyName = starSystem?.bodies?.FirstOrDefault(b => b?.bodyId == bodyId)?.bodyname;
                                     }
 
@@ -2196,7 +2225,7 @@ namespace EddiJournalMonitor
                                     var latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
                                     var longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
 
-                                    var controllingFaction = EventParsing.Faction(data, "Station", EDDI.Instance.GameState.CurrentStarSystem?.systemname, systemAddress, EDDI.Instance.GameState.CurrentStarSystem?.factions);
+                                    var controllingFaction = EventParsing.Faction(data, "Station", journalParseContext.GameState.CurrentStarSystem?.systemname, systemAddress, journalParseContext.GameState.CurrentStarSystem?.factions);
 
                                     // Get station services data
                                     var stationServices = new List<StationService>();
@@ -2290,7 +2319,7 @@ namespace EddiJournalMonitor
                                     if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
                                     var role = EventParsing.CrewRole(data, "Role");
-                                    var telepresence = EDDI.Instance.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    var telepresence = journalParseContext.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
                                     events.Add(new CrewRoleChangedEvent(timestamp, role, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -2340,7 +2369,7 @@ namespace EddiJournalMonitor
 
                                     var name = JsonParsing.getString(data, "Crew");
                                     var fighterId = JsonParsing.getInt(data, "ID");
-                                    var telepresence = EDDI.Instance.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    var telepresence = journalParseContext.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
                                     events.Add(new CrewMemberLaunchedEvent(timestamp, name, fighterId, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -2351,7 +2380,7 @@ namespace EddiJournalMonitor
 
                                     var member = JsonParsing.getString(data, "Crew");
                                     member = member.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
-                                    var telepresence = EDDI.Instance.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    var telepresence = journalParseContext.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
                                     events.Add(new CrewMemberJoinedEvent(timestamp, member, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -2362,7 +2391,7 @@ namespace EddiJournalMonitor
 
                                     var name = JsonParsing.getString(data, "Crew");
                                     var role = EventParsing.CrewRole(data, "Role");
-                                    var telepresence = EDDI.Instance.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    var telepresence = journalParseContext.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
                                     events.Add(new CrewMemberRoleChangedEvent(timestamp, name, role, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -2373,7 +2402,7 @@ namespace EddiJournalMonitor
 
                                     var member = JsonParsing.getString(data, "Crew");
                                     member = member.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
-                                    var telepresence = EDDI.Instance.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    var telepresence = journalParseContext.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
                                     events.Add(new CrewMemberLeftEvent(timestamp, member, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -2417,7 +2446,7 @@ namespace EddiJournalMonitor
                                     if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
                                     var onCrime = JsonParsing.getOptionalBool(data, "OnCrime");
-                                    var telepresence = EDDI.Instance.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    var telepresence = journalParseContext.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
                                     events.Add(new CrewSessionEndedEvent(timestamp, onCrime, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -2435,7 +2464,7 @@ namespace EddiJournalMonitor
                                     var @event = new FriendsEvent( timestamp, name, status ) { raw = line, fromLoad = fromLogLoad };
 
                                     // Friends events can be written before the commander is loaded and need to be delayed until we have seen a "Commander" event
-                                    if ( EDDI.Instance.lastEventOfType.TryGetValue( CommanderLoadingEvent.NAME, out _ ) )
+                                    if ( journalParseContext.TryGetLastEventOfType( CommanderLoadingEvent.NAME, out _ ) )
                                     {
                                         if ( !DelayedEventHolder.TryAdd( CommanderLoadingEvent.NAME, new ConcurrentBag<Event>(
                                                 [ @event ] ) ) )
@@ -2491,7 +2520,7 @@ namespace EddiJournalMonitor
 
                                     var captain = JsonParsing.getString(data, "Captain");
                                     captain = captain.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
-                                    var telepresence = EDDI.Instance.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    var telepresence = journalParseContext.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
                                     events.Add(new CrewJoinedEvent(timestamp, captain, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -2502,7 +2531,7 @@ namespace EddiJournalMonitor
 
                                     var member = JsonParsing.getString(data, "Crew");
                                     member = member.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
-                                    var telepresence = EDDI.Instance.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    var telepresence = journalParseContext.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
                                     events.Add(new CrewMemberRemovedEvent(timestamp, member, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -2562,7 +2591,7 @@ namespace EddiJournalMonitor
                                             Task.Run( async () =>
                                             {
                                                 await Task.Delay( TimeSpan.FromSeconds( 5 ) ).ConfigureAwait( false );
-                                                EDDI.Instance.enqueueEvent( crewPaidWageEvent );
+                                                journalParseContext.EnqueueEvent( crewPaidWageEvent );
                                             } );
                                         }
                                     }
@@ -2672,7 +2701,7 @@ namespace EddiJournalMonitor
 
                                     var captain = JsonParsing.getString(data, "Captain");
                                     captain = captain.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
-                                    var telepresence = EDDI.Instance.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    var telepresence = journalParseContext.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
                                     events.Add(new CrewLeftEvent(timestamp, captain, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -2770,10 +2799,10 @@ namespace EddiJournalMonitor
                                             source = MessageSource.NPC;
                                         }
                                         messageChannel = MessageChannel.FromEDName(channel);
-                                        events.Add(new MessageReceivedEvent(timestamp, localizedFrom ?? from, source, false, messageChannel, JsonParsing.getString(data, "Message_Localised"), EDDI.Instance.GameState.CurrentStarSystem, EDDI.Instance.GameState.CurrentStellarBody, EDDI.Instance.GameState.CurrentStation ) { raw = line, fromLoad = fromLogLoad });
+                                        events.Add(new MessageReceivedEvent(timestamp, localizedFrom ?? from, source, false, messageChannel, JsonParsing.getString(data, "Message_Localised"), journalParseContext.GameState.CurrentStarSystem, journalParseContext.GameState.CurrentStellarBody, journalParseContext.GameState.CurrentStation ) { raw = line, fromLoad = fromLogLoad });
 
                                         // See if we also want to spawn a specific event as well?
-                                        if (message == "$STATION_NoFireZone_entered;" && EDDI.Instance.GameState.Vehicle == Constants.VEHICLE_SHIP)
+                                        if (message == "$STATION_NoFireZone_entered;" && journalParseContext.GameState.Vehicle == Constants.VEHICLE_SHIP)
                                         {
                                             events.Add(new StationNoFireZoneEnteredEvent(timestamp, false) { raw = line, fromLoad = fromLogLoad });
                                         }

@@ -1,32 +1,77 @@
 using EddiCore;
+using EddiCore.GameState;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiStatusMonitor;
 using EddiStatusService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Utilities;
 
 namespace Tests
 {
-    [TestClass, TestCategory("UnitTests"), DoNotParallelize]
+    [TestClass, TestCategory("UnitTests")]
     public class StatusMonitorTests : TestBase
     {
-        readonly StatusService statusService = new();
-        readonly StatusMonitor statusMonitor = new();
+        private StatusService statusService;
+        private StatusMonitor statusMonitor;
+        private TestStatusRuntimeContext statusRuntimeContext;
 
         [TestInitialize]
         public void start()
         {
-            MakeSafe();
+            statusService = new StatusService();
+            statusRuntimeContext = new TestStatusRuntimeContext();
+            statusMonitor = new StatusMonitor( statusRuntimeContext );
+        }
+
+        private sealed class TestStatusRuntimeContext : IStatusRuntimeContext
+        {
+            private readonly EddiGameState gameState = new();
+            private readonly EddiGameStateService gameStateService;
+            private readonly Dictionary<string, Event> lastEventOfType = [ ];
+
+            internal TestStatusRuntimeContext ()
+            {
+                gameStateService = new EddiGameStateService(
+                    gameState,
+                    () => ( null, null, null ),
+                    ship => CurrentShip = ship,
+                    null,
+                    null,
+                    new System.Version( 4, 0 ) );
+            }
+
+            internal IEddiGameStateMutator GameStateMutator => gameStateService;
+            public IEddiGameState GameState => gameState;
+            public Ship CurrentShip { get; private set; }
+            public EnteredNormalSpaceEvent LastEnteredNormalSpaceEvent { get; set; }
+            public List<Event> EnqueuedEvents { get; } = [ ];
+            public bool FuelLogCleared { get; private set; }
+            public bool StatusServiceStarted { get; private set; }
+            public bool StatusServiceStopped { get; private set; }
+
+            public void StartStatusService () => StatusServiceStarted = true;
+            public void StopStatusService () => StatusServiceStopped = true;
+            public void UpdateVehicle ( string vehicle ) => GameStateMutator.Vehicle = vehicle;
+            public void ClearFuelLog () => FuelLogCleared = true;
+            public void EnqueueEvent ( Event @event )
+            {
+                EnqueuedEvents.Add( @event );
+                lastEventOfType[ @event.type ] = @event;
+            }
+
+            public bool TryGetLastEventOfType ( string eventName, out Event @event ) =>
+                lastEventOfType.TryGetValue( eventName, out @event );
         }
 
         [ TestMethod ]
         public void TestParseStatusFlagsDocked ()
         {
             var line = "{ \"timestamp\":\"2018-03-25T00:39:48Z\", \"event\":\"Status\", \"Flags\":16842765, \"Pips\":[5,2,5], \"FireGroup\":0, \"GuiFocus\":0 }";
-            var status = StatusService.Instance.ParseStatusEntry( line );
+            var status = statusService.ParseStatusEntry( line );
 
             // Variables set from status flags (when not signed in, flags are set to '0')
             var expectedTimestamp = new DateTime( 2018, 3, 25, 0, 39, 48, DateTimeKind.Utc );
@@ -865,10 +910,10 @@ namespace Tests
             var line3 = @"{ ""timestamp"":""2025-01-12T21:08:09Z"", ""event"":""Status"", ""Flags"":150995032, ""Flags2"":0, ""Pips"":[5,2,5], ""FireGroup"":1, ""GuiFocus"":0, ""Fuel"":{ ""FuelMain"":14.140745, ""FuelReservoir"":0.244791 }, ""Cargo"":31.000000, ""LegalState"":""Clean"", ""Balance"":4815532182, ""Destination"":{ ""System"":13864557094337, ""Body"":0, ""Name"":""Kremainn"" } }";
             var line4 = @"{ ""timestamp"":""2025-01-12T21:06:34Z"", ""event"":""Status"", ""Flags"":150995032, ""Flags2"":0, ""Pips"":[5,2,5], ""FireGroup"":1, ""GuiFocus"":0, ""Fuel"":{ ""FuelMain"":14.140745, ""FuelReservoir"":0.244791 }, ""Cargo"":31.000000, ""LegalState"":""Clean"", ""Balance"":4815532182, ""Destination"":{ ""System"":13864557094337, ""Body"":0, ""Name"":""Kremainn"" } }";
 
-            EDDI.Instance.GameStateMutator.CurrentShip = ShipDefinitions.FromEDModel( "CobraMkV" );
-            Assert.IsNotNull(EDDI.Instance.GameState.CurrentShip );
-            EDDI.Instance.GameState.CurrentShip.fueltank = Module.Int_FuelTank_Size4_Class3;
-            Assert.AreEqual(16M, EDDI.Instance.GameState.CurrentShip.fueltankcapacity);
+            statusRuntimeContext.GameStateMutator.CurrentShip = ShipDefinitions.FromEDModel( "CobraMkV" );
+            Assert.IsNotNull(statusRuntimeContext.GameState.CurrentShip );
+            statusRuntimeContext.GameState.CurrentShip.fueltank = Module.Int_FuelTank_Size4_Class3;
+            Assert.AreEqual(16M, statusRuntimeContext.GameState.CurrentShip.fueltankcapacity);
 
             var beforeRefuelStatus = statusService.ParseStatusEntry( line1 );
             var duringRefuelStatus = statusService.ParseStatusEntry( line2 );
