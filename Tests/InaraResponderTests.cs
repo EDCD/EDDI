@@ -1,4 +1,6 @@
+using EddiConfigService.Configurations;
 using EddiCore;
+using EddiCore.GameState;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiInaraResponder;
@@ -15,6 +17,39 @@ namespace Tests
     {
         private InaraResponder responder;
         private FakeInaraService fakeInaraService;
+        private TestInaraResponderContext inaraResponderContext;
+
+        private class TestInaraResponderContext : IInaraResponderContext
+        {
+            private readonly EddiGameState gameState = new();
+
+            public TestInaraResponderContext ()
+            {
+                GameStateMutator = new EddiGameStateService(
+                    gameState,
+                    () => (null, null, null),
+                    null,
+                    null,
+                    null,
+                    new Version(4, 0) );
+
+                GameStateMutator.GameVersion = new Version(4, 0);
+                ShipMonitorConfiguration = new ShipMonitorConfiguration();
+            }
+
+            public IEddiGameState GameState => gameState;
+            public IEddiGameStateMutator GameStateMutator { get; }
+            public bool EddiIsBeta { get; set; }
+            public InaraConfiguration InaraConfiguration { get; set; } = new();
+            public ShipMonitorConfiguration ShipMonitorConfiguration { get; set; }
+            public List<(Ship ship, string message)> SpokenMessages { get; } = [];
+
+            public Task SayAsync ( Ship ship, string message )
+            {
+                SpokenMessages.Add( (ship, message) );
+                return Task.CompletedTask;
+            }
+        }
 
         /// <summary>
         /// Fake implementation of IInaraService for testing purposes.
@@ -63,7 +98,8 @@ namespace Tests
         public void Setup()
         {
             fakeInaraService = new FakeInaraService();
-            responder = new InaraResponder { inaraService = fakeInaraService };
+            inaraResponderContext = new TestInaraResponderContext();
+            responder = new InaraResponder( inaraResponderContext ) { inaraService = fakeInaraService };
         }
 
         #region ResponderMetadata Tests
@@ -115,12 +151,11 @@ namespace Tests
             Assert.IsTrue(task.IsCompleted && !task.IsFaulted );
         }
 
-        [TestMethod, DoNotParallelize]
+        [TestMethod]
         public void HandleAsync_WhenInTelepresence_ReturnsCompletedTask()
         {
             // Arrange
-            MakeSafe();
-            EDDI.Instance.GameStateMutator.inTelepresence = true;
+            inaraResponderContext.GameStateMutator.inTelepresence = true;
             var @event = new DiedEvent(DateTime.UtcNow, [ ] );
 
             // Act
@@ -128,17 +163,13 @@ namespace Tests
 
             // Assert
             Assert.IsTrue(task.IsCompleted && !task.IsFaulted );
-
-            // Cleanup
-            EDDI.Instance.GameStateMutator.inTelepresence = false;
         }
 
-        [TestMethod, DoNotParallelize]
+        [TestMethod]
         public void HandleAsync_WhenGameIsBeta_ReturnsCompletedTask()
         {
             // Arrange
-            MakeSafe();
-            EDDI.Instance.GameStateMutator.gameIsBeta = true;
+            inaraResponderContext.GameStateMutator.gameIsBeta = true;
             var @event = new DiedEvent(DateTime.UtcNow, [ ] );
 
             // Act
@@ -146,18 +177,13 @@ namespace Tests
 
             // Assert
             Assert.IsTrue(task.IsCompleted && !task.IsFaulted);
-
-            // Cleanup
-            EDDI.Instance.GameStateMutator.gameIsBeta = false;
         }
 
-        [TestMethod, DoNotParallelize]
+        [TestMethod]
         public void HandleAsync_WhenGameVersionNull_ReturnsCompletedTask()
         {
             // Arrange
-            MakeSafe();
-            var currentVersion = EDDI.Instance.GameState.GameVersion;
-            EDDI.Instance.GameStateMutator.GameVersion = null;
+            inaraResponderContext.GameStateMutator.GameVersion = null;
             var @event = new DiedEvent(DateTime.UtcNow, [ ] );
 
             // Act
@@ -165,20 +191,15 @@ namespace Tests
 
             // Assert
             Assert.IsTrue(task.IsCompleted && !task.IsFaulted );
-
-            // Cleanup
-            EDDI.Instance.GameStateMutator.GameVersion = currentVersion;
         }
 
-        [TestMethod, DoNotParallelize]
+        [TestMethod]
         public void HandleAsync_WhenGameVersionBelowMinimum_ReturnsCompletedTask()
         {
             // Arrange
-            MakeSafe();
-            var currentVersion = EDDI.Instance.GameState.GameVersion;
-            EDDI.Instance.GameStateMutator.GameVersion = new Version(3, 9);
-            EDDI.Instance.GameStateMutator.inTelepresence = false;
-            EDDI.Instance.GameStateMutator.gameIsBeta = false;
+            inaraResponderContext.GameStateMutator.GameVersion = new Version(3, 9);
+            inaraResponderContext.GameStateMutator.inTelepresence = false;
+            inaraResponderContext.GameStateMutator.gameIsBeta = false;
             var @event = new DiedEvent(DateTime.UtcNow, [ ] );
 
             // Act
@@ -186,20 +207,16 @@ namespace Tests
 
             // Assert
             Assert.IsTrue(task.IsCompleted && !task.IsFaulted );
-
-            // Cleanup
-            EDDI.Instance.GameStateMutator.GameVersion = currentVersion;
         }
 
-        [TestMethod, DoNotParallelize]
+        [TestMethod]
         public void HandleAsync_WhenEventTimestampOlderThan30Days_ReturnsCompletedTask()
         {
             // Arrange
-            MakeSafe();
             var oldTimestamp = DateTime.UtcNow.AddDays(-31);
-            EDDI.Instance.GameStateMutator.inTelepresence = false;
-            EDDI.Instance.GameStateMutator.gameIsBeta = false;
-            EDDI.Instance.GameStateMutator.GameVersion = new Version(4, 0);
+            inaraResponderContext.GameStateMutator.inTelepresence = false;
+            inaraResponderContext.GameStateMutator.gameIsBeta = false;
+            inaraResponderContext.GameStateMutator.GameVersion = new Version(4, 0);
             var @event = new DiedEvent(oldTimestamp, [ ] );
 
             // Act
@@ -368,19 +385,18 @@ namespace Tests
 
         #region Specific Event Handler Tests
 
-        [TestMethod, DoNotParallelize]
+        [TestMethod]
         public void HandleDiedEvent_EnqueuesEvent()
         {
             // Arrange
-            MakeSafe();
             var killers = new List<Killer>
             {
                 new("Killer1", "Adder", CombatRating.Competent)
             };
             var @event = new DiedEvent(DateTime.UtcNow, killers);
-            EDDI.Instance.GameStateMutator.inTelepresence = false;
-            EDDI.Instance.GameStateMutator.gameIsBeta = false;
-            EDDI.Instance.GameStateMutator.GameVersion = new Version(4, 0);
+            inaraResponderContext.GameStateMutator.inTelepresence = false;
+            inaraResponderContext.GameStateMutator.gameIsBeta = false;
+            inaraResponderContext.GameStateMutator.GameVersion = new Version(4, 0);
 
             // Act
             var task = responder.HandleAsync(@event);
@@ -390,20 +406,19 @@ namespace Tests
             Assert.IsNotEmpty( fakeInaraService.EnqueuedEvents );
         }
 
-        [TestMethod, DoNotParallelize]
+        [TestMethod]
         public void HandleCargoEvent_WithInventory_EnqueuesEventData()
         {
             // Arrange
-            MakeSafe();
             var inventory = new List<CargoInfoItem>
             {
                 new() { name = "Commodity1", count = 10 },
                 new() { name = "Commodity2", count = 20 }
             };
             var @event = new CargoEvent(DateTime.UtcNow, true, "Ship", inventory, 30 );
-            EDDI.Instance.GameStateMutator.inTelepresence = false;
-            EDDI.Instance.GameStateMutator.gameIsBeta = false;
-            EDDI.Instance.GameStateMutator.GameVersion = new Version(4, 0);
+            inaraResponderContext.GameStateMutator.inTelepresence = false;
+            inaraResponderContext.GameStateMutator.gameIsBeta = false;
+            inaraResponderContext.GameStateMutator.GameVersion = new Version(4, 0);
 
             // Act
             var task = responder.HandleAsync(@event);
