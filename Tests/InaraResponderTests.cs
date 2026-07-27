@@ -25,20 +25,21 @@ namespace Tests
 
             public TestInaraResponderContext ()
             {
-                GameStateMutator = new EddiGameStateService(
+                GameStateService = new EddiGameStateService(
                     gameState,
                     () => (null, null, null),
                     null,
                     null,
                     null,
-                    new Version(4, 0) );
-
-                GameStateMutator.GameVersion = new Version(4, 0);
+                    new Version( 4, 0 ) )
+                {
+                    GameVersion = new Version( 4, 0 )
+                };
                 ShipMonitorConfiguration = new ShipMonitorConfiguration();
             }
 
             public IEddiGameState GameState => gameState;
-            public IEddiGameStateMutator GameStateMutator { get; }
+            public EddiGameStateService GameStateService { get; }
             public bool EddiIsBeta { get; set; }
             public InaraConfiguration InaraConfiguration { get; set; } = new();
             public ShipMonitorConfiguration ShipMonitorConfiguration { get; set; }
@@ -155,7 +156,7 @@ namespace Tests
         public void HandleAsync_WhenInTelepresence_ReturnsCompletedTask()
         {
             // Arrange
-            inaraResponderContext.GameStateMutator.inTelepresence = true;
+            inaraResponderContext.GameStateService.inTelepresence = true;
             var @event = new DiedEvent(DateTime.UtcNow, [ ] );
 
             // Act
@@ -169,7 +170,7 @@ namespace Tests
         public void HandleAsync_WhenGameIsBeta_ReturnsCompletedTask()
         {
             // Arrange
-            inaraResponderContext.GameStateMutator.gameIsBeta = true;
+            inaraResponderContext.GameStateService.gameIsBeta = true;
             var @event = new DiedEvent(DateTime.UtcNow, [ ] );
 
             // Act
@@ -183,7 +184,7 @@ namespace Tests
         public void HandleAsync_WhenGameVersionNull_ReturnsCompletedTask()
         {
             // Arrange
-            inaraResponderContext.GameStateMutator.GameVersion = null;
+            inaraResponderContext.GameStateService.GameVersion = null;
             var @event = new DiedEvent(DateTime.UtcNow, [ ] );
 
             // Act
@@ -197,9 +198,9 @@ namespace Tests
         public void HandleAsync_WhenGameVersionBelowMinimum_ReturnsCompletedTask()
         {
             // Arrange
-            inaraResponderContext.GameStateMutator.GameVersion = new Version(3, 9);
-            inaraResponderContext.GameStateMutator.inTelepresence = false;
-            inaraResponderContext.GameStateMutator.gameIsBeta = false;
+            inaraResponderContext.GameStateService.GameVersion = new Version(3, 9);
+            inaraResponderContext.GameStateService.inTelepresence = false;
+            inaraResponderContext.GameStateService.gameIsBeta = false;
             var @event = new DiedEvent(DateTime.UtcNow, [ ] );
 
             // Act
@@ -214,9 +215,9 @@ namespace Tests
         {
             // Arrange
             var oldTimestamp = DateTime.UtcNow.AddDays(-31);
-            inaraResponderContext.GameStateMutator.inTelepresence = false;
-            inaraResponderContext.GameStateMutator.gameIsBeta = false;
-            inaraResponderContext.GameStateMutator.GameVersion = new Version(4, 0);
+            inaraResponderContext.GameStateService.inTelepresence = false;
+            inaraResponderContext.GameStateService.gameIsBeta = false;
+            inaraResponderContext.GameStateService.GameVersion = new Version(4, 0);
             var @event = new DiedEvent(oldTimestamp, [ ] );
 
             // Act
@@ -394,9 +395,9 @@ namespace Tests
                 new("Killer1", "Adder", CombatRating.Competent)
             };
             var @event = new DiedEvent(DateTime.UtcNow, killers);
-            inaraResponderContext.GameStateMutator.inTelepresence = false;
-            inaraResponderContext.GameStateMutator.gameIsBeta = false;
-            inaraResponderContext.GameStateMutator.GameVersion = new Version(4, 0);
+            inaraResponderContext.GameStateService.inTelepresence = false;
+            inaraResponderContext.GameStateService.gameIsBeta = false;
+            inaraResponderContext.GameStateService.GameVersion = new Version(4, 0);
 
             // Act
             var task = responder.HandleAsync(@event);
@@ -416,9 +417,9 @@ namespace Tests
                 new() { name = "Commodity2", count = 20 }
             };
             var @event = new CargoEvent(DateTime.UtcNow, true, "Ship", inventory, 30 );
-            inaraResponderContext.GameStateMutator.inTelepresence = false;
-            inaraResponderContext.GameStateMutator.gameIsBeta = false;
-            inaraResponderContext.GameStateMutator.GameVersion = new Version(4, 0);
+            inaraResponderContext.GameStateService.inTelepresence = false;
+            inaraResponderContext.GameStateService.gameIsBeta = false;
+            inaraResponderContext.GameStateService.GameVersion = new Version(4, 0);
 
             // Act
             var task = responder.HandleAsync(@event);

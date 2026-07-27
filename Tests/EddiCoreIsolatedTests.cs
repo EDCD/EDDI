@@ -135,14 +135,9 @@ namespace Tests
             }
         }
 
-        private sealed class TestRuntimeVariableContext : IRuntimeVariableContext
+        private sealed class TestRuntimeVariableContext ( IEddiGameState gameState ) : IRuntimeVariableContext
         {
-            public TestRuntimeVariableContext ( IEddiGameState gameState )
-            {
-                GameState = gameState;
-            }
-
-            public IEddiGameState GameState { get; }
+            public IEddiGameState GameState { get; } = gameState;
             public bool FromVA { get; init; }
             public bool CapiActive { get; init; }
             public bool IcaoActive { get; init; }
@@ -184,15 +179,15 @@ namespace Tests
             var values = TopLevelRuntimeVariableValues.Build( context )
                 .ToDictionary( value => value.Name );
 
-            Assert.AreEqual( true, values[ RuntimeVariableCatalog.CapiActiveVariable ].Value );
+            Assert.IsTrue( (bool?)values[ RuntimeVariableCatalog.CapiActiveVariable ].Value  );
             Assert.AreEqual( 12.34M, values[ RuntimeVariableCatalog.DestinationDistanceLyVariable ].Value );
             Assert.AreEqual( Constants.ENVIRONMENT_SUPERCRUISE, values[ RuntimeVariableCatalog.EnvironmentVariable ].Value );
-            Assert.AreEqual( true, values[ RuntimeVariableCatalog.HorizonsVariable ].Value );
-            Assert.AreEqual( false, values[ RuntimeVariableCatalog.IcaoActiveVariable ].Value );
-            Assert.AreEqual( true, values[ RuntimeVariableCatalog.IpaActiveVariable ].Value );
-            Assert.AreEqual( false, values[ RuntimeVariableCatalog.OdysseyVariable ].Value );
+            Assert.IsTrue( (bool?)values[ RuntimeVariableCatalog.HorizonsVariable ].Value  );
+            Assert.IsFalse( (bool?)values[ RuntimeVariableCatalog.IcaoActiveVariable ].Value  );
+            Assert.IsTrue( (bool?)values[ RuntimeVariableCatalog.IpaActiveVariable ].Value  );
+            Assert.IsFalse( (bool?)values[ RuntimeVariableCatalog.OdysseyVariable ].Value  );
             Assert.AreEqual( 56.78M, values[ RuntimeVariableCatalog.SearchDistanceLyVariable ].Value );
-            Assert.AreEqual( true, values[ RuntimeVariableCatalog.VaActiveVariable ].Value );
+            Assert.IsTrue( (bool?)values[ RuntimeVariableCatalog.VaActiveVariable ].Value  );
             Assert.AreEqual( Constants.VEHICLE_SHIP, values[ RuntimeVariableCatalog.VehicleVariable ].Value );
             Assert.AreEqual( Constants.EDDI_VERSION.ShortString, values[ RuntimeVariableCatalog.VersionVariable ].Value );
             Assert.AreEqual( Constants.EDDI_VERSION.ToString(), values[ RuntimeVariableCatalog.VersionVariable ].GetVoiceAttackValue() );
