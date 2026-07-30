@@ -58,6 +58,8 @@ Source: "*.dll"; DestDir: "{app}"; Excludes: "Tests.dll,DocumentationGenerator.d
 Source: "*.dll.config"; DestDir: "{app}"; Flags: skipifsourcedoesntexist
 
 Source: "*.resources.dll"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs
+Source: "Cottle\*.*"; DestDir: "{app}\Cottle"; Flags: recursesubdirs createallsubdirs
+Source: "Wiki\*.*"; DestDir: "{app}\Wiki"; Flags: recursesubdirs createallsubdirs
 Source: "eddi.json"; DestDir: "{app}"
 Source: "eddi.*.json"; DestDir: "{app}"
 Source: "*.md"; DestDir: "{app}"
@@ -109,6 +111,11 @@ Type: filesandordirs; Name: "{code:GetVoiceAttack2EddiDir}\pt-BR"
 Type: filesandordirs; Name: "{code:GetVoiceAttack2EddiDir}\pt-PT"
 Type: filesandordirs; Name: "{code:GetVoiceAttack2EddiDir}\ru"
 Type: filesandordirs; Name: "{code:GetVoiceAttack2EddiDir}\zh-CN"
+Type: filesandordirs; Name: "{code:GetVoiceAttack2EddiDir}\Cottle"
+Type: filesandordirs; Name: "{code:GetVoiceAttack2EddiDir}\Wiki"
+Type: files; Name: "{code:GetVoiceAttack2EddiDir}\*.md"
+Type: files; Name: "{code:GetVoiceAttack2EddiDir}\eddi.json"
+Type: files; Name: "{code:GetVoiceAttack2EddiDir}\eddi.*.json"
 
 ; --- Remove old config files that may no longer be valid ---
 Type: files; Name: "{app}\*.dll.config"
