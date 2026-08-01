@@ -433,7 +433,8 @@ namespace Utilities.MetaVariables
                     typeof( IEnumerable<> ),
                     description,
                     i,
-                    isCollectionRoot: true );
+                    isCollectionRoot: true,
+                    declaredType: elementType );
             }
         }
 

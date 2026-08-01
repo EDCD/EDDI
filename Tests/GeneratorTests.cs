@@ -73,6 +73,9 @@ namespace Tests
             Assert.Contains( "*powerplant* - details of the ship's powerplant (this is a Module object) See: `Module`." , firstRender);
             Assert.Contains( "Used by: `Compartment.module`, `Hardpoint.module`, `Ship.bulkheads`" , firstRender);
             Assert.DoesNotContain( "*powerplant.class*", firstRender );
+            Assert.Contains( "### Economy", firstRender );
+            Assert.Contains( "Used by: `StarSystem.Economies[\\<index\\>]`", firstRender );
+            Assert.DoesNotContain( "### ResourceBasedLocalizedEDName<", firstRender );
             Assert.Contains( "*name*" , firstRender);
             Assert.Contains( "*gui_focus*" , firstRender);
         }

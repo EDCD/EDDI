@@ -445,6 +445,14 @@ namespace DocumentationGenerator
                 AddOccurrence( occurrencesByPath, descriptor.DeclaredType, descriptor.KeysPath );
             }
 
+            foreach ( var descriptor in descriptors.Where( d => d.IsCollectionRoot && d.DeclaredType is not null ) )
+            {
+                AddOccurrence(
+                    occurrencesByPath,
+                    descriptor.DeclaredType,
+                    descriptor.KeysPath.Append( MetaVariables.indexMarker ) );
+            }
+
             foreach ( var group in GetCollectionElementTypeCandidates( descriptors )
                          .GroupBy( candidate => candidate.KeysPath, new KeysPathComparer() ) )
             {
