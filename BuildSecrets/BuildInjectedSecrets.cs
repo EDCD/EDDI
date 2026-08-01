@@ -1,4 +1,4 @@
-namespace Eddi.BuildSecrets
+namespace BuildSecrets
 {
     public static partial class BuildInjectedSecrets
     {

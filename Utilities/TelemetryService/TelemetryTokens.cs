@@ -1,4 +1,4 @@
-﻿using Eddi.BuildSecrets;
+﻿using BuildSecrets;
 
 namespace Utilities.TelemetryService
 {

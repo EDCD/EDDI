@@ -1,5 +1,5 @@
 ﻿
-using Eddi.BuildSecrets;
+using BuildSecrets;
 
 namespace EddiCompanionAppService
 {
