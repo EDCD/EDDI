@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Utilities.MetaVariables;
 
 namespace Tests
@@ -138,6 +139,95 @@ namespace Tests
             Assert.IsTrue( serializedScript?.Value<bool>( "responder" ) );
             Assert.AreEqual( "Custom AFMU repairs", serializedScript?.Value<string>( "script" ) );
             Assert.IsNotNull( serializedScript?[ "defaultValue" ] );
+        }
+
+        [TestMethod]
+        public void PersonalityFromFile_PreservesCustomizedObsoleteScriptAsRecoveryScript ()
+        {
+            var obsoleteScript = new Script(
+                "Vehicle destroyed",
+                "Old vehicle destroyed description",
+                true,
+                "Custom vehicle destroyed script",
+                4,
+                "Default vehicle destroyed script" )
+            {
+                Enabled = false,
+                includes = ".Runtime"
+            };
+
+            var personality = LoadCustomPersonality( obsoleteScript );
+
+            Assert.IsFalse( personality.Scripts.ContainsKey( "Vehicle destroyed" ) );
+            Assert.IsTrue( personality.Scripts.TryGetValue( "(Obsolete) Vehicle destroyed", out var recoveredScript ) );
+            Assert.AreEqual( "(Obsolete) Vehicle destroyed", recoveredScript.Name );
+            Assert.AreEqual( "Old vehicle destroyed description", recoveredScript.Description );
+            Assert.AreEqual( "Custom vehicle destroyed script", recoveredScript.Value );
+            Assert.IsFalse( recoveredScript.Enabled );
+            Assert.IsFalse( recoveredScript.Responder );
+            Assert.IsNull( recoveredScript.defaultValue );
+            Assert.AreEqual( ".Runtime", recoveredScript.includes );
+        }
+
+        [TestMethod]
+        public void PersonalityFromFile_RemovesDefaultObsoleteScript ()
+        {
+            var obsoleteScript = new Script(
+                "Vehicle destroyed",
+                "Old vehicle destroyed description",
+                true,
+                "Default vehicle destroyed script",
+                3,
+                "Default vehicle destroyed script" );
+
+            var personality = LoadCustomPersonality( obsoleteScript );
+
+            Assert.IsFalse( personality.Scripts.ContainsKey( "Vehicle destroyed" ) );
+            Assert.IsFalse( personality.Scripts.ContainsKey( "(Obsolete) Vehicle destroyed" ) );
+        }
+
+        [TestMethod]
+        public void PersonalityFromFile_UsesExistingObsoleteRecoveryScriptWhenPresent ()
+        {
+            var obsoleteScript = new Script(
+                "Vehicle destroyed",
+                "Old vehicle destroyed description",
+                true,
+                "Custom vehicle destroyed script",
+                4,
+                "Default vehicle destroyed script" );
+            var existingRecoveryScript = new Script(
+                "(Obsolete) Vehicle destroyed",
+                "Existing recovery description",
+                false,
+                "Existing recovery script",
+                null );
+
+            var personality = LoadCustomPersonality( obsoleteScript, existingRecoveryScript );
+
+            Assert.IsFalse( personality.Scripts.ContainsKey( "Vehicle destroyed" ) );
+            Assert.IsTrue( personality.Scripts.TryGetValue( "(Obsolete) Vehicle destroyed", out var recoveredScript ) );
+            Assert.AreEqual( "Existing recovery description", recoveredScript.Description );
+            Assert.AreEqual( "Existing recovery script", recoveredScript.Value );
+            Assert.IsFalse( recoveredScript.Responder );
+            Assert.IsNull( recoveredScript.defaultValue );
+        }
+
+        [TestMethod]
+        public void PersonalityFromFile_DoesNotRenameDefaultLocalizedHelperScriptAsObsolete ()
+        {
+            var localizedHelperScript = new Script(
+                ".Preferencias",
+                "Localized helper",
+                false,
+                "Default localized helper",
+                null,
+                "Default localized helper" );
+
+            var personality = LoadCustomPersonality( localizedHelperScript );
+
+            Assert.IsFalse( personality.Scripts.ContainsKey( ".Preferencias" ) );
+            Assert.IsFalse( personality.Scripts.ContainsKey( "(Obsolete) .Preferencias" ) );
         }
 
         [TestMethod]
@@ -354,6 +444,34 @@ namespace Tests
             CollectionAssert.AreEqual(
                 new List<string> { "GetPendingSpeech()", MetaVariables.indexMarker },
                 actual );
+        }
+
+        private static Personality LoadCustomPersonality ( params Script[] scripts )
+        {
+            Personality.ResetDefault();
+            var personality = new Personality(
+                $"Custom {Guid.NewGuid():N}",
+                "Custom description",
+                new Dictionary<string, Script>() );
+            foreach ( var script in scripts )
+            {
+                personality.Scripts[ script.Name ] = script;
+            }
+
+            var filePath = Path.Combine( Path.GetTempPath(), $"{Guid.NewGuid():N}.json" );
+            try
+            {
+                File.WriteAllText( filePath, personality.ToJson() );
+                return Personality.FromFile( filePath );
+            }
+            finally
+            {
+                Personality.ResetDefault();
+                if ( File.Exists( filePath ) )
+                {
+                    File.Delete( filePath );
+                }
+            }
         }
     }
 }

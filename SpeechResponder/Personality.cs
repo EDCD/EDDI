@@ -440,19 +440,40 @@ namespace EddiSpeechResponder
             }
 
             // Finally, iterate through the personality's scripts and add any
-            // non-obsolete and non-default secondary scripts from the personality
-            // which do not have a match in the default personality and which are not obsolete script names.
+            // non-default secondary scripts from the personality which do not
+            // have a match in the default personality. Preserve customized
+            // obsolete scripts under a recovery name so user edits are not lost.
             foreach ( var kv in personality.Scripts )
             {
-                if ( !fixedScripts.ContainsKey( kv.Key ) && 
-                     !obsoleteScriptKeys.Contains( kv.Key ) && 
-                     !kv.Value.Default )
+                if ( fixedScripts.ContainsKey( kv.Key ) )
                 {
-                    var script = kv.Value;
-                    // Make sure that these scripts don't carry metadata that can lead to miscategorization.
-                    script.Responder = false;
-                    script.defaultValue = null;
-                    fixedScripts.Add( kv.Key, script );
+                    continue;
+                }
+
+                if ( obsoleteScriptKeys.Contains( kv.Key ) )
+                {
+                    if ( kv.Value.Default )
+                    {
+                        continue;
+                    }
+
+                    var recoveryKey = GetObsoleteScriptRecoveryKey( kv.Key );
+                    if ( fixedScripts.ContainsKey( recoveryKey ) )
+                    {
+                        continue;
+                    }
+
+                    var scriptToRecover = personality.Scripts.TryGetValue( recoveryKey, out var existingRecoveryScript ) &&
+                                          !existingRecoveryScript.Default
+                        ? existingRecoveryScript
+                        : kv.Value;
+                    fixedScripts.Add( recoveryKey, PrepareObsoleteScriptForRecovery( recoveryKey, scriptToRecover ) );
+                    continue;
+                }
+
+                if ( !kv.Value.Default )
+                {
+                    fixedScripts.Add( kv.Key, PrepareSecondaryScriptForRetention( kv.Key, kv.Value ) );
                 }
             }
 
@@ -493,6 +514,28 @@ namespace EddiSpeechResponder
                     }
                 }
             }
+        }
+
+        private static string GetObsoleteScriptRecoveryKey ( string scriptKey )
+        {
+            return $"(Obsolete) {scriptKey}";
+        }
+
+        private static Script PrepareObsoleteScriptForRecovery ( string scriptKey, Script script )
+        {
+            var recoveredScript = PrepareSecondaryScriptForRetention( scriptKey, script );
+            recoveredScript.Name = scriptKey;
+            return recoveredScript;
+        }
+
+        private static Script PrepareSecondaryScriptForRetention ( string scriptKey, Script script )
+        {
+            var retainedScript = script.Copy();
+            // Make sure that these scripts don't carry metadata that can lead to miscategorization.
+            retainedScript.Name = scriptKey;
+            retainedScript.Responder = false;
+            retainedScript.defaultValue = null;
+            return retainedScript;
         }
 
         public static Script UpgradeScript(Script personalityScript, Script defaultScript)
