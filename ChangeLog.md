@@ -7,6 +7,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Customized obsolete scripts are now preserved as (Obsolete) <old script name> recovery scripts, while unchanged/default obsolete scripts are still removed.
     * Custom Functions
       * `F` revised to accept a new optional parameter which allows you to pass arguments to the invoked script.
+    * Scripts
+      * `Limpet check` revised to reference invariant controller name. 
 
 ## 5.0.4
   * Core
@@ -58,7 +60,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Fighter launched` removed.
       * `Friends status` updated to remain silent if event.name is an empty string.
       * `Jumped` revised to properly invoke RouteDetails() when guidance is enabled.
-      * `Limpet check` revised to reference invariant controller name and identify the type of limpet controllers currently equipped. 
+      * `Limpet check` revised to identify the type of limpet controllers currently equipped. 
       * `Message received` updated for better rendering of pirate cargo warnings.
       * `Module purchased` updated to utilize new field `buymercprice`.
       * `Module purchased to storage` updated to utilize new field `buymercprice`.
