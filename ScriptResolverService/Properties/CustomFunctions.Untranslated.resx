@@ -241,7 +241,7 @@ Common usage of this is to provide further information about your rating, for ex
   <data name="F" xml:space="preserve">
     <value>This function is used inside a script to invoke another script.
 
-F() takes a single parameter that is the name of the script to invoke.
+F() takes one mandatory parameter that is the name of the script to invoke, and an optional second parameter containing a map of named argument values. The invoked script can read these as properties of a local `args` object.
 
 One example of its use is in the script for the event `Trade Promotion`:
 

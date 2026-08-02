@@ -103,33 +103,7 @@ namespace EddiScriptResolverService
         /// <summary> From a custom context </summary>
         public static string resolveFromName(string name, IReadOnlyDictionary<string, IScriptDefinition> scripts, IContext context, bool isTopLevelScript)
         {
-            if (!scripts.TryGetValue(name, out var script) || 
-                script?.Value is null)
-            {
-                Logging.Debug($"No {name} script found");
-                return null;
-            }
-            if (!script.Enabled)
-            {
-                Logging.Debug($"{name} script disabled");
-                return null;
-            }
-            var scriptValue = script.Value;
-
-            // Prepend included scripts as appropriate
-            var includedScriptNames = (script.includes ?? string.Empty).Split( ';' ).Select( i => i.Trim() ).ToList();
-            var includedScripts = new Dictionary<string, string>();
-            foreach ( var scriptName in includedScriptNames )
-            {
-                var includedScript = scripts.FirstOrDefault( s =>
-                    s.Key.Equals( scriptName, StringComparison.InvariantCultureIgnoreCase ) ).Value;
-                if ( includedScript != null )
-                {
-                    includedScripts.Add( includedScript.Name, includedScript.Value );
-                }
-            }
-
-            return resolveFromValue(scriptValue, context, isTopLevelScript, script, includedScripts );
+            return ScriptInvoker.ResolveFromName( name, scripts, context, isTopLevelScript );
         }
 
         /// <summary> From the default dictionary of variable values in the default context </summary>

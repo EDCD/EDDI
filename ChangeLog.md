@@ -5,6 +5,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ## 5.0.5
   * Speech Responder
     * Customized obsolete scripts are now preserved as (Obsolete) <old script name> recovery scripts, while unchanged/default obsolete scripts are still removed.
+    * Custom Functions
+      * `F` revised to accept a new optional parameter which allows you to pass arguments to the invoked script.
 
 ## 5.0.4
   * Core

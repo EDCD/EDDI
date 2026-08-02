@@ -119,6 +119,51 @@ namespace Tests
             Assert.AreEqual("Well Hello world", result);
         }
 
+        [TestMethod]
+        public void TestResolverFunctionWithArgumentMap()
+        {
+            var scripts = new Dictionary<string, Script>
+            {
+                ["func"] = new("func", null, false, "{args.foo} {args.bar}"),
+                ["test"] = new("test", null, false, "Well {F(\"func\", [\"foo\": \"hello\", \"bar\": 3])}")
+            };
+            var resolver = new ScriptResolver(scripts);
+
+            var result = resolver.resolveFromName("test", new Dictionary<string, Tuple<Type, Value>>(), true);
+
+            Assert.AreEqual("Well hello 3", result);
+        }
+
+        [TestMethod]
+        public void TestResolverFunctionArgumentMapShadowsNestedArgs()
+        {
+            var scripts = new Dictionary<string, Script>
+            {
+                ["inner"] = new("inner", null, false, "{args.value}"),
+                ["outer"] = new("outer", null, false, "{set before to args.value}{set nested to F(\"inner\", [\"value\": \"inner\"])}{before}/{nested}/{args.value}"),
+                ["test"] = new("test", null, false, "{F(\"outer\", [\"value\": \"outer\"])}")
+            };
+            var resolver = new ScriptResolver(scripts);
+
+            var result = resolver.resolveFromName("test", new Dictionary<string, Tuple<Type, Value>>(), true);
+
+            Assert.AreEqual("outer/inner/outer", result);
+        }
+
+        [TestMethod]
+        public void TestResolverFunctionRejectsNonMapArguments()
+        {
+            var scripts = new Dictionary<string, Script>
+            {
+                ["func"] = new("func", null, false, "{args.foo}"),
+                ["test"] = new("test", null, false, "{F(\"func\", 1)}")
+            };
+            var resolver = new ScriptResolver(scripts);
+            var result = resolver.resolveFromName( "test", new Dictionary<string, Tuple<Type, Value>>(), true );
+
+            Assert.Contains( "arguments which are not a map value", result );
+        }
+
         [TestMethod, DoNotParallelize]
         public void TestResolverNativeSetCustomFunction()
         {
