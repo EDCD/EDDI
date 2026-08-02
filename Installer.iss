@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "EDDI"
-#define MyAppVersion "5.0.3"
+#define MyAppVersion "5.0.4"
 #define MyAppPublisher "Elite Dangerous Community Developers (EDCD)"
 #define MyAppURL "https://github.com/EDCD/EDDI/"
 #define MyAppExeName "EDDI.exe"
@@ -289,7 +289,7 @@ end;
 
 function GetPerUserVoiceAttackAppsDir: string;
 begin
-  Result := ExpandConstant('{localappdata}\VoiceAttack2\Apps');
+  Result := ExpandConstant('{userappdata}\VoiceAttack2\Apps');
 end;
 
 function ShouldUseDetectedVoiceAttackAppsDirAsDefault(const Dir: string): Boolean;
@@ -545,7 +545,7 @@ begin
       MsgBox(
         'This install mixes a per-user EDDI application folder with a shared VoiceAttack Apps folder.' + #13#10#13#10 +
         'For a single-user install, select your per-user VoiceAttack Apps folder:' + #13#10 +
-        ExpandConstant('{localappdata}\VoiceAttack2\Apps') + #13#10#13#10 +
+        ExpandConstant('{userappdata}\VoiceAttack2\Apps') + #13#10#13#10 +
         'For a shared VoiceAttack Apps folder, restart Setup as administrator and install the EDDI application files to a shared folder such as Program Files.',
         mbError, MB_OK);
     Result := False;
