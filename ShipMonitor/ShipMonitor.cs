@@ -1349,8 +1349,8 @@ namespace EddiShipMonitor
                             {
                                 foreach ( var shipCompartment in ship.compartments )
                                 {
-                                    if ( profileCompartment.module != null && profileCompartment.module.invariantName ==
-                                        shipCompartment.module.invariantName )
+                                    if ( profileCompartment?.module != null && profileCompartment.module.invariantName ==
+                                        shipCompartment.module?.invariantName )
                                     {
                                         shipCompartment.module ??= new Module();
                                         shipCompartment.module.UpdateFromFrontierAPIModule( profileCompartment.module );
