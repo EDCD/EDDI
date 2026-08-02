@@ -355,7 +355,7 @@ namespace EddiCore.Hotkeys
         private const int VK_LWIN = 0x5B;
         private const int VK_RWIN = 0x5C;
 
-        [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
+        [UnmanagedFunctionPointer( CallingConvention.Winapi )]
         private delegate IntPtr LowLevelKeyboardProc ( int nCode, IntPtr wParam, IntPtr lParam );
 
         [StructLayout( LayoutKind.Sequential )]
@@ -370,7 +370,7 @@ namespace EddiCore.Hotkeys
 
         private partial class NativeMethods
         {
-            [DllImport("user32.dll", SetLastError = true, EntryPoint = "SetWindowsHookEx")]
+            [DllImport("user32.dll", SetLastError = true, EntryPoint = "SetWindowsHookExW")]
             [System.Diagnostics.CodeAnalysis.SuppressMessage( "Interoperability", "SYSLIB1054:Use 'LibraryImportAttribute' instead of 'DllImportAttribute' to generate P/Invoke marshalling code at compile time", Justification = "Code generation fails." )]
             private static extern IntPtr SetWindowsHookExImpl(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
 
@@ -390,7 +390,7 @@ namespace EddiCore.Hotkeys
             internal static IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam)
                 => CallNextHookExImpl(hhk, nCode, wParam, lParam);
 
-            [LibraryImport("kernel32.dll", StringMarshalling = StringMarshalling.Utf16, SetLastError = true, EntryPoint = "GetModuleHandle")]
+            [LibraryImport("kernel32.dll", StringMarshalling = StringMarshalling.Utf16, SetLastError = true, EntryPoint = "GetModuleHandleW")]
             private static partial IntPtr GetModuleHandleImpl(string lpModuleName);
 
             internal static IntPtr GetModuleHandle(string lpModuleName)
