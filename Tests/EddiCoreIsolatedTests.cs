@@ -104,10 +104,13 @@ namespace Tests
         {
             internal EddiGameState GameStateOwner { get; } = new();
             private readonly EddiGameStateService _gameStateService;
+            private OrganicSamplingTracker _organicSamplingTracker;
             public IEddiGameState GameState => GameStateOwner;
             public IEddiGameStateMutator GameStateMutator => _gameStateService;
             public DataProviderService DataProvider { get; init; }
             public EddiEventPipeline EventPipeline { get; }
+            public OrganicSamplingTracker OrganicSamplingTracker =>
+                _organicSamplingTracker ??= new OrganicSamplingTracker( DataProvider, EventPipeline.Enqueue );
             public ConcurrentDictionary<string, Event> lastEventOfType => EventPipeline.LastEventOfType;
             public Dictionary<string, IEddiMonitor> Monitors { get; } = new();
 

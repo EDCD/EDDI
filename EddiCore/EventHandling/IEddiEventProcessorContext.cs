@@ -14,6 +14,7 @@ namespace EddiCore.EventHandling
         IEddiGameStateMutator GameStateMutator { get; }
         DataProviderService DataProvider { get; }
         EddiEventPipeline EventPipeline { get; }
+        OrganicSamplingTracker OrganicSamplingTracker { get; }
         ConcurrentDictionary<string, Event> lastEventOfType { get; }
 
         IEddiMonitor ObtainMonitor ( string invariantName, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase );

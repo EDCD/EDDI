@@ -1,5 +1,4 @@
 using EddiConfigService.Configurations;
-using EddiCore;
 using EddiCore.GameState;
 using EddiDataDefinitions;
 using EddiEvents;

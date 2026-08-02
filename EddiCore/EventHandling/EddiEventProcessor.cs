@@ -7,7 +7,6 @@ using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Utilities;
@@ -17,17 +16,19 @@ namespace EddiCore.EventHandling
     internal sealed class EddiEventProcessor : IDisposable
     {
         private readonly IEddiEventProcessorContext _context;
-        private readonly StarSystemSignalSourceManager signalSourceManager = new();
+        private readonly EddiLocationStateService _locationStateService;
         private string multicrewVehicleHolder;
 
         internal EddiEventProcessor ( IEddiEventProcessorContext context )
         {
             _context = context;
+            _locationStateService = new EddiLocationStateService( context );
         }
 
         private IEddiGameState GameState => _context.GameState;
         private IEddiGameStateMutator GameStateMutator => _context.GameStateMutator;
         private DataProviderService DataProvider => _context.DataProvider;
+        private OrganicSamplingTracker OrganicSamplingTracker => _context.OrganicSamplingTracker;
         private StarSystem CurrentStarSystem { get => GameState.CurrentStarSystem; set => GameStateMutator.CurrentStarSystem = value; }
         private StarSystem LastStarSystem { get => GameState.LastStarSystem; set => GameStateMutator.LastStarSystem = value; }
         private StarSystem NextStarSystem { get => GameState.NextStarSystem; set => GameStateMutator.NextStarSystem = value; }
@@ -223,12 +224,21 @@ namespace EddiCore.EventHandling
                 passEvent = eventDied();
             }
 
+            if ( OrganicSamplingTracker is { } organicSamplingTracker )
+            {
+                organicSamplingTracker.TrackLocationEvent( @event );
+                if ( @event is ScanOrganicEvent scanOrganicEvent )
+                {
+                    await organicSamplingTracker.TrackScanOrganicAsync( scanOrganicEvent ).ConfigureAwait( false );
+                }
+            }
+
             return passEvent;
         }
 
         public void Dispose ()
         {
-            signalSourceManager.Dispose();
+            _locationStateService.Dispose();
         }
 
         private bool eventDied ()
@@ -1098,76 +1108,12 @@ namespace EddiCore.EventHandling
 
         internal async Task updateCurrentSystemAsync([NotNull] string systemName, ulong systemAddress )
         {
-            try
-            { 
-                if ( string.IsNullOrEmpty(systemName) || CurrentStarSystem?.systemAddress == systemAddress )
-                {
-                    return;
-                }
-            
-                if ( CurrentStarSystem != null )
-                {
-                    // Discard signal sources from star system we are leaving
-                    CurrentStarSystem.signalSources = ImmutableList<SignalSource>.Empty;
-
-                    // Unregister the old star system and stop managing its signal source expiries
-                    signalSourceManager.Unregister( CurrentStarSystem );
-
-                    // We have changed system so update the old one as to when we left
-                    await DataProvider.SaveStarSystemAsync( CurrentStarSystem ).ConfigureAwait(false);
-                }
-
-                // Update the CurrentStarSystem to the one we are entering
-                LastStarSystem = CurrentStarSystem;
-                if ( NextStarSystem != null && NextStarSystem.systemAddress == systemAddress )
-                {
-                    CurrentStarSystem = NextStarSystem;
-                    NextStarSystem = null;
-                }
-                else
-                {
-                    CurrentStarSystem = await DataProvider.GetOrCreateStarSystemAsync( systemAddress, systemName ).ConfigureAwait(false);
-                }
-
-                // Register our new star system and manage its signal source expiries
-                signalSourceManager.Register( CurrentStarSystem );
-
-                // If we've arrived at our destination system then clear it
-                if ( DestinationStarSystem?.systemAddress == CurrentStarSystem.systemAddress )
-                {
-                    await _context.updateDestinationSystemAsync( null ).ConfigureAwait(false);
-                }
-            }
-            catch ( Exception e )
-            {
-                Logging.Error(e.Message, e);
-            }
+            await _locationStateService.UpdateCurrentSystemAsync( systemName, systemAddress ).ConfigureAwait(false);
         }
 
         private async Task updateCurrentStellarBodyAsync(string bodyName, int? bodyId, string systemName, ulong systemAddress )
         {
-            // Make sure our system information is up to date
-            await updateCurrentSystemAsync( systemName, systemAddress ).ConfigureAwait(false);
-
-            // Update the body 
-            if ( CurrentStarSystem != null)
-            {
-                var body = CurrentStarSystem.bodies?.Find(s => s.bodyname == bodyName);
-                if (body == null)
-                {
-                    // This body is unknown to us, might not be in our 3rd party API data,
-                    // or we might not have connectivity.  Use a placeholder 
-                    body = new Body
-                    {
-                        bodyname = bodyName,
-                        bodyId = bodyId,
-                        systemname = systemName,
-                        systemAddress = systemAddress,
-                    };
-                    CurrentStarSystem.AddOrUpdateBody(body);
-                }
-                CurrentStellarBody = body;
-            }
+            await _locationStateService.UpdateCurrentStellarBodyAsync( bodyName, bodyId, systemName, systemAddress ).ConfigureAwait(false);
         }
 
         internal async Task<bool> eventFSDEngagedAsync( FSDEngagedEvent @event )
@@ -1447,27 +1393,7 @@ namespace EddiCore.EventHandling
 
         private async Task<bool> eventNearSurfaceAsync( NearSurfaceEvent theEvent )
         {
-            if ( theEvent.approaching_surface )
-            {
-                // Update the body 
-                var body = CurrentStarSystem?.bodies?.Find( s => s.bodyname == theEvent.bodyname ) ??
-                           new Body
-                           {
-                               // This body is unknown to us, might not be in our data source or we might not have connectivity.
-                               // Use a placeholder 
-                               bodyname = theEvent.bodyname, systemname = theEvent.systemname
-                           };
-
-                // System address may not be included in our data source, so we add it here. 
-                body.systemAddress = theEvent.systemAddress;
-                CurrentStellarBody = body;
-            }
-            else
-            {
-                // Clear the body we are leaving 
-                CurrentStellarBody = null;
-            }
-            await updateCurrentSystemAsync( theEvent.systemname, theEvent.systemAddress ).ConfigureAwait(false);
+            await _locationStateService.SetNearSurfaceBodyAsync( theEvent ).ConfigureAwait(false);
             return true;
         }
 

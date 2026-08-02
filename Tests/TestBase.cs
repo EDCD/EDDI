@@ -88,6 +88,7 @@ namespace Tests
         internal sealed class IsolatedEddiEventProcessorContext : IEddiEventProcessorContext
         {
             private readonly EddiGameStateService gameStateService;
+            private OrganicSamplingTracker organicSamplingTracker;
 
             internal IsolatedEddiEventProcessorContext ()
             {
@@ -115,6 +116,8 @@ namespace Tests
             public IEddiGameStateMutator GameStateMutator => gameStateService;
             public DataProviderService DataProvider { get; init; }
             public EddiEventPipeline EventPipeline { get; }
+            public OrganicSamplingTracker OrganicSamplingTracker =>
+                organicSamplingTracker ??= new OrganicSamplingTracker( DataProvider, EventPipeline.Enqueue );
             public ConcurrentDictionary<string, Event> lastEventOfType => EventPipeline.LastEventOfType;
             public Dictionary<string, IEddiMonitor> Monitors { get; } = [ ];
 

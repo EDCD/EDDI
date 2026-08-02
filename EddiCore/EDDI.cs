@@ -3,6 +3,7 @@ using EddiConfigService;
 using EddiCore.EventHandling;
 using EddiCore.GameState;
 using EddiCore.Hotkeys;
+using EddiCore.PluginHosting;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
@@ -14,14 +15,10 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
@@ -78,6 +75,7 @@ namespace EddiCore
 
         EddiEventPipeline IEddiEventProcessorContext.EventPipeline => EventPipeline;
         IEddiGameStateMutator IEddiEventProcessorContext.GameStateMutator => _gameStateService;
+        OrganicSamplingTracker IEddiEventProcessorContext.OrganicSamplingTracker => _organicSamplingTracker;
 
         Task IEddiEventProcessorContext.conditionallyRefreshStationProfileAsync (
             string expectedSystemName,
@@ -125,15 +123,13 @@ namespace EddiCore
         private static EDDI instance;
         private static readonly object instanceLock = new();
 
-        public List<IEddiMonitor> monitors = [ ];
-        internal ConcurrentBag<IEddiMonitor> activeMonitors = [ ];
-        private static readonly object monitorLock = new();
-        private readonly Dictionary<string, CancellationTokenSource> _monitorCancellationTokens = [ ];
-        private bool IsMonitorActive ( string name ) => activeMonitors.Any( m => m.MonitorName().Equals(name, StringComparison.OrdinalIgnoreCase) );
+        private readonly EddiPluginHost _pluginHost;
+        private OrganicSamplingTracker _organicSamplingTracker;
 
-        public List<IEddiResponder> responders = [ ];
-        private ConcurrentBag<IEddiResponder> activeResponders = [ ];
-        private static readonly object responderLock = new();
+        public List<IEddiMonitor> monitors => _pluginHost.Monitors;
+        internal ConcurrentBag<IEddiMonitor> activeMonitors => _pluginHost.ActiveMonitors;
+        public List<IEddiResponder> responders => _pluginHost.Responders;
+        internal ConcurrentBag<IEddiResponder> activeResponders => _pluginHost.ActiveResponders;
 
         // IPC Server infrastructure (VoiceAttack plugin mode only)
         private IPCServer _ipcServer;
@@ -162,11 +158,15 @@ namespace EddiCore
                 EddiStarMapService.StarMapService.SetGameVersion,
                 minGameVersion );
             _gameState.PropertyChanged += ( _, e ) => OnPropertyChanged( e.PropertyName );
+            _pluginHost = new EddiPluginHost(
+                () => running,
+                () => DataProvider?.IsUnitTesting ?? false, 
+                null, null, null, null, eventHandlerTS.Token );
             EventProcessor = new EddiEventProcessor( this );
             EventPipeline = new EddiEventPipeline(
                 EventProcessor.ProcessEventAsync,
-                () => activeMonitors,
-                () => activeResponders,
+                () => _pluginHost.ActiveMonitors,
+                () => _pluginHost.ActiveResponders,
                 name => ObtainResponder( name ),
                 () => DataProvider?.IsUnitTesting ?? false,
                 () => GameState.GameVersion,
@@ -177,6 +177,7 @@ namespace EddiCore
             {
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " starting");
                 DataProvider = DataProviderService.Create();
+                _organicSamplingTracker = new OrganicSamplingTracker( DataProvider, enqueueEvent );
 
                 var configuration = ConfigService.Instance.eddiConfiguration;
                 Logging.Verbose = configuration.VerboseLogging;
@@ -187,36 +188,7 @@ namespace EddiCore
                 var essentialAsyncTasks = new List<Task>();
                 if (running)
                 {
-                    // Tasks we can start asynchronously but need to complete before other dependent code is called
-                    var discoveryTasks = new List<Task>
-                    {
-                        Task.Run( () => {
-                            try
-                            {
-                                responders = findResponders();
-                                Logging.Debug( $"Discovered {responders.Count} responders" );
-                            }
-                            catch ( Exception ex )
-                            {
-                                Logging.Error( "Failed to discover responders", ex );
-                                responders = [ ];
-                            }
-                        }, eventHandlerTS.Token ),
-                        Task.Run( () => {
-                            try
-                            {
-                                monitors = findMonitors();
-                                Logging.Debug( $"Discovered {monitors.Count} monitors" );
-                            }
-                            catch ( Exception ex )
-                            {
-                                Logging.Error( "Failed to discover monitors", ex );
-                                monitors = [ ];
-                            }
-                        }, eventHandlerTS.Token )
-                    };
-
-                    essentialAsyncTasks.AddRange( discoveryTasks );
+                    essentialAsyncTasks.Add( _pluginHost.DiscoverAsync( eventHandlerTS.Token ) );
                 }
                 else
                 {
@@ -270,53 +242,11 @@ namespace EddiCore
         {
             if ( sender is Status status )
             {
-                var monitorTasks = new List<Task>();
-                foreach ( var monitor in activeMonitors )
+                if ( _organicSamplingTracker is not null )
                 {
-                    var monitorTask = monitor.HandleStatusAsync( status );
-                    monitorTask.ContinueWith( task =>
-                        {
-                            if ( task.IsFaulted )
-                            {
-                                var dict = new Dictionary<string, object>
-                                {
-                                    [ "status" ] = status, [ "exception" ] = task.Exception
-                                };
-                                Logging.Error( $"{monitor.MonitorName()} failed to handle status", dict );
-                            }
-                        }, TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously )
-                        .SafeFireAndForget( e => Logging.Error( e.Message, e ) );
-                    monitorTasks.Add( monitorTask );
+                    await _organicSamplingTracker.HandleStatusAsync( status ).ConfigureAwait( false );
                 }
-
-                var responderTasks = new List<Task>();
-                foreach ( var responder in activeResponders )
-                {
-                    var responderTask = responder.HandleStatusAsync( status );
-                    responderTask.ContinueWith( task =>
-                        {
-                            if ( task.IsFaulted )
-                            {
-                                var dict = new Dictionary<string, object>
-                                {
-                                    [ "status" ] = status, [ "exception" ] = task.Exception
-                                };
-                                Logging.Error( $"{responder.ResponderName()} failed to handle status", dict );
-                            }
-                        }, TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously )
-                        .SafeFireAndForget( e => Logging.Error( e.Message, e ) );
-                    responderTasks.Add( responderTask );
-                }
-
-                try
-                {
-                    await Task.WhenAll( monitorTasks ).ConfigureAwait( false );
-                    await Task.WhenAll( responderTasks ).ConfigureAwait( false );
-                }
-                catch ( TaskCanceledException )
-                {
-                    // Task(s) cancelled. Nothing to do here.
-                }
+                await _pluginHost.HandleStatusAsync( status ).ConfigureAwait( false );
             }
         }
 
@@ -333,62 +263,7 @@ namespace EddiCore
         {
             if (!started)
             {
-                var configuration = ConfigService.Instance.eddiConfiguration;
-                foreach (var monitor in monitors)
-                {
-                    if (!configuration.Plugins.TryGetValue(monitor.MonitorName(), out var enabled))
-                    {
-                        // No information; default to enabled
-                        enabled = true;
-                    }
-
-                    if (!enabled && !monitor.IsRequired())
-                    {
-                        Logging.Info( $"{monitor.MonitorName()} is disabled; not starting" );
-                    }
-                    else
-                    {
-                        EnableMonitor( monitor );
-                    }
-                }
-
-                foreach (var responder in responders)
-                {
-                    if (!configuration.Plugins.TryGetValue(responder.ResponderName(), out var enabled))
-                    {
-                        // No information; default to enabled
-                        enabled = true;
-                    }
-
-                    if (!enabled)
-                    {
-                        Logging.Info( $"{responder.ResponderName()} is disabled; not starting" );
-                    }
-                    else if ( activeResponders.Any( r => r.ResponderName() == responder.ResponderName() ) )
-                    {
-                        Logging.Warn( $"{responder.ResponderName()} is already running." );
-                    }
-                    else
-                    {
-                        try
-                        {
-                            var responderStarted = responder.Start();
-                            if (responderStarted)
-                            {
-                                activeResponders.Add(responder);
-                                Logging.Info("Started " + responder.ResponderName());
-                            }
-                            else
-                            {
-                                Logging.Warn("Failed to start " + responder.ResponderName());
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Logging.Error("Failed to start " + responder.ResponderName(), ex);
-                        }
-                    }
-                }
+                _pluginHost.Start( ConfigService.Instance.eddiConfiguration );
 
                 // Initialize IPC server (the VoiceAttack plugin can connect to this server as an IPC client)
                 try
@@ -431,14 +306,7 @@ namespace EddiCore
                 Utilities.TelemetryService.Telemetry.Stop();
                 eventHandlerTS.Cancel();
                 EventPipeline.Stop();
-                foreach ( var responder in responders )
-                {
-                    DisableResponder( responder );
-                }
-                foreach ( var monitor in monitors )
-                {
-                    DisableMonitor( monitor );
-                }
+                _pluginHost.StopAll();
 
                 Logging.Info( Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " stopped" );
             }
@@ -449,15 +317,7 @@ namespace EddiCore
         /// </summary>
         public void Reload()
         {
-            foreach (var responder in responders)
-            {
-                responder.Reload();
-            }
-            foreach (var monitor in monitors)
-            {
-                monitor.Reload();
-            }
-
+            _pluginHost.Reload();
             Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " reloaded");
         }
 
@@ -466,266 +326,54 @@ namespace EddiCore
         /// </summary>
         public IEddiMonitor ObtainMonitor(string invariantName, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase )
         {
-            foreach (var monitor in monitors)
-            {
-                if (monitor.MonitorName().Equals(invariantName, stringComparison))
-                {
-                    return monitor;
-                }
-            }
-            return null;
+            return _pluginHost.ObtainMonitor( invariantName, stringComparison );
         }
 
         /// <summary> Obtain a named responder </summary>
         public IEddiResponder ObtainResponder(string invariantName, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase)
         {
-            foreach (var responder in responders)
-            {
-                if (responder.ResponderName().Equals(invariantName, stringComparison ) )
-                {
-                    return responder;
-                }
-            }
-            return null;
+            return _pluginHost.ObtainResponder( invariantName, stringComparison );
         }
 
         /// <summary> Disable a named responder for this session.  This does not update the on-disk status of the responder </summary>
         public void DisableResponder(string invariantName, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase )
         {
-            var responder = ObtainResponder(invariantName, stringComparison);
-            DisableResponder(responder);
-        }
-
-        private void DisableResponder(IEddiResponder responder)
-        {
-            if (responder != null)
-            {
-                lock (responderLock)
-                {
-                    // Remove the responder from the active list.
-                    var newResponders = new ConcurrentBag<IEddiResponder>();
-                    while (activeResponders.TryTake(out var item))
-                    {
-                        if (item != responder) { newResponders.Add(item); }
-                    }
-                    activeResponders = newResponders;
-
-                    // Stop the responder only after it's been removed from the active list.
-                    responder.Stop();
-                }
-            }
+            _pluginHost.DisableResponder( invariantName, stringComparison );
         }
 
         /// <summary> Enable a named responder for this session.  This does not update the on-disk status of the responder </summary>
         public void EnableResponder(string invariantName, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase )
         {
-            var responder = ObtainResponder(invariantName, stringComparison);
-            EnableResponder(responder);
-        }
-
-        private void EnableResponder(IEddiResponder responder)
-        {
-            if (responder != null)
-            {
-                if (!activeResponders.Contains(responder))
-                {
-                    activeResponders.Add( responder );
-                    responder.Start();
-                }
-            }
+            _pluginHost.EnableResponder( invariantName, stringComparison );
         }
 
         /// <summary> Disable a named monitor for this session.  This does not update the on-disk status of the responder </summary>
         public void DisableMonitor(string invariantName, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase )
         {
-            var monitor = ObtainMonitor(invariantName, stringComparison);
-            DisableMonitor(monitor);
+            _pluginHost.DisableMonitor( invariantName, stringComparison );
         }
 
         public void DisableMonitor ( IEddiMonitor monitor )
         {
-            if ( monitor != null )
-            {
-                lock ( monitorLock )
-                {
-                    var monitorName = monitor.MonitorName();
-
-                    // Signal cancellation for this monitor's keepalive loop
-                    if ( _monitorCancellationTokens.TryGetValue( monitorName, out var cts ) )
-                    {
-                        cts.Cancel();
-                        cts.Dispose();
-                        _monitorCancellationTokens.Remove( monitorName );
-                    }
-
-                    // Remove the monitor from the active list.
-                    var newMonitors = new ConcurrentBag<IEddiMonitor>();
-                    while ( activeMonitors.TryTake( out var item ) )
-                    {
-                        if ( item != monitor )
-                        {
-                            newMonitors.Add( item );
-                        }
-                    }
-
-                    activeMonitors = newMonitors;
-
-                    // Stop the monitor only after it's been removed from the active list.
-                    monitor.Stop();
-
-                    Logging.Info( $"{monitorName} disabled." );
-                }
-            }
+            _pluginHost.DisableMonitor( monitor );
         }
 
         /// <summary> Enable a named monitor for this session.  This does not update the on-disk status of the responder </summary>
         public void EnableMonitor(string invariantName, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase )
         {
-            var monitor = ObtainMonitor(invariantName, stringComparison);
-            EnableMonitor(monitor);
+            _pluginHost.EnableMonitor( invariantName, stringComparison );
         }
 
         public void EnableMonitor ( IEddiMonitor monitor )
         {
-            if ( monitor != null )
-            {
-                if ( !activeMonitors.Contains( monitor ) )
-                {
-                    activeMonitors.Add( monitor );
-                    if ( monitor.NeedsStart() )
-                    {
-                        var monitorName = monitor.MonitorName();
-                        var cts = new CancellationTokenSource();
-                        _monitorCancellationTokens[ monitorName ] = cts;
-
-                        // Queue to thread pool instead of creating new thread
-                        ThreadPool.QueueUserWorkItem( _ => keepAlive( monitorName, monitor.Start, cts.Token ), null );
-
-                        Logging.Debug( "Queued keepalive for " + monitorName + " to thread pool" );
-                    }
-                }
-                else
-                {
-                    Logging.Warn( $"{monitor.MonitorName()} is already running." );
-                }
-            }
+            _pluginHost.EnableMonitor( monitor );
         }
 
         /// <summary> Reload a specific monitor or responder </summary>
         public void Reload(string name, StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase )
         {
-            foreach (var responder in responders)
-            {
-                if (responder.ResponderName().Contains( name, stringComparison ) )
-                {
-                    responder.Reload();
-                    return;
-                }
-            }
-            foreach (var monitor in monitors)
-            {
-                if (monitor.MonitorName().Contains( name, stringComparison ) )
-                {
-                    monitor.Reload();
-                }
-            }
-
+            _pluginHost.Reload( name, stringComparison );
             Logging.Info($"{Constants.EDDI_NAME} {Constants.EDDI_VERSION} module {name} reloaded");
-        }
-
-        /// <summary> Keep a monitor thread alive, restarting it as required </summary>
-        private void keepAlive ( string name, Action start, CancellationToken monitorCancellationToken = default )
-        {
-            var token = monitorCancellationToken != CancellationToken.None 
-                ? monitorCancellationToken 
-                : eventHandlerTS.Token;
-            const int maxConsecutiveFailures = 5;
-            var stableRunResetsFailures = TimeSpan.FromMinutes(5);
-            var consecutiveFailures = 0;
-            var rng = new Random( unchecked(( System.Environment.TickCount * 31 ) + System.Environment.CurrentManagedThreadId) );
-
-            try
-            {
-                while (running && !token.IsCancellationRequested && IsMonitorActive(name) )
-                {
-                    var runStartTs = Stopwatch.GetTimestamp();
-                    Exception failure = null;
-
-                    try
-                    {
-                        Logging.Info( $"Starting {name} (consecutiveFailures={consecutiveFailures})" );
-                        start(); // expected to block until monitor stops
-                    }
-                    catch ( Exception ex ) when ( !token.IsCancellationRequested )
-                    {
-                        failure = ex; // capture so we can apply consistent failure logic below
-                    }
-
-                    // If we are stopping or the monitor was disabled, exit cleanly.
-                    if ( !running || token.IsCancellationRequested || !IsMonitorActive( name ) )
-                    {
-                        break;
-                    }
-
-                    // Unexpected exit/crash while still enabled.
-                    // Count as failure but reset the streak if it had been stable for longer than the `stableRunResetsFailures` timespan.
-                    var ranFor = ElapsedSince(runStartTs);
-                    if ( ranFor >= stableRunResetsFailures )
-                    {
-                        consecutiveFailures = 0;
-                    }
-                    consecutiveFailures++;
-                    Logging.Warn( $"{name} exited unexpectedly after {ranFor.TotalMilliseconds} ms. Restarting." );
-
-                    if ( failure != null )
-                    {
-                        Logging.Error( $"{name} crashed. Restarting. Consecutive failures: {consecutiveFailures}", failure );
-                    }
-                    else
-                    {
-                        Logging.Warn( $"{name} exited unexpectedly. Restarting. Consecutive failures: {consecutiveFailures}" );
-                    }
-
-                    if ( consecutiveFailures >= maxConsecutiveFailures )
-                    {
-                        DisableMonitor( name );
-                        Logging.Warn( $"{name} disabled after {consecutiveFailures} consecutive failures" );
-                        break;
-                    }
-
-                    // Exponential backoff (max 30s) + small jitter, except when unit testing
-                    var exponent = Math.Min(Math.Max(0, consecutiveFailures - 1), 5);
-                    var backoffSeconds = Math.Min(30, 1 << exponent);
-                    var jitterMs = rng.Next(0, 500);
-                    var delay = DataProvider.IsUnitTesting 
-                        ? TimeSpan.Zero 
-                        : TimeSpan.FromSeconds(backoffSeconds) + TimeSpan.FromMilliseconds(jitterMs);
-
-                    // Cancellation-friendly wait
-                    token.WaitHandle.WaitOne( delay );
-                }
-            }
-            catch ( OperationCanceledException )
-            {
-                Logging.Debug( "Monitor keepAlive cancelled" );
-            }
-            catch (ThreadAbortException)
-            {
-                Logging.Debug("Thread aborted");
-            }
-            catch (Exception ex)
-            {
-                Logging.Warn( $"keepAlive for {name} failed", ex );
-            }
-
-            return;
-
-            static TimeSpan ElapsedSince ( long startTimestamp )
-            {
-                var delta = Stopwatch.GetTimestamp() - startTimestamp;
-                var seconds = (double)delta / Stopwatch.Frequency;
-                return TimeSpan.FromSeconds( seconds );
-            }
         }
 
         public void enqueueEvent ( Event @event ) => EventPipeline.Enqueue( @event );
@@ -778,35 +426,7 @@ namespace EddiCore
                         await DataProvider.SaveStarSystemAsync(GameState.CurrentStarSystem).ConfigureAwait(false);
                     }
 
-                    try
-                    {
-                        var monitorTasks = new List<Task>();
-                        foreach ( var monitor in activeMonitors )
-                        {
-                            var monitorTask = monitor.HandleProfileAsync( profile.json );
-                            monitorTask.ContinueWith( task =>
-                                    {
-                                        if ( task.IsFaulted )
-                                        {
-                                            Logging.Warn(
-                                                $"Monitor {monitor.MonitorName()} failed to handle Frontier API update",
-                                                task.Exception );
-                                            success = false;
-                                        }
-                                    },
-                                    TaskContinuationOptions.OnlyOnFaulted |
-                                    TaskContinuationOptions.ExecuteSynchronously )
-                                .SafeFireAndForget( e => Logging.Error( e.Message, e ) );
-                            monitorTasks.Add( monitorTask );
-                        }
-
-                        await Task.WhenAll( monitorTasks ).ConfigureAwait( false );
-                    }
-                    catch ( TaskCanceledException tce )
-                    {
-                        Logging.Debug( "Task cancelled", tce );
-                        success = false;
-                    }
+                    success = await _pluginHost.HandleProfileAsync( profile.json ).ConfigureAwait( false );
                 }
             }
             catch (Exception ex)
@@ -822,80 +442,7 @@ namespace EddiCore
         /// </summary>
         public static List<IEddiMonitor> findMonitors()
         {
-            var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            if (string.IsNullOrEmpty(path))
-            {
-                Logging.Warn("Unable to start EDDI Monitors, application directory path not found.");
-                return null;
-            }
-
-            var dir = new DirectoryInfo(path);
-            List<IEddiMonitor> foundMonitors = [ ];
-            var pluginType = typeof(IEddiMonitor);
-            foreach (var file in dir.GetFiles("*Monitor.dll", SearchOption.AllDirectories))
-            {
-                try
-                {
-                    var assembly = Assembly.LoadFrom(file.FullName);
-                    foreach (var type in assembly.GetTypes())
-                    {
-                        if ( !type.IsInterface && !type.IsAbstract )
-                        {
-                            if ( type.GetInterface( pluginType.FullName ) != null )
-                            {
-                                try
-                                {
-                                    Logging.Debug( "Instantiating monitor plugin at " + file.FullName );
-                                    var monitor = type.InvokeMember( null,
-                                        BindingFlags.CreateInstance,
-                                        null, null, null ) as IEddiMonitor;
-                                    foundMonitors.Add( monitor );
-                                }
-                                catch ( TargetInvocationException )
-                                {
-                                    Logging.Warn(
-                                        $"Error loading {file.Name}. Failed to load {type.Name} from {type.Assembly}." );
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (BadImageFormatException)
-                {
-                    // Ignore this; probably due to CPU architecture mismatch
-                }
-                catch (ReflectionTypeLoadException ex)
-                {
-                    var sb = new StringBuilder();
-                    foreach (var exSub in ex.LoaderExceptions)
-                    {
-                        sb.AppendLine(exSub.Message);
-                        if (exSub is FileNotFoundException exFileNotFound)
-                        {
-                            if (!string.IsNullOrEmpty(exFileNotFound.FusionLog))
-                            {
-                                sb.AppendLine("Fusion Log:");
-                                sb.AppendLine(exFileNotFound.FusionLog);
-                            }
-                        }
-                        sb.AppendLine();
-                    }
-                    Logging.Warn("Failed to instantiate plugin at " + file.FullName + ":\n" + sb);
-                }
-                catch (FileLoadException flex)
-                {
-                    var msg = string.Format(Properties.Resources.problem_load_monitor_file, dir.FullName);
-                    Logging.Error(msg, flex);
-                    SpeechService.Instance.SayAsync( null, msg, 0 ).SafeFireAndForget( e => Logging.Error( e.Message, e ) );
-                }
-                catch (Exception ex)
-                {
-                    var msg = string.Format(Properties.Resources.problem_load_monitor, $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}");
-                    Logging.Error(msg, ex);
-                    SpeechService.Instance.SayAsync( null, msg, 0 ).SafeFireAndForget( e => Logging.Error( e.Message, e ) );
-                }
-            }
-            return foundMonitors;
+            return EddiPluginHost.FindMonitors();
         }
 
         /// <summary>
@@ -903,60 +450,7 @@ namespace EddiCore
         /// </summary>
         public static List<IEddiResponder> findResponders()
         {
-            var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            if (string.IsNullOrEmpty(path))
-            {
-                Logging.Warn("Unable to start EDDI Responders, application directory path not found.");
-                return null;
-            }
-            var dir = new DirectoryInfo(path);
-            List<IEddiResponder> foundResponders = [ ];
-            var pluginType = typeof(IEddiResponder);
-            foreach (var file in dir.GetFiles("*Responder.dll", SearchOption.AllDirectories))
-            {
-                try
-                {
-                    var assembly = Assembly.LoadFrom(file.FullName);
-                    foreach (var type in assembly.GetTypes())
-                    {
-                        if ( !type.IsInterface && !type.IsAbstract && pluginType.FullName is not null )
-                        {
-                            if ( type.GetInterface( pluginType.FullName ) != null )
-                            {
-                                Logging.Debug( "Instantiating responder plugin at " + file.FullName );
-                                var responder = type.InvokeMember( type.Name,
-                                    BindingFlags.CreateInstance,
-                                    null, null, null ) as IEddiResponder;
-                                foundResponders.Add( responder );
-                            }
-                        }
-                    }
-                }
-                catch (BadImageFormatException)
-                {
-                    // Ignore this; probably due to CPU architecure mismatch
-                }
-                catch (ReflectionTypeLoadException ex)
-                {
-                    var sb = new StringBuilder();
-                    foreach (var exSub in ex.LoaderExceptions)
-                    {
-                        if ( exSub is null ) { continue; }
-                        sb.AppendLine(exSub.Message);
-                        if (exSub is FileNotFoundException exFileNotFound)
-                        {
-                            if (!string.IsNullOrEmpty(exFileNotFound.FusionLog))
-                            {
-                                sb.AppendLine("Fusion Log:");
-                                sb.AppendLine(exFileNotFound.FusionLog);
-                            }
-                        }
-                        sb.AppendLine();
-                    }
-                    Logging.Warn("Failed to instantiate plugin at " + file.FullName + ":\n" + sb);
-                }
-            }
-            return foundResponders;
+            return EddiPluginHost.FindResponders();
         }
 
         /// <summary>
