@@ -665,4 +665,7 @@
   <data name="FuelScoopEfficiency" xml:space="preserve">
     <value>Efficient Fuel Scoop</value>
   </data>
+  <data name="SeekerMissileRackDrag" xml:space="preserve">
+    <value>Drag Munitions</value>
+  </data>
 </root>

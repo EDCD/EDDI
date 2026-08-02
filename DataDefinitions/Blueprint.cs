@@ -849,6 +849,12 @@ namespace EddiDataDefinitions
             _ = new Blueprint( 129041435, "FuelScoopEfficiency", "FuelScoopEfficiency", 3 ); // Efficient Fuel Scoop
             _ = new Blueprint( 129041436, "FuelScoopEfficiency", "FuelScoopEfficiency", 4 ); // Efficient Fuel Scoop
             _ = new Blueprint( 129041437, "FuelScoopEfficiency", "FuelScoopEfficiency", 5 ); // Efficient Fuel Scoop
+
+            _ = new Blueprint( 129045476, "SeekerMissileRackDrag", "SeekerMissileRackDrag", 1 ); // Drag Munitions
+            _ = new Blueprint( 129045477, "SeekerMissileRackDrag", "SeekerMissileRackDrag", 2 ); // Drag Munitions
+            _ = new Blueprint( 129045478, "SeekerMissileRackDrag", "SeekerMissileRackDrag", 3 ); // Drag Munitions
+            _ = new Blueprint( 129045479, "SeekerMissileRackDrag", "SeekerMissileRackDrag", 4 ); // Drag Munitions
+            _ = new Blueprint( 129045480, "SeekerMissileRackDrag", "SeekerMissileRackDrag", 5 ); // Drag Munitions
         }
         public static readonly Blueprint None;
         private static readonly Dictionary<long, Blueprint> BlueprintsByEliteID;

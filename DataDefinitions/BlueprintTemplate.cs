@@ -1566,6 +1566,14 @@ namespace EddiDataDefinitions
                 { 4, [ ] },
                 { 5, [ ] }
             } );
+            _ = new BlueprintTemplate( "SeekerMissileRackDrag", new Dictionary<int, List<MaterialAmount>>()
+            {
+                { 1, [ ] },
+                { 2, [ ] },
+                { 3, [ ] },
+                { 4, [ ] },
+                { 5, [ ] }
+            } );
         }
         public static readonly BlueprintTemplate None;
 

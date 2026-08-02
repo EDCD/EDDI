@@ -1384,6 +1384,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Drag Munitions.
+        /// </summary>
+        public static string SeekerMissileRackDrag {
+            get {
+                return ResourceManager.GetString("SeekerMissileRackDrag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expanded Probe Scanning Radius.
         /// </summary>
         public static string SensorExpanded {
