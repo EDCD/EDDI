@@ -534,7 +534,7 @@ namespace EddiCommanderMonitor
             // We need to reload the EDSM responder if the commander name has changed
             if ( ConfigService.Instance.commanderConfiguration.commanderName != @event.name )
             {
-                EDDI.Instance.ObtainResponder( "EDSM Responder" ).Reload();
+                EDDI.Instance.ObtainResponder( "EDSM Responder" )?.Reload();
             }
         }
 
