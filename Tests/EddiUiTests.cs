@@ -353,6 +353,34 @@ namespace Tests
         }
 
         [TestMethod]
+        public void ThemeDictionaries_DefineAvalonEditSearchResultBrushes()
+        {
+            foreach (var themeFile in new[] { "ThemeLight.xaml", "ThemeDark.xaml", "ThemeClassic.xaml" })
+            {
+                var themeXaml = File.ReadAllText(FindRepoFile("EddiUI", "Themes", themeFile));
+
+                Assert.Contains("x:Key=\"SearchResultBackgroundBrush\"", themeXaml);
+                Assert.Contains("x:Key=\"SearchResultBorderPen\"", themeXaml);
+            }
+        }
+
+        [TestMethod]
+        public void EditScriptWindow_UsesThemedAvalonEditSearchHighlights()
+        {
+            var editScriptWindowXaml = File.ReadAllText(FindRepoFile("SpeechResponder", "EditScriptWindow.xaml"));
+            var searchPanelStyle = ExtractBetween(
+                editScriptWindowXaml,
+                "<Style TargetType=\"{x:Type avalonEdit:SearchPanel}\">",
+                "</Style>" );
+
+            Assert.Contains("MarkerBrush", searchPanelStyle);
+            Assert.Contains("SearchResultBackgroundBrush", searchPanelStyle);
+            Assert.Contains("MarkerPen", searchPanelStyle);
+            Assert.Contains("SearchResultBorderPen", searchPanelStyle);
+            Assert.DoesNotContain("LightGreen", searchPanelStyle);
+        }
+
+        [TestMethod]
         public void ShowDiffWindow_UsesThemeDiffBrushes()
         {
             var showDiffWindowCode = File.ReadAllText(FindRepoFile("SpeechResponder", "ShowDiffWindow.xaml.cs"));

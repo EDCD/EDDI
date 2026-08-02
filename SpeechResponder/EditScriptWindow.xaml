@@ -161,6 +161,8 @@
                 <avalonEdit:TextEditor.Resources>
                     <Style TargetType="{x:Type avalonEdit:SearchPanel}">
                         <Setter Property="MinHeight" Value="30" />
+                        <Setter Property="MarkerBrush" Value="{DynamicResource SearchResultBackgroundBrush}" />
+                        <Setter Property="MarkerPen" Value="{DynamicResource SearchResultBorderPen}" />
                     </Style>
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
                         <Setter Property="Padding" Value="2,0,2,0" />

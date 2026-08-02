@@ -83,6 +83,8 @@
     <!-- Diff comparison backgrounds -->
     <SolidColorBrush x:Key="DiffDeletedBackgroundBrush" Color="#F08080"/>
     <SolidColorBrush x:Key="DiffInsertedBackgroundBrush" Color="#90EE90"/>
+    <SolidColorBrush x:Key="SearchResultBackgroundBrush" Color="#66FFD54F"/>
+    <Pen x:Key="SearchResultBorderPen" Brush="#FFE0A800" Thickness="1"/>
 
     <!-- Default WPF template brushes -->
     <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="{StaticResource ControlBackground}"/>
