@@ -174,7 +174,7 @@ namespace Tests
             Assert.IsEmpty( host.ActiveResponders);
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public void EddiPluginHost_DisableMonitor_CancelsKeepAlive ()
         {
             var monitor = new HostTestMonitor( "KeepAlive monitor", needsStart: true );

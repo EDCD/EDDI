@@ -61,6 +61,13 @@ namespace EddiVoiceAttackResponder
             AllRuntimeVariableDefinitions.Values
                 .Where( definition => definition.CurrentlyEmittedByVoiceAttack )
                 .ToDictionary( definition => definition.Name );
+
+        private static string Humanise ( decimal? number )
+        {
+            var speechResponder = EDDI.Instance.ObtainResponder( "Speech responder" ) as ISpeechResponderController;
+            return speechResponder?.Humanise( number )
+                   ?? "Cottle speech system configuration error: Speech responder is unavailable for Humanise.";
+        }
         
         // The following variables notify changes via `PropertyChanged`
         private static readonly Dictionary<string, Action> StandardValues = new()
@@ -423,9 +430,9 @@ namespace EddiVoiceAttackResponder
                     RuntimeSetInt("Exobiologist rating", cmdr?.exobiologistrating?.rank);
                     RuntimeSetText("Exobiologist rank", cmdr?.exobiologistrating?.localizedName);
                     RuntimeSetDecimal("Credits", cmdr?.credits);
-                    RuntimeSetText("Credits (spoken)", SpeechConversions.Humanize(cmdr?.credits));
+                    RuntimeSetText("Credits (spoken)", Humanise(cmdr?.credits));
                     RuntimeSetDecimal("Debt", cmdr?.debt);
-                    RuntimeSetText("Debt (spoken)", SpeechConversions.Humanize(cmdr?.debt));
+                    RuntimeSetText("Debt (spoken)", Humanise(cmdr?.debt));
                     RuntimeSetText("Title", cmdr?.title ?? EddiCore.Properties.Resources.Commander);
                     RuntimeSetText("Gender", cmdr?.gender ?? EddiCore.Properties.Resources.commander_gender_n);
                     RuntimeSetText("Squadron name", cmdr?.squadronname);
@@ -493,13 +500,13 @@ namespace EddiVoiceAttackResponder
                     RuntimeSetText( $"{prefix} role", ship?.Role?.localizedName );
                     RuntimeSetText( $"{prefix} size", ship?.Size?.localizedName );
                     RuntimeSetDecimal( $"{prefix} value", ship?.value );
-                    RuntimeSetText( $"{prefix} value (spoken)", SpeechConversions.Humanize( ship?.value ) );
+                    RuntimeSetText( $"{prefix} value (spoken)", Humanise( ship?.value ) );
                     RuntimeSetDecimal( $"{prefix} hull value", ship?.hullvalue );
-                    RuntimeSetText( $"{prefix} hull value (spoken)", SpeechConversions.Humanize( ship?.hullvalue ) );
+                    RuntimeSetText( $"{prefix} hull value (spoken)", Humanise( ship?.hullvalue ) );
                     RuntimeSetDecimal( $"{prefix} modules value", ship?.modulesvalue );
-                    RuntimeSetText( $"{prefix} modules value (spoken)", SpeechConversions.Humanize( ship?.modulesvalue ) );
+                    RuntimeSetText( $"{prefix} modules value (spoken)", Humanise( ship?.modulesvalue ) );
                     RuntimeSetDecimal( $"{prefix} rebuy", ship?.rebuy );
-                    RuntimeSetText( $"{prefix} rebuy (spoken)", SpeechConversions.Humanize( ship?.rebuy ) );
+                    RuntimeSetText( $"{prefix} rebuy (spoken)", Humanise( ship?.rebuy ) );
                     RuntimeSetDecimal( $"{prefix} health", ship?.health );
                     RuntimeSetInt( $"{prefix} cargo capacity", ship?.cargocapacity );
                     RuntimeSetBoolean( $"{prefix} hot", ship?.hot );
@@ -634,7 +641,7 @@ namespace EddiVoiceAttackResponder
                         {
                             // And it's cheaper
                             RuntimeSetDecimal( $"{name} station discount", existing.price - Module.price);
-                            RuntimeSetText( $"{name} station discount (spoken)", SpeechConversions.Humanize(existing.price - Module.price));
+                            RuntimeSetText( $"{name} station discount (spoken)", Humanise(existing.price - Module.price));
                         }
                         return;
                     }
@@ -672,7 +679,7 @@ namespace EddiVoiceAttackResponder
                 try
                 {
                     var phoneticStarSystem = SpeechConversions.getPhoneticStarSystem( system?.systemname );
-                    var phoneticPopulation = SpeechConversions.Humanize( system?.population );
+                    var phoneticPopulation = Humanise( system?.population );
                     var phoneticPower = SpeechConversions.getPhoneticPower( system?.power );
 
                     RuntimeSetText( $"{prefix} name", system?.systemname);

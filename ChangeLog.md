@@ -7,7 +7,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Customized obsolete scripts are now preserved as (Obsolete) <old script name> recovery scripts, while unchanged/default obsolete scripts are still removed.
     * Custom Functions
       * `F` revised to accept a new optional parameter which allows you to pass arguments to the invoked script.
+      * `Humanise` revised to use a customizable `Humanise` script and a decomposed number value from the new `NumberDetails` function (#2294).
+      * `NumberDetails` added to decompose number values into translateable elements.
     * Scripts
+      * `Humanise` customizable script added. 
       * `Limpet check` revised to reference invariant controller name. 
 
 ## 5.0.4

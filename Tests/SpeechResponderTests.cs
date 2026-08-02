@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Utilities.MetaVariables;
 
 namespace Tests
@@ -139,6 +140,48 @@ namespace Tests
             Assert.IsTrue( serializedScript?.Value<bool>( "responder" ) );
             Assert.AreEqual( "Custom AFMU repairs", serializedScript?.Value<string>( "script" ) );
             Assert.IsNotNull( serializedScript?[ "defaultValue" ] );
+        }
+
+        [TestMethod]
+        public void DefaultPersonality_IncludesEditableHumaniseHelperScript ()
+        {
+            var script = Personality.Default().Scripts[ "Humanise" ];
+
+            Assert.IsFalse( script.Responder );
+            Assert.IsNull( script.Priority );
+            Assert.IsTrue( script.Enabled );
+            Assert.IsTrue( script.Default );
+            Assert.IsTrue( script.IsResettable );
+            Assert.IsFalse( string.IsNullOrWhiteSpace( script.Value ) );
+            Assert.AreEqual( script.Value, script.defaultValue );
+        }
+
+        [TestMethod]
+        public void ShippedDefaultPersonalities_IncludeEditableHumaniseScaffold ()
+        {
+            var dirInfo = new DirectoryInfo( AppContext.BaseDirectory );
+            foreach ( var fileInfo in dirInfo.GetFiles()
+                         .Where( f => f.Name.StartsWith( "eddi" ) && f.Extension == ".json" ) )
+            {
+                var personality = Personality.FromFile( fileInfo.FullName, true );
+                Assert.IsTrue(
+                    personality.Scripts.TryGetValue( "Humanise", out var script ),
+                    $"{fileInfo.Name} is missing the Humanise helper script." );
+
+                Assert.IsFalse( script.Responder, $"{fileInfo.Name} Humanise should be a non-responder helper." );
+                Assert.IsNull( script.Priority, $"{fileInfo.Name} Humanise should not have a responder priority." );
+                Assert.IsTrue( script.Enabled, $"{fileInfo.Name} Humanise should be enabled." );
+                Assert.IsTrue( script.IsResettable, $"{fileInfo.Name} Humanise should be resettable." );
+                Assert.AreEqual( script.Value, script.defaultValue, $"{fileInfo.Name} Humanise should be resettable to its shipped script." );
+                Assert.Contains( "NumberDetails(args.number)", script.Value, $"{fileInfo.Name} Humanise should decompose args.number." );
+                Assert.Contains( "humanise.magnitudename", script.Value, $"{fileInfo.Name} Humanise should expose magnitude handling." );
+                Assert.Contains( "humanise.isnegative", script.Value, $"{fileInfo.Name} Humanise should expose sign handling." );
+                Assert.Contains( "humanise.format = \"short_decimal\"", script.Value, $"{fileInfo.Name} Humanise should expose decimal formatting." );
+                Assert.Contains( "humanise.format = \"just_over\"", script.Value, $"{fileInfo.Name} Humanise should expose approximation formatting." );
+                Assert.Contains( "humanise.format = \"around_half\"", script.Value, $"{fileInfo.Name} Humanise should expose half-step formatting." );
+                Assert.Contains( "humanise.format = \"well_over_half\"", script.Value, $"{fileInfo.Name} Humanise should expose rounded half-step handling." );
+                Assert.DoesNotContain( "fallback", script.Value, $"{fileInfo.Name} Humanise should not use legacy fallback output." );
+            }
         }
 
         [TestMethod]

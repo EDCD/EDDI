@@ -94,6 +94,16 @@ namespace EddiSpeechResponder
             return Properties.SpeechResponder.desc;
         }
 
+        public string Humanise ( decimal? number )
+        {
+            var scriptSource = CurrentPersonality?.Scripts?.ContainsKey( "Humanise" ) == true
+                ? CurrentPersonality.Scripts
+                : Personality.Default().Scripts;
+            var scripts = scriptSource?
+                .ToDictionary( script => script.Key, script => (IScriptDefinition)script.Value );
+            return HumaniseRenderer.Render( number, scripts );
+        }
+
         public SpeechResponder()
         {
             Configuration = ConfigService.Instance.speechResponderConfiguration;

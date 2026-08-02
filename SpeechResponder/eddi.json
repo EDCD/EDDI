@@ -1248,6 +1248,15 @@
       "name": "Holoscreen hacked",
       "description": "Triggered when you hack a power's holoscreen."
     },
+    "Humanise": {
+      "enabled": true,
+      "priority": null,
+      "responder": false,
+      "script": "{set humanise to NumberDetails(args.number)}\r\n{set word_minus to \"minus \"}\r\n{set word_one to \"one\"}\r\n{set word_just_over to \"just over \"}\r\n{set word_over to \"over \"}\r\n{set word_well_over to \"well over \"}\r\n{set word_nearly to \"nearly \"}\r\n{set word_around to \"around \"}\r\n{set word_and_a_half to \" and a half\"}\r\n{set magnitude to \"\"}\r\n{if humanise.magnitudename:\r\n    {set magnitude to cat(\" \", humanise.magnitudename)}\r\n}\r\n{set sign to \"\"}\r\n{if humanise.isnegative:\r\n    {set sign to word_minus}\r\n}\r\n{set quantity to humanise.quantity}\r\n{if humanise.number = 1 && (humanise.format = \"nearly_half\" || humanise.format = \"around_half\" || humanise.format = \"over_half\"):\r\n    {set quantity to word_one}\r\n}\r\n{if humanise.format = \"zero\" || humanise.format = \"small\" || humanise.format = \"verbatim\":\r\n    {humanise.quantity}\r\n|elif humanise.format = \"short_decimal\" || humanise.format = \"integer_mantissa\":\r\n    {sign}{humanise.quantity}{magnitude}\r\n|elif humanise.format = \"just_over\":\r\n    {sign}{word_just_over}{humanise.quantity}{magnitude}\r\n|elif humanise.format = \"over\":\r\n    {sign}{word_over}{humanise.quantity}{magnitude}\r\n|elif humanise.format = \"well_over\":\r\n    {sign}{word_well_over}{humanise.quantity}{magnitude}\r\n|elif humanise.format = \"nearly\":\r\n    {sign}{word_nearly}{humanise.quantity}{magnitude}\r\n|elif humanise.format = \"nearly_half\":\r\n    {sign}{word_nearly}{quantity}{word_and_a_half}{magnitude}\r\n|elif humanise.format = \"around_half\":\r\n    {sign}{word_around}{quantity}{word_and_a_half}{magnitude}\r\n|elif humanise.format = \"over_half\":\r\n    {sign}{word_over}{quantity}{word_and_a_half}{magnitude}\r\n|elif humanise.format = \"well_over_half\":\r\n    {sign}{word_nearly}{humanise.number + 1}{magnitude}\r\n|else:\r\n    {humanise.quantity}\r\n}",
+      "default": true,
+      "name": "Humanise",
+      "description": "Function to render decomposed Humanise() values as speech"
+    },
     "Honorific": {
       "enabled": true,
       "priority": 3,

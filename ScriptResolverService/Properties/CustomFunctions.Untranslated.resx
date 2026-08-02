@@ -311,7 +311,7 @@ At current this does not have a lot of use as the government object only contain
   <data name="Humanise" xml:space="preserve">
     <value>This function will turn its argument into a more human number, for example turning 31245 in to \"just over thirty thousand\".
 
-Humanise() takes one argument: the number to humanise.
+Humanise() takes one mandatory argument: the number to humanise. It returns a result generated using the editable `Humanise` script. The input is passed to that script as `args.number`.
 
 Common usage of this is to provide human-sounding numbers when speaking rather than saying every digit, for example:
 
@@ -393,6 +393,18 @@ MissionDetails() takes a single argument of the mission ID for which you want mo
 Common usage of this is to provide detailed information about a previously accepted mission, for example:
 
     {set mission to MissionDetails(event.missionid)}</value>
+  </data>
+  <data name="NumberDetails" xml:space="preserve">
+    <value>This function will decompose a number into values that scripts can use to render human-sounding speech.
+
+NumberDetails() takes one mandatory argument: the number to decompose.
+
+It returns `rawvalue`, `absolutevalue`, `isnegative`, `number`, `nextdigit`, `quantity`, `format`, `magnitudename`, `invariantmagnitudename`, and `ordermultiplier`.
+
+Common usage of this is to customize number grammar in scripts, for example:
+
+    {set details to NumberDetails(cmdr.credits)}
+    {details.quantity} {details.magnitudename}</value>
   </data>
   <data name="Occasionally" xml:space="preserve">
     <value>This function will take its argument 1/*n*th of the time, the rest of time discarding it.

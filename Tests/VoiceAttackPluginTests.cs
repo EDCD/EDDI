@@ -7,6 +7,7 @@ using EddiIPC_Service;
 using EddiIPC_Service.Messages;
 using EddiIPC_Service.Server;
 using EddiJournalMonitor;
+using EddiSpeechResponder;
 using EddiVoiceAttackAdapter;
 using EddiVoiceAttackResponder;
 using JetBrains.Annotations;
@@ -551,6 +552,34 @@ namespace Tests
             Assert.IsNull(mockVAProxy.GetDecimal("Ship large hardpoint 0 module health"));
             Assert.IsNull(mockVAProxy.GetDecimal("Ship large hardpoint 0 module cost"));
             Assert.IsNull(mockVAProxy.GetDecimal("Ship large hardpoint 0 module value"));
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void VoiceAttackSpokenNumericVariablesUseHumaniseScript()
+        {
+            var speechResponder = EDDI.Instance.ObtainResponder( "Speech responder" ) as SpeechResponder;
+            Assert.IsNotNull( speechResponder );
+
+            var originalPersonality = speechResponder.CurrentPersonality;
+            speechResponder.CurrentPersonality = Personality.Default();
+            var script = speechResponder.CurrentPersonality.Scripts[ "Humanise" ];
+            var originalValue = script.Value;
+            try
+            {
+                script.Value = "{set details to NumberDetails(args.number)}custom {details.rawvalue}";
+                var configuration = DeserializeJsonResource<ShipMonitorConfiguration>( Resources.shipMonitor );
+                var krait = configuration.shipyard.FirstOrDefault( s => s.LocalId == 81 );
+                Assert.IsNotNull( krait );
+
+                VoiceAttackVariables.setShipValues( krait, "Ship" );
+
+                Assert.AreEqual( "custom 201065994", mockVAProxy.GetText( "Ship value (spoken)" ) );
+            }
+            finally
+            {
+                script.Value = originalValue;
+                speechResponder.CurrentPersonality = originalPersonality;
+            }
         }
 
         [TestMethod, DoNotParallelize]
