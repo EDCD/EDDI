@@ -217,28 +217,49 @@ namespace EddiCore.Hotkeys
             hookProc = HookCallback;
 
             var moduleHandle = IntPtr.Zero;
+            var moduleName = string.Empty;
+            var modulePath = string.Empty;
+            var getModuleHandleWin32Error = 0;
+            string moduleResolutionError = null;
+            using var currentProcess = Process.GetCurrentProcess();
             try
             {
-                using ( var curProcess = Process.GetCurrentProcess() )
+                using ( var curModule = currentProcess.MainModule )
                 {
-                    using ( var curModule = curProcess.MainModule )
+                    if ( curModule != null )
                     {
-                        if ( curModule != null )
-                        {
-                            moduleHandle = NativeMethods.GetModuleHandle( curModule.ModuleName );
-                        }
+                        moduleName = curModule.ModuleName;
+                        modulePath = curModule.FileName;
+                        moduleHandle = NativeMethods.GetModuleHandle( moduleName );
+                        getModuleHandleWin32Error = moduleHandle == IntPtr.Zero ? Marshal.GetLastWin32Error() : 0;
                     }
                 }
             }
-            catch
+            catch ( Exception ex )
             {
                 // Best-effort. If module handle is IntPtr.Zero, SetWindowsHookEx may still succeed for WH_KEYBOARD_LL.
+                moduleResolutionError = $"{ex.GetType().Name}: {ex.Message}";
             }
 
             hookHandle = NativeMethods.SetWindowsHookEx( WH_KEYBOARD_LL, hookProc, moduleHandle, 0 );
+            var setHookWin32Error = hookHandle == IntPtr.Zero ? Marshal.GetLastWin32Error() : 0;
             if ( hookHandle == IntPtr.Zero )
             {
-                Logging.Error( $"Failed to install keyboard hook. Win32Error={Marshal.GetLastWin32Error()}" );
+                Logging.Error(
+                    "Failed to install keyboard hook. " +
+                    $"Win32Error={setHookWin32Error}; " +
+                    $"HookId={WH_KEYBOARD_LL}; " +
+                    "ThreadId=0; " +
+                    $"ModuleHandle=0x{moduleHandle.ToInt64():X}; " +
+                    $"ModuleName='{moduleName}'; " +
+                    $"ModulePath='{modulePath}'; " +
+                    $"GetModuleHandleWin32Error={getModuleHandleWin32Error}; " +
+                    $"ModuleResolutionError='{moduleResolutionError ?? "none"}'; " +
+                    $"ProcessId={currentProcess.Id}; " +
+                    $"ProcessName='{currentProcess.ProcessName}'; " +
+                    $"Is64BitProcess={Environment.Is64BitProcess}; " +
+                    $"Is64BitOperatingSystem={Environment.Is64BitOperatingSystem}; " +
+                    $"UserInteractive={Environment.UserInteractive}" );
             }
         }
 
