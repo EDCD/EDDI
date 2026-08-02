@@ -158,6 +158,25 @@
                                    ShowLineNumbers="True"
                                    SyntaxHighlighting="Cottle"
                                    >
+                <avalonEdit:TextEditor.Resources>
+                    <Style TargetType="{x:Type avalonEdit:SearchPanel}">
+                        <Setter Property="MinHeight" Value="30" />
+                    </Style>
+                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                        <Setter Property="Padding" Value="2,0,2,0" />
+                        <Setter Property="MinHeight" Value="0" />
+                        <Setter Property="MinWidth" Value="0" />
+                    </Style>
+                    <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource {x:Type ToggleButton}}">
+                        <Setter Property="Padding" Value="2,0,2,0" />
+                        <Setter Property="MinHeight" Value="0" />
+                        <Setter Property="MinWidth" Value="0" />
+                    </Style>
+                    <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                        <Setter Property="Padding" Value="2,0,2,0" />
+                        <Setter Property="MinHeight" Value="0" />
+                    </Style>
+                </avalonEdit:TextEditor.Resources>
                 <avalonEdit:TextEditor.ContextMenu>
                     <ContextMenu>
                         <MenuItem Command="ApplicationCommands.Undo"/>
