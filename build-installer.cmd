@@ -12,10 +12,16 @@ if not defined iscc (
 set "releaseRoot=bin\Release"
 set "appOutput=%releaseRoot%\Application"
 set "shimOutput=%releaseRoot%\VoiceAttackPluginShim"
+set "docGenerator=%releaseRoot%\BuildTools\DocumentationGenerator\DocumentationGenerator.dll"
 
 echo ---- Checking MSBuild release layout ----
 if not exist "%appOutput%\Eddi.exe" (
     echo Eddi.exe not found at "%appOutput%\Eddi.exe"
+    exit /b 1
+)
+
+if not exist "%docGenerator%" (
+    echo DocumentationGenerator.dll not found at "%docGenerator%"
     exit /b 1
 )
 
@@ -34,7 +40,26 @@ if not exist "%shimOutput%\eddi_app_path.txt" (
     exit /b 1
 )
 
+echo ---- Generating installer documentation payload ----
+dotnet "%docGenerator%" "%appOutput%"
+if not "%ERRORLEVEL%"=="0" exit /b %ERRORLEVEL%
+
+if not exist "%appOutput%\Cottle\Custom keywords.txt" (
+    echo Custom keywords.txt not found at "%appOutput%\Cottle\Custom keywords.txt"
+    exit /b 1
+)
+
+if not exist "%appOutput%\Wiki\Variables.md" (
+    echo Variables.md not found at "%appOutput%\Wiki\Variables.md"
+    exit /b 1
+)
+
+if not exist "%appOutput%\Wiki\VoiceAttack-Integration.md" (
+    echo VoiceAttack-Integration.md not found at "%appOutput%\Wiki\VoiceAttack-Integration.md"
+    exit /b 1
+)
+
 echo ---- Compiling installer ----
 "%iscc%" Installer.iss
-if errorlevel 1 exit /b %errorlevel%
+if not "%ERRORLEVEL%"=="0" exit /b %ERRORLEVEL%
 echo ---- Installer compiled ----
