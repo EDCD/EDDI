@@ -23,7 +23,7 @@ namespace EddiSpeechResponder
     /// <summary>
     /// A responder that responds to events with a speech
     /// </summary>
-    public class SpeechResponder : IEddiResponder, INotifyPropertyChanged
+    public class SpeechResponder : IEddiResponder, ISpeechResponderController, INotifyPropertyChanged
     {
         // The file to log speech
         private static readonly string LogFile = Constants.DATA_DIR + @"\speechresponder.out";

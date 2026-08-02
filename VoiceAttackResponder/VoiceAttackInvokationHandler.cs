@@ -5,7 +5,6 @@ using EddiDataDefinitions;
 using EddiIPC_Service.Messages;
 using EddiIPC_Service.Server;
 using EddiNavigationService;
-using EddiSpeechResponder;
 using EddiSpeechService;
 using EddiStarMapService;
 using System;
@@ -606,7 +605,7 @@ namespace EddiVoiceAttackResponder
 
                 var voice = RuntimeGetText( "Voice" );
 
-                var speechResponder = (SpeechResponder)EDDI.Instance.ObtainResponder( "Speech responder" );
+                var speechResponder = EDDI.Instance.ObtainResponder( "Speech responder" ) as ISpeechResponderController;
                 if ( speechResponder == null )
                 {
                     Logging.Warn( "Unable to find speech responder" );
@@ -620,7 +619,8 @@ namespace EddiVoiceAttackResponder
 
                 // sayOutLoud must be true to match the behavior described by the wiki for the `disablespeechresponder` command
                 // i.e. "not talk unless specifically asked for information"
-                speechResponder?.SayAsync( ship, script, null, priority, voice, true, true );
+                speechResponder?.SayAsync( ship, script, null, priority, voice, true, true )
+                    .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
             }
             catch ( Exception e )
             {
@@ -659,7 +659,7 @@ namespace EddiVoiceAttackResponder
             var personality = RuntimeGetText( "Personality" );
             try
             {
-                var speechResponder = (SpeechResponder)EDDI.Instance.ObtainResponder( "Speech responder" );
+                var speechResponder = EDDI.Instance.ObtainResponder( "Speech responder" ) as ISpeechResponderController;
                 speechResponder?.TrySetPersonality( personality );
             }
             catch ( Exception e )
