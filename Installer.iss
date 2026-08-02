@@ -800,6 +800,52 @@ begin
     RemoveDirIfOldEddiInstall(GetPreviousEddiInstallDir);
 end;
 
+function RemoveOldVoiceAttackPluginDir(const ShimDir: string): Boolean;
+var
+  CleanDir: string;
+begin
+  Result := True;
+
+  if Trim(ShimDir) = '' then
+    exit;
+
+  CleanDir := RemoveBackslashUnlessRoot(ShimDir);
+
+  if not DirExists(CleanDir) then
+    exit;
+
+  if SamePath(CleanDir, ExpandConstant('{app}')) then
+    exit;
+
+  Log(Format('Removing old EDDI VoiceAttack plugin folder at "%s".', [CleanDir]));
+  Result := DelTree(CleanDir, True, True, True);
+end;
+
+function RemoveKnownVoiceAttackPluginDirs: Boolean;
+var
+  AppsDir: string;
+begin
+  Result := True;
+
+  if not RemoveOldVoiceAttackPluginDir(GetVoiceAttack2EddiDir('')) then
+    Result := False;
+
+  if TryGetVoiceAttack2AppsDir(AppsDir) then
+  begin
+    if not RemoveOldVoiceAttackPluginDir(GetVoiceAttackShimDirForAppsDir(AppsDir)) then
+      Result := False;
+  end;
+
+  if TryGetLegacyVoiceAttackAppsDir(AppsDir) then
+  begin
+    if not RemoveOldVoiceAttackPluginDir(GetVoiceAttackShimDirForAppsDir(AppsDir)) then
+      Result := False;
+  end;
+
+  if not RemoveOldVoiceAttackPluginDir(GetVoiceAttackShimDirForAppsDir(GetPerUserVoiceAttackAppsDir)) then
+    Result := False;
+end;
+
 procedure WriteVoiceAttackShimMarker;
 var
   ShimDir: string;
@@ -919,14 +965,20 @@ begin
 end;
 
 procedure CurStepChanged(CurStep: TSetupStep);
+var
+  RemovedOldEddiInstalls: Boolean;
+  RemovedVoiceAttackPlugins: Boolean;
 begin
   if CurStep = ssInstall then
   begin
-    if not RemoveOldEddiInstalls then
+    RemovedOldEddiInstalls := RemoveOldEddiInstalls;
+    RemovedVoiceAttackPlugins := RemoveKnownVoiceAttackPluginDirs;
+
+    if not (RemovedOldEddiInstalls and RemovedVoiceAttackPlugins) then
     begin
       MsgBox(
-        'Setup could not remove an old EDDI install.' + #13#10#13#10 +
-        'Close EDDI and VoiceAttack, then run Setup again.',
+        'Setup could not remove an old EDDI install or VoiceAttack plugin.' + #13#10#13#10 +
+        'Close EDDI and VoiceAttack, then run Setup again. If VoiceAttack is installed in Program Files, run Setup as administrator.',
         mbCriticalError, MB_OK);
       Abort;
     end;
