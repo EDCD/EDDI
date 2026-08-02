@@ -842,8 +842,13 @@ namespace EddiDataDefinitions
             _ = new Blueprint( 129028578, "WeaponOvercharged5", "WeaponOvercharged", 5 ); // Pre-engineered (Azimuth?) AX overcharged autoloader multicannon
             _ = new Blueprint( 129030458, "GuardianWeaponSturdy1", "GuardianWeaponSturdy", 1 ); // Anti-Guardian Zone Resistance
             _ = new Blueprint( 129035483, "PowerDistributor_PrioritySystems", null, 5 ); // Pre-engineered system and engine focused power distributor
-            _ = new Blueprint( 129036395, "CargoRack_IncreasedCapacity", "CargoRackIncreasedCapacity", 5 ); // Pre-engineered high capacity cargo racks
+            _ = new Blueprint( 129036395, "CargoRackIncreasedCapacity", "CargoRackIncreasedCapacity", 5 ); // Pre-engineered high capacity cargo racks
             _ = new Blueprint( 129041439, "Weapon_HighCapacity", "Weapon_HighCapacity", 5 ); // Pre-engineered high capacity super penetrator railgun
+            _ = new Blueprint( 129041433, "FuelScoopEfficiency", "FuelScoopEfficiency", 1 ); // Efficient Fuel Scoop
+            _ = new Blueprint( 129041434, "FuelScoopEfficiency", "FuelScoopEfficiency", 2 ); // Efficient Fuel Scoop
+            _ = new Blueprint( 129041435, "FuelScoopEfficiency", "FuelScoopEfficiency", 3 ); // Efficient Fuel Scoop
+            _ = new Blueprint( 129041436, "FuelScoopEfficiency", "FuelScoopEfficiency", 4 ); // Efficient Fuel Scoop
+            _ = new Blueprint( 129041437, "FuelScoopEfficiency", "FuelScoopEfficiency", 5 ); // Efficient Fuel Scoop
         }
         public static readonly Blueprint None;
         private static readonly Dictionary<long, Blueprint> BlueprintsByEliteID;

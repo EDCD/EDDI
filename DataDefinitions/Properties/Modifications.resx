@@ -662,4 +662,7 @@
     <value>Expanded Cargo Rack</value>
     <comment>Special CG reward expanded cargo rack blueprint</comment>
   </data>
+  <data name="FuelScoopEfficiency" xml:space="preserve">
+    <value>Efficient Fuel Scoop</value>
+  </data>
 </root>
