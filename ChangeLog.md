@@ -2,6 +2,11 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+## 5.0.4
+  * Core
+    * Fixed VoiceAttack plugin local install location. 
+    * Fixed slightly cut off buttons in the `Copy Personality` window.
+
 ## 5.0.3
   * Core
     * Add `factions` table to local SQLITE database for better tracking of faction reputation data. 
