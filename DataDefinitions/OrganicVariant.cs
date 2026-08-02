@@ -1035,7 +1035,7 @@ namespace EddiDataDefinitions
             this.nebulaDistance = nebulaDistance;
             this.distanceFromArrival = distanceFromArrival;
             this.geologicalsPresent = geologicalsPresent;
-            this.regions = regions.Select( GalacticRegion.FromID ).Where( r => r != null ).ToList() ?? [ ];
+            this.regions = regions?.Select( GalacticRegion.FromID )?.Where( r => r != null ).ToList() ?? [ ];
         }
 
         /// <summary>
