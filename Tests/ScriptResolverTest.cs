@@ -5,6 +5,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 
@@ -219,28 +221,39 @@ namespace Tests
             Assert.AreEqual(newDefaultScript.Value, upgradedScript.Value);
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public void TestSetClipboard()
         {
+            ExceptionDispatchInfo exception = null;
             var testThread = new Thread(() =>
             {
-                var scripts = new Dictionary<string, Script>
+                try
                 {
-                    {"test1", new Script("test1", null, false, @"{SetClipboard(""A"")}")},
-                    {"test2", new Script("test2", null, false, @"{SetClipboard(""B"")}")},
-                    {"test3", new Script("test3", null, false, @"{SetClipboard(""C"")}")},
-                };
-                var resolver = new ScriptResolver(scripts);
-                var dict = new Dictionary<string, Tuple<Type, Value>>();
+                    var originalClipboardText = TryGetClipboardText();
+                    try
+                    {
+                        var scripts = new Dictionary<string, Script>
+                        {
+                            {"test1", new Script("test1", null, false, @"{SetClipboard(""A"")}")},
+                            {"test2", new Script("test2", null, false, @"{SetClipboard(""B"")}")},
+                            {"test3", new Script("test3", null, false, @"{SetClipboard(""C"")}")},
+                        };
+                        var resolver = new ScriptResolver(scripts);
+                        var dict = new Dictionary<string, Tuple<Type, Value>>();
 
-                resolver.resolveFromName("test1", dict, true);
-                Assert.AreEqual("A", Clipboard.GetText());
-
-                resolver.resolveFromName("test2", dict, true);
-                Assert.AreEqual("B", Clipboard.GetText());
-
-                resolver.resolveFromName("test3", dict, true);
-                Assert.AreEqual("C", Clipboard.GetText());
+                        ResolveAndAssertClipboard( resolver, "test1", dict, "A" );
+                        ResolveAndAssertClipboard( resolver, "test2", dict, "B" );
+                        ResolveAndAssertClipboard( resolver, "test3", dict, "C" );
+                    }
+                    finally
+                    {
+                        RestoreClipboardText( originalClipboardText );
+                    }
+                }
+                catch ( Exception ex )
+                {
+                    exception = ExceptionDispatchInfo.Capture( ex );
+                }
             });
             if (!testThread.TrySetApartmentState(ApartmentState.STA))
             {
@@ -248,6 +261,75 @@ namespace Tests
             }
             testThread.Start();
             testThread.Join();
+            exception?.Throw();
+        }
+
+        private static void ResolveAndAssertClipboard (
+            ScriptResolver resolver,
+            string scriptName,
+            Dictionary<string, Tuple<Type, Value>> dict,
+            string expectedText )
+        {
+            COMException lastException = null;
+            string lastText = null;
+
+            for ( var attempt = 0; attempt < 10; attempt++ )
+            {
+                resolver.resolveFromName( scriptName, dict, true );
+                try
+                {
+                    lastText = Clipboard.GetText();
+                    if ( lastText == expectedText )
+                    {
+                        return;
+                    }
+                }
+                catch ( COMException ex ) when ( IsClipboardBusy( ex ) )
+                {
+                    lastException = ex;
+                }
+
+                Thread.Sleep( 50 );
+            }
+
+            if ( lastException != null )
+            {
+                Assert.Fail( $"Unable to read clipboard after retrying: {lastException.Message}" );
+            }
+            Assert.AreEqual( expectedText, lastText );
+        }
+
+        private static string TryGetClipboardText ()
+        {
+            try
+            {
+                return Clipboard.GetText();
+            }
+            catch ( COMException ex ) when ( IsClipboardBusy( ex ) )
+            {
+                return null;
+            }
+        }
+
+        private static void RestoreClipboardText ( string text )
+        {
+            try
+            {
+                Clipboard.Clear();
+                if ( text != null )
+                {
+                    Clipboard.SetText( text );
+                }
+            }
+            catch ( COMException ex ) when ( IsClipboardBusy( ex ) )
+            {
+                // Cleanup should not mask the assertion result.
+            }
+        }
+
+        private static bool IsClipboardBusy ( COMException ex )
+        {
+            return ex.HResult == unchecked((int)0x800401D0);
         }
 
         [ TestMethod ]

@@ -190,6 +190,100 @@ namespace Tests
         }
 
         [TestMethod]
+        public async Task EddiStationMarketEventHandler_Market_UpdatesCurrentStationAndEmitsOncePerVisit ()
+        {
+            var ( context, currentStation, emittedEvents ) = CreateStationMarketContext();
+            var handler = new EddiStationMarketEventHandler( context, emittedEvents.Add );
+            var firstEvent = CreateMarketEvent();
+            var secondEvent = CreateMarketEvent();
+
+            var firstPassEvent = await handler.HandleMarketAsync( firstEvent ).ConfigureAwait( false );
+            var secondPassEvent = await handler.HandleMarketAsync( secondEvent ).ConfigureAwait( false );
+
+            Assert.IsTrue( firstPassEvent );
+            Assert.IsTrue( secondPassEvent );
+            Assert.HasCount( 1, currentStation.commodities );
+            Assert.IsTrue( currentStation.marketUpdatedThisVisit );
+            var updateEvent = AssertSingleMarketInformationUpdatedEvent( emittedEvents );
+            Assert.Contains( "market", updateEvent.updates);
+        }
+
+        [TestMethod]
+        public async Task EddiStationMarketEventHandler_Outfitting_UpdatesCurrentStationAndEmitsOncePerVisit ()
+        {
+            var ( context, currentStation, emittedEvents ) = CreateStationMarketContext();
+            var handler = new EddiStationMarketEventHandler( context, emittedEvents.Add );
+
+            var firstPassEvent = await handler.HandleOutfittingAsync( CreateOutfittingEvent() ).ConfigureAwait( false );
+            var secondPassEvent = await handler.HandleOutfittingAsync( CreateOutfittingEvent() ).ConfigureAwait( false );
+
+            Assert.IsTrue( firstPassEvent );
+            Assert.IsTrue( secondPassEvent );
+            Assert.HasCount( 1, currentStation.outfitting );
+            Assert.IsTrue( currentStation.outfittingUpdatedThisVisit );
+            var updateEvent = AssertSingleMarketInformationUpdatedEvent( emittedEvents );
+            Assert.Contains( "outfitting", updateEvent.updates);
+        }
+
+        [TestMethod]
+        public async Task EddiStationMarketEventHandler_Shipyard_UpdatesCurrentStationAndEmitsOncePerVisit ()
+        {
+            var ( context, currentStation, emittedEvents ) = CreateStationMarketContext();
+            var handler = new EddiStationMarketEventHandler( context, emittedEvents.Add );
+
+            var firstPassEvent = await handler.HandleShipyardAsync( CreateShipyardEvent() ).ConfigureAwait( false );
+            var secondPassEvent = await handler.HandleShipyardAsync( CreateShipyardEvent() ).ConfigureAwait( false );
+
+            Assert.IsTrue( firstPassEvent );
+            Assert.IsTrue( secondPassEvent );
+            Assert.HasCount( 1, currentStation.shipyard );
+            Assert.IsTrue( currentStation.shipyardUpdatedThisVisit );
+            var updateEvent = AssertSingleMarketInformationUpdatedEvent( emittedEvents );
+            Assert.Contains( "shipyard", updateEvent.updates);
+        }
+
+        [TestMethod]
+        public async Task EddiStationMarketEventHandler_UpdatesKnownNonCurrentStationWithoutEmitting ()
+        {
+            var ( context, _, emittedEvents ) = CreateStationMarketContext();
+            var otherStation = new Station
+            {
+                name = "Other Station",
+                marketId = 987654,
+                systemname = StationMarketSystemName,
+                systemAddress = StationMarketSystemAddress
+            };
+            context.GameState.CurrentStarSystem.AddOrUpdateStation( otherStation );
+            var handler = new EddiStationMarketEventHandler( context, emittedEvents.Add );
+
+            var passEvent = await handler.HandleMarketAsync( CreateMarketEvent( otherStation.marketId ?? 0, otherStation.name ) )
+                .ConfigureAwait( false );
+
+            Assert.IsFalse( passEvent );
+            Assert.HasCount( 1, otherStation.commodities );
+            Assert.IsFalse( otherStation.marketUpdatedThisVisit );
+            Assert.IsEmpty( emittedEvents );
+        }
+
+        [TestMethod]
+        public async Task EddiStationMarketEventHandler_SuppressesFromLoadAndWrongSystemEvents ()
+        {
+            var ( context, currentStation, emittedEvents ) = CreateStationMarketContext();
+            var handler = new EddiStationMarketEventHandler( context, emittedEvents.Add );
+
+            var fromLoadEvent = CreateMarketEvent();
+            fromLoadEvent.fromLoad = true;
+            var fromLoadPassEvent = await handler.HandleMarketAsync( fromLoadEvent ).ConfigureAwait( false );
+            var wrongSystemPassEvent = await handler.HandleMarketAsync( CreateMarketEvent( system: "Wrong System" ) )
+                .ConfigureAwait( false );
+
+            Assert.IsFalse( fromLoadPassEvent );
+            Assert.IsFalse( wrongSystemPassEvent );
+            Assert.IsEmpty( currentStation.commodities );
+            Assert.IsEmpty( emittedEvents );
+        }
+
+        [TestMethod]
         public async Task EddiLocationStateService_UpdateCurrentSystem_UsesNextSystemAndClearsReachedDestination ()
         {
             var context = CreateEventProcessorContext();
@@ -241,6 +335,84 @@ namespace Tests
             Assert.AreEqual( "Sol 1", context.GameState.CurrentStellarBody.bodyname );
             Assert.AreEqual( 1, context.GameState.CurrentStellarBody.bodyId );
             Assert.HasCount( 1, context.GameState.CurrentStarSystem.bodies);
+        }
+
+        private const string StationMarketSystemName = "Sol";
+        private const ulong StationMarketSystemAddress = 10477373803;
+        private const long StationMarketId = 123456;
+        private const string StationMarketStationName = "Galileo";
+
+        private static (IsolatedEddiEventProcessorContext context, Station currentStation, List<Event> emittedEvents) CreateStationMarketContext ()
+        {
+            var context = CreateEventProcessorContext();
+            var currentStation = new Station
+            {
+                name = StationMarketStationName,
+                marketId = StationMarketId,
+                systemname = StationMarketSystemName,
+                systemAddress = StationMarketSystemAddress
+            };
+            var currentSystem = new StarSystem
+            {
+                systemname = StationMarketSystemName,
+                systemAddress = StationMarketSystemAddress
+            };
+            currentSystem.AddOrUpdateStation( currentStation );
+            context.GameStateMutator.CurrentStarSystem = currentSystem;
+            context.GameStateMutator.CurrentStation = currentStation;
+            return ( context, currentStation, [ ] );
+        }
+
+        private static MarketEvent CreateMarketEvent (
+            long marketId = StationMarketId,
+            string station = StationMarketStationName,
+            string system = StationMarketSystemName )
+        {
+            var timestamp = DateTime.UtcNow;
+            var info = new MarketInfo(
+                timestamp,
+                marketId,
+                station,
+                system,
+                [ new MarketInfoItem( 128049166, "Water", "Chemicals", 10, 12, 11, CommodityBracket.None, CommodityBracket.None, 100, 200 ) ] );
+            return new MarketEvent( timestamp, marketId, station, system, info );
+        }
+
+        private static OutfittingEvent CreateOutfittingEvent ()
+        {
+            var timestamp = DateTime.UtcNow;
+            var info = new OutfittingInfo(
+                timestamp,
+                StationMarketId,
+                StationMarketStationName,
+                StationMarketSystemName,
+                [ new OutfittingInfoItem( "Hpt_PulseLaser_Fixed_Small", "weapon", 1000 ) ] );
+            return new OutfittingEvent( timestamp, StationMarketId, StationMarketStationName, StationMarketSystemName, info );
+        }
+
+        private static ShipyardEvent CreateShipyardEvent ()
+        {
+            var timestamp = DateTime.UtcNow;
+            var info = new ShipyardInfo(
+                timestamp,
+                StationMarketId,
+                StationMarketStationName,
+                StationMarketSystemName,
+                true,
+                true,
+                [ new ShipyardInfoItem( "sidewinder", 32000 ) ] );
+            return new ShipyardEvent( timestamp, StationMarketId, StationMarketStationName, StationMarketSystemName, info );
+        }
+
+        private static MarketInformationUpdatedEvent AssertSingleMarketInformationUpdatedEvent ( List<Event> emittedEvents )
+        {
+            Assert.HasCount( 1, emittedEvents );
+            Assert.IsInstanceOfType<MarketInformationUpdatedEvent>( emittedEvents[ 0 ] );
+            var updateEvent = (MarketInformationUpdatedEvent)emittedEvents[ 0 ];
+            Assert.AreEqual( StationMarketId, updateEvent.marketID );
+            Assert.AreEqual( StationMarketStationName, updateEvent.stationName );
+            Assert.AreEqual( StationMarketSystemName, updateEvent.systemName );
+            return updateEvent;
         }
 
         [TestMethod]

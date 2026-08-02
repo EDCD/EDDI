@@ -17,12 +17,14 @@ namespace EddiCore.EventHandling
     {
         private readonly IEddiEventProcessorContext _context;
         private readonly EddiLocationStateService _locationStateService;
+        private readonly EddiStationMarketEventHandler _stationMarketEventHandler;
         private string multicrewVehicleHolder;
 
         internal EddiEventProcessor ( IEddiEventProcessorContext context )
         {
             _context = context;
             _locationStateService = new EddiLocationStateService( context );
+            _stationMarketEventHandler = new EddiStationMarketEventHandler( context, enqueueEvent );
         }
 
         private IEddiGameState GameState => _context.GameState;
@@ -173,15 +175,15 @@ namespace EddiCore.EventHandling
             }
             else if ( @event is MarketEvent marketEvent )
             {
-                passEvent = await eventMarketAsync( marketEvent ).ConfigureAwait( false );
+                passEvent = await _stationMarketEventHandler.HandleMarketAsync( marketEvent ).ConfigureAwait( false );
             }
             else if ( @event is OutfittingEvent outfittingEvent )
             {
-                passEvent = await eventOutfittingAsync( outfittingEvent ).ConfigureAwait( false );
+                passEvent = await _stationMarketEventHandler.HandleOutfittingAsync( outfittingEvent ).ConfigureAwait( false );
             }
             else if ( @event is ShipyardEvent shipyardEvent )
             {
-                passEvent = await eventShipyardAsync( shipyardEvent ).ConfigureAwait( false );
+                passEvent = await _stationMarketEventHandler.HandleShipyardAsync( shipyardEvent ).ConfigureAwait( false );
             }
             else if ( @event is DiscoveryScanEvent discoveryScanEvent )
             {
@@ -874,160 +876,6 @@ namespace EddiCore.EventHandling
 
             Logging.Info($"Liftoff in {Vehicle}");
             return true;
-        }
-
-        private async Task<bool> eventMarketAsync(MarketEvent theEvent)
-        {
-            // Don't proceed if loading pre-existing logs
-            if (theEvent.fromLoad) { return false; }
-
-            // Don't proceed if the event data isn't what we expect
-            if ( theEvent.system != CurrentStarSystem?.systemname) { return false; }
-
-            var items = theEvent.info?.Items?
-                .Select(q => q.ToCommodityMarketQuote())
-                .ToList();
-
-            if (theEvent.info?.Items?.Count == items?.Count && items != null) // We've successfully parsed all commodity items
-            {
-                // Update the current station commodities
-                if (CurrentStation != null && CurrentStation?.marketId == theEvent.marketId)
-                {
-                    CurrentStation.commodities = items;
-                    CurrentStation.commoditiesupdatedat = Dates.fromDateTimeToSeconds(theEvent.timestamp);
-
-                    // Update the current station information in our backend DB
-                    Logging.Debug("Star system information updated from remote server; updating local copy");
-                    await DataProvider.SaveStarSystemAsync(CurrentStarSystem).ConfigureAwait(false);
-
-                    // Post an update event for new market data
-                    // Don't proceed if the data was already updated this visit
-                    if ( !CurrentStation.marketUpdatedThisVisit )
-                    {
-                        CurrentStation.marketUpdatedThisVisit = true;
-                        enqueueEvent( new MarketInformationUpdatedEvent( theEvent.timestamp, theEvent.marketId,
-                            theEvent.station, theEvent.system, [ "market" ] ) { raw = theEvent.raw } );
-                    }
-
-                    return true;
-                }
-                else
-                {
-                    var station = CurrentStarSystem?.stations.FirstOrDefault(s => s.marketId == theEvent.marketId);
-                    if (station != null)
-                    {
-                        station.commodities = theEvent.info.Items.Select(q => q.ToCommodityMarketQuote()).ToList();
-                        station.commoditiesupdatedat = Dates.fromDateTimeToSeconds(theEvent.timestamp);
-                        await DataProvider.SaveStarSystemAsync(CurrentStarSystem).ConfigureAwait(false);
-                    }
-                }
-            }
-            return false;
-        }
-
-        private async Task<bool> eventOutfittingAsync(OutfittingEvent theEvent)
-        {
-            // Don't proceed when loading pre-existing logs
-            if (theEvent.fromLoad) { return false; }
-
-            // Don't proceed if the event data isn't what we expect
-            if ( theEvent.system != CurrentStarSystem?.systemname) { return false; }
-
-            var modules = theEvent.info?.Items?
-                .Select(EddiDataDefinitions.Module.FromOutfittingInfo)
-                .Where(i => i != null)
-                .ToList();
-
-            if (theEvent.info?.Items?.Count == modules?.Count && modules != null) // We've successfully parsed all module items
-            {
-                // Update the current station outfitting
-                if (CurrentStation?.marketId != null && CurrentStation?.marketId == theEvent.marketId)
-                {
-                    CurrentStation.outfitting = modules;
-                    CurrentStation.outfittingupdatedat = Dates.fromDateTimeToSeconds(theEvent.timestamp);
-
-                    // Update the current station information in our backend DB
-                    Logging.Debug("Star system information updated from remote server; updating local copy");
-                    await DataProvider.SaveStarSystemAsync(CurrentStarSystem).ConfigureAwait(false);
-
-                    // Post an update event for new outfitting data
-                    // Don't proceed if the data was already updated this visit
-                    if ( !CurrentStation.outfittingUpdatedThisVisit )
-                    {
-                        CurrentStation.outfittingUpdatedThisVisit = true;
-                        enqueueEvent( new MarketInformationUpdatedEvent( theEvent.timestamp, theEvent.marketId,
-                            theEvent.station, theEvent.system, [ "outfitting" ] )
-                        {
-                            raw = theEvent.raw
-                        } );
-                    }
-
-                    return true;
-                }
-                else
-                {
-                    var station = CurrentStarSystem?.stations.FirstOrDefault(s => s.marketId == theEvent.marketId);
-                    if (station != null)
-                    {
-                        station.outfitting = modules;
-                        station.outfittingupdatedat = Dates.fromDateTimeToSeconds(theEvent.timestamp);
-                        await DataProvider.SaveStarSystemAsync(CurrentStarSystem).ConfigureAwait(false);
-                    }
-                }
-            }
-            return false;
-        }
-
-        private async Task<bool> eventShipyardAsync(ShipyardEvent theEvent)
-        {
-            // Don't proceed when loading pre-existing logs
-            if (theEvent.fromLoad) { return false; }
-
-            // Don't proceed if the event data isn't what we expect
-            if (theEvent.system != CurrentStarSystem?.systemname) { return false; }
-
-            var ships = theEvent.info?.PriceList?
-                .Select(Ship.FromShipyardInfo)
-                .Where(s => s != null)
-                .ToList();
-
-            if (theEvent.info?.PriceList?.Count == ships?.Count && ships != null) // We've successfully parsed all ship items
-            {
-                if (CurrentStation?.marketId != null && CurrentStation?.marketId == theEvent.marketId)
-                {
-                    // Update the current station shipyard
-                    CurrentStation.shipyard = ships;
-                    CurrentStation.shipyardupdatedat = Dates.fromDateTimeToSeconds(theEvent.timestamp);
-
-                    // Update the current station information in our backend DB
-                    await DataProvider.SaveStarSystemAsync(CurrentStarSystem).ConfigureAwait(false);
-
-                    // Post an update event for new shipyard data
-                    // Don't proceed if the data was already updated this visit
-                    if ( !CurrentStation.shipyardUpdatedThisVisit )
-                    {
-                        CurrentStation.shipyardUpdatedThisVisit = true;
-                        enqueueEvent( new MarketInformationUpdatedEvent( theEvent.timestamp, theEvent.marketId,
-                            theEvent.station, theEvent.system, [ "shipyard" ] )
-                        {
-                            raw = theEvent.raw
-                        } );
-                    }
-
-                    return true;
-                }
-                else
-                {
-                    var station = CurrentStarSystem?.stations.FirstOrDefault(s => s.marketId == theEvent.marketId);
-                    if (station != null)
-                    {
-                        station.shipyard = ships;
-                        station.shipyardupdatedat = Dates.fromDateTimeToSeconds(theEvent.timestamp);
-                        await DataProvider.SaveStarSystemAsync(CurrentStarSystem).ConfigureAwait(false);
-                    }
-                }
-            }
-            return false;
         }
 
         private async Task ApplyCurrentSystemSnapshotAsync (
