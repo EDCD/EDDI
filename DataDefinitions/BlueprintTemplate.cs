@@ -1558,6 +1558,14 @@ namespace EddiDataDefinitions
             {
                 { 5, [ ] }
             } );
+            _ = new BlueprintTemplate( "FuelScoopEfficiency", new Dictionary<int, List<MaterialAmount>>()
+            {
+                { 1, [ ] },
+                { 2, [ ] },
+                { 3, [ ] },
+                { 4, [ ] },
+                { 5, [ ] }
+            } );
         }
         public static readonly BlueprintTemplate None;
 
