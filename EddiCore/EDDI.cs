@@ -124,7 +124,7 @@ namespace EddiCore
         private static readonly object instanceLock = new();
 
         private readonly EddiPluginHost _pluginHost;
-        private OrganicSamplingTracker _organicSamplingTracker;
+        private readonly OrganicSamplingTracker _organicSamplingTracker;
 
         public List<IEddiMonitor> monitors => _pluginHost.Monitors;
         internal ConcurrentBag<IEddiMonitor> activeMonitors => _pluginHost.ActiveMonitors;

@@ -35,10 +35,10 @@ namespace EddiDataDefinitions
         private JArray _carrierLockerAssets = [ ];
         private JArray _carrierLockerGoods = [ ];
         private JArray _carrierLockerData = [ ];
-        private JArray _commoditySalesOrders = [ ];
-        private JArray _commodityPurchaseOrders = [ ];
-        private JArray _microresourceSalesOrders = [ ];
-        private JArray _microresourcePurchaseOrders = [ ];
+        private readonly JArray _commoditySalesOrders = [ ];
+        private readonly JArray _commodityPurchaseOrders = [ ];
+        private readonly JArray _microresourceSalesOrders = [ ];
+        private readonly JArray _microresourcePurchaseOrders = [ ];
 
         public long carrierID
         {
