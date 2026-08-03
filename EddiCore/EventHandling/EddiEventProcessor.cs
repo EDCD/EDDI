@@ -1229,7 +1229,7 @@ namespace EddiCore.EventHandling
 
         private bool eventVesselDestroyed(VesselDestroyedEvent @event)
         {
-            if ( @event.vesselDefinition.vesselGroup == VesselGroup.Telepresence )
+            if ( @event.vesselDefinition?.vesselGroup == VesselGroup.Telepresence )
             {
                 // We are back in the ship
                 Vehicle = Constants.VEHICLE_SHIP;
