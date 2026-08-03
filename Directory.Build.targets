@@ -34,4 +34,17 @@
                               Condition="'%(EmbeddedResource.LastGenOutput)' != ''" />
         </ItemGroup>
     </Target>
+
+    <Target Name="RemoveSourceGeneratedResxDesignerFiles"
+            BeforeTargets="CoreCompile">
+        <ItemGroup>
+            <_SourceGeneratedResxDesigner Include="@(EmbeddedResource->'%(RelativeDir)%(LastGenOutput)')"
+                                          Condition="'%(EmbeddedResource.LastGenOutput)' != ''
+                                                     and '%(EmbeddedResource.GenerateSource)' != 'false'" />
+            <_SourceGeneratedResxDesigner Include="@(EmbeddedResource->'%(RootDir)%(Directory)%(LastGenOutput)')"
+                                          Condition="'%(EmbeddedResource.LastGenOutput)' != ''
+                                                     and '%(EmbeddedResource.GenerateSource)' != 'false'" />
+            <Compile Remove="@(_SourceGeneratedResxDesigner)" />
+        </ItemGroup>
+    </Target>
 </Project>
