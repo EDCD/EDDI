@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Utilities.MetaVariables;
 
 namespace Tests
@@ -143,9 +144,9 @@ namespace Tests
         }
 
         [TestMethod]
-        public void DefaultPersonality_IncludesEditableHumaniseHelperScript ()
+        public void DefaultPersonality_IncludesEditableApproximateHelperScript ()
         {
-            var script = Personality.Default().Scripts[ "Humanise" ];
+            var script = Personality.Default().Scripts[ "Approximate" ];
 
             Assert.IsFalse( script.Responder );
             Assert.IsNull( script.Priority );
@@ -157,7 +158,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public void ShippedDefaultPersonalities_IncludeEditableHumaniseScaffold ()
+        public void ShippedDefaultPersonalities_IncludeEditableApproximateScaffold ()
         {
             var dirInfo = new DirectoryInfo( AppContext.BaseDirectory );
             foreach ( var fileInfo in dirInfo.GetFiles()
@@ -165,22 +166,43 @@ namespace Tests
             {
                 var personality = Personality.FromFile( fileInfo.FullName, true );
                 Assert.IsTrue(
-                    personality.Scripts.TryGetValue( "Humanise", out var script ),
-                    $"{fileInfo.Name} is missing the Humanise helper script." );
+                    personality.Scripts.TryGetValue( "Approximate", out var script ),
+                    $"{fileInfo.Name} is missing the Approximate helper script." );
 
-                Assert.IsFalse( script.Responder, $"{fileInfo.Name} Humanise should be a non-responder helper." );
-                Assert.IsNull( script.Priority, $"{fileInfo.Name} Humanise should not have a responder priority." );
-                Assert.IsTrue( script.Enabled, $"{fileInfo.Name} Humanise should be enabled." );
-                Assert.IsTrue( script.IsResettable, $"{fileInfo.Name} Humanise should be resettable." );
-                Assert.AreEqual( script.Value, script.defaultValue, $"{fileInfo.Name} Humanise should be resettable to its shipped script." );
-                Assert.Contains( "NumberDetails(args.number)", script.Value, $"{fileInfo.Name} Humanise should decompose args.number." );
-                Assert.Contains( "humanise.magnitudename", script.Value, $"{fileInfo.Name} Humanise should expose magnitude handling." );
-                Assert.Contains( "humanise.isnegative", script.Value, $"{fileInfo.Name} Humanise should expose sign handling." );
-                Assert.Contains( "humanise.format = \"short_decimal\"", script.Value, $"{fileInfo.Name} Humanise should expose decimal formatting." );
-                Assert.Contains( "humanise.format = \"just_over\"", script.Value, $"{fileInfo.Name} Humanise should expose approximation formatting." );
-                Assert.Contains( "humanise.format = \"around_half\"", script.Value, $"{fileInfo.Name} Humanise should expose half-step formatting." );
-                Assert.Contains( "humanise.format = \"well_over_half\"", script.Value, $"{fileInfo.Name} Humanise should expose rounded half-step handling." );
-                Assert.DoesNotContain( "fallback", script.Value, $"{fileInfo.Name} Humanise should not use legacy fallback output." );
+                Assert.IsFalse( script.Responder, $"{fileInfo.Name} Approximate should be a non-responder helper." );
+                Assert.IsNull( script.Priority, $"{fileInfo.Name} Approximate should not have a responder priority." );
+                Assert.IsTrue( script.Enabled, $"{fileInfo.Name} Approximate should be enabled." );
+                Assert.IsTrue( script.IsResettable, $"{fileInfo.Name} Approximate should be resettable." );
+                Assert.AreEqual( script.Value, script.defaultValue, $"{fileInfo.Name} Approximate should be resettable to its shipped script." );
+                Assert.Contains( "NumberDetails(args.number)", script.Value, $"{fileInfo.Name} Approximate should decompose args.number." );
+                Assert.Contains( "humanise.magnitudename", script.Value, $"{fileInfo.Name} Approximate should expose magnitude handling." );
+                Assert.Contains( "humanise.isnegative", script.Value, $"{fileInfo.Name} Approximate should expose sign handling." );
+                Assert.Contains( "humanise.format = \"short_decimal\"", script.Value, $"{fileInfo.Name} Approximate should expose decimal formatting." );
+                Assert.Contains( "humanise.format = \"just_over\"", script.Value, $"{fileInfo.Name} Approximate should expose approximation formatting." );
+                Assert.Contains( "humanise.format = \"around_half\"", script.Value, $"{fileInfo.Name} Approximate should expose half-step formatting." );
+                Assert.Contains( "humanise.format = \"well_over_half\"", script.Value, $"{fileInfo.Name} Approximate should expose rounded half-step handling." );
+                Assert.DoesNotContain( "fallback", script.Value, $"{fileInfo.Name} Approximate should not use legacy fallback output." );
+            }
+        }
+
+        [TestMethod]
+        public void ShippedDefaultPersonalities_DoNotUseDeprecatedFunctionNames ()
+        {
+            var deprecatedFunctionPattern = new Regex(
+                @"(?<![A-Za-z0-9_])(F|Humanise|P|Spacialise)\(",
+                RegexOptions.Compiled );
+            var dirInfo = new DirectoryInfo( AppContext.BaseDirectory );
+
+            foreach ( var fileInfo in dirInfo.GetFiles()
+                         .Where( f => f.Name.StartsWith( "eddi" ) && f.Extension == ".json" ) )
+            {
+                var personality = Personality.FromFile( fileInfo.FullName, true );
+                foreach ( var script in personality.Scripts.Values )
+                {
+                    Assert.IsFalse(
+                        deprecatedFunctionPattern.IsMatch( script.Value ?? string.Empty ),
+                        $"{fileInfo.Name} script '{script.Name}' should use preferred Cottle function aliases." );
+                }
             }
         }
 

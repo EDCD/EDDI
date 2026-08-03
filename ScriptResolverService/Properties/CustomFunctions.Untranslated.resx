@@ -239,13 +239,16 @@ Common usage of this is to provide further information about your rating, for ex
     You have been promoted {ExplorationRatingDetails("Surveyor").rank} times.</value>
   </data>
   <data name="F" xml:space="preserve">
+    <value>Legacy/deprecated alias for `InvokeScript()`. This name is retained for compatibility with existing scripts, but `InvokeScript()` is preferred for new scripts.</value>
+  </data>
+  <data name="InvokeScript" xml:space="preserve">
     <value>This function is used inside a script to invoke another script.
 
-F() takes one mandatory parameter that is the name of the script to invoke, and an optional second parameter containing a map of named argument values. The invoked script can read these as properties of a local `args` object.
+InvokeScript() takes one mandatory parameter that is the name of the script to invoke, and an optional second parameter containing a map of named argument values. The invoked script can read these as properties of a local `args` object.
 
 One example of its use is in the script for the event `Trade Promotion`:
 
-    You have been recognised for your trading ability, {F(\"Honorific\")}.
+    You have been recognised for your trading ability, {InvokeScript(\"Honorific\")}.
 
 Here the call to script `Honorific` will generate the right title for the player, according to their allegiance.</value>
   </data>
@@ -308,14 +311,17 @@ GovernmentDetails() takes a single argument of the government for which you want
 
 At current this does not have a lot of use as the government object only contains its name but this may be expanded in future.</value>
   </data>
-  <data name="Humanise" xml:space="preserve">
+  <data name="Approximate" xml:space="preserve">
     <value>This function will turn its argument into a more human number, for example turning 31245 in to \"just over thirty thousand\".
 
-Humanise() takes one mandatory argument: the number to humanise. It returns a result generated using the editable `Humanise` script. The input is passed to that script as `args.number`.
+Approximate() takes one mandatory argument: the number to approximate. It returns a result generated using the editable `Approximate` script. The input is passed to that script as `args.number`.
 
 Common usage of this is to provide human-sounding numbers when speaking rather than saying every digit, for example:
 
-    You have {Humanise(cmdr.credits)} credits.</value>
+    You have {Approximate(cmdr.credits)} credits.</value>
+  </data>
+  <data name="Humanise" xml:space="preserve">
+    <value>Legacy/deprecated alias for `Approximate()`. This name is retained for compatibility with existing scripts, but `Approximate()` is preferred for new scripts.</value>
   </data>
   <data name="ICAO" xml:space="preserve">
     <value>This function will turn its argument into an ICAO spoken value, for example "NCC" becomes "November Charlie Charlie".
@@ -440,17 +446,20 @@ Common usage of this is to provide the velocity in meters per second required to
     Orbital velocity to orbit Tethys at the current altitude is {velocity} meters per second.</value>
   </data>
   <data name="P" xml:space="preserve">
+    <value>Legacy/deprecated alias for `PronounceForContext()`. This name is retained for compatibility with existing scripts, but `PronounceForContext()` is preferred for new scripts.</value>
+  </data>
+  <data name="PronounceForContext" xml:space="preserve">
     <value>This function will attempt to provide phonetic pronunciation for the supplied text. This function uses SSML tags.
 
-P() takes one mandatory and one optional argument. The first argument is the string to be pronounced. The second optional argument describes which set of pronunciation overrides should be applied. Recognized values are: "power", "planettype", "shipmodel", "shipmanufacturer", "body", "starsystem", "station", or "faction".
+PronounceForContext() takes one mandatory and one optional argument. The first argument is the string to be pronounced. The second optional argument describes which set of pronunciation overrides should be applied. Recognized values are: "power", "planettype", "shipmodel", "shipmanufacturer", "body", "starsystem", "station", or "faction".
 
 Common usage of this is to wrap the names of planets, powers, ships etc., for example:
 
-    You are in the {P(system.name)} system.
+    You are in the {PronounceForContext(system.name)} system.
 
 or
 
-    You are in the {P(system.name, "starsystem")} system.</value>
+    You are in the {PronounceForContext(system.name, "starsystem")} system.</value>
   </data>
   <data name="Pause" xml:space="preserve">
     <value>This function will pause the speech for a given amount of time. This function uses SSML tags.
@@ -580,13 +589,16 @@ ShipName() also takes an optional ship model. If the optional ship ID is not fou
 If you have not set up a name for your ship it will just return "your ship".</value>
   </data>
   <data name="Spacialise" xml:space="preserve">
+    <value>Legacy/deprecated alias for `SpellOut()`. This name is retained for compatibility with existing scripts, but `SpellOut()` is preferred for new scripts.</value>
+  </data>
+  <data name="SpellOut" xml:space="preserve">
     <value>This function will allow letters and numbers in a string to be pronounced individually. If SSML is enabled, this function will render the text using SSML. If not, it will add spaces between letters in a string &amp; convert to uppercase to assist the voice with achieving the proper pronunciation. 
 
-Spacialise() takes one argument: the string of characters to Spacialise.
+SpellOut() takes one argument: the string of characters to spell out.
 
 Common usage of this is to provide a more human-sounding reading of a string of letters that are not a part of known word:
 
-    Star luminosity class: {Spacialise(event.luminosityclass)}.</value>
+    Star luminosity class: {SpellOut(event.luminosityclass)}.</value>
   </data>
   <data name="SpeechPitch" xml:space="preserve">
     <value>This function allows you to dynamically adjust the pitch of the spoken speech. This function uses SSML tags.

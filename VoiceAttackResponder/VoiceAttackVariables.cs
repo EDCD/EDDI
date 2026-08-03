@@ -65,8 +65,8 @@ namespace EddiVoiceAttackResponder
         private static string Humanise ( decimal? number )
         {
             var speechResponder = EDDI.Instance.ObtainResponder( "Speech responder" ) as ISpeechResponderController;
-            return speechResponder?.Humanise( number )
-                   ?? "Cottle speech system configuration error: Speech responder is unavailable for Humanise.";
+            return speechResponder?.ApproximateNumber( number )
+                   ?? "Cottle speech system configuration error: Speech responder is unavailable for number approximation.";
         }
         
         // The following variables notify changes via `PropertyChanged`

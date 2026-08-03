@@ -18,7 +18,7 @@
   <Color name="Operator" foreground="MediumVioletRed" fontWeight="bold" exampleText="{ a + b }"/>
   <Color name="Literals" foreground="Blue" exampleText="{ 42.0 }"/>
   <Color name="Built-in functions" foreground="MediumOrchid" fontWeight="bold" exampleText="{ abs(-42) }"/>
-  <Color name="Custom functions" foreground="DodgerBlue" exampleText="{ Humanise(text) }"/>
+  <Color name="Custom functions" foreground="DodgerBlue" exampleText="{ Approximate(text) }"/>
   <Color name="Custom properties" foreground="LightSeaGreen" exampleText="{ event.awardingfaction }"/>
 
   <!-- The main rule set: it states that Cottle docs always begin as body text. -->

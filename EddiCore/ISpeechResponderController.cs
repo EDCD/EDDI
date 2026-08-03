@@ -8,7 +8,7 @@ namespace EddiCore
     {
         Task SayAsync ( Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool sayOutLoud = true, bool invokedFromVA = false );
 
-        string Humanise ( decimal? number );
+        string ApproximateNumber ( decimal? number );
 
         bool TrySetPersonality ( string newPersonalityName );
     }

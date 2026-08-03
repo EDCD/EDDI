@@ -9,12 +9,19 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech Responder
     * Customized obsolete scripts are now preserved as (Obsolete) <old script name> recovery scripts, while unchanged/default obsolete scripts are still removed.
     * Custom Functions
-      * `F` revised to accept a new optional parameter which allows you to pass arguments to the invoked script.
-      * `Humanise` revised to use a customizable `Humanise` script and a decomposed number value from the new `NumberDetails` function (#2294).
+      * `Approximate` added to provide a human-readable approximation of a number value using a decomposed number value from the new `NumberDetails` function (#2294). (replaces deprecated `Humanise` function).
+      * `F` deprecated but still available (#2147). Use `InvokeScript` instead moving forwards.
+      * `Humanise` deprecated but still available (#2147). Use `Approximate` instead moving forwards.
+      * `InvokeScript` added to allow you to invoke a script from another script and pass arguments to the invoked script (replaces deprecated `F` function).
       * `NumberDetails` added to decompose number values into translateable elements.
+      * `P` deprecated but still available (#2147). Use `PronounceForContext` instead moving forwards.
+      * `PronounceForContext` added to allow you to lookup a pronunciation for a word or phrase with a specific context (replaced deprecated `P` function).
+      * `Spacialise` deprecated but still available (#2147). Use `SpellOut` instead moving forwards.
+      * `SpellOut` added to spell out a word or phrase letter by letter (replaces deprecated `Spacialise` function).
     * Scripts
-      * `Humanise` customizable script added. 
+      * `Approximate` customizable script added. 
       * `Limpet check` revised to reference invariant controller name. 
+      * Various scripts updated to use replacement Cottle functions for deprecated `F`, `Humanise`, and `P` functions.
 
 ## 5.0.4
   * Core

@@ -7,12 +7,12 @@ namespace EddiScriptResolverService.CustomFunctions
 {
     [UsedImplicitly]
     [ method: UsedImplicitly]
-    public class Humanise ( IContext context, IReadOnlyDictionary<string, IScriptDefinition> scripts )
+    public class Approximate ( IContext context, IReadOnlyDictionary<string, IScriptDefinition> scripts )
         : RecursiveFunction( context, scripts ), ICustomFunction
     {
-        public string name => "Humanise";
+        public string name => "Approximate";
         public FunctionCategory Category => FunctionCategory.Utility;
-        public string description => Properties.CustomFunctions_Untranslated.Humanise;
+        public string description => Properties.CustomFunctions_Untranslated.Approximate;
         public Type ReturnType => typeof( string );
         public IFunction function => Function.CreateNative1( ( runtime, input, writer ) =>
             RenderApproximateNumber( runtime.Globals, input ) );

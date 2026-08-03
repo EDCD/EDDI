@@ -205,6 +205,18 @@ namespace Tests
             Assert.AreEqual( Help, Help2 );
             Assert.AreEqual( Functions, Functions2 );
             Assert.Contains( "* " , Functions);
+            Assert.Contains( "### Approximate()", Help );
+            Assert.Contains( "### InvokeScript()", Help );
+            Assert.Contains( "### PronounceForContext()", Help );
+            Assert.Contains( "### SpellOut()", Help );
+            Assert.Contains( "Legacy/deprecated alias for `Approximate()`", Help );
+            Assert.Contains( "Legacy/deprecated alias for `InvokeScript()`", Help );
+            Assert.Contains( "Legacy/deprecated alias for `PronounceForContext()`", Help );
+            Assert.Contains( "Legacy/deprecated alias for `SpellOut()`", Help );
+            Assert.Contains( "* Approximate()" , Functions);
+            Assert.Contains( "* InvokeScript()" , Functions);
+            Assert.Contains( "* PronounceForContext()" , Functions);
+            Assert.Contains( "* SpellOut()" , Functions);
         }
 
         [TestMethod]

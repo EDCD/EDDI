@@ -94,14 +94,14 @@ namespace EddiSpeechResponder
             return Properties.SpeechResponder.desc;
         }
 
-        public string Humanise ( decimal? number )
+        public string ApproximateNumber ( decimal? number )
         {
-            var scriptSource = CurrentPersonality?.Scripts?.ContainsKey( "Humanise" ) == true
+            var scriptSource = CurrentPersonality?.Scripts?.ContainsKey( "Approximate" ) == true
                 ? CurrentPersonality.Scripts
                 : Personality.Default().Scripts;
             var scripts = scriptSource?
                 .ToDictionary( script => script.Key, script => (IScriptDefinition)script.Value );
-            return HumaniseRenderer.Render( number, scripts );
+            return EddiScriptResolverService.ApproximateNumber.Render( number, scripts );
         }
 
         public SpeechResponder()

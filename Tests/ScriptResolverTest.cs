@@ -28,8 +28,17 @@ namespace Tests
             return document.Render(store);
         }
 
-        private const string DefaultHumaniseScript =
-            "{set humanise to NumberDetails(args.number)}\r\n" +
+        private static string ResolveScript ( string script, Dictionary<string, Script> scripts = null )
+        {
+            var resolver = new ScriptResolver( scripts ?? new Dictionary<string, Script>
+            {
+                [ "test" ] = new( "test", null, false, script )
+            } );
+            return resolver.resolveFromName( "test", new Dictionary<string, Tuple<Type, Value>>(), true );
+        }
+
+        private const string DefaultApproximateScript =
+            "{set number to NumberDetails(args.number)}\r\n" +
             "{set word_minus to \"minus \"}\r\n" +
             "{set word_one to \"one\"}\r\n" +
             "{set word_just_over to \"just over \"}\r\n" +
@@ -39,50 +48,50 @@ namespace Tests
             "{set word_around to \"around \"}\r\n" +
             "{set word_and_a_half to \" and a half\"}\r\n" +
             "{set magnitude to \"\"}\r\n" +
-            "{if humanise.magnitudename:\r\n" +
-            "    {set magnitude to cat(\" \", humanise.magnitudename)}\r\n" +
+            "{if number.magnitudename:\r\n" +
+            "    {set magnitude to cat(\" \", number.magnitudename)}\r\n" +
             "}\r\n" +
             "{set sign to \"\"}\r\n" +
-            "{if humanise.isnegative:\r\n" +
+            "{if number.isnegative:\r\n" +
             "    {set sign to word_minus}\r\n" +
             "}\r\n" +
-            "{set quantity to humanise.quantity}\r\n" +
-            "{if humanise.number = 1 && (humanise.format = \"nearly_half\" || humanise.format = \"around_half\" || humanise.format = \"over_half\"):\r\n" +
+            "{set quantity to number.quantity}\r\n" +
+            "{if number.number = 1 && (number.format = \"nearly_half\" || number.format = \"around_half\" || number.format = \"over_half\"):\r\n" +
             "    {set quantity to word_one}\r\n" +
             "}\r\n" +
-            "{if humanise.format = \"zero\" || humanise.format = \"small\" || humanise.format = \"verbatim\":\r\n" +
-            "    {humanise.quantity}\r\n" +
-            "|elif humanise.format = \"short_decimal\" || humanise.format = \"integer_mantissa\":\r\n" +
-            "    {sign}{humanise.quantity}{magnitude}\r\n" +
-            "|elif humanise.format = \"just_over\":\r\n" +
-            "    {sign}{word_just_over}{humanise.quantity}{magnitude}\r\n" +
-            "|elif humanise.format = \"over\":\r\n" +
-            "    {sign}{word_over}{humanise.quantity}{magnitude}\r\n" +
-            "|elif humanise.format = \"well_over\":\r\n" +
-            "    {sign}{word_well_over}{humanise.quantity}{magnitude}\r\n" +
-            "|elif humanise.format = \"nearly\":\r\n" +
-            "    {sign}{word_nearly}{humanise.quantity}{magnitude}\r\n" +
-            "|elif humanise.format = \"nearly_half\":\r\n" +
+            "{if number.format = \"zero\" || number.format = \"small\" || number.format = \"verbatim\":\r\n" +
+            "    {number.quantity}\r\n" +
+            "|elif number.format = \"short_decimal\" || number.format = \"integer_mantissa\":\r\n" +
+            "    {sign}{number.quantity}{magnitude}\r\n" +
+            "|elif number.format = \"just_over\":\r\n" +
+            "    {sign}{word_just_over}{number.quantity}{magnitude}\r\n" +
+            "|elif number.format = \"over\":\r\n" +
+            "    {sign}{word_over}{number.quantity}{magnitude}\r\n" +
+            "|elif number.format = \"well_over\":\r\n" +
+            "    {sign}{word_well_over}{number.quantity}{magnitude}\r\n" +
+            "|elif number.format = \"nearly\":\r\n" +
+            "    {sign}{word_nearly}{number.quantity}{magnitude}\r\n" +
+            "|elif number.format = \"nearly_half\":\r\n" +
             "    {sign}{word_nearly}{quantity}{word_and_a_half}{magnitude}\r\n" +
-            "|elif humanise.format = \"around_half\":\r\n" +
+            "|elif number.format = \"around_half\":\r\n" +
             "    {sign}{word_around}{quantity}{word_and_a_half}{magnitude}\r\n" +
-            "|elif humanise.format = \"over_half\":\r\n" +
+            "|elif number.format = \"over_half\":\r\n" +
             "    {sign}{word_over}{quantity}{word_and_a_half}{magnitude}\r\n" +
-            "|elif humanise.format = \"well_over_half\":\r\n" +
-            "    {sign}{word_nearly}{humanise.number + 1}{magnitude}\r\n" +
+            "|elif number.format = \"well_over_half\":\r\n" +
+            "    {sign}{word_nearly}{number.number + 1}{magnitude}\r\n" +
             "|else:\r\n" +
-            "    {humanise.quantity}\r\n" +
+            "    {number.quantity}\r\n" +
             "}";
 
-        private static Dictionary<string, Script> DefaultHumaniseScripts (
+        private static Dictionary<string, Script> DefaultApproximateScripts (
             string testScriptName,
             string testScript,
-            string humaniseScript = DefaultHumaniseScript )
+            string approximateScript = DefaultApproximateScript )
         {
             return new Dictionary<string, Script>
             {
                 [testScriptName] = new(testScriptName, null, false, testScript),
-                ["Humanise"] = new("Humanise", null, false, humaniseScript, null, humaniseScript)
+                ["Approximate"] = new("Approximate", null, false, approximateScript, null, approximateScript)
             };
         }
 
@@ -108,6 +117,18 @@ namespace Tests
 
             var result = Render( template, vars );
             Assert.AreEqual("You are entering the <phoneme alphabet=\"ipa\" ph=\"ˈalraɪ\">Alrai</phoneme> system.", result);
+        }
+
+        [TestMethod]
+        public void PreferredPronunciationAliasMatchesLegacyFunction ()
+        {
+            Assert.AreEqual(
+                ResolveScript( "{P('Alrai')}" ),
+                ResolveScript( "{PronounceForContext('Alrai')}" ) );
+
+            Assert.AreEqual(
+                ResolveScript( "{P('Aisling Duval', 'power')}" ),
+                ResolveScript( "{PronounceForContext('Aisling Duval', 'power')}" ) );
         }
 
         [TestMethod]
@@ -178,6 +199,18 @@ namespace Tests
         }
 
         [TestMethod]
+        public void PreferredInvokeScriptAliasMatchesLegacyFunction ()
+        {
+            var scripts = new Dictionary<string, Script>
+            {
+                [ "func" ] = new( "func", null, false, "Hello" ),
+                [ "test" ] = new( "test", null, false, "Well {InvokeScript(\"func\")}" )
+            };
+
+            Assert.AreEqual( "Well Hello", ResolveScript( scripts[ "test" ].Value, scripts ) );
+        }
+
+        [TestMethod]
         public void TestResolverFunctionWithArgumentMap()
         {
             var scripts = new Dictionary<string, Script>
@@ -190,6 +223,18 @@ namespace Tests
             var result = resolver.resolveFromName("test", new Dictionary<string, Tuple<Type, Value>>(), true);
 
             Assert.AreEqual("Well hello 3", result);
+        }
+
+        [TestMethod]
+        public void PreferredInvokeScriptAliasPassesArgumentMap ()
+        {
+            var scripts = new Dictionary<string, Script>
+            {
+                [ "func" ] = new( "func", null, false, "{args.foo} {args.bar}" ),
+                [ "test" ] = new( "test", null, false, "Well {InvokeScript(\"func\", [\"foo\": \"hello\", \"bar\": 3])}" )
+            };
+
+            Assert.AreEqual( "Well hello 3", ResolveScript( scripts[ "test" ].Value, scripts ) );
         }
 
         [TestMethod]
@@ -220,6 +265,18 @@ namespace Tests
             var result = resolver.resolveFromName( "test", new Dictionary<string, Tuple<Type, Value>>(), true );
 
             Assert.Contains( "arguments which are not a map value", result );
+        }
+
+        [TestMethod]
+        public void PreferredInvokeScriptAliasRejectsNonMapArguments ()
+        {
+            var scripts = new Dictionary<string, Script>
+            {
+                [ "func" ] = new( "func", null, false, "{args.foo}" ),
+                [ "test" ] = new( "test", null, false, "{InvokeScript(\"func\", 1)}" )
+            };
+
+            Assert.Contains( "arguments which are not a map value", ResolveScript( scripts[ "test" ].Value, scripts ) );
         }
 
         [TestMethod, DoNotParallelize]
@@ -273,10 +330,26 @@ namespace Tests
         [DataRow("{Humanise(945710000000)}", "over 940 billion")]
         public void TestHumaniseDefaultScriptRendering ( string script, string expected )
         {
-            var resolver = new ScriptResolver(DefaultHumaniseScripts("test", script));
+            var resolver = new ScriptResolver(DefaultApproximateScripts("test", script));
             var result = resolver.resolveFromName("test", new Dictionary<string, Tuple<Type, Value>>(), true);
 
             Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void PreferredApproximateAliasMatchesLegacyFunction ()
+        {
+            Assert.AreEqual(
+                ResolveScript( "{Humanise(1110001)}", DefaultApproximateScripts( "test", "{Humanise(1110001)}" ) ),
+                ResolveScript( "{Approximate(1110001)}", DefaultApproximateScripts( "test", "{Approximate(1110001)}" ) ) );
+        }
+
+        [TestMethod]
+        public void PreferredSpellOutAliasMatchesLegacyFunction ()
+        {
+            Assert.AreEqual(
+                ResolveScript( "{Spacialise('SRV')}" ),
+                ResolveScript( "{SpellOut('SRV')}" ) );
         }
 
         [TestMethod]
@@ -299,7 +372,7 @@ namespace Tests
         [DataRow("{if NumberDetails(1500000).magnitude:bad|else:empty}", "empty")]
         public void TestNumberDetailsFunction ( string script, string expected )
         {
-            var resolver = new ScriptResolver(DefaultHumaniseScripts("test", script));
+            var resolver = new ScriptResolver(DefaultApproximateScripts("test", script));
             var result = resolver.resolveFromName("test", new Dictionary<string, Tuple<Type, Value>>(), true);
 
             Assert.AreEqual(expected, result);
@@ -308,7 +381,7 @@ namespace Tests
         [TestMethod]
         public void TestHumaniseCustomScriptCanReorderDecomposedProperties()
         {
-            var scripts = DefaultHumaniseScripts(
+            var scripts = DefaultApproximateScripts(
                 "test",
                 "{Humanise(1500000)} credits",
                 "{set details to NumberDetails(args.number)}{details.magnitudename} :: {details.number} :: {details.nextdigit}" );
@@ -322,7 +395,7 @@ namespace Tests
         [TestMethod]
         public void TestNumberDetailsCanBeUsedDirectlyInScripts()
         {
-            var scripts = DefaultHumaniseScripts(
+            var scripts = DefaultApproximateScripts(
                 "test",
                 "{set details to NumberDetails(1500000)}{details.magnitudename} :: {details.number} :: {details.nextdigit}" );
             var resolver = new ScriptResolver(scripts);
@@ -340,36 +413,36 @@ namespace Tests
                 ["test"] = new("test", null, false, "{Humanise(-1110001)}")
             });
             Assert.AreEqual(
-                "Cottle speech system configuration error: Humanise script not found.",
+                "Cottle speech system configuration error: Approximate script not found.",
                 missing.resolveFromName("test", new Dictionary<string, Tuple<Type, Value>>(), true));
 
-            var disabledScripts = DefaultHumaniseScripts("test", "{Humanise(-1110001)}");
-            disabledScripts["Humanise"].Enabled = false;
+            var disabledScripts = DefaultApproximateScripts("test", "{Humanise(-1110001)}");
+            disabledScripts["Approximate"].Enabled = false;
             Assert.AreEqual(
-                "Cottle speech system configuration error: Humanise script is disabled.",
+                "Cottle speech system configuration error: Approximate script is disabled.",
                 new ScriptResolver(disabledScripts).resolveFromName("test", new Dictionary<string, Tuple<Type, Value>>(), true));
 
-            var emptyScripts = DefaultHumaniseScripts("test", "{Humanise(-1110001)}", "");
+            var emptyScripts = DefaultApproximateScripts("test", "{Humanise(-1110001)}", "");
             Assert.AreEqual(
-                "Cottle speech system configuration error: Humanise script is empty.",
+                "Cottle speech system configuration error: Approximate script is empty.",
                 new ScriptResolver(emptyScripts).resolveFromName("test", new Dictionary<string, Tuple<Type, Value>>(), true));
 
-            var parseErrorScripts = DefaultHumaniseScripts("test", "{Humanise(-1110001)}", "{");
+            var parseErrorScripts = DefaultApproximateScripts("test", "{Humanise(-1110001)}", "{");
             Assert.StartsWith(
-                "There is a problem with the script \"Humanise\"",
+                "There is a problem with the script \"Approximate\"",
                 new ScriptResolver(parseErrorScripts).resolveFromName("test", new Dictionary<string, Tuple<Type, Value>>(), true));
         }
 
         [TestMethod]
         public void TestHumaniseRecursiveScriptFailsVisibly()
         {
-            var scripts = DefaultHumaniseScripts("test", "{Humanise(-1110001)}", "{set details to NumberDetails(args.number)}outer [{Humanise(details.rawvalue)}]");
+            var scripts = DefaultApproximateScripts("test", "{Humanise(-1110001)}", "{set details to NumberDetails(args.number)}outer [{Humanise(details.rawvalue)}]");
             var resolver = new ScriptResolver(scripts);
 
             var result = resolver.resolveFromName("test", new Dictionary<string, Tuple<Type, Value>>(), true);
 
             Assert.AreEqual(
-                "outer [Cottle speech system configuration error: Recursive Humanise() calls are not supported.]",
+                "outer [Cottle speech system configuration error: Recursive Approximate() or Humanise() calls are not supported.]",
                 result);
         }
 

@@ -555,14 +555,14 @@ namespace Tests
         }
 
         [TestMethod, DoNotParallelize]
-        public void VoiceAttackSpokenNumericVariablesUseHumaniseScript()
+        public void VoiceAttackSpokenNumericVariablesUseApproximateScript()
         {
             var speechResponder = EDDI.Instance.ObtainResponder( "Speech responder" ) as SpeechResponder;
             Assert.IsNotNull( speechResponder );
 
             var originalPersonality = speechResponder.CurrentPersonality;
             speechResponder.CurrentPersonality = Personality.Default();
-            var script = speechResponder.CurrentPersonality.Scripts[ "Humanise" ];
+            var script = speechResponder.CurrentPersonality.Scripts[ "Approximate" ];
             var originalValue = script.Value;
             try
             {

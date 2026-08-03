@@ -4,9 +4,9 @@ using System.Threading;
 
 namespace EddiScriptResolverService
 {
-    public static class HumaniseRenderer
+    public static class ApproximateNumber
     {
-        private const string ScriptName = "Humanise";
+        private const string ScriptName = "Approximate";
         private static readonly AsyncLocal<bool> RenderingScript = new();
 
         public static string Render (
@@ -21,22 +21,22 @@ namespace EddiScriptResolverService
 
             if ( RenderingScript.Value )
             {
-                return "Cottle speech system configuration error: Recursive Humanise() calls are not supported.";
+                return "Cottle speech system configuration error: Recursive Approximate() or Humanise() calls are not supported.";
             }
 
             if ( scripts is null || !scripts.TryGetValue( ScriptName, out var script ) )
             {
-                return "Cottle speech system configuration error: Humanise script not found.";
+                return "Cottle speech system configuration error: Approximate script not found.";
             }
 
             if ( script?.Enabled != true )
             {
-                return "Cottle speech system configuration error: Humanise script is disabled.";
+                return "Cottle speech system configuration error: Approximate script is disabled.";
             }
 
             if ( string.IsNullOrWhiteSpace( script.Value ) )
             {
-                return "Cottle speech system configuration error: Humanise script is empty.";
+                return "Cottle speech system configuration error: Approximate script is empty.";
             }
 
             var renderContext = context ?? ScriptResolver.buildContext( null, scripts );

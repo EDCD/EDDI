@@ -50,6 +50,30 @@ namespace EddiScriptResolverService
             }
             return Context.CreateCascade( latestContext, ParentContext );
         }
+
+        protected string InvokeScript ( IMap globals, IReadOnlyList<Value> values )
+        {
+            var scriptName = values[ 0 ].AsString;
+            if ( values.Count > 1 && values[ 1 ].Type != ValueContent.Map )
+            {
+                throw new ArgumentException ( $"The function invoking {scriptName} has arguments which are not a map value." );
+            }
+
+            return ScriptInvoker.ResolveFromName(
+                scriptName,
+                Scripts,
+                GetContext( globals ),
+                false,
+                false,
+                values.Count > 1,
+                values.Count > 1 ? values[ 1 ] : default )?.Trim();
+        }
+
+        protected string RenderApproximateNumber ( IMap globals, Value input )
+        {
+            var number = (decimal?)Convert.ToDecimal( input.AsNumber );
+            return ApproximateNumber.Render( number, Scripts, GetContext( globals ) );
+        }
     }
 
     public enum FunctionCategory

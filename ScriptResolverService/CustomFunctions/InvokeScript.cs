@@ -7,14 +7,14 @@ namespace EddiScriptResolverService.CustomFunctions
 {
     [UsedImplicitly]
     [ method: UsedImplicitly]
-    public class F ( IContext context, IReadOnlyDictionary<string, IScriptDefinition> scripts )
+    public class InvokeScript ( IContext context, IReadOnlyDictionary<string, IScriptDefinition> scripts )
         : RecursiveFunction( context, scripts ), ICustomFunction
     {
-        public string name => "F";
+        public string name => "InvokeScript";
         public FunctionCategory Category => FunctionCategory.Utility;
-        public string description => Properties.CustomFunctions_Untranslated.F;
+        public string description => Properties.CustomFunctions_Untranslated.InvokeScript;
         public Type ReturnType => typeof( string );
         public IFunction function => Function.CreateNativeMinMax( ( runtime, values, writer ) =>
-            InvokeScript( runtime.Globals, values ), 1, 2 );
+            base.InvokeScript( runtime.Globals, values ), 1, 2 );
     }
 }
