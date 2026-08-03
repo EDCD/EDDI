@@ -2,6 +2,7 @@
 
 using Microsoft.Win32;
 using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace EddiVoiceAttackAdapter
@@ -33,18 +34,21 @@ namespace EddiVoiceAttackAdapter
         {
             store ??= new RegistryEddiInstallLocatorStore();
 
-            return ResolveRegistryCandidate( store, EddiInstallLocatorHive.CurrentUser, shimDirectory ) ??
+            return ResolveMarkerCandidate( markerFilePath ?? GetDefaultMarkerPath( shimDirectory ), shimDirectory ) ??
+                   ResolveRegistryCandidate( store, EddiInstallLocatorHive.CurrentUser, shimDirectory ) ??
                    ResolveRegistryCandidate( store, EddiInstallLocatorHive.LocalMachine, shimDirectory ) ??
-                   ResolveMarkerCandidate( markerFilePath ?? GetDefaultMarkerPath( shimDirectory ), shimDirectory ) ??
                    ResolveFallbackCandidate( shimDirectory ) ??
                    ResolveFallbackCandidate( baseDirectory );
         }
 
-        public static string? ResolveVersion ( IEddiInstallLocatorStore? store = null )
+        public static string? ResolveVersion (
+            IEddiInstallLocatorStore? store = null,
+            string? executablePath = null )
         {
             store ??= new RegistryEddiInstallLocatorStore();
 
-            return NormalizeVersion( store.ReadValue( EddiInstallLocatorHive.CurrentUser, VersionValueName ) ) ??
+            return ResolveExecutableVersion( executablePath ) ??
+                   NormalizeVersion( store.ReadValue( EddiInstallLocatorHive.CurrentUser, VersionValueName ) ) ??
                    NormalizeVersion( store.ReadValue( EddiInstallLocatorHive.LocalMachine, VersionValueName ) );
         }
 
@@ -125,6 +129,26 @@ namespace EddiVoiceAttackAdapter
             return string.IsNullOrWhiteSpace( version )
                 ? null
                 : version.Trim();
+        }
+
+        private static string? ResolveExecutableVersion ( string? executablePath )
+        {
+            var candidate = NormalizeExistingEddiExecutable( executablePath );
+            if ( candidate == null )
+            {
+                return null;
+            }
+
+            try
+            {
+                var versionInfo = FileVersionInfo.GetVersionInfo( candidate );
+                return NormalizeVersion( versionInfo.ProductVersion ) ??
+                       NormalizeVersion( versionInfo.FileVersion );
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         private static string? GetDefaultMarkerPath ( string? shimDirectory )

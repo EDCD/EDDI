@@ -33,6 +33,27 @@ namespace Tests
         }
 
         [TestMethod]
+        public void ResolveExecutablePath_MarkerWinsOverStaleRegistryValues ()
+        {
+            using var paths = new LocatorTestPaths();
+            var markerExe = paths.CreateExternalExe( "marker" );
+            var currentUserExe = paths.CreateExternalExe( "stale-current-user" );
+            var localMachineExe = paths.CreateExternalExe( "stale-local-machine" );
+            var markerPath = paths.WriteMarker( markerExe );
+            var store = new FakeEddiInstallLocatorStore();
+            store.Set( EddiInstallLocatorHive.CurrentUser, EddiInstallLocator.ExecutablePathValueName, currentUserExe );
+            store.Set( EddiInstallLocatorHive.LocalMachine, EddiInstallLocator.ExecutablePathValueName, localMachineExe );
+
+            var resolved = EddiInstallLocator.ResolveExecutablePath(
+                paths.ShimDirectory,
+                store,
+                markerPath,
+                paths.EmptyBaseDirectory );
+
+            Assert.AreEqual( markerExe, resolved );
+        }
+
+        [TestMethod]
         public void ResolveExecutablePath_LocalMachineRegistryWorksWhenCurrentUserMissing ()
         {
             using var paths = new LocatorTestPaths();
@@ -64,10 +85,15 @@ namespace Tests
         [TestMethod]
         public void AdapterVersionProvider_UsesLocatorVersion ()
         {
+            using var paths = new LocatorTestPaths();
             var store = new FakeEddiInstallLocatorStore();
             store.Set( EddiInstallLocatorHive.LocalMachine, EddiInstallLocator.VersionValueName, "5.0.2" );
 
-            var version = AdapterVersionProvider.GetDisplayVersion( store );
+            var version = AdapterVersionProvider.GetDisplayVersion(
+                store,
+                paths.EmptyBaseDirectory,
+                markerFilePath: null,
+                baseDirectory: paths.EmptyBaseDirectory );
 
             Assert.AreEqual( "5.0.2", version );
         }
