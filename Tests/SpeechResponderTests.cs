@@ -175,12 +175,12 @@ namespace Tests
                 Assert.IsTrue( script.IsResettable, $"{fileInfo.Name} Approximate should be resettable." );
                 Assert.AreEqual( script.Value, script.defaultValue, $"{fileInfo.Name} Approximate should be resettable to its shipped script." );
                 Assert.Contains( "NumberDetails(args.number)", script.Value, $"{fileInfo.Name} Approximate should decompose args.number." );
-                Assert.Contains( "humanise.magnitudename", script.Value, $"{fileInfo.Name} Approximate should expose magnitude handling." );
-                Assert.Contains( "humanise.isnegative", script.Value, $"{fileInfo.Name} Approximate should expose sign handling." );
-                Assert.Contains( "humanise.format = \"short_decimal\"", script.Value, $"{fileInfo.Name} Approximate should expose decimal formatting." );
-                Assert.Contains( "humanise.format = \"just_over\"", script.Value, $"{fileInfo.Name} Approximate should expose approximation formatting." );
-                Assert.Contains( "humanise.format = \"around_half\"", script.Value, $"{fileInfo.Name} Approximate should expose half-step formatting." );
-                Assert.Contains( "humanise.format = \"well_over_half\"", script.Value, $"{fileInfo.Name} Approximate should expose rounded half-step handling." );
+                Assert.Contains( "number.magnitudename", script.Value, $"{fileInfo.Name} Approximate should expose magnitude handling." );
+                Assert.Contains( "number.isnegative", script.Value, $"{fileInfo.Name} Approximate should expose sign handling." );
+                Assert.Contains( "number.format = \"short_decimal\"", script.Value, $"{fileInfo.Name} Approximate should expose decimal formatting." );
+                Assert.Contains( "number.format = \"just_over\"", script.Value, $"{fileInfo.Name} Approximate should expose approximation formatting." );
+                Assert.Contains( "number.format = \"around_half\"", script.Value, $"{fileInfo.Name} Approximate should expose half-step formatting." );
+                Assert.Contains( "number.format = \"well_over_half\"", script.Value, $"{fileInfo.Name} Approximate should expose rounded half-step handling." );
                 Assert.DoesNotContain( "fallback", script.Value, $"{fileInfo.Name} Approximate should not use legacy fallback output." );
             }
         }
