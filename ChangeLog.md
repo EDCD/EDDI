@@ -4,6 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ## 5.0.5
   * Core
+    * Further installer hardening.
     * Various bug fixes from telemetry.
   * Speech Responder
     * Customized obsolete scripts are now preserved as (Obsolete) <old script name> recovery scripts, while unchanged/default obsolete scripts are still removed.
