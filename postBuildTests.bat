@@ -37,7 +37,7 @@ ECHO %this%: Running dotnet tests for "%solutionDir%Tests\Tests.csproj"
 ECHO %this%: Test filter is "%testCaseFilter%"
 SET "testResultsDir=%solutionDir%TestResults\%buildConfiguration%"
 ECHO %this%: Test results and blame artifacts will be written to "%testResultsDir%"
-powershell -NoProfile -ExecutionPolicy Bypass -Command "& dotnet test '%solutionDir%Tests\Tests.csproj' -c '%buildConfiguration%' --no-build --no-restore --filter '%testCaseFilter%' '-p:SolutionDir=%solutionDir%' -p:Platform=x64 --results-directory '%testResultsDir%' --logger 'console;verbosity=detailed' --logger 'trx;LogFileName=%trxLogFileName%' --blame-hang --blame-hang-timeout 5m --blame-hang-dump-type mini"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "& dotnet test '%solutionDir%Tests\Tests.csproj' -c '%buildConfiguration%' --no-build --no-restore --filter '%testCaseFilter%' '-p:SolutionDir=%solutionDir%' -p:Platform=x64 --results-directory '%testResultsDir%' --logger 'console;verbosity=normal' --logger 'trx;LogFileName=%trxLogFileName%' --blame-hang --blame-hang-timeout 5m --blame-hang-dump-type mini"
 EXIT /B %ERRORLEVEL%
 
 :GenerateDocs

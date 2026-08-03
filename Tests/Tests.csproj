@@ -95,6 +95,7 @@
         <EmbeddedResource Update="Properties\Resources.resx">
             <Generator>PublicResXFileCodeGenerator</Generator>
             <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+            <GenerateSource>false</GenerateSource>
         </EmbeddedResource>
     </ItemGroup>
     <Choose>

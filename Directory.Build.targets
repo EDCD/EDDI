@@ -22,4 +22,16 @@
 
     <!-- Import injected credentials -->
     <Import Project="build\InjectedSecrets.targets" Condition="Exists('build\InjectedSecrets.targets')" />
+
+    <Target Name="SetPublicResxSourceGeneration"
+            BeforeTargets="AddAllResxFilesAsAdditionalFiles;AddGenerateSourceResxFilesAsAdditionalFiles">
+        <ItemGroup>
+            <EmbeddedResource Update="@(EmbeddedResource)"
+                              Public="true"
+                              Condition="'%(EmbeddedResource.Generator)' == 'PublicResXFileCodeGenerator'" />
+            <EmbeddedResource Update="@(EmbeddedResource)"
+                              ClassName="$(EddiRootNamespace).$([System.String]::Copy('%(EmbeddedResource.RelativeDir)').Replace('\', '.').Replace('/', '.'))$([System.String]::Copy('%(EmbeddedResource.LastGenOutput)').Replace('.Designer.cs', '').Replace('.', '_'))"
+                              Condition="'%(EmbeddedResource.LastGenOutput)' != ''" />
+        </ItemGroup>
+    </Target>
 </Project>

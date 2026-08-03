@@ -215,6 +215,7 @@ ModelManifest.xml
 
 # Auto-generated resource manager
 Documentation.chw
+**/Properties/*.Designer.cs
 
 # AxoCover
 .axoCover/runs
