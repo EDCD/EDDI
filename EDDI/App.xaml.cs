@@ -223,7 +223,12 @@ namespace Eddi
         // For standalone, this will be handled here.
         public static bool AlreadyRunning()
         {
-            eddiMutex = new Mutex(true, Constants.EDDI_SYSTEM_MUTEX_NAME, out var firstOwner);
+            return AlreadyRunning( Constants.EDDI_SYSTEM_MUTEX_NAME );
+        }
+
+        internal static bool AlreadyRunning ( string mutexName )
+        {
+            eddiMutex = new Mutex(true, mutexName, out var firstOwner);
             return !firstOwner;
         }
 

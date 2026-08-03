@@ -58,11 +58,12 @@ namespace Tests
             try
             {
                 // Create an external (simulated other process) mutex and take ownership
-                external = new Mutex( true, Constants.EDDI_SYSTEM_MUTEX_NAME, out var externalOwner );
+                var mutexName = $"{Constants.EDDI_SYSTEM_MUTEX_NAME}-{Guid.NewGuid():N}";
+                external = new Mutex( true, mutexName, out var externalOwner );
                 Assert.IsTrue( externalOwner, "Test setup failed to obtain external mutex ownership" );
 
                 // Now call AlreadyRunning which will create its own mutex; it should detect an existing owner
-                var already = App.AlreadyRunning();
+                var already = App.AlreadyRunning( mutexName );
                 Assert.IsTrue( already, "AlreadyRunning should return true when an external mutex exists" );
             }
             finally
