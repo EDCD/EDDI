@@ -21,6 +21,7 @@
             if exist "$(SolutionDir)postBuildTests.bat" (
             @echo Post-build script exists at: $(SolutionDir)postBuildTests.bat - executing...
             call "$(SolutionDir)postBuildTests.bat" "$(Configuration)" "$(SolutionDir)" "bin\$(Configuration)\"
+            if errorlevel 1 exit /b %errorlevel%
             )
 
             if "$(Configuration)" == "Release" (
