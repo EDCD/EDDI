@@ -25,6 +25,9 @@ namespace Utilities
         [GeneratedRegex( @"\{set\s+(?<key>[A-Za-z_]\w*)\s+to\s+(?<expression>[^{}\r\n]+?)\s*\}", RegexOptions.CultureInvariant )]
         public static partial Regex CottleSetExpressionRegex ();
 
+        [GeneratedRegex( @"(?<![A-Za-z0-9_])(F|Humanise|P|Spacialise)\(", RegexOptions.Compiled )]
+        public static partial Regex DeprecatedCottleFunctionsRegex ();
+
         [GeneratedRegex( @"\d+(?:\s|$)", RegexOptions.Compiled )]
         public static partial Regex DIGIT ();
 

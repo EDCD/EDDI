@@ -5,13 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
+using Utilities;
 using Utilities.MetaVariables;
 
 namespace Tests
 {
     [TestClass, TestCategory( "UnitTests" )]
-    public class SpeechResponderTests : TestBase
+    public partial class SpeechResponderTests : TestBase
     {
         [TestInitialize]
         public void Start ()
@@ -188,9 +188,7 @@ namespace Tests
         [TestMethod]
         public void ShippedDefaultPersonalities_DoNotUseDeprecatedFunctionNames ()
         {
-            var deprecatedFunctionPattern = new Regex(
-                @"(?<![A-Za-z0-9_])(F|Humanise|P|Spacialise)\(",
-                RegexOptions.Compiled );
+            var deprecatedFunctionPattern = GeneratedRegex.DeprecatedCottleFunctionsRegex();
             var dirInfo = new DirectoryInfo( AppContext.BaseDirectory );
 
             foreach ( var fileInfo in dirInfo.GetFiles()
