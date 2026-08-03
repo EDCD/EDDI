@@ -1,10 +1,14 @@
 #nullable enable
 
 using EddiIPC_Service.Messages;
+using EddiIPC_Service.Messaging;
 using EddiIPC_Service.Server;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
+using System.Net;
+using System.Net.Sockets;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Tests.EddiVoiceAttackService
@@ -158,8 +162,6 @@ namespace Tests.EddiVoiceAttackService
         {
             // Arrange
             var server = new IPCServer();
-            await server.StartAsync( TestContext.CancellationToken );
-
             var handler = new DefaultServerEventHandler(server);
             var connectMessage = MessageEnvelope.Create(MessageTypes.Connect,
                 new ConnectData 
@@ -170,26 +172,25 @@ namespace Tests.EddiVoiceAttackService
                     SupportedMessageTypes = new System.Collections.Generic.List<string> { MessageTypes.Command }
                 });
 
-            // Create a dummy connection context
-            var dummyClient = new System.Net.Sockets.TcpListener(System.Net.IPAddress.Loopback, 0);
-            dummyClient.Start();
-            var port = ((System.Net.IPEndPoint)dummyClient.LocalEndpoint).Port;
+            await server.StartAsync( TestContext.CancellationToken );
+            server.Router.RegisterHandler( MessageTypes.Connect, handler.HandleConnectAsync );
 
-            var acceptTask = dummyClient.AcceptTcpClientAsync(TestContext.CancellationToken);
-            var testClient = new System.Net.Sockets.TcpClient();
-            await testClient.ConnectAsync(System.Net.IPAddress.Loopback, port, TestContext.CancellationToken );
-            var acceptedClient = await acceptTask.ConfigureAwait(false);
-            dummyClient.Stop();
+            using var client = new TcpClient();
+            try
+            {
+                await client.ConnectAsync( IPAddress.Loopback, server.Port, TestContext.CancellationToken );
+                await client.GetStream()
+                    .WriteAsync( MessageSerializer.SerializeToFrame( connectMessage ).Memory, TestContext.CancellationToken )
+                    .ConfigureAwait( false );
 
-            var context = new ConnectionContext(testClient);
+                var response = await ReadSingleMessageAsync( client, TestContext.CancellationToken ).ConfigureAwait( false );
 
-            // Act & Assert - Should not throw
-            await handler.HandleConnectAsync(connectMessage, context);
-
-            // Cleanup
-            acceptedClient.Dispose();
-            context.Dispose();
-            await server.StopAsync( TestContext.CancellationToken );
+                Assert.AreEqual( MessageTypes.ConnectAck, response.Type );
+            }
+            finally
+            {
+                await server.StopAsync( TestContext.CancellationToken );
+            }
         }
 
         [TestMethod]
@@ -220,6 +221,34 @@ namespace Tests.EddiVoiceAttackService
             {
                 client.Dispose();
                 await server.StopAsync( TestContext.CancellationToken );
+            }
+        }
+
+        private static async Task<MessageEnvelope> ReadSingleMessageAsync ( TcpClient client, CancellationToken cancellationToken )
+        {
+            var stream = client.GetStream();
+            var buffer = new byte[ 4096 ];
+            using var received = new MemoryStream();
+
+            while ( true )
+            {
+                var bytesRead = await stream.ReadAsync( buffer.AsMemory( 0, buffer.Length ), cancellationToken )
+                    .ConfigureAwait( false );
+                if ( bytesRead == 0 )
+                {
+                    Assert.Fail( "IPC server closed the connection before sending a response." );
+                }
+
+                received.Write( buffer, 0, bytesRead );
+                MessageSerializer.DeserializeMessages(
+                    received.ToArray(),
+                    out var messages,
+                    out _ );
+
+                if ( messages.Count > 0 )
+                {
+                    return messages[ 0 ];
+                }
             }
         }
     }
