@@ -1574,6 +1574,10 @@ namespace EddiDataDefinitions
                 { 4, [ ] },
                 { 5, [ ] }
             } );
+            _ = new BlueprintTemplate( "CargoRackS6C1Extended", new Dictionary<int, List<MaterialAmount>>()
+            {
+                { 5, [ ] }
+            } );
         }
         public static readonly BlueprintTemplate None;
 

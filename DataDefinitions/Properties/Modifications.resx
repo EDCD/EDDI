@@ -668,4 +668,8 @@
   <data name="SeekerMissileRackDrag" xml:space="preserve">
     <value>Drag Munitions</value>
   </data>
+  <data name="CargoRackS6C1Extended" xml:space="preserve">
+    <value>Extended Cargo Rack</value>
+    <comment>Purchased with Merc Coins</comment>
+  </data>
 </root>
