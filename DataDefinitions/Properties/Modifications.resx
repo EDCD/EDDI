@@ -666,7 +666,7 @@
     <value>Efficient Fuel Scoop</value>
   </data>
   <data name="SeekerMissileRackDrag" xml:space="preserve">
-    <value>Drag Munitions</value>
+    <value>Drag Seeker Missile Rack</value>
   </data>
   <data name="CargoRackS6C1Extended" xml:space="preserve">
     <value>Extended Cargo Rack</value>
