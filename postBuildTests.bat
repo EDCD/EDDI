@@ -37,7 +37,7 @@ ECHO %this%: Running dotnet tests for "%solutionDir%Tests\Tests.csproj"
 ECHO %this%: Test filter is "%testCaseFilter%"
 SET "testResultsDir=%solutionDir%TestResults\%buildConfiguration%"
 ECHO %this%: Test results and blame artifacts will be written to "%testResultsDir%"
-powershell -NoProfile -ExecutionPolicy Bypass -Command "& dotnet test '%solutionDir%Tests\Tests.csproj' -c '%buildConfiguration%' --no-build --no-restore --filter '%testCaseFilter%' '-p:SolutionDir=%solutionDir%' -p:Platform=x64 --results-directory '%testResultsDir%' --logger 'console;verbosity=normal' --logger 'trx;LogFileName=%trxLogFileName%' --blame-hang --blame-hang-timeout 5m --blame-hang-dump-type mini"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "& dotnet test '%solutionDir%Tests\Tests.csproj' -c '%buildConfiguration%' --no-build --no-restore --filter '%testCaseFilter%' '-p:SolutionDir=%solutionDir%' -p:Platform=x64 --results-directory '%testResultsDir%' --logger 'console;verbosity=normal' --logger 'trx;LogFileName=%trxLogFileName%' --blame-hang --blame-hang-timeout 5m --blame-hang-dump-type mini; exit $LASTEXITCODE"
 EXIT /B %ERRORLEVEL%
 
 :GenerateDocs
@@ -45,7 +45,7 @@ SET "docOutputDir=%solutionDir%bin\%buildConfiguration%\Application"
 SET "docGeneratorPath=%solutionDir%bin\%buildConfiguration%\BuildTools\DocumentationGenerator\DocumentationGenerator.dll"
 ECHO %this%: Generating documentation output in "%docOutputDir%"
 IF EXIST "%docOutputDir%\DocumentationGenerator.*" DEL /Q "%docOutputDir%\DocumentationGenerator.*"
-powershell -NoProfile -ExecutionPolicy Bypass -Command "& dotnet '%docGeneratorPath%' '%docOutputDir%'"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "& dotnet '%docGeneratorPath%' '%docOutputDir%'; exit $LASTEXITCODE"
 EXIT /B %ERRORLEVEL%
 
 ECHO ****************************
