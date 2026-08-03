@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace Tests
@@ -251,6 +252,40 @@ namespace Tests
             var result = resolver.resolveFromName("test", new Dictionary<string, Tuple<Type, Value>>(), true);
 
             Assert.AreEqual("outer/inner/outer", result);
+        }
+
+        [TestMethod]
+        public async Task InvokeScriptArgumentMapsRemainIsolatedAcrossConcurrentResolvers ()
+        {
+            static string ResolveWithValue ( string value )
+            {
+                var scripts = new Dictionary<string, Script>
+                {
+                    [ "inner" ] = new( "inner", null, false, "{args.value}:{shared}:state={if state:ok|else:missing}" ),
+                    [ "outer" ] = new( "outer", null, false, "{set before to args.value}{set nested to InvokeScript(\"inner\", [\"value\": args.value])}{before}/{nested}/{args.value}/{shared}" ),
+                    [ "test" ] = new( "test", null, false, "{InvokeScript(\"outer\", [\"value\": root])}" )
+                };
+                var resolver = new ScriptResolver( scripts );
+                var dict = new Dictionary<string, Tuple<Type, Value>>
+                {
+                    [ "root" ] = new( typeof( string ), value ),
+                    [ "shared" ] = new( typeof( string ), value )
+                };
+
+                return resolver.resolveFromName( "test", dict, true );
+            }
+
+            var alpha = Task.Run( () => ResolveWithValue( "alpha" ) );
+            var beta = Task.Run( () => ResolveWithValue( "beta" ) );
+            var results = await Task.WhenAll( alpha, beta );
+
+            CollectionAssert.AreEquivalent(
+                new[]
+                {
+                    "alpha/alpha:alpha:state=ok/alpha/alpha",
+                    "beta/beta:beta:state=ok/beta/beta"
+                },
+                results );
         }
 
         [TestMethod]
