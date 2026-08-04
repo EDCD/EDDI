@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Utilities;
 
 namespace EddiCore.Hotkeys
@@ -15,22 +17,34 @@ namespace EddiCore.Hotkeys
 
         public HotkeyRegistration ( HotkeyActionCollection collection )
             : this( collection, installHook: true, invoke: null )
-        {
-            Collection = collection ?? throw new ArgumentNullException( nameof( collection ) );
-            syncContext = SynchronizationContext.Current;
-            StartHook();
-        }
+        { }
 
         internal HotkeyRegistration ( HotkeyActionCollection collection, bool installHook, Action<Action> invoke )
+            : this( collection, installHook, invoke, null, null, true )
+        { }
+
+        internal HotkeyRegistration (
+            HotkeyActionCollection collection,
+            bool installHook,
+            Action<Action> invoke,
+            Func<IntPtr> installHookOverride,
+            Action<string> logHookUnavailable,
+            bool scheduleRetries )
         {
             Collection = collection ?? throw new ArgumentNullException( nameof( collection ) );
             this.invoke = invoke ?? DefaultInvoke;
+            this.installHookOverride = installHookOverride;
+            this.logHookUnavailable = logHookUnavailable ?? ( message => Logging.Warn( message ) );
+            this.scheduleRetries = scheduleRetries;
             if ( installHook )
             { StartHook(); }
         }
 
         private readonly Action<Action> invoke;
         private readonly SynchronizationContext syncContext = SynchronizationContext.Current;
+        private readonly Func<IntPtr> installHookOverride;
+        private readonly Action<string> logHookUnavailable;
+        private readonly bool scheduleRetries;
 
         private void DefaultInvoke ( Action a )
         {
@@ -48,6 +62,10 @@ namespace EddiCore.Hotkeys
         private IntPtr hookHandle = IntPtr.Zero;
         private LowLevelKeyboardProc hookProc; // keep delegate alive
         private readonly HashSet<int> keysDown = [ ];
+        private bool disposed;
+        internal int HookInstallAttempts { get; private set; }
+        internal bool IsHookInstalled => hookHandle != IntPtr.Zero;
+        internal bool IsHookUnavailable => HookInstallAttempts >= MaxHookInstallAttempts && hookHandle == IntPtr.Zero;
 
         // Tracked modifier state
         private bool shiftDown;
@@ -120,6 +138,7 @@ namespace EddiCore.Hotkeys
 
         public void Dispose ()
         {
+            disposed = true;
             StopHook();
             GC.SuppressFinalize( this );
         }
@@ -209,12 +228,18 @@ namespace EddiCore.Hotkeys
 
         private void StartHook ()
         {
-            if ( hookHandle != IntPtr.Zero )
+            RetryHookInstallation();
+        }
+
+        internal bool RetryHookInstallation ()
+        {
+            if ( disposed || hookHandle != IntPtr.Zero || HookInstallAttempts >= MaxHookInstallAttempts )
             {
-                return;
+                return hookHandle != IntPtr.Zero;
             }
 
             hookProc = HookCallback;
+            HookInstallAttempts++;
 
             var moduleHandle = IntPtr.Zero;
             var moduleName = string.Empty;
@@ -222,34 +247,38 @@ namespace EddiCore.Hotkeys
             var getModuleHandleWin32Error = 0;
             string moduleResolutionError = null;
             using var currentProcess = Process.GetCurrentProcess();
-            try
+            if ( installHookOverride is null )
             {
-                using ( var curModule = currentProcess.MainModule )
+                try
                 {
-                    if ( curModule != null )
+                    using ( var curModule = currentProcess.MainModule )
                     {
-                        moduleName = curModule.ModuleName;
-                        modulePath = curModule.FileName;
-                        moduleHandle = NativeMethods.GetModuleHandle( moduleName );
-                        getModuleHandleWin32Error = moduleHandle == IntPtr.Zero ? Marshal.GetLastWin32Error() : 0;
+                        if ( curModule != null )
+                        {
+                            moduleName = curModule.ModuleName;
+                            modulePath = curModule.FileName;
+                            moduleHandle = NativeMethods.GetModuleHandle( moduleName );
+                            getModuleHandleWin32Error = moduleHandle == IntPtr.Zero ? Marshal.GetLastWin32Error() : 0;
+                        }
                     }
                 }
-            }
-            catch ( Exception ex )
-            {
-                // Best-effort. If module handle is IntPtr.Zero, SetWindowsHookEx may still succeed for WH_KEYBOARD_LL.
-                moduleResolutionError = $"{ex.GetType().Name}: {ex.Message}";
+                catch ( Exception ex )
+                {
+                    // Best-effort. If module handle is IntPtr.Zero, SetWindowsHookEx may still succeed for WH_KEYBOARD_LL.
+                    moduleResolutionError = $"{ex.GetType().Name}: {ex.Message}";
+                }
             }
 
-            hookHandle = NativeMethods.SetWindowsHookEx( WH_KEYBOARD_LL, hookProc, moduleHandle, 0 );
+            hookHandle = installHookOverride?.Invoke() ?? NativeMethods.SetWindowsHookEx( WH_KEYBOARD_LL, hookProc, moduleHandle, 0 );
             var setHookWin32Error = hookHandle == IntPtr.Zero ? Marshal.GetLastWin32Error() : 0;
             if ( hookHandle == IntPtr.Zero )
             {
-                Logging.Error(
+                logHookUnavailable(
                     "Failed to install keyboard hook. " +
                     $"Win32Error={setHookWin32Error}; " +
                     $"HookId={WH_KEYBOARD_LL}; " +
                     "ThreadId=0; " +
+                    $"Attempt={HookInstallAttempts}/{MaxHookInstallAttempts}; " +
                     $"ModuleHandle=0x{moduleHandle.ToInt64():X}; " +
                     $"ModuleName='{moduleName}'; " +
                     $"ModulePath='{modulePath}'; " +
@@ -259,8 +288,35 @@ namespace EddiCore.Hotkeys
                     $"ProcessName='{currentProcess.ProcessName}'; " +
                     $"Is64BitProcess={Environment.Is64BitProcess}; " +
                     $"Is64BitOperatingSystem={Environment.Is64BitOperatingSystem}; " +
-                    $"UserInteractive={Environment.UserInteractive}" );
+                    $"UserInteractive={Environment.UserInteractive}; " +
+                    $"HasSynchronizationContext={SynchronizationContext.Current != null}; " +
+                    $"HasDispatcher={Dispatcher.FromThread( Thread.CurrentThread ) != null}" );
+
+                ScheduleHookRetry();
+                return false;
             }
+
+            return true;
+        }
+
+        private void ScheduleHookRetry ()
+        {
+            if ( !scheduleRetries || disposed || hookHandle != IntPtr.Zero || HookInstallAttempts >= MaxHookInstallAttempts )
+            {
+                return;
+            }
+
+            var dispatcher = Dispatcher.FromThread( Thread.CurrentThread );
+            if ( dispatcher is null )
+            {
+                return;
+            }
+
+            _ = dispatcher.InvokeAsync( async () =>
+            {
+                await Task.Delay( HookRetryDelayMilliseconds );
+                RetryHookInstallation();
+            }, DispatcherPriority.Background );
         }
 
         private void StopHook ()
@@ -354,6 +410,8 @@ namespace EddiCore.Hotkeys
         private const int VK_RMENU = 0xA5;
         private const int VK_LWIN = 0x5B;
         private const int VK_RWIN = 0x5C;
+        private const int MaxHookInstallAttempts = 3;
+        private const int HookRetryDelayMilliseconds = 5000;
 
         [UnmanagedFunctionPointer( CallingConvention.Winapi )]
         private delegate IntPtr LowLevelKeyboardProc ( int nCode, IntPtr wParam, IntPtr lParam );

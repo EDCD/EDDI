@@ -111,5 +111,74 @@ namespace Tests
             // Assert
             Assert.IsFalse( invoked, "Action should not be invoked when modifiers do not match." );
         }
+
+        [TestMethod]
+        public void HookInstallationFailure_DoesNotInstallGlobalHook ()
+        {
+            // Arrange
+            var messages = new List<string>();
+
+            // Act
+            var registration = new HotkeyRegistration(
+                hotkeyCollection,
+                installHook: true,
+                invoke: a => a(),
+                installHookOverride: () => IntPtr.Zero,
+                logHookUnavailable: messages.Add,
+                scheduleRetries: false );
+
+            // Assert
+            Assert.AreEqual( 1, registration.HookInstallAttempts, "The constructor should attempt hook installation once." );
+            Assert.IsFalse( registration.IsHookInstalled, "The hook should remain uninstalled when the native call fails." );
+            Assert.AreEqual( 1, messages.Count, "Hook installation failures should be logged once per failed attempt." );
+            StringAssert.Contains( messages[ 0 ], "Attempt=1/3" );
+        }
+
+        [TestMethod]
+        public void HookInstallationFailure_StopsAfterMaxAttempts ()
+        {
+            // Arrange
+            var messages = new List<string>();
+            var registration = new HotkeyRegistration(
+                hotkeyCollection,
+                installHook: true,
+                invoke: a => a(),
+                installHookOverride: () => IntPtr.Zero,
+                logHookUnavailable: messages.Add,
+                scheduleRetries: false );
+
+            // Act
+            registration.RetryHookInstallation();
+            registration.RetryHookInstallation();
+            registration.RetryHookInstallation();
+
+            // Assert
+            Assert.AreEqual( 3, registration.HookInstallAttempts, "Retries should stop at the configured maximum." );
+            Assert.IsTrue( registration.IsHookUnavailable, "The hook should be marked unavailable after repeated failures." );
+            Assert.AreEqual( 3, messages.Count, "No failure should be logged after retry attempts are exhausted." );
+        }
+
+        [TestMethod]
+        public void HookInstallationFailure_DoesNotPreventHotkeyRegistration ()
+        {
+            // Arrange
+            var gesture = new KeyGesture( Key.A, ModifierKeys.Control );
+            var registration = new HotkeyRegistration(
+                hotkeyCollection,
+                installHook: true,
+                invoke: a => a(),
+                installHookOverride: () => IntPtr.Zero,
+                logHookUnavailable: _ => { },
+                scheduleRetries: false );
+            var manager = new HotkeyManager { Hotkeys = registration };
+
+            // Act
+            manager.RegisterHotkey( "Test", gesture );
+
+            // Assert
+            manager.Hotkeys.Collection.TryGetValue( "Test", out var actionHotkey );
+            Assert.IsNotNull( actionHotkey, "We should be able to retrieve the item we just modified." );
+            Assert.AreEqual( gesture, actionHotkey.KeyGesture, "Hook availability should not block hotkey configuration." );
+        }
     }
 }
