@@ -292,15 +292,22 @@ begin
   Result := ExpandConstant('{userappdata}\VoiceAttack2\Apps');
 end;
 
+function GetSharedVoiceAttackAppsDir: string;
+begin
+  Result := ExpandConstant('{autopf}\VoiceAttack2\Apps');
+end;
+
 function ShouldUseDetectedVoiceAttackAppsDirAsDefault(const Dir: string): Boolean;
 begin
   {
-    In current-user install mode, avoid defaulting to a shared VoiceAttack Apps
-    folder from LastRun. That creates a mixed per-user app / shared plugin install
-    which validation must reject because the shared plugin would point at one
-    user's private application directory.
+    Avoid defaulting to a VoiceAttack Apps folder that does not match the
+    selected install mode. Mixed per-user / shared locations are rejected later
+    by validation, but defaults should not create that invalid pairing.
   }
-  Result := IsAdminInstallMode or IsUserProfilePath(Dir);
+  if IsAdminInstallMode then
+    Result := not IsUserProfilePath(Dir)
+  else
+    Result := IsUserProfilePath(Dir);
 end;
 
 function GetDefaultVoiceAttackAppsDir: string;
@@ -319,7 +326,10 @@ begin
     exit;
   end;
 
-  Result := GetPerUserVoiceAttackAppsDir;
+  if IsAdminInstallMode then
+    Result := GetSharedVoiceAttackAppsDir
+  else
+    Result := GetPerUserVoiceAttackAppsDir;
 end;
 
 function GetSelectedVoiceAttackAppsDir: string;
@@ -358,6 +368,13 @@ end;
 
 procedure EnsureSelectedVoiceAttackAppsDirMatchesInstallMode;
 begin
+  if IsAdminInstallMode and
+     ((Trim(SelectedVoiceAttackAppsDir) = '') or
+      IsUserProfilePath(NormalizeVoiceAttackAppsDir(SelectedVoiceAttackAppsDir))) then
+  begin
+    SelectedVoiceAttackAppsDir := GetSharedVoiceAttackAppsDir;
+  end;
+
   if (not IsAdminInstallMode) and
      ((Trim(SelectedVoiceAttackAppsDir) = '') or
       (not IsUserProfilePath(NormalizeVoiceAttackAppsDir(SelectedVoiceAttackAppsDir)))) then
@@ -557,7 +574,11 @@ begin
   begin
     if ShowMessage then
       MsgBox(
-        'The selected locations are per-user paths, but Setup is running in administrative install mode.' + #13#10#13#10 +
+        'The selected locations include a per-user path, but Setup is running in administrative install mode.' + #13#10#13#10 +
+        'EDDI application folder:' + #13#10 +
+        CleanAppDir + #13#10#13#10 +
+        'VoiceAttack Apps folder:' + #13#10 +
+        CleanAppsDir + #13#10#13#10 +
         'Restart Setup without elevation or select shared machine-wide locations.',
         mbError, MB_OK);
     Result := False;

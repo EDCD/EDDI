@@ -21,6 +21,49 @@ namespace Tests
         }
 
         [TestMethod]
+        public void InstallerVoiceAttackAppsDefaultFallback_MatchesInstallMode ()
+        {
+            var sharedDefault = GetInstallerRoutine( "function", "GetSharedVoiceAttackAppsDir" );
+            StringAssert.Contains( sharedDefault, "Result := ExpandConstant('{autopf}\\VoiceAttack2\\Apps');" );
+
+            var defaultSelection = GetInstallerRoutine( "function", "GetDefaultVoiceAttackAppsDir" );
+            StringAssert.Contains( defaultSelection, "if IsAdminInstallMode then" );
+            StringAssert.Contains( defaultSelection, "Result := GetSharedVoiceAttackAppsDir" );
+            StringAssert.Contains( defaultSelection, "Result := GetPerUserVoiceAttackAppsDir" );
+        }
+
+        [TestMethod]
+        public void InstallerDetectedVoiceAttackAppsDefaults_MustMatchInstallMode ()
+        {
+            var body = GetInstallerRoutine( "function", "ShouldUseDetectedVoiceAttackAppsDirAsDefault" );
+
+            StringAssert.Contains( body, "if IsAdminInstallMode then" );
+            StringAssert.Contains( body, "Result := not IsUserProfilePath(Dir)" );
+            StringAssert.Contains( body, "Result := IsUserProfilePath(Dir)" );
+        }
+
+        [TestMethod]
+        public void InstallerVoiceAttackAppsSelection_NormalizesBlankDefaultsByInstallMode ()
+        {
+            var body = GetInstallerRoutine( "procedure", "EnsureSelectedVoiceAttackAppsDirMatchesInstallMode" );
+
+            StringAssert.Contains( body, "if IsAdminInstallMode and" );
+            StringAssert.Contains( body, "SelectedVoiceAttackAppsDir := GetSharedVoiceAttackAppsDir;" );
+            StringAssert.Contains( body, "if (not IsAdminInstallMode) and" );
+            StringAssert.Contains( body, "SelectedVoiceAttackAppsDir := GetPerUserVoiceAttackAppsDir;" );
+        }
+
+        [TestMethod]
+        public void InstallerAdminModePathValidationMessage_NamesBothLocations ()
+        {
+            var body = GetInstallerRoutine( "function", "ValidateInstallLocations" );
+
+            StringAssert.Contains( body, "The selected locations include a per-user path" );
+            StringAssert.Contains( body, "EDDI application folder:" );
+            StringAssert.Contains( body, "VoiceAttack Apps folder:" );
+        }
+
+        [TestMethod]
         public void VoiceAttackAdapterVisibleMetadata_UsesEddiVersionWithoutSourceRevisionSuffix ()
         {
             var productVersion = Constants.EDDI_VERSION.ToString();
@@ -355,11 +398,37 @@ namespace Tests
 
         private static string GetInstallerVersion ()
         {
-            var installerPath = Path.Combine( SolutionDirectory, "Installer.iss" );
-            var versionLine = File.ReadLines( installerPath )
+            var versionLine = File.ReadLines( GetInstallerPath() )
                 .First( line => line.TrimStart().StartsWith( "#define MyAppVersion ", System.StringComparison.Ordinal ) );
 
             return versionLine.Split( '"' )[ 1 ];
         }
+
+        private static string GetInstallerRoutine ( string routineKind, string routineName )
+        {
+            var script = File.ReadAllText( GetInstallerPath() );
+            var marker = $"{routineKind} {routineName}";
+            var start = script.IndexOf( marker, System.StringComparison.Ordinal );
+            Assert.AreNotEqual( -1, start, $"Unable to find {marker} in Installer.iss." );
+
+            var functionStart = script.IndexOf( "\nfunction ", start + marker.Length, System.StringComparison.Ordinal );
+            var procedureStart = script.IndexOf( "\nprocedure ", start + marker.Length, System.StringComparison.Ordinal );
+            var nextRoutineStart = MinPositive( functionStart, procedureStart );
+            var end = nextRoutineStart >= 0 ? nextRoutineStart : script.Length;
+
+            return script.Substring( start, end - start );
+        }
+
+        private static int MinPositive ( int first, int second )
+        {
+            if ( first < 0 )
+                return second;
+            if ( second < 0 )
+                return first;
+            return first < second ? first : second;
+        }
+
+        private static string GetInstallerPath () =>
+            Path.Combine( SolutionDirectory, "Installer.iss" );
     }
 }
