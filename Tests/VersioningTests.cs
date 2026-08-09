@@ -24,12 +24,12 @@ namespace Tests
         public void InstallerVoiceAttackAppsDefaultFallback_MatchesInstallMode ()
         {
             var sharedDefault = GetInstallerRoutine( "function", "GetSharedVoiceAttackAppsDir" );
-            StringAssert.Contains( sharedDefault, "Result := ExpandConstant('{autopf}\\VoiceAttack2\\Apps');" );
+            Assert.Contains( "Result := ExpandConstant('{autopf}\\VoiceAttack2\\Apps');" , sharedDefault);
 
             var defaultSelection = GetInstallerRoutine( "function", "GetDefaultVoiceAttackAppsDir" );
-            StringAssert.Contains( defaultSelection, "if IsAdminInstallMode then" );
-            StringAssert.Contains( defaultSelection, "Result := GetSharedVoiceAttackAppsDir" );
-            StringAssert.Contains( defaultSelection, "Result := GetPerUserVoiceAttackAppsDir" );
+            Assert.Contains( "if IsAdminInstallMode then" , defaultSelection);
+            Assert.Contains( "Result := GetSharedVoiceAttackAppsDir" , defaultSelection);
+            Assert.Contains( "Result := GetPerUserVoiceAttackAppsDir" , defaultSelection);
         }
 
         [TestMethod]
@@ -37,9 +37,9 @@ namespace Tests
         {
             var body = GetInstallerRoutine( "function", "ShouldUseDetectedVoiceAttackAppsDirAsDefault" );
 
-            StringAssert.Contains( body, "if IsAdminInstallMode then" );
-            StringAssert.Contains( body, "Result := not IsUserProfilePath(Dir)" );
-            StringAssert.Contains( body, "Result := IsUserProfilePath(Dir)" );
+            Assert.Contains( "if IsAdminInstallMode then" , body);
+            Assert.Contains( "Result := not IsUserProfilePath(Dir)" , body);
+            Assert.Contains( "Result := IsUserProfilePath(Dir)" , body);
         }
 
         [TestMethod]
@@ -47,10 +47,10 @@ namespace Tests
         {
             var body = GetInstallerRoutine( "procedure", "EnsureSelectedVoiceAttackAppsDirMatchesInstallMode" );
 
-            StringAssert.Contains( body, "if IsAdminInstallMode and" );
-            StringAssert.Contains( body, "SelectedVoiceAttackAppsDir := GetSharedVoiceAttackAppsDir;" );
-            StringAssert.Contains( body, "if (not IsAdminInstallMode) and" );
-            StringAssert.Contains( body, "SelectedVoiceAttackAppsDir := GetPerUserVoiceAttackAppsDir;" );
+            Assert.Contains( "if IsAdminInstallMode and" , body);
+            Assert.Contains( "SelectedVoiceAttackAppsDir := GetSharedVoiceAttackAppsDir;" , body);
+            Assert.Contains( "if (not IsAdminInstallMode) and" , body);
+            Assert.Contains( "SelectedVoiceAttackAppsDir := GetPerUserVoiceAttackAppsDir;" , body);
         }
 
         [TestMethod]
@@ -58,9 +58,9 @@ namespace Tests
         {
             var body = GetInstallerRoutine( "function", "ValidateInstallLocations" );
 
-            StringAssert.Contains( body, "The selected locations include a per-user path" );
-            StringAssert.Contains( body, "EDDI application folder:" );
-            StringAssert.Contains( body, "VoiceAttack Apps folder:" );
+            Assert.Contains( "The selected locations include a per-user path" , body);
+            Assert.Contains( "EDDI application folder:" , body);
+            Assert.Contains( "VoiceAttack Apps folder:" , body);
         }
 
         [TestMethod]
