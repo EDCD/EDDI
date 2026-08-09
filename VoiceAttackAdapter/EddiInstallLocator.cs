@@ -45,10 +45,15 @@ namespace EddiVoiceAttackAdapter
             IEddiInstallLocatorStore? store = null,
             string? executablePath = null )
         {
+            return ResolveExecutableVersion( executablePath ) ??
+                   ResolveRegistryVersion( store );
+        }
+
+        public static string? ResolveRegistryVersion ( IEddiInstallLocatorStore? store = null )
+        {
             store ??= new RegistryEddiInstallLocatorStore();
 
-            return ResolveExecutableVersion( executablePath ) ??
-                   NormalizeVersion( store.ReadValue( EddiInstallLocatorHive.CurrentUser, VersionValueName ) ) ??
+            return NormalizeVersion( store.ReadValue( EddiInstallLocatorHive.CurrentUser, VersionValueName ) ) ??
                    NormalizeVersion( store.ReadValue( EddiInstallLocatorHive.LocalMachine, VersionValueName ) );
         }
 
@@ -131,7 +136,7 @@ namespace EddiVoiceAttackAdapter
                 : version.Trim();
         }
 
-        private static string? ResolveExecutableVersion ( string? executablePath )
+        public static string? ResolveExecutableVersion ( string? executablePath )
         {
             var candidate = NormalizeExistingEddiExecutable( executablePath );
             if ( candidate == null )

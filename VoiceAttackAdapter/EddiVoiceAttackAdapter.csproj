@@ -3,6 +3,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <OutputType>Library</OutputType>
     <OutputPath>..\bin\$(EddiOutputConfiguration)\VoiceAttackPluginShim\</OutputPath>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" />
@@ -19,6 +21,39 @@
     </PropertyGroup>
     <RemoveDir Directories="$(ShimOutputDir)" Condition="Exists('$(ShimOutputDir)')" />
     <MakeDir Directories="$(ShimOutputDir)" />
+  </Target>
+
+  <Target Name="GenerateVoiceAttackAdapterVersionInfo" BeforeTargets="CoreCompile">
+    <ReadLinesFromFile File="$(MSBuildThisFileDirectory)..\Installer.iss">
+      <Output TaskParameter="Lines" ItemName="InstallerLine" />
+    </ReadLinesFromFile>
+
+    <ItemGroup>
+      <InstallerVersionLine Include="@(InstallerLine)" Condition="$([System.String]::Copy('%(Identity)').TrimStart().StartsWith('#define MyAppVersion '))" />
+    </ItemGroup>
+
+    <PropertyGroup>
+      <VoiceAttackAdapterVersionLine>@(InstallerVersionLine)</VoiceAttackAdapterVersionLine>
+      <VoiceAttackAdapterProductVersion>$([System.Text.RegularExpressions.Regex]::Replace('$(VoiceAttackAdapterVersionLine)', '^.*&quot;([^&quot;]+)&quot;.*$', '$1'))</VoiceAttackAdapterProductVersion>
+      <VoiceAttackAdapterVersionCore>$([System.Text.RegularExpressions.Regex]::Replace('$(VoiceAttackAdapterProductVersion)', '^([0-9]+\.[0-9]+\.[0-9]+).+$', '$1'))</VoiceAttackAdapterVersionCore>
+      <VoiceAttackAdapterFileVersionIteration>0</VoiceAttackAdapterFileVersionIteration>
+      <VoiceAttackAdapterFileVersionIteration Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(VoiceAttackAdapterProductVersion)', '^[0-9]+\.[0-9]+\.[0-9]+-[a-z]+[0-9]+$'))">$([System.Text.RegularExpressions.Regex]::Replace('$(VoiceAttackAdapterProductVersion)', '^[0-9]+\.[0-9]+\.[0-9]+-[a-z]+([0-9]+)$', '$1'))</VoiceAttackAdapterFileVersionIteration>
+      <VoiceAttackAdapterFileVersion>$(VoiceAttackAdapterVersionCore).$(VoiceAttackAdapterFileVersionIteration)</VoiceAttackAdapterFileVersion>
+      <VoiceAttackAdapterVersionInfoFile>$(IntermediateOutputPath)Generated\EddiVoiceAttackAdapterVersion.g.cs</VoiceAttackAdapterVersionInfoFile>
+    </PropertyGroup>
+
+    <Error Condition="'@(InstallerVersionLine)' == ''" Text="Unable to find MyAppVersion in Installer.iss." />
+    <Error Condition="'$(VoiceAttackAdapterProductVersion)' == '' Or ! $([System.Text.RegularExpressions.Regex]::IsMatch('$(VoiceAttackAdapterProductVersion)', '^[0-9]+\.[0-9]+\.[0-9]+(-[a-z]+[0-9]+)?$'))" Text="Unable to parse MyAppVersion from Installer.iss: $(VoiceAttackAdapterProductVersion)" />
+
+    <MakeDir Directories="$(IntermediateOutputPath)Generated" />
+    <ItemGroup>
+      <VoiceAttackAdapterVersionInfoLine Include="// &lt;auto-generated /&gt;" />
+      <VoiceAttackAdapterVersionInfoLine Include="using System.Reflection%3B" />
+      <VoiceAttackAdapterVersionInfoLine Include="[assembly: AssemblyFileVersion(&quot;$(VoiceAttackAdapterFileVersion)&quot;)]" />
+      <VoiceAttackAdapterVersionInfoLine Include="[assembly: AssemblyInformationalVersion(&quot;$(VoiceAttackAdapterProductVersion)&quot;)]" />
+      <Compile Include="$(VoiceAttackAdapterVersionInfoFile)" Visible="false" />
+    </ItemGroup>
+    <WriteLinesToFile File="$(VoiceAttackAdapterVersionInfoFile)" Lines="@(VoiceAttackAdapterVersionInfoLine)" Overwrite="true" />
   </Target>
 
   <Target Name="PrepareVoiceAttackPluginShim" AfterTargets="CopyFilesToOutputDirectory">

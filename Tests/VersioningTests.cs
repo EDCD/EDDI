@@ -1,4 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using EddiVoiceAttackAdapter;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using Utilities;
 
 namespace Tests
@@ -7,6 +11,30 @@ namespace Tests
     // this class is pure and doesn't need TestBase.MakeSafe()
     public class VersioningTests
     {
+        private static readonly string SolutionDirectory = Path.GetFullPath(
+            Path.Combine( System.AppContext.BaseDirectory, "..", "..", ".." ) );
+
+        [TestMethod]
+        public void InstallerVersion_MatchesRuntimeConstant ()
+        {
+            Assert.AreEqual( Constants.EDDI_VERSION.ToString(), GetInstallerVersion() );
+        }
+
+        [TestMethod]
+        public void VoiceAttackAdapterVisibleMetadata_UsesEddiVersionWithoutSourceRevisionSuffix ()
+        {
+            var productVersion = Constants.EDDI_VERSION.ToString();
+            var fileVersion = $"{Constants.EDDI_VERSION.ShortString}.{Constants.EDDI_VERSION.iteration}";
+
+            AssertAssemblyVisibleVersionMetadata( typeof( VoiceAttackPlugin ).Assembly.Location, productVersion, fileVersion );
+        }
+
+        [TestMethod]
+        public void VoiceAttackDisplayName_UsesEddiVersion ()
+        {
+            Assert.AreEqual( $"EDDI {Constants.EDDI_VERSION}", VoiceAttackPlugin.VA_DisplayName() );
+        }
+
         [TestMethod]
         public void TestBetaVersionToString()
         {
@@ -309,6 +337,29 @@ namespace Tests
         public void TestVersionRCToNewerAlpha()
         {
             Assert.AreEqual(-1, Version.CompareStrings("2.1.0-rc1", "2.2.0-a1"));
+        }
+
+        private static void AssertAssemblyVisibleVersionMetadata (
+            string assemblyPath,
+            string expectedProductVersion,
+            string expectedFileVersion )
+        {
+            var versionInfo = FileVersionInfo.GetVersionInfo( assemblyPath );
+
+            Assert.AreEqual( expectedProductVersion, versionInfo.ProductVersion );
+            Assert.AreEqual( expectedFileVersion, versionInfo.FileVersion );
+            Assert.IsFalse(
+                versionInfo.ProductVersion?.Contains( '+' ) ?? false,
+                $"Visible product metadata must not include a source revision suffix: {assemblyPath}" );
+        }
+
+        private static string GetInstallerVersion ()
+        {
+            var installerPath = Path.Combine( SolutionDirectory, "Installer.iss" );
+            var versionLine = File.ReadLines( installerPath )
+                .First( line => line.TrimStart().StartsWith( "#define MyAppVersion ", System.StringComparison.Ordinal ) );
+
+            return versionLine.Split( '"' )[ 1 ];
         }
     }
 }

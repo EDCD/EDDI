@@ -83,7 +83,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public void AdapterVersionProvider_UsesLocatorVersion ()
+        public void AdapterVersionProvider_UsesAdapterVisibleVersionBeforeRegistryFallback ()
         {
             using var paths = new LocatorTestPaths();
             var store = new FakeEddiInstallLocatorStore();
@@ -95,7 +95,21 @@ namespace Tests
                 markerFilePath: null,
                 baseDirectory: paths.EmptyBaseDirectory );
 
-            Assert.AreEqual( "5.0.2", version );
+            Assert.AreEqual( Constants.EDDI_VERSION.ToString(), version );
+        }
+
+        [TestMethod]
+        public void AdapterVersionProvider_FallsBackToAdapterVisibleVersionWhenLocatorIsUnavailable ()
+        {
+            using var paths = new LocatorTestPaths();
+
+            var version = AdapterVersionProvider.GetDisplayVersion(
+                new FakeEddiInstallLocatorStore(),
+                paths.EmptyBaseDirectory,
+                markerFilePath: null,
+                baseDirectory: paths.EmptyBaseDirectory );
+
+            Assert.AreEqual( Constants.EDDI_VERSION.ToString(), version );
         }
 
         [TestMethod]
