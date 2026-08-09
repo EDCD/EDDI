@@ -490,42 +490,68 @@ namespace EddiCore.PluginHosting
             FileLoadException ex,
             string monitorPath,
             string applicationPath )
-        {
-            var failedFile = string.IsNullOrEmpty( ex.FileName ) ? monitorPath : ex.FileName;
-            if ( ex.HResult == HResultApplicationControlBlocked ||
-                 ex.Message.Contains( "Application Control policy", StringComparison.OrdinalIgnoreCase ) )
-            {
-                return $"Failed to load monitor {failedFile}. Windows Application Control blocked this file. This usually happens on systems with Smart App Control, AppLocker, WDAC, or corporate security policies.";
-            }
-
-            if ( ex.HResult == HResultNotSupported ||
-                 ex.Message.Contains( "Operation is not supported", StringComparison.OrdinalIgnoreCase ) )
-            {
-                return $"Failed to load monitor {failedFile}. Windows blocked this file because it came from another computer or an untrusted location.";
-            }
-
-            return $"Failed to load monitor {failedFile}. Please ensure that {applicationPath} is not on a network share, or itself shared. Windows reported: {ex.Message}";
-        }
+            => BuildPluginFileLoadLogMessage( ex, monitorPath, applicationPath, "monitor" );
 
         internal static string BuildMonitorFileLoadUserMessage (
             FileLoadException ex,
             string monitorPath,
             string applicationPath )
+            => BuildPluginFileLoadUserMessage( ex, monitorPath, applicationPath, "monitor" );
+
+        internal static string BuildResponderFileLoadLogMessage (
+            FileLoadException ex,
+            string responderPath,
+            string applicationPath )
+            => BuildPluginFileLoadLogMessage( ex, responderPath, applicationPath, "responder" );
+
+        internal static string BuildResponderFileLoadUserMessage (
+            FileLoadException ex,
+            string responderPath,
+            string applicationPath )
+            => BuildPluginFileLoadUserMessage( ex, responderPath, applicationPath, "responder" );
+
+        private static string BuildPluginFileLoadLogMessage (
+            FileLoadException ex,
+            string pluginPath,
+            string applicationPath,
+            string pluginKind )
         {
-            var failedFile = string.IsNullOrEmpty( ex.FileName ) ? monitorPath : ex.FileName;
+            var failedFile = string.IsNullOrEmpty( ex.FileName ) ? pluginPath : ex.FileName;
             if ( ex.HResult == HResultApplicationControlBlocked ||
                  ex.Message.Contains( "Application Control policy", StringComparison.OrdinalIgnoreCase ) )
             {
-                return $"Failed to load monitor {failedFile}. Windows Application Control blocked this file. This usually happens on systems with Smart App Control, AppLocker, WDAC, or corporate security policies. Please allow EDDI in Windows Security or ask your system administrator to allow EDDI's application files.";
+                return $"Failed to load {pluginKind} {failedFile}. Windows Application Control blocked this file. This usually happens on systems with Smart App Control, AppLocker, WDAC, or corporate security policies.";
             }
 
             if ( ex.HResult == HResultNotSupported ||
                  ex.Message.Contains( "Operation is not supported", StringComparison.OrdinalIgnoreCase ) )
             {
-                return $"Failed to load monitor {failedFile}. Windows blocked this file because it came from another computer or an untrusted location. Please unblock the file in Windows file properties or reinstall EDDI from a trusted download.";
+                return $"Failed to load {pluginKind} {failedFile}. Windows blocked this file because it came from another computer or an untrusted location.";
             }
 
-            return $"Failed to load monitor {failedFile}. Please ensure that {applicationPath} is not on a network share, or itself shared. Windows reported: {ex.Message}";
+            return $"Failed to load {pluginKind} {failedFile}. Please ensure that {applicationPath} is not on a network share, or itself shared. Windows reported: {ex.Message}";
+        }
+
+        private static string BuildPluginFileLoadUserMessage (
+            FileLoadException ex,
+            string pluginPath,
+            string applicationPath,
+            string pluginKind )
+        {
+            var failedFile = string.IsNullOrEmpty( ex.FileName ) ? pluginPath : ex.FileName;
+            if ( ex.HResult == HResultApplicationControlBlocked ||
+                 ex.Message.Contains( "Application Control policy", StringComparison.OrdinalIgnoreCase ) )
+            {
+                return $"Failed to load {pluginKind} {failedFile}. Windows Application Control blocked this file. This usually happens on systems with Smart App Control, AppLocker, WDAC, or corporate security policies. Please allow EDDI in Windows Security or ask your system administrator to allow EDDI's application files.";
+            }
+
+            if ( ex.HResult == HResultNotSupported ||
+                 ex.Message.Contains( "Operation is not supported", StringComparison.OrdinalIgnoreCase ) )
+            {
+                return $"Failed to load {pluginKind} {failedFile}. Windows blocked this file because it came from another computer or an untrusted location. Please unblock the file in Windows file properties or reinstall EDDI from a trusted download.";
+            }
+
+            return $"Failed to load {pluginKind} {failedFile}. Please ensure that {applicationPath} is not on a network share, or itself shared. Windows reported: {ex.Message}";
         }
 
         internal static List<IEddiResponder> FindResponders ()
@@ -582,6 +608,14 @@ namespace EddiCore.PluginHosting
                         sb.AppendLine();
                     }
                     Logging.Warn( "Failed to instantiate plugin at " + file.FullName + ":\n" + sb );
+                }
+                catch ( FileLoadException flex )
+                {
+                    var logMessage = BuildResponderFileLoadLogMessage( flex, file.FullName, dir.FullName );
+                    var userMessage = BuildResponderFileLoadUserMessage( flex, file.FullName, dir.FullName );
+                    Logging.Error( logMessage, flex );
+                    SpeechService.Instance.SayAsync( null, userMessage, 0 )
+                        .SafeFireAndForget( e => Logging.Error( e.Message, e ) );
                 }
             }
             return foundResponders;

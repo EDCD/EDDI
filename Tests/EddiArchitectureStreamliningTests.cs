@@ -199,6 +199,86 @@ namespace Tests
         }
 
         [TestMethod]
+        public void EddiPluginHost_BuildResponderFileLoadMessages_ExplainApplicationControlPolicy ()
+        {
+            var exception = new HostTestFileLoadException(
+                "Could not load file or assembly 'C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application\\EddiSpeechResponder.dll'. An Application Control policy has blocked this file.",
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application\\EddiSpeechResponder.dll",
+                unchecked((int)0x800711C7) );
+
+            var logMessage = EddiPluginHost.BuildResponderFileLoadLogMessage(
+                exception,
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application\\EddiSpeechResponder.dll",
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application" );
+            var userMessage = EddiPluginHost.BuildResponderFileLoadUserMessage(
+                exception,
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application\\EddiSpeechResponder.dll",
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application" );
+
+            Assert.Contains( "Failed to load responder" , logMessage);
+            Assert.Contains( "Windows Application Control blocked this file" , logMessage);
+            Assert.Contains( "Smart App Control" , logMessage);
+            Assert.Contains( "EddiSpeechResponder.dll" , logMessage);
+            Assert.Contains( "Failed to load responder" , userMessage);
+            Assert.Contains( "Windows Application Control blocked this file" , userMessage);
+            Assert.Contains( "Smart App Control" , userMessage);
+            Assert.Contains( "EddiSpeechResponder.dll" , userMessage);
+        }
+
+        [TestMethod]
+        public void EddiPluginHost_BuildResponderFileLoadMessages_ExplainBlockedDownloadedFile ()
+        {
+            var exception = new HostTestFileLoadException(
+                "Operation is not supported.",
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application\\EddiVoiceAttackResponder.dll",
+                unchecked((int)0x80131515) );
+
+            var logMessage = EddiPluginHost.BuildResponderFileLoadLogMessage(
+                exception,
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application\\EddiVoiceAttackResponder.dll",
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application" );
+            var userMessage = EddiPluginHost.BuildResponderFileLoadUserMessage(
+                exception,
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application\\EddiVoiceAttackResponder.dll",
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application" );
+
+            Assert.Contains( "Failed to load responder" , logMessage);
+            Assert.Contains( "Windows blocked this file" , logMessage);
+            Assert.Contains( "untrusted location" , logMessage);
+            Assert.Contains( "EddiVoiceAttackResponder.dll" , logMessage);
+            Assert.Contains( "Failed to load responder" , userMessage);
+            Assert.Contains( "Windows blocked this file" , userMessage);
+            Assert.Contains( "unblock the file" , userMessage);
+            Assert.Contains( "EddiVoiceAttackResponder.dll" , userMessage);
+        }
+
+        [TestMethod]
+        public void EddiPluginHost_BuildResponderFileLoadMessages_PreserveNetworkShareGuidanceForOtherFileLoadFailures ()
+        {
+            var exception = new FileLoadException(
+                "The located assembly's manifest definition does not match the assembly reference.",
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application\\EddiEddnResponder.dll" );
+
+            var logMessage = EddiPluginHost.BuildResponderFileLoadLogMessage(
+                exception,
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application\\EddiEddnResponder.dll",
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application" );
+            var userMessage = EddiPluginHost.BuildResponderFileLoadUserMessage(
+                exception,
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application\\EddiEddnResponder.dll",
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application" );
+
+            Assert.Contains( "Failed to load responder" , logMessage);
+            Assert.Contains( "not on a network share" , logMessage);
+            Assert.Contains( "EddiEddnResponder.dll" , logMessage);
+            Assert.Contains( exception.Message , logMessage);
+            Assert.Contains( "Failed to load responder" , userMessage);
+            Assert.Contains( "not on a network share" , userMessage);
+            Assert.Contains( "EddiEddnResponder.dll" , userMessage);
+            Assert.Contains( exception.Message , userMessage);
+        }
+
+        [TestMethod]
         public void EddiPluginHost_Start_RespectsEnabledStateAndRequiredMonitors ()
         {
             var optionalMonitor = new HostTestMonitor( "Optional monitor" );
