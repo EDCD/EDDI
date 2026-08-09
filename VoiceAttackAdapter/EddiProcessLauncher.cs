@@ -31,7 +31,7 @@ namespace EddiVoiceAttackAdapter
         /// <param name="voiceAttackVersion">Optional VoiceAttack host application version</param>
         /// <returns>True if EDI process launched successfully or was already running; False if launch failed</returns>
         public static async Task<bool> LaunchEddiIfNeededAsync(bool fromVoiceAttack = true,
-            System.Version? voiceAttackVersion = null, CancellationToken cancellationToken = default)
+            Version? voiceAttackVersion = null, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -97,7 +97,7 @@ namespace EddiVoiceAttackAdapter
         /// Launches the EDDI.exe process and waits for it to be ready.
         /// </summary>
         /// <returns>True if process launched and became ready; False otherwise</returns>
-        private static async Task<bool> LaunchEddiProcessAsync(bool fromVoiceAttack, System.Version? voiceAttackVersion,
+        private static async Task<bool> LaunchEddiProcessAsync(bool fromVoiceAttack, Version? voiceAttackVersion,
             CancellationToken cancellationToken = default)
         {
             try

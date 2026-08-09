@@ -130,8 +130,8 @@ namespace Tests
             // Assert
             Assert.AreEqual( 1, registration.HookInstallAttempts, "The constructor should attempt hook installation once." );
             Assert.IsFalse( registration.IsHookInstalled, "The hook should remain uninstalled when the native call fails." );
-            Assert.AreEqual( 1, messages.Count, "Hook installation failures should be logged once per failed attempt." );
-            StringAssert.Contains( messages[ 0 ], "Attempt=1/3" );
+            Assert.HasCount( 1, messages, "Hook installation failures should be logged once per failed attempt." );
+            Assert.Contains( "Attempt=1/3" , messages[ 0 ]);
         }
 
         [TestMethod]
@@ -155,7 +155,7 @@ namespace Tests
             // Assert
             Assert.AreEqual( 3, registration.HookInstallAttempts, "Retries should stop at the configured maximum." );
             Assert.IsTrue( registration.IsHookUnavailable, "The hook should be marked unavailable after repeated failures." );
-            Assert.AreEqual( 3, messages.Count, "No failure should be logged after retry attempts are exhausted." );
+            Assert.HasCount( 3, messages, "No failure should be logged after retry attempts are exhausted." );
         }
 
         [TestMethod]

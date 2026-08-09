@@ -132,7 +132,7 @@ namespace EddiVoiceAttackAdapter.Client
         /// <param name="voiceAttackVersion">Optional VoiceAttack version metadata for EDDI state sync</param>
         /// <param name="cancellationToken">Cancellation token for the operation</param>
         /// <returns>A task representing the asynchronous operation; true if successful</returns>
-        public async Task<bool> SendSetResponderModeAsync(bool enable, System.Version? voiceAttackVersion = null,
+        public async Task<bool> SendSetResponderModeAsync(bool enable, Version? voiceAttackVersion = null,
             CancellationToken cancellationToken = default)
         {
             try

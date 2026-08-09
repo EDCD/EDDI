@@ -279,12 +279,13 @@ namespace Tests
             var beta = Task.Run( () => ResolveWithValue( "beta" ) );
             var results = await Task.WhenAll( alpha, beta );
 
-            CollectionAssert.AreEquivalent(
-                new[]
+            var expected = new[]
                 {
                     "alpha/alpha:alpha:state=ok/alpha/alpha",
                     "beta/beta:beta:state=ok/beta/beta"
-                },
+                };
+            CollectionAssert.AreEquivalent(
+                expected,
                 results );
         }
 

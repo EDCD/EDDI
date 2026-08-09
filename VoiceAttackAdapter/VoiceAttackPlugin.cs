@@ -30,7 +30,7 @@ namespace EddiVoiceAttackAdapter
 
         internal static dynamic? VaProxy;
 
-        private static System.Version? VaVersion
+        private static Version? VaVersion
         {
             get
             {
@@ -43,7 +43,7 @@ namespace EddiVoiceAttackAdapter
 
                     try
                     {
-                        return VaProxy.VAVersion as System.Version;
+                        return VaProxy.VAVersion as Version;
                     }
                     catch ( RuntimeBinderException )
                     {
@@ -54,7 +54,7 @@ namespace EddiVoiceAttackAdapter
                         return vaVersionProperty?.GetValue(
                             vaVersionProperty.GetMethod?.IsStatic == true
                                 ? null
-                                : VaProxy ) as System.Version;
+                                : VaProxy ) as Version;
                     }
                 }
             }
@@ -414,7 +414,7 @@ namespace EddiVoiceAttackAdapter
             _runtimeReceiverSubscribed = false;
         }
 
-        private static bool IsVaVersionSameOrNewer ( System.Version minVersion )
+        private static bool IsVaVersionSameOrNewer ( Version minVersion )
         {
             lock ( vaProxyLock )
             {
@@ -425,7 +425,7 @@ namespace EddiVoiceAttackAdapter
         #region Command Interactions
 
         // If running VoiceAttack version 1.7.4 or later then we should use the more modern command API endpoints
-        private static readonly System.Version commandApiVaVersion = new( 1, 7, 4 );
+        private static readonly Version commandApiVaVersion = new( 1, 7, 4 );
 
         public static async Task WaitForCommandExecutionAsync ( string commandName )
         {
@@ -485,7 +485,7 @@ namespace EddiVoiceAttackAdapter
         #region Variable Interactions
 
         // If running VoiceAttack version 1.10.4 or later then we should use the more modern variable API endpoints
-        private static readonly System.Version variableApiVaVersion = new( 1, 10, 4 );
+        private static readonly Version variableApiVaVersion = new( 1, 10, 4 );
 
         public static bool? GetBoolean ( string key, bool retrieveFromProfile = false )
         {

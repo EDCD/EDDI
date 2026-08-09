@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -99,6 +100,14 @@ namespace Tests
             public UserControl ConfigurationTabItem () => null;
         }
 
+        private sealed class HostTestFileLoadException : FileLoadException
+        {
+            public HostTestFileLoadException ( string message, string fileName, int hResult ) : base( message, fileName )
+            {
+                HResult = hResult;
+            }
+        }
+
         [TestMethod]
         public async Task EddiPluginHost_DiscoverAsync_HandlesDiscoveryFailures ()
         {
@@ -113,6 +122,80 @@ namespace Tests
 
             Assert.IsEmpty( host.Monitors);
             Assert.IsEmpty( host.Responders);
+        }
+
+        [TestMethod]
+        public void EddiPluginHost_BuildMonitorFileLoadMessages_ExplainApplicationControlPolicy ()
+        {
+            var exception = new HostTestFileLoadException(
+                "Could not load file or assembly 'C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application\\EddiEddpMonitor.dll'. An Application Control policy has blocked this file.",
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application\\EddiEddpMonitor.dll",
+                unchecked((int)0x800711C7) );
+
+            var logMessage = EddiPluginHost.BuildMonitorFileLoadLogMessage(
+                exception,
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application\\EddiEddpMonitor.dll",
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application" );
+            var userMessage = EddiPluginHost.BuildMonitorFileLoadUserMessage(
+                exception,
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application\\EddiEddpMonitor.dll",
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application" );
+
+            Assert.Contains( "Windows Application Control blocked this file" , logMessage);
+            Assert.Contains( "Smart App Control" , logMessage);
+            Assert.Contains( "EddiEddpMonitor.dll" , logMessage);
+            Assert.Contains( "Windows Application Control blocked this file" , userMessage);
+            Assert.Contains( "Smart App Control" , userMessage);
+            Assert.Contains( "EddiEddpMonitor.dll" , userMessage);
+        }
+
+        [TestMethod]
+        public void EddiPluginHost_BuildMonitorFileLoadMessages_ExplainBlockedDownloadedFile ()
+        {
+            var exception = new HostTestFileLoadException(
+                "Operation is not supported.",
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application\\EddiJournalMonitor.dll",
+                unchecked((int)0x80131515) );
+
+            var logMessage = EddiPluginHost.BuildMonitorFileLoadLogMessage(
+                exception,
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application\\EddiJournalMonitor.dll",
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application" );
+            var userMessage = EddiPluginHost.BuildMonitorFileLoadUserMessage(
+                exception,
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application\\EddiJournalMonitor.dll",
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application" );
+
+            Assert.Contains( "Windows blocked this file" , logMessage);
+            Assert.Contains( "untrusted location" , logMessage);
+            Assert.Contains( "EddiJournalMonitor.dll" , logMessage);
+            Assert.Contains( "Windows blocked this file" , userMessage);
+            Assert.Contains( "unblock the file" , userMessage);
+            Assert.Contains( "EddiJournalMonitor.dll" , userMessage);
+        }
+
+        [TestMethod]
+        public void EddiPluginHost_BuildMonitorFileLoadMessages_PreserveNetworkShareGuidanceForOtherFileLoadFailures ()
+        {
+            var exception = new FileLoadException(
+                "The located assembly's manifest definition does not match the assembly reference.",
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application\\EddiStatusMonitor.dll" );
+
+            var logMessage = EddiPluginHost.BuildMonitorFileLoadLogMessage(
+                exception,
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application\\EddiStatusMonitor.dll",
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application" );
+            var userMessage = EddiPluginHost.BuildMonitorFileLoadUserMessage(
+                exception,
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application\\EddiStatusMonitor.dll",
+                "C:\\Users\\pilot\\AppData\\Local\\EDDI\\Application" );
+
+            Assert.Contains( "not on a network share" , logMessage);
+            Assert.Contains( "EddiStatusMonitor.dll" , logMessage);
+            Assert.Contains( exception.Message , logMessage);
+            Assert.Contains( "not on a network share" , userMessage);
+            Assert.Contains( "EddiStatusMonitor.dll" , userMessage);
+            Assert.Contains( exception.Message , userMessage);
         }
 
         [TestMethod]
