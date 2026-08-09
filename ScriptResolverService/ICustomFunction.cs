@@ -18,8 +18,7 @@ namespace EddiScriptResolverService
     {
         private IContext ParentContext { get; }
 
-        private static Dictionary<Value, Value> RuntimeGlobals { get; set; } = new();
-        private static readonly object globalsLock = new();
+        private Dictionary<Value, Value> RuntimeGlobals { get; set; } = new();
 
         protected IReadOnlyDictionary<string, IScriptDefinition> Scripts { get; }
 
@@ -27,27 +26,21 @@ namespace EddiScriptResolverService
         {
             this.ParentContext = context;
             this.Scripts = scripts;
-            lock ( globalsLock )
-            {
-                RuntimeGlobals.Clear();
-            }
+            RuntimeGlobals.Clear();
         }
 
         protected IContext GetContext ( IMap globals )
         {
             IContext latestContext;
-            lock ( globalsLock )
-            {
-                RuntimeGlobals = new[]
-                    {
-                        globals.ToDictionary( g => g.Key, g => g.Value ),
-                        RuntimeGlobals.Where( g => !globals.Contains( g.Key ) )
-                    }
-                    .SelectMany( dict => dict )
-                    .ToDictionary( pair => pair.Key, pair => pair.Value );
-                RuntimeGlobals[ "state" ] = ScriptResolver.buildState();
-                latestContext = Context.CreateBuiltin( RuntimeGlobals );
-            }
+            RuntimeGlobals = new[]
+                {
+                    globals.ToDictionary( g => g.Key, g => g.Value ),
+                    RuntimeGlobals.Where( g => !globals.Contains( g.Key ) )
+                }
+                .SelectMany( dict => dict )
+                .ToDictionary( pair => pair.Key, pair => pair.Value );
+            RuntimeGlobals[ "state" ] = ScriptResolver.buildState();
+            latestContext = Context.CreateBuiltin( RuntimeGlobals );
             return Context.CreateCascade( latestContext, ParentContext );
         }
 
