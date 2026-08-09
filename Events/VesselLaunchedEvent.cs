@@ -57,7 +57,10 @@ namespace EddiEvents
             if ( vesselGroup == "srv" )
             {
                 vesselDefinition = VesselDefinition.FromEDName(JsonParsing.getString(data, "SRVType"));
+                if ( vesselDefinition != null )
+                {
                 vesselDefinition.fallbackLocalizedName = JsonParsing.getString( data, "SRVType_Localised" );
+            }
             }
 
             // The Nomad is a shipped launch SRV. Because it is launched like a fighter it doesn't have an "SRVType" field

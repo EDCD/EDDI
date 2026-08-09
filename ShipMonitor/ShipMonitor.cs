@@ -315,7 +315,7 @@ namespace EddiShipMonitor
             if (@event.timestamp > updatedAt)
             {
                 updatedAt = @event.timestamp;
-                if (!inFighter(@event.shipEDModel) && !inBuggy(@event.shipEDModel) && !onFoot(@event.shipEDModel) && !inTaxi(@event.shipEDModel))
+                if (!VesselDefinition.isVessel(@event.shipEDModel) && !onFoot(@event.shipEDModel) && !inTaxi(@event.shipEDModel))
                 {
                     SetCurrentShip((int?)@event.shipid, @event.shipEDModel);
                     var ship = GetCurrentShip();
@@ -483,7 +483,7 @@ namespace EddiShipMonitor
             {
                 // If we're in the SRV when we start the game, we'll still get a Loadout event for our parent ship
                 updatedAt = @event.timestamp;
-                if (!inFighter(@event.edModel))
+                if ( !VesselDefinition.isVessel( @event.edModel ) )
                 {
                     var ship = ParseShipLoadoutEvent(@event);
 
@@ -1467,7 +1467,7 @@ namespace EddiShipMonitor
                 var newModuleList = configuration.storedmodules.OrderBy(s => s.slot).ToList();
 
                 // There was a bug (ref. #1894) that added the SRV as a ship. Clean that up here.
-                newShiplist = newShiplist.Where(s => s.EDName != "SRV").ToList();
+                newShiplist = newShiplist.Where( s => !VesselDefinition.isVessel( s.EDName ) ).ToList();
 
                 // Set up the shipyard
                 currentShipId = configuration.currentshipid;
@@ -1965,18 +1965,6 @@ namespace EddiShipMonitor
             {
                 Logging.Warn("Cannot remove the module. Ship ID " + ship?.LocalId + " or ship slot " + slot + " was not found.");
             }
-        }
-
-        /// <summary> See if we're in a fighter </summary>
-        private static bool inFighter(string model)
-        {
-            return model.Contains("Fighter");
-        }
-
-        /// <summary> See if we're in a buggy / SRV / Lander</summary>
-        private static bool inBuggy(string edModel)
-        {
-            return edModel.Contains("Buggy") || edModel.Contains("SRV") || edModel.Contains("Lander");
         }
 
         /// <summary> See if we're on foot </summary>

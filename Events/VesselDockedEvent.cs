@@ -47,7 +47,10 @@ namespace EddiEvents
             if ( vesselGroup == "srv" )
             {
                 vesselDefinition = VesselDefinition.FromEDName(JsonParsing.getString(data, "SRVType"));
-                vesselDefinition.fallbackLocalizedName = JsonParsing.getString( data, "SRVType_Localised" );
+                if ( vesselDefinition != null )
+                {
+                    vesselDefinition.fallbackLocalizedName = JsonParsing.getString( data, "SRVType_Localised" );
+                }
             }
 
             events.Add( new VesselDockedEvent( timestamp, vesselDefinition, id ) { raw = line, fromLoad = false } );

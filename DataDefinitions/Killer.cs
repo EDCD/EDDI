@@ -46,7 +46,7 @@ namespace EddiDataDefinitions
             if ( killerShip != null ) { return; }
 
             // Might be a SRV or Fighter
-            killerVehicle = VesselDefinition.EDNameExists(edModel) ? VesselDefinition.FromEDName(edModel) : null;
+            killerVehicle = VesselDefinition.isVessel(edModel) ? VesselDefinition.FromEDName(edModel) : null;
             if ( killerVehicle != null ) { return; }
 
             // Might be an on foot commander
