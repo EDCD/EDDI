@@ -1004,5 +1004,31 @@ namespace Tests
             Assert.AreEqual("LimpetController01", compartment11.name);
             Assert.AreEqual(5, compartment11.size);
         }
+
+        [TestMethod]
+        [DataRow( null, null, false, false, false )] // Test for a null input
+        [DataRow( "", null, false, false, false )] // Test for an empty string
+        [DataRow( "NonExistent_Vessel", null, false, false, false )] // Test for a non-existent vessel
+        [DataRow( "Empire_Fighter", "GU-97", true, true, false )] // Test for a known vessel with expected invariant name and telepresence
+        [DataRow( "federation_fighter", "F63 Condor", true, true, false )] // Case-insensitive test
+        [DataRow( "Independent_Fighter", "Taipan", true, true, false )]
+        [DataRow( "Gdn_Hybrid_Fighter_V1", "XG7 Trident", true, true, false )]
+        [DataRow( "Gdn_Hybrid_Fighter_V2", "XG8 Javalin", true, true, false )]
+        [DataRow( "Gdn_Hybrid_Fighter_V3", "XG9 Lance", true, true, false )]
+        [DataRow( "TestBuggy", "Scarab SRV", false, false, true )]
+        [DataRow( "Lander01", "Nomad", false, false, true )]
+        [DataRow( "MEV_Rhino", "Rhino", false, false, true )]
+        [DataRow( "Combat_Multicrew_SRV_01", "Scorpion SRV", false, false, true )]
+        public void VesselFromEDName ( string edName, string invariantName, bool telepresence, bool inFighter, bool inSRV )
+        {
+            // Arrange & Act
+            var result = VesselDefinition.FromEDName(edName);
+
+            // Assert
+            Assert.AreEqual( invariantName, result?.invariantName );
+            Assert.AreEqual( telepresence, result?.vesselGroup == VesselGroup.Telepresence );
+            Assert.AreEqual( inFighter, VesselDefinition.inFighter( edName ) );
+            Assert.AreEqual( inSRV, VesselDefinition.inSRV( edName ) );
+        }
     }
 }

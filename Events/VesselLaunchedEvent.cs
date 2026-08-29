@@ -1,4 +1,4 @@
-﻿using EddiDataDefinitions;
+using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -56,20 +56,10 @@ namespace EddiEvents
             VesselDefinition vesselDefinition = null;
             if ( vesselGroup == "srv" )
             {
-                vesselDefinition = VesselDefinition.FromEDName(JsonParsing.getString(data, "SRVType"));
-                if ( vesselDefinition != null )
-                {
+                var edName = JsonParsing.getString(data, "SRVType");
+                vesselDefinition = VesselDefinition.FromEDName( edName ) ?? new VesselDefinition( edName, VesselGroup.Piloted );
                 vesselDefinition.fallbackLocalizedName = JsonParsing.getString( data, "SRVType_Localised" );
             }
-            }
-
-            // The Nomad is a shipped launch SRV. Because it is launched like a fighter it doesn't have an "SRVType" field
-            // but we can still look up the vessel definition from its loadout (e.g. the Nomad has a consistent loadout of "base").
-            // Unfortunately, most fighters don't have a consistent loadout that is unique to them.
-            if ( vesselDefinition is null && playercontrolled )
-            {
-                var loadoutDescription = LoadoutDescription.FromLoadoutName(loadout);
-                vesselDefinition = loadoutDescription?.Vessel;
             }
 
             events.Add( new VesselLaunchedEvent( timestamp, loadout, playercontrolled, vesselDefinition, id ) { raw = line, fromLoad = fromLogLoad } );
