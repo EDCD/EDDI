@@ -186,4 +186,12 @@
     <value>dual pulse lasers</value>
     <comment>Default loadout for a Nomad Exploration Vessel</comment>
   </data>
+  <data name="Galactic" xml:space="preserve">
+    <value>dual pulse lasers</value>
+    <comment>Galactic loadout for a Nomad Exploration Vessel</comment>
+  </data>
+  <data name="Advanced" xml:space="preserve">
+    <value>dual pulse lasers</value>
+    <comment>Stellar loadout for a Nomad Exploration Vessel</comment>
+  </data>
 </root>

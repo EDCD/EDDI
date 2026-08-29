@@ -42,8 +42,8 @@ namespace EddiEvents
         public bool odyssey { get; private set; } = odyssey;
 
         [PublicAPI("The commander's ship")]
-        public string ship => shipEDModel == "TestBuggy" ? Constants.VEHICLE_SRV
-            : shipEDModel.Contains("fighter", StringComparison.OrdinalIgnoreCase) ? Constants.VEHICLE_FIGHTER
+        public string ship => VesselDefinition.inSRV( shipEDModel ) ? Constants.VEHICLE_SRV
+            : VesselDefinition.inFighter( shipEDModel ) ? Constants.VEHICLE_FIGHTER
             : shipEDModel.Contains("suit", StringComparison.OrdinalIgnoreCase ) ? Constants.VEHICLE_LEGS
             : shipEDModel.Contains("taxi", StringComparison.OrdinalIgnoreCase ) ? Constants.VEHICLE_TAXI
             : ShipDefinitions.FromEDModel(shipEDModel, false)?.model;

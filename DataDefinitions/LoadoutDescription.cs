@@ -33,6 +33,8 @@ namespace EddiDataDefinitions
         public static readonly LoadoutDescription Starter = new("Starter", VesselDefinition.SRV_Scarab);
         public static readonly LoadoutDescription Default = new("Default", VesselDefinition.SRV_Scorpion);
         public static readonly LoadoutDescription Base = new("Base", VesselDefinition.Nomad);
+        public static readonly LoadoutDescription Advanced = new("Advanced", VesselDefinition.Nomad);
+        public static readonly LoadoutDescription Galactic = new("Galactic", VesselDefinition.Nomad);
 
         public readonly VesselDefinition Vessel;
 

@@ -60,7 +60,6 @@ namespace EddiEvents
                 vesselDefinition = VesselDefinition.FromEDName( edName ) ?? new VesselDefinition( edName, VesselGroup.Piloted );
                 vesselDefinition.fallbackLocalizedName = JsonParsing.getString( data, "SRVType_Localised" );
             }
-            }
 
             events.Add( new VesselLaunchedEvent( timestamp, loadout, playercontrolled, vesselDefinition, id ) { raw = line, fromLoad = fromLogLoad } );
             return true;

@@ -257,6 +257,43 @@ namespace Tests
         }
 
         [TestMethod]
+        public async Task TestNomadLaunchRedockAndRelogStateAsync()
+        {
+            var dataProvider = CreateIsolatedTestDataProvider( out var fakeSpanshHttpClient, out _ );
+            var context = CreateEventProcessorContext( dataProvider );
+            var processor = new EddiEventProcessor( context );
+            fakeSpanshHttpClient.Expect( "dump/5856221467362", Encoding.UTF8.GetString( Resources.SpanshStarSystemDumpEravate ) );
+            fakeSpanshHttpClient.Expect( "systems/field_values/system_names?q=Eravate", @"{""min_max"":[{""id64"":5856221467362,""name"":""Eravate"",""x"":-42.4375,""y"":-3.15625,""z"":59.65625}],""values"":[""Eravate""]}" );
+
+            var launchEvent = (VesselLaunchedEvent)JournalMonitor
+                .ParseJournalEntry(@"{ ""timestamp"":""2026-08-05T19:42:12Z"", ""event"":""LaunchFighter"", ""Loadout"":""galactic"", ""ID"":173, ""PlayerControlled"":true }")[0];
+            Assert.IsTrue(await processor.ProcessEventAsync(launchEvent).ConfigureAwait(false));
+            Assert.AreEqual(Constants.VEHICLE_SRV, context.GameStateOwner.Vehicle);
+            Assert.IsTrue(context.GameStateOwner.DeployedVessels.TryGetValue(173, out var launchedVessel));
+            Assert.AreSame(VesselDefinition.Nomad, launchedVessel);
+
+            var dockEvent = (VesselDockedEvent)JournalMonitor
+                .ParseJournalEntry(@"{ ""timestamp"":""2026-08-05T19:45:53Z"", ""event"":""DockSRV"", ""SRVType"":""lander01"", ""SRVType_Localised"":""Nomad"", ""ID"":173 }")[0];
+            Assert.IsTrue(await processor.ProcessEventAsync(dockEvent).ConfigureAwait(false));
+            Assert.AreEqual(Constants.VEHICLE_SHIP, context.GameStateOwner.Vehicle);
+            Assert.IsFalse(context.GameStateOwner.DeployedVessels.ContainsKey(173));
+
+            var continuedEvent = (CommanderContinuedEvent)JournalMonitor
+                .ParseJournalEntry(@"{ ""timestamp"":""2026-08-05T20:12:03Z"", ""event"":""LoadGame"", ""FID"":""F136796"", ""Commander"":""Evolution"", ""Horizons"":true, ""Odyssey"":true, ""Ship"":""Lander01"", ""Ship_Localised"":""Nomad"", ""ShipID"":173, ""ShipName"":""Viator"", ""ShipIdent"":""-EVO-"", ""FuelLevel"":0.000000, ""FuelCapacity"":0.000000, ""GameMode"":""Group"", ""Group"":""MOBIUS PVE EURASIA"", ""Credits"":54537210098, ""Loan"":0, ""language"":""English/UK"", ""gameversion"":""4.4.0.3"", ""build"":""r330683/r0 "" }")[0];
+            Assert.IsTrue(await processor.ProcessEventAsync(continuedEvent).ConfigureAwait(false));
+            Assert.AreEqual(Constants.VEHICLE_SRV, context.GameStateOwner.Vehicle);
+            Assert.IsTrue(context.GameStateOwner.DeployedVessels.TryGetValue(173, out var continuedVessel));
+            Assert.AreSame(VesselDefinition.Nomad, continuedVessel);
+
+            var locationEvent = (LocationEvent)JournalMonitor
+                .ParseJournalEntry(@"{ ""timestamp"":""2026-08-05T20:12:04Z"", ""event"":""Location"", ""Docked"":false, ""InSRV"":true, ""OnFoot"":false, ""Taxi"":false, ""Multicrew"":false, ""StarSystem"":""Eravate"", ""SystemAddress"":5856221467362, ""StarPos"":[-42.43750,-3.15625,59.65625], ""SystemAllegiance"":""Federation"", ""SystemEconomy"":""$economy_Agri;"", ""SystemEconomy_Localised"":""Agriculture"", ""SystemSecondEconomy"":""$economy_Industrial;"", ""SystemSecondEconomy_Localised"":""Industrial"", ""SystemGovernment"":""$government_Corporate;"", ""SystemGovernment_Localised"":""Corporate"", ""SystemSecurity"":""$SYSTEM_SECURITY_high;"", ""SystemSecurity_Localised"":""High Security"", ""Population"":740380179, ""Body"":""Eravate A 1"", ""BodyID"":1, ""BodyType"":""Planet"" }")[0];
+            Assert.IsTrue(await processor.eventLocationAsync(locationEvent).ConfigureAwait(false));
+            Assert.AreEqual(Constants.VEHICLE_SRV, context.GameStateOwner.Vehicle);
+            Assert.IsTrue(context.GameStateOwner.DeployedVessels.TryGetValue(173, out var locationVessel));
+            Assert.AreSame(VesselDefinition.Nomad, locationVessel);
+        }
+
+        [TestMethod]
         public async Task TestBodyScannedEventHandlerAsync()
         {
             var dataProvider = CreateIsolatedTestDataProvider( out var fakeSpanshHttpClient, out _ );

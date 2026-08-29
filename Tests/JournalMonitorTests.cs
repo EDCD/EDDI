@@ -1898,6 +1898,65 @@ namespace Tests
         }
 
         [TestMethod]
+        public void TestCommanderContinuedInNomad()
+        {
+            var line = @"{ ""timestamp"":""2026-08-05T20:12:03Z"", ""event"":""LoadGame"", ""FID"":""F555555"", ""Commander"":""Evolution"", ""Horizons"":true, ""Odyssey"":true, ""Ship"":""Lander01"", ""Ship_Localised"":""Nomad"", ""ShipID"":173, ""ShipName"":""Viator"", ""ShipIdent"":""-EVO-"", ""FuelLevel"":0.000000, ""FuelCapacity"":0.000000, ""GameMode"":""Group"", ""Group"":""MOBIUS PVE EURASIA"", ""Credits"":54537210098, ""Loan"":0, ""language"":""English/UK"", ""gameversion"":""4.4.0.3"", ""build"":""r330683/r0 "" }";
+
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.HasCount( 1, events );
+
+            var @event = (CommanderContinuedEvent)events[0];
+            Assert.AreEqual("Lander01", @event.shipEDModel);
+            Assert.AreEqual(Constants.VEHICLE_SRV, @event.ship);
+            Assert.AreEqual(173, @event.shipid);
+        }
+
+        [TestMethod]
+        public void TestNomadVesselEvents()
+        {
+            var launchLine = @"{ ""timestamp"":""2026-08-05T19:42:12Z"", ""event"":""LaunchFighter"", ""Loadout"":""galactic"", ""ID"":173, ""PlayerControlled"":true }";
+            var launchEvents = JournalMonitor.ParseJournalEntry(launchLine);
+            Assert.HasCount( 1, launchEvents );
+
+            var launchedEvent = (VesselLaunchedEvent)launchEvents[0];
+            Assert.AreEqual("galactic", launchedEvent.loadout);
+            Assert.IsTrue(launchedEvent.playercontrolled);
+            Assert.AreEqual(173, launchedEvent.id);
+            Assert.AreSame(VesselDefinition.Nomad, launchedEvent.vesselDefinition);
+            Assert.AreEqual("Nomad", launchedEvent.vesselDescription);
+            Assert.IsFalse(launchedEvent.isTelepresence);
+
+            var dockLine = @"{ ""timestamp"":""2026-08-05T19:45:53Z"", ""event"":""DockSRV"", ""SRVType"":""lander01"", ""SRVType_Localised"":""Nomad"", ""ID"":173 }";
+            var dockEvents = JournalMonitor.ParseJournalEntry(dockLine);
+            Assert.HasCount( 1, dockEvents );
+
+            var dockedEvent = (VesselDockedEvent)dockEvents[0];
+            Assert.AreEqual(173, dockedEvent.id);
+            Assert.AreSame(VesselDefinition.Nomad, dockedEvent.vesselDefinition);
+            Assert.AreEqual("Nomad", dockedEvent.vesselDescription);
+            Assert.IsFalse(dockedEvent.isTelepresence);
+        }
+
+        [TestMethod]
+        public void TestFighterAndGenericSrvVesselEventsRemainDistinct()
+        {
+            var fighterLine = @"{ ""timestamp"":""2026-06-27T07:17:08Z"", ""event"":""LaunchFighter"", ""Loadout"":""one"", ""ID"":96, ""PlayerControlled"":false }";
+            var fighterEvents = JournalMonitor.ParseJournalEntry(fighterLine);
+            Assert.HasCount( 1, fighterEvents );
+            var fighterEvent = (VesselLaunchedEvent)fighterEvents[0];
+            Assert.IsFalse(fighterEvent.playercontrolled);
+            Assert.IsNull(fighterEvent.vesselDefinition);
+
+            var srvLine = @"{ ""timestamp"":""2022-11-24T23:44:25Z"", ""event"":""LaunchSRV"", ""SRVType"":""combat_multicrew_srv_01"", ""SRVType_Localised"":""SRV Scorpion"", ""Loadout"":""default"", ""ID"":53, ""PlayerControlled"":true }";
+            var srvEvents = JournalMonitor.ParseJournalEntry(srvLine);
+            Assert.HasCount( 1, srvEvents );
+            var srvEvent = (VesselLaunchedEvent)srvEvents[0];
+            Assert.AreSame(VesselDefinition.SRV_Scorpion, srvEvent.vesselDefinition);
+            Assert.AreEqual("Scorpion SRV", srvEvent.vesselDescription);
+            Assert.IsFalse(srvEvent.isTelepresence);
+        }
+
+        [TestMethod]
         [DataRow(@"{ ""timestamp"":""2021-01-08T13:26:17Z"", ""event"":""Died"", ""KillerName"":""Xepherous"", ""KillerShip"":""federation_dropship"", ""KillerRank"":""Master"" }", @"{""killers"":[{""name"":""Xepherous"",""rating"":""Master"",""equipment"":""Federal Dropship""}],""raw"":""{ \""timestamp\"":\""2021-01-08T13:26:17Z\"", \""event\"":\""Died\"", \""KillerName\"":\""Xepherous\"", \""KillerShip\"":\""federation_dropship\"", \""KillerRank\"":\""Master\"" }"",""timestamp"":""2021-01-08T13:26:17Z"",""type"":""Died"",""fromLoad"":false}")]
         [DataRow(@"{ ""timestamp"":""2021-05-07T11:34:12Z"", ""event"":""Died"", ""KillerName"":""Gretchen Rasmussen"", ""KillerShip"":""assaultsuitai_class1"", ""KillerRank"":""Harmless"" }", @"{""killers"":[{""name"":""Gretchen Rasmussen"",""rating"":""Harmless"",""equipment"":""Commando""}],""raw"":""{ \""timestamp\"":\""2021-05-07T11:34:12Z\"", \""event\"":\""Died\"", \""KillerName\"":\""Gretchen Rasmussen\"", \""KillerShip\"":\""assaultsuitai_class1\"", \""KillerRank\"":\""Harmless\"" }"",""timestamp"":""2021-05-07T11:34:12Z"",""type"":""Died"",""fromLoad"":false}")]
         [DataRow(@"{ ""timestamp"":""2021-05-07T12:08:29Z"", ""event"":""Died"", ""KillerShip"":""ps_turretbasesmall_3m"" }", @"{""killers"":[],""raw"":""{ \""timestamp\"":\""2021-05-07T12:08:29Z\"", \""event\"":\""Died\"", \""KillerShip\"":\""ps_turretbasesmall_3m\"" }"",""timestamp"":""2021-05-07T12:08:29Z"",""type"":""Died"",""fromLoad"":false}")]
