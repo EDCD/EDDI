@@ -1197,6 +1197,12 @@ namespace EddiDataDefinitions
         public static readonly Module Int_Fighterbaymk2_size7_class1 = new( "Int_Fighterbaymk2_size7_class1", "VesselHangar_MkII", 7, "D", 3269661); // Mk II Vessel Hangar Class 7 Rating D
         public static readonly Module Int_Fighterbaymk2_size6_class1 = new( "Int_Fighterbaymk2_size6_class1", "VesselHangar_MkII", 6, "D", 2579690); // Mk II Vessel Hangar Class 6 Rating D
         public static readonly Module Int_Fighterbaymk2_size5_class1 = new( "Int_Fighterbaymk2_size5_class1", "VesselHangar_MkII", 5, "D", 794388); // Mk II Vessel Hangar Class 5 Rating D
+        public static readonly Module Int_LargeBuggyBay_Size2_Class3 = new( "Int_LargeBuggyBay_Size2_Class3", "LargePlanetaryVehicleHangar", 2, "F", 32400); // Large Planetary Vehicle Hangar
+        public static readonly Module Int_LargeBuggyBay_Size4_Class3 = new( "Int_LargeBuggyBay_Size4_Class3", "LargePlanetaryVehicleHangar", 4, "F", 129600); // Large Planetary Vehicle Hangar
+        public static readonly Module Int_LargeBuggyBay_Size6_Class3 = new( "Int_LargeBuggyBay_Size6_Class3", "LargePlanetaryVehicleHangar", 6, "F", 1036800); // Large Planetary Vehicle Hangar
+        public static readonly Module Int_MkII_LargeBuggyBay_Size2_Class3 = new( "Int_MkIILargeBuggyBay_Size2_Class3", "LargePlanetaryVehicleHangar_MkII", 2, "F", 32400); // Mk II Large Planetary Vehicle Hangar
+        public static readonly Module Int_MkII_LargeBuggyBay_Size4_Class3 = new( "Int_MkIILargeBuggyBay_Size4_Class3", "LargePlanetaryVehicleHangar_MkII", 4, "F", 129600); // Mk II Large Planetary Vehicle Hangar
+        public static readonly Module Int_MkII_LargeBuggyBay_Size6_Class3 = new( "Int_MkIILargeBuggyBay_Size6_Class3", "LargePlanetaryVehicleHangar_MkII", 6, "F", 1036800); // Mk II Large Planetary Vehicle Hangar
 
         // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
         public static readonly Module Hpt_PulseLaser_Fixed_SmallFree = new( "Hpt_PulseLaser_Fixed_SmallFree", "PulseLaser", 1, "F", 0, ModuleMount.Fixed);
@@ -1311,8 +1317,7 @@ namespace EddiDataDefinitions
             
             return rawEDName.ToLowerInvariant()
                 .Replace( "$", "" ) // Header for types from repair events
-                .Replace( "_name;", "" ) // Trailer for types from repair events
-                .Replace( "_Name;", "" ) // Trailer for types from repair events
+                .Replace( "_name;", "", StringComparison.OrdinalIgnoreCase ) // Trailer for types from repair events
                 ;
         }
 

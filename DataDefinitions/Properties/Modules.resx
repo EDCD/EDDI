@@ -714,4 +714,12 @@
   <data name="BiologicalScanner_MkII" xml:space="preserve">
     <value>Mark II Biological Scanner</value>
   </data>
+  <data name="LargePlanetaryVehicleHangar" xml:space="preserve">
+    <value>Large Planetary Vehicle Hangar</value>
+    <comment>Module LargeBuggyBay</comment>
+  </data>
+  <data name="LargePlanetaryVehicleHangar_MkII" xml:space="preserve">
+    <value>Mark II Large Planetary Vehicle Hangar</value>
+    <comment>Module MKIILargeBuggyBay</comment>
+  </data>
 </root>
