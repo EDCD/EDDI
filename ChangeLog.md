@@ -6,6 +6,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * Add support for the new "Rhino" mining SRV.
     * Various bug fixes from telemetry.
+  * Speech Responder
+    * Scripts
+      * `Surface signals detected` updated to incorporate planetary mining locations.
 
 ## 5.0.5
   * Core

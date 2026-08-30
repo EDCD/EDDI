@@ -457,4 +457,8 @@
     <value>Medium Intensity Powerplay Conflict Zone</value>
     <comment>Power Conflict Zone [Medium Intensity]</comment>
   </data>
+  <data name="PlanetaryMiningLocation" xml:space="preserve">
+    <value>Planetary Mining Location</value>
+    <comment>Planetary Mining Location</comment>
+  </data>
 </root>

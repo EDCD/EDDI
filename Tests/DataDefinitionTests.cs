@@ -858,6 +858,7 @@ namespace Tests
         [DataRow("$SAA_SignalType_Other;", "Other Surface Signal", 0, 0)]
         [DataRow("$SAA_SignalType_PlanetAnomaly;", "Planetary Anomaly", 0, 0)]
         [DataRow("$SAA_SignalType_Thargoid;", "Thargoid Surface Signal", 0, 0)]
+        [DataRow( "$PlanetaryMiningLocation_Name;", "Planetary Mining Location", 0, 0 )]
         // From `Touchdown` events
         [DataRow("$POI_CrashedShip:#index=1;", "Crashed Ship", 1, 0)]
         [DataRow("$POIScenario_Watson_Abandoned_Buggy_01_Easy;", "Distress Beacon", 0, 1)]
@@ -1017,7 +1018,7 @@ namespace Tests
         [DataRow( "Gdn_Hybrid_Fighter_V3", "XG9 Lance", true, true, false )]
         [DataRow( "TestBuggy", "Scarab SRV", false, false, true )]
         [DataRow( "Lander01", "Nomad", false, false, true )]
-        [DataRow( "MEV_Rhino", "Rhino", false, false, true )]
+        [DataRow( "MEV_Rhino", "Rhino SRV", false, false, true )]
         [DataRow( "Combat_Multicrew_SRV_01", "Scorpion SRV", false, false, true )]
         public void VesselFromEDName ( string edName, string invariantName, bool telepresence, bool inFighter, bool inSRV )
         {

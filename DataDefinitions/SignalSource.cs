@@ -78,6 +78,7 @@ namespace EddiDataDefinitions
             var Human = new SignalSource("SAA_SignalType_Human");
             var Thargoid = new SignalSource("SAA_SignalType_Thargoid");
             var PlanetAnomaly = new SignalSource("SAA_SignalType_PlanetAnomaly");
+            var PlanetaryMiningLocation = new SignalSource("PlanetaryMiningLocation");
             var Other = new SignalSource("SAA_SignalType_Other");
 
             var AncientGuardianRuins = new SignalSource("Ancient");
@@ -198,19 +199,19 @@ namespace EddiDataDefinitions
                 var tidiedFrom = from
                     .Replace("$", "")
                     .Replace(";", "")
-                    .Replace("_name", "");
+                    .Replace("_name", "", StringComparison.OrdinalIgnoreCase);
 
                 // Remove various prefix and suffix tags from non-USS sources
-                if (!tidiedFrom.StartsWith("USS_"))
+                if (!tidiedFrom.StartsWith("USS_", StringComparison.OrdinalIgnoreCase ) )
                 {
                     tidiedFrom = tidiedFrom
-                        .Replace("POI_", "")
-                        .Replace("POIScenario_", "")
-                        .Replace("POIScene_", "")
-                        .Replace("Watson_", "")
-                        .Replace("_Heist", "")
-                        .Replace("_Salvage", "")
-                        .Replace("_Skimmers", "");
+                        .Replace("POI_", "", StringComparison.OrdinalIgnoreCase )
+                        .Replace("POIScenario_", "", StringComparison.OrdinalIgnoreCase )
+                        .Replace("POIScene_", "", StringComparison.OrdinalIgnoreCase )
+                        .Replace("Watson_", "", StringComparison.OrdinalIgnoreCase )
+                        .Replace("_Heist", "", StringComparison.OrdinalIgnoreCase )
+                        .Replace("_Salvage", "", StringComparison.OrdinalIgnoreCase )
+                        .Replace("_Skimmers", "", StringComparison.OrdinalIgnoreCase );
                 }
 
                 // Extract any sub-type from the name (e.g. $SAA_Unknown_Signal:#type=$SAA_SignalType_Geological;:#index=3; )
@@ -223,32 +224,32 @@ namespace EddiDataDefinitions
                 // Extract any threat value which might be present and then strip the index value
                 if (tidiedFrom.Contains("USS_ThreatLevel:#threatLevel="))
                 {
-                    var fromArray = tidiedFrom.Split( [ "USS_ThreatLevel:#threatLevel=" ], System.StringSplitOptions.None);
+                    var fromArray = tidiedFrom.Split( [ "USS_ThreatLevel:#threatLevel=" ], StringSplitOptions.None);
                     if (int.TryParse(fromArray[1], out var threat)) { threatLvl = threat; }
                     tidiedFrom = fromArray[0]
-                        .Replace("_Easy", "")
-                        .Replace("_Medium", "")
-                        .Replace("_Hard", "");
+                        .Replace("_Easy", "", StringComparison.OrdinalIgnoreCase )
+                        .Replace("_Medium", "", StringComparison.OrdinalIgnoreCase )
+                        .Replace("_Hard", "", StringComparison.OrdinalIgnoreCase );
                 }
                 else
                 {
                     // Derive threat levels for Odyssey content from "Easy", "Medium", and "Hard" suffix tags
-                    if (tidiedFrom.Contains("_Easy"))
+                    if (tidiedFrom.Contains("_Easy", StringComparison.OrdinalIgnoreCase ) )
                     {
                         threatLvl = 1;
-                        tidiedFrom = tidiedFrom.Replace("_Easy", "");
+                        tidiedFrom = tidiedFrom.Replace("_Easy", "", StringComparison.OrdinalIgnoreCase );
                     }
-                    else if (tidiedFrom.Contains("_Medium") && !tidiedFrom.StartsWith("Ancient_"))
+                    else if (tidiedFrom.Contains("_Medium", StringComparison.OrdinalIgnoreCase ) && !tidiedFrom.StartsWith("Ancient_", StringComparison.OrdinalIgnoreCase ))
                     {
                         // We need to use size to distinguish between guardian structures so preserve the "Medium" tag
                         // when it represents the size of an ancient guardian structures. Remove it when it describes the difficulty of the encounter.
                         threatLvl = 2;
-                        tidiedFrom = tidiedFrom.Replace("_Medium", "");
+                        tidiedFrom = tidiedFrom.Replace("_Medium", "", StringComparison.OrdinalIgnoreCase );
                     }
-                    else if (tidiedFrom.Contains("_Hard"))
+                    else if (tidiedFrom.Contains("_Hard", StringComparison.OrdinalIgnoreCase ))
                     {
                         threatLvl = 3;
-                        tidiedFrom = tidiedFrom.Replace("_Hard", "");
+                        tidiedFrom = tidiedFrom.Replace("_Hard", "", StringComparison.OrdinalIgnoreCase );
                     }
                 }
 
@@ -271,7 +272,7 @@ namespace EddiDataDefinitions
 
                 // Use the USS Type for USS signals (since those are always unique)
                 // There is an FDev bug where both Encoded Emissions and High Grade Emissions use the `USS_HighGradeEmissions` symbol.
-                if (tidiedFrom.StartsWith("USS_") && !tidiedFrom.Contains("Type_"))
+                if (tidiedFrom.StartsWith("USS_", StringComparison.OrdinalIgnoreCase ) && !tidiedFrom.Contains("Type_", StringComparison.OrdinalIgnoreCase ))
                 {
                     tidiedFrom = AllOfThem.FirstOrDefault(s => s.altEdName == tidiedFrom)?.edname ?? tidiedFrom;
                 }
