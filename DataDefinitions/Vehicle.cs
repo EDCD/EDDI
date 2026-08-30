@@ -68,15 +68,15 @@ namespace EddiDataDefinitions
             if (json is null) { return null; }
 
             var edName = (string)json["name"];
-            var loadoutName = (string)json["loadoutName"];
+            var loadout = (string)json["loadout"];
 
             var vehicle = new Vehicle()
             {
-                loadout = (string)json["loadout"],
+                loadout = loadout,
                 rebuilds = (int)json["rebuilds"],
                 subslot = subslot,
                 vehicleDef = VesselDefinition.FromEDName(edName),
-                descriptionDef = LoadoutDescription.FromVesselAndLoadoutEDName(edName, loadoutName)
+                descriptionDef = LoadoutDescription.FromVesselAndLoadoutEDName(edName, loadout)
             };
 
             return vehicle;

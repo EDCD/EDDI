@@ -3,7 +3,9 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ## 5.0.6
-
+  * Core
+    * Add support for the new "Rhino" mining SRV.
+    * Various bug fixes from telemetry.
 
 ## 5.0.5
   * Core

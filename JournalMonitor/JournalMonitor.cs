@@ -2913,7 +2913,7 @@ namespace EddiJournalMonitor
                             case "LoadoutRemoveModule":
                             case "RenameSuitLoadout":
                             case "ReservoirReplenished":
-                            case "RestockVehicle": // Samples: { "timestamp":"2026-06-22T20:54:25Z", "event":"RestockVehicle", "Type":"empire_fighter", "Type_Localised":"Gu-97", "Loadout":"one", "ID":85, "Cost":13400, "Count":1 }, { "timestamp":"2026-06-22T20:54:42Z", "event":"RestockVehicle", "Type":"lander01", "Type_Localised":"Nomad", "Loadout":"base", "ID":85, "Cost":0, "Count":1 }
+                            case "RestockVehicle": // Samples: { "timestamp":"2026-06-22T20:54:25Z", "event":"RestockVehicle", "Type":"empire_fighter", "Type_Localised":"Gu-97", "Loadout":"one", "ID":85, "Cost":13400, "Count":1 }, { "timestamp":"2026-06-22T20:54:42Z", "event":"RestockVehicle", "Type":"lander01", "Type_Localised":"Nomad", "Loadout":"base", "ID":85, "Cost":0, "Count":1 }, { "timestamp":"2026-08-29T23:40:26Z", "event":"RestockVehicle", "Type":"mev_rhino", "Type_Localised":"SRV Rhino", "Loadout":"galactic", "ID":145, "Cost":0, "Count":1 }
                             case "SellMicroResources":
                             case "ShipyardBankDeposit": // Written when depositing a ship into a squadron carrier. Sample: { "timestamp": "2025-08-20T02:09:05Z", "event": "ShipyardBankDeposit", "ShipType": "Type9", "ShipType_Localised": "Type-9 Heavy", "MarketID": 3713125120 }
                             case "SuitLoadout":

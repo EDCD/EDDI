@@ -296,14 +296,16 @@ namespace EddiShipMonitor
             {
                 if (cpt.name == launchbay.name)
                 {
-                    switch (cpt.module.basename)
+                    if ( cpt.module?.basename?.Contains( "PlanetaryVehicleHangar", StringComparison.OrdinalIgnoreCase ) ?? false )
                     {
-                        case "PlanetaryVehicleHangar":
-                            launchbay.type = "SRV";
-                            break;
-                        case "VesselHangar":
-                            launchbay.type = "Vessel";
-                            break;
+                        launchbay.type = "SRV";
+                        continue;
+                    }
+
+                    if ( cpt.module?.basename?.Contains( "VesselHangar", StringComparison.OrdinalIgnoreCase ) ?? false )
+                    {
+                        launchbay.type = "Vessel";
+                        continue;
                     }
                 }
             }
