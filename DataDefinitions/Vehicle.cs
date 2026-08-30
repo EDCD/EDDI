@@ -76,7 +76,7 @@ namespace EddiDataDefinitions
                 rebuilds = (int)json["rebuilds"],
                 subslot = subslot,
                 vehicleDef = VesselDefinition.FromEDName(edName),
-                descriptionDef = LoadoutDescription.FromLoadoutName(loadoutName)
+                descriptionDef = LoadoutDescription.FromVesselAndLoadoutEDName(edName, loadoutName)
             };
 
             return vehicle;

@@ -1,6 +1,7 @@
 using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Utilities;
 
 namespace EddiEvents
@@ -61,8 +62,21 @@ namespace EddiEvents
                 vesselDefinition.fallbackLocalizedName = JsonParsing.getString( data, "SRVType_Localised" );
             }
 
+            // For now, a Nomad is the only "fighter" grouped vessel that uses loadouts like "base", "advanced", or "galactic"
+            if ( vesselGroup == "fighter" && playercontrolled && isNomadLoadout(loadout) )
+            {
+                vesselDefinition = VesselDefinition.Nomad;
+            }
+
             events.Add( new VesselLaunchedEvent( timestamp, loadout, playercontrolled, vesselDefinition, id ) { raw = line, fromLoad = fromLogLoad } );
             return true;
+        }
+
+        private static bool isNomadLoadout ( string loadout )
+        {
+            return LoadoutDescription.AllOfThem
+                .Where( l => l.vesselEDName.Equals( VesselDefinition.Nomad.edname, StringComparison.OrdinalIgnoreCase ) )
+                .Any( l => l.edname.Equals( loadout, StringComparison.OrdinalIgnoreCase ) );
         }
     }
 }

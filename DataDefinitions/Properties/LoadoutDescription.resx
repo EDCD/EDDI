@@ -182,16 +182,36 @@
     <value>heavy cannon and a missile rack</value>
     <comment>Default loadout for a Scorpion Combat SRV</comment>
   </data>
-  <data name="Base" xml:space="preserve">
+  <data name="NomadBase" xml:space="preserve">
     <value>dual pulse lasers</value>
     <comment>Default loadout for a Nomad Exploration Vessel</comment>
   </data>
-  <data name="Galactic" xml:space="preserve">
+  <data name="NomadGalactic" xml:space="preserve">
     <value>dual pulse lasers</value>
     <comment>Galactic loadout for a Nomad Exploration Vessel</comment>
   </data>
-  <data name="Advanced" xml:space="preserve">
+  <data name="NomadAdvanced" xml:space="preserve">
     <value>dual pulse lasers</value>
     <comment>Stellar loadout for a Nomad Exploration Vessel</comment>
+  </data>
+  <data name="RhinoBase" xml:space="preserve">
+    <value>dual plasma repeaters</value>
+    <comment>Default loadout for a Rhino Mining Vessel</comment>
+  </data>
+  <data name="RhinoAdvanced" xml:space="preserve">
+    <value>dual plasma repeaters</value>
+    <comment>Stellar loadout for a Rhino Mining Vessel</comment>
+  </data>
+  <data name="RhinoMiningAdvanced" xml:space="preserve">
+    <value>dual plasma repeaters</value>
+    <comment>Stellar loadout for a Rhino Mining Vessel, "Mining" Edition</comment>
+  </data>
+  <data name="RhinoGalactic" xml:space="preserve">
+    <value>dual plasma repeaters</value>
+    <comment>Galactic loadout for a Rhino Mining Vessel</comment>
+  </data>
+  <data name="RhinoMiningGalactic" xml:space="preserve">
+    <value>dual plasma repeaters</value>
+    <comment>Galactic loadout for a Rhino Mining Vessel, "Mining" Edition</comment>
   </data>
 </root>
