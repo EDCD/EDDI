@@ -844,17 +844,36 @@ namespace EddiDataDefinitions
             _ = new Blueprint( 129035483, "PowerDistributor_PrioritySystems", null, 5 ); // Pre-engineered system and engine focused power distributor
             _ = new Blueprint( 129036395, "CargoRackIncreasedCapacity", "CargoRackIncreasedCapacity", 5 ); // Pre-engineered high capacity cargo racks
             _ = new Blueprint( 129041439, "Weapon_HighCapacity", "Weapon_HighCapacity", 5 ); // Pre-engineered high capacity super penetrator railgun
-            _ = new Blueprint( 129041433, "FuelScoopEfficiency", "FuelScoopEfficiency", 1 ); // Efficient Fuel Scoop
-            _ = new Blueprint( 129041434, "FuelScoopEfficiency", "FuelScoopEfficiency", 2 ); // Efficient Fuel Scoop
-            _ = new Blueprint( 129041435, "FuelScoopEfficiency", "FuelScoopEfficiency", 3 ); // Efficient Fuel Scoop
-            _ = new Blueprint( 129041436, "FuelScoopEfficiency", "FuelScoopEfficiency", 4 ); // Efficient Fuel Scoop
-            _ = new Blueprint( 129041437, "FuelScoopEfficiency", "FuelScoopEfficiency", 5 ); // Efficient Fuel Scoop
-            _ = new Blueprint( 129045476, "SeekerMissileRackDrag", "SeekerMissileRackDrag", 1 ); // Drag Munitions
-            _ = new Blueprint( 129045477, "SeekerMissileRackDrag", "SeekerMissileRackDrag", 2 ); // Drag Munitions
-            _ = new Blueprint( 129045478, "SeekerMissileRackDrag", "SeekerMissileRackDrag", 3 ); // Drag Munitions
-            _ = new Blueprint( 129045479, "SeekerMissileRackDrag", "SeekerMissileRackDrag", 4 ); // Drag Munitions
-            _ = new Blueprint( 129045480, "SeekerMissileRackDrag", "SeekerMissileRackDrag", 5 ); // Drag Munitions
-            _ = new Blueprint( 129045530, "CargoRackS6C1Extended", "CargoRackS6C1Extended", 5 ); // Extended cargo rack
+            _ = new Blueprint( 129041433, "FuelScoopEfficiency", "FuelScoopEfficiency", 1 ); // Scoop Rate Enhanced
+            _ = new Blueprint( 129041434, "FuelScoopEfficiency", "FuelScoopEfficiency", 2 ); // Scoop Rate Enhanced
+            _ = new Blueprint( 129041435, "FuelScoopEfficiency", "FuelScoopEfficiency", 3 ); // Scoop Rate Enhanced
+            _ = new Blueprint( 129041436, "FuelScoopEfficiency", "FuelScoopEfficiency", 4 ); // Scoop Rate Enhanced
+            _ = new Blueprint( 129041437, "FuelScoopEfficiency", "FuelScoopEfficiency", 5 ); // Scoop Rate Enhanced
+            _ = new Blueprint( 129043753, "RailGunLongShot", "RailGunLongShot", 1 ); // Enduring Feedback Railgun
+            _ = new Blueprint( 129043758, "PowerDistributorBalanced", "PowerDistributorBalanced", 1 ); // Balanced Power Distributor
+            _ = new Blueprint( 129043767, "ModuleReinforcementHeavyDuty", "ModuleReinforcementHeavyDuty", 5 ); // Heavy Duty Module Reinforcement Package
+            _ = new Blueprint( 129044378, "BeamLaserThermalPlasmaConversion", "LaserThermalPlasmaConversion", 1 ); // Plasma Conversion
+            _ = new Blueprint( 129044637, "BeamLaserThermalPlasmaConversion", "LaserThermalPlasmaConversion", 5 ); // Plasma Conversion
+            _ = new Blueprint( 129045412, "PulseLaserThermalPlasmaConversion", "LaserThermalPlasmaConversion", 5 ); // Plasma Conversion
+            _ = new Blueprint( 129045460, "FragmentCannonLargeDoubleScreaming", "FragmentCannonDoubleScreaming", 5 ); // Double Screaming Fragment Cannon
+            _ = new Blueprint( 129045465, "FragmentCannonSmallDoubleScreaming", "FragmentCannonDoubleScreaming", 5 ); // Double Screaming Fragment Cannon
+            _ = new Blueprint( 129045476, "SeekerMissileRackDrag", "SeekerMissileRackDrag", 1 ); // Drag Seeker Missile Rack
+            _ = new Blueprint( 129045477, "SeekerMissileRackDrag", "SeekerMissileRackDrag", 2 ); // Drag Seeker Missile Rack
+            _ = new Blueprint( 129045478, "SeekerMissileRackDrag", "SeekerMissileRackDrag", 3 ); // Drag Seeker Missile Rack
+            _ = new Blueprint( 129045479, "SeekerMissileRackDrag", "SeekerMissileRackDrag", 4 ); // Drag Seeker Missile Rack
+            _ = new Blueprint( 129045480, "SeekerMissileRackDrag", "SeekerMissileRackDrag", 5 ); // Drag Seeker Missile Rack
+            _ = new Blueprint( 129045475, "MultiCannonRapid", "MultiCannonRapid", 5 ); // Rapid Phase Multicannons
+            _ = new Blueprint( 129045520, "PowerDistributorS6C5SupportFocused", "PowerDistributorSupportFocused", 5 ); // Support Focused Power Distributor
+            _ = new Blueprint( 129045521, "CargoRackS5C1Extended", "CargoRackExtended", 1 ); // Extended cargo rack
+            _ = new Blueprint( 129045522, "CargoRackS5C1Extended", "CargoRackExtended", 2 ); // Extended cargo rack
+            _ = new Blueprint( 129045523, "CargoRackS5C1Extended", "CargoRackExtended", 3 ); // Extended cargo rack
+            _ = new Blueprint( 129045524, "CargoRackS5C1Extended", "CargoRackExtended", 4 ); // Extended cargo rack
+            _ = new Blueprint( 129045525, "CargoRackS5C1Extended", "CargoRackExtended", 5 ); // Extended cargo rack
+            _ = new Blueprint( 129045526, "CargoRackS6C1Extended", "CargoRackExtended", 1 ); // Extended cargo rack
+            _ = new Blueprint( 129045527, "CargoRackS6C1Extended", "CargoRackExtended", 2 ); // Extended cargo rack
+            _ = new Blueprint( 129045528, "CargoRackS6C1Extended", "CargoRackExtended", 3 ); // Extended cargo rack
+            _ = new Blueprint( 129045529, "CargoRackS6C1Extended", "CargoRackExtended", 4 ); // Extended cargo rack
+            _ = new Blueprint( 129045530, "CargoRackS6C1Extended", "CargoRackExtended", 5 ); // Extended cargo rack
         }
         public static readonly Blueprint None;
         private static readonly Dictionary<long, Blueprint> BlueprintsByEliteID;

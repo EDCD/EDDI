@@ -1574,8 +1574,68 @@ namespace EddiDataDefinitions
                 { 4, [ ] },
                 { 5, [ ] }
             } );
-            _ = new BlueprintTemplate( "CargoRackS6C1Extended", new Dictionary<int, List<MaterialAmount>>()
+            _ = new BlueprintTemplate( "CargoRackExtended", new Dictionary<int, List<MaterialAmount>>()
             {
+                { 1, [ ] },
+                { 2, [ ] },
+                { 3, [ ] },
+                { 4, [ ] },
+                { 5, [ ] }
+            } );
+            _ = new BlueprintTemplate( "LaserThermalPlasmaConversion", new Dictionary<int, List<MaterialAmount>>()
+            {
+                { 1, [ ] },
+                { 2, [ ] },
+                { 3, [ ] },
+                { 4, [ ] },
+                { 5, [ ] }
+            } );
+            _ = new BlueprintTemplate( "FragmentCannonDoubleScreaming", new Dictionary<int, List<MaterialAmount>>()
+            {
+                { 1, [ ] },
+                { 2, [ ] },
+                { 3, [ ] },
+                { 4, [ ] },
+                { 5, [ ] }
+            } );
+            _ = new BlueprintTemplate( "ModuleReinforcementHeavyDuty", new Dictionary<int, List<MaterialAmount>>()
+            {
+                { 1, [ ] },
+                { 2, [ ] },
+                { 3, [ ] },
+                { 4, [ ] },
+                { 5, [ ] }
+            } );
+            _ = new BlueprintTemplate( "MultiCannonRapid", new Dictionary<int, List<MaterialAmount>>()
+            {
+                { 1, [ ] },
+                { 2, [ ] },
+                { 3, [ ] },
+                { 4, [ ] },
+                { 5, [ ] }
+            } );
+            _ = new BlueprintTemplate( "PowerDistributorBalanced", new Dictionary<int, List<MaterialAmount>>()
+            {
+                { 1, [ ] },
+                { 2, [ ] },
+                { 3, [ ] },
+                { 4, [ ] },
+                { 5, [ ] }
+            } );
+            _ = new BlueprintTemplate( "PowerDistributorSupportFocused", new Dictionary<int, List<MaterialAmount>>()
+            {
+                { 1, [ ] },
+                { 2, [ ] },
+                { 3, [ ] },
+                { 4, [ ] },
+                { 5, [ ] }
+            } );
+            _ = new BlueprintTemplate( "RailGunLongShot", new Dictionary<int, List<MaterialAmount>>()
+            {
+                { 1, [ ] },
+                { 2, [ ] },
+                { 3, [ ] },
+                { 4, [ ] },
                 { 5, [ ] }
             } );
         }

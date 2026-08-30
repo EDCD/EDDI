@@ -663,7 +663,7 @@
     <comment>Special CG reward expanded cargo rack blueprint</comment>
   </data>
   <data name="FuelScoopEfficiency" xml:space="preserve">
-    <value>Efficient Fuel Scoop</value>
+    <value>Scoop Rate Enhanced</value>
   </data>
   <data name="SeekerMissileRackDrag" xml:space="preserve">
     <value>Drag Seeker Missile Rack</value>
@@ -671,5 +671,34 @@
   <data name="CargoRackS6C1Extended" xml:space="preserve">
     <value>Extended Cargo Rack</value>
     <comment>Purchased with Merc Coins</comment>
+  </data>
+  <data name="MultiCannonRapid" xml:space="preserve">
+    <value>Rapid Phase Multicannon</value>
+    <comment>Operations Blueprint</comment>
+  </data>
+  <data name="CargoRackExtended" xml:space="preserve">
+    <value>Extended Cargo Rack</value>
+  </data>
+  <data name="LaserThermalPlasmaConversion" xml:space="preserve">
+    <value>Plasma Conversion</value>
+  </data>
+  <data name="ModuleReinforcementHeavyDuty" xml:space="preserve">
+    <value>Heavy Duty Module Reinforcement Package</value>
+  </data>
+  <data name="PowerDistributorSupportFocused" xml:space="preserve">
+    <value>Support Focused Power Distributor</value>
+    <comment>Operations - Merc Blueprint</comment>
+  </data>
+  <data name="PowerDistributorBalanced" xml:space="preserve">
+    <value>Balanced Power Distributor</value>
+    <comment>Operations Blueprint</comment>
+  </data>
+  <data name="RailGunLongShot" xml:space="preserve">
+    <value>Enduring Feedback Railgun</value>
+    <comment>Operations Blueprint</comment>
+  </data>
+  <data name="FragmentCannonDoubleScreaming" xml:space="preserve">
+    <value>Double Screaming Fragment Cannon</value>
+    <comment>Operations Blueprint</comment>
   </data>
 </root>
