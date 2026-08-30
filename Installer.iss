@@ -132,9 +132,9 @@ Type: files; Name: "{userappdata}\EDDI\credentials.json"; Check: ShouldModifyCur
 Type: files; Name: "{userappdata}\EDDI\elite.json"; Check: ShouldModifyCurrentUserAreas
 Type: filesandordirs; Name: "{userappdata}\EDDI\galnet"; Check: ShouldModifyCurrentUserAreas
 
-; Remove sensitive data on uninstall
+; Keep user data on uninstall. API credentials are user-owned and may be reused
+; after repairing or reinstalling EDDI.
 [UninstallDelete]
-Type: files; Name: "{userappdata}\EDDI\CompanionAPI.json"; Check: ShouldModifyCurrentUserAreas
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
@@ -403,18 +403,31 @@ begin
   Result := not IsAdminInstallMode;
 end;
 
+function TryGetPreviousEddiInstallDirFromRoot(RootKey: Integer; var Dir: string): Boolean;
+begin
+  Dir := '';
+
+  Result := RegQueryStringValue(
+    RootKey,
+    'Software\Microsoft\Windows\CurrentVersion\Uninstall\{830C0324-30D8-423C-B5B4-D7EE8D007A79}_is1',
+    'InstallLocation',
+    Dir);
+
+  if Result then
+  begin
+    Dir := RemoveBackslashUnlessRoot(Dir);
+    Result := Trim(Dir) <> '';
+  end;
+end;
+
 function GetPreviousEddiInstallDir: string;
 begin
   Result := '';
 
-  RegQueryStringValue(
-    HKLM,
-    'Software\Microsoft\Windows\CurrentVersion\Uninstall\{830C0324-30D8-423C-B5B4-D7EE8D007A79}_is1',
-    'InstallLocation',
-    Result);
+  if TryGetPreviousEddiInstallDirFromRoot(HKLM, Result) then
+    exit;
 
-  if Trim(Result) <> '' then
-    Result := RemoveBackslashUnlessRoot(Result);
+  TryGetPreviousEddiInstallDirFromRoot(HKCU, Result);
 end;
 
 function GetLegacyEddiDir: string;
@@ -785,9 +798,45 @@ begin
 end;
 
 procedure RegisterExtraCloseApplicationsResources;
+var
+  Dir: string;
 begin
   RegisterCloseResource(GetLegacyEddiDir);
-  RegisterCloseResource(GetPreviousEddiInstallDir);
+
+  if TryGetPreviousEddiInstallDirFromRoot(HKLM, Dir) then
+    RegisterCloseResource(Dir);
+
+  if TryGetPreviousEddiInstallDirFromRoot(HKCU, Dir) then
+    RegisterCloseResource(Dir);
+end;
+
+function RemoveStaleUninstallEntryIfMatches(RootKey: Integer; const RemovedDir: string): Boolean;
+var
+  ExistingInstallLocation: string;
+  UninstallSubkey: string;
+begin
+  Result := True;
+  UninstallSubkey := 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{830C0324-30D8-423C-B5B4-D7EE8D007A79}_is1';
+
+  if RegQueryStringValue(RootKey, UninstallSubkey, 'InstallLocation', ExistingInstallLocation) and
+     SamePath(ExistingInstallLocation, RemovedDir) then
+  begin
+    Log(Format('Removing stale EDDI uninstall entry for removed install at "%s".', [RemovedDir]));
+    Result := RegDeleteKeyIncludingSubkeys(RootKey, UninstallSubkey);
+    if not Result then
+      Log(Format('Failed to remove stale EDDI uninstall entry for removed install at "%s".', [RemovedDir]));
+  end;
+end;
+
+function RemoveStaleUninstallEntriesIfMatches(const RemovedDir: string): Boolean;
+begin
+  Result := True;
+
+  if not RemoveStaleUninstallEntryIfMatches(HKLM, RemovedDir) then
+    Result := False;
+
+  if not RemoveStaleUninstallEntryIfMatches(HKCU, RemovedDir) then
+    Result := False;
 end;
 
 function RemoveDirIfOldEddiInstall(const Dir: string): Boolean;
@@ -811,14 +860,28 @@ begin
   begin
     Log(Format('Removing old EDDI install at "%s".', [CleanDir]));
     Result := DelTree(CleanDir, True, True, True);
+    if Result then
+      Result := RemoveStaleUninstallEntriesIfMatches(CleanDir);
   end;
 end;
 
 function RemoveOldEddiInstalls: Boolean;
+var
+  PreviousDir: string;
 begin
-  Result :=
-    RemoveDirIfOldEddiInstall(GetLegacyEddiDir) and
-    RemoveDirIfOldEddiInstall(GetPreviousEddiInstallDir);
+  Result := RemoveDirIfOldEddiInstall(GetLegacyEddiDir);
+
+  if TryGetPreviousEddiInstallDirFromRoot(HKLM, PreviousDir) then
+  begin
+    if not RemoveDirIfOldEddiInstall(PreviousDir) then
+      Result := False;
+  end;
+
+  if TryGetPreviousEddiInstallDirFromRoot(HKCU, PreviousDir) then
+  begin
+    if not RemoveDirIfOldEddiInstall(PreviousDir) then
+      Result := False;
+  end;
 end;
 
 function RemoveOldVoiceAttackPluginDir(const ShimDir: string): Boolean;
