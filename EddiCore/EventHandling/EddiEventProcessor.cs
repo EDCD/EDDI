@@ -1179,9 +1179,9 @@ namespace EddiCore.EventHandling
             }
             Logging.Debug($"Commander Continued: vehicle is {Vehicle}");
 
-            if ( Vehicle == Constants.VEHICLE_SRV || Vehicle == Constants.VEHICLE_FIGHTER )
+            if ( theEvent.shipid is not null && ( Vehicle == Constants.VEHICLE_SRV || Vehicle == Constants.VEHICLE_FIGHTER ) )
             {
-                GameState.DeployedVessels[ (int)theEvent.shipid.Value ] = VesselDefinition.FromEDName(theEvent.shipEDModel);
+                GameState.DeployedVessels[ (int)theEvent.shipid ] = VesselDefinition.FromEDName(theEvent.shipEDModel);
             }
 
             // Set Environment state for the ship if 'startlanded' is present in the event
