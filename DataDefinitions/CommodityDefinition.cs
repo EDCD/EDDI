@@ -37,52 +37,47 @@ namespace EddiDataDefinitions
 
         public static readonly CommodityDefinition Pesticides = new(128049205, "Pesticides", Chemicals, 241, false);
 
-        public static readonly CommodityDefinition DeltaPhoenicisPalms =
-            new( 128667073, "DeltaPhoenicisPalms", Chemicals, 8188, true );
+        public static readonly CommodityDefinition DeltaPhoenicisPalms = new( 128667073, "DeltaPhoenicisPalms", Chemicals, 8188, true );
 
         public static readonly CommodityDefinition ToxandjiVirocide = new(128667074, "ToxandjiVirocide", Chemicals, 8275, true);
 
         public static readonly CommodityDefinition AnduligaFireWorks = new(128667673, "AnduligaFireWorks", Chemicals, 8519, true);
 
-        public static readonly CommodityDefinition HIPOrganophosphates =
-            new( 128667682, "HIPOrganophosphates", Chemicals, 8169, true );
+        public static readonly CommodityDefinition HIPOrganophosphates = new( 128667682, "HIPOrganophosphates", Chemicals, 8169, true );
 
         public static readonly CommodityDefinition KorroKungPellets = new(128667684, "KorroKungPellets", Chemicals, 8067, true);
 
-        public static readonly CommodityDefinition SyntheticReagents =
-            new( 128672303, "SyntheticReagents", Chemicals, 6675, false );
+        public static readonly CommodityDefinition SyntheticReagents = new( 128672303, "SyntheticReagents", Chemicals, 6675, false );
 
         public static readonly CommodityDefinition NerveAgents = new(128672304, "NerveAgents", Chemicals, 13526, false);
 
-        public static readonly CommodityDefinition SurfaceStabilisers =
-            new( 128672305, "SurfaceStabilisers", Chemicals, 467, false );
+        public static readonly CommodityDefinition SurfaceStabilisers = new( 128672305, "SurfaceStabilisers", Chemicals, 467, false );
 
         public static readonly CommodityDefinition HydrogenPeroxide = new(128673850, "HydrogenPeroxide", Chemicals, 917, false);
 
         public static readonly CommodityDefinition LiquidOxygen = new(128673851, "LiquidOxygen", Chemicals, 263, false);
 
-        public static readonly CommodityDefinition RockforthFertiliser =
-            new( 128924333, "RockforthFertiliser", Chemicals, 8, false );
+        public static readonly CommodityDefinition RockforthFertiliser = new( 128924333, "RockforthFertiliser", Chemicals, 8, false );
 
-        public static readonly CommodityDefinition AgronomicTreatment =
-            new( 128924334, "AgronomicTreatment", Chemicals, 3464, false );
+        public static readonly CommodityDefinition AgronomicTreatment = new( 128924334, "AgronomicTreatment", Chemicals, 3464, false );
 
         public static readonly CommodityDefinition Tritium = new(128961249, "Tritium", Chemicals, 41684, false);
+
+        public static readonly CommodityDefinition Helium = new(129046166, "Helium", Chemicals, 99128, false);
+
+        public static readonly CommodityDefinition Helium3 = new(129046167, "Helium3", Chemicals, 221590, false);
 
         #endregion
 
         #region ConsumerItems
 
-        public static readonly CommodityDefinition DomesticAppliances =
-            new( 128049238, "DomesticAppliances", ConsumerItems, 487, false );
+        public static readonly CommodityDefinition DomesticAppliances = new( 128049238, "DomesticAppliances", ConsumerItems, 487, false );
 
-        public static readonly CommodityDefinition ConsumerTechnology =
-            new( 128049240, "ConsumerTechnology", ConsumerItems, 6769, false );
+        public static readonly CommodityDefinition ConsumerTechnology = new( 128049240, "ConsumerTechnology", ConsumerItems, 6769, false );
 
         public static readonly CommodityDefinition Clothing = new(128049241, "Clothing", ConsumerItems, 285, false);
 
-        public static readonly CommodityDefinition AlacarakmoSkinArt =
-            new( 128667036, "AlacarakmoSkinArt", ConsumerItems, 8899, true );
+        public static readonly CommodityDefinition AlacarakmoSkinArt = new( 128667036, "AlacarakmoSkinArt", ConsumerItems, 8899, true );
 
         public static readonly CommodityDefinition EleuThermals = new(128667037, "EleuThermals", ConsumerItems, 8507, true);
 
@@ -92,28 +87,21 @@ namespace EddiDataDefinitions
 
         public static readonly CommodityDefinition NjangariSaddles = new(128667040, "NjangariSaddles", ConsumerItems, 8356, true);
 
-        public static readonly CommodityDefinition KinagoInstruments =
-            new( 128667045, "KinagoInstruments", ConsumerItems, 13030, true );
+        public static readonly CommodityDefinition KinagoInstruments = new( 128667045, "KinagoInstruments", ConsumerItems, 13030, true );
 
-        public static readonly CommodityDefinition NgunaModernAntiques =
-            new( 128667046, "NgunaModernAntiques", ConsumerItems, 8545, true );
+        public static readonly CommodityDefinition NgunaModernAntiques = new( 128667046, "NgunaModernAntiques", ConsumerItems, 8545, true );
 
         public static readonly CommodityDefinition RajukruStoves = new(128667047, "RajukruStoves", ConsumerItems, 8378, true);
 
-        public static readonly CommodityDefinition TiolceWaste2PasteUnits =
-            new( 128667048, "TiolceWaste2PasteUnits", ConsumerItems, 8710, true );
+        public static readonly CommodityDefinition TiolceWaste2PasteUnits = new( 128667048, "TiolceWaste2PasteUnits", ConsumerItems, 8710, true );
 
-        public static readonly CommodityDefinition OphiuchiExinoArtefacts =
-            new( 128667668, "OphiuchiExinoArtefacts", ConsumerItems, 10969, true );
+        public static readonly CommodityDefinition OphiuchiExinoArtefacts = new( 128667668, "OphiuchiExinoArtefacts", ConsumerItems, 10969, true );
 
-        public static readonly CommodityDefinition HavasupaiDreamCatcher =
-            new( 128667680, "HavasupaiDreamCatcher", ConsumerItems, 14639, true );
+        public static readonly CommodityDefinition HavasupaiDreamCatcher = new( 128667680, "HavasupaiDreamCatcher", ConsumerItems, 14639, true );
 
-        public static readonly CommodityDefinition JaradharrePuzzleBox =
-            new( 128667683, "JaradharrePuzzleBox", ConsumerItems, 16816, true );
+        public static readonly CommodityDefinition JaradharrePuzzleBox = new( 128667683, "JaradharrePuzzleBox", ConsumerItems, 16816, true );
 
-        public static readonly CommodityDefinition UzumokuLowGWings =
-            new( 128667696, "UzumokuLowGWings", ConsumerItems, 13845, true );
+        public static readonly CommodityDefinition UzumokuLowGWings = new( 128667696, "UzumokuLowGWings", ConsumerItems, 13845, true );
 
         public static readonly CommodityDefinition AltairianSkin = new(128667700, "AltairianSkin", ConsumerItems, 8432, true);
 
@@ -125,35 +113,27 @@ namespace EddiDataDefinitions
 
         public static readonly CommodityDefinition AlienEggs = new(128667717, "AlienEggs", ConsumerItems, 25067, true);
 
-        public static readonly CommodityDefinition VidavantianLace =
-            new( 128667719, "VidavantianLace", ConsumerItems, 12615, true );
+        public static readonly CommodityDefinition VidavantianLace = new( 128667719, "VidavantianLace", ConsumerItems, 12615, true );
 
-        public static readonly CommodityDefinition JaquesQuinentianStill =
-            new( 128668017, "JaquesQuinentianStill", ConsumerItems, 2108, true );
+        public static readonly CommodityDefinition JaquesQuinentianStill = new( 128668017, "JaquesQuinentianStill", ConsumerItems, 2108, true );
 
         public static readonly CommodityDefinition SoontillRelics = new(128668018, "SoontillRelics", ConsumerItems, 19885, true);
 
-        public static readonly CommodityDefinition Advert1 = // Ultra-Compact Processor Prototypes
-            new(128671119, "Advert1", ConsumerItems, 21542, true);
+        public static readonly CommodityDefinition Advert1 =  new(128671119, "Advert1", ConsumerItems, 21542, true); // Ultra-Compact Processor Prototypes
 
         public static readonly CommodityDefinition TheHuttonMug = new(128672121, "TheHuttonMug", ConsumerItems, 7986, true);
 
-        public static readonly CommodityDefinition EvacuationShelter =
-            new( 128672314, "EvacuationShelter", ConsumerItems, 343, false );
+        public static readonly CommodityDefinition EvacuationShelter = new( 128672314, "EvacuationShelter", ConsumerItems, 343, false );
 
         public static readonly CommodityDefinition PersonalGifts = new(128672431, "PersonalGifts", ConsumerItems, 16535, false);
 
-        public static readonly CommodityDefinition CrystallineSpheres =
-            new( 128672432, "CrystallineSpheres", ConsumerItems, 12216, true );
+        public static readonly CommodityDefinition CrystallineSpheres = new( 128672432, "CrystallineSpheres", ConsumerItems, 12216, true );
 
-        public static readonly CommodityDefinition SurvivalEquipment =
-            new( 128682048, "SurvivalEquipment", ConsumerItems, 485, false );
+        public static readonly CommodityDefinition SurvivalEquipment = new( 128682048, "SurvivalEquipment", ConsumerItems, 485, false );
 
-        public static readonly CommodityDefinition ShansCharisOrchid =
-            new( 128732551, "ShansCharisOrchid", ConsumerItems, 9043, true );
+        public static readonly CommodityDefinition ShansCharisOrchid = new( 128732551, "ShansCharisOrchid", ConsumerItems, 9043, true );
 
-        public static readonly CommodityDefinition BuckyballBeerMats =
-            new( 128748428, "BuckyballBeerMats", ConsumerItems, 7957, true );
+        public static readonly CommodityDefinition BuckyballBeerMats = new( 128748428, "BuckyballBeerMats", ConsumerItems, 7957, true );
 
         public static readonly CommodityDefinition Duradrives = new(128922524, "Duradrives", ConsumerItems, 19356, true);
 
@@ -181,11 +161,9 @@ namespace EddiDataDefinitions
 
         public static readonly CommodityDefinition HIP10175BushMeat = new(128667019, "HIP10175BushMeat", Foods, 9382, true);
 
-        public static readonly CommodityDefinition AlbinoQuechuaMammoth =
-            new( 128667020, "AlbinoQuechuaMammoth", Foods, 9687, true );
+        public static readonly CommodityDefinition AlbinoQuechuaMammoth = new( 128667020, "AlbinoQuechuaMammoth", Foods, 9687, true );
 
-        public static readonly CommodityDefinition UtgaroarMillenialEggs =
-            new( 128667021, "UtgaroarMillenialEggs", Foods, 9163, true );
+        public static readonly CommodityDefinition UtgaroarMillenialEggs = new( 128667021, "UtgaroarMillenialEggs", Foods, 9163, true );
 
         public static readonly CommodityDefinition WitchhaulKobeBeef = new(128667022, "WitchhaulKobeBeef", Foods, 11085, true);
 
@@ -193,8 +171,7 @@ namespace EddiDataDefinitions
 
         public static readonly CommodityDefinition GiantIrukamaSnails = new(128667024, "GiantIrukamaSnails", Foods, 9174, true);
 
-        public static readonly CommodityDefinition BaltahSineVacuumKrill =
-            new( 128667025, "BaltahSineVacuumKrill", Foods, 8479, true );
+        public static readonly CommodityDefinition BaltahSineVacuumKrill = new( 128667025, "BaltahSineVacuumKrill", Foods, 8479, true );
 
         public static readonly CommodityDefinition CetiRabbits = new(128667026, "CetiRabbits", Foods, 9079, true);
 
@@ -204,8 +181,7 @@ namespace EddiDataDefinitions
 
         public static readonly CommodityDefinition GomanYauponCoffee = new(128667043, "GomanYauponCoffee", Foods, 8921, true);
 
-        public static readonly CommodityDefinition ChiEridaniMarinePaste =
-            new( 128667049, "ChiEridaniMarinePaste", Foods, 8450, true );
+        public static readonly CommodityDefinition ChiEridaniMarinePaste = new( 128667049, "ChiEridaniMarinePaste", Foods, 8450, true );
 
         public static readonly CommodityDefinition EsusekuCaviar = new(128667050, "EsusekuCaviar", Foods, 9625, true);
 
@@ -215,8 +191,7 @@ namespace EddiDataDefinitions
 
         public static readonly CommodityDefinition HIP41181Squid = new(128667053, "HIP41181Squid", Foods, 8497, true);
 
-        public static readonly CommodityDefinition CoquimSpongiformVictuals =
-            new( 128667054, "CoquimSpongiformVictuals", Foods, 8077, true );
+        public static readonly CommodityDefinition CoquimSpongiformVictuals = new( 128667054, "CoquimSpongiformVictuals", Foods, 8077, true );
 
         public static readonly CommodityDefinition AerialEdenApple = new(128667055, "AerialEdenApple", Foods, 8331, true);
 
@@ -244,8 +219,7 @@ namespace EddiDataDefinitions
 
         public static readonly CommodityDefinition HaidneBlackBrew = new(128667679, "HaidneBlackBrew", Foods, 8837, true);
 
-        public static readonly CommodityDefinition LFTVoidExtractCoffee =
-            new( 128667685, "LFTVoidExtractCoffee", Foods, 9554, true );
+        public static readonly CommodityDefinition LFTVoidExtractCoffee = new( 128667685, "LFTVoidExtractCoffee", Foods, 9554, true );
 
         public static readonly CommodityDefinition LTTHyperSweet = new(128667688, "LTTHyperSweet", Foods, 8054, true);
 
@@ -259,8 +233,7 @@ namespace EddiDataDefinitions
 
         public static readonly CommodityDefinition WheemeteWheatCakes = new(128667698, "WheemeteWheatCakes", Foods, 8081, true);
 
-        public static readonly CommodityDefinition AroucaConventualSweets =
-            new( 128667705, "AroucaConventualSweets", Foods, 8737, true );
+        public static readonly CommodityDefinition AroucaConventualSweets = new( 128667705, "AroucaConventualSweets", Foods, 8737, true );
 
         public static readonly CommodityDefinition OrrerianViciousBrew = new(128667711, "OrrerianViciousBrew", Foods, 8342, true);
 
@@ -302,8 +275,7 @@ namespace EddiDataDefinitions
 
         public static readonly CommodityDefinition WaterPurifiers = new(128049218, "WaterPurifiers", Machinery, 258, false);
 
-        public static readonly CommodityDefinition HeliostaticFurnaces =
-            new( 128049220, "HeliostaticFurnaces", Machinery, 236, false );
+        public static readonly CommodityDefinition HeliostaticFurnaces = new( 128049220, "HeliostaticFurnaces", Machinery, 236, false );
 
         public static readonly CommodityDefinition MineralExtractors = new(128049221, "MineralExtractors", Machinery, 443, false);
 
@@ -311,57 +283,45 @@ namespace EddiDataDefinitions
 
         public static readonly CommodityDefinition MarineSupplies = new(128049223, "MarineSupplies", Machinery, 3916, false);
 
-        public static readonly CommodityDefinition AtmosphericExtractors =
-            new( 128064028, "AtmosphericExtractors", Machinery, 357, false );
+        public static readonly CommodityDefinition AtmosphericExtractors = new( 128064028, "AtmosphericExtractors", Machinery, 357, false );
 
         public static readonly CommodityDefinition VolkhabBeeDrones = new(128667044, "VolkhabBeeDrones", Machinery, 10198, true);
 
-        public static readonly CommodityDefinition WulpaHyperboreSystems =
-            new( 128667067, "WulpaHyperboreSystems", Machinery, 8726, true );
+        public static readonly CommodityDefinition WulpaHyperboreSystems = new( 128667067, "WulpaHyperboreSystems", Machinery, 8726, true );
 
-        public static readonly CommodityDefinition NonEuclidianExotanks =
-            new( 128667687, "NonEuclidianExotanks", Machinery, 8526, true );
+        public static readonly CommodityDefinition NonEuclidianExotanks = new( 128667687, "NonEuclidianExotanks", Machinery, 8526, true );
 
         public static readonly CommodityDefinition GiantVerrix = new(128667703, "GiantVerrix", Machinery, 12496, true);
 
-        public static readonly CommodityDefinition GeologicalEquipment =
-            new( 128672307, "GeologicalEquipment", Machinery, 1661, false );
+        public static readonly CommodityDefinition GeologicalEquipment = new( 128672307, "GeologicalEquipment", Machinery, 1661, false );
 
-        public static readonly CommodityDefinition ThermalCoolingUnits =
-            new( 128672308, "ThermalCoolingUnits", Machinery, 256, false );
+        public static readonly CommodityDefinition ThermalCoolingUnits = new( 128672308, "ThermalCoolingUnits", Machinery, 256, false );
 
-        public static readonly CommodityDefinition BuildingFabricators =
-            new( 128672309, "BuildingFabricators", Machinery, 980, false );
+        public static readonly CommodityDefinition BuildingFabricators = new( 128672309, "BuildingFabricators", Machinery, 980, false );
 
         public static readonly CommodityDefinition SkimerComponents = new(128672313, "SkimerComponents", Machinery, 859, false);
 
-        public static readonly CommodityDefinition ArticulationMotors =
-            new( 128673859, "ArticulationMotors", Machinery, 4997, false );
+        public static readonly CommodityDefinition ArticulationMotors = new( 128673859, "ArticulationMotors", Machinery, 4997, false );
 
         public static readonly CommodityDefinition HNShockMount = new(128673860, "HNShockMount", Machinery, 406, false);
 
-        public static readonly CommodityDefinition EmergencyPowerCells =
-            new( 128673861, "EmergencyPowerCells", Machinery, 1011, false );
+        public static readonly CommodityDefinition EmergencyPowerCells = new( 128673861, "EmergencyPowerCells", Machinery, 1011, false );
 
         public static readonly CommodityDefinition PowerConverter = new(128673862, "PowerConverter", Machinery, 246, false);
 
-        public static readonly CommodityDefinition PowerGridAssembly =
-            new( 128673863, "PowerGridAssembly", Machinery, 1684, false );
+        public static readonly CommodityDefinition PowerGridAssembly = new( 128673863, "PowerGridAssembly", Machinery, 1684, false );
 
-        public static readonly CommodityDefinition PowerTransferConduits =
-            new( 128673864, "PowerTransferConduits", Machinery, 857, false );
+        public static readonly CommodityDefinition PowerTransferConduits = new( 128673864, "PowerTransferConduits", Machinery, 857, false );
 
         public static readonly CommodityDefinition RadiationBaffle = new(128673865, "RadiationBaffle", Machinery, 383, false);
 
         public static readonly CommodityDefinition ExhaustManifold = new(128673866, "ExhaustManifold", Machinery, 479, false);
 
-        public static readonly CommodityDefinition ReinforcedMountingPlate =
-            new( 128673867, "ReinforcedMountingPlate", Machinery, 1074, false );
+        public static readonly CommodityDefinition ReinforcedMountingPlate = new( 128673867, "ReinforcedMountingPlate", Machinery, 1074, false );
 
         public static readonly CommodityDefinition HeatsinkInterlink = new(128673868, "HeatsinkInterlink", Machinery, 729, false);
 
-        public static readonly CommodityDefinition MagneticEmitterCoil =
-            new( 128673869, "MagneticEmitterCoil", Machinery, 199, false );
+        public static readonly CommodityDefinition MagneticEmitterCoil = new( 128673869, "MagneticEmitterCoil", Machinery, 199, false );
 
         public static readonly CommodityDefinition ModularTerminals = new(128673870, "ModularTerminals", Machinery, 695, false);
 
@@ -369,25 +329,21 @@ namespace EddiDataDefinitions
 
         #region Medicines
 
-        public static readonly CommodityDefinition AgriculturalMedicines =
-            new( 128049208, "AgriculturalMedicines", Medicines, 1038, false );
+        public static readonly CommodityDefinition AgriculturalMedicines = new( 128049208, "AgriculturalMedicines", Medicines, 1038, false );
 
-        public static readonly CommodityDefinition PerformanceEnhancers =
-            new( 128049209, "PerformanceEnhancers", Medicines, 6816, false );
+        public static readonly CommodityDefinition PerformanceEnhancers = new( 128049209, "PerformanceEnhancers", Medicines, 6816, false );
 
         public static readonly CommodityDefinition BasicMedicines = new(128049210, "BasicMedicines", Medicines, 279, false);
 
         public static readonly CommodityDefinition ProgenitorCells = new(128049669, "ProgenitorCells", Medicines, 6779, false);
 
-        public static readonly CommodityDefinition CombatStabilisers =
-            new( 128049670, "CombatStabilisers", Medicines, 3505, false );
+        public static readonly CommodityDefinition CombatStabilisers = new( 128049670, "CombatStabilisers", Medicines, 3505, false );
         
         public static readonly CommodityDefinition KachiriginLeaches = new(128667027, "KachiriginLeaches", Medicines, 8227, true);
         
         public static readonly CommodityDefinition AganippeRush = new(128667068, "AganippeRush", Medicines, 14220, true);
 
-        public static readonly CommodityDefinition TerraMaterBloodBores =
-            new( 128667069, "TerraMaterBloodBores", Medicines, 13414, true );
+        public static readonly CommodityDefinition TerraMaterBloodBores = new( 128667069, "TerraMaterBloodBores", Medicines, 13414, true );
 
         public static readonly CommodityDefinition WatersOfShintara = new(128667085, "WatersOfShintara", Medicines, 13711, true);
 
@@ -399,15 +355,13 @@ namespace EddiDataDefinitions
 
         public static readonly CommodityDefinition TauriChimes = new(128667706, "TauriChimes", Medicines, 8549, true);
 
-        public static readonly CommodityDefinition PantaaPrayerSticks =
-            new( 128667708, "PantaaPrayerSticks", Medicines, 9177, true );
+        public static readonly CommodityDefinition PantaaPrayerSticks = new( 128667708, "PantaaPrayerSticks", Medicines, 9177, true );
 
         public static readonly CommodityDefinition FujinTea = new(128667709, "FujinTea", Medicines, 8597, true);
 
         public static readonly CommodityDefinition AlyaBodilySoap = new(128667718, "AlyaBodilySoap", Medicines, 8218, true);
 
-        public static readonly CommodityDefinition AdvancedMedicines =
-            new( 128682046, "AdvancedMedicines", Medicines, 1259, false );
+        public static readonly CommodityDefinition AdvancedMedicines = new( 128682046, "AdvancedMedicines", Medicines, 1259, false );
 
         public static readonly CommodityDefinition Nanomedicines = new(128913661, "Nanomedicines", Medicines, 9859, true);
 
@@ -447,8 +401,7 @@ namespace EddiDataDefinitions
 
         public static readonly CommodityDefinition Osmium = new(128671118, "Osmium", Metals, 7591, false);
 
-        public static readonly CommodityDefinition SothisCrystallineGold =
-            new( 128672122, "SothisCrystallineGold", Metals, 19112, true );
+        public static readonly CommodityDefinition SothisCrystallineGold = new( 128672122, "SothisCrystallineGold", Metals, 19112, true );
 
         public static readonly CommodityDefinition Lanthanum = new(128672298, "Lanthanum", Metals, 8766, false);
 
@@ -466,75 +419,53 @@ namespace EddiDataDefinitions
 
         public static readonly CommodityDefinition Steel = new(129031238, "Steel", Metals, 4179, false);
 
+        public static readonly CommodityDefinition Iridium = new(129046165, "Iridium", Metals, 193745, false);
+
         #endregion
 
         #region Minerals
 
         public static readonly CommodityDefinition Bertrandite = new(128049156, "Bertrandite", Minerals, 2374, false);
-
         public static readonly CommodityDefinition Indite = new(128049157, "Indite", Minerals, 2088, false);
-
         public static readonly CommodityDefinition Gallite = new(128049158, "Gallite", Minerals, 1819, false);
-
         public static readonly CommodityDefinition Coltan = new(128049159, "Coltan", Minerals, 1319, false);
-
         public static readonly CommodityDefinition Uraninite = new(128049160, "Uraninite", Minerals, 836, false);
-
         public static readonly CommodityDefinition Lepidolite = new(128049161, "Lepidolite", Minerals, 544, false);
-        
         public static readonly CommodityDefinition Rutile = new(128049163, "Rutile", Minerals, 299, false);
-
         public static readonly CommodityDefinition Bauxite = new(128049165, "Bauxite", Minerals, 120, false);
-
-        public static readonly CommodityDefinition CherbonesBloodCrystals =
-            new( 128667675, "CherbonesBloodCrystals", Minerals, 16714, true );
-
-        public static readonly CommodityDefinition NgadandariFireOpals =
-            new( 128667694, "NgadandariFireOpals", Minerals, 19112, true );
-
+        public static readonly CommodityDefinition CherbonesBloodCrystals = new( 128667675, "CherbonesBloodCrystals", Minerals, 16714, true );
+        public static readonly CommodityDefinition NgadandariFireOpals = new( 128667694, "NgadandariFireOpals", Minerals, 19112, true );
         public static readonly CommodityDefinition Painite = new(128668550, "Painite", Minerals, 40508, false);
-
         public static readonly CommodityDefinition Cryolite = new(128672294, "Cryolite", Minerals, 2266, false);
-
         public static readonly CommodityDefinition Goslarite = new(128672295, "Goslarite", Minerals, 916, false);
-
         public static readonly CommodityDefinition Moissanite = new(128672296, "Moissanite", Minerals, 8273, false);
-
         public static readonly CommodityDefinition Pyrophyllite = new(128672297, "Pyrophyllite", Minerals, 1565, false);
-
         public static readonly CommodityDefinition Taaffeite = new(128672775, "Taaffeite", Minerals, 20696, false);
-
         public static readonly CommodityDefinition Jadeite = new(128672776, "Jadeite", Minerals, 13474, false);
-
         public static readonly CommodityDefinition Bromellite = new(128673846, "Bromellite", Minerals, 7062, false);
-
-        public static readonly CommodityDefinition LowTemperatureDiamond =
-            new( 128673848, "LowTemperatureDiamond", Minerals, 57445, false );
-
-        public static readonly CommodityDefinition MethanolMonohydrateCrystals =
-            new( 128673852, "MethanolMonohydrateCrystals", Minerals, 2282, false );
-
+        public static readonly CommodityDefinition LowTemperatureDiamond = new( 128673848, "LowTemperatureDiamond", Minerals, 57445, false );
+        public static readonly CommodityDefinition MethanolMonohydrateCrystals = new( 128673852, "MethanolMonohydrateCrystals", Minerals, 2282, false );
         public static readonly CommodityDefinition LithiumHydroxide = new(128673853, "LithiumHydroxide", Minerals, 5646, false);
-
         public static readonly CommodityDefinition MethaneClathrate = new(128673854, "MethaneClathrate", Minerals, 629, false);
-
         public static readonly CommodityDefinition Rhodplumsite = new(128924325, "Rhodplumsite", Minerals, 176791, false);
-
         public static readonly CommodityDefinition Serendibite = new(128924326, "Serendibite", Minerals, 172634, false);
-
         public static readonly CommodityDefinition Monazite = new(128924327, "Monazite", Minerals, 200925, false);
-
         public static readonly CommodityDefinition Musgravite = new(128924328, "Musgravite", Minerals, 198527, false);
-
         public static readonly CommodityDefinition Benitoite = new(128924329, "Benitoite", Minerals, 149325, false);
-
         public static readonly CommodityDefinition Grandidierite = new(128924330, "Grandidierite", Minerals, 197204, false);
-
         public static readonly CommodityDefinition Alexandrite = new(128924331, "Alexandrite", Minerals, 217192, false);
-
         public static readonly CommodityDefinition Opal = new(128924332, "Opal", Minerals, 135218, false);
-
         public static readonly CommodityDefinition Haematite = new(129031327, "Haematite", Minerals, 1791, false);
+        public static readonly CommodityDefinition Bastnasite = new(129046168, "Bastnasite", Minerals, 66401, false);
+        public static readonly CommodityDefinition Deuterium = new(129046169, "Deuterium", Minerals, 221590, false);
+        public static readonly CommodityDefinition Thortveitite = new(129046170, "Thortveitite", Minerals, 193745, false);
+        public static readonly CommodityDefinition QuartzPyroxenite = new (129046171, "QuartzPyroxenite", Minerals, 39010, false);
+        public static readonly CommodityDefinition Olivine = new (129046172, "Olivine", Minerals, 26243, false);
+        public static readonly CommodityDefinition PericlaseDunite = new (129046173, "PericlaseDunite", Minerals, 193745, false);
+        public static readonly CommodityDefinition Sapphire = new (129046174, "Sapphire", Minerals, 121169, false);
+        public static readonly CommodityDefinition Diamond = new (129046175, "Diamond", Minerals, 129563, false);
+        public static readonly CommodityDefinition Ruby = new (129046176, "Ruby", Minerals, 105986, false);
+        public static readonly CommodityDefinition Magnesite = new (129046177, "Magnesite", Minerals, 31986, false);
 
         #endregion
 
@@ -582,16 +513,13 @@ namespace EddiDataDefinitions
 
         public static readonly CommodityDefinition CentauriMegaGin = new(128667672, "CentauriMegaGin", Narcotics, 10217, true);
 
-        public static readonly CommodityDefinition MotronaExperienceJelly =
-            new( 128667676, "MotronaExperienceJelly", Narcotics, 13129, true );
+        public static readonly CommodityDefinition MotronaExperienceJelly = new( 128667676, "MotronaExperienceJelly", Narcotics, 13129, true );
 
         public static readonly CommodityDefinition GeawenDanceDust = new(128667677, "GeawenDanceDust", Narcotics, 8618, true);
 
-        public static readonly CommodityDefinition GerasianGueuzeBeer =
-            new( 128667678, "GerasianGueuzeBeer", Narcotics, 8215, true );
+        public static readonly CommodityDefinition GerasianGueuzeBeer = new( 128667678, "GerasianGueuzeBeer", Narcotics, 8215, true );
 
-        public static readonly CommodityDefinition BurnhamBileDistillate =
-            new( 128667681, "BurnhamBileDistillate", Narcotics, 8466, true );
+        public static readonly CommodityDefinition BurnhamBileDistillate = new( 128667681, "BurnhamBileDistillate", Narcotics, 8466, true );
 
         public static readonly CommodityDefinition PavonisEarGrubs = new(128667701, "PavonisEarGrubs", Narcotics, 8364, true);
 
@@ -601,8 +529,7 @@ namespace EddiDataDefinitions
 
         public static readonly CommodityDefinition BlueMilk = new(128667716, "BlueMilk", Narcotics, 10805, true);
 
-        public static readonly CommodityDefinition TransgenicOnionHead =
-            new( 128667760, "TransgenicOnionHead", Narcotics, 8472, true );
+        public static readonly CommodityDefinition TransgenicOnionHead = new( 128667760, "TransgenicOnionHead", Narcotics, 8472, true );
 
         public static readonly CommodityDefinition BootlegLiquor = new(128672306, "BootlegLiquor", Narcotics, 855, false);
 

@@ -1889,4 +1889,60 @@
     <value>Curated Commodity Package</value>
     <comment>Commodity CuratedCommodity</comment>
   </data>
+  <data name="Iridium" xml:space="preserve">
+    <value>Iridium</value>
+    <comment>Commodity Iridium</comment>
+  </data>
+  <data name="Helium" xml:space="preserve">
+    <value>Helium</value>
+    <comment>Commodity Helium</comment>
+  </data>
+  <data name="Helium3" xml:space="preserve">
+    <value>Helium 3</value>
+    <comment>Commodity Helium-3</comment>
+  </data>
+  <data name="Haematite" xml:space="preserve">
+    <value>Haematite</value>
+    <comment>Commodity Haematite</comment>
+  </data>
+  <data name="Bastnasite" xml:space="preserve">
+    <value>Bastnasite</value>
+    <comment>Commodity Bastnasite</comment>
+  </data>
+  <data name="Deuterium" xml:space="preserve">
+    <value>Deuterium</value>
+    <comment>Commodity Deuterium</comment>
+  </data>
+  <data name="Thortveitite" xml:space="preserve">
+    <value>Thortveitite</value>
+    <comment>Commodity Thortveitite</comment>
+  </data>
+  <data name="QuartzPyroxenite" xml:space="preserve">
+    <value>Quartz Pyroxenite</value>
+    <comment>Commodity QuartzPyroxenite</comment>
+  </data>
+  <data name="Olivine" xml:space="preserve">
+    <value>Olivine</value>
+    <comment>Commodity Olivine</comment>
+  </data>
+  <data name="PericlaseDunite" xml:space="preserve">
+    <value>Periclase Dunite</value>
+    <comment>Commodity PericlaseDunite</comment>
+  </data>
+  <data name="Sapphire" xml:space="preserve">
+    <value>Sapphire</value>
+    <comment>Commodity Sapphire</comment>
+  </data>
+  <data name="Diamond" xml:space="preserve">
+    <value>Diamond</value>
+    <comment>Commodity Diamond</comment>
+  </data>
+  <data name="Ruby" xml:space="preserve">
+    <value>Ruby</value>
+    <comment>Commodity Ruby</comment>
+  </data>
+  <data name="Magnesite" xml:space="preserve">
+    <value>Magnesite</value>
+    <comment>Commodity Magnesite</comment>
+  </data>
 </root>
