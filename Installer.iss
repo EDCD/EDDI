@@ -6,6 +6,8 @@
 #define MyAppPublisher "Elite Dangerous Community Developers (EDCD)"
 #define MyAppURL "https://github.com/EDCD/EDDI/"
 #define MyAppExeName "EDDI.exe"
+#define DotNetDesktopRuntimeMajor "8"
+#define DotNetDesktopRuntimeInstallerUrl "https://aka.ms/dotnet/8.0/windowsdesktop-runtime-win-x64.exe"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -174,6 +176,7 @@ Root: "HKLM"; Subkey: "Software\EDCD\EDDI"; ValueType: string; ValueName: "Versi
 [Code]
 
 var
+  DotNetDesktopRuntimeNeedsRestart: Boolean;
   LegacySilentMigration: Boolean;
   VoiceAttackAppsPage: TWizardPage;
   ApplicationDirText: TNewStaticText;
@@ -211,6 +214,192 @@ begin
     IsUnderPath(Dir, ExpandConstant('{localappdata}')) or
     IsUnderPath(Dir, ExpandConstant('{userappdata}')) or
     ((Trim(UserProfile) <> '') and IsUnderPath(Dir, UserProfile));
+end;
+
+function IsRequiredDotNetDesktopRuntimeVersionName(const VersionName: string): Boolean;
+begin
+  Result := Pos('{#DotNetDesktopRuntimeMajor}.', VersionName) = 1;
+end;
+
+function IsRequiredDotNetDesktopRuntimeRegisteredAt(RootKey: Integer; const RuntimeKey: string): Boolean;
+var
+  I: Integer;
+  SubkeyNames: TArrayOfString;
+  ValueNames: TArrayOfString;
+begin
+  Result := False;
+  if RegGetValueNames(RootKey, RuntimeKey, ValueNames) then
+  begin
+    for I := 0 to GetArrayLength(ValueNames) - 1 do
+    begin
+      if IsRequiredDotNetDesktopRuntimeVersionName(ValueNames[I]) then
+      begin
+        Log(Format('Found required .NET Desktop Runtime major version %s from registry value: %s', ['{#DotNetDesktopRuntimeMajor}', ValueNames[I]]));
+        Result := True;
+        exit;
+      end;
+    end;
+  end;
+  if RegGetSubkeyNames(RootKey, RuntimeKey, SubkeyNames) then
+  begin
+    for I := 0 to GetArrayLength(SubkeyNames) - 1 do
+    begin
+      if IsRequiredDotNetDesktopRuntimeVersionName(SubkeyNames[I]) then
+      begin
+        Log(Format('Found required .NET Desktop Runtime major version %s from registry subkey: %s', ['{#DotNetDesktopRuntimeMajor}', SubkeyNames[I]]));
+        Result := True;
+        exit;
+      end;
+    end;
+  end;
+  Log(Format('.NET Desktop Runtime registry key did not contain major version %s: %s', ['{#DotNetDesktopRuntimeMajor}', RuntimeKey]));
+end;
+
+function IsRequiredDotNetDesktopRuntimeInDirectory(const RuntimeDir: string): Boolean;
+var
+  FindRec: TFindRec;
+begin
+  Result := False;
+  if (Trim(RuntimeDir) = '') or not DirExists(RuntimeDir) then
+    exit;
+
+  if FindFirst(AddBackslash(RuntimeDir) + '{#DotNetDesktopRuntimeMajor}.*', FindRec) then
+  begin
+    try
+      repeat
+        if DirExists(AddBackslash(RuntimeDir) + FindRec.Name) and IsRequiredDotNetDesktopRuntimeVersionName(FindRec.Name) then
+        begin
+          Log(Format('Found required .NET Desktop Runtime major version %s in runtime directory: %s', ['{#DotNetDesktopRuntimeMajor}', FindRec.Name]));
+          Result := True;
+          exit;
+        end;
+      until not FindNext(FindRec);
+    finally
+      FindClose(FindRec);
+    end;
+  end;
+end;
+
+function IsRequiredDotNetDesktopRuntimeUnderRoot(const RuntimeRoot: string): Boolean;
+begin
+  Result :=
+    (Trim(RuntimeRoot) <> '') and
+    IsRequiredDotNetDesktopRuntimeInDirectory(
+      AddBackslash(RuntimeRoot) + 'shared\Microsoft.WindowsDesktop.App');
+end;
+
+function IsRequiredDotNetDesktopRuntimeInstalled: Boolean;
+begin
+  Result :=
+    IsRequiredDotNetDesktopRuntimeRegisteredAt(
+      HKLM64,
+      'SOFTWARE\dotnet\Setup\InstalledVersions\x64\sharedfx\Microsoft.WindowsDesktop.App') or
+    IsRequiredDotNetDesktopRuntimeRegisteredAt(
+      HKLM32,
+      'SOFTWARE\dotnet\Setup\InstalledVersions\x64\sharedfx\Microsoft.WindowsDesktop.App') or
+    IsRequiredDotNetDesktopRuntimeInDirectory(
+      ExpandConstant('{commonpf64}\dotnet\shared\Microsoft.WindowsDesktop.App')) or
+    IsRequiredDotNetDesktopRuntimeUnderRoot(GetEnv('DOTNET_ROOT_X64')) or
+    IsRequiredDotNetDesktopRuntimeUnderRoot(GetEnv('DOTNET_ROOT'));
+
+  if Result then
+    exit;
+
+  Log(Format('Required .NET Desktop Runtime major version %s was not found.', ['{#DotNetDesktopRuntimeMajor}']));
+end;
+
+function WriteDotNetDesktopRuntimeInstallerScript: string;
+begin
+  Result := ExpandConstant('{tmp}\InstallDotNetDesktopRuntime.ps1');
+  SaveStringToFile(
+    Result,
+    '$ErrorActionPreference = ''Stop''' + #13#10 +
+    '$runtimeMajor = ''{#DotNetDesktopRuntimeMajor}''' + #13#10 +
+    '$runtimeKey = ''HKLM:\SOFTWARE\dotnet\Setup\InstalledVersions\x64\sharedfx\Microsoft.WindowsDesktop.App''' + #13#10 +
+    '$wowRuntimeKey = ''HKLM:\SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions\x64\sharedfx\Microsoft.WindowsDesktop.App''' + #13#10 +
+    'function Test-RuntimeKey($key) {' + #13#10 +
+    '    if (-not (Test-Path $key)) { return $false }' + #13#10 +
+    '    $item = Get-ItemProperty $key -ErrorAction SilentlyContinue' + #13#10 +
+    '    if ($item -and ($item | Get-Member -MemberType NoteProperty | Where-Object { $_.Name -like "$runtimeMajor.*" } | Select-Object -First 1)) { return $true }' + #13#10 +
+    '    if (Get-ChildItem $key -ErrorAction SilentlyContinue | Where-Object { Split-Path -Leaf $_.Name -like "$runtimeMajor.*" } | Select-Object -First 1) { return $true }' + #13#10 +
+    '    return $false' + #13#10 +
+    '}' + #13#10 +
+    'foreach ($key in @($runtimeKey, $wowRuntimeKey)) {' + #13#10 +
+    '    if (Test-RuntimeKey $key) { exit 0 }' + #13#10 +
+    '}' + #13#10 +
+    '$runtimeDirs = @()' + #13#10 +
+    'if ($env:ProgramFiles) { $runtimeDirs += Join-Path $env:ProgramFiles ''dotnet\shared\Microsoft.WindowsDesktop.App'' }' + #13#10 +
+    'foreach ($root in @($env:DOTNET_ROOT_X64, $env:DOTNET_ROOT)) {' + #13#10 +
+    '    if ($root) { $runtimeDirs += Join-Path $root ''shared\Microsoft.WindowsDesktop.App'' }' + #13#10 +
+    '}' + #13#10 +
+    'foreach ($runtimeDir in $runtimeDirs) {' + #13#10 +
+    '    if ($runtimeDir -and (Test-Path $runtimeDir) -and (Get-ChildItem $runtimeDir -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -like "$runtimeMajor.*" } | Select-Object -First 1)) { exit 0 }' + #13#10 +
+    '}' + #13#10 +
+    '$installer = Join-Path $env:TEMP "windowsdesktop-runtime-{#DotNetDesktopRuntimeMajor}-win-x64.exe"' + #13#10 +
+    '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12' + #13#10 +
+    'Invoke-WebRequest -Uri "{#DotNetDesktopRuntimeInstallerUrl}" -OutFile $installer -UseBasicParsing' + #13#10 +
+    '$signature = Get-AuthenticodeSignature -FilePath $installer' + #13#10 +
+    'if ($signature.Status -ne ''Valid'' -or $signature.SignerCertificate.Subject -notlike ''*Microsoft Corporation*'') { exit 1603 }' + #13#10 +
+    '$process = Start-Process -FilePath $installer -ArgumentList "/install", "/quiet", "/norestart" -Wait -PassThru' + #13#10 +
+    'exit $process.ExitCode' + #13#10,
+    False);
+end;
+
+function InstallRequiredDotNetDesktopRuntime(var ResultCode: Integer): Boolean;
+var
+  InstallerScript: string;
+begin
+  InstallerScript := WriteDotNetDesktopRuntimeInstallerScript;
+  Log(Format('Installing .NET Desktop Runtime %s from official Microsoft sources.', ['{#DotNetDesktopRuntimeMajor}']));
+  if IsAdmin then
+  begin
+    Result :=
+      Exec(
+        ExpandConstant('{sys}\WindowsPowerShell\v1.0\powershell.exe'),
+        '-NoProfile -ExecutionPolicy Bypass -File "' + InstallerScript + '"',
+        '',
+        SW_HIDE,
+        ewWaitUntilTerminated,
+        ResultCode);
+  end
+  else
+  begin
+    Log('Requesting elevation to install the machine-wide .NET Desktop Runtime.');
+    Result :=
+      ShellExec(
+        'runas',
+        ExpandConstant('{sys}\WindowsPowerShell\v1.0\powershell.exe'),
+        '-NoProfile -ExecutionPolicy Bypass -File "' + InstallerScript + '"',
+        '',
+        SW_HIDE,
+        ewWaitUntilTerminated,
+        ResultCode);
+  end;
+  if not Result then
+    Log('Failed to start PowerShell for .NET Desktop Runtime installation.')
+  else
+    Log(Format('.NET Desktop Runtime installer command completed with exit code %d.', [ResultCode]));
+end;
+
+function EnsureRequiredDotNetDesktopRuntimeInstalled(var NeedsRestart: Boolean): Boolean;
+var
+  ResultCode: Integer;
+begin
+  Result := True;
+  if IsRequiredDotNetDesktopRuntimeInstalled then
+    exit;
+  ResultCode := -1;
+  if not InstallRequiredDotNetDesktopRuntime(ResultCode) then
+  begin
+    Result := False;
+    exit;
+  end;
+  DotNetDesktopRuntimeNeedsRestart := ResultCode = 3010;
+  if DotNetDesktopRuntimeNeedsRestart then
+    NeedsRestart := True;
+  Result := (ResultCode = 0) or ((ResultCode = 3010) and IsRequiredDotNetDesktopRuntimeInstalled);
+  if not Result then
+    Log(Format('.NET Desktop Runtime installation did not complete successfully. Exit code: %d.', [ResultCode]));
 end;
 
 function TryGetVoiceAttack2AppsDir(var Dir: string): Boolean;
@@ -781,7 +970,7 @@ end;
 
 function ShouldRunAfterInAppUpgrade: Boolean;
 begin
-  Result := IsInAppUpgrade or LegacySilentMigration;
+  Result := (IsInAppUpgrade or LegacySilentMigration) and not DotNetDesktopRuntimeNeedsRestart;
 end;
 
 procedure RegisterCloseResource(const Dir: string);
@@ -1045,6 +1234,13 @@ begin
     Result :=
       'The selected EDDI application and VoiceAttack plugin locations are not valid for this install mode. ' +
       'Run Setup as administrator for shared machine-wide locations, or choose per-user locations.';
+    exit;
+  end;
+  if not EnsureRequiredDotNetDesktopRuntimeInstalled(NeedsRestart) then
+  begin
+    Result :=
+      'Setup could not install the required .NET Desktop Runtime {#DotNetDesktopRuntimeMajor}. ' +
+      'Install it from Microsoft, then run Setup again: {#DotNetDesktopRuntimeInstallerUrl}';
   end;
 end;
 
