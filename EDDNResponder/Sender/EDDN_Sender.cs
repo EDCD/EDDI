@@ -258,16 +258,19 @@ namespace EddiEddnResponder.Sender
             var response = await httpClient.PostAsync("upload", content).ConfigureAwait(false);
             if ( response.StatusCode == HttpStatusCode.Accepted ) { return true; }
 
-            throw new HttpListenerException( 413, "Compressed retry failed." );
+            var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            throw new HttpListenerException( (int)response.StatusCode, $"Compressed retry failed: {responseJson}" );
         }
 
-        private static byte[] Compress ( byte[] data )
+        internal static byte[] Compress ( byte[] data )
         {
             using ( var ms = new MemoryStream() )
-            using ( var gzip = new GZipStream( ms, CompressionMode.Compress ) )
             {
-                gzip.Write( data, 0, data.Length );
-                gzip.Flush();
+                using ( var gzip = new GZipStream( ms, CompressionMode.Compress ) )
+                {
+                    gzip.Write( data, 0, data.Length );
+                }
+
                 return ms.ToArray();
             }
         }

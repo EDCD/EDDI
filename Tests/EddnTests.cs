@@ -1,6 +1,7 @@
 ﻿using EddiCore;
 using EddiEddnResponder;
 using EddiEddnResponder.Schemas;
+using EddiEddnResponder.Sender;
 using EddiEddnResponder.Toolkit;
 using EddiEvents;
 using EddiJournalMonitor;
@@ -8,6 +9,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,6 +70,22 @@ namespace Tests
             Assert.AreEqual( expectedX, starPos[ 0 ] );
             Assert.AreEqual( expectedY, starPos[ 1 ] );
             Assert.AreEqual( expectedZ, starPos[ 2 ] );
+        }
+
+        [TestMethod]
+        public void TestEddnCompressionProducesCompleteGzipPayload()
+        {
+            var expected = string.Join( string.Empty, Enumerable.Repeat( @"{ ""message"": ""large EDDN payload"" }", 500 ) );
+            var payload = Encoding.UTF8.GetBytes( expected );
+
+            var compressed = EDDNSender.Compress( payload );
+
+            using ( var compressedStream = new MemoryStream( compressed ) )
+            using ( var gzipStream = new GZipStream( compressedStream, CompressionMode.Decompress ) )
+            using ( var reader = new StreamReader( gzipStream, Encoding.UTF8 ) )
+            {
+                Assert.AreEqual( expected, reader.ReadToEnd() );
+            }
         }
 
         [TestMethod]
