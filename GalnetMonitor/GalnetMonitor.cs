@@ -268,7 +268,12 @@ namespace EddiGalnetMonitor
             {
                 await using ( var stream = await httpClient.GetStreamAsync( url ).ConfigureAwait( false ) )
                 {
-                    using ( var reader = XmlReader.Create( stream ) )
+                    var settings = new XmlReaderSettings
+                    {
+                        DtdProcessing = DtdProcessing.Ignore,
+                        XmlResolver = null
+                    };
+                    using ( var reader = XmlReader.Create( stream, settings ) )
                     {
                         var feed = SyndicationFeed.Load( reader );
                         var normalizer = new GalnetFeedItemNormalizer( fromAltUrl );
