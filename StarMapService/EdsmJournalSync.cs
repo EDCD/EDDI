@@ -227,7 +227,7 @@ namespace EddiStarMapService
         public async Task<List<string>> getIgnoredEventsAsync ()
         {
             var url = $"{baseUrl}api-journal-v1/discard";
-            var responseJson = await edsmHttpClient.GetAsync(url, syncCancellationTS.Token).ConfigureAwait(false);
+            var responseJson = await edsmJournalHttpClient.GetAsync(url, syncCancellationTS.Token).ConfigureAwait(false);
             var response = responseJson is null ? null : JsonConvert.DeserializeObject<List<string>>( responseJson );
             return response;
         }
