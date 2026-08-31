@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -891,7 +891,7 @@ namespace EddiDataDefinitions
         public long? blueprintId { get; private set; }
 
         [PublicAPI( "the materials required to produce the blueprint (a list of items with *material* and *amount* keys for each item)" ), JsonIgnore]
-        public List<MaterialAmount> materials => grade > 0 && grade <= blueprintTemplate?.byGrade?.Count ? blueprintTemplate?.byGrade[grade] : [ ];
+        public List<MaterialAmount> materials => grade > 0 && blueprintTemplate?.byGrade?.TryGetValue(grade, out var materials) == true ? materials : [ ];
 
         // Not intended to be user facing
         public BlueprintTemplate blueprintTemplate { get; private set; }
