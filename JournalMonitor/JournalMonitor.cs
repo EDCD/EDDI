@@ -2985,7 +2985,7 @@ namespace EddiJournalMonitor
                 }
 
                 // Only log json reader exceptions that we haven't handled above.
-                Logging.Error( jre.Message, jre );
+                Logging.Error( $"Unable to read from json string: {line}", jre );
             }
             catch (Exception ex)
             {

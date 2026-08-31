@@ -15,17 +15,7 @@ namespace Utilities
             }
 
             Logging.Debug("Deserializing " + data);
-            Dictionary<string, object> values;
-            try
-            {
-                values = JsonConvert.DeserializeObject<Dictionary<string, object>>(data);
-            }
-            catch (JsonReaderException e)
-            {
-                Logging.Error($"Unable to read from json string: {data}", e);
-                throw;
-            }
-
+            var values = JsonConvert.DeserializeObject<Dictionary<string, object>>( data );
             return DeserializeData(values);
         }
 
