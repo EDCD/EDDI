@@ -20,6 +20,7 @@ namespace EddiSpeechService.SpeechSynthesizers
     public sealed class WindowsMediaSynthesizer : IDisposable
     {
         private readonly SpeechSynthesizer synth;
+        private IReadOnlyList<VoiceInformation> allVoices = [];
 
         private WindowsMediaSynthesizer ( SpeechSynthesizer synth )
         {
@@ -27,6 +28,8 @@ namespace EddiSpeechService.SpeechSynthesizers
         }
 
         internal string currentVoice => synth.Voice.DisplayName;
+        internal static Func<IReadOnlyList<VoiceInformation>> GetAllVoices { get; set; } =
+            () => SpeechSynthesizer.AllVoices.ToList();
 
         public static async Task<WindowsMediaSynthesizer> CreateAsync (
             HashSet<VoiceDetails> voiceStore,
@@ -37,25 +40,29 @@ namespace EddiSpeechService.SpeechSynthesizers
             {
                 synth = new SpeechSynthesizer();
             }
-            catch ( Exception ex ) when ( ex is ArgumentException || ex is InvalidOperationException ||
-                                          ex is NotImplementedException || ex is COMException ||
-                                          ex.GetType().FullName?.Contains( "WinRT" ) == true )
+            catch ( Exception ex ) when ( IsWindowsMediaUnavailableException( ex ) )
             {
-                Logging.Warn(
-                    $"Windows.Media.SpeechSynthesis.SpeechSynthesizer is not activatable on this system. " +
-                    $"Windows Media voices will be unavailable. {RuntimeInformation.OSDescription}",
-                    ex );
+                LogWindowsMediaUnavailable( ex );
                 return null;
             }
 
             var synthesizer = new WindowsMediaSynthesizer( synth );
-            await synthesizer.InitializeAsync( voiceStore, ct ).ConfigureAwait( false );
-            return synthesizer;
+            try
+            {
+                await synthesizer.InitializeAsync( voiceStore, ct ).ConfigureAwait( false );
+                return synthesizer;
+            }
+            catch ( Exception ex ) when ( IsWindowsMediaUnavailableException( ex ) )
+            {
+                LogWindowsMediaUnavailable( ex );
+                synthesizer.Dispose();
+                return null;
+            }
         }
 
         private async Task InitializeAsync ( HashSet<VoiceDetails> voiceStore, CancellationToken ct = default )
         {
-            var allVoices = SpeechSynthesizer.AllVoices.ToList();
+            allVoices = GetAllVoices();
             var voices = new List<VoiceDetails>();
 
             foreach ( var voice in allVoices )
@@ -76,7 +83,7 @@ namespace EddiSpeechService.SpeechSynthesizers
                         continue;
                     }
 
-                    if ( !await TryOneCoreVoiceSpeechAsync( voiceDetails, ct ).ConfigureAwait( false ) )
+                    if ( !await TryOneCoreVoiceSpeechAsync( voiceDetails, allVoices, ct ).ConfigureAwait( false ) )
                     {
                         continue;
                     }
@@ -96,11 +103,14 @@ namespace EddiSpeechService.SpeechSynthesizers
             }
         }
 
-        private async Task<bool> TryOneCoreVoiceSpeechAsync ( VoiceDetails voiceDetails, CancellationToken ct = default )
+        private async Task<bool> TryOneCoreVoiceSpeechAsync (
+            VoiceDetails voiceDetails,
+            IEnumerable<VoiceInformation> availableVoices,
+            CancellationToken ct = default )
         {
             try
             {
-                var matchingVoice = SpeechSynthesizer.AllVoices
+                var matchingVoice = availableVoices
                     .FirstOrDefault( v => v.DisplayName == voiceDetails.name );
 
                 if ( matchingVoice == null )
@@ -189,7 +199,7 @@ namespace EddiSpeechService.SpeechSynthesizers
                 {
                     Logging.Debug("Selecting voice " + voice.name);
                     synth.Voice =
-                        SpeechSynthesizer.AllVoices.FirstOrDefault(v =>
+                        allVoices.FirstOrDefault(v =>
                             v.DisplayName == voice.name);
                 }
 
@@ -250,6 +260,21 @@ namespace EddiSpeechService.SpeechSynthesizers
         public void Dispose()
         {
             synth?.Dispose();
+        }
+
+        internal static bool IsWindowsMediaUnavailableException ( Exception ex )
+        {
+            return ex is ArgumentException || ex is InvalidOperationException ||
+                   ex is NotImplementedException || ex is COMException ||
+                   ex is InvalidCastException || ex.GetType().FullName?.Contains( "WinRT" ) == true;
+        }
+
+        private static void LogWindowsMediaUnavailable ( Exception ex )
+        {
+            Logging.Warn(
+                $"Windows.Media.SpeechSynthesis.SpeechSynthesizer is not available on this system. " +
+                $"Windows Media voices will be unavailable. {RuntimeInformation.OSDescription}",
+                ex );
         }
     }
 }

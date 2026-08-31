@@ -1,7 +1,9 @@
+using EddiDataDefinitions;
 using EddiSpeechResponder;
 using EddiSpeechService;
 using EddiSpeechService.SpeechConversions;
 using EddiSpeechService.SpeechPreparation;
+using EddiSpeechService.SpeechSynthesizers;
 using EddiVoiceAttackResponder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -10,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace Tests
@@ -27,6 +30,26 @@ namespace Tests
         private string CondenseSpaces(string s)
         {
             return GeneratedRegex.WhiteSpaceRegex().Replace(s, " ");
+        }
+
+        [TestMethod]
+        public async Task WindowsMediaSynthesizer_CreateAsync_TreatsInvalidVoiceEnumerationAsUnavailable ()
+        {
+            var voiceStore = new HashSet<VoiceDetails>();
+            var getAllVoices = WindowsMediaSynthesizer.GetAllVoices;
+            try
+            {
+                WindowsMediaSynthesizer.GetAllVoices = () => throw new InvalidCastException( "Test WinRT projection failure." );
+
+                using var synthesizer = await WindowsMediaSynthesizer.CreateAsync( voiceStore, TestContext.CancellationToken );
+
+                Assert.IsNull( synthesizer );
+                Assert.IsEmpty( voiceStore );
+            }
+            finally
+            {
+                WindowsMediaSynthesizer.GetAllVoices = getAllVoices;
+            }
         }
 
         [TestMethod]
@@ -447,5 +470,7 @@ namespace Tests
 
             return (CancellationTokenSource)value;
         }
+
+        public TestContext TestContext { get; set; }
     }
 }
