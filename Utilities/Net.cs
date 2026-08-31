@@ -10,6 +10,8 @@ namespace Utilities
 {
     public static class Net
     {
+        private const int MaxStringDownloadAttempts = 3;
+
         private static readonly HttpClient httpClient = new(
             new HttpClientHandler
             {
@@ -19,20 +21,46 @@ namespace Utilities
 
         public static async Task<string> DownloadStringAsync ( string uri )
         {
+            return await DownloadStringAsync( uri, httpClient, MaxStringDownloadAttempts, DelayBeforeRetryAsync )
+                .ConfigureAwait(false);
+        }
+
+        internal static async Task<string> DownloadStringAsync (
+            string uri,
+            HttpClient client,
+            int maxAttempts,
+            Func<int, Task> delayBeforeRetryAsync )
+        {
+            if ( maxAttempts < 1 )
+            {
+                throw new ArgumentOutOfRangeException( nameof(maxAttempts), maxAttempts, "At least one attempt is required." );
+            }
+
             try
             {
-                Logging.Debug( "Requesting " + uri );
-                using ( var response = await httpClient.GetAsync( uri, HttpCompletionOption.ResponseHeadersRead ).ConfigureAwait(false) )
+                for ( var attempt = 1; attempt <= maxAttempts; attempt++ )
                 {
-                    if ( !response.IsSuccessStatusCode )
+                    try
                     {
-                        Logging.Error( $"Error obtaining string response from {uri}: {response.StatusCode}" );
-                        return null;
-                    }
+                        Logging.Debug( "Requesting " + uri );
+                        using ( var response = await client.GetAsync( uri, HttpCompletionOption.ResponseHeadersRead ).ConfigureAwait(false) )
+                        {
+                            if ( !response.IsSuccessStatusCode )
+                            {
+                                Logging.Error( $"Error obtaining string response from {uri}: {response.StatusCode}" );
+                                return null;
+                            }
 
-                    var encoding = GetEncodingFromResponse( response );
-                    Logging.Debug( "Reading response from " + uri );
-                    return await ReadResponseStringAsync( response, encoding ).ConfigureAwait(false);
+                            var encoding = GetEncodingFromResponse( response );
+                            Logging.Debug( "Reading response from " + uri );
+                            return await ReadResponseStringAsync( response, encoding ).ConfigureAwait(false);
+                        }
+                    }
+                    catch ( Exception e ) when ( attempt < maxAttempts && IsTransientDownloadException( e ) )
+                    {
+                        Logging.Warn( $"Error obtaining string response from {uri}: {e.Message}. Retrying ({attempt + 1}/{maxAttempts}).", e );
+                        await delayBeforeRetryAsync( attempt ).ConfigureAwait(false);
+                    }
                 }
             }
             catch ( HttpRequestException hre ) when (hre.InnerException is WebException we)
@@ -45,6 +73,21 @@ namespace Utilities
                 Logging.Error( $"Error obtaining string response from {uri}: {e.Message}", e );
                 return null;
             }
+
+            return null;
+        }
+
+        private static Task DelayBeforeRetryAsync ( int attempt )
+        {
+            return Task.Delay( 250 * attempt );
+        }
+
+        private static bool IsTransientDownloadException ( Exception exception )
+        {
+            return exception is HttpRequestException or
+                                IOException or
+                                TaskCanceledException or
+                                WebException;
         }
 
         private static Encoding GetEncodingFromResponse ( HttpResponseMessage response )
