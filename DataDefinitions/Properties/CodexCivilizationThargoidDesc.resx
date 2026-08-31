@@ -53,6 +53,7 @@
     value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
+
     mimetype: application/x-microsoft.net.object.bytearray.base64
     value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
@@ -128,6 +129,9 @@
   <data name="Cyclops" xml:space="preserve">
     <value>These powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic.</value>
   </data>
+  <data name="Glaive" xml:space="preserve">
+    <value>This is a specialized Thargoid strike craft, quick and aggressive.</value>
+  </data>
   <data name="Hydra" xml:space="preserve">
     <value>These powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic.</value>
   </data>
@@ -147,10 +151,13 @@
     <value>This ship can remotely repair damage to nearby Thargoid Scouts.</value>
   </data>
   <data name="Scavengers" xml:space="preserve">
-    <value>Biomechanical constructs created by the Thargoids.</value>
+    <value>These are biomechanical constructs created by the Thargoids.</value>
+  </data>
+  <data name="Scythe" xml:space="preserve">
+    <value>This is a specialized Thargoid craft which prioritizes abducting humans.</value>
   </data>
   <data name="TG_DataScan" xml:space="preserve">
-    <value>A piece of Thargoid technology.</value>
+    <value>This is a piece of Thargoid technology.</value>
   </data>
   <data name="TG_Pod" xml:space="preserve">
     <value>These cyst-like growths are a symptom of Thargoid interference with a planet's ecology.</value>
@@ -158,10 +165,34 @@
   <data name="TG_Transmitter" xml:space="preserve">
     <value>These devices are able to generate holographic star maps.</value>
   </data>
+  <data name="Thargoid_Barnacle_Matrix" xml:space="preserve">
+    <value>These biological structures share features with other Thargoid barnacles but have an evolved root-like structure which elevates them from the ground in some cases.</value>
+  </data>
+  <data name="Thargoid_Barnacle_Spikes" xml:space="preserve">
+    <value>These biological structures are typically found near Thargoid barnacles. Smaller ones contain rare elements, while larger ones contain meta-alloys.</value>
+  </data>
+  <data name="Thargoid_Coral_Root" xml:space="preserve">
+    <value>These biological structures are part of the root-like system beneath Thargoid spire sites.</value>
+  </data>
+  <data name="Thargoid_Coral_Tree" xml:space="preserve">
+    <value>These upright, branched protrusions are part of the root-like system beneath Thargoid spire sites. They ooze quantities of an unknown sap. </value>
+  </data>
+  <data name="Thargoid_Tower_ExtraHigh" xml:space="preserve">
+    <value>This is an enormous Thargoid spire, several kilometers tall. Believed to be the main processing plant of the spire site's subterranean industry. </value>
+  </data>
+  <data name="Thargoid_Tower_High" xml:space="preserve">
+    <value>This is one of the largest of the non-primary spires. Believed to be a vital component of the spire site's operation.</value>
+  </data>
+  <data name="Thargoid_Tower_Low" xml:space="preserve">
+    <value>This is one of the smallest Thargoid spire to have sprouted above the ground. Believed to be a regulatory component of the spire site's operation.</value>
+  </data>
+  <data name="Thargoid_Tower_Med" xml:space="preserve">
+    <value>This is an average sized Thargoid spire which has sprouted above the ground. Believed to be a core component of the spire site's operation.</value>
+  </data>
   <data name="Wrecked_Interceptor" xml:space="preserve">
-    <value>The wreckage of a Thargoid Interceptor, a Thargoid attack ship.</value>
+    <value>This is the wreckage of a Thargoid Interceptor, a Thargoid attack ship.</value>
   </data>
   <data name="Wrecked_Scout" xml:space="preserve">
-    <value>The wreckage of a Thargoid Scout, a small Thargoid attack ship.</value>
+    <value>This is the wreckage of a Thargoid Scout, a small Thargoid attack ship.</value>
   </data>
 </root>

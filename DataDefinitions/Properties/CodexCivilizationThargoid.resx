@@ -165,8 +165,29 @@
   <data name="TG_Transmitter" xml:space="preserve">
     <value>Thargoid Device</value>
   </data>
+  <data name="Thargoid_Barnacle_Matrix" xml:space="preserve">
+    <value>Thargoid Mega Barnacles</value>
+  </data>
+  <data name="Thargoid_Barnacle_Spikes" xml:space="preserve">
+    <value>Thargoid Barnacle Barbs</value>
+  </data>
   <data name="Thargoid_Coral_Root" xml:space="preserve">
     <value>Coral Root</value>
+  </data>
+  <data name="Thargoid_Coral_Tree" xml:space="preserve">
+    <value>Coral Tree</value>
+  </data>
+  <data name="Thargoid_Tower_ExtraHigh" xml:space="preserve">
+    <value>Primary Thargoid Spire</value>
+  </data>
+  <data name="Thargoid_Tower_High" xml:space="preserve">
+    <value>Major Thargoid Spire</value>
+  </data>
+  <data name="Thargoid_Tower_Low" xml:space="preserve">
+    <value>Minor Thargoid Spire</value>
+  </data>
+  <data name="Thargoid_Tower_Med" xml:space="preserve">
+    <value>Thargoid Spire</value>
   </data>
   <data name="Wrecked_Interceptor" xml:space="preserve">
     <value>Thargoid Interceptor Shipwreck</value>
