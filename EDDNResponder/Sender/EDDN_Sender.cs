@@ -181,9 +181,9 @@ namespace EddiEddnResponder.Sender
             {
                 Logging.Error( $"EDDN {body.schemaRef} Error: {hre.Message}", hre );
             }
-            catch ( HttpListenerException hle )
+            catch ( EddnResponseException ere )
             {
-                Logging.Error( $"EDDN Error: {hle.Message}", hle );
+                Logging.Error( $"EDDN {body.schemaRef} Error {(int)ere.StatusCode}: {ere.Message}", ere );
             }
         }
 
@@ -229,7 +229,7 @@ namespace EddiEddnResponder.Sender
 
             if ( status == HttpStatusCode.BadRequest ) // Code 400
             {
-                throw new HttpListenerException( 400, responseJson );
+                throw new EddnResponseException( status, responseJson );
             }
 
             if ( status == HttpStatusCode.UpgradeRequired ) // Code 426
@@ -237,12 +237,12 @@ namespace EddiEddnResponder.Sender
                 // Note that this deviates from the typical usage of code 426
                 // (which typically indicates that this client is using an obsolete security protocol.
                 invalidSchemas.Add( body.schemaRef );
-                throw new HttpListenerException( 426, $"Schema {body.schemaRef} is obsolete." );
+                throw new EddnResponseException( status, $"Schema {body.schemaRef} is obsolete." );
             }
 
             if ( (int)status >= 400 && status != HttpStatusCode.Accepted )
             {
-                throw new HttpListenerException( (int)status, "Unexpected EDDN response" );
+                throw new EddnResponseException( status, "Unexpected EDDN response" );
             }
         }
 
@@ -259,7 +259,7 @@ namespace EddiEddnResponder.Sender
             if ( response.StatusCode == HttpStatusCode.Accepted ) { return true; }
 
             var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            throw new HttpListenerException( (int)response.StatusCode, $"Compressed retry failed: {responseJson}" );
+            throw new EddnResponseException( response.StatusCode, $"Compressed retry failed: {responseJson}" );
         }
 
         internal static byte[] Compress ( byte[] data )
