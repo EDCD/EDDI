@@ -529,7 +529,7 @@ namespace EddiFleetCarrierMonitor
             // If we are at a carrier we own, make sure that it is up to date.
             if ( carrier != null )
             {
-                FleetCarrier.SetCurrentLocation(@event.systemAddress, @event.systemname, @event.bodyId);
+                carrier.SetCurrentLocation(@event.systemAddress, @event.systemname, @event.bodyId);
                 carrier.timestamp = @event.timestamp;
                 WriteConfiguration();
             }
