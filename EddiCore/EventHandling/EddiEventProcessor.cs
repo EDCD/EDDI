@@ -1181,7 +1181,7 @@ namespace EddiCore.EventHandling
 
             if ( theEvent.shipid is not null && ( Vehicle == Constants.VEHICLE_SRV || Vehicle == Constants.VEHICLE_FIGHTER ) )
             {
-                GameState.DeployedVessels[ (int)theEvent.shipid ] = VesselDefinition.FromEDName(theEvent.shipEDModel);
+                GameState.DeployedVessels.TryAdd( (int)theEvent.shipid, VesselDefinition.FromEDName(theEvent.shipEDModel) );
             }
 
             // Set Environment state for the ship if 'startlanded' is present in the event
@@ -1231,7 +1231,7 @@ namespace EddiCore.EventHandling
                     : Constants.VEHICLE_FIGHTER ) // We are in a vessel (either a piloted SRV or telepresence fighter). 
                 : Constants.VEHICLE_SHIP; // We are (still) in the ship
 
-            GameState.DeployedVessels.Add( @event.id, @event.vesselDefinition );
+            GameState.DeployedVessels.TryAdd( @event.id, @event.vesselDefinition );
 
             return true;
         }
