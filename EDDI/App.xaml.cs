@@ -162,17 +162,23 @@ namespace Eddi
             var preloadTasks = PreloadCriticalServicesAsync();
             Task.WaitAll( preloadTasks.ToArray() );
 
+            var mainWindow = new MainWindow();
+
+            // Announce any available upgrade after the main window has initialized speech services.
+            EddiUpgrader.AnnounceUpgradeIfAvailableAsync()
+                .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
+
             if ( fromVA )
             {
                 // Create the MainWindow with visibility controlled by code-behind logic
                 // (hidden by default in VA mode, shown on demand via VA commands)
-                app.MainWindow = new MainWindow();
+                app.MainWindow = mainWindow;
                 app.Run();
             }
             else
             {
                 // Start by displaying the MainWindow
-                app.Run( new MainWindow() );
+                app.Run( mainWindow );
             }
         }
 

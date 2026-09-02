@@ -20,6 +20,9 @@ namespace EddiCore.Upgrader
         public static string UpgradeVersion { get; private set; }
         private static string UpgradeLocation;
 
+        internal static Func<string, Task> SaySystemMessageAsync = message =>
+            SpeechService.Instance.SayAsync( null, message, 0 );
+
         /// <summary>
         /// Check to see if an upgrade is available and populate relevant variables
         /// </summary>
@@ -85,9 +88,21 @@ namespace EddiCore.Upgrader
             catch ( Exception ex )
             {
                 Logging.Warn( "Failed to access GitHub API for releases", ex );
-                SpeechService.Instance.SayAsync( null, Properties.Resources.update_server_unreachable, 0 )
+                SaySystemMessageAsync( Properties.Resources.update_server_unreachable )
                     .SafeFireAndForget( e => Logging.Error( e.Message, e ) );
             }
+        }
+
+        public static Task AnnounceUpgradeIfAvailableAsync ()
+        {
+            if ( !UpgradeAvailable )
+            {
+                return Task.CompletedTask;
+            }
+
+            var spokenVersion = UpgradeVersion.Replace( ".", $" {Properties.Resources.point} " );
+            var message = string.Format( Properties.Resources.update_available, spokenVersion );
+            return SaySystemMessageAsync( message );
         }
 
         private static void ProcessRelease ( JObject release )
@@ -112,11 +127,6 @@ namespace EddiCore.Upgrader
                         {
                             UpgradeLocation = downloadUrl;
                             UpgradeVersion = version;
-
-                            var spokenVersion = version.Replace(".", $" {Properties.Resources.point} ");
-                            var message = string.Format(Properties.Resources.update_available, spokenVersion);
-                            SpeechService.Instance.SayAsync( null, message, 0 )
-                                .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                         }
 
                         break; // Exit loop once the correct asset is found
@@ -160,6 +170,11 @@ namespace EddiCore.Upgrader
                 await SpeechService.Instance.SayAsync(null, Properties.Resources.upgrade_failed, 0).ConfigureAwait(false);
                 Logging.Error("Upgrade failed", ex);
             }
+        }
+
+        internal static void ResetTestHooks ()
+        {
+            SaySystemMessageAsync = message => SpeechService.Instance.SayAsync( null, message, 0 );
         }
     }
 }

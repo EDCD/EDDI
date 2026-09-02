@@ -5,6 +5,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ## 5.0.6
   * Core
     * Add support for the new "Rhino" mining SRV.
+    * Fixed EDDI failing to verbally announce new EDDI releases when EDDI starts up.
     * Various bug fixes from telemetry.
   * Speech Responder
     * Scripts

@@ -507,6 +507,7 @@ namespace EddiUI
 
                 // Because we have changed to wanting beta upgrades we need to re-check upgrade information
                 await EddiUpgrader.CheckUpgradeAsync().ConfigureAwait(true);
+                await EddiUpgrader.AnnounceUpgradeIfAvailableAsync().ConfigureAwait(true);
                 setStatusInfo();
             }
             catch (Exception ex)
@@ -525,6 +526,7 @@ namespace EddiUI
 
                 // Because we have changed to not wanting beta upgrades we need to re-check upgrade information
                 await EddiUpgrader.CheckUpgradeAsync().ConfigureAwait(true);
+                await EddiUpgrader.AnnounceUpgradeIfAvailableAsync().ConfigureAwait(true);
                 setStatusInfo();
             }
             catch (Exception ex)
