@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
@@ -83,22 +84,8 @@ namespace EddiDataDefinitions
             }
         }
 
-        [JsonIgnore]
-        private int? _maximum;
-
         [PublicAPI( "your maximum amount" )]
-        public int? maximum
-        {
-            get => _maximum;
-            set
-            {
-                if (_maximum != value)
-                {
-                    _maximum = value;
-                    NotifyPropertyChanged("maximum");
-                }
-            }
-        }
+        public int? maximum => 350 - ( 50 * Math.Max(Rarity.level, 1 ) );
 
         [JsonIgnore]
         private string _Category;
@@ -123,13 +110,14 @@ namespace EddiDataDefinitions
         [PublicAPI( "the material's rarity, as an object" ), JsonIgnore]
         public Rarity Rarity
         {
-            get => _Rarity;
+            get => _Rarity ?? Rarity.Unknown;
             set
             {
                 if ( _Rarity != value )
                 {
                     _Rarity = value;
                     NotifyPropertyChanged( "Rarity" );
+                    NotifyPropertyChanged("maximum");
                 }
             }
         }
@@ -150,15 +138,15 @@ namespace EddiDataDefinitions
         }
 
         public MaterialAmount(Material material, int amount)
-            : this(material.edname, amount, null, null, null)
+            : this(material.edname, amount, null, null)
         { }
 
-        public MaterialAmount(Material material, int amount, int? minimum, int? desired, int? maximum)
-            : this(material.edname, amount, minimum, desired, maximum)
+        public MaterialAmount(Material material, int amount, int? minimum, int? desired)
+            : this(material.edname, amount, minimum, desired)
         { }
 
         [JsonConstructor]
-        public MaterialAmount(string edname, int amount, int? minimum, int? desired, int? maximum)
+        public MaterialAmount(string edname, int amount, int? minimum, int? desired)
         {
             var My_material = Material.FromEDName(edname);
             this.material = My_material?.localizedName;
@@ -166,7 +154,6 @@ namespace EddiDataDefinitions
             this.amount = amount;
             this.minimum = minimum;
             this.desired = desired;
-            this.maximum = maximum;
             this.category = My_material?.Category.localizedName;
             this.Rarity = My_material?.Rarity ?? Rarity.Unknown;
         }

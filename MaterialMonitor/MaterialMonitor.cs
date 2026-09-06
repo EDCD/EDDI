@@ -172,18 +172,19 @@ namespace EddiMaterialMonitor
 
         private void handleMaterialInventoryEvent(MaterialInventoryEvent @event)
         {
-            // Set all listed material quantities to match the event
+            // Set all listed material quantities with complete material definitions to match the event
             var knownNames = new List<string>();
-            foreach (var materialAmount in @event.inventory)
+            foreach (var materialAmount in @event.inventory
+                .Where( m => Material.FromEDName(m.edname).Category != MaterialCategory.Unknown ) )
             {
                 setMaterial(materialAmount.edname, materialAmount.amount);
                 knownNames.Add(materialAmount.edname);
             }
 
-            // Set any unlisted materials with known definitions to zero
+            // Set any unlisted materials with complete material definitions to zero
             var unlistedMaterials = Material.AllOfThem
-                .Where(m => m.Category != MaterialCategory.Unknown)
-                .Select(m => m.edname).Except(knownNames).ToList();
+                .Where(m => !knownNames.Contains(m.edname) && m.Category != MaterialCategory.Unknown)
+                .Select(m => m.edname).ToList();
             foreach (var unlistedMaterial in unlistedMaterials)
             {
                 setMaterial(unlistedMaterial, 0);
@@ -461,7 +462,7 @@ namespace EddiMaterialMonitor
             lock (inventoryLock)
             {
                 // Write material configuration with current inventory
-                var materials = inventory.Select(m => new MaterialAmount(m.edname, m.amount, m.minimum, m.desired, m.maximum)).ToList();
+                var materials = inventory.Select(m => new MaterialAmount(m.edname, m.amount, m.minimum, m.desired)).ToList();
                 var configuration = new MaterialMonitorConfiguration
                 {
                     materials = materials,
@@ -485,19 +486,10 @@ namespace EddiMaterialMonitor
                 // Start with the materials we have in the log
                 foreach (var ma in configuration.materials)
                 {
-                    var ma2 = new MaterialAmount(ma.edname, ma.amount, ma.minimum, ma.desired, ma.maximum);
+                    var ma2 = new MaterialAmount(ma.edname, ma.amount, ma.minimum, ma.desired);
                     // Make sure the edname is unique before adding the material to the new inventory 
                     if (newInventory.All(inv => inv.edname != ma2.edname))
                     {
-                        // Set material maximums if they aren't already defined
-                        if (ma2.maximum == null)
-                        {
-                            var rarityLevel = Material.FromEDName(ma2.edname)?.Rarity.level ?? 0;
-                            if (rarityLevel > 0)
-                            {
-                                ma2.maximum = (-50 * rarityLevel) + 350;
-                            }
-                        }
                         newInventory.Add(ma2);
                     }
                 }

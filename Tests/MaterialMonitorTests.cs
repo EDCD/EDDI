@@ -52,7 +52,7 @@ namespace Tests
             Assert.AreEqual("zirconium", zirconiumAmount.edname);
             Assert.AreEqual(13, zirconiumAmount.amount);
             Assert.AreEqual(EddiDataDefinitions.Properties.Materials.zirconium, Material.FromEDName(config.materials[1].edname)?.localizedName);
-            Assert.AreEqual(100, config.materials[1].maximum);
+            Assert.AreEqual(250, config.materials[1].maximum);
             Assert.AreEqual(50, config.materials[1].desired);
             Assert.IsNull(config.materials[1].minimum);
             Assert.AreEqual(EddiDataDefinitions.Properties.MaterialCategories.Element, Material.FromEDName(config.materials[1].edname)?.Category.localizedName);
@@ -126,7 +126,7 @@ namespace Tests
             {
                 materials = new List<MaterialAmount>
                 {
-                    new(Material.Zirconium.edname, 13, null, 50, 100)
+                    new(Material.Zirconium.edname, 13, null, 50)
                 }
             };
 
@@ -183,7 +183,7 @@ namespace Tests
             var antimony = materialMonitor.inventory.SingleOrDefault(m => string.Equals(m.edname, "antimony", StringComparison.InvariantCultureIgnoreCase));
             if (antimony is null)
             {
-                antimony = new MaterialAmount("antimony", 5, 25, 50, 75);
+                antimony = new MaterialAmount("antimony", 5, 25, 50);
                 materialMonitor.inventory.Add(antimony);
             }
             else

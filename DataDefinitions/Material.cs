@@ -33,6 +33,9 @@ namespace EddiDataDefinitions
         // then taking 90% of that value as a definition for a `great` percentage and by taking 75% of that value as a `good` percentage.
         // The data used to generate the current values are located at https://docs.google.com/spreadsheets/d/1UcgHvnDF-lYYPD7PNkT_g7B1dr9lBBkVPPlL51ITrz4
 
+        // Grade 0, Unknown Rarity and Category
+        public static readonly Material SearchRescueVoucher = new( "searchrescuevoucher", MaterialCategory.Unknown, Rarity.Unknown ); // Infrequently written. Perhaps only in some preview release builds.
+
         // Grade 1, Very Common
         public static readonly Material Carbon = new("carbon", Element, VeryCommon, "C", 24.6M, 29.5M);
         public static readonly Material Iron = new("iron", Element, VeryCommon, "Fe", 36.4M, 43.6M);
@@ -133,9 +136,6 @@ namespace EddiDataDefinitions
         // Grade 5 Xeno
         public static readonly Material Guardian_VesselBlueprint = new("guardian_vesselblueprint", Data, VeryRare);
         public static readonly Material Tg_StructuralData02 = new( "tg_structuraldata02", Data, VeryRare );
-
-        // Unknown rarity
-        public static readonly Material SearchRescueVoucher = new( "searchrescuevoucher", Data, Rarity.Unknown );
 
         #endregion
 
