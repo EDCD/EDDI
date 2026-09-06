@@ -991,6 +991,24 @@ namespace Tests
         }
 
         [TestMethod]
+        [DataRow( "Int_LargeBuggyBay_Size2_Class3_Free", "LargePlanetaryVehicleHangar", 2 )]
+        [DataRow( "Int_LargeBuggyBay_Size4_Class3_Free", "LargePlanetaryVehicleHangar", 4 )]
+        [DataRow( "Int_LargeBuggyBay_Size6_Class3_Free", "LargePlanetaryVehicleHangar", 6 )]
+        [DataRow( "Int_MkIILargeBuggyBay_Size2_Class3_Free", "LargePlanetaryVehicleHangar_MkII", 2 )]
+        [DataRow( "Int_MkIILargeBuggyBay_Size4_Class3_Free", "LargePlanetaryVehicleHangar_MkII", 4 )]
+        [DataRow( "Int_MkIILargeBuggyBay_Size6_Class3_Free", "LargePlanetaryVehicleHangar_MkII", 6 )]
+        public void TestFreeLargeVehicleHangarFromEDName ( string edName, string basename, int size )
+        {
+            var module = Module.FromEDName( edName );
+            Assert.IsNotNull( module );
+            Assert.AreEqual( edName, module.edname );
+            Assert.AreEqual( basename, module.basename );
+            Assert.AreEqual( size, module.@class );
+            Assert.AreEqual( "F", module.grade );
+            Assert.AreEqual( 0L, module.value );
+        }
+
+        [TestMethod]
         public void TestLakonMinerSpecialtySlots()
         {
             var type11 = ShipDefinitions.FromModel("LakonMiner");

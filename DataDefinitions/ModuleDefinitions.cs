@@ -1224,7 +1224,7 @@ namespace EddiDataDefinitions
         public static readonly Module Int_Fighterbay_size5_class1_free = new( "Int_Fighterbay_size5_class1_free", "VesselHangar", 5, "D", 0); // Vessel Hangar Class 5 Rating D
         public static readonly Module Int_LargeBuggyBay_Size2_Class3_Free = new( "Int_LargeBuggyBay_Size2_Class3_Free", "LargePlanetaryVehicleHangar", 2, "F", 0); // Large Planetary Vehicle Hangar
         public static readonly Module Int_LargeBuggyBay_Size4_Class3_Free = new( "Int_LargeBuggyBay_Size4_Class3_Free", "LargePlanetaryVehicleHangar", 4, "F", 0); // Large Planetary Vehicle Hangar
-        public static readonly Module Int_LargeBuggyBay_Size6_Class3_Free = new( "Int_LargeBuggyBay_Size6_Class_Free3", "LargePlanetaryVehicleHangar", 6, "F", 0); // Large Planetary Vehicle Hangar
+        public static readonly Module Int_LargeBuggyBay_Size6_Class3_Free = new( "Int_LargeBuggyBay_Size6_Class3_Free", "LargePlanetaryVehicleHangar", 6, "F", 0); // Large Planetary Vehicle Hangar
         public static readonly Module Int_MkII_LargeBuggyBay_Size2_Class3_Free = new( "Int_MkIILargeBuggyBay_Size2_Class3_Free", "LargePlanetaryVehicleHangar_MkII", 2, "F", 0); // Mk II Large Planetary Vehicle Hangar
         public static readonly Module Int_MkII_LargeBuggyBay_Size4_Class3_Free = new( "Int_MkIILargeBuggyBay_Size4_Class3_Free", "LargePlanetaryVehicleHangar_MkII", 4, "F", 0); // Mk II Large Planetary Vehicle Hangar
         public static readonly Module Int_MkII_LargeBuggyBay_Size6_Class3_Free = new( "Int_MkIILargeBuggyBay_Size6_Class3_Free", "LargePlanetaryVehicleHangar_MkII", 6, "F", 0); // Mk II Large Planetary Vehicle Hangar
