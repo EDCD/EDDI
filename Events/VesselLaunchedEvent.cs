@@ -52,8 +52,6 @@ namespace EddiEvents
 
         public static bool Handle ( DateTime timestamp, string edType, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {
-            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
-
             var loadoutEDName = JsonParsing.getString(data, "Loadout");
             var playercontrolled = JsonParsing.getBool(data, "PlayerControlled");
             var id = JsonParsing.getInt(data, "ID");
