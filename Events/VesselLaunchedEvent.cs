@@ -67,7 +67,10 @@ namespace EddiEvents
 
             string edName = JsonParsing.getString( data, $"{vesselTypeKey}" );
             VesselDefinition vesselDefinition = VesselDefinition.FromEDName( edName );
-            vesselDefinition.fallbackLocalizedName = JsonParsing.getString( data, $"{vesselTypeKey}_Localised" );
+            if ( vesselDefinition is not null )
+            {
+                vesselDefinition.fallbackLocalizedName = JsonParsing.getString( data, $"{vesselTypeKey}_Localised" );
+            }
             var loadoutDescription = LoadoutDescription.FromVesselAndLoadoutEDName( edName, loadoutEDName );
 
             events.Add( new VesselLaunchedEvent( timestamp, loadoutDescription, playercontrolled, vesselDefinition, id ) { raw = line, fromLoad = fromLogLoad } );

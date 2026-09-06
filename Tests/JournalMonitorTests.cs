@@ -1914,12 +1914,12 @@ namespace Tests
         [TestMethod]
         public void TestNomadVesselEvents()
         {
-            var launchLine = @"{ ""timestamp"":""2026-08-05T19:42:12Z"", ""event"":""LaunchFighter"", ""Loadout"":""galactic"", ""ID"":173, ""PlayerControlled"":true }";
+            var launchLine = @"{ ""timestamp"":""2026-09-04T08:25:49Z"", ""event"":""LaunchVessel"", ""VesselType"":""lander01"", ""VesselType_Localised"":""Nomad"", ""Loadout"":""Galactic"", ""ID"":173, ""PlayerControlled"":true }";
             var launchEvents = JournalMonitor.ParseJournalEntry(launchLine);
             Assert.HasCount( 1, launchEvents );
 
             var launchedEvent = (VesselLaunchedEvent)launchEvents[0];
-            Assert.AreEqual("galactic", launchedEvent.loadout);
+            Assert.AreEqual("Galactic", launchedEvent.loadout);
             Assert.IsTrue(launchedEvent.playercontrolled);
             Assert.AreEqual(173, launchedEvent.id);
             Assert.AreSame(VesselDefinition.Nomad, launchedEvent.vesselDefinition);
@@ -1938,22 +1938,119 @@ namespace Tests
         }
 
         [TestMethod]
-        public void TestFighterAndGenericSrvVesselEventsRemainDistinct()
+        [DataRow("base", "Base")]
+        [DataRow("advanced", "Advanced")]
+        [DataRow("galactic", "Galactic")]
+        public void TestLaunchVesselNomad(string loadout, string expectedLoadout)
         {
-            var fighterLine = @"{ ""timestamp"":""2026-06-27T07:17:08Z"", ""event"":""LaunchFighter"", ""Loadout"":""one"", ""ID"":96, ""PlayerControlled"":false }";
-            var fighterEvents = JournalMonitor.ParseJournalEntry(fighterLine);
-            Assert.HasCount( 1, fighterEvents );
-            var fighterEvent = (VesselLaunchedEvent)fighterEvents[0];
-            Assert.IsFalse(fighterEvent.playercontrolled);
-            Assert.IsNull(fighterEvent.vesselDefinition);
+            var line = new Newtonsoft.Json.Linq.JObject
+            {
+                ["timestamp"] = "2026-09-04T08:25:49Z",
+                ["event"] = "LaunchVessel",
+                ["VesselType"] = "lander01",
+                ["VesselType_Localised"] = "Nomad",
+                ["Loadout"] = loadout,
+                ["ID"] = 138,
+                ["PlayerControlled"] = true
+            }.ToString(Formatting.None);
 
-            var srvLine = @"{ ""timestamp"":""2022-11-24T23:44:25Z"", ""event"":""LaunchSRV"", ""SRVType"":""combat_multicrew_srv_01"", ""SRVType_Localised"":""SRV Scorpion"", ""Loadout"":""default"", ""ID"":53, ""PlayerControlled"":true }";
-            var srvEvents = JournalMonitor.ParseJournalEntry(srvLine);
-            Assert.HasCount( 1, srvEvents );
-            var srvEvent = (VesselLaunchedEvent)srvEvents[0];
-            Assert.AreSame(VesselDefinition.SRV_Scorpion, srvEvent.vesselDefinition);
-            Assert.AreEqual("Scorpion SRV", srvEvent.vesselDescription);
-            Assert.IsFalse(srvEvent.isTelepresence);
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.HasCount(1, events);
+            var launched = (VesselLaunchedEvent)events[0];
+            Assert.AreSame(VesselDefinition.Nomad, launched.vesselDefinition);
+            Assert.AreEqual("Nomad", launched.vesselDescriptionInvariant);
+            Assert.AreEqual(expectedLoadout, launched.loadout);
+            var expectedDescription = loadout switch
+            {
+                "base" => LoadoutDescription.NomadBase,
+                "advanced" => LoadoutDescription.NomadAdvanced,
+                _ => LoadoutDescription.NomadGalactic
+            };
+            Assert.AreSame(expectedDescription, launched.LoadoutDescription);
+            Assert.AreEqual(expectedDescription.localizedName, launched.loadoutDescription);
+            Assert.AreEqual(138, launched.id);
+            Assert.IsTrue(launched.playercontrolled);
+            Assert.IsFalse(launched.isTelepresence);
+            Assert.AreEqual(line, launched.raw);
+            Assert.IsFalse(launched.fromLoad);
+        }
+
+        [TestMethod]
+        [DataRow("FighterType", true)]
+        [DataRow("FighterType", false)]
+        [DataRow("", true)]
+        [DataRow("", false)]
+        public void TestLaunchFighterTypeFields(string typeKey, bool playerControlled)
+        {
+            var data = new Newtonsoft.Json.Linq.JObject
+            {
+                ["timestamp"] = "2026-09-04T08:32:48Z",
+                ["event"] = "LaunchFighter",
+                [typeKey] = "independent_fighter",
+                [typeKey + "_Localised"] = "Taipan",
+                ["Loadout"] = "one",
+                ["ID"] = 96,
+                ["PlayerControlled"] = playerControlled
+            };
+            // A named type must take precedence over the malformed empty-key field.
+            if (typeKey != "")
+            {
+                data[""] = "lander01";
+                data["_Localised"] = "Nomad";
+            }
+
+            var events = JournalMonitor.ParseJournalEntry(data.ToString(Formatting.None));
+            Assert.HasCount(1, events);
+            var launched = (VesselLaunchedEvent)events[0];
+            Assert.AreSame(VesselDefinition.Fighter_Independent, launched.vesselDefinition);
+            Assert.AreEqual("Taipan", launched.vesselDescriptionInvariant);
+            Assert.AreSame(LoadoutDescription.IndependentOne, launched.LoadoutDescription);
+            Assert.AreEqual("One", launched.loadout);
+            Assert.AreEqual(LoadoutDescription.IndependentOne.localizedName, launched.loadoutDescription);
+            Assert.AreEqual(96, launched.id);
+            Assert.AreEqual(playerControlled, launched.playercontrolled);
+            Assert.IsTrue(launched.isTelepresence);
+        }
+
+        [TestMethod]
+        public void TestLaunchSrvLoadoutDescription()
+        {
+            var line = @"{ ""timestamp"":""2022-11-24T23:44:25Z"", ""event"":""LaunchSRV"", ""SRVType"":""combat_multicrew_srv_01"", ""SRVType_Localised"":""SRV Scorpion"", ""Loadout"":""default"", ""ID"":53, ""PlayerControlled"":true }";
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.HasCount(1, events);
+            var launched = (VesselLaunchedEvent)events[0];
+            Assert.AreSame(VesselDefinition.SRV_Scorpion, launched.vesselDefinition);
+            Assert.AreEqual("Scorpion SRV", launched.vesselDescriptionInvariant);
+            Assert.AreSame(LoadoutDescription.Default, launched.LoadoutDescription);
+            Assert.AreEqual("Default", launched.loadout);
+            Assert.AreEqual(LoadoutDescription.Default.localizedName, launched.loadoutDescription);
+            Assert.AreEqual(53, launched.id);
+            Assert.IsTrue(launched.playercontrolled);
+            Assert.IsFalse(launched.isTelepresence);
+        }
+
+        [TestMethod]
+        [DataRow("future_loadout")]
+        [DataRow(null)]
+        public void TestLaunchVesselUnknownOrMissingLoadout(string loadout)
+        {
+            var data = new Newtonsoft.Json.Linq.JObject
+            {
+                ["timestamp"] = "2026-09-04T08:25:49Z",
+                ["event"] = "LaunchVessel",
+                ["VesselType"] = "lander01",
+                ["ID"] = 138,
+                ["PlayerControlled"] = true
+            };
+            if (loadout != null) { data["Loadout"] = loadout; }
+
+            var events = JournalMonitor.ParseJournalEntry(data.ToString(Formatting.None));
+            Assert.HasCount(1, events);
+            var launched = (VesselLaunchedEvent)events[0];
+            Assert.AreSame(VesselDefinition.Nomad, launched.vesselDefinition);
+            Assert.AreEqual(loadout, launched.loadout);
+            Assert.AreEqual(loadout, launched.loadoutDescription);
+            Assert.IsFalse(launched.isTelepresence);
         }
 
         [TestMethod]

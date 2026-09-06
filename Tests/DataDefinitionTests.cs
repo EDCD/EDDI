@@ -1027,7 +1027,7 @@ namespace Tests
         [TestMethod]
         [DataRow( null, null, false, false, false )] // Test for a null input
         [DataRow( "", null, false, false, false )] // Test for an empty string
-        [DataRow( "NonExistent_Vessel", null, false, false, false )] // Test for a non-existent vessel
+        [DataRow( "NonExistent_Vessel", "NonExistentVessel", false, false, false )] // Test for a non-existent vessel
         [DataRow( "Empire_Fighter", "GU-97", true, true, false )] // Test for a known vessel with expected invariant name and telepresence
         [DataRow( "federation_fighter", "F63 Condor", true, true, false )] // Case-insensitive test
         [DataRow( "Independent_Fighter", "Taipan", true, true, false )]

@@ -266,7 +266,7 @@ namespace Tests
             fakeSpanshHttpClient.Expect( "systems/field_values/system_names?q=Eravate", @"{""min_max"":[{""id64"":5856221467362,""name"":""Eravate"",""x"":-42.4375,""y"":-3.15625,""z"":59.65625}],""values"":[""Eravate""]}" );
 
             var launchEvent = (VesselLaunchedEvent)JournalMonitor
-                .ParseJournalEntry(@"{ ""timestamp"":""2026-08-05T19:42:12Z"", ""event"":""LaunchFighter"", ""Loadout"":""galactic"", ""ID"":173, ""PlayerControlled"":true }")[0];
+                .ParseJournalEntry(@"{ ""timestamp"":""2026-09-04T08:25:49Z"", ""event"":""LaunchVessel"", ""VesselType"":""lander01"", ""VesselType_Localised"":""Nomad"", ""Loadout"":""Galactic"", ""ID"":173, ""PlayerControlled"":true }")[0];
             Assert.IsTrue(await processor.ProcessEventAsync(launchEvent).ConfigureAwait(false));
             Assert.AreEqual(Constants.VEHICLE_SRV, context.GameStateOwner.Vehicle);
             Assert.IsTrue(context.GameStateOwner.DeployedVessels.TryGetValue(173, out var launchedVessel));
