@@ -9,7 +9,7 @@ namespace EddiEvents
     [PublicAPI]
     public class VesselLaunchedEvent (
         DateTime timestamp,
-        string loadout,
+        LoadoutDescription loadoutDesc,
         bool playercontrolled,
         VesselDefinition vesselDefinition,
         int id )
@@ -20,63 +20,58 @@ namespace EddiEvents
         public static readonly string[] SAMPLES =
         {
             @"{ ""timestamp"":""2022-11-24T23:44:25Z"", ""event"":""LaunchSRV"", ""SRVType"":""combat_multicrew_srv_01"", ""SRVType_Localised"":""SRV Scorpion"", ""Loadout"":""default"", ""ID"":53, ""PlayerControlled"":true }",
-            @"{ ""timestamp"":""2026-06-22T20:49:11Z"", ""event"":""LaunchFighter"", ""Loadout"":""base"", ""ID"":85, ""PlayerControlled"":true }",
-            @"{ ""timestamp"":""2026-06-27T07:17:08Z"", ""event"":""LaunchFighter"", ""Loadout"":""one"", ""ID"":96, ""PlayerControlled"":false }"
+            @"{ ""timestamp"":""2026-09-04T08:25:49Z"", ""event"":""LaunchVessel"", ""VesselType"":""lander01"", ""VesselType_Localised"":""Nomad"", ""Loadout"":""base"", ""ID"":138, ""PlayerControlled"":true }",
+            @"{ ""timestamp"":""2026-09-04T08:32:48Z"", ""event"":""LaunchFighter"", """":""independent_fighter"", ""_Localised"":""Taipan"", ""Loadout"":""one"", ""ID"":138, ""PlayerControlled"":true }"
         };
 
-        [PublicAPI("The vessel's loadout")]
-        public string loadout { get; private set; } = loadout;
+        [PublicAPI( "The localized vessel description" )]
+        public string vesselDescription => vesselDefinition?.localizedName;
 
-        [PublicAPI("True if the vessel is controlled by the player")]
-        public bool playercontrolled { get; private set; } = playercontrolled;
+        [PublicAPI( "The invariant vessel description" )]
+        public string vesselDescriptionInvariant => vesselDefinition?.invariantName;
+
+        [PublicAPI( "The vessel's loadout type" )]
+        public string loadout => LoadoutDescription?.edname;
+
+        [PublicAPI( "The vessel's localized loadout description" )]
+        public string loadoutDescription => LoadoutDescription?.localizedName;
 
         [PublicAPI( "The ID assigned to the vessel" )]
         public int id { get; private set; } = id;
 
-        [PublicAPI( "The localized vessel description (not available for fighters)" )]
-        public string vesselDescription => vesselDefinition?.localizedName;
-
-        [PublicAPI( "The invariant vessel description (not available for fighters)" )]
-        public string vesselDescriptionInvariant => vesselDefinition?.invariantName;
+        [PublicAPI( "True if the vessel is controlled by the player" )]
+        public bool playercontrolled { get; private set; } = playercontrolled;
 
         [PublicAPI( "Whether the vessel is controlled via telepresence" )]
-        public bool isTelepresence => vesselDefinition?.vesselGroup != VesselGroup.Piloted; // vesselDefinition may be null for fighters
+        public bool isTelepresence => vesselDefinition?.vesselGroup != VesselGroup.Piloted;
 
         // Not intended to be public facing at this time
         public VesselDefinition vesselDefinition { get; private set; } = vesselDefinition;
+
+        public LoadoutDescription LoadoutDescription { get; private set; } = loadoutDesc;
 
         public static bool Handle ( DateTime timestamp, string edType, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {
             if ( fromLogLoad ) { return true; } // Skip handling this during log loading
 
-            var loadout = JsonParsing.getString(data, "Loadout");
+            var loadoutEDName = JsonParsing.getString(data, "Loadout");
             var playercontrolled = JsonParsing.getBool(data, "PlayerControlled");
             var id = JsonParsing.getInt(data, "ID");
-            var vesselGroup = edType.Replace("Launch", "").ToLowerInvariant(); // e.g. LaunchFighter or LaunchSRV
+            var vesselTypeKey = edType.Replace("Launch", "") + "Type"; // e.g. FighterType, SRVType, or VesselType
 
-            VesselDefinition vesselDefinition = null;
-            if ( vesselGroup == "srv" )
+            // We've observed missing `FighterType` and `FighterType_Localised` field names in the `LaunchFighter` event.
+            if ( data.ContainsKey( "" ) && !data.ContainsKey( $"{vesselTypeKey}" ) )
             {
-                var edName = JsonParsing.getString(data, "SRVType");
-                vesselDefinition = VesselDefinition.FromEDName( edName ) ?? new VesselDefinition( edName, VesselGroup.Piloted );
-                vesselDefinition.fallbackLocalizedName = JsonParsing.getString( data, "SRVType_Localised" );
+                vesselTypeKey = "";
             }
 
-            // For now, a Nomad is the only "fighter" grouped vessel that uses loadouts like "base", "advanced", or "galactic"
-            if ( vesselGroup == "fighter" && playercontrolled && isNomadLoadout(loadout) )
-            {
-                vesselDefinition = VesselDefinition.Nomad;
-            }
+            string edName = JsonParsing.getString( data, $"{vesselTypeKey}" );
+            VesselDefinition vesselDefinition = VesselDefinition.FromEDName( edName );
+            vesselDefinition.fallbackLocalizedName = JsonParsing.getString( data, $"{vesselTypeKey}_Localised" );
+            var loadoutDescription = LoadoutDescription.FromVesselAndLoadoutEDName( edName, loadoutEDName );
 
-            events.Add( new VesselLaunchedEvent( timestamp, loadout, playercontrolled, vesselDefinition, id ) { raw = line, fromLoad = fromLogLoad } );
+            events.Add( new VesselLaunchedEvent( timestamp, loadoutDescription, playercontrolled, vesselDefinition, id ) { raw = line, fromLoad = fromLogLoad } );
             return true;
-        }
-
-        private static bool isNomadLoadout ( string loadout )
-        {
-            return LoadoutDescription.AllOfThem
-                .Where( l => l.vesselEDName.Equals( VesselDefinition.Nomad.edname, StringComparison.OrdinalIgnoreCase ) )
-                .Any( l => l.edname.Equals( loadout, StringComparison.OrdinalIgnoreCase ) );
         }
     }
 }

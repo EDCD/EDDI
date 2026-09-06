@@ -1964,6 +1964,12 @@ namespace EddiJournalMonitor
                                 break;
                             case "CarrierNameChange":
                                 {
+                                    // We've observed a missing `CarrierType` field name in the `CarrierNameChange` event, fix that here.
+                                    if ( line.Contains( @"""event"":""CarrierNameChange""" ) && line.Contains( @""""": ""SquadronCarrier""," ) )
+                                    {
+                                        line = line.Replace( @""""": ""SquadronCarrier"",", @"""CarrierType"": ""SquadronCarrier""," );
+                                    }
+
                                     var carrierID = JsonParsing.getLong(data, "CarrierID");
                                     var carrierType = StationModel.FromEDName( JsonParsing.getString( data, "CarrierType" ) );
                                     var callsign = JsonParsing.getString(data, "Callsign");
@@ -2544,9 +2550,8 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "LaunchFighter":
-                                handled = VesselLaunchedEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
-                                break;
                             case "LaunchSRV":
+                            case "LaunchVessel":
                                 handled = VesselLaunchedEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "ModuleInfo":
@@ -2974,13 +2979,6 @@ namespace EddiJournalMonitor
                 {
                     // We've observed a missing comma in the `BackpackChange` event, fix that here.
                     line = line.Replace( @"] ""Removed""", @"], ""Removed""" );
-                    return ParseJournalEntry( line, fromLogLoad );
-                }
-
-                if ( line.Contains( @"""event"":""CarrierNameChange""" ) && line.Contains(@""""": ""SquadronCarrier"",") )
-                {
-                    // We've observed a missing CarrierType field name in the `CarrierNameChange` event, fix that here.
-                    line = line.Replace( @""""": ""SquadronCarrier"",", @"""CarrierType"": ""SquadronCarrier""," );
                     return ParseJournalEntry( line, fromLogLoad );
                 }
 

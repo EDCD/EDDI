@@ -7,6 +7,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Add support for the new "Rhino" mining SRV.
     * Fixed EDDI failing to verbally announce new EDDI releases when EDDI starts up.
     * Various bug fixes from telemetry.
+  * Events
+    * `Vessel launched` updated to add new field `loadoutDescription`.
   * Speech Responder
     * Scripts
       * `Surface signals detected` updated to incorporate planetary mining locations.

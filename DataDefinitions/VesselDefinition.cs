@@ -3,14 +3,14 @@ using System.Linq;
 
 namespace EddiDataDefinitions
 {
-    public class VesselDefinition ( string edname, VesselGroup? vesselGroup ) 
-        : ResourceBasedLocalizedEDName<VesselDefinition>( edname, edname.ToLowerInvariant()
-            .Replace( "fighter", "", StringComparison.OrdinalIgnoreCase ).Replace( "_", "" ) )
+    public class VesselDefinition ( string edname, VesselGroup? vesselGroup ) : ResourceBasedLocalizedEDName<VesselDefinition>( 
+        edname, edname?.Replace( "Fighter", "", StringComparison.OrdinalIgnoreCase ).Replace( "_", "" ) )
     {
         static VesselDefinition ()
         {
             resourceManager = Properties.Vehicle.ResourceManager;
             resourceManager.IgnoreCase = true;
+            missingEDNameHandler = ( edname ) => new VesselDefinition( edname, null );
         }
 
         public static readonly VesselDefinition Fighter_Empire = new("Empire_Fighter", VesselGroup.Telepresence); // Imperial GU-97 Fighter
@@ -30,14 +30,7 @@ namespace EddiDataDefinitions
         public VesselDefinition () : this( "", null )
         { }
 
-        public static new VesselDefinition FromEDName ( string edName )
-        {
-            if ( edName == null ) { return null; }
-
-            return AllOfThem.FirstOrDefault( v =>
-                string.Equals( v.edname, edName, StringComparison.OrdinalIgnoreCase ) );
-        }
-
+        // By using key word searches, we can prevent possible misclassification of a new vessel we haven't yet defined. 
         public static bool inFighter ( string edName )
         {
             if ( string.IsNullOrEmpty( edName ) ) { return false; }
@@ -45,6 +38,7 @@ namespace EddiDataDefinitions
             return edName.Contains( "Fighter", StringComparison.OrdinalIgnoreCase );
         }
 
+        // By using key word searches, we can prevent possible misclassification of a new vessel we haven't yet defined. 
         public static bool inSRV ( string edName )
         {
             if ( string.IsNullOrEmpty( edName ) ) { return false; }

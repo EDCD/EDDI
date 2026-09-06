@@ -9,6 +9,7 @@ namespace EddiDataDefinitions
         {
             resourceManager = Properties.LoadoutDescription.ResourceManager;
             resourceManager.IgnoreCase = true;
+            missingEDNameHandler = ( edname ) => new LoadoutDescription( edname, edname, edname );
         }
 
         public static readonly LoadoutDescription EmpireZero = new("Empire_Fighter", "Zero", "EmpireZero");
@@ -65,7 +66,8 @@ namespace EddiDataDefinitions
                 .Replace("name", "");
             return AllOfThem
                 .Where(v => v.vesselEDName.Equals(vesselEDName, StringComparison.OrdinalIgnoreCase))
-                .FirstOrDefault( v => string.Equals( v.edname, tidiedLoadout, StringComparison.OrdinalIgnoreCase ) );
+                .FirstOrDefault( v => string.Equals( v.edname, tidiedLoadout, StringComparison.OrdinalIgnoreCase ) )
+                ?? new LoadoutDescription( vesselEDName, loadoutEDName, loadoutEDName );
         }
     }
 }
