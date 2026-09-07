@@ -33,7 +33,7 @@ namespace EddiEvents
         public string message { get; private set; }
 
         [PublicAPI("A seed number generated from the sender information. This can be used with the VoiceDetails() function to assign a voice to a message sender.")]
-        public int seed { get; } // Used to randomize voices
+        public int seed { get; private set; } // Used to randomize voices
 
         // Not intended to be user facing
 
@@ -74,5 +74,10 @@ namespace EddiEvents
             if (starSystem is null && body is null && station is null) { return 0; }
             return new { starSystem, body, station }.GetHashCode();
         }
+        public void ResolveNpcSeed ( StarSystem starSystem, Body body, Station station )
+        {
+            if ( !player ) { seed = getNPCSeed( starSystem, body, station ); }
+        }
+
     }
 }

@@ -12,5 +12,8 @@ namespace EddiEvents
 
         [PublicAPI("True if the ship's weapons are deployed when entering the zone")]
         public bool weaponsdeployed { get; private set; } = weaponsdeployed;
+
+        // Not intended to be user facing
+        public bool RequiresShip { get; init; }
     }
 }

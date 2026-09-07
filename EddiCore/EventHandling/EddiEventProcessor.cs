@@ -246,6 +246,14 @@ namespace EddiCore.EventHandling
                     mission.destinationstation = mission.originstation;
                 }
             }
+            else if ( @event is MessageReceivedEvent messageReceivedEvent )
+            {
+                messageReceivedEvent.ResolveNpcSeed( CurrentStarSystem, CurrentStellarBody, CurrentStation );
+            }
+            else if ( @event is StationNoFireZoneEnteredEvent { RequiresShip: true } )
+            {
+                passEvent = Vehicle == Constants.VEHICLE_SHIP;
+            }
             else if ( @event is RingMappedEvent ringMappedEvent )
             {
                 var parent = CurrentStarSystem?.systemAddress == ringMappedEvent.systemAddress

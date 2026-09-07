@@ -2658,12 +2658,12 @@ namespace EddiJournalMonitor
                                             source = MessageSource.NPC;
                                         }
                                         messageChannel = MessageChannel.FromEDName(channel);
-                                        events.Add(new MessageReceivedEvent(timestamp, localizedFrom ?? from, source, false, messageChannel, JsonParsing.getString(data, "Message_Localised"), journalParseContext.GameState.CurrentStarSystem, journalParseContext.GameState.CurrentStellarBody, journalParseContext.GameState.CurrentStation ) { raw = line, fromLoad = fromLogLoad });
+                                        events.Add(new MessageReceivedEvent(timestamp, localizedFrom ?? from, source, false, messageChannel, JsonParsing.getString(data, "Message_Localised") ) { raw = line, fromLoad = fromLogLoad });
 
                                         // See if we also want to spawn a specific event as well?
-                                        if (message == "$STATION_NoFireZone_entered;" && journalParseContext.GameState.Vehicle == Constants.VEHICLE_SHIP)
+                                        if (message == "$STATION_NoFireZone_entered;")
                                         {
-                                            events.Add(new StationNoFireZoneEnteredEvent(timestamp, false) { raw = line, fromLoad = fromLogLoad });
+                                            events.Add(new StationNoFireZoneEnteredEvent(timestamp, false) { RequiresShip = true, raw = line, fromLoad = fromLogLoad });
                                         }
                                         else if (message == "$STATION_NoFireZone_entered_deployed;")
                                         {
