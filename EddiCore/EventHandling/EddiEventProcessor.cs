@@ -231,6 +231,10 @@ namespace EddiCore.EventHandling
             {
                 passEvent = eventDied();
             }
+            else if ( @event is HullDamagedEvent hullDamagedEvent )
+            {
+                hullDamagedEvent.ResolveVehicle( Vehicle );
+            }
             else if ( @event is MissionAcceptedEvent { ResolveOrigin: true } missionAcceptedEvent )
             {
                 var mission = missionAcceptedEvent.Mission;

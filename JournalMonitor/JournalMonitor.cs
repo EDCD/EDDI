@@ -326,7 +326,7 @@ namespace EddiJournalMonitor
                                 handled = HeatWarningEvent.Handle( timestamp, line, ref events, fromLogLoad );
                                 break;
                             case "HullDamage":
-                                handled = HullDamagedEvent.Handle( timestamp, journalParseContext.GameState.Vehicle, line, data, ref events, fromLogLoad );
+                                handled = HullDamagedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "Interdiction":
                                 handled = ShipInterdictionEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
