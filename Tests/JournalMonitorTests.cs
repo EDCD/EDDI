@@ -1,5 +1,4 @@
-using EddiCore;
-using EddiCore.GameState;
+﻿using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
@@ -21,33 +20,14 @@ namespace Tests
     {
         private sealed class TestJournalParseContext : IJournalParseContext
         {
-            private readonly EddiGameState gameState = new();
-            private readonly Dictionary<string, Event> lastEventOfType = [ ];
-
-            internal TestJournalParseContext ()
-            {
-                GameStateService = new EddiGameStateService(
-                    gameState,
-                    () => ( null, null, null ),
-                    null,
-                    null,
-                    null,
-                    new System.Version( 4, 0 ) );
-            }
-
-            internal EddiGameStateService GameStateService { get; }
-            public IEddiGameState GameState => gameState;
             public DataProviderService DataProvider { get; init; }
             public List<Event> EnqueuedEvents { get; } = [ ];
 
             public void EnqueueEvent ( Event @event )
             {
                 EnqueuedEvents.Add( @event );
-                lastEventOfType[ @event.type ] = @event;
             }
 
-            public bool TryGetLastEventOfType ( string eventName, out Event @event ) =>
-                lastEventOfType.TryGetValue( eventName, out @event );
         }
 
         public TestContext TestContext { get; set; }

@@ -1,6 +1,5 @@
 using EddiConfigService;
 using EddiCore;
-using EddiCore.GameState;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
@@ -22,19 +21,14 @@ namespace EddiJournalMonitor
 {
     internal interface IJournalParseContext
     {
-        IEddiGameState GameState { get; }
         DataProviderService DataProvider { get; }
         void EnqueueEvent ( Event @event );
-        bool TryGetLastEventOfType ( string eventName, out Event @event );
     }
 
     internal sealed class EddiJournalParseContext : IJournalParseContext
     {
-        public IEddiGameState GameState => EDDI.Instance.GameState;
         public DataProviderService DataProvider => EDDI.Instance.DataProvider;
         public void EnqueueEvent ( Event @event ) => EDDI.Instance.enqueueEvent( @event );
-        public bool TryGetLastEventOfType ( string eventName, out Event @event ) =>
-            EDDI.Instance.lastEventOfType.TryGetValue( eventName, out @event );
     }
 
     [UsedImplicitly]

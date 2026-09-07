@@ -135,7 +135,7 @@ namespace EddiCore.EventHandling
             {
                 passEvent = eventCrewJoined( crewJoinedEvent );
             }
-            else if ( @event is CrewLeftEvent crewLeftEvent )
+            else if ( @event is CrewLeftEvent )
             {
                 passEvent = eventCrewLeft();
             }
