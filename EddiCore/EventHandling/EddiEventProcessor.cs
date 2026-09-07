@@ -292,6 +292,31 @@ namespace EddiCore.EventHandling
             return passEvent;
         }
 
+        private void ResolveSettlementFaction ( SettlementApproachedEvent @event )
+        {
+            var parsed = @event.controllingFaction;
+            if ( parsed is null || CurrentStarSystem?.systemAddress != @event.systemAddress ) { return; }
+
+            // Non-human allegiances do not require enrichment of faction details
+            if ( parsed.Allegiance == Superpower.Guardian || parsed.Allegiance == Superpower.Thargoid ) { return; }
+
+            var existing = CurrentStarSystem.factions?.FirstOrDefault( f => f.name == parsed.name );
+            foreach ( var presence in parsed.presences ) { presence.systemName = CurrentStarSystem.systemname; }
+            if ( existing is null ) { return; }
+
+            // Journal data must be merged with cached faction details.
+            if ( @event.HasJournalGovernment ) { existing.Government = parsed.Government; }
+            if ( @event.HasJournalAllegiance ) { existing.Allegiance = parsed.Allegiance; }
+            foreach ( var presence in parsed.presences )
+            {
+                if ( existing.presences.All( p => p.systemAddress != presence.systemAddress ) )
+                {
+                    existing.presences.Add( presence );
+                }
+            }
+            @event.ResolveFaction( existing );
+        }
+
         private void ScheduleModuleArrival ( ModuleTransferEvent transfer )
         {
             var system = CurrentStarSystem?.systemname ?? string.Empty;
@@ -375,6 +400,7 @@ namespace EddiCore.EventHandling
 
         private bool eventSettlementApproached(SettlementApproachedEvent settlementApproachedEvent)
         {
+            ResolveSettlementFaction( settlementApproachedEvent );
             if (CurrentStarSystem?.systemAddress == settlementApproachedEvent.systemAddress
                 && settlementApproachedEvent.marketId != null )
             {

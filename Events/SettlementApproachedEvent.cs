@@ -62,12 +62,12 @@ namespace EddiEvents
         // Not intended to be user facing
 
         public Faction controllingFaction { get; private set; }
-
         public List<StationService> stationServices { get; private set; }
-
         public List<EconomyShare> economyShares { get; private set; }
+        public bool HasJournalGovernment { get; init; }
+        public bool HasJournalAllegiance { get; init; }
 
-        public SettlementApproachedEvent(DateTime timestamp, string settlementName, string localizedName, long? marketId, Faction controllingFaction, List<StationService> stationServices, List<EconomyShare> economyShares, ulong systemAddress, string bodyName, long? bodyId, decimal? latitude, decimal? longitude) : base(timestamp, NAME)
+        public SettlementApproachedEvent (DateTime timestamp, string settlementName, string localizedName, long? marketId, Faction controllingFaction, List<StationService> stationServices, List<EconomyShare> economyShares, ulong systemAddress, string bodyName, long? bodyId, decimal? latitude, decimal? longitude) : base(timestamp, NAME)
         {
             // Prefer our own localization of generic settlement names when available
             if ( settlementName.Contains( '$' ) && !string.IsNullOrEmpty( localizedName ) )
@@ -94,5 +94,62 @@ namespace EddiEvents
             this.latitude = latitude;
             this.longitude = longitude;
         }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            // The settlement name may be a proper name or a symbolic name.
+            var settlementName = JsonParsing.getString(data, "Name").ReplaceEnd('+');
+
+            // Symbolic names may include a localized name which may have an number appended to it (e.g. "Ancient Ruins (3)".
+            // If so, remove the appended number.
+            var localizedName = JsonParsing.getString(data, "Name_Localised");
+            if ( !string.IsNullOrEmpty( localizedName ) )
+            {
+                localizedName = GeneratedRegex.EndingCountRegex().Replace( localizedName, string.Empty ).Trim();
+            }
+
+            var marketId = JsonParsing.getOptionalLong(data, "MarketID"); // Tourist beacons and guardian structures are reported as settlements without MarketID
+            var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+            var bodyName = JsonParsing.getString(data, "BodyName");
+            var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+
+            var latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
+            var longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
+
+            var controllingFaction = EventParsing.Faction(data, "Station", null, systemAddress);
+
+            // Get station services data
+            var stationServices = new List<StationService>();
+            if ( data.TryGetValue( "StationServices", out var val ) )
+            {
+                stationServices = ( val as List<object> )
+                    .Cast<string>()
+                    .Select( StationService.FromEDName )
+                    .ToList();
+            }
+
+            // Get station economies and their shares
+            var Economies = new List<EconomyShare>();
+            if ( data.TryGetValue( "StationEconomies", out var val2 ) )
+            {
+                var economies = ( val2 as List<object> )
+                                            .Cast<Dictionary<string, object>>();
+                foreach ( var economyshare in economies )
+                {
+                    var economy = Economy.FromEDName(JsonParsing.getString(economyshare, "Name"));
+                    economy.fallbackLocalizedName = JsonParsing.getString( economyshare, "Name_Localised" );
+                    var share = JsonParsing.getDecimal(economyshare, "Proportion");
+                    if ( economy != Economy.None && share > 0 )
+                    {
+                        Economies.Add( new EconomyShare( economy, share ) );
+                    }
+                }
+            }
+
+            events.Add( new SettlementApproachedEvent( timestamp, settlementName, localizedName, marketId, controllingFaction, stationServices, Economies, systemAddress, bodyName, bodyId, latitude, longitude ) { HasJournalGovernment = data.ContainsKey( "StationGovernment" ), HasJournalAllegiance = data.ContainsKey( "StationAllegiance" ), raw = line, fromLoad = fromLogLoad } );
+            return true;
+        }
+
+        public void ResolveFaction ( Faction faction ) => controllingFaction = faction;
     }
 }
