@@ -148,9 +148,8 @@ namespace EddiDataProviderService
         private const string WHERE_NAME = @"WHERE name = @name;";
         private const string WHERE_NAME_STARTSWITH = @"WHERE name LIKE @name;";
 
-        private StarSystemSqLiteRepository ( bool unitTesting = false )
+        private StarSystemSqLiteRepository ( bool unitTesting = false ) : base( unitTesting )
         {
-            SqLiteBaseRepository.unitTesting = unitTesting;
         }
 
         public static StarSystemSqLiteRepository Create ( bool isUnitTesting = false )
@@ -263,7 +262,7 @@ namespace EddiDataProviderService
         }
 
         [ NotNull, ItemNotNull ]
-        private static async Task<List<DatabaseStarSystem>> ReadStarSystemsAsync ( ulong[] systemAddresses, CancellationToken cancellationToken )
+        private async Task<List<DatabaseStarSystem>> ReadStarSystemsAsync ( ulong[] systemAddresses, CancellationToken cancellationToken )
         {
             var results = new List<DatabaseStarSystem>();
             if ( systemAddresses.Length == 0 ) { return results; }
@@ -322,7 +321,7 @@ namespace EddiDataProviderService
         }
 
         [NotNull, ItemNotNull]
-        private static async Task<List<DatabaseStarSystem>> ReadStarSystemsAsync ( string[] systemNames, CancellationToken cancellationToken )
+        private async Task<List<DatabaseStarSystem>> ReadStarSystemsAsync ( string[] systemNames, CancellationToken cancellationToken )
         {
             var results = new List<DatabaseStarSystem>();
             if ( systemNames.Length == 0 ) { return results; }
@@ -370,7 +369,7 @@ namespace EddiDataProviderService
             return results.RemoveNulls().ToList();
         }
 
-        private static async Task<List<DatabaseStarSystem>> ReadStarSystemsAsync( IList<StarSystem> starSystems, CancellationToken cancellationToken )
+        private async Task<List<DatabaseStarSystem>> ReadStarSystemsAsync( IList<StarSystem> starSystems, CancellationToken cancellationToken )
         {
             var results = new List<DatabaseStarSystem>();
             if ( starSystems is null || !starSystems.Any()) { return results; }
@@ -587,7 +586,7 @@ namespace EddiDataProviderService
             await upsertFactionDataAsync( starSystems, true ).ConfigureAwait( false );
         }
 
-        private static async Task insertStarSystemsAsync(ImmutableList<StarSystem> systems)
+        private async Task insertStarSystemsAsync(ImmutableList<StarSystem> systems)
         {
             if ( systems.Count == 0)
             {
@@ -637,7 +636,7 @@ namespace EddiDataProviderService
             }
         }
 
-        private static async Task updateStarSystemsAsync ( ImmutableList<StarSystem> systems )
+        private async Task updateStarSystemsAsync ( ImmutableList<StarSystem> systems )
         {
             if ( systems.Count == 0 )
             {
@@ -697,7 +696,7 @@ namespace EddiDataProviderService
             }
         }
 
-        private static async Task deleteStarSystemsAsync ( ImmutableList<StarSystem> systems )
+        private async Task deleteStarSystemsAsync ( ImmutableList<StarSystem> systems )
         {
             if ( systems.Count == 0 )
             {
@@ -749,7 +748,7 @@ namespace EddiDataProviderService
             }
         }
 
-        private static async Task upsertFactionDataAsync ( IList<StarSystem> systems, bool includeZeroReputations )
+        private async Task upsertFactionDataAsync ( IList<StarSystem> systems, bool includeZeroReputations )
         {
             var factionData = ExtractFactionData( systems, includeZeroReputations );
             if ( factionData.Count == 0 )

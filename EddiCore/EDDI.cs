@@ -176,7 +176,7 @@ namespace EddiCore
             try
             {
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " starting");
-                DataProvider = DataProviderService.Create();
+                DataProvider = DataProviderService.Create( unitTesting: ConfigService.unitTesting );
                 _organicSamplingTracker = new OrganicSamplingTracker( DataProvider, enqueueEvent );
 
                 var configuration = ConfigService.Instance.eddiConfiguration;

@@ -61,7 +61,7 @@ namespace EddiCore.PluginHosting
                 {
                     try
                     {
-                        Responders = _findResponders();
+                        Responders = _findResponders() ?? [];
                         Logging.Debug( $"Discovered {Responders.Count} responders" );
                     }
                     catch ( Exception ex )
@@ -74,7 +74,7 @@ namespace EddiCore.PluginHosting
                 {
                     try
                     {
-                        Monitors = _findMonitors();
+                        Monitors = _findMonitors() ?? [];
                         Logging.Debug( $"Discovered {Monitors.Count} monitors" );
                     }
                     catch ( Exception ex )
@@ -407,7 +407,7 @@ namespace EddiCore.PluginHosting
             if ( string.IsNullOrEmpty( path ) )
             {
                 Logging.Warn( "Unable to start EDDI Monitors, application directory path not found." );
-                return null;
+                return [];
             }
 
             var dir = new DirectoryInfo( path );
@@ -560,7 +560,7 @@ namespace EddiCore.PluginHosting
             if ( string.IsNullOrEmpty( path ) )
             {
                 Logging.Warn( "Unable to start EDDI Responders, application directory path not found." );
-                return null;
+                return [];
             }
 
             var dir = new DirectoryInfo( path );

@@ -86,7 +86,7 @@ namespace EddiGalnetMonitor
 
         private static GalnetSqLiteRepository instance;
 
-        private GalnetSqLiteRepository()
+        private GalnetSqLiteRepository() : base( EddiConfigService.ConfigService.unitTesting )
         {
             CreateDatabase();
         }
@@ -146,12 +146,13 @@ namespace EddiGalnetMonitor
 
         public static List<News> GetArticles(string category = null, bool incRead = false)
         {
-            if (!File.Exists(DbFile)) return null;
+            var repository = Instance;
+            if (!File.Exists(repository.DbFile)) return null;
             if (String.Equals(category, "All", StringComparison.Ordinal)) { category = null; }
             List<News> result = null;
             try
             {
-                using (var con = SimpleDbConnection())
+                using (var con = repository.SimpleDbConnection())
                 {
                     con.Open();
                     using (var cmd = new SQLiteCommand(con))
@@ -319,7 +320,7 @@ namespace EddiGalnetMonitor
             }
         }
 
-        private static void CreateDatabase()
+        private void CreateDatabase()
         {
             lock ( nameof(SimpleDbConnection) )
             {

@@ -27,7 +27,7 @@ namespace Tests
         [TestMethod, DoNotParallelize]
         public async Task TestSqlRepositoryPresent()
         {
-            EDDI.Instance.DataProvider = DataProviderService.Create();
+            EDDI.Instance.DataProvider = CreateTestDataProvider();
             var starSystemRepository = EDDI.Instance.DataProvider.starSystemRepository;
             await starSystemRepository.SaveStarSystemAsync( DeserializeJsonResource<StarSystem>( Resources.sqlStarSystem6 ), CancellationToken.None ).ConfigureAwait(false);
             var dbData = await starSystemRepository.GetSqlStarSystemAsync( 10477373803U, CancellationToken.None ).ConfigureAwait(false);
@@ -38,7 +38,7 @@ namespace Tests
         [TestMethod, DoNotParallelize]
         public async Task TestSqlRepositoryMissing()
         {
-            EDDI.Instance.DataProvider = DataProviderService.Create();
+            EDDI.Instance.DataProvider = CreateTestDataProvider();
             var starSystemRepository = EDDI.Instance.DataProvider.starSystemRepository;
             var DBData = await starSystemRepository.GetSqlStarSystemAsync( 0, CancellationToken.None ).ConfigureAwait(false);
             Assert.IsNull(DBData);
@@ -406,7 +406,7 @@ namespace Tests
         [TestMethod, DoNotParallelize]
         public async Task TestSchemaVersionFiveCreatesFactionTable()
         {
-            await using ( var con = SqLiteBaseRepository.SimpleDbConnection() )
+            await using ( var con = CreateTestDataProvider().starSystemRepository.SimpleDbConnection() )
             {
                 await con.OpenAsync(TestContext.CancellationToken).ConfigureAwait( false );
                 await using var cmd = con.CreateCommand();
@@ -534,7 +534,7 @@ namespace Tests
 
         private static async Task<bool> FactionTableExistsAsync ()
         {
-            await using var con = SqLiteBaseRepository.SimpleDbConnection();
+            await using var con = CreateTestDataProvider().starSystemRepository.SimpleDbConnection();
             await con.OpenAsync().ConfigureAwait( false );
             await using var cmd = con.CreateCommand();
             cmd.CommandText = "SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = 'factions';";

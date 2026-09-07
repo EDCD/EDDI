@@ -1,4 +1,5 @@
 ﻿using System.Data.SQLite;
+using System;
 using System.IO;
 using Utilities;
 
@@ -6,33 +7,30 @@ namespace EddiDataProviderService
 {
     public class SqLiteBaseRepository
     {
-        protected static bool unitTesting
+        // Share test storage within a process, never between runners. Constructing
+        // a repository must not reset a database that another repository is using.
+        private static readonly Lazy<string> TestDbFile = new( () =>
         {
-            get => _unitTesting;
-            set
+            var path = Path.Combine( Path.GetTempPath(), $"EDDI_TEST_{Guid.NewGuid():N}.sqlite" );
+            AppDomain.CurrentDomain.ProcessExit += ( _, _ ) =>
             {
-                if ( _unitTesting != value )
-                {
-                    ResetTestDatabase();
-                    _unitTesting = value;
-                }
-            }
-        }
-        private static bool _unitTesting;
+                try { File.Delete( path ); }
+                catch ( IOException ) { }
+                catch ( UnauthorizedAccessException ) { }
+            };
+            return path;
+        } );
 
-        private static void ResetTestDatabase ()
+        protected SqLiteBaseRepository ( bool unitTesting = false )
         {
-            var testDatabase = new FileInfo( Constants.DATA_DIR + @"\EDDI_TEST.sqlite" );
-            if ( testDatabase.Exists ) { testDatabase.Delete(); }
+            DbFile = unitTesting ? TestDbFile.Value : Path.Combine( Constants.DATA_DIR, "EDDI.sqlite" );
         }
 
-        protected static string DbFile => unitTesting 
-            ? Constants.DATA_DIR + @"\EDDI_TEST.sqlite"
-            : Constants.DATA_DIR + @"\EDDI.sqlite";
+        protected string DbFile { get; }
 
-        public static SQLiteConnection SimpleDbConnection()
+        public SQLiteConnection SimpleDbConnection()
         {
-            return new SQLiteConnection("Data Source=" + DbFile);
+            return new SQLiteConnection( new SQLiteConnectionStringBuilder { DataSource = DbFile }.ConnectionString );
         }
     }
 }
