@@ -11,6 +11,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * `Vessel launched` updated to add new field `loadoutDescription`.
   * Material Monitor
     * Added search box and filtering. Added checkbox to display invariant text in place of translated text when applicable. (#2411)
+    * Added bulk editor for setting minimum and desired inventory levels.
   * Speech Responder
     * Scripts
       * `Surface signals detected` updated to incorporate planetary mining locations.

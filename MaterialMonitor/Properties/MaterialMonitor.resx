@@ -158,4 +158,30 @@
   <data name="filter_below_desired" xml:space="preserve"><value>Below desired</value></data>
   <data name="filter_unknown" xml:space="preserve"><value>Unknown</value></data>
   <data name="clear_filters" xml:space="preserve"><value>Clear filters</value></data>
+  <data name="level_editor_header" xml:space="preserve"><value>Set inventory levels</value></data>
+  <data name="apply_to_label" xml:space="preserve"><value>Apply to:</value></data>
+  <data name="filtered_materials" xml:space="preserve"><value>Filtered materials</value></data>
+  <data name="all_materials" xml:space="preserve"><value>All materials</value></data>
+  <data name="units_label" xml:space="preserve"><value>Units:</value></data>
+  <data name="quantity_units" xml:space="preserve"><value>Quantity</value></data>
+  <data name="percentage_units" xml:space="preserve"><value>Percentage of capacity</value></data>
+  <data name="leave_unchanged" xml:space="preserve"><value>Leave Unchanged</value></data>
+  <data name="fill_blanks" xml:space="preserve"><value>Fill Blanks</value></data>
+  <data name="replace_values" xml:space="preserve"><value>Replace Values</value></data>
+  <data name="clear_threshold" xml:space="preserve"><value>Clear Threshold</value></data>
+  <data name="apply_levels" xml:space="preserve"><value>Apply</value></data>
+  <data name="undo_last_apply" xml:space="preserve"><value>Undo Last Apply</value></data>
+  <data name="bulk_summary" xml:space="preserve"><value>{0} targeted; {1} will change; {2} unchanged.</value></data>
+  <data name="bulk_invalid_number" xml:space="preserve"><value>Enter a whole number from {0} to {1}.</value></data>
+  <data name="bulk_conflict" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="bulk_stale" xml:space="preserve"><value>The materials changed. Review the updated preview, then apply again.</value></data>
+  <data name="bulk_applied" xml:space="preserve"><value>Updated {0} materials.</value></data>
+  <data name="bulk_undo_unavailable" xml:space="preserve"><value>Undo is no longer available because affected values changed.</value></data>
+  <data name="preview_changes" xml:space="preserve"><value>Preview changes</value></data>
+  <data name="bulk_change_detail" xml:space="preserve"><value>{0}: minimum {1} → {2}; desired {3} → {4}</value></data>
+  <data name="blank_value" xml:space="preserve"><value>blank</value></data>
+  <data name="bulk_negative" xml:space="preserve"><value>Thresholds cannot be negative.</value></data>
+  <data name="bulk_exceeds_capacity" xml:space="preserve"><value>A threshold exceeds this material's capacity.</value></data>
+  <data name="bulk_minimum_exceeds_desired" xml:space="preserve"><value>Minimum exceeds desired.</value></data>
+  <data name="bulk_undone" xml:space="preserve"><value>Restored {0} materials.</value></data>
 </root>

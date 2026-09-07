@@ -17,12 +17,7 @@ namespace EddiMaterialMonitor
 
         internal static bool Matches(MaterialAmount item, string search, string category, int? grade, string status)
         {
-            if (item.amount == 0 &&
-                (item.MaterialDef?.Category == null || item.MaterialDef.Category == MaterialCategory.Unknown ||
-                 item.Rarity == Rarity.Unknown))
-            {
-                return false;
-            }
+            if (!IsEligible(item)) { return false; }
 
             var query = search?.Trim() ?? "";
             return (query.Length == 0 || new[] { item.material, item.MaterialDef?.invariantName, item.edname }
@@ -37,6 +32,11 @@ namespace EddiMaterialMonitor
                        _ => true
                    });
         }
+
+        internal static bool IsEligible(MaterialAmount item) => item != null &&
+            (item.amount != 0 ||
+             (item.MaterialDef?.Category != null && item.MaterialDef.Category != MaterialCategory.Unknown &&
+              item.Rarity != Rarity.Unknown));
 
         internal static bool HasLocalizedNames(CultureInfo culture, IEnumerable<Material> definitions)
         {

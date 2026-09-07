@@ -38,6 +38,76 @@
                     <Button Content="{x:Static resx:MaterialMonitor.clear_filters}" Height="23" Click="clearFilters" VerticalAlignment="Bottom" Padding="10, 2"/>
                 </StackPanel>
             </WrapPanel>
+            <Expander x:Name="levelEditor" Header="{x:Static resx:MaterialMonitor.level_editor_header}" Margin="0,8,0,0"
+                      Expanded="bulkControlsChanged">
+                <Border Padding="4,4,0,0">
+                    <StackPanel>
+                        <WrapPanel Margin="0,0,0,6">
+                            <TextBlock Text="{x:Static resx:MaterialMonitor.apply_to_label}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <RadioButton x:Name="filteredTargets" Content="{x:Static resx:MaterialMonitor.filtered_materials}" IsChecked="True"
+                                         GroupName="BulkTarget" Checked="bulkControlsChanged" Margin="0,0,12,0"/>
+                            <RadioButton x:Name="allTargets" Content="{x:Static resx:MaterialMonitor.all_materials}"
+                                         GroupName="BulkTarget" Checked="bulkControlsChanged" Margin="0,0,24,0"/>
+                            <StackPanel x:Name="unitsPanel" Orientation="Horizontal" Margin="3, 0" >
+                                <TextBlock Text="{x:Static resx:MaterialMonitor.units_label}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <RadioButton x:Name="quantityUnits" Content="{x:Static resx:MaterialMonitor.quantity_units}" IsChecked="True"
+                                             GroupName="BulkUnits" Checked="bulkControlsChanged" Margin="0,0,12,0"/>
+                                <RadioButton x:Name="percentageUnits" Content="{x:Static resx:MaterialMonitor.percentage_units}"
+                                             GroupName="BulkUnits" Checked="bulkControlsChanged"/>
+                            </StackPanel>
+                        </WrapPanel>
+                        <WrapPanel x:Name="bulkActionPanel">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,12,4">
+                                <Label Content="{x:Static resx:MaterialMonitor.min_header}" Target="{Binding ElementName=minimumAction}" Padding="5,3"/>
+                                <ComboBox x:Name="minimumAction" DisplayMemberPath="Label" Width="145"
+                                          SelectionChanged="bulkControlsChanged"/>
+                                <TextBox x:Name="minimumBulkValue" Width="65" Margin="4,0,0,0" VerticalContentAlignment="Center"
+                                         TextChanged="bulkControlsChanged" PreviewTextInput="bulkValuePreviewTextInput"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,12,4">
+                                <Label Content="{x:Static resx:MaterialMonitor.desired_header}" Target="{Binding ElementName=desiredAction}" Padding="5,3"/>
+                                <ComboBox x:Name="desiredAction" DisplayMemberPath="Label" Width="145"
+                                          SelectionChanged="bulkControlsChanged"/>
+                                <TextBox x:Name="desiredBulkValue" Width="65" Margin="4,0,0,0" VerticalContentAlignment="Center"
+                                         TextChanged="bulkControlsChanged" PreviewTextInput="bulkValuePreviewTextInput"/>
+                            </StackPanel>
+                        </WrapPanel>
+                        <WrapPanel Margin="0,2,0,0">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,12,0">
+                                <Button x:Name="applyBulkLevels" Content="{x:Static resx:MaterialMonitor.apply_levels}" Click="applyBulkLevelsClick" Padding="10,2" Margin="0,0,8,0"/>
+                                <Button x:Name="undoBulkLevels" Content="{x:Static resx:MaterialMonitor.undo_last_apply}" Click="undoBulkLevelsClick" Padding="10,2" IsEnabled="False"/>
+                            </StackPanel>
+                            <TextBlock x:Name="bulkSummary" TextWrapping="Wrap" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                            <TextBlock x:Name="bulkStatus" TextWrapping="Wrap" VerticalAlignment="Center">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="Text" Value=""><Setter Property="Visibility" Value="Collapsed"/></Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </WrapPanel>
+                        <ScrollViewer MaxHeight="90" VerticalScrollBarVisibility="Auto">
+                            <ItemsControl x:Name="bulkConflicts" Margin="0,3,0,0">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate><TextBlock Text="{Binding}" TextWrapping="Wrap" Foreground="{DynamicResource TextPrimaryBrush}"/></DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                        <Expander x:Name="bulkDetailsExpander" Header="{x:Static resx:MaterialMonitor.preview_changes}" Margin="0,4,0,0">
+                            <ScrollViewer MaxHeight="100" VerticalScrollBarVisibility="Auto">
+                                <ItemsControl x:Name="bulkDetails">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate><TextBlock Text="{Binding}" TextWrapping="Wrap"/></DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </Expander>
+                    </StackPanel>
+                </Border>
+            </Expander>
         </StackPanel>
         <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="materialsData" CanUserAddRows="false" CanUserDeleteRows="False" SourceUpdated="materialsUpdated" HeadersVisibility="Column">
             <DataGrid.Columns>

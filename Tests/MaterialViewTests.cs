@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
+using Res = EddiMaterialMonitor.Properties.MaterialMonitor;
 
 namespace Tests
 {
@@ -86,6 +87,118 @@ namespace Tests
                 Assert.IsTrue(MaterialViewFilter.Matches(item, null, null, null, "All"));
             }
             Assert.IsTrue(MaterialViewFilter.Matches(new MaterialAmount(Material.Iron, 0), null, null, null, "All"));
+        }
+
+        [TestMethod]
+        public void BulkLevelPreviewSupportsAllActions()
+        {
+            var iron = new MaterialAmount(Material.Iron, 1, null, 100);
+            var carbon = new MaterialAmount(Material.Carbon, 1, 20, null);
+            var fill = MaterialLevelEditor.Preview(new[] { iron, carbon },
+                MaterialLevelAction.FillBlanks, 30, MaterialLevelAction.FillBlanks, 80,
+                MaterialLevelUnits.Quantity);
+            Assert.HasCount(2, fill.Changes);
+            Assert.AreEqual(30, fill.Changes.Single(c => c.EDName == iron.edname).NewMinimum);
+            Assert.AreEqual(100, fill.Changes.Single(c => c.EDName == iron.edname).NewDesired);
+            Assert.AreEqual(20, fill.Changes.Single(c => c.EDName == carbon.edname).NewMinimum);
+            Assert.AreEqual(80, fill.Changes.Single(c => c.EDName == carbon.edname).NewDesired);
+            var zeroIsExisting = new MaterialAmount(Material.Nickel, 1, 0, null);
+            var zeroFill = MaterialLevelEditor.Preview(new[] { zeroIsExisting },
+                MaterialLevelAction.FillBlanks, 30, MaterialLevelAction.FillBlanks, 80,
+                MaterialLevelUnits.Quantity).Changes.Single();
+            Assert.AreEqual(0, zeroFill.NewMinimum);
+            Assert.AreEqual(80, zeroFill.NewDesired);
+
+            var replace = MaterialLevelEditor.Preview(new[] { iron },
+                MaterialLevelAction.ReplaceValues, 25, MaterialLevelAction.ReplaceValues, 75,
+                MaterialLevelUnits.Percentage);
+            Assert.AreEqual(75, replace.Changes.Single().NewMinimum);
+            Assert.AreEqual(225, replace.Changes.Single().NewDesired);
+            var boundaries = MaterialLevelEditor.Preview(new[] { iron },
+                MaterialLevelAction.ReplaceValues, 0, MaterialLevelAction.ReplaceValues, 100,
+                MaterialLevelUnits.Percentage).Changes.Single();
+            Assert.AreEqual(0, boundaries.NewMinimum);
+            Assert.AreEqual(300, boundaries.NewDesired);
+
+            var clear = MaterialLevelEditor.Preview(new[] { carbon },
+                MaterialLevelAction.ClearThreshold, null, MaterialLevelAction.LeaveUnchanged, null,
+                MaterialLevelUnits.Quantity);
+            Assert.IsNull(clear.Changes.Single().NewMinimum);
+            Assert.IsNull(clear.Changes.Single().NewDesired);
+
+            var unchanged = MaterialLevelEditor.Preview(new[] { iron },
+                MaterialLevelAction.LeaveUnchanged, null, MaterialLevelAction.LeaveUnchanged, null,
+                MaterialLevelUnits.Quantity);
+            Assert.IsEmpty(unchanged.Changes);
+        }
+
+        [TestMethod]
+        public void BulkLevelPreviewRoundsDownAndRejectsWholeInvalidBatch()
+        {
+            var iron = new MaterialAmount(Material.Iron, 1, null, null);
+            var preview = MaterialLevelEditor.Preview(new[] { iron },
+                MaterialLevelAction.ReplaceValues, 33, MaterialLevelAction.ReplaceValues, 100,
+                MaterialLevelUnits.Percentage);
+            Assert.AreEqual(99, preview.Changes.Single().NewMinimum);
+            Assert.AreEqual(300, preview.Changes.Single().NewDesired);
+
+            var conflict = MaterialLevelEditor.Preview(new[] { iron },
+                MaterialLevelAction.ReplaceValues, 201, MaterialLevelAction.ReplaceValues, 200,
+                MaterialLevelUnits.Quantity);
+            Assert.IsEmpty(conflict.Changes);
+            Assert.AreEqual(MaterialLevelValidationError.MinimumExceedsDesired, conflict.Conflicts.Single().Error);
+
+            conflict = MaterialLevelEditor.Preview(new[] { iron },
+                MaterialLevelAction.ReplaceValues, 0, MaterialLevelAction.ReplaceValues, 301,
+                MaterialLevelUnits.Quantity);
+            Assert.AreEqual(MaterialLevelValidationError.ExceedsCapacity, conflict.Conflicts.Single().Error);
+            conflict = MaterialLevelEditor.Preview(new[] { iron },
+                MaterialLevelAction.ReplaceValues, -1, MaterialLevelAction.LeaveUnchanged, null,
+                MaterialLevelUnits.Quantity);
+            Assert.AreEqual(MaterialLevelValidationError.Negative, conflict.Conflicts.Single().Error);
+
+            var preexistingInvalid = new MaterialAmount(Material.Iron, 1, 200, 100);
+            var noChange = MaterialLevelEditor.Preview(new[] { preexistingInvalid },
+                MaterialLevelAction.LeaveUnchanged, null, MaterialLevelAction.LeaveUnchanged, null,
+                MaterialLevelUnits.Quantity);
+            Assert.IsEmpty(noChange.Conflicts);
+        }
+
+        [TestMethod]
+        public void BulkLevelApplyIsAtomicPersistsAndSupportsGuardedUndo()
+        {
+            var previousConfig = ConfigService.Instance.materialMonitorConfiguration;
+            try
+            {
+                ConfigService.Instance.materialMonitorConfiguration = new MaterialMonitorConfiguration();
+                var monitor = new MaterialMonitor();
+                monitor.inventory.Clear();
+                var iron = new MaterialAmount(Material.Iron, 3, null, null);
+                var carbon = new MaterialAmount(Material.Carbon, 4, null, null);
+                monitor.inventory.Add(iron);
+                monitor.inventory.Add(carbon);
+                var changes = MaterialLevelEditor.Preview(new[] { iron, carbon },
+                    MaterialLevelAction.ReplaceValues, 20, MaterialLevelAction.ReplaceValues, 80,
+                    MaterialLevelUnits.Quantity).Changes;
+                var notifications = 0;
+                monitor.InventoryUpdatedEvent += (_, _) => notifications++;
+                Assert.IsTrue(monitor.TryApplyMaterialLevelChanges(changes));
+                Assert.AreEqual(1, notifications);
+                Assert.AreEqual(20, iron.minimum);
+                Assert.AreEqual(80, carbon.desired);
+                Assert.AreEqual(3, iron.amount);
+                Assert.AreEqual(20, ConfigService.Instance.materialMonitorConfiguration.materials
+                    .Single(m => m.edname == iron.edname).minimum);
+                Assert.IsTrue(monitor.TryApplyMaterialLevelChanges(changes, true));
+                Assert.IsNull(iron.minimum);
+                Assert.IsNull(carbon.desired);
+
+                Assert.IsTrue(monitor.TryApplyMaterialLevelChanges(changes));
+                iron.minimum = 21;
+                Assert.IsFalse(monitor.TryApplyMaterialLevelChanges(changes, true));
+                Assert.AreEqual(80, carbon.desired);
+            }
+            finally { ConfigService.Instance.materialMonitorConfiguration = previousConfig; }
         }
 
         [TestMethod]
@@ -355,6 +468,103 @@ namespace Tests
         }
 
         [TestMethod]
+        public void BulkEditorAppliesFilteredOrAllMaterialsAndProvidesGuardedUndo()
+        {
+            var previous = ConfigService.Instance.materialMonitorConfiguration;
+            try
+            {
+                ConfigService.Instance.materialMonitorConfiguration = new MaterialMonitorConfiguration();
+                var monitor = new MaterialMonitor();
+                monitor.inventory.Clear();
+                var iron = new MaterialAmount(Material.Iron, 1);
+                var carbon = new MaterialAmount(Material.Carbon, 1);
+                monitor.inventory.Add(iron);
+                monitor.inventory.Add(carbon);
+                var panel = new ConfigurationWindow(monitor, new MaterialMonitorConfiguration { searchText = "iron" });
+                panel.RaiseEvent(new RoutedEventArgs(FrameworkElement.LoadedEvent));
+                var minimumAction = (ComboBox)panel.FindName("minimumAction");
+                var desiredAction = (ComboBox)panel.FindName("desiredAction");
+                var minimumValue = (TextBox)panel.FindName("minimumBulkValue");
+                var desiredValue = (TextBox)panel.FindName("desiredBulkValue");
+                var apply = (Button)panel.FindName("applyBulkLevels");
+                var undo = (Button)panel.FindName("undoBulkLevels");
+                try
+                {
+                    minimumAction.SelectedIndex = desiredAction.SelectedIndex = 2;
+                    minimumValue.Text = "20";
+                    desiredValue.Text = "80";
+                    Assert.AreEqual(Visibility.Visible, minimumValue.Visibility);
+                    Assert.AreEqual(Visibility.Visible, ((StackPanel)panel.FindName("unitsPanel")).Visibility);
+                    Assert.IsTrue(apply.IsEnabled);
+                    apply.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                    Assert.AreEqual(20, iron.minimum);
+                    Assert.AreEqual(80, iron.desired);
+                    Assert.IsNull(carbon.minimum);
+                    Assert.IsTrue(undo.IsEnabled);
+                    undo.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                    Assert.IsNull(iron.minimum);
+                    Assert.IsNull(iron.desired);
+
+                    ((RadioButton)panel.FindName("allTargets")).IsChecked = true;
+                    apply.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                    Assert.AreEqual(20, iron.minimum);
+                    Assert.AreEqual(20, carbon.minimum);
+                    Assert.AreEqual(80, carbon.desired);
+                    iron.minimum = 21;
+                    PumpDispatcher();
+                    Assert.IsFalse(undo.IsEnabled);
+                }
+                finally { panel.RaiseEvent(new RoutedEventArgs(FrameworkElement.UnloadedEvent)); }
+            }
+            finally { ConfigService.Instance.materialMonitorConfiguration = previous; }
+        }
+
+        [TestMethod]
+        public void BulkEditorBlocksConflictsAndRequiresReviewOfStalePreview()
+        {
+            var monitor = new MaterialMonitor();
+            monitor.inventory.Clear();
+            var iron = new MaterialAmount(Material.Iron, 1);
+            monitor.inventory.Add(iron);
+            var panel = new ConfigurationWindow(monitor, new MaterialMonitorConfiguration());
+            var minimumAction = (ComboBox)panel.FindName("minimumAction");
+            var desiredAction = (ComboBox)panel.FindName("desiredAction");
+            var minimumValue = (TextBox)panel.FindName("minimumBulkValue");
+            var desiredValue = (TextBox)panel.FindName("desiredBulkValue");
+            var apply = (Button)panel.FindName("applyBulkLevels");
+            var unitsPanel = (StackPanel)panel.FindName("unitsPanel");
+            var bulkStatus = (TextBlock)panel.FindName("bulkStatus");
+            Assert.AreEqual(Visibility.Collapsed, minimumValue.Visibility);
+            Assert.AreEqual(Visibility.Collapsed, desiredValue.Visibility);
+            Assert.AreEqual(Visibility.Collapsed, unitsPanel.Visibility);
+            Assert.AreEqual(Visibility.Collapsed, bulkStatus.Visibility);
+            minimumAction.SelectedIndex = 1;
+            Assert.AreEqual(Visibility.Visible, minimumValue.Visibility);
+            Assert.AreEqual(Visibility.Collapsed, desiredValue.Visibility);
+            Assert.AreEqual(Visibility.Visible, unitsPanel.Visibility);
+            minimumAction.SelectedIndex = 3;
+            Assert.AreEqual(Visibility.Collapsed, minimumValue.Visibility);
+            Assert.AreEqual(Visibility.Collapsed, unitsPanel.Visibility);
+            minimumAction.SelectedIndex = desiredAction.SelectedIndex = 2;
+            minimumValue.Text = "81";
+            desiredValue.Text = "80";
+            Assert.IsFalse(apply.IsEnabled);
+            Assert.HasCount(1, ((ItemsControl)panel.FindName("bulkConflicts")).Items);
+
+            minimumValue.Text = "20";
+            Assert.IsTrue(apply.IsEnabled);
+            iron.minimum = 1;
+            apply.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            Assert.AreEqual(1, iron.minimum);
+            Assert.AreEqual(Res.bulk_stale, ((TextBlock)panel.FindName("bulkStatus")).Text);
+            Assert.AreEqual(Visibility.Visible, ((TextBlock)panel.FindName("bulkStatus")).Visibility);
+            Assert.IsTrue(apply.IsEnabled);
+            apply.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            Assert.AreEqual(20, iron.minimum);
+            Assert.AreEqual(80, iron.desired);
+        }
+
+        [TestMethod]
         public void PanelLayoutWrapsControlsAtNarrowWidths()
         {
             var original = CultureInfo.CurrentUICulture;
@@ -365,6 +575,11 @@ namespace Tests
                 {
                     Background = System.Windows.Media.Brushes.White
                 };
+                ((Expander)panel.FindName("levelEditor")).IsExpanded = true;
+                ((ComboBox)panel.FindName("minimumAction")).SelectedIndex = 2;
+                ((ComboBox)panel.FindName("desiredAction")).SelectedIndex = 2;
+                ((TextBox)panel.FindName("minimumBulkValue")).Text = "20";
+                ((TextBox)panel.FindName("desiredBulkValue")).Text = "80";
                 foreach (var width in new[] { 800, 480 })
                 {
                     var size = new Size(width, 600);
@@ -379,6 +594,17 @@ namespace Tests
                     var statusPosition = status.TransformToAncestor(panel).Transform(new Point());
                     Assert.IsLessThanOrEqualTo( width, statusPosition.X + status.ActualWidth);
                     if (width == 480) { Assert.IsGreaterThan( searchPosition.Y, statusPosition.Y); }
+                    if (width == 800)
+                    {
+                        var minimumPosition = ((ComboBox)panel.FindName("minimumAction"))
+                            .TransformToAncestor(panel).Transform(new Point());
+                        var desiredPosition = ((ComboBox)panel.FindName("desiredAction"))
+                            .TransformToAncestor(panel).Transform(new Point());
+                        var applyPosition = ((Button)panel.FindName("applyBulkLevels"))
+                            .TransformToAncestor(panel).Transform(new Point());
+                        Assert.AreEqual(minimumPosition.Y, desiredPosition.Y, 0.1);
+                        Assert.IsGreaterThan(minimumPosition.Y, applyPosition.Y);
+                    }
                     var bitmap = new System.Windows.Media.Imaging.RenderTargetBitmap(width, 600, 96, 96,
                         System.Windows.Media.PixelFormats.Pbgra32);
                     bitmap.Render(panel);

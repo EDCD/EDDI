@@ -490,6 +490,36 @@ namespace EddiMaterialMonitor
             lock (inventoryLock) { return inventory.ToList(); }
         }
 
+        internal bool TryApplyMaterialLevelChanges(IReadOnlyList<MaterialLevelChange> changes, bool undo = false)
+        {
+            lock (inventoryLock)
+            {
+                var resolved = new List<(MaterialAmount Material, MaterialLevelChange Change)>();
+                foreach (var change in changes)
+                {
+                    var material = inventory.FirstOrDefault(item => item.edname == change.EDName);
+                    var expectedMinimum = undo ? change.NewMinimum : change.PreviousMinimum;
+                    var expectedDesired = undo ? change.NewDesired : change.PreviousDesired;
+                    var nextMinimum = undo ? change.PreviousMinimum : change.NewMinimum;
+                    var nextDesired = undo ? change.PreviousDesired : change.NewDesired;
+                    if (material == null || material.minimum != expectedMinimum || material.desired != expectedDesired ||
+                        !MaterialLevelEditor.IsValid(nextMinimum, nextDesired, material.maximum, out _))
+                    {
+                        return false;
+                    }
+                    resolved.Add((material, change));
+                }
+
+                foreach (var (material, change) in resolved)
+                {
+                    material.minimum = undo ? change.PreviousMinimum : change.NewMinimum;
+                    material.desired = undo ? change.PreviousDesired : change.NewDesired;
+                }
+                writeMaterials();
+                return true;
+            }
+        }
+
         private void readMaterials()
         {
             lock (inventoryLock)
