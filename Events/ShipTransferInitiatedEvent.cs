@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -48,5 +49,30 @@ namespace EddiEvents
         public long toMarketId { get; private set; } = toMarketId;
 
         public Ship Ship { get; private set; } = ship;
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
+            var toMarketId = JsonParsing.getLong(data, "MarketID");
+            var fromMarketId = JsonParsing.getLong(data, "ShipMarketID");
+
+            data.TryGetValue( "ShipID", out var val );
+            var shipId = (int)(long)val;
+
+            var system = JsonParsing.getString(data, "System");
+            var distance = JsonParsing.getDecimal(data, "Distance");
+            var price = JsonParsing.getOptionalLong(data, "TransferPrice");
+            var time = JsonParsing.getOptionalLong(data, "TransferTime");
+
+            var shipEDModel = JsonParsing.getString(data, "ShipType");
+            var ship = ShipDefinitions.FromEDModel(shipEDModel);
+            ship.LocalId = shipId;
+
+            events.Add( new ShipTransferInitiatedEvent( timestamp, ship, system, distance, price, time, fromMarketId, toMarketId ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
+        }
+
+        public void SetShip ( Ship resolvedShip ) => Ship = resolvedShip ?? Ship;
     }
 }

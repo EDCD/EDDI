@@ -18,13 +18,19 @@ namespace EddiCore.EventHandling
         private readonly IEddiEventProcessorContext _context;
         private readonly EddiLocationStateService _locationStateService;
         private readonly EddiStationMarketEventHandler _stationMarketEventHandler;
+        private readonly IEventScheduler _eventScheduler;
+        private readonly Func<int?, Ship> _resolveTransferShip;
         private string multicrewVehicleHolder;
 
-        internal EddiEventProcessor ( IEddiEventProcessorContext context )
+        internal EddiEventProcessor ( IEddiEventProcessorContext context, IEventScheduler eventScheduler = null,
+            Func<int?, Ship> resolveTransferShip = null )
         {
             _context = context;
             _locationStateService = new EddiLocationStateService( context );
             _stationMarketEventHandler = new EddiStationMarketEventHandler( context, enqueueEvent );
+            _eventScheduler = eventScheduler ?? new EventScheduler( enqueueEvent );
+            _resolveTransferShip = resolveTransferShip ?? ( id => EddiConfigService.ConfigService.Instance
+                .shipMonitorConfiguration?.shipyard?.FirstOrDefault( s => s.LocalId == id ) );
         }
 
         private IEddiGameState GameState => _context.GameState;
@@ -225,6 +231,18 @@ namespace EddiCore.EventHandling
             {
                 passEvent = eventDied();
             }
+            else if ( @event is ModuleTransferEvent moduleTransferEvent )
+            {
+                if ( !moduleTransferEvent.fromLoad && moduleTransferEvent.transfertime.HasValue )
+                {
+                    ScheduleModuleArrival( moduleTransferEvent );
+                }
+            }
+            else if ( @event is ShipTransferInitiatedEvent shipTransferEvent )
+            {
+                shipTransferEvent.SetShip( _resolveTransferShip( shipTransferEvent.shipid ) );
+                if ( !shipTransferEvent.fromLoad && shipTransferEvent.time.HasValue ) { ScheduleShipArrival( shipTransferEvent ); }
+            }
 
             if ( OrganicSamplingTracker is { } organicSamplingTracker )
             {
@@ -238,8 +256,30 @@ namespace EddiCore.EventHandling
             return passEvent;
         }
 
+        private void ScheduleModuleArrival ( ModuleTransferEvent transfer )
+        {
+            var system = CurrentStarSystem?.systemname ?? string.Empty;
+            var station = CurrentStation?.name ?? string.Empty;
+            _eventScheduler.Schedule( TimeSpan.FromSeconds( transfer.transfertime.Value ), () =>
+                new ModuleArrivedEvent( DateTime.UtcNow, transfer.ShipEDModel, transfer.shipid,
+                    transfer.storageslot, transfer.serverid, transfer.module, transfer.transfercost,
+                    transfer.transfertime, system, station ) { fromLoad = transfer.fromLoad } );
+        }
+
+        private void ScheduleShipArrival ( ShipTransferInitiatedEvent transfer )
+        {
+            var system = CurrentStarSystem?.systemname ?? string.Empty;
+            var station = CurrentStation?.name ?? string.Empty;
+            var ship = transfer.Ship;
+            _eventScheduler.Schedule( TimeSpan.FromSeconds( transfer.time.Value ), () =>
+                new ShipArrivedEvent( DateTime.UtcNow, ship, system, transfer.distance,
+                    transfer.price, transfer.time, station, transfer.fromMarketId, transfer.toMarketId )
+                    { fromLoad = transfer.fromLoad } );
+        }
+
         public void Dispose ()
         {
+            _eventScheduler.Dispose();
             _locationStateService.Dispose();
         }
 

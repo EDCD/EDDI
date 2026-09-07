@@ -716,41 +716,7 @@ namespace EddiJournalMonitor
                                 handled = EngineerProgressedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "FetchRemoteModule":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    data.TryGetValue("ShipID", out var val);
-                                    var shipId = (int)(long)val;
-                                    var ship = JsonParsing.getString(data, "Ship");
-
-                                    var module = Module.FromEDName(JsonParsing.getString(data, "StoredItem"));
-                                    data.TryGetValue("TransferCost", out val);
-                                    var transferCost = (long)val;
-                                    var transferTime = JsonParsing.getOptionalLong(data, "TransferTime");
-
-                                    // Probably not useful. We'll get these but we won't tell the end user about them
-                                    data.TryGetValue("StorageSlot", out val);
-                                    var storageSlot = (int)(long)val;
-                                    data.TryGetValue("ServerId", out val);
-                                    var serverId = (long)val;
-
-                                    events.Add(new ModuleTransferEvent(timestamp, ship, shipId, storageSlot, serverId, module, transferCost, transferTime) { raw = line, fromLoad = fromLogLoad });
-
-                                    // Generate a secondary event when the module is arriving
-
-                                    if (transferTime.HasValue)
-                                    {
-                                        Task.Run( async () =>
-                                        {
-                                            // Include the station and system at which the transfer will arrive
-                                            var arrivalStation = journalParseContext.GameState.CurrentStation?.name ?? string.Empty;
-                                            var arrivalSystem = journalParseContext.GameState.CurrentStarSystem?.systemname ?? string.Empty;
-                                            await Task.Delay( (int)transferTime * 1000 ).ConfigureAwait( true );
-                                            journalParseContext.EnqueueEvent( new ModuleArrivedEvent( DateTime.UtcNow, ship, shipId, storageSlot, serverId, module, transferCost, transferTime, arrivalSystem, arrivalStation ) { fromLoad = fromLogLoad } );
-                                        } );
-                                    }
-                                }
-                                handled = true;
+                                handled = ModuleTransferEvent.Handle(timestamp, line, data, ref events, fromLogLoad);
                                 break;
                             case "Market":
                                 {
@@ -1273,47 +1239,7 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "ShipyardTransfer":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var toMarketId = JsonParsing.getLong(data, "MarketID");
-                                    var fromMarketId = JsonParsing.getLong(data, "ShipMarketID");
-
-                                    data.TryGetValue("ShipID", out var val);
-                                    var shipId = (int)(long)val;
-
-                                    var system = JsonParsing.getString(data, "System");
-                                    var distance = JsonParsing.getDecimal(data, "Distance");
-                                    var price = JsonParsing.getOptionalLong(data, "TransferPrice");
-                                    var time = JsonParsing.getOptionalLong(data, "TransferTime");
-
-                                    var ship = ConfigService.Instance.shipMonitorConfiguration?.shipyard.FirstOrDefault(s => s.LocalId == shipId);
-                                    if (ship is null)
-                                    {
-                                        var shipEDModel = JsonParsing.getString(data, "ShipType");
-                                        ship = ShipDefinitions.FromEDModel(shipEDModel);
-                                        ship.LocalId = shipId;
-                                    }
-
-                                    events.Add(new ShipTransferInitiatedEvent(timestamp, ship, system, distance, price, time, fromMarketId, toMarketId) { raw = line, fromLoad = fromLogLoad });
-
-                                    // Generate secondary event when the ship is arriving
-                                    if (time.HasValue)
-                                    {
-                                        Task.Run( async () =>
-                                        {
-                                            // Include the station and system at which the transfer will arrive
-                                            var arrivalStation = journalParseContext.GameState.CurrentStation?.name ?? string.Empty;
-                                            var arrivalSystem = journalParseContext.GameState.CurrentStarSystem?.systemname ??
-                                                                string.Empty;
-                                            await Task.Delay( (int)time * 1000 ).ConfigureAwait( true );
-                                            journalParseContext.EnqueueEvent( new ShipArrivedEvent( DateTime.UtcNow, ship,
-                                                arrivalSystem, distance, price, time, arrivalStation, fromMarketId,
-                                                toMarketId ) { fromLoad = fromLogLoad } );
-                                        } );
-                                    }
-                                }
-                                handled = true;
+                                handled = ShipTransferInitiatedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "ShipyardSwap":
                                 {
@@ -1418,7 +1344,6 @@ namespace EddiJournalMonitor
                                                     ship.StoredLocation = stationWaypoint is null 
                                                         ? null 
                                                         : new Ship.Location( stationWaypoint );
-                                                    ship.distance = ship.DistanceLY( journalParseContext.GameState.CurrentStarSystem );
                                                     shipyard.Add(ship);
                                                 }
                                             }

@@ -2888,23 +2888,7 @@ namespace Tests
             Assert.AreEqual( new DateTime( 2026, 1, 1, 0, 0, 0, DateTimeKind.Utc ), body.mappedDateTime );
             Assert.IsTrue( body.mappedEfficiently );
         }
-
-        [TestMethod]
-        public async Task TestShipTransferArrivalUsesExplicitParseContextAsync ()
-        {
-            var context = new TestJournalParseContext();
-            context.GameStateService.CurrentStarSystem = new StarSystem { systemname = "Arrival System" };
-            context.GameStateService.CurrentStation = new Station { name = "Arrival Station" };
-
-            var line = @"{ ""timestamp"":""2018-07-30T04:57:09Z"", ""event"":""ShipyardTransfer"", ""ShipType"":""TypeX"", ""ShipType_Localised"":""Alliance Chieftain"", ""ShipID"":76, ""System"":""Balante"", ""ShipMarketID"":3223259392, ""Distance"":8.017741, ""TransferPrice"":70213, ""TransferTime"":0, ""MarketID"":3223343616 }";
-            var events = JournalMonitor.ParseJournalEntry( line, context );
-            var @event = (ShipTransferInitiatedEvent)events[0];
-
-            Assert.AreEqual( "Alliance Chieftain", @event.ship );
-            await Task.Delay( 50, TestContext.CancellationToken ).ConfigureAwait( false );
-            var arrived = context.EnqueuedEvents.OfType<ShipArrivedEvent>().Single();
-            Assert.AreEqual( "Arrival System", arrived.system );
-            Assert.AreEqual( "Arrival Station", arrived.station );
+            Assert.IsFalse( body.mappedEfficiently );
         }
 
         [TestMethod]
