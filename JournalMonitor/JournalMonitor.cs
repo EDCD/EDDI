@@ -2149,7 +2149,7 @@ namespace EddiJournalMonitor
                                     if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
                                     var role = EventParsing.CrewRole(data, "Role");
-                                    var telepresence = journalParseContext.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    var telepresence = JsonParsing.getOptionalBool(data, "Telepresence");
                                     events.Add(new CrewRoleChangedEvent(timestamp, role, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -2199,7 +2199,7 @@ namespace EddiJournalMonitor
 
                                     var name = JsonParsing.getString(data, "Crew");
                                     var fighterId = JsonParsing.getInt(data, "ID");
-                                    var telepresence = journalParseContext.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    var telepresence = JsonParsing.getOptionalBool(data, "Telepresence");
                                     events.Add(new CrewMemberLaunchedEvent(timestamp, name, fighterId, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -2210,7 +2210,7 @@ namespace EddiJournalMonitor
 
                                     var member = JsonParsing.getString(data, "Crew");
                                     member = member.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
-                                    var telepresence = journalParseContext.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    var telepresence = JsonParsing.getOptionalBool(data, "Telepresence");
                                     events.Add(new CrewMemberJoinedEvent(timestamp, member, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -2221,7 +2221,7 @@ namespace EddiJournalMonitor
 
                                     var name = JsonParsing.getString(data, "Crew");
                                     var role = EventParsing.CrewRole(data, "Role");
-                                    var telepresence = journalParseContext.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    var telepresence = JsonParsing.getOptionalBool(data, "Telepresence");
                                     events.Add(new CrewMemberRoleChangedEvent(timestamp, name, role, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -2232,7 +2232,7 @@ namespace EddiJournalMonitor
 
                                     var member = JsonParsing.getString(data, "Crew");
                                     member = member.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
-                                    var telepresence = journalParseContext.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    var telepresence = JsonParsing.getOptionalBool(data, "Telepresence");
                                     events.Add(new CrewMemberLeftEvent(timestamp, member, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -2276,7 +2276,7 @@ namespace EddiJournalMonitor
                                     if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
                                     var onCrime = JsonParsing.getOptionalBool(data, "OnCrime");
-                                    var telepresence = journalParseContext.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    var telepresence = JsonParsing.getOptionalBool(data, "Telepresence");
                                     events.Add(new CrewSessionEndedEvent(timestamp, onCrime, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -2328,7 +2328,7 @@ namespace EddiJournalMonitor
 
                                     var captain = JsonParsing.getString(data, "Captain");
                                     captain = captain.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
-                                    var telepresence = journalParseContext.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    var telepresence = JsonParsing.getOptionalBool(data, "Telepresence");
                                     events.Add(new CrewJoinedEvent(timestamp, captain, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -2339,7 +2339,7 @@ namespace EddiJournalMonitor
 
                                     var member = JsonParsing.getString(data, "Crew");
                                     member = member.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
-                                    var telepresence = journalParseContext.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    var telepresence = JsonParsing.getOptionalBool(data, "Telepresence");
                                     events.Add(new CrewMemberRemovedEvent(timestamp, member, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -2508,7 +2508,7 @@ namespace EddiJournalMonitor
 
                                     var captain = JsonParsing.getString(data, "Captain");
                                     captain = captain.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
-                                    var telepresence = journalParseContext.GameState.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    var telepresence = JsonParsing.getOptionalBool(data, "Telepresence");
                                     events.Add(new CrewLeftEvent(timestamp, captain, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;

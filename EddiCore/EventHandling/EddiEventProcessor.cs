@@ -1,4 +1,4 @@
-using EddiCompanionAppService;
+﻿using EddiCompanionAppService;
 using EddiCore.GameState;
 using EddiDataDefinitions;
 using EddiDataProviderService;
@@ -135,7 +135,7 @@ namespace EddiCore.EventHandling
             {
                 passEvent = eventCrewJoined( crewJoinedEvent );
             }
-            else if ( @event is CrewLeftEvent )
+            else if ( @event is CrewLeftEvent crewLeftEvent )
             {
                 passEvent = eventCrewLeft();
             }
@@ -1427,8 +1427,8 @@ namespace EddiCore.EventHandling
                     body.scannedDateTime ??= theEvent.timestamp;
                     body.mappedDateTime = theEvent.timestamp;
                     body.mappedEfficiently = theEvent.probesused <= theEvent.efficiencytarget;
-                await DataProvider.SaveStarSystemAsync(CurrentStarSystem).ConfigureAwait(false);
-            }
+                    await DataProvider.SaveStarSystemAsync(CurrentStarSystem).ConfigureAwait(false);
+                }
             }
             return true;
         }
