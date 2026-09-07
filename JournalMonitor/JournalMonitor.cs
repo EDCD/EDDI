@@ -2461,29 +2461,7 @@ namespace EddiJournalMonitor
                                 handled = FighterRebuiltEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "Friends":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var status = JsonParsing.getString(data, "Status");
-                                    var name = JsonParsing.getString(data, "Name");
-                                    name = name.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
-                                    var @event = new FriendsEvent( timestamp, name, status ) { raw = line, fromLoad = fromLogLoad };
-
-                                    // Friends events can be written before the commander is loaded and need to be delayed until we have seen a "Commander" event
-                                    if ( journalParseContext.TryGetLastEventOfType( CommanderLoadingEvent.NAME, out _ ) )
-                                    {
-                                        if ( !DelayedEventHolder.TryAdd( CommanderLoadingEvent.NAME, new ConcurrentBag<Event>(
-                                                [ @event ] ) ) )
-                                        {
-                                            DelayedEventHolder[ CommanderLoadingEvent.NAME ].Add( @event );
-                                        }
-                                    }
-                                    else
-                                    {
-                                        events.Add( @event );
-                                    }
-                                }
-                                handled = true;
+                                handled = FriendsEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "FuelScoop":
                                 {

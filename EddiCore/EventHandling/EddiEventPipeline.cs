@@ -1,4 +1,4 @@
-using EddiEvents;
+﻿using EddiEvents;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -21,6 +21,8 @@ namespace EddiCore.EventHandling
         private readonly CancellationToken _appCancellationToken;
         private readonly BlockingCollection<Event> _eventQueue = [ ];
         private Task _eventConsumerThread;
+        private readonly Queue<FriendsEvent> pendingFriends = new();
+        private bool commanderReady;
 
         internal EddiEventPipeline (
             Func<Event, Task<bool>> processEventAsync,
@@ -97,6 +99,22 @@ namespace EddiCore.EventHandling
             var gameVersion = _getGameVersion();
             if ( gameVersion != null && gameVersion < _minGameVersion && @event is not FileHeaderEvent ) { return; }
 
+            if ( @event is FileHeaderEvent )
+            {
+                commanderReady = false;
+                pendingFriends.Clear();
+            }
+
+            if ( @event is FriendsEvent friend )
+            {
+                if ( friend.fromLoad ) { return; }
+                if ( !commanderReady )
+                {
+                    pendingFriends.Enqueue( friend );
+                    return;
+                }
+            }
+
             try
             {
                 Logging.Debug( $"Handling event: {@event.type}", @event );
@@ -111,6 +129,14 @@ namespace EddiCore.EventHandling
                 }
 
                 LastEventOfType[ @event.type ] = @event;
+                if ( @event is CommanderLoadingEvent )
+                {
+                    commanderReady = true;
+                    while ( pendingFriends.Count > 0 )
+                    {
+                        await HandleEventAsync( pendingFriends.Dequeue() ).ConfigureAwait( false );
+                    }
+                }
             }
             catch ( Exception ex )
             {
