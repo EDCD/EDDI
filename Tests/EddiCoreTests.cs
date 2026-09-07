@@ -1,4 +1,4 @@
-using EddiCore;
+﻿using EddiCore;
 using EddiCore.EventHandling;
 using EddiCore.GameState;
 using EddiDataDefinitions;
@@ -352,18 +352,15 @@ namespace Tests
             Assert.AreEqual(@event.timestamp, scannedBody.scannedDateTime);
             var event1EstimatedValue = scannedBody.estimatedvalue;
 
-            // The journal monitor applies the body map details before raising BodyMappedEvent.
+            // Mapping details are applied by core after the journal event has been parsed.
             var mappedTimestamp = new DateTime( 2016, 11, 1, 18, 59, 7, DateTimeKind.Utc );
-            scannedBody.mappedDateTime = mappedTimestamp;
-            scannedBody.mappedEfficiently = true;
             var @event2 = new BodyMappedEvent(
                 mappedTimestamp,
                 "Grea Bloae HH-T d4-44 4",
-                scannedBody,
                 1520309296811,
                 5,
-                6 );
-            await processor.eventBodyMappedAsync( @event2 ).ConfigureAwait(false);
+                6 ) { JournalBodyId = scannedBody.bodyId };
+            await processor.ProcessEventAsync( @event2 ).ConfigureAwait(false);
 
             Assert.AreEqual(@event.timestamp, scannedBody.scannedDateTime);
             Assert.AreEqual(@event2.timestamp, scannedBody.mappedDateTime);
