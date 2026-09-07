@@ -14,10 +14,34 @@
         <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
             <TextBlock TextWrapping="Wrap" Margin="0, 5" Text="{x:Static resx:MaterialMonitor.p1}"/>
             <TextBlock TextWrapping="Wrap" Margin ="0, 5" Text="{x:Static resx:MaterialMonitor.p2}"/>
+            <CheckBox x:Name="invariantNames" Content="{x:Static resx:MaterialMonitor.use_invariant_names}" Margin="0,5"
+                      Checked="controlsChanged" Unchecked="controlsChanged"/>
+            <WrapPanel>
+                <StackPanel Margin="0,0,10,0">
+                    <Label Content="{x:Static resx:MaterialMonitor.search_label}" Target="{Binding ElementName=searchText}"/>
+                    <TextBox x:Name="searchText" Width="180" Height="22" TextChanged="searchChanged" VerticalAlignment="Bottom" VerticalContentAlignment="Center" AutomationProperties.Name="{x:Static resx:MaterialMonitor.search_label}"/>
+                </StackPanel>
+                <StackPanel Margin="0,0,10,0">
+                    <Label Content="{x:Static resx:MaterialMonitor.type_header}" Target="{Binding ElementName=typeFilter}"/>
+                    <ComboBox x:Name="typeFilter" MinWidth="120" DisplayMemberPath="Label" SelectionChanged="controlsChanged" AutomationProperties.Name="{x:Static resx:MaterialMonitor.type_header}"/>
+                </StackPanel>
+                <StackPanel Margin="0,0,10,0">
+                    <Label Content="{x:Static resx:MaterialMonitor.grade_header}" Target="{Binding ElementName=gradeFilter}"/>
+                    <ComboBox x:Name="gradeFilter" MinWidth="80" DisplayMemberPath="Label" SelectionChanged="controlsChanged" AutomationProperties.Name="{x:Static resx:MaterialMonitor.grade_header}"/>
+                </StackPanel>
+                <StackPanel Margin="0,0,10,0">
+                    <Label Content="{x:Static resx:MaterialMonitor.inventory_header}" Target="{Binding ElementName=inventoryFilter}"/>
+                    <ComboBox x:Name="inventoryFilter" MinWidth="120" DisplayMemberPath="Label" SelectionChanged="controlsChanged" AutomationProperties.Name="{x:Static resx:MaterialMonitor.inventory_header}"/>
+                </StackPanel>
+                <StackPanel Margin="0,0,10,0">
+                    <Label Content=""/>
+                    <Button Content="{x:Static resx:MaterialMonitor.clear_filters}" Height="23" Click="clearFilters" VerticalAlignment="Bottom" Padding="10, 2"/>
+                </StackPanel>
+            </WrapPanel>
         </StackPanel>
-        <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="materialsData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="materialsUpdated" HeadersVisibility="Column">
+        <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="materialsData" CanUserAddRows="false" CanUserDeleteRows="False" SourceUpdated="materialsUpdated" HeadersVisibility="Column">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="{x:Static resx:MaterialMonitor.name_header}" Width="*" IsReadOnly="True" Binding="{Binding Path=material}">
+                <DataGridTextColumn x:Name="nameColumn" Header="{x:Static resx:MaterialMonitor.name_header}" Width="*" IsReadOnly="True" Binding="{Binding Path=material}">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="VerticalAlignment" Value="Center" />
@@ -25,7 +49,7 @@
                         </Style>                    
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="{x:Static resx:MaterialMonitor.type_header}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=category}">
+                <DataGridTextColumn x:Name="categoryColumn" Header="{x:Static resx:MaterialMonitor.type_header}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=category}">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="VerticalAlignment" Value="Center" />
@@ -72,7 +96,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:MaterialMonitor.min_header}" Binding="{Binding Path=minimum, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:MaterialMonitor.min_header}" Binding="{Binding Path=minimum, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Right" />
@@ -81,7 +105,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:MaterialMonitor.desired_header}" Binding="{Binding Path=desired, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:MaterialMonitor.desired_header}" Binding="{Binding Path=desired, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Right" />

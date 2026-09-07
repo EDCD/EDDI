@@ -9,6 +9,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Various bug fixes from telemetry.
   * Events
     * `Vessel launched` updated to add new field `loadoutDescription`.
+  * Material Monitor
+    * Added search box and filtering. Added checkbox to display invariant text in place of translated text when applicable. (#2411)
   * Speech Responder
     * Scripts
       * `Surface signals detected` updated to incorporate planetary mining locations.

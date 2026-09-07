@@ -150,4 +150,12 @@
   <data name="grade_header" xml:space="preserve">
     <value>Grade</value>
   </data>
+  <data name="use_invariant_names" xml:space="preserve"><value>Use Invariant Names</value></data>
+  <data name="search_label" xml:space="preserve"><value>Search</value></data>
+  <data name="filter_all" xml:space="preserve"><value>All</value></data>
+  <data name="filter_owned" xml:space="preserve"><value>Owned</value></data>
+  <data name="filter_below_minimum" xml:space="preserve"><value>Below minimum</value></data>
+  <data name="filter_below_desired" xml:space="preserve"><value>Below desired</value></data>
+  <data name="filter_unknown" xml:space="preserve"><value>Unknown</value></data>
+  <data name="clear_filters" xml:space="preserve"><value>Clear filters</value></data>
 </root>

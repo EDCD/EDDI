@@ -11,26 +11,20 @@ namespace EddiDataDefinitions
     public class MaterialAmount : INotifyPropertyChanged
     {
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate), DefaultValue(null)]
-        public string edname { get; private set; }
+        public string edname
+        {
+            get => MaterialDef?.edname;
+            set => SetDefinition(Material.FromEDName(value));
+        }
 
         [JsonIgnore]
-        private string _material;
+        public Material MaterialDef { get; private set; }
 
         [PublicAPI( "the material's localized name" ), JsonIgnore]
         public string material
         {
-            get => _material;
-            set
-            {
-                if (_material != value)
-                {
-                    var My_material = Material.FromName(value) ?? Material.FromEDName(value);
-                    _material = My_material?.localizedName ?? value;
-                    edname = My_material?.edname ?? value;
-                    category = My_material?.Category.localizedName;
-                    NotifyPropertyChanged("material");
-                }
-            }
+            get => MaterialDef?.localizedName;
+            set => edname = Material.FromName(value)?.edname ?? value;
         }
 
         [JsonIgnore]
@@ -128,34 +122,44 @@ namespace EddiDataDefinitions
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
-            if (material == null)
+            if (material == null && _additionalData.TryGetValue("material", out var legacyMaterial))
             {
-                var materialName = (string)_additionalData["material"];
-                material = materialName;
+                material = (string)legacyMaterial;
             }
 
             _additionalData = null;
         }
 
         public MaterialAmount(Material material, int amount)
-            : this(material.edname, amount, null, null)
+            : this(material, amount, null, null)
         { }
 
         public MaterialAmount(Material material, int amount, int? minimum, int? desired)
-            : this(material.edname, amount, minimum, desired)
-        { }
+        {
+            SetDefinition(material);
+            this.amount = amount;
+            this.minimum = minimum;
+            this.desired = desired;
+        }
 
         [JsonConstructor]
         public MaterialAmount(string edname, int amount, int? minimum, int? desired)
         {
-            var My_material = Material.FromEDName(edname);
-            this.material = My_material?.localizedName;
-            this.edname = My_material?.edname;
+            this.edname = edname;
             this.amount = amount;
             this.minimum = minimum;
             this.desired = desired;
-            this.category = My_material?.Category.localizedName;
-            this.Rarity = My_material?.Rarity ?? Rarity.Unknown;
+        }
+
+        private void SetDefinition(Material definition)
+        {
+            if (ReferenceEquals(MaterialDef, definition)) { return; }
+            MaterialDef = definition;
+            category = definition?.Category?.localizedName;
+            Rarity = definition?.Rarity ?? Rarity.Unknown;
+            NotifyPropertyChanged(nameof(MaterialDef));
+            NotifyPropertyChanged(nameof(edname));
+            NotifyPropertyChanged(nameof(material));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

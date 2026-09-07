@@ -463,14 +463,31 @@ namespace EddiMaterialMonitor
             {
                 // Write material configuration with current inventory
                 var materials = inventory.Select(m => new MaterialAmount(m.edname, m.amount, m.minimum, m.desired)).ToList();
-                var configuration = new MaterialMonitorConfiguration
-                {
-                    materials = materials,
-                };
+                var configuration = ConfigService.Instance.materialMonitorConfiguration;
+                configuration.materials = materials;
                 ConfigService.Instance.materialMonitorConfiguration = configuration;
             }
             // Make sure the UI is up to date
             RaiseOnUIThread(InventoryUpdatedEvent, inventory);
+        }
+
+        internal static void SaveViewPreferences(bool invariant, string search, string category, int? grade, string status)
+        {
+            lock (inventoryLock)
+            {
+                var configuration = ConfigService.Instance.materialMonitorConfiguration;
+                configuration.useInvariantNames = invariant;
+                configuration.searchText = search;
+                configuration.categoryFilter = category;
+                configuration.gradeFilter = grade;
+                configuration.inventoryFilter = status;
+                ConfigService.Instance.materialMonitorConfiguration = configuration;
+            }
+        }
+
+        internal List<MaterialAmount> InventorySnapshot()
+        {
+            lock (inventoryLock) { return inventory.ToList(); }
         }
 
         private void readMaterials()
