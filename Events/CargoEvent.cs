@@ -29,11 +29,11 @@ namespace EddiEvents
 
         public int cargocarried { get; private set; } = cargocarried;
 
-        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, string vehicle, ref List<Event> events, bool fromLogLoad )
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {
             var inventory = new List<CargoInfoItem>();
 
-            var vessel = JsonParsing.getString(data, "Vessel") ?? vehicle;
+            var vessel = JsonParsing.getString(data, "Vessel");
             var cargocarried = JsonParsing.getOptionalInt(data, "Count") ?? 0;
             data.TryGetValue( "Inventory", out var val );
             if ( val != null )

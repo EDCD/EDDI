@@ -81,14 +81,14 @@ namespace EddiEvents
 
         public Station Station { get; private set; } = station;
 
-        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, List<Faction> factions, ref List<Event> events, bool fromLogLoad )
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {
             var systemName = JsonParsing.getString(data, "StarSystem");
             var systemAddress = JsonParsing.getULong(data, "SystemAddress");
             var marketId = JsonParsing.getOptionalLong(data, "MarketID");
             EventParsing.StationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationModel );
 
-            var controllingfaction = EventParsing.Faction(data, "Station", systemName, systemAddress, factions);
+            var controllingfaction = EventParsing.Faction(data, "Station", systemName, systemAddress, null);
             var distancefromstar = JsonParsing.getOptionalDecimal(data, "DistFromStarLS");
 
             // Get station landing pads data

@@ -243,7 +243,9 @@ namespace EddiShipMonitor
 
         private void handleCargoEvent ( CargoEvent @event )
         {
-            if ( @event.timestamp > updatedAt && @event.vessel.Equals( Constants.VEHICLE_SHIP, StringComparison.OrdinalIgnoreCase ) )
+            if ( @event.timestamp > updatedAt && 
+                !string.IsNullOrEmpty(@event.vessel) && 
+                @event.vessel.Equals( Constants.VEHICLE_SHIP, StringComparison.OrdinalIgnoreCase ) )
             {
                 var ship = GetCurrentShip();
                 if ( ship != null )

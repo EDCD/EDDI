@@ -751,6 +751,18 @@ namespace EddiCore.EventHandling
                 return false;
             }
 
+            // Fill in faction information not present in the event
+            if ( @event.Station.Faction != null )
+            {
+                var systemFaction = CurrentStarSystem.factions.Find( f => f.name == @event.Station.Faction.name );
+                if ( systemFaction != null )
+                {
+                    @event.Station.Faction.myreputation = systemFaction.myreputation;
+                    @event.Station.Faction.presences = systemFaction.presences;
+                    @event.Station.Faction.squadronfaction = systemFaction.squadronfaction;
+                }
+            }
+
             // Update the station
             Logging.Debug( $"Now at station {@event.station} ({@event.marketId})." );
             if ( station == null && @event.Station != null )

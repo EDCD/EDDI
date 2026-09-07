@@ -192,7 +192,7 @@ namespace EddiJournalMonitor
                             #region Startup Events
                               
                             case "Cargo":
-                                handled = CargoEvent.Handle( timestamp, line, data, journalParseContext.GameState.Vehicle, ref events, fromLogLoad );
+                                handled = CargoEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "ClearSavedGame":
                                 handled = ClearedSaveEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
@@ -249,7 +249,7 @@ namespace EddiJournalMonitor
                                 handled = NearSurfaceEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "Docked":
-                                handled = DockedEvent.Handle( timestamp, line, data, journalParseContext.GameState.CurrentStarSystem?.factions, ref events, fromLogLoad );
+                                handled = DockedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "DockingCancelled":
                                 handled = DockingCancelledEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
