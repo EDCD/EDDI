@@ -108,5 +108,8 @@ namespace EddiEvents
                     return false;
             }
         }
+
+        // Community goals already supply their own origin.
+        public bool ResolveOrigin { get; init; }
     }
 }

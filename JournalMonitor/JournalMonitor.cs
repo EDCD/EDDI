@@ -897,10 +897,6 @@ namespace EddiJournalMonitor
                                             // Get the minor faction stuff
                                             faction = faction,
 
-                                            // Set mission origin to to the current system & station
-                                            originsystem = journalParseContext.GameState.CurrentStarSystem?.systemname,
-                                            originstation = journalParseContext.GameState.CurrentStation?.name,
-
                                             // Missions with engineering rewards
                                             CommodityDefinition = commodity,
                                             MicroResourceDefinition = microResource,
@@ -944,20 +940,15 @@ namespace EddiJournalMonitor
                                         }
                                         else
                                         {
-                                            // Populate destination system and station, depending on mission type
-                                            if ( mission.tagsList.Contains( MissionType.Altruism ) )
-                                            {
-                                                mission.destinationsystem = mission.originsystem;
-                                                mission.destinationstation = mission.originstation;
-                                            }
-                                            else
+                                            // Altruism destinations are resolved together with their origin in core.
+                                            if ( !mission.tagsList.Contains( MissionType.Altruism ) )
                                             {
                                                 mission.destinationsystem = destinationsystem;
                                                 mission.destinationstation = destinationstation ?? destinationsettlement;
                                             }
                                         }
 
-                                        events.Add(new MissionAcceptedEvent(timestamp, mission) { raw = line, fromLoad = fromLogLoad });
+                                        events.Add(new MissionAcceptedEvent(timestamp, mission) { ResolveOrigin = true, raw = line, fromLoad = fromLogLoad });
                                     }
                                 }
                                 handled = true;

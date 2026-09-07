@@ -231,6 +231,17 @@ namespace EddiCore.EventHandling
             {
                 passEvent = eventDied();
             }
+            else if ( @event is MissionAcceptedEvent { ResolveOrigin: true } missionAcceptedEvent )
+            {
+                var mission = missionAcceptedEvent.Mission;
+                mission.originsystem = CurrentStarSystem?.systemname;
+                mission.originstation = CurrentStation?.name;
+                if ( mission.tagsList.Contains( MissionType.Altruism ) && mission.destinationsystems.Count == 0 )
+                {
+                    mission.destinationsystem = mission.originsystem;
+                    mission.destinationstation = mission.originstation;
+                }
+            }
             else if ( @event is ModuleTransferEvent moduleTransferEvent )
             {
                 if ( !moduleTransferEvent.fromLoad && moduleTransferEvent.transfertime.HasValue )
