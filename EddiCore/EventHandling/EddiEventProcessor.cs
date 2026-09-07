@@ -246,6 +246,10 @@ namespace EddiCore.EventHandling
                     mission.destinationstation = mission.originstation;
                 }
             }
+            else if ( @event is StoredShipsEvent storedShipsEvent )
+            {
+                foreach ( var ship in storedShipsEvent.shipyard ) { ship.distance = ship.DistanceLY( CurrentStarSystem ); }
+            }
             else if ( @event is MessageReceivedEvent messageReceivedEvent )
             {
                 messageReceivedEvent.ResolveNpcSeed( CurrentStarSystem, CurrentStellarBody, CurrentStation );
