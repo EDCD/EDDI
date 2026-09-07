@@ -9,7 +9,6 @@ namespace EddiEvents
     public class BodyMappedEvent (
         DateTime timestamp,
         string bodyName,
-        Body body,
         ulong systemAddress,
         int probesUsed,
         int efficiencyTarget )
@@ -25,7 +24,7 @@ namespace EddiEvents
         public string bodyname => body?.bodyname ?? bodyName;
 
         [PublicAPI( "The numeric ID of the body that has been mapped" )]
-        public long? bodyId => body.bodyId;
+        public long? bodyId => body?.bodyId ?? JournalBodyId;
 
         [PublicAPI("The name of the system containing the mapped body")]
         public string systemname => body?.systemname;
@@ -175,10 +174,35 @@ namespace EddiEvents
         public DateTime? mapped => body?.mappedDateTime;
 
         [Obsolete("Use 'bodyname' instead")]
-        public string name => body?.bodyname;
+        public string name => body?.bodyname ?? bodyName;
 
         public string bodyName { get; private set; } = bodyName;
 
-        public Body body { get; private set; } = body;
+        public Body body { get; private set; }
+
+        // Journal identity remains available when the body is not cached.
+        public long? JournalBodyId { get; init; }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var bodyName = JsonParsing.getString(data, "BodyName");
+            var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+            var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+            var probesUsed = JsonParsing.getInt(data, "ProbesUsed");
+            var efficiencyTarget = JsonParsing.getInt(data, "EfficiencyTarget");
+
+            if ( bodyName.EndsWith( " Ring" ) )
+            {
+                // This event should actually be resolved as a RingMappedEvent.
+                events.Add( new RingMappedEvent( timestamp, bodyName, null, systemAddress, probesUsed, efficiencyTarget ) { JournalBodyId = bodyId, raw = line, fromLoad = fromLogLoad } );
+            }
+            else
+            {
+                events.Add( new BodyMappedEvent( timestamp, bodyName, systemAddress, probesUsed, efficiencyTarget ) { JournalBodyId = bodyId, raw = line, fromLoad = fromLogLoad } );
+            }
+            return true;
+        }
+
+        public void ResolveBody ( Body resolvedBody ) => body = resolvedBody;
     }
 }

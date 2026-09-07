@@ -9,7 +9,6 @@ namespace EddiEvents
         DateTime timestamp,
         string ringName,
         Ring ring,
-        Body body,
         ulong systemAddress,
         int probesUsed,
         int efficiencyTarget )
@@ -49,7 +48,13 @@ namespace EddiEvents
         // Not intended to be user facing
 
         public Ring ring { get; private set; } = ring;
+        public Body body { get; private set; }
+        public long? JournalBodyId { get; init; }
 
-        public Body body { get; private set; } = body;
+        public void ResolveRing ( Ring resolvedRing, Body parentBody )
+        {
+            ring = resolvedRing;
+            body = parentBody;
+        }
     }
 }

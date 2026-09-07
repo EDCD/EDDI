@@ -387,48 +387,8 @@ namespace EddiJournalMonitor
                                 handled = NavBeaconScanEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "SAAScanComplete": // Body mapped
-                                {
-                                    var bodyName = JsonParsing.getString(data, "BodyName");
-                                    var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    var probesUsed = JsonParsing.getInt(data, "ProbesUsed");
-                                    var efficiencyTarget = JsonParsing.getInt(data, "EfficiencyTarget");
-
-                                    // Target may be either a ring or a body
-                                    var system = journalParseContext.GameState.CurrentStarSystem;
-                                    Body body = null;
-
-                                    if (system != null && bodyName.EndsWith(" Ring"))
-                                    {
-                                        // We've mapped a ring. 
-                                        Ring ring = null;
-                                        var ringedBodies = system.bodies?.Where(b => b.rings?.Count > 0).ToList();
-                                        foreach (var ringedBody in ringedBodies)
-                                        {
-                                            ring = ringedBody.rings.FirstOrDefault(r => r.name == bodyName);
-                                            if (ring != null)
-                                            {
-                                                body = ringedBody;
+                                handled = BodyMappedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                                 break;
-                                            }
-                                        }
-                                        events.Add(new RingMappedEvent(timestamp, bodyName, ring, body, systemAddress, probesUsed, efficiencyTarget) { raw = line, fromLoad = fromLogLoad });
-                                    }
-                                    else
-                                    {
-                                        // Prepare updated map details to update the body in our star system
-                                        body = system?.BodyWithID(bodyId);
-                                        if (body is not null)
-                                        {
-                                            body.scannedDateTime ??= timestamp;
-                                            body.mappedDateTime = timestamp;
-                                            body.mappedEfficiently = probesUsed <= efficiencyTarget;
-                                            events.Add(new BodyMappedEvent(timestamp, bodyName, body, systemAddress, probesUsed, efficiencyTarget) { raw = line, fromLoad = fromLogLoad });
-                                        }
-                                    }
-                                }
-                                handled = true;
-                                break;
                             case "Scan":
                                 {
                                     var name = JsonParsing.getString(data, "BodyName");

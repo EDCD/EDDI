@@ -2861,7 +2861,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public void TestBodyMappedEventUsesExplicitParseContext ()
+        public void TestBodyMappedEventRetainsIdentityWithoutGameState ()
         {
             var context = new TestJournalParseContext();
             var body = new Body
@@ -2877,7 +2877,6 @@ namespace Tests
                 systemAddress = 1234
             };
             currentSystem.AddOrUpdateBody( body );
-            context.GameStateService.CurrentStarSystem = currentSystem;
 
             var line = @"{ ""timestamp"":""2026-01-01T00:00:00Z"", ""event"":""SAAScanComplete"", ""BodyName"":""Test System 1"", ""BodyID"":7, ""SystemAddress"":1234, ""ProbesUsed"":5, ""EfficiencyTarget"":6 }";
             var events = JournalMonitor.ParseJournalEntry( line, context );
@@ -2885,9 +2884,9 @@ namespace Tests
             Assert.HasCount( 1, events );
             var @event = (BodyMappedEvent)events[0];
             Assert.AreEqual( "Test System 1", @event.bodyname );
-            Assert.AreEqual( new DateTime( 2026, 1, 1, 0, 0, 0, DateTimeKind.Utc ), body.mappedDateTime );
-            Assert.IsTrue( body.mappedEfficiently );
-        }
+            Assert.AreEqual( 7L, @event.bodyId );
+            Assert.IsNull( @event.body );
+            Assert.IsNull( body.mappedDateTime );
             Assert.IsFalse( body.mappedEfficiently );
         }
 

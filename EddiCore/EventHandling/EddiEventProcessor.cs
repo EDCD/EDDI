@@ -246,6 +246,15 @@ namespace EddiCore.EventHandling
                     mission.destinationstation = mission.originstation;
                 }
             }
+            else if ( @event is RingMappedEvent ringMappedEvent )
+            {
+                var parent = CurrentStarSystem?.systemAddress == ringMappedEvent.systemAddress
+                    ? CurrentStarSystem.bodies?.FirstOrDefault( b =>
+                        ( ringMappedEvent.JournalBodyId.HasValue && b.bodyId == ringMappedEvent.JournalBodyId ) ||
+                        b.rings?.Any( r => r.name == ringMappedEvent.ringname ) == true )
+                    : null;
+                ringMappedEvent.ResolveRing( parent?.rings?.FirstOrDefault( r => r.name == ringMappedEvent.ringname ), parent );
+            }
             else if ( @event is ModuleTransferEvent moduleTransferEvent )
             {
                 if ( !moduleTransferEvent.fromLoad && moduleTransferEvent.transfertime.HasValue )
@@ -1370,11 +1379,18 @@ namespace EddiCore.EventHandling
 
         internal async Task<bool> eventBodyMappedAsync(BodyMappedEvent theEvent)
         {
+            theEvent.ResolveBody( CurrentStarSystem?.systemAddress == theEvent.systemAddress
+                ? CurrentStarSystem.bodies?.FirstOrDefault( b => b.bodyId != null && b.bodyId == theEvent.bodyId )
+                : null );
             if (CurrentStarSystem != null && theEvent.systemAddress == CurrentStarSystem.systemAddress)
             {
-                // We've already updated the body (via the journal monitor) if the CurrentStarSystem isn't null
-                // Here, we just need to save the data.
+                if ( theEvent.body is { } body )
+                {
+                    body.scannedDateTime ??= theEvent.timestamp;
+                    body.mappedDateTime = theEvent.timestamp;
+                    body.mappedEfficiently = theEvent.probesused <= theEvent.efficiencytarget;
                 await DataProvider.SaveStarSystemAsync(CurrentStarSystem).ConfigureAwait(false);
+            }
             }
             return true;
         }
