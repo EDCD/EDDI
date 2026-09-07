@@ -35,11 +35,10 @@ namespace Tests
             Assert.AreEqual("Sol", dbData.systemName);
         }
 
-        [TestMethod, DoNotParallelize]
+        [TestMethod]
         public async Task TestSqlRepositoryMissing()
         {
-            EDDI.Instance.DataProvider = CreateTestDataProvider();
-            var starSystemRepository = EDDI.Instance.DataProvider.starSystemRepository;
+            var starSystemRepository = CreateIsolatedTestDataProvider( out _, out _ ).starSystemRepository;
             var DBData = await starSystemRepository.GetSqlStarSystemAsync( 0, CancellationToken.None ).ConfigureAwait(false);
             Assert.IsNull(DBData);
         }
@@ -148,8 +147,6 @@ namespace Tests
         [TestMethod]
         public void TestPreservedProperties()
         {
-            EDDI.Instance.DataProvider = CreateTestDataProvider();
-
             // Set up our original star systems
             var system = DeserializeJsonResource<StarSystem>(Resources.sqlStarSystem5);
             var systemsToUpdate = new List<StarSystem>
@@ -291,11 +288,10 @@ namespace Tests
             Assert.IsNull( result.bodies.FirstOrDefault( b => b.bodyname == $"{systemName} 3" ) );
         }
 
-        [TestMethod, DoNotParallelize]
+        [TestMethod]
         public async Task TestLocalDatabaseHydratesFactionReputationAcrossStarSystemsAsync()
         {
-            var dataProvider = CreateTestDataProvider();
-            EDDI.Instance.DataProvider = dataProvider;
+            var dataProvider = CreateIsolatedTestDataProvider( out _, out _ );
 
             var factionName = $"Shared Reputation Faction {Guid.NewGuid():N}";
             var reputationUpdatedAt = new DateTime( 2026, 01, 02, 03, 04, 05, DateTimeKind.Utc );
@@ -328,11 +324,10 @@ namespace Tests
             Assert.AreEqual( reputationUpdatedAt, faction?.updatedAt );
         }
 
-        [TestMethod, DoNotParallelize]
+        [TestMethod]
         public async Task TestFactionReputationUsesNewestTimestampAndCaseInsensitiveNamesAsync()
         {
-            var dataProvider = CreateTestDataProvider();
-            EDDI.Instance.DataProvider = dataProvider;
+            var dataProvider = CreateIsolatedTestDataProvider( out _, out _ );
 
             var factionName = $"Case Reputation Faction {Guid.NewGuid():N}";
             var olderDate = new DateTime( 2026, 01, 01, 00, 00, 00, DateTimeKind.Utc );
@@ -383,7 +378,7 @@ namespace Tests
                     latestDate ),
                 CancellationToken.None ).ConfigureAwait( false );
 
-            var freshDataProvider = CreateTestDataProvider();
+            var freshDataProvider = CreateIsolatedTestDataProvider( out _, out _ );
             var secondTarget = CreateFactionHydrationSystem(
                 $"Second Target {Guid.NewGuid():N}",
                 BitConverter.ToUInt64( Guid.NewGuid().ToByteArray(), 0 ),
@@ -403,6 +398,8 @@ namespace Tests
             Assert.AreEqual( latestDate, secondResult?.factions.Single().updatedAt );
         }
 
+        // All test repositories in this process share the schema; dropping a table
+        // must not overlap tests that read or write faction reputation.
         [TestMethod, DoNotParallelize]
         public async Task TestSchemaVersionFiveCreatesFactionTable()
         {
@@ -418,11 +415,10 @@ namespace Tests
             Assert.IsTrue( await FactionTableExistsAsync().ConfigureAwait( false ) );
         }
 
-        [TestMethod, DoNotParallelize]
+        [TestMethod]
         public async Task TestGetOrFetchStarSystemAsyncPreservesUnsyncedPropertiesFromStaleDatabaseRecordAsync()
         {
-            var dataProvider = CreateTestDataProvider();
-            EDDI.Instance.DataProvider = dataProvider;
+            var dataProvider = CreateIsolatedTestDataProvider( out var spanshHttpClient, out _ );
 
             var staleSystem = CloneStarSystem( DeserializeJsonResource<StarSystem>( Resources.sqlStarSystem5 ) );
             var uniqueSystemAddress = BitConverter.ToUInt64( Guid.NewGuid().ToByteArray(), 0 );
@@ -433,7 +429,7 @@ namespace Tests
             await dataProvider.starSystemRepository.SaveStarSystemAsync( staleSystem, CancellationToken.None ).ConfigureAwait( false );
 
             var fetchedBody = staleSystem.bodies.First( b => b.bodyname == $"{uniqueSystemName} 1" );
-            FakeSpanshHttpClient.Expect( $"dump/{uniqueSystemAddress}", CreateSpanshDumpResponse( staleSystem, fetchedBody ) );
+            spanshHttpClient.Expect( $"dump/{uniqueSystemAddress}", CreateSpanshDumpResponse( staleSystem, fetchedBody ) );
 
             var result = await dataProvider.GetOrFetchStarSystemAsync( uniqueSystemAddress,
                 fetchIfMissing: true,
@@ -456,11 +452,10 @@ namespace Tests
             Assert.AreEqual( staleSystem.bodies.First( b => b.bodyname == $"{uniqueSystemName} 2" ).scannedDateTime, body2.scannedDateTime );
         }
 
-        [TestMethod, DoNotParallelize]
+        [TestMethod]
         public async Task TestGetOrFetchStarSystemByNameAsyncRefreshesStaleDatabaseRecordAsync()
         {
-            var dataProvider = CreateTestDataProvider();
-            EDDI.Instance.DataProvider = dataProvider;
+            var dataProvider = CreateIsolatedTestDataProvider( out var spanshHttpClient, out _ );
 
             var staleSystem = CloneStarSystem( DeserializeJsonResource<StarSystem>( Resources.sqlStarSystem5 ) );
             var uniqueSystemAddress = BitConverter.ToUInt64( Guid.NewGuid().ToByteArray(), 0 );
@@ -471,8 +466,8 @@ namespace Tests
             await dataProvider.starSystemRepository.SaveStarSystemAsync( staleSystem, CancellationToken.None ).ConfigureAwait( false );
 
             var fetchedBody = staleSystem.bodies.First( b => b.bodyname == $"{uniqueSystemName} 1" );
-            FakeSpanshHttpClient.Expect( $"systems/field_values/system_names?q={uniqueSystemName}", CreateSpanshSystemNameQueryResponse( staleSystem ) );
-            FakeSpanshHttpClient.Expect( $"dump/{uniqueSystemAddress}", CreateSpanshDumpResponse( staleSystem, fetchedBody ) );
+            spanshHttpClient.Expect( $"systems/field_values/system_names?q={uniqueSystemName}", CreateSpanshSystemNameQueryResponse( staleSystem ) );
+            spanshHttpClient.Expect( $"dump/{uniqueSystemAddress}", CreateSpanshDumpResponse( staleSystem, fetchedBody ) );
 
             var result = await dataProvider.GetOrFetchStarSystemAsync( uniqueSystemName,
                 fetchIfMissing: true,
@@ -491,10 +486,10 @@ namespace Tests
             Assert.AreEqual( staleSystem.bodies.First( b => b.bodyname == $"{uniqueSystemName} 2" ).scannedDateTime, body2.scannedDateTime );
         }
 
-        [TestMethod, DoNotParallelize]
+        [TestMethod]
         public async Task TestGetOrFetchStarSystemByNameAsyncDoesNotFetchWaypointWhenFetchIfMissingIsFalse()
         {
-            var dataProvider = CreateTestDataProvider();
+            var dataProvider = CreateIsolatedTestDataProvider( out _, out _ );
             var missingSystemName = $"No Spansh Lookup {Guid.NewGuid():N}";
 
             var result = await dataProvider.GetOrFetchStarSystemAsync(
@@ -513,6 +508,12 @@ namespace Tests
 
         private static void RenameStarSystem ( StarSystem starSystem, string systemName, ulong systemAddress )
         {
+            // Factions have their own shared table, so isolate their names too.
+            foreach ( var faction in starSystem.factions ?? [ ] )
+            {
+                faction.name = $"{faction.name} {systemAddress}";
+            }
+
             var originalSystemName = starSystem.systemname;
             starSystem.systemname = systemName;
             starSystem.systemAddress = systemAddress;
