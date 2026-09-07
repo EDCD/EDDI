@@ -261,7 +261,7 @@ namespace Tests
             {
                 var scripts = new Dictionary<string, Script>
                 {
-                    [ "inner" ] = new( "inner", null, false, "{args.value}:{shared}:state={if state:ok|else:missing}" ),
+                    [ "inner" ] = new( "inner", null, false, "{args.value}:{shared}:state={if shared:ok|else:missing}" ),
                     [ "outer" ] = new( "outer", null, false, "{set before to args.value}{set nested to InvokeScript(\"inner\", [\"value\": args.value])}{before}/{nested}/{args.value}/{shared}" ),
                     [ "test" ] = new( "test", null, false, "{InvokeScript(\"outer\", [\"value\": root])}" )
                 };
@@ -277,16 +277,20 @@ namespace Tests
 
             var alpha = Task.Run( () => ResolveWithValue( "alpha" ) );
             var beta = Task.Run( () => ResolveWithValue( "beta" ) );
-            var results = await Task.WhenAll( alpha, beta );
+            await Task.WhenAll( alpha, beta );
+
+            var results = new List<string>
+            {
+                alpha.Result ?? "",
+                beta.Result ?? ""
+            };
 
             var expected = new[]
-                {
-                    "alpha/alpha:alpha:state=ok/alpha/alpha",
-                    "beta/beta:beta:state=ok/beta/beta"
-                };
-            CollectionAssert.AreEquivalent(
-                expected,
-                results );
+            {
+                "alpha/alpha:alpha:state=ok/alpha/alpha",
+                "beta/beta:beta:state=ok/beta/beta"
+            };
+            CollectionAssert.AreEquivalent( expected, results );
         }
 
         [TestMethod]
