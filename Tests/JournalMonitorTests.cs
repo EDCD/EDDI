@@ -1,7 +1,6 @@
 ﻿using EddiCore;
 using EddiCore.EventHandling;
 using EddiDataDefinitions;
-using EddiDataProviderService;
 using EddiEvents;
 using EddiJournalMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -21,7 +20,6 @@ namespace Tests
     {
         private sealed class TestJournalParseContext : IJournalParseContext
         {
-            public DataProviderService DataProvider { get; init; }
             public List<Event> EnqueuedEvents { get; } = [ ];
 
             public void EnqueueEvent ( Event @event )

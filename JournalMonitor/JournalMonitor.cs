@@ -1,7 +1,6 @@
 using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
-using EddiDataProviderService;
 using EddiEvents;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
@@ -21,13 +20,11 @@ namespace EddiJournalMonitor
 {
     internal interface IJournalParseContext
     {
-        DataProviderService DataProvider { get; }
         void EnqueueEvent ( Event @event );
     }
 
     internal sealed class EddiJournalParseContext : IJournalParseContext
     {
-        public DataProviderService DataProvider => EDDI.Instance.DataProvider;
         public void EnqueueEvent ( Event @event ) => EDDI.Instance.enqueueEvent( @event );
     }
 

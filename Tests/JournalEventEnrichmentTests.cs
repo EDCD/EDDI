@@ -23,7 +23,6 @@ namespace Tests
 
         private sealed class ParseContext : IJournalParseContext
         {
-            public DataProviderService DataProvider => throw new InvalidOperationException( "Unexpected data lookup" );
             public void EnqueueEvent ( Event @event ) => Assert.Fail( "Parsing must not schedule these events" );
         }
 
