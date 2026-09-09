@@ -155,12 +155,123 @@ namespace EddiEvents
         public SecurityLevel securityLevel { get; private set; }
 
         public BodyType bodyType { get; private set; }
-        
+
         public Faction carrierFaction { get; private set; }
 
         public List<StationService> carrierServices { get; private set; }
 
         public List<EconomyShare> carrierEconomies { get; private set; }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            // Get destination star system data
+            var systemName = JsonParsing.getString( data, "StarSystem" );
+            data.TryGetValue( "StarPos", out var starposVal );
+            var starPos = (List<object>)starposVal;
+            var x = Math.Round( JsonParsing.getDecimal( "X", starPos?[ 0 ] ) * 32 ) /
+                                            (decimal)32.0;
+            var y = Math.Round( JsonParsing.getDecimal( "Y", starPos?[ 1 ] ) * 32 ) /
+                                            (decimal)32.0;
+            var z = Math.Round( JsonParsing.getDecimal( "Z", starPos?[ 2 ] ) * 32 ) /
+                                            (decimal)32.0;
+            var systemAddress = JsonParsing.getULong( data, "SystemAddress" );
+            var systemEconomy =
+                                        Economy.FromEDName( JsonParsing.getString( data, "SystemEconomy" ) );
+            var systemEconomy2 =
+                                        Economy.FromEDName( JsonParsing.getString( data, "SystemSecondEconomy" ) );
+            var systemSecurity =
+                                        SecurityLevel.FromEDName( JsonParsing.getString( data, "SystemSecurity" ) );
+            systemSecurity.fallbackLocalizedName =
+                JsonParsing.getString( data, "SystemSecurity_Localised" );
+            var systemPopulation = JsonParsing.getOptionalLong( data, "Population" );
+
+            // Get destination body data (if any)
+            var bodyName = JsonParsing.getString( data, "Body" );
+            var bodyId = JsonParsing.getOptionalLong( data, "BodyID" );
+            var bodyType = BodyType.FromEDName( JsonParsing.getString( data, "BodyType" ) ) ??
+                                                   BodyType.None;
+            // Get carrier data (may not be present when on-foot at a fleet carrier but not docked)
+            var carrierId = JsonParsing.getOptionalLong( data, "MarketID" );
+            EventParsing.StationNameAndType( data, out var carrierName, out _, out var carrierType );
+
+            // Get carrier services data (may not be present when on-foot at a fleet carrier but not docked)
+            var stationServices = new List<StationService>();
+            data.TryGetValue( "StationServices", out var stationserviceVal );
+            var stationservices =
+                                        ( stationserviceVal as List<object> )?.Cast<string>()?.ToList() ??
+                                        [ ];
+            foreach ( var service in stationservices )
+            {
+                stationServices.Add( StationService.FromEDName( service ) );
+            }
+
+            // Get carrier economies and their shares (may not be present when on-foot at a fleet carrier but not docked)
+            data.TryGetValue( "StationEconomies", out var economiesVal );
+            var economies = economiesVal as List<object> ?? [ ];
+            var stationEconomies = new List<EconomyShare>();
+            foreach ( var economyShareVal in economies )
+            {
+                if ( economyShareVal is Dictionary<string, object> economyshare )
+                {
+                    var economy =
+                                                Economy.FromEDName( JsonParsing.getString( economyshare, "Name" ) );
+                    economy.fallbackLocalizedName =
+                        JsonParsing.getString( economyshare, "Name_Localised" );
+                    var share = JsonParsing.getDecimal( economyshare, "Proportion" );
+                    if ( economy != Economy.None && share > 0 )
+                    {
+                        stationEconomies.Add( new EconomyShare( economy, share ) );
+                    }
+                }
+            }
+
+            // Parse factions array data
+            var factions = new List<Faction>();
+            data.TryGetValue( "Factions", out var factionsVal );
+            if ( factionsVal != null )
+            {
+                factions = EventParsing.Factions( factionsVal, systemName, systemAddress );
+            }
+            var systemfaction = EventParsing.Faction( data, "System", systemName, systemAddress, factions );
+            var stationFaction = EventParsing.Faction( data, "Station", systemName, systemAddress, factions );
+
+            // Parse conflicts array data
+            var conflicts = new List<Conflict>();
+            data.TryGetValue( "Conflicts", out var conflictsVal );
+            if ( conflictsVal != null )
+            {
+                conflicts = EventParsing.FactionConflicts( conflictsVal, factions );
+            }
+
+            // Powerplay data (if pledged)
+            EventParsing.PowerplayDetails( data, systemAddress, out var controllingPower,
+                out var powersInAcquisitionRange, out var powerplayState,
+                out var powerAcquisitionProgress,
+                out var powerplayControlProgress, out var powerplayReinforcementControlPoints,
+                out var powerplayUnderminingControlPoints );
+
+            // Thargoid war data (if any)
+            EventParsing.ThargoidWarData( data, out var thargoidWar );
+
+            var docked = JsonParsing.getBool( data, "Docked" );
+            var onFoot = JsonParsing.getOptionalBool( data, "OnFoot" ) ?? false;
+
+            events.Add( new CarrierJumpedEvent( timestamp, systemName, systemAddress, x, y, z,
+                bodyName, bodyId, bodyType, docked, onFoot, carrierName, carrierType, carrierId,
+                stationServices, systemfaction, stationFaction, factions, conflicts,
+                stationEconomies, systemEconomy, systemEconomy2, systemSecurity,
+                systemPopulation, controllingPower, powersInAcquisitionRange, powerplayState,
+                powerAcquisitionProgress, powerplayControlProgress,
+                powerplayReinforcementControlPoints, powerplayUnderminingControlPoints,
+                thargoidWar )
+            { raw = line, fromLoad = fromLogLoad } );
+            return true;
+        }
+
+        public void ResolveBodyType ( BodyType resolvedBodyType )
+        {
+            bodyType = resolvedBodyType ?? bodyType;
+        }
 
         public CarrierJumpedEvent ( DateTime timestamp, string systemName, ulong systemAddress, decimal x, decimal y,
             decimal z, string bodyName, long? bodyId, BodyType bodyType, bool docked, bool onFoot, string carrierName,

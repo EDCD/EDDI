@@ -566,6 +566,23 @@ namespace EddiCore.EventHandling
         {
             Logging.Info( "Carrier jumped to: " + @event.systemname );
             
+            if ( @event.bodyType == BodyType.Planet && @event.bodyId.HasValue && DataProvider != null )
+            {
+                try
+                {
+                    var starSystem = await DataProvider
+                        .GetOrCreateStarSystemAsync( @event.systemAddress, @event.systemname )
+                        .ConfigureAwait( false );
+                    var resolvedBodyType = starSystem?.bodies?
+                        .FirstOrDefault( b => b?.bodyId == @event.bodyId )?.bodyType;
+                    @event.ResolveBodyType( resolvedBodyType );
+                }
+                catch ( Exception ex )
+                {
+                    Logging.Warn( "Failed to resolve the carrier jump destination body type", ex );
+                }
+            }
+            
             if ( @event.docked || @event.onFoot )
             {
                 // We are either docked and in a ship or on foot and in normal space.

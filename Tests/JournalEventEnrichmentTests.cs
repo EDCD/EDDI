@@ -320,6 +320,36 @@ namespace Tests
         }
 
         [TestMethod]
+        public async Task CarrierJump_BodyTypeIsResolvedInCore ()
+        {
+            var dataProvider = TestBase.CreateIsolatedTestDataProvider( out _, out _ );
+            var item = (CarrierJumpedEvent)JournalMonitor.ParseJournalEntry( CarrierJumpedEvent.SAMPLES[ 1 ], new ParseContext() ).Single();
+            var storedSystem = new StarSystem
+            {
+                systemname = item.systemname,
+                systemAddress = item.systemAddress,
+                x = item.x,
+                y = item.y,
+                z = item.z
+            };
+            storedSystem.AddOrUpdateBody( new Body
+            {
+                bodyname = "HR 6421 4 a",
+                bodyId = item.bodyId,
+                bodyType = BodyType.Moon,
+                systemname = item.systemname,
+                systemAddress = item.systemAddress
+            } );
+            await dataProvider.SaveStarSystemAsync( storedSystem ).ConfigureAwait( false );
+            Assert.AreEqual( BodyType.Planet, item.bodyType );
+
+            using var processor = new EddiEventProcessor( TestBase.CreateEventProcessorContext( dataProvider ) );
+            await processor.ProcessEventAsync( item ).ConfigureAwait( false );
+
+            Assert.AreEqual( BodyType.Moon, item.bodyType );
+        }
+
+        [TestMethod]
         public async Task SettlementParsing_DoesNotMutateCachedFaction_AndMergePreservesMissingFields ()
         {
             var context = TestBase.CreateEventProcessorContext();

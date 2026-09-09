@@ -1623,19 +1623,23 @@ namespace Tests
         }
 
         [TestMethod]
-        public void TestCarrierJumpRequestMissingBody()
+        public async Task TestCarrierJumpRequestMissingBody()
         {
             // There is an FDev bug which caused the `Body` property not to be written for a `CarrierJumpRequest` event.
             // Test that we handle that scenario gracefully.
 
             // Set up our data resources with canned data
-            EDDI.Instance.DataProvider = CreateTestDataProvider();
+            var dataProvider = CreateTestDataProvider();
             FakeSpanshHttpClient.Expect( "dump/3932277478106", Encoding.UTF8.GetString( Properties.Resources.SpanshStarSystemDumpShinrartaDezhra ) );
 
             // Parse the event
             var line = "{ \"timestamp\":\"2020-06-12T11:01:40Z\", \"event\":\"CarrierJumpRequest\", \"CarrierID\":3701442048, \"CarrierType\":\"FleetCarrier\", \"SystemName\":\"Shinrarta Dezhra\", \"SystemAddress\":3932277478106, \"BodyID\":16, \"DepartureTime\":\"2023-05-22T09:09:57Z\" }";
             var events = JournalMonitor.ParseJournalEntry(line);
             var @event = (CarrierJumpRequestEvent)events[0];
+
+            Assert.IsNull( @event.bodyname );
+            using var processor = new EddiEventProcessor( CreateEventProcessorContext( dataProvider ) );
+            await processor.ProcessEventAsync( @event ).ConfigureAwait( false );
 
             // Declare our expected value
             var expectedEvent = new CarrierJumpRequestEvent(new DateTime(2020, 6, 12, 11, 1, 40, DateTimeKind.Utc), "Shinrarta Dezhra", 3932277478106, "Shinrarta Dezhra B 2", 16, 3701442048, StationModel.FleetCarrier, new DateTime(2023, 5, 22, 9, 9, 57, DateTimeKind.Utc) ) { raw = line, fromLoad = false };
