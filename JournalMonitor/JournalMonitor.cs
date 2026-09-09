@@ -1254,49 +1254,7 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "StoredShips":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var marketId = JsonParsing.getLong(data, "MarketID");
-                                    var system = JsonParsing.getString(data, "StarSystem");
-                                    var station = JsonParsing.getString(data, "StationName");
-
-                                    var shipyard = new List<Ship>();
-                                    foreach (var type in new string[] { "ShipsHere", "ShipsRemote" } )
-                                    {
-                                        data.TryGetValue(type, out var val);
-                                        var shipsData = (List<object>)val;
-                                        if (shipsData != null)
-                                        {
-                                            foreach (var shipData in shipsData.Cast<IDictionary<string, object>>() )
-                                            {
-                                                var shipType = JsonParsing.getString(shipData, "ShipType");
-                                                var ship = ShipDefinitions.FromEDModel(shipType);
-                                                if (ship != null)
-                                                {
-                                                    ship.LocalId = JsonParsing.getInt(shipData, "ShipID");
-                                                    ship.name = JsonParsing.getString(shipData, "Name");
-                                                    ship.value = JsonParsing.getLong(shipData, "Value");
-                                                    ship.hot = JsonParsing.getOptionalBool(shipData, "Hot") ?? false;
-                                                    ship.intransit = JsonParsing.getOptionalBool(shipData, "InTransit") ?? false;
-                                                    ship.transferprice = JsonParsing.getOptionalLong(shipData, "TransferPrice");
-                                                    ship.transfertime = JsonParsing.getOptionalLong(shipData, "TransferTime");
-
-                                                    var shipSystemName = JsonParsing.getString(shipData, "StarSystem");
-                                                    var shipMarketID = JsonParsing.getOptionalLong( shipData, "ShipMarketID" );
-                                                    var stationWaypoint = journalParseContext.DataProvider.GetOrFetchStationWaypointAsync(
-                                                            shipSystemName ?? system, shipMarketID ?? marketId ).GetAwaiter().GetResult();
-                                                    ship.StoredLocation = stationWaypoint is null 
-                                                        ? null 
-                                                        : new Ship.Location( stationWaypoint );
-                                                    shipyard.Add(ship);
-                                                }
-                                            }
-                                        }
-                                    }
-                                    events.Add(new StoredShipsEvent(timestamp, marketId, station, system, shipyard) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                                handled = StoredShipsEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "TechnologyBroker":
                                 {

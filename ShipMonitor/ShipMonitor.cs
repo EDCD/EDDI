@@ -229,7 +229,7 @@ namespace EddiShipMonitor
             }
             else if ( @event is StoredShipsEvent storedShipsEvent )
             {
-                await handleStoredShipsEventAsync( storedShipsEvent ).ConfigureAwait( false );
+                handleStoredShipsEvent( storedShipsEvent );
             }
             else if (@event is BountyIncurredEvent bountyIncurredEvent)
             {
@@ -624,44 +624,13 @@ namespace EddiShipMonitor
             }
         }
 
-        private async Task handleStoredShipsEventAsync ( StoredShipsEvent @event )
+        private void handleStoredShipsEvent ( StoredShipsEvent @event )
         {
             if ( @event.timestamp > updatedAt )
             {
                 updatedAt = @event.timestamp;
                 if ( @event.shipyard != null )
                 {
-                    // Update ship location data in the event
-                    var quickSystems =
-                        await EDDI.Instance.DataProvider
-                            .GetOrFetchQuickStarSystemsAsync(
-                                @event.shipyard.Select( sh => sh.starsystem ).Distinct().ToArray(), false )
-                            .ConfigureAwait( false ) ?? [ ];
-
-                    foreach ( var ship in @event.shipyard )
-                    {
-                        if ( !string.IsNullOrEmpty( ship.starsystem ) )
-                        {
-                            var systemData = quickSystems.FirstOrDefault( sys => sys.systemname == @event.system);
-                            var stationData = systemData?.stations?.FirstOrDefault( s => s.marketId == ship.marketid );
-                            ship.StoredLocation = systemData is null || stationData is null
-                                ? null
-                                : new Ship.Location( systemData, stationData.name, stationData.marketId );
-                            ship.distance = ship.DistanceLY( EDDI.Instance.GameState.CurrentStarSystem );
-                        }
-                        else
-                        {
-                            ship.StoredLocation =
-                                EDDI.Instance.GameState.CurrentStarSystem is null || EDDI.Instance.GameState.CurrentStation is null
-                                    ? null
-                                    : new Ship.Location(
-                                        EDDI.Instance.GameState.CurrentStarSystem,
-                                        EDDI.Instance.GameState.CurrentStation.name,
-                                        EDDI.Instance.GameState.CurrentStation.marketId );
-                            ship.distance = 0;
-                        }
-                    }
-
                     //Check for ships missing from the shipyard
                     foreach ( var shipInEvent in @event.shipyard )
                     {

@@ -267,6 +267,59 @@ namespace Tests
         }
 
         [TestMethod]
+        public async Task StoredShips_RetainJournalLocationUntilCoreResolution ()
+        {
+            var dataProvider = TestBase.CreateIsolatedTestDataProvider( out _, out _ );
+            var storedSystem = new StarSystem
+            {
+                systemname = "Origin",
+                systemAddress = 123,
+                x = 0,
+                y = 0,
+                z = 0
+            };
+            storedSystem.AddOrUpdateStation( new Station
+            {
+                name = "Remote Port",
+                marketId = 42,
+                systemname = storedSystem.systemname,
+                systemAddress = storedSystem.systemAddress
+            } );
+            await dataProvider.SaveStarSystemAsync( storedSystem ).ConfigureAwait( false );
+
+            var item = (StoredShipsEvent)Parse( "StoredShips", new JObject
+            {
+                ["MarketID"] = 99,
+                ["StarSystem"] = "Current",
+                ["StationName"] = "Current Port",
+                ["ShipsHere"] = new JArray(),
+                ["ShipsRemote"] = new JArray
+                {
+                    new JObject
+                    {
+                        ["ShipType"] = "Adder",
+                        ["ShipID"] = 7,
+                        ["Value"] = 100,
+                        ["StarSystem"] = "Origin",
+                        ["ShipMarketID"] = 42
+                    }
+                }
+            } ).Single();
+            var ship = item.shipyard.Single();
+            Assert.AreEqual( "Origin", ship.starsystem );
+            Assert.IsNull( ship.station );
+            Assert.IsNull( ship.distance );
+
+            var context = TestBase.CreateEventProcessorContext( dataProvider );
+            context.GameStateMutator.CurrentStarSystem = new StarSystem { systemname = "Current", x = 3, y = 4, z = 0 };
+            using var processor = new EddiEventProcessor( context );
+            await processor.ProcessEventAsync( item ).ConfigureAwait( false );
+
+            Assert.AreEqual( "Remote Port", ship.station );
+            Assert.AreEqual( 5M, ship.distance );
+        }
+
+        [TestMethod]
         public async Task SettlementParsing_DoesNotMutateCachedFaction_AndMergePreservesMissingFields ()
         {
             var context = TestBase.CreateEventProcessorContext();

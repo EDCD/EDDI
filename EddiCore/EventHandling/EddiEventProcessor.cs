@@ -248,7 +248,28 @@ namespace EddiCore.EventHandling
             }
             else if ( @event is StoredShipsEvent storedShipsEvent )
             {
-                foreach ( var ship in storedShipsEvent.shipyard ) { ship.distance = ship.DistanceLY( CurrentStarSystem ); }
+                foreach ( var ship in storedShipsEvent.shipyard ?? [ ] )
+                {
+                    var location = ship.StoredLocation;
+                    if ( DataProvider != null && !string.IsNullOrEmpty( location?.systemName ) && location.marketId.HasValue )
+                    {
+                        try
+                        {
+                            var stationWaypoint = await DataProvider
+                                .GetOrFetchStationWaypointAsync( location.systemName, location.marketId.Value )
+                                .ConfigureAwait( false );
+                            if ( stationWaypoint != null )
+                            {
+                                ship.StoredLocation = new Ship.Location( stationWaypoint );
+                            }
+                        }
+                        catch ( Exception ex )
+                        {
+                            Logging.Warn( $"Failed to resolve the stored location for ship {ship.LocalId}", ex );
+                        }
+                    }
+                    ship.distance = ship.DistanceLY( CurrentStarSystem );
+                }
             }
             else if ( @event is MessageReceivedEvent messageReceivedEvent )
             {
