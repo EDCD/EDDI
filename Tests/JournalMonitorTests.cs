@@ -1,4 +1,5 @@
 ﻿using EddiCore;
+using EddiCore.EventHandling;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;

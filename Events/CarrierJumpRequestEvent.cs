@@ -1,5 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
+using System.Reflection.Metadata;
 using Utilities;
 
 namespace EddiEvents
@@ -51,8 +53,28 @@ namespace EddiEvents
         
         public DateTime departureTime { get; private set; } = departureTime;
 
-        // System
-        // Body
-        // Carrier
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
+            var carrierId = JsonParsing.getLong(data, "CarrierID");
+            var carrierType = StationModel.FromEDName( JsonParsing.getString( data, "CarrierType" ) );
+            var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+            var systemName = JsonParsing.getString(data, "SystemName");
+            var bodyName = JsonParsing.getString(data, "Body");
+            var bodyId = JsonParsing.getLong(data, "BodyID");
+            var departureTime = JsonParsing.getDateTime( "DepartureTime", data );
+
+            events.Add( new CarrierJumpRequestEvent( timestamp, systemName, systemAddress, bodyName, bodyId, carrierId, carrierType, departureTime ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
+        }
+
+        public void ResolveBodyName ( string resolvedBodyName )
+        {
+            if ( !string.IsNullOrEmpty( resolvedBodyName ) )
+            {
+                bodyname = resolvedBodyName;
+            }
+        }
     }
 }

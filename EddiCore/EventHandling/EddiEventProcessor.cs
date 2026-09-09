@@ -207,6 +207,10 @@ namespace EddiCore.EventHandling
             {
                 passEvent = await eventCarrierJumpedAsync( carrierJumpedEvent ).ConfigureAwait( false );
             }
+            else if ( @event is CarrierJumpRequestEvent carrierJumpRequestEvent )
+            {
+                passEvent = await eventCarrierJumpRequestAsync( carrierJumpRequestEvent ).ConfigureAwait( false );
+            }
             else if ( @event is DisembarkEvent disembarkEvent )
             {
                 passEvent = await eventDisembarkAsync( disembarkEvent ).ConfigureAwait(false);
@@ -257,14 +261,14 @@ namespace EddiCore.EventHandling
 
                 if ( missionAcceptedEvent.ResolveOrigin )
                 {
-                mission.originsystem = CurrentStarSystem?.systemname;
-                mission.originstation = CurrentStation?.name;
-                if ( mission.tagsList.Contains( MissionType.Altruism ) && mission.destinationsystems.Count == 0 )
-                {
-                    mission.destinationsystem = mission.originsystem;
-                    mission.destinationstation = mission.originstation;
+                    mission.originsystem = CurrentStarSystem?.systemname;
+                    mission.originstation = CurrentStation?.name;
+                    if ( mission.tagsList.Contains( MissionType.Altruism ) && mission.destinationsystems.Count == 0 )
+                    {
+                        mission.destinationsystem = mission.originsystem;
+                        mission.destinationstation = mission.originstation;
+                    }
                 }
-            }
             }
             else if ( @event is StoredShipsEvent storedShipsEvent )
             {
@@ -585,7 +589,7 @@ namespace EddiCore.EventHandling
         private async Task<bool> eventCarrierJumpedAsync( CarrierJumpedEvent @event )
         {
             Logging.Info( "Carrier jumped to: " + @event.systemname );
-            
+
             if ( @event.bodyType == BodyType.Planet && @event.bodyId.HasValue && DataProvider != null )
             {
                 try
@@ -693,6 +697,34 @@ namespace EddiCore.EventHandling
                 throw new NotImplementedException();
             }
 
+            return true;
+        }
+
+        private async Task<bool> eventCarrierJumpRequestAsync ( CarrierJumpRequestEvent @event )
+        {
+            if ( @event.systemAddress == 0 || DataProvider is null )
+            {
+                return false;
+            }
+
+            if ( @event.bodyId.HasValue && !string.IsNullOrEmpty( @event.bodyname ) )
+            {
+                // We already have the body name, no need to resolve it
+                return true;
+            }
+
+            try
+            {
+                var starSystem = await DataProvider
+                    .GetOrCreateStarSystemAsync( @event.systemAddress, @event.systemname )
+                    .ConfigureAwait( false );
+                @event.ResolveBodyName( starSystem?.bodies?
+                    .FirstOrDefault( b => b?.bodyId == @event.bodyId )?.bodyname );
+            }
+            catch ( Exception ex )
+            {
+                Logging.Warn( "Failed to resolve the carrier jump destination body name", ex );
+            }
             return true;
         }
 

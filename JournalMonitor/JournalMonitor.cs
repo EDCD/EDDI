@@ -1492,27 +1492,7 @@ namespace EddiJournalMonitor
                                 handled = CarrierJumpedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "CarrierJumpRequest":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var carrierId = JsonParsing.getLong(data, "CarrierID");
-                                    var carrierType = StationModel.FromEDName( JsonParsing.getString( data, "CarrierType" ) );
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    var systemName = JsonParsing.getString(data, "SystemName");
-                                    var bodyName = JsonParsing.getString(data, "Body");
-                                    var bodyId = JsonParsing.getLong(data, "BodyID");
-                                    var departureTime = JsonParsing.getDateTime( "DepartureTime", data );
-
-                                    // There is a bug in the journal output where "Body" can be missing but "BodyID" can be present. Try to Work around that here.
-                                    if (string.IsNullOrEmpty(bodyName) && systemAddress > 0)
-                                    {
-                                        var starSystem = journalParseContext.DataProvider.GetOrCreateStarSystemAsync( systemAddress, systemName ).GetAwaiter().GetResult();
-                                        bodyName = starSystem?.bodies?.FirstOrDefault(b => b?.bodyId == bodyId)?.bodyname;
-                                    }
-
-                                    events.Add(new CarrierJumpRequestEvent(timestamp, systemName, systemAddress, bodyName, bodyId, carrierId, carrierType, departureTime ) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                                handled = CarrierJumpRequestEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "CarrierJumpCancelled":
                                 {
