@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Utilities;
 
 namespace EddiEvents
@@ -89,27 +90,191 @@ namespace EddiEvents
         {
             switch ( edType )
             {
-                case "CommunityGoalJoin":
-                    var cgid = JsonParsing.getULong(data, "CGID");
-                    var name = JsonParsing.getString(data, "Name");
-                    var system = JsonParsing.getString(data, "System");
-
-                    var mission = new Mission(cgid, "MISSION_CommunityGoal", null, MissionStatus.Active)
+                case "CommunityGoalJoin": // Community Goal
                     {
-                        localisedname = name,
-                        destinationsystem = system,
-                        originsystem = system,
-                        communal = true
-                    };
+                        var cgid = JsonParsing.getULong(data, "CGID");
+                        var name = JsonParsing.getString(data, "Name");
+                        var system = JsonParsing.getString(data, "System");
 
-                    events.Add( new MissionAcceptedEvent( timestamp, mission ) { raw = line, fromLoad = fromLogLoad } );
-                    return true;
+                        var mission = new Mission(cgid, "MISSION_CommunityGoal", null, MissionStatus.Active)
+                        {
+                            localisedname = name,
+                            destinationsystem = system,
+                            originsystem = system,
+                            communal = true
+                        };
+
+                        events.Add( new MissionAcceptedEvent( timestamp, mission ) { raw = line, fromLoad = fromLogLoad } );
+                        return true;
+                    }
+                case "MissionAccepted": // Standard Mission
+                    {
+                        var missionid = JsonParsing.getULong( data, "MissionID" );
+                        data.TryGetValue( "Expiry", out var val );
+                        var expiry = (DateTime?)val;
+                        var name = JsonParsing.getString(data, "Name");
+                        var localisedname = JsonParsing.getString(data, "LocalisedName");
+                        if ( !string.IsNullOrEmpty( localisedname ) )
+                        {
+                            // Mission localized names may have embedded HTML tags. If so then remove them.
+                            localisedname = GeneratedRegex.HtmlRegex().Replace( localisedname, string.Empty );
+                        }
+                        var faction = EventParsing.FactionName(data, "Faction");
+                        var reward = JsonParsing.getOptionalInt(data, "Reward");
+                        var wing = JsonParsing.getBool(data, "Wing");
+
+                        if ( name == "MISSION_genericPermit1" )
+                        {
+                            // This is a permit mission where the permit is granted immediately once it is accepted.
+                            // There are no other mission related events generated from this (no mission completion event).
+                            events.Add( new PermitAcquiredEvent( timestamp, faction ) { raw = line, fromLoad = fromLogLoad } );
+                        }
+                        else
+                        {
+                            // Missions with destinations
+                            var destinationsystem = JsonParsing.getString(data, "DestinationSystem");
+                            var destinationstation = JsonParsing.getString(data, "DestinationStation");
+                            var destinationsettlement = JsonParsing.getString(data, "DestinationSettlement");
+
+                            // Missions with commodities (which may include on-foot micro-resources)
+                            var c = JsonParsing.getString(data, "Commodity");
+                            var fallbackC = JsonParsing.getString(data, "Commodity_Localised");
+                            CommodityDefinition commodity = null;
+                            MicroResource microResource = null;
+
+                            if ( !string.IsNullOrEmpty( c ) )
+                            {
+                                if ( MicroResource.EDNameExists( c ) )
+                                {
+                                    // This is an on-foot micro-resource
+                                    microResource = MicroResource.FromEDName( c );
+                                    microResource.fallbackLocalizedName = fallbackC;
+                                }
+                                else
+                                {
+                                    // This is (probably) a traditional ship commodity
+                                    commodity = CommodityDefinition.FromEDName( c );
+                                    commodity.fallbackLocalizedName = fallbackC;
+                                }
+                            }
+                            data.TryGetValue( "Count", out val );
+                            var amount = (int?)(long?)val;
+
+                            // Missions with targets
+                            var target = JsonParsing.getString(data, "Target");
+                            var targettype = JsonParsing.getString(data, "TargetType");
+                            var targetfaction = EventParsing.FactionName(data, "TargetFaction");
+                            data.TryGetValue( "KillCount", out val );
+                            if ( val != null )
+                            {
+                                amount = (int?)(long?)val;
+                            }
+
+                            // Missions with passengers
+                            //var passengercount = JsonParsing.getOptionalInt(data, "PassengerCount"); // TODO: This is not used in the code, but it is available in the journal. Consider if it should be added to the Mission class.
+                            var passengertype = JsonParsing.getString(data, "PassengerType");
+                            var passengerswanted = JsonParsing.getOptionalBool(data, "PassengerWanted");
+                            var passengervips = JsonParsing.getOptionalBool(data, "PassengerVIPs");
+                            data.TryGetValue( "PassengerCount", out val );
+                            if ( val != null )
+                            {
+                                amount = (int?)(long?)val;
+                            }
+
+                            // Impact on influence and reputation
+                            var influence = JsonParsing.getString(data, "Influence");
+                            var reputation = JsonParsing.getString(data, "Reputation");
+
+                            var mission = new Mission(missionid, name, expiry, MissionStatus.Active)
+                            {
+                                // Common parameters
+                                localisedname = localisedname,
+                                amount = amount ?? 0,
+                                influence = influence,
+                                reputation = reputation,
+                                reward = reward ?? 0,
+                                communal = false,
+
+                                // Get the minor faction stuff
+                                faction = faction,
+
+                                // Missions with engineering rewards
+                                CommodityDefinition = commodity,
+                                MicroResourceDefinition = microResource,
+
+                                // Missions with targets
+                                targetTypeEDName = targettype?.Split('_')?
+                                                .ElementAtOrDefault(2)?.Replace(";", ""),
+                                target = target,
+                                targetfaction = targetfaction,
+
+                                // Missions with passengers
+                                passengertypeEDName = passengertype,
+                                passengervips = passengervips,
+                                passengerwanted = passengerswanted
+                            };
+
+                            if ( wing && !mission.tagsList.Contains( MissionType.Wing ) )
+                            {
+                                mission.tagsList.Add( MissionType.Wing );
+                            }
+
+                            var journalDestinationSystems = Array.Empty<string>();
+
+                            // Missions with multiple destinations
+                            if ( destinationsystem != null && destinationsystem.Contains( "$MISSIONUTIL_MULTIPLE" ) )
+                            {
+                                // If 'chained' mission, get the destination systems
+                                journalDestinationSystems = destinationsystem
+                                    .Replace( "$MISSIONUTIL_MULTIPLE_INNER_SEPARATOR;", "#" )
+                                    .Replace( "$MISSIONUTIL_MULTIPLE_FINAL_SEPARATOR;", "#" )
+                                    .Split( '#' );
+                            }
+                            else
+                            {
+                                // Altruism destinations are resolved together with their origin in core.
+                                if ( !mission.tagsList.Contains( MissionType.Altruism ) )
+                                {
+                                    mission.destinationsystem = destinationsystem;
+                                    mission.destinationstation = destinationstation ?? destinationsettlement;
+                                }
+                            }
+
+                            events.Add( new MissionAcceptedEvent( timestamp, mission )
+                            {
+                                JournalDestinationSystems = journalDestinationSystems,
+                                ResolveOrigin = true,
+                                raw = line,
+                                fromLoad = fromLogLoad
+                            } );
+                        }
+                        return true;
+                    }
                 default:
-                    return false;
+                    {
+                        return false;
+                    }
             }
         }
 
         // Community goals already supply their own origin.
         public bool ResolveOrigin { get; init; }
+
+        // Destination system names encoded in the journal for missions with multiple destinations.
+        // These are resolved to navigation waypoints during ordered core processing.
+        public string[] JournalDestinationSystems { get; init; } = [ ];
+
+        public void ResolveDestinations ( IEnumerable<NavWaypoint> destinations )
+        {
+            foreach ( var destination in destinations ?? [ ] )
+            {
+                if ( string.IsNullOrEmpty( destination.systemName ) ) { continue; }
+
+                destination.missionids.Add( Mission.missionid );
+                Mission.destinationsystems.Add( destination );
+            }
+
+            Mission.destinationsystem = Mission.destinationsystems.FirstOrDefault()?.systemName;
+        }
     }
 }

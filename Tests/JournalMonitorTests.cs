@@ -658,11 +658,11 @@ namespace Tests
         }
 
         [TestMethod]
-        public void TestJournalMissionAccepted1()
+        public async Task TestJournalMissionAccepted1()
         {
             var line = @"{ ""timestamp"":""2017-05-05T16:07:37Z"", ""event"":""MissionAccepted"", ""Faction"":""Chick Ek Partnership"", ""Name"":""Mission_Sightseeing_Criminal_BOOM"", ""Commodity"":""$Wine_Name;"", ""Commodity_Localised"":""Wine"", ""Count"":3, ""DestinationSystem"":""HR 7221$MISSIONUTIL_MULTIPLE_FINAL_SEPARATOR;Tupa"", ""Expiry"":""2017-05-06T04:31:24Z"", ""Wing"":false, ""Influence"":""Low"", ""Reputation"":""Med"", ""PassengerCount"":7, ""PassengerVIPs"":true, ""PassengerWanted"":true, ""PassengerType"":""Criminal"", ""MissionID"":134724902 }";
 
-            EDDI.Instance.DataProvider = CreateTestDataProvider();
+            var dataProvider = CreateTestDataProvider();
             FakeSpanshHttpClient.Expect( "systems/field_values/system_names?q=HR 7221", @"{""min_max"":[{""id64"":1458376250082,""name"":""HR 7221"",""x"":58.53125,""y"":-55.8125,""z"":91.25},{""id64"":1984977218610962,""name"":""Stuemeae HR-W c1-7221"",""x"":10.15625,""y"":33.78125,""z"":25930.3125},{""id64"":248122030838051,""name"":""Ogaimy HR-U d3-7221"",""x"":-612.625,""y"":748.0625,""z"":19813.40625},{""id64"":248122231837339,""name"":""Wepai HR-V d2-7221"",""x"":345.6875,""y"":-881.8125,""z"":23512.625},{""id64"":1419209853283,""name"":""HIP 7221"",""x"":-124.1875,""y"":-25.5625,""z"":-103.0},{""id64"":31015022086420,""name"":""Agnairt BQ-X e1-7221"",""x"":-9350.6875,""y"":-344.3125,""z"":22368.15625},{""id64"":31015047219436,""name"":""Kyloall TO-R e4-7221"",""x"":-8434.0,""y"":-863.78125,""z"":21591.5},{""id64"":31015084968164,""name"":""Kyloarph QI-T e3-7221"",""x"":-6968.15625,""y"":-912.75,""z"":21370.9375},{""id64"":31015097591764,""name"":""Boelts BV-X e1-7221"",""x"":-6537.5,""y"":-163.71875,""z"":16001.59375},{""id64"":31015139510300,""name"":""Eephaim FM-V e2-7221"",""x"":-4986.625,""y"":-584.5,""z"":17484.0625},{""id64"":248120386491131,""name"":""Wepua NF-C d14-7221"",""x"":-8457.96875,""y"":-116.53125,""z"":24523.5},{""id64"":248120487121299,""name"":""Kyloall XT-Y d1-7221"",""x"":-7964.75,""y"":-285.1875,""z"":20868.5},{""id64"":248120520659547,""name"":""Agnaiz LS-I d10-7221"",""x"":-7822.375,""y"":-407.25,""z"":22892.375},{""id64"":248120638034363,""name"":""Kyloarph UZ-O d6-7221"",""x"":-7259.5625,""y"":-721.53125,""z"":21275.9375},{""id64"":248120654827963,""name"":""Kyloarph TE-P d6-7221"",""x"":-7122.03125,""y"":-663.625,""z"":21330.9375},{""id64"":248120721936675,""name"":""Leamue LM-U d3-7221"",""x"":-6854.875,""y"":-624.84375,""z"":19738.0625},{""id64"":248120722182699,""name"":""Dumboea RN-S d4-7221"",""x"":-6864.15625,""y"":589.78125,""z"":22437.3125},{""id64"":248120738681195,""name"":""Leamue AG-E d12-7221"",""x"":-6752.59375,""y"":-779.5,""z"":20482.8125},{""id64"":248120738714075,""name"":""Kyloarph OD-I d10-7221"",""x"":-6711.84375,""y"":-656.53125,""z"":21622.3125},{""id64"":248120789029347,""name"":""Kyloarph XE-G d11-7221"",""x"":-6516.09375,""y"":-688.125,""z"":21698.53125}],""values"":[""HR 7221"",""Stuemeae HR-W c1-7221"",""Ogaimy HR-U d3-7221"",""Wepai HR-V d2-7221"",""HIP 7221"",""Agnairt BQ-X e1-7221"",""Kyloall TO-R e4-7221"",""Kyloarph QI-T e3-7221"",""Boelts BV-X e1-7221"",""Eephaim FM-V e2-7221"",""Wepua NF-C d14-7221"",""Kyloall XT-Y d1-7221"",""Agnaiz LS-I d10-7221"",""Kyloarph UZ-O d6-7221"",""Kyloarph TE-P d6-7221"",""Leamue LM-U d3-7221"",""Dumboea RN-S d4-7221"",""Leamue AG-E d12-7221"",""Kyloarph OD-I d10-7221"",""Kyloarph XE-G d11-7221""]}" );
             FakeSpanshHttpClient.Expect( "systems/field_values/system_names?q=Tupa", @"{""min_max"":[{""id64"":908419142354,""name"":""Tupa"",""x"":-63.625,""y"":-9.96875,""z"":0.0625}],""values"":[""Tupa""]}" );
 
@@ -672,6 +672,15 @@ namespace Tests
             var event1 = (MissionAcceptedEvent)events[0];
 
             Assert.AreEqual("Wine", event1.commodity);
+            var expected = new[] { "HR 7221", "Tupa" };
+            CollectionAssert.AreEqual( expected, event1.JournalDestinationSystems );
+            Assert.IsEmpty( event1.Mission.destinationsystems );
+
+            using var processor = new EddiEventProcessor( CreateEventProcessorContext( dataProvider ) );
+            await processor.ProcessEventAsync( event1 ).ConfigureAwait( false );
+            CollectionAssert.AreEqual( expected,
+                event1.Mission.destinationsystems.Select( d => d.systemName ).ToArray() );
+            Assert.AreEqual( "HR 7221", event1.destinationsystem );
         }
 
         [TestMethod, DoNotParallelize]

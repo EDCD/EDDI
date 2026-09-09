@@ -235,9 +235,28 @@ namespace EddiCore.EventHandling
             {
                 hullDamagedEvent.ResolveVehicle( Vehicle );
             }
-            else if ( @event is MissionAcceptedEvent { ResolveOrigin: true } missionAcceptedEvent )
+            else if ( @event is MissionAcceptedEvent missionAcceptedEvent )
             {
                 var mission = missionAcceptedEvent.Mission;
+                if ( missionAcceptedEvent.JournalDestinationSystems.Length > 0 &&
+                     mission.destinationsystems.Count == 0 &&
+                     DataProvider != null )
+                {
+                    try
+                    {
+                        var destinations = await DataProvider
+                            .GetOrFetchSystemWaypointsAsync( missionAcceptedEvent.JournalDestinationSystems )
+                            .ConfigureAwait( false );
+                        missionAcceptedEvent.ResolveDestinations( destinations );
+                    }
+                    catch ( Exception ex )
+                    {
+                        Logging.Warn( "Failed to resolve mission destination systems", ex );
+                    }
+                }
+
+                if ( missionAcceptedEvent.ResolveOrigin )
+                {
                 mission.originsystem = CurrentStarSystem?.systemname;
                 mission.originstation = CurrentStation?.name;
                 if ( mission.tagsList.Contains( MissionType.Altruism ) && mission.destinationsystems.Count == 0 )
@@ -245,6 +264,7 @@ namespace EddiCore.EventHandling
                     mission.destinationsystem = mission.originsystem;
                     mission.destinationstation = mission.originstation;
                 }
+            }
             }
             else if ( @event is StoredShipsEvent storedShipsEvent )
             {
