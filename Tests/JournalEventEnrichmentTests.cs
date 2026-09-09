@@ -61,9 +61,9 @@ namespace Tests
         private static List<Event> Parse ( string eventName, JObject fields = null, bool fromLoad = false ) =>
             JournalMonitor.ParseJournalEntry( Line( eventName, fields ), new ParseContext(), fromLoad );
 
-        private static EddiEventPipeline Pipeline ( Func<Event, Task<bool>> process ) => new(
+        private static EddiEventPipeline Pipeline ( Func<Event, Task<bool>> process, IEventScheduler scheduler = null ) => new(
             process, () => [ ], () => [ ], _ => null, () => true,
-            () => new System.Version( 4, 0 ), new System.Version( 4, 0 ), CancellationToken.None );
+            () => new System.Version( 4, 0 ), new System.Version( 4, 0 ), CancellationToken.None, scheduler );
 
         [TestMethod]
         public async Task Batch_UsesPrecedingLoadGameForVehicleAndExpansion ()
@@ -444,6 +444,32 @@ namespace Tests
             Assert.HasCount( 2, scheduler.Pending );
             Assert.IsEmpty( JournalMonitor.ParseJournalEntry( ShipTransferInitiatedEvent.SAMPLE, new ParseContext(), true ) );
             Assert.IsEmpty( JournalMonitor.ParseJournalEntry( ModuleTransferEvent.SAMPLE, new ParseContext(), true ) );
+
+        [TestMethod]
+        public async Task ShipShutdown_IsSuppressedAndRebootedByCore ()
+        {
+            var processed = new List<Event>();
+            var scheduler = new Scheduler();
+            var pipeline = Pipeline( e => { processed.Add( e ); return Task.FromResult( true ); }, scheduler );
+            var first = new ShipShutdownEvent( Timestamp );
+            var repeated = new ShipShutdownEvent( Timestamp.AddSeconds( 1 ) );
+            var partial = new ShipShutdownEvent( Timestamp.AddSeconds( 2 ) ) { partialshutdown = true };
+
+            await pipeline.HandleEventAsync( first );
+            await pipeline.HandleEventAsync( repeated );
+            await pipeline.HandleEventAsync( partial );
+            CollectionAssert.AreEqual( new Event[] { first, partial }, processed );
+            Assert.HasCount( 1, scheduler.Pending );
+            Assert.AreEqual( TimeSpan.FromSeconds( 30 ), scheduler.Pending[0].delay );
+
+            var reboot = scheduler.Pending[0].create();
+            Assert.IsInstanceOfType<ShipShutdownRebootEvent>( reboot );
+            await pipeline.HandleEventAsync( reboot );
+            var nextShutdown = new ShipShutdownEvent( Timestamp.AddMinutes( 1 ) );
+            await pipeline.HandleEventAsync( nextShutdown );
+            CollectionAssert.AreEqual( new Event[] { reboot, nextShutdown }, processed.TakeLast( 2 ).ToArray() );
+            Assert.HasCount( 2, scheduler.Pending );
+            pipeline.Stop();
         }
 
         [TestMethod]

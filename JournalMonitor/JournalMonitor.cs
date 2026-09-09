@@ -38,8 +38,6 @@ namespace EddiJournalMonitor
         /// </summary>
         private static readonly ConcurrentDictionary<string, ConcurrentBag<Event>> DelayedEventHolder = new();
 
-        internal static CancellationTokenSource ShipShutdownCancellationTokenSource;
-
         private static void ForwardJournalEntries ( IList<string> lines, Action<Event> callback, bool isLogLoadEventBatch )
         {
             if ( !lines.Any() ) { return; }
@@ -116,24 +114,8 @@ namespace EddiJournalMonitor
                         // flickering for a few seconds. Simulate a partial ship system shutdown.
                         shipShutdownEvent.partialshutdown = true;
                     }
-                    else
-                    {
-                        // Simulate a full ship system shutdown and reboot.
-                        // Suppress additional shutdown events during this time.
-                        ShipShutdownCancellationTokenSource = new CancellationTokenSource();
-                        shipShutdownEvent
-                            .ScheduleRebootAsync( e => Task.Run( () =>
-                                {
-                                    journalParseContext.EnqueueEvent( e );
-                                    ShipShutdownCancellationTokenSource?.Dispose();
-                                    ShipShutdownCancellationTokenSource = null;
-                                } ),
-                                ShipShutdownCancellationTokenSource.Token )
-                            .SafeFireAndForget( ex => Logging.Error( "Ship reboot scheduling failed", ex ) );
-                        
                     }
                 }
-            }
 
             return events;
         }
@@ -2337,7 +2319,7 @@ namespace EddiJournalMonitor
                                 handled = SynthesisedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "SystemsShutdown":
-                                handled = ShipShutdownEvent.Handle(timestamp, line, ref events, fromLogLoad, ShipShutdownCancellationTokenSource);
+                                handled = ShipShutdownEvent.Handle(timestamp, line, ref events, fromLogLoad);
                                 break;
                             case "VehicleSwitch":
                                 {

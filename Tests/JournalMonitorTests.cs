@@ -2667,38 +2667,18 @@ namespace Tests
         [TestMethod, DoNotParallelize]
         public void TestRepeatedShipShutdownEvents ()
         {
-            JournalMonitor.ShipShutdownCancellationTokenSource = null;
-
-            // Trigger a `ShipShutdown` event.
             var events = JournalMonitor.ParseJournalEntries( [
-                @"{ ""timestamp"":""2023-11-24T20:22:45Z"", ""event"":""SystemsShutdown"" }"
-            ] );
-            Assert.HasCount( 1, events );
-            Assert.AreEqual(typeof(ShipShutdownEvent), events[0].GetType() );
-            Assert.IsFalse( ((ShipShutdownEvent)events[ 0 ]).partialshutdown );
-
-            // New `ShipShutdown` events should be suppressed for the next 30 seconds. Test at 8 seconds.
-            Thread.Sleep( TimeSpan.FromSeconds( 8 ) );
-            events = JournalMonitor.ParseJournalEntries( [
+                @"{ ""timestamp"":""2023-11-24T20:22:45Z"", ""event"":""SystemsShutdown"" }",
                 @"{ ""timestamp"":""2023-11-24T20:22:53Z"", ""event"":""SystemsShutdown"" }"
             ] );
-            Assert.HasCount( 0, events );
 
-            // New `ShipShutdown` events should be suppressed for the next 30 seconds. Test at 8 + 24 = 32 seconds.
-            Thread.Sleep( TimeSpan.FromSeconds( 24 ) );
-            events = JournalMonitor.ParseJournalEntries( [
-                @"{ ""timestamp"":""2023-11-24T20:23:17Z"", ""event"":""SystemsShutdown"" }"
-            ] );
-            Assert.HasCount( 1, events );
-            Assert.AreEqual( typeof( ShipShutdownEvent ), events[ 0 ].GetType() );
-            Assert.IsFalse( ( (ShipShutdownEvent)events[ 0 ] ).partialshutdown );
+            Assert.HasCount( 2, events );
+            Assert.IsTrue( events.All( e => e is ShipShutdownEvent { partialshutdown: false } ) );
         }
 
         [TestMethod, DoNotParallelize]
         public void TestShipShutdownThargoidTitanPulse ()
         {
-            JournalMonitor.ShipShutdownCancellationTokenSource = null;
-
             //The `SystemsShutdown` event should be ignored because it is followed immediately by a `MaterialCollected` event for the material `tg_shutdowndata` and no shutdown in fact occurs for this circumstance.
             var lines = new[]
             {

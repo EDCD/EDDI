@@ -18,7 +18,7 @@ namespace EddiCore.EventHandling
         public void Schedule ( TimeSpan delay, Func<Event> createEvent )
         {
             RunAsync( delay, createEvent, cancellation.Token )
-                .SafeFireAndForget( ex => Logging.Error( "Transfer arrival scheduling failed", ex ) );
+                .SafeFireAndForget( ex => Logging.Error( "Event scheduling failed", ex ) );
         }
 
         private async Task RunAsync ( TimeSpan delay, Func<Event> createEvent, CancellationToken token )

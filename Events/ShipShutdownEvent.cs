@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiEvents
@@ -16,39 +14,13 @@ namespace EddiEvents
         [PublicAPI( "True if shutdown is momentary, with flickering power which does not fully disable the ship" )]
         public bool partialshutdown { get; set; }
 
-        public static bool Handle ( DateTime timestamp, string line, ref List<Event> events, bool fromLogLoad, CancellationTokenSource ShipShutdownCancellationTokenSource )
+        public static bool Handle ( DateTime timestamp, string line, ref List<Event> events, bool fromLogLoad )
         {
             if ( fromLogLoad ) { return true; } // Skip handling this during log loading
 
-            if ( ShipShutdownCancellationTokenSource != null )
-            {
-                // Ignore repetitions when the ship is already in a shut-down state. 
-            }
-            else
-            {
-                events.Add( new ShipShutdownEvent( timestamp ) { raw = line, fromLoad = fromLogLoad } );
-            }
+            events.Add( new ShipShutdownEvent( timestamp ) { raw = line, fromLoad = fromLogLoad } );
 
             return true;
-        }
-
-        public async Task ScheduleRebootAsync (
-            Func<Event, Task> enqueueEvent,
-            CancellationToken token )
-        {
-            // The ship reboots about 30 seconds after the shutdown occurs unless canceled early.
-            var startTime = DateTime.UtcNow;
-
-            try
-            {
-                await Task.Delay( TimeSpan.FromSeconds( 30 ), token ).ConfigureAwait( false );
-                var rebootEvent = new ShipShutdownRebootEvent( this.timestamp + (DateTime.UtcNow - startTime));
-                await enqueueEvent( rebootEvent ).ConfigureAwait(false);
-            }
-            catch ( OperationCanceledException )
-            {
-                // expected, ignore
-            }
         }
     }
 }

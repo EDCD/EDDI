@@ -435,7 +435,6 @@ namespace Tests
         [TestMethod, DoNotParallelize]
         public async Task TestShipShutdownScenario ()
         {
-            JournalMonitor.ShipShutdownCancellationTokenSource = null;
             var speechResponder = new SpeechResponder();
             var speechService = SpeechService.Instance;
 

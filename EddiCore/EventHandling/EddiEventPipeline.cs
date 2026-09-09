@@ -19,10 +19,13 @@ namespace EddiCore.EventHandling
         private readonly Func<System.Version> _getGameVersion;
         private readonly System.Version _minGameVersion;
         private readonly CancellationToken _appCancellationToken;
+        private readonly IEventScheduler _eventScheduler;
         private readonly BlockingCollection<Event> _eventQueue = [ ];
         private Task _eventConsumerThread;
         private readonly Queue<FriendsEvent> pendingFriends = new();
         private bool commanderReady;
+        private int shipShutdownPending;
+        private int stopped;
 
         internal EddiEventPipeline (
             Func<Event, Task<bool>> processEventAsync,
@@ -32,7 +35,8 @@ namespace EddiCore.EventHandling
             Func<bool> isUnitTesting,
             Func<System.Version> getGameVersion,
             System.Version minGameVersion,
-            CancellationToken appCancellationToken )
+            CancellationToken appCancellationToken,
+            IEventScheduler eventScheduler = null )
         {
             _processEventAsync = processEventAsync;
             _getActiveMonitors = getActiveMonitors;
@@ -42,6 +46,7 @@ namespace EddiCore.EventHandling
             _getGameVersion = getGameVersion;
             _minGameVersion = minGameVersion;
             _appCancellationToken = appCancellationToken;
+            _eventScheduler = eventScheduler ?? new EventScheduler( Enqueue );
         }
 
         internal ConcurrentDictionary<string, Event> LastEventOfType { get; } = [ ];
@@ -69,10 +74,13 @@ namespace EddiCore.EventHandling
 
         internal void Stop ()
         {
+            if ( Interlocked.Exchange( ref stopped, 1 ) != 0 ) { return; }
+
             if ( !_eventQueue.IsAddingCompleted )
             {
                 _eventQueue.CompleteAdding();
             }
+            _eventScheduler.Dispose();
         }
 
         private async Task DequeueEventsAsync ()
@@ -113,6 +121,19 @@ namespace EddiCore.EventHandling
                     pendingFriends.Enqueue( friend );
                     return;
                 }
+            }
+
+            if ( @event is ShipShutdownEvent { partialshutdown: false } shipShutdownEvent )
+            {
+                if ( Interlocked.CompareExchange( ref shipShutdownPending, 1, 0 ) != 0 ) { return; }
+
+                var schedulingStarted = DateTime.UtcNow;
+                _eventScheduler.Schedule( TimeSpan.FromSeconds( 30 ), () =>
+                {
+                    Interlocked.Exchange( ref shipShutdownPending, 0 );
+                    return new ShipShutdownRebootEvent(
+                        shipShutdownEvent.timestamp + ( DateTime.UtcNow - schedulingStarted ) );
+                } );
             }
 
             try
