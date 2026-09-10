@@ -1747,59 +1747,7 @@ namespace EddiJournalMonitor
                                 handled = SettlementApproachedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "CargoTransfer":
-                                {
-                                    var toShip = new List<CommodityAmount>();
-                                    var toSRV = new List<CommodityAmount>();
-                                    var toCarrier = new List<CommodityAmount>();
-                                    if ( data.TryGetValue("Transfers", out var transfersVal) )
-                                    {
-                                        var transfersArray = JArray.FromObject( transfersVal );
-                                        foreach ( var transfer in transfersArray )
-                                        {
-                                            var direction = transfer[ "Direction" ].ToString();
-                                            var count = (int)transfer[ "Count" ];
-                                            var commodity = CommodityDefinition.FromEDName( transfer[ "Type" ].ToString() );
-                                            commodity.fallbackLocalizedName = transfer[ "Type_Localised" ]?.ToString();
-
-                                            // Objects may have a `MissionID` but the legalstatus is not identified so we rtat these items
-                                            // as CommodityAmount objects and use the `Cargo` event to update the CargoMonitor.
-
-                                            var commodityAmount = new CommodityAmount( commodity, count );
-                                            if ( direction.Equals( "toship", StringComparison.InvariantCultureIgnoreCase ) )
-                                            {
-                                                toShip.Add( commodityAmount );
-                                            }
-                                            else if ( direction.Equals( "tosrv", StringComparison.InvariantCultureIgnoreCase ) )
-                                            {
-                                                toSRV.Add( commodityAmount );
-                                            }
-                                            else if ( direction.Equals( "tocarrier", StringComparison.InvariantCultureIgnoreCase ) )
-                                            {
-                                                toCarrier.Add( commodityAmount );
-                                            }
-                                            else
-                                            {
-                                                throw new ArgumentException( "Unhandled CargoTransfer `Direction`." );
-                                            }
-                                        }
-                                    }
-
-                                    var cargoTransferEvent = new CargoTransferEvent( timestamp, toShip, toSRV, toCarrier ) { raw = line, fromLoad = fromLogLoad };
-                                    if ( !deferSyntheticEvents )
-                                    {
-                                        events.Add( cargoTransferEvent );
-                                    }
-                                    else
-                                    {
-                                        if ( !DelayedEventHolder.TryAdd( CargoEvent.NAME, new ConcurrentBag<Event>( [
-                                                cargoTransferEvent
-                                            ] ) ) )
-                                        {
-                                            DelayedEventHolder[ CargoEvent.NAME ].Add( cargoTransferEvent );
-                                        }
-                                    }
-                                }
-                                handled = true;
+                                handled = CargoTransferEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "ChangeCrewRole":
                                 {

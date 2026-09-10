@@ -23,6 +23,7 @@ namespace EddiCore.EventHandling
         private readonly BlockingCollection<Event> _eventQueue = [ ];
         private Task _eventConsumerThread;
         private readonly Queue<FriendsEvent> pendingFriends = new();
+        private readonly Queue<CargoTransferEvent> pendingCargoTransfers = new();
         private readonly ConcurrentDictionary<CrewPaidWageEvent, bool> crewWageReadiness = new();
         private bool commanderReady;
         private int shipShutdownPending;
@@ -100,7 +101,9 @@ namespace EddiCore.EventHandling
             }
         }
 
-        internal async Task HandleEventAsync ( Event @event )
+        internal Task HandleEventAsync ( Event @event ) => HandleEventAsync( @event, false );
+
+        private async Task HandleEventAsync ( Event @event, bool releaseCargoTransfer )
         {
             if ( @event is null ) { return; }
 
@@ -112,6 +115,14 @@ namespace EddiCore.EventHandling
             {
                 commanderReady = false;
                 pendingFriends.Clear();
+                pendingCargoTransfers.Clear();
+            }
+
+            if ( @event is CargoTransferEvent cargoTransferEvent && !releaseCargoTransfer )
+            {
+                if ( cargoTransferEvent.fromLoad ) { return; }
+                pendingCargoTransfers.Enqueue( cargoTransferEvent );
+                return;
             }
 
             if ( @event is FriendsEvent friend )
@@ -192,6 +203,14 @@ namespace EddiCore.EventHandling
                 await _obtainResponder( "EDDN Responder" ).HandleAsync( @event ).ConfigureAwait( false );
                 await _obtainResponder( "EDSM Responder" ).HandleAsync( @event ).ConfigureAwait( false );
                 await _obtainResponder( "Inara Responder" ).HandleAsync( @event ).ConfigureAwait( false );
+            }
+
+            if ( @event is CargoEvent )
+            {
+                while ( pendingCargoTransfers.Count > 0 )
+                {
+                    await HandleEventAsync( pendingCargoTransfers.Dequeue(), true ).ConfigureAwait( false );
+                }
             }
         }
 

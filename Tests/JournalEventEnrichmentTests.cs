@@ -446,6 +446,34 @@ namespace Tests
             Assert.IsEmpty( JournalMonitor.ParseJournalEntry( ModuleTransferEvent.SAMPLE, new ParseContext(), true ) );
 
         [TestMethod]
+        public async Task CargoTransfers_AreReleasedAfterCargoInArrivalOrder ()
+        {
+            var processed = new List<Event>();
+            var pipeline = Pipeline( e => { processed.Add( e ); return Task.FromResult( true ); } );
+            var first = new CargoTransferEvent( Timestamp, [ ], [ ], [ ] );
+            var second = new CargoTransferEvent( Timestamp.AddSeconds( 1 ), [ ], [ ], [ ] );
+
+            await pipeline.HandleEventAsync( first );
+            await pipeline.HandleEventAsync( second );
+            await pipeline.HandleEventAsync( new CargoTransferEvent( Timestamp, [ ], [ ], [ ] ) { fromLoad = true } );
+            Assert.IsEmpty( processed );
+
+            var cargo = new CargoEvent( Timestamp, false, Constants.VEHICLE_SHIP, [ ], 0 );
+            await pipeline.HandleEventAsync( cargo );
+            CollectionAssert.AreEqual( new Event[] { cargo, first, second }, processed );
+
+            var discarded = new CargoTransferEvent( Timestamp.AddSeconds( 2 ), [ ], [ ], [ ] );
+            await pipeline.HandleEventAsync( discarded );
+            var header = new FileHeaderEvent( Timestamp, "Journal.next.log", "4.0", "build" );
+            await pipeline.HandleEventAsync( header );
+            var nextCargo = new CargoEvent( Timestamp, false, Constants.VEHICLE_SHIP, [ ], 0 );
+            await pipeline.HandleEventAsync( nextCargo );
+            CollectionAssert.AreEqual( new Event[] { header, nextCargo }, processed.TakeLast( 2 ).ToArray() );
+            Assert.DoesNotContain( discarded, processed );
+            pipeline.Stop();
+        }
+
+        [TestMethod]
         public async Task CrewPaidWage_IsScheduledByCoreAndReplayIsExcluded ()
         {
             var processed = new List<Event>();

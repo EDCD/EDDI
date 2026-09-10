@@ -1,4 +1,5 @@
 ﻿using EddiDataDefinitions;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -30,5 +31,47 @@ namespace EddiEvents
 
         [PublicAPI( "The commodities and amounts being transferred to your carrier" )]
         public List<CommodityAmount> tocarrier { get; private set; } = toCarrier;
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var toShip = new List<CommodityAmount>();
+            var toSRV = new List<CommodityAmount>();
+            var toCarrier = new List<CommodityAmount>();
+            if ( data.TryGetValue( "Transfers", out var transfersVal ) )
+            {
+                var transfersArray = JArray.FromObject( transfersVal );
+                foreach ( var transfer in transfersArray )
+                {
+                    var direction = transfer[ "Direction" ].ToString();
+                    var count = (int)transfer[ "Count" ];
+                    var commodity = CommodityDefinition.FromEDName( transfer[ "Type" ].ToString() );
+                    commodity.fallbackLocalizedName = transfer[ "Type_Localised" ]?.ToString();
+
+                    // Objects may have a `MissionID` but the legalstatus is not identified so we rtat these items
+                    // as CommodityAmount objects and use the `Cargo` event to update the CargoMonitor.
+
+                    var commodityAmount = new CommodityAmount( commodity, count );
+                    if ( direction.Equals( "toship", StringComparison.InvariantCultureIgnoreCase ) )
+                    {
+                        toShip.Add( commodityAmount );
+                    }
+                    else if ( direction.Equals( "tosrv", StringComparison.InvariantCultureIgnoreCase ) )
+                    {
+                        toSRV.Add( commodityAmount );
+                    }
+                    else if ( direction.Equals( "tocarrier", StringComparison.InvariantCultureIgnoreCase ) )
+                    {
+                        toCarrier.Add( commodityAmount );
+                    }
+                    else
+                    {
+                        throw new ArgumentException( "Unhandled CargoTransfer `Direction`." );
+                    }
+                }
+            }
+
+            events.Add( new CargoTransferEvent( timestamp, toShip, toSRV, toCarrier ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
+        }
     }
 }
