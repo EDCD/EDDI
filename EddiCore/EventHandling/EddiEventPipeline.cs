@@ -23,6 +23,7 @@ namespace EddiCore.EventHandling
         private readonly BlockingCollection<Event> _eventQueue = [ ];
         private Task _eventConsumerThread;
         private readonly Queue<FriendsEvent> pendingFriends = new();
+        private readonly ConcurrentDictionary<CrewPaidWageEvent, bool> crewWageReadiness = new();
         private bool commanderReady;
         private int shipShutdownPending;
         private int stopped;
@@ -119,6 +120,29 @@ namespace EddiCore.EventHandling
                 if ( !commanderReady )
                 {
                     pendingFriends.Enqueue( friend );
+                    return;
+                }
+            }
+
+            if ( @event is CrewPaidWageEvent crewPaidWageEvent )
+            {
+                if ( crewPaidWageEvent.fromLoad ) { return; }
+
+                // Delay `Crew paid wage` events to occur after events where the commander receives a payment.
+                if ( crewWageReadiness.TryGetValue( crewPaidWageEvent, out var ready ) && ready )
+                {
+                    crewWageReadiness.TryRemove( crewPaidWageEvent, out _ );
+                }
+                else
+                {
+                    if ( crewWageReadiness.TryAdd( crewPaidWageEvent, false ) )
+                    {
+                        _eventScheduler.Schedule( TimeSpan.FromSeconds( 5 ), () =>
+                        {
+                            crewWageReadiness[ crewPaidWageEvent ] = true;
+                            return crewPaidWageEvent;
+                        } );
+                    }
                     return;
                 }
             }

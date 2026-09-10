@@ -2035,32 +2035,7 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "NpcCrewPaidWage":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var name = JsonParsing.getString(data, "NpcCrewName");
-                                    var crewid = JsonParsing.getLong(data, "NpcCrewId");
-                                    var amount = JsonParsing.getLong(data, "Amount");
-                                    
-                                    // Delay `Crew paid wage` events to occur after events where the commander receives a payment.
-                                    if ( amount > 0 )
-                                    {
-                                        var crewPaidWageEvent = new CrewPaidWageEvent( timestamp, name, crewid, amount ) { raw = line, fromLoad = fromLogLoad };
-                                        if ( !deferSyntheticEvents )
-                                        {
-                                            events.Add( crewPaidWageEvent );
-                                        }
-                                        else
-                                        {
-                                            Task.Run( async () =>
-                                            {
-                                                await Task.Delay( TimeSpan.FromSeconds( 5 ) ).ConfigureAwait( false );
-                                                journalParseContext.EnqueueEvent( crewPaidWageEvent );
-                                            } );
-                                        }
-                                    }
-                                }
-                                handled = true;
+                                handled = CrewPaidWageEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "NpcCrewRank":
                                 {

@@ -446,6 +446,27 @@ namespace Tests
             Assert.IsEmpty( JournalMonitor.ParseJournalEntry( ModuleTransferEvent.SAMPLE, new ParseContext(), true ) );
 
         [TestMethod]
+        public async Task CrewPaidWage_IsScheduledByCoreAndReplayIsExcluded ()
+        {
+            var processed = new List<Event>();
+            var scheduler = new Scheduler();
+            var pipeline = Pipeline( e => { processed.Add( e ); return Task.FromResult( true ); }, scheduler );
+            var wage = (CrewPaidWageEvent)JournalMonitor.ParseJournalEntry( CrewPaidWageEvent.SAMPLE ).Single();
+
+            await pipeline.HandleEventAsync( wage );
+            await pipeline.HandleEventAsync( new CrewPaidWageEvent( Timestamp, "Replay", 1, 1 ) { fromLoad = true } );
+            Assert.IsEmpty( processed );
+            Assert.HasCount( 1, scheduler.Pending );
+            Assert.AreEqual( TimeSpan.FromSeconds( 5 ), scheduler.Pending[0].delay );
+
+            var released = scheduler.Pending[0].create();
+            Assert.AreSame( wage, released );
+            await pipeline.HandleEventAsync( released );
+            CollectionAssert.AreEqual( new Event[] { wage }, processed );
+            pipeline.Stop();
+        }
+
+        [TestMethod]
         public async Task ShipShutdown_IsSuppressedAndRebootedByCore ()
         {
             var processed = new List<Event>();
