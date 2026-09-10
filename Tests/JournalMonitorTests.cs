@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
 
@@ -18,17 +17,6 @@ namespace Tests
     [TestClass, TestCategory("UnitTests")]
     public class JournalMonitorTests : TestBase
     {
-        private sealed class TestJournalParseContext : IJournalParseContext
-        {
-            public List<Event> EnqueuedEvents { get; } = [ ];
-
-            public void EnqueueEvent ( Event @event )
-            {
-                EnqueuedEvents.Add( @event );
-            }
-
-        }
-
         public TestContext TestContext { get; set; }
 
         [TestInitialize]
@@ -2835,7 +2823,6 @@ namespace Tests
         [TestMethod]
         public void TestBodyMappedEventRetainsIdentityWithoutGameState ()
         {
-            var context = new TestJournalParseContext();
             var body = new Body
             {
                 bodyname = "Test System 1",
@@ -2851,7 +2838,7 @@ namespace Tests
             currentSystem.AddOrUpdateBody( body );
 
             var line = @"{ ""timestamp"":""2026-01-01T00:00:00Z"", ""event"":""SAAScanComplete"", ""BodyName"":""Test System 1"", ""BodyID"":7, ""SystemAddress"":1234, ""ProbesUsed"":5, ""EfficiencyTarget"":6 }";
-            var events = JournalMonitor.ParseJournalEntry( line, context );
+            var events = JournalMonitor.ParseJournalEntry( line );
 
             Assert.HasCount( 1, events );
             var @event = (BodyMappedEvent)events[0];

@@ -6,52 +6,24 @@ using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using Utilities;
 
-[assembly: InternalsVisibleTo( "Tests" )]
 namespace EddiJournalMonitor
 {
-    internal interface IJournalParseContext
-    {
-        void EnqueueEvent ( Event @event );
-    }
-
-    internal sealed class EddiJournalParseContext : IJournalParseContext
-    {
-        public void EnqueueEvent ( Event @event ) => EDDI.Instance.enqueueEvent( @event );
-    }
-
     [UsedImplicitly]
     public class JournalMonitor () : LogMonitor( Files.GetEliteSavedGamesDir(), @"^Journal.*\.[0-9\.]+\.log$",
         ( result, isLogLoadEvent ) =>
             ForwardJournalEntries( result.ToList(), EDDI.Instance.enqueueEvent, isLogLoadEvent ) ), IEddiMonitor, IJournalEntryParser
     {
-        /// <summary>
-        /// Holds a delayed event until we see an event of the type specified
-        /// </summary>
-        private static readonly ConcurrentDictionary<string, ConcurrentBag<Event>> DelayedEventHolder = new();
-
         private static void ForwardJournalEntries ( IList<string> lines, Action<Event> callback, bool isLogLoadEventBatch )
         {
             if ( !lines.Any() ) { return; }
 
             var events = ParseJournalEntries(lines, isLogLoadEventBatch);
-
-            // Append any delayed events
-            foreach ( var @event in events.ToList() )
-            {
-                if ( DelayedEventHolder.TryRemove( @event.type, out var delayedEvents ) )
-                {
-                    events.AddRange( delayedEvents );
-                }
-            }
 
             // Enqueue events for processing
             events.ForEach(callback);
@@ -59,14 +31,9 @@ namespace EddiJournalMonitor
 
         public static List<Event> ParseJournalEntries(IList<string> lines, bool fromLogLoad = false)
         {
-            return ParseJournalEntries( lines, new EddiJournalParseContext(), fromLogLoad );
-        }
-
-        internal static List<Event> ParseJournalEntries(IList<string> lines, IJournalParseContext journalParseContext, bool fromLogLoad = false)
-        {
             var events = lines
                 .Where( line => !string.IsNullOrEmpty( line ) )
-                .SelectMany( line => ParseJournalEntry( line, journalParseContext, fromLogLoad ) )
+                .SelectMany( line => ParseJournalEntry( line, fromLogLoad ) )
                 .ToList();
 
             if ( fromLogLoad ) { return events; }
@@ -120,12 +87,7 @@ namespace EddiJournalMonitor
             return events;
         }
 
-        public static List<Event> ParseJournalEntry(string line, bool fromLogLoad = false, bool deferSyntheticEvents = true )
-        {
-            return ParseJournalEntry( line, new EddiJournalParseContext(), fromLogLoad, deferSyntheticEvents );
-        }
-
-        internal static List<Event> ParseJournalEntry(string line, IJournalParseContext journalParseContext, bool fromLogLoad = false, bool deferSyntheticEvents = true )
+        public static List<Event> ParseJournalEntry(string line, bool fromLogLoad = false )
         {
             var events = new List<Event>();
             try
@@ -2374,9 +2336,9 @@ namespace EddiJournalMonitor
             return events;
         }
 
-        List<Event> IJournalEntryParser.ParseJournalEntry ( string line, bool fromLogLoad, bool deferSyntheticEvents )
+        List<Event> IJournalEntryParser.ParseJournalEntry ( string line, bool fromLogLoad )
         {
-            return ParseJournalEntry( line, fromLogLoad, deferSyntheticEvents );
+            return ParseJournalEntry( line, fromLogLoad );
         }
 
         public string MonitorName()

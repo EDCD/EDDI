@@ -221,7 +221,7 @@ namespace EddiSpeechResponder
             {
                 // It's a string so a journal entry.  Parse it
                 sampleEvents = ( EDDI.Instance.ObtainMonitor( "Journal monitor" ) as IJournalEntryParser )
-                    ?.ParseJournalEntry(s, deferSyntheticEvents: false) ?? [ ];
+                    ?.ParseJournalEntry(s) ?? [ ];
             }
             else if (sample is Event e)
             {

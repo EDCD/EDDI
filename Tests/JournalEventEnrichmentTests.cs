@@ -21,11 +21,6 @@ namespace Tests
     {
         private static readonly DateTime Timestamp = new( 2026, 1, 1, 0, 0, 0, DateTimeKind.Utc );
 
-        private sealed class ParseContext : IJournalParseContext
-        {
-            public void EnqueueEvent ( Event @event ) => Assert.Fail( "Parsing must not schedule these events" );
-        }
-
         private sealed class Scheduler : IEventScheduler
         {
             public List<(TimeSpan delay, Func<Event> create)> Pending { get; } = [ ];
@@ -59,7 +54,7 @@ namespace Tests
         }
 
         private static List<Event> Parse ( string eventName, JObject fields = null, bool fromLoad = false ) =>
-            JournalMonitor.ParseJournalEntry( Line( eventName, fields ), new ParseContext(), fromLoad );
+            JournalMonitor.ParseJournalEntry( Line( eventName, fields ), fromLoad );
 
         private static EddiEventPipeline Pipeline ( Func<Event, Task<bool>> process, IEventScheduler scheduler = null ) => new(
             process, () => [ ], () => [ ], _ => null, () => true,
@@ -79,7 +74,7 @@ namespace Tests
                 load.ToString(),
                 Line( "HullDamage", new JObject { ["Health"] = 0.5, ["PlayerPilot"] = true } ),
                 Line( "ChangeCrewRole", new JObject { ["Role"] = "Idle", ["Telepresence"] = false } )
-            ], new ParseContext() );
+            ] );
             Assert.IsNull( ((HullDamagedEvent)batch[1]).vehicle );
             foreach ( var item in batch ) { await processor.ProcessEventAsync( item ); }
             Assert.AreEqual( Constants.VEHICLE_SRV, ((HullDamagedEvent)batch[1]).vehicle );
@@ -205,7 +200,7 @@ namespace Tests
             using var processor = new EddiEventProcessor( context );
             var batch = JournalMonitor.ParseJournalEntries( [ LocationEvent.SAMPLE,
                 Line( "MissionAccepted", new JObject { ["MissionID"] = 123, ["Name"] = "Mission_AltruismCredits",
-                    ["Faction"] = "Test", ["Wing"] = false } ) ], new ParseContext() );
+                    ["Faction"] = "Test", ["Wing"] = false } ) ] );
             Assert.HasCount( 2, batch );
             var mission = (MissionAcceptedEvent)batch[1];
             Assert.IsNull( mission.Mission.originsystem );
@@ -235,10 +230,10 @@ namespace Tests
             {
                 var fields = JObject.Parse( sample );
                 fields.Remove( "TransferTime" );
-                var item = JournalMonitor.ParseJournalEntry( fields.ToString(), new ParseContext() ).Single();
+                var item = JournalMonitor.ParseJournalEntry( fields.ToString() ).Single();
                 await processor.ProcessEventAsync( item );
                 fields["TransferTime"] = 0;
-                item = JournalMonitor.ParseJournalEntry( fields.ToString(), new ParseContext() ).Single();
+                item = JournalMonitor.ParseJournalEntry( fields.ToString() ).Single();
                 await processor.ProcessEventAsync( item );
             }
             Assert.HasCount( 2, scheduler.Pending );
@@ -322,7 +317,7 @@ namespace Tests
         public async Task CarrierJump_BodyTypeIsResolvedInCore ()
         {
             var dataProvider = TestBase.CreateIsolatedTestDataProvider( out _, out _ );
-            var item = (CarrierJumpedEvent)JournalMonitor.ParseJournalEntry( CarrierJumpedEvent.SAMPLES[ 1 ], new ParseContext() ).Single();
+            var item = (CarrierJumpedEvent)JournalMonitor.ParseJournalEntry( CarrierJumpedEvent.SAMPLES[ 1 ] ).Single();
             var storedSystem = new StarSystem
             {
                 systemname = item.systemname,
@@ -418,8 +413,8 @@ namespace Tests
             knownShip.LocalId = 81;
             knownShip.name = "Known ship";
             using var processor = new EddiEventProcessor( context, scheduler, id => id == 81 ? knownShip : null );
-            var ship = (ShipTransferInitiatedEvent)JournalMonitor.ParseJournalEntry( ShipTransferInitiatedEvent.SAMPLE, new ParseContext() ).Single();
-            var module = (ModuleTransferEvent)JournalMonitor.ParseJournalEntry( ModuleTransferEvent.SAMPLE, new ParseContext() ).Single();
+            var ship = (ShipTransferInitiatedEvent)JournalMonitor.ParseJournalEntry( ShipTransferInitiatedEvent.SAMPLE ).Single();
+            var module = (ModuleTransferEvent)JournalMonitor.ParseJournalEntry( ModuleTransferEvent.SAMPLE ).Single();
             Assert.IsEmpty( scheduler.Pending );
             context.GameStateMutator.CurrentStarSystem = new StarSystem { systemname = "Arrival" };
             context.GameStateMutator.CurrentStation = new Station { name = "Port" };
@@ -442,8 +437,9 @@ namespace Tests
             await processor.ProcessEventAsync( ship );
             await processor.ProcessEventAsync( module );
             Assert.HasCount( 2, scheduler.Pending );
-            Assert.IsEmpty( JournalMonitor.ParseJournalEntry( ShipTransferInitiatedEvent.SAMPLE, new ParseContext(), true ) );
-            Assert.IsEmpty( JournalMonitor.ParseJournalEntry( ModuleTransferEvent.SAMPLE, new ParseContext(), true ) );
+            Assert.IsEmpty( JournalMonitor.ParseJournalEntry( ShipTransferInitiatedEvent.SAMPLE, true ) );
+            Assert.IsEmpty( JournalMonitor.ParseJournalEntry( ModuleTransferEvent.SAMPLE, true ) );
+        }
 
         [TestMethod]
         public async Task CargoTransfers_AreReleasedAfterCargoInArrivalOrder ()
