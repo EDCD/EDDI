@@ -2402,6 +2402,5 @@ namespace EddiJournalMonitor
         {
             return Task.CompletedTask;
         }
-        
     }
 }

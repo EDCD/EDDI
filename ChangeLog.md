@@ -14,6 +14,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added bulk editor for setting minimum and desired inventory levels.
   * Speech Responder
     * Scripts
+      * `FSD engaged` updated to use explicit `departuresystem` and `arrivalsystem` variables for clearer jump context and to pass an explicit `arrivalsystem` allegiance into the `Honorific` script invocation (#2854).
+      * `Honorific` updated to allow an `allegiance` optional argument to be passed during invocation (#2854).
       * `Surface signals detected` updated to incorporate planetary mining locations.
 
 ## 5.0.5
