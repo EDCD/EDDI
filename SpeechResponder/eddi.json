@@ -1185,6 +1185,15 @@
       "name": "Galnet unread report",
       "description": "Report on unread news"
     },
+    "Game mode change": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": null,
+      "default": true,
+      "name": "Game mode change",
+      "description": "Triggered when joining or leaving an Operation or CQC combat"
+    },
     "Glide": {
       "enabled": true,
       "priority": 3,

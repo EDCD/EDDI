@@ -1443,6 +1443,15 @@
       "default": true,
       "includes": null
     },
+    "Game mode change": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": null,
+      "default": true,
+      "name": "Game mode change",
+      "description": "Triggered when joining or leaving an Operation or CQC combat"
+    },
     "GetDistance": {
       "name": "GetDistance",
       "description": "Find distance to destination (TEST)",

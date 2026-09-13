@@ -8,6 +8,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed EDDI failing to verbally announce new EDDI releases when EDDI starts up.
     * Various bug fixes from telemetry.
   * Events
+    * `Game mode changed` added, triggered when joining or leaving an Operation or CQC combat.
     * `Vessel launched` updated to add new field `loadoutDescription`.
   * Material Monitor
     * Added search box and filtering. Added checkbox to display invariant text in place of translated text when applicable. (#2411)

@@ -1285,6 +1285,15 @@
 			"description": "Report on unread news",
 			"default": true
 		},
+		"Game mode change": {
+			"enabled": true,
+			"priority": 3,
+			"responder": false,
+			"script": null,
+			"default": true,
+			"name": "Game mode change",
+			"description": "Triggered when joining or leaving an Operation or CQC combat"
+		},
 		"GetDistance": {
 			"enabled": true,
 			"priority": 3,

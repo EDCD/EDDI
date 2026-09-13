@@ -81,8 +81,8 @@ namespace EddiJournalMonitor
                         // flickering for a few seconds. Simulate a partial ship system shutdown.
                         shipShutdownEvent.partialshutdown = true;
                     }
-                    }
                 }
+            }
 
             return events;
         }
@@ -323,7 +323,7 @@ namespace EddiJournalMonitor
                                 break;
                             case "SAAScanComplete": // Body mapped
                                 handled = BodyMappedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
-                                                break;
+                                break;
                             case "Scan":
                                 {
                                     var name = JsonParsing.getString(data, "BodyName");
@@ -1860,6 +1860,9 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
+                            case "GameModeChange":
+                                handled = GameModeChangedEvent.Handle( timestamp, data, ref events );
+                                break;
                             case "JetConeBoost":
                                 {
                                     var boost = JsonParsing.getDecimal(data, "BoostValue");
@@ -2401,6 +2404,6 @@ namespace EddiJournalMonitor
         public Task HandleStatusAsync ( Status status )
         {
             return Task.CompletedTask;
-        }
+        }        
     }
 }
