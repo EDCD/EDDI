@@ -1,0 +1,91 @@
+<Project>
+    <UsingTask TaskName="GenerateEddnKeySource" TaskFactory="RoslynCodeTaskFactory"
+               AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+        <ParameterGroup>
+            <KeyFile ParameterType="System.String" Required="true" />
+            <OutputFile ParameterType="System.String" Required="true" />
+        </ParameterGroup>
+        <Task>
+            <Using Namespace="System" />
+            <Using Namespace="System.IO" />
+            <Using Namespace="System.Text" />
+            <Using Namespace="System.Security.Cryptography" />
+            <Using Namespace="System.Text.RegularExpressions" />
+            <Code Type="Fragment" Language="cs"><![CDATA[
+                byte[] key = null;
+                byte[] mask = null;
+                try
+                {
+                    var input = File.Exists(KeyFile) ? File.ReadAllText(KeyFile, new UTF8Encoding(false, true)) : "";
+                    if (Regex.IsMatch(input, @"(?m)^[ \t]*// EDDN_SIGNING_KEY:"))
+                    {
+                        Log.LogError("Migrate the obsolete EDDN key comment to the #if false EddnSigningKeyInput declaration documented in BuildSecrets/README.md.");
+                        return false;
+                    }
+                    // Accept only the documented verbatim literal in its own excluded block.
+                    var declarationInput = Regex.Replace(input, @"(?m)^[ \t]*//[^\r\n]*", "");
+                    var pattern = @"(?m)^[ \t]*#if false[ \t]*\r?\n[ \t]*private const string EddnSigningKeyInput[ \t]*=[ \t]*@""(?<key>(?:[^""\r\n]|"""")*)"";[ \t]*\r?\n[ \t]*#endif[ \t]*\r?$";
+                    var matches = Regex.Matches(declarationInput, pattern);
+                    if (matches.Count == 0 && !Regex.IsMatch(declarationInput, @"\bEddnSigningKeyInput\b"))
+                    {
+                        if (File.Exists(OutputFile)) { File.Delete(OutputFile); }
+                        return true;
+                    }
+                    if (matches.Count != 1 || Regex.IsMatch(Regex.Replace(declarationInput, pattern, ""), @"\bEddnSigningKeyInput\b"))
+                    {
+                        Log.LogError("Invalid EDDN build input. Use exactly one #if false EddnSigningKeyInput verbatim-string declaration as documented in BuildSecrets/README.md.");
+                        return false;
+                    }
+                    key = Encoding.UTF8.GetBytes(matches[0].Groups["key"].Value.Replace("\"\"", "\""));
+                    if (key.Length == 0)
+                    {
+                        Log.LogError("EddnSigningKeyInput is empty. Supply the original key or remove the declaration for unsigned builds.");
+                        return false;
+                    }
+                    mask = new byte[key.Length];
+                    using (var random = RandomNumberGenerator.Create()) { random.GetBytes(mask); }
+                    var source = new StringBuilder("// Generated privately at build time. Do not publish.\n#nullable enable\nnamespace BuildSecrets { public static partial class BuildInjectedSecrets {\nstatic partial void SetEddnSigningKey(ref byte[]? key) {\nkey = new byte[] {");
+                    for (int i = 0; i < key.Length; i++)
+                    {
+                        if (i != 0) { source.Append(','); }
+                        source.Append((byte)(key[i] ^ mask[i]));
+                    }
+                    source.Append("};\nvar mask = new byte[] {");
+                    for (int i = 0; i < mask.Length; i++)
+                    {
+                        if (i != 0) { source.Append(','); }
+                        source.Append(mask[i]);
+                    }
+                    source.Append("};\nfor (int i = 0; i < key.Length; i++) { key[i] ^= mask[i]; }\n} } }\n");
+                    Directory.CreateDirectory(Path.GetDirectoryName(OutputFile));
+                    File.WriteAllText(OutputFile, source.ToString(), new UTF8Encoding(false));
+                }
+                catch (Exception)
+                {
+                    // Never echo file contents or private exception details into build logs.
+                    Log.LogError("Unable to generate EDDN signing source. Check the private key file and intermediate directory.");
+                    return false;
+                }
+                finally
+                {
+                    if (key != null) { Array.Clear(key, 0, key.Length); }
+                    if (mask != null) { Array.Clear(mask, 0, mask.Length); }
+                }
+            ]]></Code>
+        </Task>
+    </UsingTask>
+
+    <Target Name="PrepareEddnSigningSource" BeforeTargets="CoreCompile">
+        <Error Condition="'$(DebugType)' != 'none' or '$(DebugSymbols)' != 'false'"
+               Text="BuildSecrets must use DebugType=none and DebugSymbols=false to protect private source." />
+        <PropertyGroup>
+            <_EddnKeyFile>$(MSBuildProjectDirectory)\BuildInjectedSecrets.local.cs</_EddnKeyFile>
+            <_EddnGeneratedSource>$(IntermediateOutputPath)EddnSigning.g.cs</_EddnGeneratedSource>
+        </PropertyGroup>
+        <GenerateEddnKeySource KeyFile="$(_EddnKeyFile)" OutputFile="$(_EddnGeneratedSource)" />
+        <ItemGroup>
+            <Compile Include="$(_EddnGeneratedSource)" Condition="Exists('$(_EddnGeneratedSource)')" />
+            <FileWrites Include="$(_EddnGeneratedSource)" />
+        </ItemGroup>
+    </Target>
+</Project>

@@ -12,6 +12,7 @@
         <OutputPath>..\bin\Release\Application\</OutputPath>
     </PropertyGroup>
     <ItemGroup>
+        <ProjectReference Include="..\BuildSecrets\BuildSecrets.csproj" />
         <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj" />
         <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
         <ProjectReference Include="..\EddiCore\EddiCore.csproj" />
