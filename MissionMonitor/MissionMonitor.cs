@@ -404,7 +404,9 @@ namespace EddiMissionMonitor
                 if (missionEntry != null)
                 {
                     missionEntry.name = mission.name;
-                    missionEntry.localisedname = mission.localisedname;
+                    missionEntry.localisedname = string.IsNullOrEmpty(mission.localisedname) 
+                        ? mission.name 
+                        : mission.localisedname;
 
                     switch (mission.statusEDName)
                     {
