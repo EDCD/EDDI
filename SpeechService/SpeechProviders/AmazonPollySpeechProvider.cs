@@ -167,7 +167,7 @@ namespace EddiSpeechService.SpeechProviders
                 Mp3SampleRate.ToString( CultureInfo.InvariantCulture ),
                 languageCode );
 
-            Logging.Info(
+            Logging.Debug(
                 $"Amazon Polly synthesis request voice='{voice?.name}', voiceId='{request.VoiceId}', engine='{request.Engine}', language='{request.LanguageCode}', outputFormat='{request.OutputFormat}', requestedSampleRate='{request.SampleRate}', configuredRate={effectiveConfiguration.Rate}, normalizedRate='{normalizedRate}', configuredVolume={effectiveConfiguration.Volume}, normalizedVolume='{normalizedVolume}', ssmlLength={pollySpeech.Length}.");
 
             try
@@ -187,7 +187,7 @@ namespace EddiSpeechService.SpeechProviders
                 using var decodedStream = decodeAudioToWave( encodedStream );
                 var outputStream = ApplyTempoStretch( decodedStream, tempoStretchFactor );
                 var (SampleRate, BitsPerSample, Channels, Duration) = GetWaveMetadata( outputStream );
-                Logging.Info(
+                Logging.Debug(
                     $"Amazon Polly synthesis response voice='{voice?.name}', encodedBytes={encodedStream.Length}, outputFormat='{request.OutputFormat}', requestedSampleRate={request.SampleRate}, tempoStretchFactor={tempoStretchFactor:0.###}, outputSampleRate={SampleRate}, outputBits={BitsPerSample}, outputChannels={Channels}, outputBytes={outputStream.Length}, outputDurationMs={Duration.TotalMilliseconds:0}." );
                 outputStream.Position = 0;
                 return outputStream;

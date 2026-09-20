@@ -224,7 +224,7 @@ namespace EddiSpeechService
                 ?? throw new InvalidOperationException( $"No web speech provider is available for profile '{profile.DisplayName}'." );
 
             Logging.Info(
-                $"Using web speech provider '{profile.DisplayName}' ({profile.ProviderType}) for voice '{voiceDetails.name}' with key '{voiceDetails.voiceKey}'." );
+                $"Using web speech provider '{profile.DisplayName}' ({profile.ProviderType}) and voice '{voiceDetails.friendlyName}' ('{voiceDetails.voiceKey}') to say '{speech}'." );
 
             return await provider
                 .SynthesizeAsync( profile, voiceDetails, speech, config, ct )
