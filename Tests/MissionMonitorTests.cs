@@ -7,6 +7,8 @@ using EddiEvents;
 using EddiJournalMonitor;
 using EddiMissionMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -331,6 +333,222 @@ namespace Tests
 
             // Restore original data
             ConfigService.Instance.missionMonitorConfiguration = missionData;
+        }
+
+        [TestMethod]
+        public async Task MissionTimerEmitsExpirationOnceWithoutChangingStatus()
+        {
+            var now = new DateTime( 2026, 9, 20, 12, 0, 0, DateTimeKind.Utc );
+            var eliteRunning = true;
+            var emittedEvents = new List<Event>();
+            var monitor = new MissionMonitor( () => now, () => eliteRunning, emittedEvents.Add );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 0 } );
+            var mission = new Mission( 1, "Mission_Courier", now.AddSeconds( 5 ), MissionStatus.Active );
+
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            var snapshot = new MissionsEvent( now, [ mission ] );
+            monitor._handleMissionsEvent( snapshot );
+            monitor.ArmMissionTimersFromSnapshot( snapshot );
+
+            now = now.AddSeconds( 5 );
+            monitor.ProcessMissionTimers();
+            monitor.ProcessMissionTimers();
+
+            Assert.AreEqual( 1, emittedEvents.OfType<MissionExpiredEvent>().Count() );
+            Assert.AreEqual( MissionStatus.Active, monitor.missions.Single().statusDef );
+        }
+
+        [TestMethod]
+        public async Task MissionTimerDeadlineExtensionRearmsExpiration()
+        {
+            var now = new DateTime( 2026, 9, 20, 12, 0, 0, DateTimeKind.Utc );
+            var emittedEvents = new List<Event>();
+            var monitor = new MissionMonitor( () => now, () => true, emittedEvents.Add );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 0 } );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            var snapshot = new MissionsEvent( now,
+                [ new Mission( 2, "Mission_Courier", now.AddSeconds( 5 ), MissionStatus.Active ) ] );
+            monitor._handleMissionsEvent( snapshot );
+            monitor.ArmMissionTimersFromSnapshot( snapshot );
+
+            now = now.AddSeconds( 5 );
+            monitor.ProcessMissionTimers();
+            var extendedDeadline = now.AddSeconds( 10 );
+            snapshot = new MissionsEvent( now,
+                [ new Mission( 2, "Mission_Courier", extendedDeadline, MissionStatus.Active ) ] );
+            monitor._handleMissionsEvent( snapshot );
+            monitor.ArmMissionTimersFromSnapshot( snapshot );
+            now = extendedDeadline;
+            monitor.ProcessMissionTimers();
+
+            Assert.AreEqual( 2, emittedEvents.OfType<MissionExpiredEvent>().Count() );
+            Assert.AreEqual( MissionStatus.Active, monitor.missions.Single().statusDef );
+        }
+
+        [TestMethod]
+        public async Task MissionTimerDoesNotArmAlreadyOverdueOrOfflineMissions()
+        {
+            var now = new DateTime( 2026, 9, 20, 12, 0, 0, DateTimeKind.Utc );
+            var eliteRunning = true;
+            var emittedEvents = new List<Event>();
+            var monitor = new MissionMonitor( () => now, () => eliteRunning, emittedEvents.Add );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 0 } );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            var snapshot = new MissionsEvent( now,
+                [ new Mission( 3, "Mission_Courier", now.AddSeconds( -1 ), MissionStatus.Active ) ] );
+            monitor._handleMissionsEvent( snapshot );
+            monitor.ArmMissionTimersFromSnapshot( snapshot );
+            monitor.ProcessMissionTimers();
+
+            eliteRunning = false;
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.offline.log", "test", "test" ) );
+            snapshot = new MissionsEvent( now,
+                [ new Mission( 4, "Mission_Courier", now.AddSeconds( 5 ), MissionStatus.Active ) ] );
+            monitor._handleMissionsEvent( snapshot );
+            monitor.ArmMissionTimersFromSnapshot( snapshot );
+            eliteRunning = true;
+            now = now.AddSeconds( 5 );
+            monitor.ProcessMissionTimers();
+
+            Assert.AreEqual( 0, emittedEvents.OfType<MissionExpiredEvent>().Count() );
+        }
+
+        [TestMethod]
+        public async Task MissionTimerDisarmsOnProcessExitAndShutdown()
+        {
+            var now = new DateTime( 2026, 9, 20, 12, 0, 0, DateTimeKind.Utc );
+            var eliteRunning = true;
+            var emittedEvents = new List<Event>();
+            var monitor = new MissionMonitor( () => now, () => eliteRunning, emittedEvents.Add );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 0 } );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            var snapshot = new MissionsEvent( now,
+                [ new Mission( 8, "Mission_Courier", now.AddSeconds( 5 ), MissionStatus.Active ) ] );
+            monitor._handleMissionsEvent( snapshot );
+            monitor.ArmMissionTimersFromSnapshot( snapshot );
+
+            eliteRunning = false;
+            monitor.ProcessMissionTimers();
+            eliteRunning = true;
+            now = now.AddSeconds( 5 );
+            monitor.ProcessMissionTimers();
+
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.next.log", "test", "test" ) );
+            snapshot = new MissionsEvent( now,
+                [ new Mission( 9, "Mission_Courier", now.AddSeconds( 5 ), MissionStatus.Active ) ] );
+            monitor._handleMissionsEvent( snapshot );
+            monitor.ArmMissionTimersFromSnapshot( snapshot );
+            await monitor.PreHandleAsync( new ShutdownEvent( now ) );
+            now = now.AddSeconds( 5 );
+            monitor.ProcessMissionTimers();
+
+            Assert.AreEqual( 0, emittedEvents.OfType<MissionExpiredEvent>().Count() );
+        }
+
+        [TestMethod]
+        public async Task MissionWarningsRequireCurrentSessionMissionData()
+        {
+            var now = new DateTime( 2026, 9, 20, 12, 0, 0, DateTimeKind.Utc );
+            var emittedEvents = new List<Event>();
+            var liveMonitor = new MissionMonitor( () => now, () => true, emittedEvents.Add );
+            liveMonitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 1 } );
+            await liveMonitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            var mission = new Mission( 10, "Mission_Courier", now.AddSeconds( 30 ), MissionStatus.Active );
+            var snapshot = new MissionsEvent( now, [ mission ] );
+            liveMonitor._handleMissionsEvent( snapshot );
+            liveMonitor.ArmMissionTimersFromSnapshot( snapshot );
+
+            liveMonitor.ProcessMissionTimers();
+            liveMonitor.ProcessMissionTimers();
+
+            var offlineMonitor = new MissionMonitor( () => now, () => false, emittedEvents.Add );
+            offlineMonitor.initializeMissionMonitor( new MissionMonitorConfiguration
+            {
+                missionWarning = 1,
+                missions = [ new Mission( 11, "Mission_Courier", now.AddSeconds( 30 ), MissionStatus.Active ) ]
+            } );
+            offlineMonitor.ProcessMissionTimers();
+
+            Assert.AreEqual( 1, emittedEvents.OfType<MissionWarningEvent>().Count() );
+        }
+
+        [TestMethod]
+        public async Task MissionTimersIgnoreFailedAndCompletedMissions()
+        {
+            var now = new DateTime( 2026, 9, 20, 12, 0, 0, DateTimeKind.Utc );
+            var deadline = now.AddSeconds( 30 );
+            var emittedEvents = new List<Event>();
+            var monitor = new MissionMonitor( () => now, () => true, emittedEvents.Add );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 1 } );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            var failedMission = new Mission( 12, "Mission_OnFoot_Collect", deadline, MissionStatus.Active );
+            var completedMission = new Mission( 13, "Mission_OnFoot_Collect", deadline, MissionStatus.Active );
+            var snapshot = new MissionsEvent( now, [ failedMission, completedMission ] );
+            monitor._handleMissionsEvent( snapshot );
+            monitor.ArmMissionTimersFromSnapshot( snapshot );
+
+            failedMission.statusDef = MissionStatus.Failed;
+            completedMission.statusDef = MissionStatus.Complete;
+            Assert.IsNotNull( failedMission.expiry );
+            Assert.IsNotNull( completedMission.expiry );
+
+            monitor.ProcessMissionTimers();
+            now = deadline;
+            monitor.ProcessMissionTimers();
+
+            Assert.AreEqual( 0, emittedEvents.OfType<MissionWarningEvent>().Count() );
+            Assert.AreEqual( 0, emittedEvents.OfType<MissionExpiredEvent>().Count() );
+            Assert.IsFalse( failedMission.expiring );
+            Assert.IsFalse( completedMission.expiring );
+        }
+
+        [TestMethod]
+        public async Task MissionExpirationDoesNotOverrideAuthoritativeTerminalEventsOrAdvanceWatermark()
+        {
+            var now = new DateTime( 2026, 9, 20, 12, 0, 0, DateTimeKind.Utc );
+            var emittedEvents = new List<Event>();
+            var monitor = new MissionMonitor( () => now, () => true, emittedEvents.Add );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 0 } );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            var snapshot = new MissionsEvent( now,
+                [
+                    new Mission( 5, "Mission_Courier", now.AddSeconds( 5 ), MissionStatus.Active ),
+                    new Mission( 6, "Mission_Courier", now.AddSeconds( 5 ), MissionStatus.Active )
+                ] );
+            monitor._handleMissionsEvent( snapshot );
+            monitor.ArmMissionTimersFromSnapshot( snapshot );
+
+            now = now.AddSeconds( 5 );
+            monitor.ProcessMissionTimers();
+            await monitor.PreHandleAsync( new MissionExpiredEvent( now.AddSeconds( 5 ), 5, "Mission_Courier" ) );
+            await monitor.PreHandleAsync( new MissionFailedEvent( now.AddSeconds( 1 ), 5, "Mission_Courier", 0 ) );
+            await monitor.PreHandleAsync( new MissionCompletedEvent( now.AddSeconds( 2 ), 6, "Mission_Courier",
+                null, null, null, null, false, 0 ) );
+
+            Assert.AreEqual( MissionStatus.Failed, monitor.missions.Single( m => m.missionid == 5 ).statusDef );
+            Assert.AreEqual( MissionStatus.Complete, monitor.missions.Single( m => m.missionid == 6 ).statusDef );
+        }
+
+        [TestMethod]
+        public async Task MissionTimerIgnoresCommunityGoals()
+        {
+            var now = new DateTime( 2026, 9, 20, 12, 0, 0, DateTimeKind.Utc );
+            var emittedEvents = new List<Event>();
+            var monitor = new MissionMonitor( () => now, () => true, emittedEvents.Add );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 0 } );
+            var communityGoal = new Mission( 7, "MISSION_CommunityGoal", now.AddSeconds( 5 ), MissionStatus.Active )
+            {
+                communal = true
+            };
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            monitor._handleMissionAcceptedEvent( new MissionAcceptedEvent( now, communityGoal ) );
+            monitor.ArmMissionTimer( communityGoal );
+
+            now = now.AddSeconds( 5 );
+            monitor.ProcessMissionTimers();
+
+            Assert.AreEqual( 0, emittedEvents.OfType<MissionExpiredEvent>().Count() );
+            Assert.AreEqual( MissionStatus.Active, monitor.missions.Single().statusDef );
         }
 
         [TestMethod]

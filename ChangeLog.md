@@ -13,6 +13,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Material Monitor
     * Added search box and filtering. Added checkbox to display invariant text in place of translated text when applicable. (#2411)
     * Added bulk editor for setting minimum and desired inventory levels.
+  * Mission Monitor
+    * Decoupled synthetic mission expiration events from mission status changes.  
   * Speech Responder
     * Scripts
       * `FSD engaged` updated to use explicit `departuresystem` and `arrivalsystem` variables for clearer jump context and to pass an explicit `arrivalsystem` allegiance into the `Honorific` script invocation (#2854).
