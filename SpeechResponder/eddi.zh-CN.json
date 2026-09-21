@@ -1656,7 +1656,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Mission expired }\r\n{_ Triggered when a mission has expired }\r\n\r\n{_ Context }\r\n{SetState('eddi_context_last_subject', 'mission')}\r\n{SetState('eddi_context_last_action', 'expired')}\r\n\r\n{set mission to MissionDetails(event.missionid)}\r\n\r\n{if find(mission.invariantTags, \"Transport\") > -1:\r\n    {set type to \"运输 \"}\r\n    {set type to cat(type, mission.passengertype)}\r\n|else:\r\n    {set type to mission.tags[0]}\r\n}\r\n{set type to cat(type, \" 任务\")}\r\n\r\n{if mission.faction: {PronounceForContext(mission.faction, \"faction\")}的}{type}  已过期.\r\n{if mission.commodity:\r\n    {for cargo in inventory:\r\n        {if cargo.name = mission.commodity && cargo.haulage > 0:\r\n            所有与任务相关的物品将被标记为被盗.\r\n        }\r\n    }\r\n}",
+      "script": "{set activeMission to MissionDetails(event.missionid)}\r\n{if activeMission.statusEDName = \"Active\":\r\n{_ Context }\r\n{SetState('eddi_context_last_subject', 'mission')}\r\n{SetState('eddi_context_last_action', 'expired')}\r\n\r\n{set mission to MissionDetails(event.missionid)}\r\n{set missionName to mission.localisedname}\r\n{if !missionName:\r\n    {set missionName to event.name}\r\n}\r\n\r\n任务 {missionName} 的到期计时器已归零。\r\n\r\n{if mission.commodity:\r\n    {for cargo in inventory:\r\n        {if cargo.name = mission.commodity && cargo.haulage > 0:\r\n            {for missionId, amount in cargo.missionCargo:\r\n                {if missionId = mission.missionid:\r\n                    如果放弃此任务，正在运送的 {amount} 吨 {cargo.name} 任务货物将变为非法货物，{PronounceForContext(mission.faction, \"faction\")} 还会因货物损失处以罚款。\r\n                }\r\n            }\r\n        }\r\n    }\r\n}\r\n}",
       "default": true,
       "name": "Mission expired",
       "description": "Triggered when a mission has expired"
@@ -1701,7 +1701,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Mission warning }\r\n{_ Triggered when a mission is about to expire, based on a set threshold }\r\n\r\n{_ Context }\r\n{SetState('eddi_context_last_subject', 'mission')}\r\n{SetState('eddi_context_last_action', 'warning')}\r\n\r\n{set mission to MissionDetails(event.missionid)}\r\n\r\n{if find(mission.invariantTags, \"Transport\") > -1:\r\n    {set type to \"运输 \"}\r\n    {set type to cat(type, mission.passengertype)}\r\n|else:\r\n    {set type to mission.tags[0]}\r\n}\r\n{set type to cat(type, \" 任务\")}\r\n\r\n警告: {if mission.faction: for {PronounceForContext(mission.faction, \"faction\")}提供的} {type}  将在 {event.remaining} 分钟后过期.",
+      "script": "{set activeMission to MissionDetails(event.missionid)}\r\n{if activeMission.statusEDName = \"Active\":\r\n{_ Mission warning }\r\n{_ Triggered when a mission is about to expire, based on a set threshold }\r\n\r\n{_ Context }\r\n{SetState('eddi_context_last_subject', 'mission')}\r\n{SetState('eddi_context_last_action', 'warning')}\r\n\r\n{set mission to MissionDetails(event.missionid)}\r\n\r\n{if find(mission.invariantTags, \"Transport\") > -1:\r\n    {set type to \"运输 \"}\r\n    {set type to cat(type, mission.passengertype)}\r\n|else:\r\n    {set type to mission.tags[0]}\r\n}\r\n{set type to cat(type, \" 任务\")}\r\n\r\n警告: {if mission.faction: for {PronounceForContext(mission.faction, \"faction\")}提供的} {type}  将在 {event.remaining} 分钟后过期.\r\n}",
       "default": true,
       "name": "Mission warning",
       "description": "Triggered when a mission is about to expire, based on a set threshold"
