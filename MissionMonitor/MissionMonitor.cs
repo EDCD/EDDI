@@ -29,7 +29,6 @@ namespace EddiMissionMonitor
 
         // Observable collection for us to handle changes
         public ObservableCollection<Mission> missions { get; private set; }
-        private readonly List<Mission> communityGoalHolder = [ ];
 
         private DateTime updateDat;
         public int? missionWarning;
@@ -157,6 +156,7 @@ namespace EddiMissionMonitor
                     {
                         if ( now >= deadline )
                         {
+                            mission.expiring = false;
                             if ( !timerState.expirationEmitted )
                             {
                                 timerState.expirationEmitted = true;
@@ -287,7 +287,8 @@ namespace EddiMissionMonitor
             }
             else if ( @event is MissionAcceptedEvent missionAcceptedEvent )
             {
-                if ( handleMissionAcceptedEvent( missionAcceptedEvent ) )
+                if ( ( !missionAcceptedEvent.communal || IsLiveSessionReady() ) &&
+                     handleMissionAcceptedEvent( missionAcceptedEvent ) )
                 {
                     ArmMissionTimer( missionAcceptedEvent.Mission );
                 }
@@ -298,10 +299,7 @@ namespace EddiMissionMonitor
             }
             else if ( @event is MissionsEvent missionsEvent )
             {
-                if ( handleMissionsEvent( missionsEvent ) )
-                {
-                    ArmMissionTimersFromSnapshot( missionsEvent );
-                }
+                handleMissionsEvent( missionsEvent );
             }
             else if ( @event is PassengersEvent passengersEvent )
             {
@@ -311,13 +309,19 @@ namespace EddiMissionMonitor
             // Change the mission status here, remove the missions after the events resolve using the post-handler
             else if ( @event is MissionAbandonedEvent missionAbandonedEvent )
             {
-                handleMissionAbandonedEvent( missionAbandonedEvent );
-                CancelMissionSnapshotReconciliation( missionAbandonedEvent.missionid );
+                if ( !IsCommunityGoalMission( missionAbandonedEvent.missionid ) || IsLiveSessionReady() )
+                {
+                    handleMissionAbandonedEvent( missionAbandonedEvent );
+                    CancelMissionSnapshotReconciliation( missionAbandonedEvent.missionid );
+                }
             }
             else if ( @event is MissionCompletedEvent missionCompletedEvent )
             {
-                handleMissionCompletedEvent( missionCompletedEvent );
-                CancelMissionSnapshotReconciliation( missionCompletedEvent.missionid );
+                if ( !missionCompletedEvent.communal || IsLiveSessionReady() )
+                {
+                    handleMissionCompletedEvent( missionCompletedEvent );
+                    CancelMissionSnapshotReconciliation( missionCompletedEvent.missionid );
+                }
             }
             else if ( @event is MissionFailedEvent missionFailedEvent )
             {
@@ -342,49 +346,69 @@ namespace EddiMissionMonitor
             missionTimerStates.Clear();
             missionSnapshotReconciliations.Clear();
             liveSessionReady = false;
+            lock ( missionsLock )
+            {
+                foreach ( var mission in missions )
+                {
+                    mission.expiring = false;
+                }
+            }
+        }
+
+        private bool IsLiveSessionReady ()
+        {
+            lock ( missionTimerLock )
+            {
+                return liveSessionReady && isEliteRunning();
+            }
         }
 
         internal void ArmMissionTimersFromSnapshot ( MissionsEvent @event )
         {
             lock ( missionTimerLock )
             {
-                if ( !isEliteRunning() )
-                {
-                    ResetLiveSession();
-                    return;
-                }
-                if ( !liveSessionReady )
-                {
-                    return;
-                }
+                ArmMissionTimersFromSnapshotLocked( @event );
+            }
+        }
 
-                var now = utcNow();
-                var snapshotMissionIds = @event.missions.Where( m => !m.communal )
-                    .Select( m => m.missionid ).ToHashSet();
-                foreach ( var missionId in missionTimerStates.Keys.Where( id => !snapshotMissionIds.Contains( id ) ).ToList() )
-                {
-                    missionTimerStates.Remove( missionId );
-                }
-                foreach ( var missionId in missionSnapshotReconciliations.Keys
-                             .Where( id => !snapshotMissionIds.Contains( id ) ).ToList() )
-                {
-                    missionSnapshotReconciliations.Remove( missionId );
-                }
+        private void ArmMissionTimersFromSnapshotLocked ( MissionsEvent @event )
+        {
+            if ( !isEliteRunning() )
+            {
+                ResetLiveSession();
+                return;
+            }
+            if ( !liveSessionReady )
+            {
+                return;
+            }
 
-                foreach ( var mission in @event.missions )
+            var now = utcNow();
+            var snapshotMissionIds = @event.missions.Where( m => !m.communal )
+                .Select( m => m.missionid ).ToHashSet();
+            foreach ( var missionId in missionTimerStates.Keys.Where( id => !snapshotMissionIds.Contains( id ) ).ToList() )
+            {
+                missionTimerStates.Remove( missionId );
+            }
+            foreach ( var missionId in missionSnapshotReconciliations.Keys
+                         .Where( id => !snapshotMissionIds.Contains( id ) ).ToList() )
+            {
+                missionSnapshotReconciliations.Remove( missionId );
+            }
+
+            foreach ( var mission in @event.missions )
+            {
+                if ( !mission.communal && mission.statusDef == MissionStatus.Active &&
+                     @event.zeroExpiryMissionIds.Contains( mission.missionid ) )
                 {
-                    if ( !mission.communal && mission.statusDef == MissionStatus.Active &&
-                         @event.zeroExpiryMissionIds.Contains( mission.missionid ) )
-                    {
-                        missionTimerStates.Remove( mission.missionid );
-                        missionSnapshotReconciliations[ mission.missionid ] =
-                            new MissionSnapshotReconciliationState( now.AddSeconds( 10 ) );
-                    }
-                    else
-                    {
-                        missionSnapshotReconciliations.Remove( mission.missionid );
-                        ArmMissionTimerLocked( mission );
-                    }
+                    missionTimerStates.Remove( mission.missionid );
+                    missionSnapshotReconciliations[ mission.missionid ] =
+                        new MissionSnapshotReconciliationState( now.AddSeconds( 10 ) );
+                }
+                else
+                {
+                    missionSnapshotReconciliations.Remove( mission.missionid );
+                    ArmMissionTimerLocked( mission );
                 }
             }
         }
@@ -431,11 +455,17 @@ namespace EddiMissionMonitor
             // Use the post-handler to persist or remove missions only after we have reacted to terminal events.
             if ( @event is MissionAbandonedEvent missionAbandonedEvent )
             {
-                postHandleMissionAbandonedEvent( missionAbandonedEvent );
+                if ( !IsCommunityGoalMission( missionAbandonedEvent.missionid ) || IsLiveSessionReady() )
+                {
+                    postHandleMissionAbandonedEvent( missionAbandonedEvent );
+                }
             }
             else if ( @event is MissionCompletedEvent missionCompletedEvent )
             {
-                postHandleMissionCompletedEvent( missionCompletedEvent );
+                if ( !missionCompletedEvent.communal || IsLiveSessionReady() )
+                {
+                    postHandleMissionCompletedEvent( missionCompletedEvent );
+                }
             }
             else if ( @event is MissionFailedEvent missionFailedEvent )
             {
@@ -557,18 +587,26 @@ namespace EddiMissionMonitor
             return false;
         }
 
-        private bool handleMissionsEvent(MissionsEvent @event)
+        private void handleMissionsEvent(MissionsEvent @event)
         {
-            if (@event.timestamp >= updateDat)
+            var update = false;
+            lock ( missionTimerLock )
             {
-                updateDat = @event.timestamp;
-                if (_handleMissionsEvent(@event))
+                if ( @event.timestamp >= updateDat )
                 {
-                    writeMissions();
+                    updateDat = @event.timestamp;
+                    update = _handleMissionsEvent( @event );
+
+                    // Apply snapshot state and cancel or arm its reconciliation while holding the same lock
+                    // used by ProcessMissionTimers, so a positive expiry cannot race a due zero-expiry window.
+                    ArmMissionTimersFromSnapshotLocked( @event );
                 }
-                return true;
             }
-            return false;
+
+            if ( update )
+            {
+                writeMissions();
+            }
         }
 
         public bool _handleMissionsEvent(MissionsEvent @event)
@@ -645,19 +683,10 @@ namespace EddiMissionMonitor
             // Remove strays from the mission log
             foreach (var missionEntry in missions.ToList())
             {
-                // Community goals aren't written by the `Missions` event. We'll keep them until they expire, then once they expire we'll
-                // move them to a holder until we see another CommunityGoal event. If there is none, the entry is automatically removed.
-                if (missionEntry.communal)
+                // Standard mission snapshots do not own community goal membership or state.
+                if ( missionEntry.communal )
                 {
-                    if (missionEntry.expiry is null)
-                    {
-                        RemoveMissionWithMissionId( missionEntry.missionid );
-                        communityGoalHolder.Add(missionEntry);
-                    }
-                    else
-                    {
-                        continue;
-                    }
+                    continue;
                 }
                 
                 var mission = @event.missions.FirstOrDefault(m => m.missionid == missionEntry.missionid);
@@ -712,46 +741,52 @@ namespace EddiMissionMonitor
 
         private void handleCommunityGoalsEvent(CommunityGoalsEvent @event)
         {
-            if (@event.timestamp >= updateDat)
+            if ( !IsLiveSessionReady() )
+            {
+                return;
+            }
+
+            if ( @event.timestamp > updateDat )
             {
                 updateDat = @event.timestamp;
-                _handleCommunityGoalsEvent(@event);
-                writeMissions();
             }
+            _handleCommunityGoalsEvent(@event);
+            writeMissions();
         }
 
         public void _handleCommunityGoalsEvent(CommunityGoalsEvent @event)
         {
-            // Prune community goals not reported from the CommunityGoalsEvent.
-            foreach (var cgMissionID in missions.ToList().Where(m => m.communal).Select(m => m.missionid))
+            var currentGoalIds = @event.goals.Select( goal => goal.cgid ).ToHashSet();
+
+            // A current CommunityGoal snapshot is authoritative for community goal membership.
+            foreach ( var missionId in missions.Where( mission => mission.communal )
+                         .Select( mission => mission.missionid ).Where( id => !currentGoalIds.Contains( id ) ).ToList() )
             {
-                if (!@event.goals.Select(cg => (ulong)cg.cgid).Contains(cgMissionID))
-                {
-                    RemoveMissionWithMissionId(cgMissionID);
-                }
+                RemoveMissionWithMissionId( missionId );
             }
 
-            // Update missions status
-            foreach (var goal in @event.goals)
+            foreach ( var goal in @event.goals )
             {
-                // Find or create our mission (excluding completed goals without contributions)
-                var mission = communityGoalHolder.FirstOrDefault(m => m.missionid == goal.cgid);
-                if (mission != null)
+                var mission = missions.FirstOrDefault( m => m.communal && m.missionid == goal.cgid );
+
+                // Completed goals without a contribution have no reward to claim.
+                if ( goal.iscomplete && goal.contribution <= 0 )
                 {
-                    communityGoalHolder.Remove(mission);
-                    AddMission(mission);
-                }
-                else
-                {
-                    mission = missions.FirstOrDefault(m => m.missionid == goal.cgid);
-                }
-                if (mission == null && (!goal.iscomplete || (goal.iscomplete && goal.contribution > 0)))
-                {
-                    mission = new Mission(goal.cgid, "MISSION_CommunityGoal", goal.expiryDateTime, MissionStatus.Active);
-                    AddMission(mission);
+                    if ( mission != null )
+                    {
+                        RemoveMissionWithMissionId( mission.missionid );
+                    }
+                    continue;
                 }
 
-                if (!@event.fromLoad && mission != null)
+                if ( mission == null )
+                {
+                    mission = new Mission( goal.cgid, "MISSION_CommunityGoal", goal.expiryDateTime,
+                        MissionStatus.Active ) { communal = true };
+                    AddMission( mission );
+                }
+
+                if ( !@event.fromLoad )
                 {
                     // Raise events for the notable changes in community goal status.
                     var cgUpdates = new List<CGUpdate>();
@@ -787,34 +822,22 @@ namespace EddiMissionMonitor
 
                     if ( cgUpdates.Count > 0 )
                     {
-                        EDDI.Instance.enqueueEvent( new CommunityGoalEvent( DateTime.UtcNow, cgUpdates, goal ) );
-                    }
-
-                    // Update our mission records
-                    mission.localisedname = goal.name;
-                    mission.originsystem = goal.system;
-                    mission.originstation = goal.station;
-                    mission.destinationsystem = goal.system;
-                    mission.destinationstation = goal.station;
-                    mission.reward = goal.contribution > 0 ? goal.tierreward : 0;
-                    mission.communal = true;
-                    mission.communalPercentileBand = goal.percentileband;
-                    mission.communalTier = goal.tier;
-                    mission.communalContribution = goal.contribution;
-                    mission.expiry = goal.expiryDateTime;
-
-                    if ( goal.iscomplete )
-                    {
-                        if ( goal.contribution > 0 )
-                        {
-                            mission.statusDef = MissionStatus.Claim;
-                        }
-                        else
-                        {
-                            RemoveMissionWithMissionId( mission.missionid );
-                        }
+                        enqueueEvent( new CommunityGoalEvent( utcNow(), cgUpdates, goal ) );
                     }
                 }
+
+                mission.localisedname = goal.name;
+                mission.originsystem = goal.system;
+                mission.originstation = goal.station;
+                mission.destinationsystem = goal.system;
+                mission.destinationstation = goal.station;
+                mission.reward = goal.contribution > 0 ? goal.tierreward : 0;
+                mission.communal = true;
+                mission.communalPercentileBand = goal.percentileband;
+                mission.communalTier = goal.tier;
+                mission.communalContribution = goal.contribution;
+                mission.statusDef = goal.iscomplete ? MissionStatus.Claim : MissionStatus.Active;
+                mission.expiry = goal.expiryDateTime;
             }
         }
 
@@ -990,6 +1013,9 @@ namespace EddiMissionMonitor
             }
             return update;
         }
+
+        private bool IsCommunityGoalMission ( ulong missionId ) =>
+            missions.Any( mission => mission.missionid == missionId && mission.communal );
 
         public void handleMissionCompletedEvent ( MissionCompletedEvent @event )
         {

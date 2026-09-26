@@ -345,7 +345,7 @@ namespace Tests
             var eliteRunning = true;
             var emittedEvents = new List<Event>();
             var monitor = new MissionMonitor( () => now, () => eliteRunning, emittedEvents.Add );
-            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 0 } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 1 } );
             var mission = new Mission( 1, "Mission_Courier", now.AddSeconds( 5 ), MissionStatus.Active );
 
             await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
@@ -353,12 +353,16 @@ namespace Tests
             monitor._handleMissionsEvent( snapshot );
             monitor.ArmMissionTimersFromSnapshot( snapshot );
 
+            monitor.ProcessMissionTimers();
+            Assert.IsTrue( mission.expiring );
+
             now = now.AddSeconds( 5 );
             monitor.ProcessMissionTimers();
             monitor.ProcessMissionTimers();
 
             Assert.AreEqual( 1, emittedEvents.OfType<MissionExpiredEvent>().Count() );
             Assert.AreEqual( MissionStatus.Active, monitor.missions.Single().statusDef );
+            Assert.IsFalse( mission.expiring );
         }
 
         [TestMethod]
@@ -423,26 +427,34 @@ namespace Tests
             var eliteRunning = true;
             var emittedEvents = new List<Event>();
             var monitor = new MissionMonitor( () => now, () => eliteRunning, emittedEvents.Add );
-            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 0 } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 1 } );
             await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            var processExitMission = new Mission( 8, "Mission_Courier", now.AddSeconds( 30 ), MissionStatus.Active );
             var snapshot = new MissionsEvent( now,
-                [ new Mission( 8, "Mission_Courier", now.AddSeconds( 5 ), MissionStatus.Active ) ] );
+                [ processExitMission ] );
             monitor._handleMissionsEvent( snapshot );
             monitor.ArmMissionTimersFromSnapshot( snapshot );
+            monitor.ProcessMissionTimers();
+            Assert.IsTrue( processExitMission.expiring );
 
             eliteRunning = false;
             monitor.ProcessMissionTimers();
+            Assert.IsFalse( processExitMission.expiring );
             eliteRunning = true;
-            now = now.AddSeconds( 5 );
+            now = now.AddSeconds( 30 );
             monitor.ProcessMissionTimers();
 
             await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.next.log", "test", "test" ) );
+            var shutdownMission = new Mission( 9, "Mission_Courier", now.AddSeconds( 30 ), MissionStatus.Active );
             snapshot = new MissionsEvent( now,
-                [ new Mission( 9, "Mission_Courier", now.AddSeconds( 5 ), MissionStatus.Active ) ] );
+                [ shutdownMission ] );
             monitor._handleMissionsEvent( snapshot );
             monitor.ArmMissionTimersFromSnapshot( snapshot );
+            monitor.ProcessMissionTimers();
+            Assert.IsTrue( shutdownMission.expiring );
             await monitor.PreHandleAsync( new ShutdownEvent( now ) );
-            now = now.AddSeconds( 5 );
+            Assert.IsFalse( shutdownMission.expiring );
+            now = now.AddSeconds( 30 );
             monitor.ProcessMissionTimers();
 
             Assert.AreEqual( 0, emittedEvents.OfType<MissionExpiredEvent>().Count() );
@@ -815,8 +827,12 @@ namespace Tests
             {
                 communal = true
             };
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration
+            {
+                missionWarning = 0,
+                missions = [ communityGoal ]
+            } );
             await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
-            monitor._handleMissionAcceptedEvent( new MissionAcceptedEvent( now, communityGoal ) );
             monitor.ArmMissionTimer( communityGoal );
 
             now = now.AddSeconds( 5 );
@@ -834,6 +850,142 @@ namespace Tests
             Assert.HasCount( 1, events );
             var mcEvent = (MissionCompletedEvent)events[0];
             Assert.IsInstanceOfType(mcEvent, typeof(MissionCompletedEvent));
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task LiveAndReplayedCurrentCommunityGoalSnapshotsApplyTheSameState()
+        {
+            var now = new DateTime( 2026, 9, 21, 12, 0, 0, DateTimeKind.Utc );
+            var liveEvents = new List<Event>();
+            var replayEvents = new List<Event>();
+            var liveMonitor = new MissionMonitor( () => now, () => true, liveEvents.Add );
+            var replayMonitor = new MissionMonitor( () => now, () => true, replayEvents.Add );
+            liveMonitor.initializeMissionMonitor( new MissionMonitorConfiguration() );
+            replayMonitor.initializeMissionMonitor( new MissionMonitorConfiguration
+                { updatedat = now.AddMinutes( 5 ) } );
+            await liveMonitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.live.log", "test", "test" ) );
+            await replayMonitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.replay.log", "test", "test" ) );
+            var goal = CreateCommunityGoal( 700, now.AddHours( 1 ), false, 250, 3, 25, 500000 );
+            var joinedGoal = new Mission( 700, "MISSION_CommunityGoal", null, MissionStatus.Active )
+                { communal = true };
+
+            await liveMonitor.PreHandleAsync( new MissionAcceptedEvent( now, joinedGoal ) );
+            Assert.ContainsSingle( liveMonitor.missions );
+            Assert.IsTrue( liveMonitor.missions.Single().communal );
+
+            // A join is provisional incremental state, so an event older than the persisted watermark is ignored.
+            await replayMonitor.PreHandleAsync( new MissionAcceptedEvent( now, joinedGoal ) { fromLoad = true } );
+            Assert.IsEmpty( replayMonitor.missions );
+
+            await liveMonitor.PreHandleAsync( new CommunityGoalsEvent( now, [ goal ] ) );
+            await replayMonitor.PreHandleAsync( new CommunityGoalsEvent( now, [ goal ] ) { fromLoad = true } );
+
+            var liveMission = liveMonitor.missions.Single();
+            var replayMission = replayMonitor.missions.Single();
+            Assert.AreEqual( liveMission.statusDef, replayMission.statusDef );
+            Assert.AreEqual( liveMission.expiry, replayMission.expiry );
+            Assert.AreEqual( liveMission.localisedname, replayMission.localisedname );
+            Assert.AreEqual( liveMission.communalContribution, replayMission.communalContribution );
+            Assert.AreEqual( liveMission.communalTier, replayMission.communalTier );
+            Assert.AreEqual( liveMission.communalPercentileBand, replayMission.communalPercentileBand );
+            Assert.IsTrue( liveEvents.OfType<CommunityGoalEvent>().Any() );
+            Assert.IsFalse( replayEvents.OfType<CommunityGoalEvent>().Any() );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task CommunityGoalSnapshotOwnsCompletionAndMembership()
+        {
+            var now = new DateTime( 2026, 9, 21, 12, 0, 0, DateTimeKind.Utc );
+            var monitor = new MissionMonitor( () => now, () => true, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration() );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            await monitor.PreHandleAsync( new CommunityGoalsEvent( now,
+            [
+                CreateCommunityGoal( 701, now.AddHours( 1 ), false, 100 ),
+                CreateCommunityGoal( 702, now.AddHours( 1 ), false, 0 ),
+                CreateCommunityGoal( 703, now.AddHours( 1 ), false, 50 )
+            ] ) { fromLoad = true } );
+
+            now = now.AddMinutes( 1 );
+            await monitor.PreHandleAsync( new CommunityGoalsEvent( now,
+            [
+                CreateCommunityGoal( 701, now.AddHours( -1 ), true, 125, 4, 10, 1000000 ),
+                CreateCommunityGoal( 702, now.AddHours( -1 ), true, 0 )
+            ] ) { fromLoad = true } );
+
+            Assert.ContainsSingle( monitor.missions );
+            var claimableGoal = monitor.missions.Single();
+            Assert.AreEqual( 701UL, claimableGoal.missionid );
+            Assert.AreEqual( MissionStatus.Claim, claimableGoal.statusDef );
+            Assert.AreEqual( 125, claimableGoal.communalContribution );
+            Assert.AreEqual( 1000000, claimableGoal.reward );
+            Assert.AreEqual( now.AddHours( -1 ), claimableGoal.expiry );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task CommunityGoalRewardAndDiscardRemoveTrackedGoals()
+        {
+            var now = new DateTime( 2026, 9, 21, 12, 0, 0, DateTimeKind.Utc );
+            var monitor = new MissionMonitor( () => now, () => true, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration() );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            await monitor.PreHandleAsync( new CommunityGoalsEvent( now,
+            [
+                CreateCommunityGoal( 704, now.AddHours( 1 ), true, 100 ),
+                CreateCommunityGoal( 705, now.AddHours( 1 ), false, 0 )
+            ] ) { fromLoad = true } );
+
+            now = now.AddSeconds( 1 );
+            var rewardEvent = new MissionCompletedEvent( now, 704, "MISSION_CommunityGoal", "Goal 704",
+                null, null, null, true, 100000 ) { fromLoad = true };
+            await monitor.PreHandleAsync( rewardEvent );
+            await monitor.PostHandleAsync( rewardEvent );
+
+            now = now.AddSeconds( 1 );
+            // Community goal identity comes from the tracked mission rather than the event name.
+            var discardEvent = new MissionAbandonedEvent( now, 705, "UnexpectedMissionName", 0 ) { fromLoad = true };
+            await monitor.PreHandleAsync( discardEvent );
+            await monitor.PostHandleAsync( discardEvent );
+
+            Assert.IsEmpty( monitor.missions );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task OfflineReplayPreservesPersistedCommunityGoals()
+        {
+            var now = new DateTime( 2026, 9, 21, 12, 0, 0, DateTimeKind.Utc );
+            var persistedGoals = new[]
+            {
+                new Mission( 706, "MISSION_CommunityGoal", now.AddHours( -1 ), MissionStatus.Active )
+                    { communal = true, localisedname = "Goal 706" },
+                new Mission( 707, "MISSION_CommunityGoal", now.AddHours( -1 ), MissionStatus.Claim )
+                    { communal = true, localisedname = "Goal 707" },
+                new Mission( 708, "MISSION_CommunityGoal", now.AddHours( -1 ), MissionStatus.Active )
+                    { communal = true, localisedname = "Goal 708" }
+            };
+            var monitor = new MissionMonitor( () => now, () => false, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missions = [ .. persistedGoals ] } );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.offline.log", "test", "test" ) );
+
+            var joinedGoal = new Mission( 709, "MISSION_CommunityGoal", null, MissionStatus.Active )
+                { communal = true };
+            await monitor.PreHandleAsync( new MissionAcceptedEvent( now, joinedGoal ) { fromLoad = true } );
+            await monitor.PreHandleAsync( new CommunityGoalsEvent( now, [ ] ) { fromLoad = true } );
+            var rewardEvent = new MissionCompletedEvent( now.AddSeconds( 1 ), 707, "MISSION_CommunityGoal",
+                "Goal 707", null, null, null, true, 100000 ) { fromLoad = true };
+            await monitor.PreHandleAsync( rewardEvent );
+            await monitor.PostHandleAsync( rewardEvent );
+            var discardEvent = new MissionAbandonedEvent( now.AddSeconds( 2 ), 708, "MISSION_CommunityGoal", 0 )
+                { fromLoad = true };
+            await monitor.PreHandleAsync( discardEvent );
+            await monitor.PostHandleAsync( discardEvent );
+
+            Assert.HasCount( 3, monitor.missions );
+            Assert.IsTrue( monitor.missions.All( mission => mission.communal ) );
+            Assert.AreEqual( MissionStatus.Active,
+                monitor.missions.Single( mission => mission.missionid == 706 ).statusDef );
+            Assert.AreEqual( MissionStatus.Claim,
+                monitor.missions.Single( mission => mission.missionid == 707 ).statusDef );
         }
 
         [TestMethod]
@@ -866,17 +1018,20 @@ namespace Tests
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.HasCount( 1, events );
             missionMonitor._handleCommunityGoalsEvent((CommunityGoalsEvent)events[0]);
-            Assert.AreEqual("Fox Enterprise", missionMonitor.missions[0].originstation);
-            Assert.AreEqual("Active", missionMonitor.missions[0].statusEDName);
-            Assert.AreEqual(600000, missionMonitor.missions[0].reward);
+            Assert.HasCount( 2, missionMonitor.missions );
+            var deliveryGoal = missionMonitor.missions.Single( mission => mission.missionid == 619 );
+            Assert.AreEqual("Fox Enterprise", deliveryGoal.originstation);
+            Assert.AreEqual("Active", deliveryGoal.statusEDName);
+            Assert.AreEqual(600000, deliveryGoal.reward);
 
             // CommunityGoal (completed)
             line = @"{ ""timestamp"":""2020-10-30T01:22:34Z"", ""event"":""CommunityGoal"", ""CurrentGoals"":[ { ""CGID"":619, ""Title"":""Federal Initiative to Deliver Supplies for Marlinist Refugees"", ""SystemName"":""LFT 625"", ""MarketName"":""Fox Enterprise"", ""Expiry"":""2020-10-29T06:00:27Z"", ""IsComplete"":true, ""CurrentTotal"":33417668, ""PlayerContribution"":6304, ""NumContributors"":0, ""TopTier"":{ ""Name"":""Tier 6"", ""Bonus"":""All systems supported"" }, ""TopRankSize"":10, ""PlayerInTopRank"":true, ""TierReached"":""Tier 3"", ""PlayerPercentileBand"":0, ""Bonus"":10000000 }, { ""CGID"":620, ""Title"":""Federal Initiative to Protect Supplies for Marlinist Refugees"", ""SystemName"":""LFT 625"", ""MarketName"":""Fox Enterprise"", ""Expiry"":""2020-10-29T06:00:17Z"", ""IsComplete"":true, ""CurrentTotal"":18046921733, ""PlayerContribution"":4899320, ""NumContributors"":0, ""TopTier"":{ ""Name"":""Tier 6"", ""Bonus"":"""" }, ""TopRankSize"":10, ""PlayerInTopRank"":true, ""TierReached"":""Tier 3"", ""PlayerPercentileBand"":0, ""Bonus"":10000000 } ] }";
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.HasCount( 1, events );
             missionMonitor._handleCommunityGoalsEvent((CommunityGoalsEvent)events[0]);
-            Assert.AreEqual("Claim", missionMonitor.missions[0].statusEDName);
-            Assert.AreEqual(10000000, missionMonitor.missions[0].reward);
+            deliveryGoal = missionMonitor.missions.Single( mission => mission.missionid == 619 );
+            Assert.AreEqual("Claim", deliveryGoal.statusEDName);
+            Assert.AreEqual(10000000, deliveryGoal.reward);
 
             // CommunityGoalReward
             line = @"{ ""timestamp"":""2020-10-30T01:24:27Z"", ""event"":""CommunityGoalReward"", ""CGID"":619, ""Name"":""Federal Initiative to Deliver Supplies for Marlinist Refugees"", ""System"":""LFT 625"", ""Reward"":10000000 }";
@@ -890,11 +1045,26 @@ namespace Tests
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.HasCount( 1, events );
             missionMonitor._handleMissionsEvent((MissionsEvent)events[0]);
-            Assert.HasCount( 0, missionMonitor.missions ); // Community goals temporarily removed by the `Missions` event (where community goals are absent) until they are confirmed active again
+            Assert.HasCount( 1, missionMonitor.missions ); // Standard mission snapshots do not own community goal membership.
 
             // Restore original data
             ConfigService.Instance.missionMonitorConfiguration = missionData;
         }
+
+        private static CommunityGoal CreateCommunityGoal ( ulong id, DateTime expiry, bool isComplete,
+            long contribution, int tier = 1, int percentile = 50, long reward = 100000 ) => new()
+        {
+            cgid = id,
+            name = $"Goal {id}",
+            system = "LFT 625",
+            station = "Fox Enterprise",
+            expiryDateTime = expiry,
+            iscomplete = isComplete,
+            contribution = contribution,
+            Tier = $"Tier {tier}",
+            percentileband = percentile,
+            tierreward = reward
+        };
 
         [TestMethod]
         public void TestMissionAcceptedToSettlement()
