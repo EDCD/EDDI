@@ -894,6 +894,136 @@ namespace Tests
             Assert.IsEmpty( monitor.missions );
         }
 
+        [TestMethod, DoNotParallelize]
+        public async Task Issue2856SalvageCargoAcrossFsdRemainsActiveAndCanComplete()
+        {
+            var now = new DateTime( 2026, 9, 27, 12, 0, 0, DateTimeKind.Utc );
+            var fullCargoMission = new Mission( 1056406125, "Mission_Salvage_Expansion", now.AddHours( 1 ),
+                MissionStatus.Active ) { amount = 4 };
+            var partialCargoMission = new Mission( 967262440, "Mission_Salvage_Expansion", now.AddHours( 1 ),
+                MissionStatus.Active ) { amount = 3 };
+            var monitor = new MissionMonitor( () => now, () => true, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration
+            {
+                missions = [ fullCargoMission, partialCargoMission ]
+            } );
+            var originalCargoConfiguration = ConfigService.Instance.cargoMonitorConfiguration;
+            ConfigService.Instance.cargoMonitorConfiguration = new CargoMonitorConfiguration
+            {
+                cargo =
+                [
+                    new Cargo( "DamagedEscapePod" )
+                    {
+                        missionCargo = new Dictionary<ulong, int>
+                        {
+                            [ fullCargoMission.missionid ] = 4,
+                            [ partialCargoMission.missionid ] = 2
+                        }
+                    }
+                ]
+            };
+
+            try
+            {
+                await monitor.PreHandleAsync( new FSDEngagedEvent( now, "Hyperspace", "Col 285 Sector YF-M c8-8",
+                    null, "G", false ) );
+
+                Assert.IsTrue( monitor.missions.All( mission => mission.statusDef == MissionStatus.Active ) );
+
+                await monitor.PreHandleAsync( new MissionCompletedEvent( now.AddMinutes( 5 ),
+                    fullCargoMission.missionid, fullCargoMission.name, null, null, null, null, false, 0 ) );
+                await monitor.PreHandleAsync( new MissionCompletedEvent( now.AddMinutes( 6 ),
+                    partialCargoMission.missionid, partialCargoMission.name, null, null, null, null, false, 0 ) );
+
+                Assert.IsTrue( monitor.missions.All( mission => mission.statusDef == MissionStatus.Complete ) );
+            }
+            finally
+            {
+                ConfigService.Instance.cargoMonitorConfiguration = originalCargoConfiguration;
+            }
+        }
+
+        [TestMethod, DoNotParallelize]
+        [DataRow( "Mission_Salvage_Expansion" )]
+        [DataRow( "Mission_Rescue_Planet" )]
+        [DataRow( "Mission_Smuggle_Famine" )]
+        public async Task CargoLossAcrossFsdDoesNotInferMissionFailure( string missionName )
+        {
+            var now = new DateTime( 2026, 9, 27, 12, 0, 0, DateTimeKind.Utc );
+            var mission = new Mission( 963626959, missionName, now.AddHours( 1 ), MissionStatus.Active )
+            {
+                amount = 2
+            };
+            var monitor = new MissionMonitor( () => now, () => true, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missions = [ mission ] } );
+            var originalCargoConfiguration = ConfigService.Instance.cargoMonitorConfiguration;
+            ConfigService.Instance.cargoMonitorConfiguration = CreateMissionCargoConfiguration( mission.missionid, 1 );
+
+            try
+            {
+                await monitor.PreHandleAsync( new FSDEngagedEvent( now, "Supercruise", null, null, null, false ) );
+
+                Assert.AreEqual( MissionStatus.Active, monitor.missions.Single().statusDef );
+            }
+            finally
+            {
+                ConfigService.Instance.cargoMonitorConfiguration = originalCargoConfiguration;
+            }
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task DeliveryCargoLossAcrossFsdDoesNotInferMissionFailure()
+        {
+            var now = new DateTime( 2026, 9, 27, 12, 0, 0, DateTimeKind.Utc );
+            var mission = new Mission( 970176050, "Mission_Delivery", now.AddHours( 1 ), MissionStatus.Active )
+            {
+                amount = 10,
+                collected = 10,
+                delivered = 0
+            };
+            var monitor = new MissionMonitor( () => now, () => true, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missions = [ mission ] } );
+            var originalCargoConfiguration = ConfigService.Instance.cargoMonitorConfiguration;
+            ConfigService.Instance.cargoMonitorConfiguration = CreateMissionCargoConfiguration( mission.missionid, 4 );
+
+            try
+            {
+                await monitor.PreHandleAsync( new FSDEngagedEvent( now, "Hyperspace", "Aulin", null, "K", false ) );
+
+                Assert.AreEqual( MissionStatus.Active, monitor.missions.Single().statusDef );
+            }
+            finally
+            {
+                ConfigService.Instance.cargoMonitorConfiguration = originalCargoConfiguration;
+            }
+        }
+
+        [TestMethod]
+        public async Task FsdEngagementDoesNotSuppressOlderAuthoritativeMissionEvents()
+        {
+            var now = new DateTime( 2026, 9, 27, 12, 0, 0, DateTimeKind.Utc );
+            var monitor = new MissionMonitor( () => now, () => true, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration
+            {
+                missions =
+                [
+                    new Mission( 41, "Mission_Courier", now.AddHours( 1 ), MissionStatus.Active ),
+                    new Mission( 42, "Mission_Courier", now.AddHours( 1 ), MissionStatus.Active )
+                ]
+            } );
+
+            await monitor.PreHandleAsync( new FSDEngagedEvent( now.AddSeconds( 10 ), "Hyperspace", "Aulin", null,
+                "K", false ) );
+            await monitor.PreHandleAsync( new MissionCompletedEvent( now.AddSeconds( 5 ), 41, "Mission_Courier",
+                null, null, null, null, false, 0 ) );
+            await monitor.PreHandleAsync( new MissionFailedEvent( now.AddSeconds( 6 ), 42, "Mission_Courier", 0 ) );
+
+            Assert.AreEqual( MissionStatus.Complete,
+                monitor.missions.Single( mission => mission.missionid == 41 ).statusDef );
+            Assert.AreEqual( MissionStatus.Failed,
+                monitor.missions.Single( mission => mission.missionid == 42 ).statusDef );
+        }
+
         [TestMethod]
         public async Task MissionTimerIgnoresCommunityGoals()
         {
@@ -1143,6 +1273,18 @@ namespace Tests
             percentileband = percentile,
             tierreward = reward
         };
+
+        private static CargoMonitorConfiguration CreateMissionCargoConfiguration ( ulong missionId, int amount ) =>
+            new()
+            {
+                cargo =
+                [
+                    new Cargo( "DamagedEscapePod" )
+                    {
+                        missionCargo = new Dictionary<ulong, int> { [ missionId ] = amount }
+                    }
+                ]
+            };
 
         [TestMethod]
         public void TestMissionAcceptedToSettlement()

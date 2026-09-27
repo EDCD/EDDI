@@ -284,10 +284,6 @@ namespace EddiMissionMonitor
             {
                 handleDataScannedEvent( dataScannedEvent );
             }
-            if ( @event is FSDEngagedEvent fsdEngagedEvent )
-            {
-                handleFsdEngagedEvent( fsdEngagedEvent );
-            }
             else if ( @event is MissionAcceptedEvent missionAcceptedEvent )
             {
                 if ( ( !missionAcceptedEvent.communal || IsLiveSessionReady() ) &&
@@ -924,46 +920,6 @@ namespace EddiMissionMonitor
                 mission.expiry = goal.expiryDateTime;
             }
             return generatedEvents;
-        }
-
-        private void handleFsdEngagedEvent ( FSDEngagedEvent @event )
-        {
-            var cargoInventory = ConfigService.Instance.cargoMonitorConfiguration;
-            lock ( stateLock )
-            {
-                if ( @event.timestamp > updateDat )
-                {
-                    updateDat = @event.timestamp;
-                    _handleFsdEngagedEvent( cargoInventory );
-                }
-            }
-        }
-
-        private void _handleFsdEngagedEvent ( CargoMonitorConfiguration cargoInventory )
-        {
-            foreach ( var mission in missions )
-            {
-                var cargo = cargoInventory.cargo.FirstOrDefault( c => c.missionCargo.ContainsKey( mission.missionid ) );
-                if ( cargo is null ) { continue; }
-
-                if ( mission.tagsList.Contains( MissionType.Delivery ) )
-                {
-                    // Delivery missions allow up to 50% of cargo to be lost before failing the mission
-                    var onboard = cargo.missionCargo.Where( c => c.Key == mission.missionid ).Sum( c => c.Value );
-                    var lost = mission.collected - mission.delivered - onboard;
-                    if ( lost > ( Convert.ToDecimal( mission.amount ) / 2 ) )
-                    {
-                        mission.statusDef = MissionStatus.Failed;
-                    }
-                }
-                else if ( mission.tagsList.Any( tag =>
-                             tag == MissionType.Rescue || tag == MissionType.Salvage ||
-                             tag == MissionType.Smuggle ) )
-                {
-                    // If we leave the instance after having lost irreplaceable mission cargo then the mission is failed.
-                    mission.statusDef = MissionStatus.Failed;
-                }
-            }
         }
 
         private void handleCargoDepotEvent(CargoDepotEvent @event)
