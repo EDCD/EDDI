@@ -4,6 +4,7 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using JetBrains.Annotations;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,18 @@ namespace EddiMissionMonitor
         public ObservableCollection<Mission> missions { get; private set; }
 
         private DateTime updateDat;
-        public int? missionWarning;
+        private int? _missionWarning;
+        public int? missionWarning
+        {
+            get
+            {
+                lock ( stateLock ) { return _missionWarning; }
+            }
+            set
+            {
+                lock ( stateLock ) { _missionWarning = value; }
+            }
+        }
 
         private readonly Func<DateTime> utcNow;
         private readonly Func<bool> isEliteRunning;
@@ -40,8 +52,7 @@ namespace EddiMissionMonitor
         private readonly Dictionary<ulong, MissionSnapshotReconciliationState> missionSnapshotReconciliations = [ ];
         private bool liveSessionReady;
 
-        private static readonly object missionsLock = new();
-        private readonly object missionTimerLock = new();
+        private readonly object stateLock = new();
         [UsedImplicitly] public event EventHandler MissionUpdatedEvent;
 
         public string MonitorName()
@@ -86,15 +97,21 @@ namespace EddiMissionMonitor
 
         private void Missions_CollectionRegistering(object sender, CollectionRegisteringEventArgs e)
         {
+            if ( !ReferenceEquals( e.Collection, missions ) )
+            {
+                return;
+            }
+
+            BindingOperations.CollectionRegistering -= Missions_CollectionRegistering;
             if (Application.Current != null)
             {
                 // Synchronize this collection between threads
-                BindingOperations.EnableCollectionSynchronization(missions, missionsLock);
+                BindingOperations.EnableCollectionSynchronization(missions, stateLock);
             }
             else
             {
                 // If started from VoiceAttack, the dispatcher is on a different thread. Invoke synchronization there.
-                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(missions, missionsLock); });
+                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(missions, stateLock); });
             }
         }
         public bool NeedsStart()
@@ -126,26 +143,19 @@ namespace EddiMissionMonitor
             var gameIsRunning = isEliteRunning();
             var events = new List<Event>();
             var missionStateUpdated = false;
-            List<Mission> missionsList;
-            lock ( missionsLock )
-            {
-                missionsList = missions.ToList();
-            }
-
-            lock ( missionTimerLock )
+            lock ( stateLock )
             {
                 if ( !gameIsRunning )
                 {
-                    ResetLiveSession();
+                    ResetLiveSessionLocked();
                 }
 
-                foreach ( var mission in missionsList )
+                foreach ( var mission in missions )
                 {
                     if ( mission.statusDef != MissionStatus.Active )
                     {
                         missionTimerStates.Remove( mission.missionid );
                         missionSnapshotReconciliations.Remove( mission.missionid );
-                        mission.expiring = false;
                         mission.UpdateTimeRemaining();
                         continue;
                     }
@@ -156,27 +166,21 @@ namespace EddiMissionMonitor
                     {
                         if ( now >= deadline )
                         {
-                            mission.expiring = false;
                             if ( !timerState.expirationEmitted )
                             {
                                 timerState.expirationEmitted = true;
                                 events.Add( new MissionExpiredEvent( now, mission.missionid, mission.name ) );
                             }
                         }
-                        else if ( missionWarning > 0 &&
-                                  deadline < now.AddMinutes( (double)missionWarning ) )
+                        else if ( _missionWarning > 0 &&
+                                  deadline < now.AddMinutes( (double)_missionWarning ) )
                         {
                             if ( !timerState.warningEmitted )
                             {
                                 timerState.warningEmitted = true;
-                                mission.expiring = true;
                                 events.Add( new MissionWarningEvent( now, mission.missionid, mission.name,
                                     (int)( deadline - now ).TotalMinutes ) );
                             }
-                        }
-                        else if ( mission.expiring )
-                        {
-                            mission.expiring = false;
                         }
                     }
 
@@ -190,7 +194,7 @@ namespace EddiMissionMonitor
                         continue;
                     }
 
-                    var mission = missionsList.FirstOrDefault( m => m.missionid == missionId );
+                    var mission = missions.FirstOrDefault( m => m.missionid == missionId );
                     missionSnapshotReconciliations.Remove( missionId );
                     if ( mission is null || mission.communal || mission.statusDef != MissionStatus.Active )
                     {
@@ -200,7 +204,6 @@ namespace EddiMissionMonitor
                     var knownDeadline = mission.expiry;
                     mission.statusDef = MissionStatus.Claim;
                     mission.expiry = knownDeadline;
-                    mission.expiring = false;
                     missionTimerStates.Remove( missionId );
                     missionStateUpdated = true;
                 }
@@ -252,9 +255,9 @@ namespace EddiMissionMonitor
             }
             else if ( @event is ShutdownEvent )
             {
-                lock ( missionTimerLock )
+                lock ( stateLock )
                 {
-                    ResetLiveSession();
+                    ResetLiveSessionLocked();
                 }
             }
             else if ( @event is CommodityCollectedEvent commodityCollectedEvent )
@@ -334,48 +337,45 @@ namespace EddiMissionMonitor
 
         internal void ObserveFileHeader ()
         {
-            lock ( missionTimerLock )
+            var gameIsRunning = isEliteRunning();
+            lock ( stateLock )
             {
                 missionTimerStates.Clear();
-                liveSessionReady = isEliteRunning();
+                liveSessionReady = gameIsRunning;
             }
         }
 
-        private void ResetLiveSession ()
+        private void ResetLiveSessionLocked ()
         {
             missionTimerStates.Clear();
             missionSnapshotReconciliations.Clear();
             liveSessionReady = false;
-            lock ( missionsLock )
-            {
-                foreach ( var mission in missions )
-                {
-                    mission.expiring = false;
-                }
-            }
         }
 
         private bool IsLiveSessionReady ()
         {
-            lock ( missionTimerLock )
+            var gameIsRunning = isEliteRunning();
+            lock ( stateLock )
             {
-                return liveSessionReady && isEliteRunning();
+                return liveSessionReady && gameIsRunning;
             }
         }
 
         internal void ArmMissionTimersFromSnapshot ( MissionsEvent @event )
         {
-            lock ( missionTimerLock )
+            var gameIsRunning = isEliteRunning();
+            var now = utcNow();
+            lock ( stateLock )
             {
-                ArmMissionTimersFromSnapshotLocked( @event );
+                ArmMissionTimersFromSnapshotLocked( @event, gameIsRunning, now );
             }
         }
 
-        private void ArmMissionTimersFromSnapshotLocked ( MissionsEvent @event )
+        private void ArmMissionTimersFromSnapshotLocked ( MissionsEvent @event, bool gameIsRunning, DateTime now )
         {
-            if ( !isEliteRunning() )
+            if ( !gameIsRunning )
             {
-                ResetLiveSession();
+                ResetLiveSessionLocked();
                 return;
             }
             if ( !liveSessionReady )
@@ -383,7 +383,6 @@ namespace EddiMissionMonitor
                 return;
             }
 
-            var now = utcNow();
             var snapshotMissionIds = @event.missions.Where( m => !m.communal )
                 .Select( m => m.missionid ).ToHashSet();
             foreach ( var missionId in missionTimerStates.Keys.Where( id => !snapshotMissionIds.Contains( id ) ).ToList() )
@@ -408,27 +407,29 @@ namespace EddiMissionMonitor
                 else
                 {
                     missionSnapshotReconciliations.Remove( mission.missionid );
-                    ArmMissionTimerLocked( mission );
+                    ArmMissionTimerLocked( mission, now );
                 }
             }
         }
 
         internal void ArmMissionTimer ( Mission mission )
         {
-            lock ( missionTimerLock )
+            var gameIsRunning = isEliteRunning();
+            var now = utcNow();
+            lock ( stateLock )
             {
-                if ( liveSessionReady && isEliteRunning() )
+                if ( liveSessionReady && gameIsRunning )
                 {
-                    ArmMissionTimerLocked( mission );
+                    ArmMissionTimerLocked( mission, now );
                 }
             }
         }
 
-        private void ArmMissionTimerLocked ( Mission mission )
+        private void ArmMissionTimerLocked ( Mission mission, DateTime now )
         {
             missionSnapshotReconciliations.Remove( mission.missionid );
             if ( mission.communal || mission.statusDef != MissionStatus.Active ||
-                 mission.expiry is not DateTime deadline || deadline <= utcNow() )
+                 mission.expiry is not DateTime deadline || deadline <= now )
             {
                 missionTimerStates.Remove( mission.missionid );
                 return;
@@ -438,13 +439,12 @@ namespace EddiMissionMonitor
                  timerState.deadline != deadline )
             {
                 missionTimerStates[ mission.missionid ] = new MissionTimerState( deadline );
-                mission.expiring = false;
             }
         }
 
         private void CancelMissionSnapshotReconciliation ( ulong missionId )
         {
-            lock ( missionTimerLock )
+            lock ( stateLock )
             {
                 missionSnapshotReconciliations.Remove( missionId );
             }
@@ -477,87 +477,128 @@ namespace EddiMissionMonitor
 
         private void handleCommodityCollectedEvent ( CommodityCollectedEvent @event )
         {
-            if ( @event.timestamp > updateDat )
+            var currentSystem = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
+            var currentBody = EDDI.Instance.GameState.CurrentStellarBody?.bodyname;
+            var update = false;
+            lock ( stateLock )
             {
-                updateDat = @event.timestamp;
-                if ( _handleCommodityCollectedEvent( @event ) )
+                if ( @event.timestamp > updateDat )
                 {
-                    writeMissions();
+                    updateDat = @event.timestamp;
+                    update = HandleCommodityCollectedLocked( @event, currentSystem, currentBody );
                 }
             }
+            if ( update ) { writeMissions(); }
         }
 
-        private bool _handleCommodityCollectedEvent ( CommodityCollectedEvent @event )
+        private bool HandleCommodityCollectedLocked ( CommodityCollectedEvent @event, string currentSystem,
+            string currentBody )
         {
             var mission = missions.FirstOrDefault( h => h.missionid == @event.missionid );
             if ( mission != null )
             {
-                mission.sourcesystem = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
-                mission.sourcebody = EDDI.Instance.GameState.CurrentStellarBody?.bodyname;
+                mission.sourcesystem = currentSystem;
+                mission.sourcebody = currentBody;
             }
             return true;
         }
 
         private void handleCommodityPurchasedEvent ( CommodityPurchasedEvent @event )
         {
-            if ( @event.timestamp > updateDat )
+            var currentSystem = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
+            var currentStation = EDDI.Instance.GameState.CurrentStation?.name;
+            var update = false;
+            lock ( stateLock )
             {
-                updateDat = @event.timestamp;
-                if ( _handleCommodityPurchasedEvent( @event ) )
+                if ( @event.timestamp > updateDat )
                 {
-                    writeMissions();
+                    updateDat = @event.timestamp;
+                    update = HandleCommodityPurchasedLocked( @event, currentSystem, currentStation );
                 }
             }
+            if ( update ) { writeMissions(); }
         }
 
-        private bool _handleCommodityPurchasedEvent ( CommodityPurchasedEvent @event )
+        private bool HandleCommodityPurchasedLocked ( CommodityPurchasedEvent @event, string currentSystem,
+            string currentStation )
         {
             var collectMissions = missions.Where( m => m.CommodityDefinition?.edname == @event.commodityDefinition.edname && m.tagsList.Contains( MissionType.Collect ) ).ToList();
             foreach ( var mission in collectMissions )
             {
-                mission.sourcesystem = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
-                mission.sourcebody = EDDI.Instance.GameState.CurrentStation?.name;
+                mission.sourcesystem = currentSystem;
+                mission.sourcebody = currentStation;
             }
             return collectMissions.Count > 0;
         }
 
         private void handleCommodityRefinedEvent ( CommodityRefinedEvent @event )
         {
-            if ( @event.timestamp > updateDat )
+            var currentSystem = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
+            var currentStation = EDDI.Instance.GameState.CurrentStation?.name;
+            var update = false;
+            lock ( stateLock )
             {
-                updateDat = @event.timestamp;
-                if ( _handleCommodityRefinedEvent( @event ) )
+                if ( @event.timestamp > updateDat )
                 {
-                    writeMissions();
+                    updateDat = @event.timestamp;
+                    update = HandleCommodityRefinedLocked( @event, currentSystem, currentStation );
                 }
             }
+            if ( update ) { writeMissions(); }
         }
 
-        private bool _handleCommodityRefinedEvent ( CommodityRefinedEvent @event )
+        private bool HandleCommodityRefinedLocked ( CommodityRefinedEvent @event, string currentSystem,
+            string currentStation )
         {
             var miningMissions = missions.Where( m => m.CommodityDefinition?.edname == @event.commodityDefinition.edname && m.tagsList.Contains( MissionType.Mining ) ).ToList();
             foreach ( var mission in miningMissions )
             {
-                mission.sourcesystem = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
-                mission.sourcebody = EDDI.Instance.GameState.CurrentStation?.name;
+                mission.sourcesystem = currentSystem;
+                mission.sourcebody = currentStation;
             }
             return miningMissions.Count > 0;
         }
 
         private void handleDataScannedEvent(DataScannedEvent @event)
         {
-            if (@event.timestamp >= updateDat)
+            var currentSystemAddress = EDDI.Instance.GameState.CurrentStarSystem?.systemAddress;
+            var currentSystemName = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
+            var now = utcNow();
+            var update = false;
+            MissionRedirectedEvent redirectedEvent = null;
+            lock ( stateLock )
             {
-                updateDat = @event.timestamp;
-                if (_handleDataScannedEvent(@event))
+                if (@event.timestamp >= updateDat)
                 {
-                    writeMissions();
+                    updateDat = @event.timestamp;
+                    update = HandleDataScannedLocked( @event, currentSystemAddress, currentSystemName, now,
+                        out redirectedEvent );
                 }
             }
+            if ( redirectedEvent != null ) { enqueueEvent( redirectedEvent ); }
+            if ( update ) { writeMissions(); }
         }
 
         public bool _handleDataScannedEvent(DataScannedEvent @event)
         {
+            var currentSystemAddress = EDDI.Instance.GameState.CurrentStarSystem?.systemAddress;
+            var currentSystemName = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
+            var now = utcNow();
+            MissionRedirectedEvent redirectedEvent;
+            bool update;
+            lock ( stateLock )
+            {
+                update = HandleDataScannedLocked( @event, currentSystemAddress, currentSystemName, now,
+                    out redirectedEvent );
+            }
+            if ( redirectedEvent != null ) { enqueueEvent( redirectedEvent ); }
+            return update;
+        }
+
+        private bool HandleDataScannedLocked ( DataScannedEvent @event, ulong? currentSystemAddress,
+            string currentSystemName, DateTime now, out MissionRedirectedEvent redirectedEvent )
+        {
+            redirectedEvent = null;
             if ( DataScan.FromName( @event.datalinktype ).edname == "TouristBeacon")
             {
                 foreach (var mission in missions.ToList())
@@ -565,7 +606,7 @@ namespace EddiMissionMonitor
                     // A `MissionRedirected` journal event isn't written for each waypoint in multi-destination passenger missions, so we handle those here.
                     if ( mission.tagsList.Contains(MissionType.SightSeeing) )
                     {
-                        var system = mission.destinationsystems.FirstOrDefault(s => s.systemAddress == EDDI.Instance.GameState.CurrentStarSystem?.systemAddress);
+                        var system = mission.destinationsystems.FirstOrDefault(s => s.systemAddress == currentSystemAddress);
                         if ( system != null )
                         {
                             system.visited = true;
@@ -574,9 +615,9 @@ namespace EddiMissionMonitor
                             if ( !string.IsNullOrEmpty( waypointSystemName ) )
                             {
                                 // Set destination system to next in chain & trigger a 'Mission redirected' event
-                                EDDI.Instance.enqueueEvent( new MissionRedirectedEvent( DateTime.UtcNow,
+                                redirectedEvent = new MissionRedirectedEvent( now,
                                     mission.missionid, mission.name, null, null, waypointSystemName,
-                                    EDDI.Instance.GameState.CurrentStarSystem?.systemname ) );
+                                    currentSystemName );
                             }
 
                             return true;
@@ -590,16 +631,18 @@ namespace EddiMissionMonitor
         private void handleMissionsEvent(MissionsEvent @event)
         {
             var update = false;
-            lock ( missionTimerLock )
+            var gameIsRunning = isEliteRunning();
+            var now = utcNow();
+            lock ( stateLock )
             {
                 if ( @event.timestamp >= updateDat )
                 {
                     updateDat = @event.timestamp;
-                    update = _handleMissionsEvent( @event );
+                    update = HandleMissionsLocked( @event );
 
                     // Apply snapshot state and cancel or arm its reconciliation while holding the same lock
                     // used by ProcessMissionTimers, so a positive expiry cannot race a due zero-expiry window.
-                    ArmMissionTimersFromSnapshotLocked( @event );
+                    ArmMissionTimersFromSnapshotLocked( @event, gameIsRunning, now );
                 }
             }
 
@@ -610,6 +653,14 @@ namespace EddiMissionMonitor
         }
 
         public bool _handleMissionsEvent(MissionsEvent @event)
+        {
+            lock ( stateLock )
+            {
+                return HandleMissionsLocked( @event );
+            }
+        }
+
+        private bool HandleMissionsLocked ( MissionsEvent @event )
         {
             var update = false;
             foreach (var mission in @event.missions)
@@ -702,15 +753,30 @@ namespace EddiMissionMonitor
 
         private void handlePassengersEvent(PassengersEvent @event)
         {
-            if (@event.timestamp >= updateDat)
+            var now = utcNow();
+            var update = false;
+            lock ( stateLock )
             {
-                updateDat = @event.timestamp;
-                _handlePassengersEvent(@event);
-                writeMissions();
+                if (@event.timestamp >= updateDat)
+                {
+                    updateDat = @event.timestamp;
+                    HandlePassengersLocked( @event, now );
+                    update = true;
+                }
             }
+            if ( update ) { writeMissions(); }
         }
 
         public void _handlePassengersEvent(PassengersEvent @event)
+        {
+            var now = utcNow();
+            lock ( stateLock )
+            {
+                HandlePassengersLocked( @event, now );
+            }
+        }
+
+        private void HandlePassengersLocked ( PassengersEvent @event, DateTime now )
         {
             foreach (var passenger in @event.passengers)
             {
@@ -727,7 +793,7 @@ namespace EddiMissionMonitor
                     // Dummy mission to populate 'Passengers' parameters
                     // 'Missions' event will populate 'name', 'status', 'type' & 'expiry'
                     var status = MissionStatus.Active;
-                    mission = new Mission(passenger.missionid, "Mission_None", DateTime.UtcNow.AddDays(1), status)
+                    mission = new Mission(passenger.missionid, "Mission_None", now.AddDays(1), status)
                     {
                         passengertypeEDName = passenger.type,
                         passengervips = passenger.vip,
@@ -746,16 +812,34 @@ namespace EddiMissionMonitor
                 return;
             }
 
-            if ( @event.timestamp > updateDat )
+            var now = utcNow();
+            List<Event> generatedEvents;
+            lock ( stateLock )
             {
-                updateDat = @event.timestamp;
+                if ( @event.timestamp > updateDat )
+                {
+                    updateDat = @event.timestamp;
+                }
+                generatedEvents = HandleCommunityGoalsLocked( @event, now );
             }
-            _handleCommunityGoalsEvent(@event);
+            foreach ( var generatedEvent in generatedEvents ) { enqueueEvent( generatedEvent ); }
             writeMissions();
         }
 
         public void _handleCommunityGoalsEvent(CommunityGoalsEvent @event)
         {
+            var now = utcNow();
+            List<Event> generatedEvents;
+            lock ( stateLock )
+            {
+                generatedEvents = HandleCommunityGoalsLocked( @event, now );
+            }
+            foreach ( var generatedEvent in generatedEvents ) { enqueueEvent( generatedEvent ); }
+        }
+
+        private List<Event> HandleCommunityGoalsLocked ( CommunityGoalsEvent @event, DateTime now )
+        {
+            var generatedEvents = new List<Event>();
             var currentGoalIds = @event.goals.Select( goal => goal.cgid ).ToHashSet();
 
             // A current CommunityGoal snapshot is authoritative for community goal membership.
@@ -822,7 +906,7 @@ namespace EddiMissionMonitor
 
                     if ( cgUpdates.Count > 0 )
                     {
-                        enqueueEvent( new CommunityGoalEvent( utcNow(), cgUpdates, goal ) );
+                        generatedEvents.Add( new CommunityGoalEvent( now, cgUpdates, goal ) );
                     }
                 }
 
@@ -839,20 +923,24 @@ namespace EddiMissionMonitor
                 mission.statusDef = goal.iscomplete ? MissionStatus.Claim : MissionStatus.Active;
                 mission.expiry = goal.expiryDateTime;
             }
+            return generatedEvents;
         }
 
         private void handleFsdEngagedEvent ( FSDEngagedEvent @event )
         {
-            if ( @event.timestamp > updateDat )
+            var cargoInventory = ConfigService.Instance.cargoMonitorConfiguration;
+            lock ( stateLock )
             {
-                updateDat = @event.timestamp;
-                _handleFsdEngagedEvent();
+                if ( @event.timestamp > updateDat )
+                {
+                    updateDat = @event.timestamp;
+                    _handleFsdEngagedEvent( cargoInventory );
+                }
             }
         }
 
-        private void _handleFsdEngagedEvent ()
+        private void _handleFsdEngagedEvent ( CargoMonitorConfiguration cargoInventory )
         {
-            var cargoInventory = ConfigService.Instance.cargoMonitorConfiguration;
             foreach ( var mission in missions )
             {
                 var cargo = cargoInventory.cargo.FirstOrDefault( c => c.missionCargo.ContainsKey( mission.missionid ) );
@@ -880,16 +968,41 @@ namespace EddiMissionMonitor
 
         private void handleCargoDepotEvent(CargoDepotEvent @event)
         {
-            if (@event.timestamp >= updateDat)
+            var currentSystem = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
+            var currentStation = EDDI.Instance.GameState.CurrentStation?.name;
+            var now = utcNow();
+            var update = false;
+            CargoWingUpdateEvent wingUpdateEvent = null;
+            lock ( stateLock )
             {
-                _handleCargoDepotEvent(@event);
-                updateDat = @event.timestamp;
-                writeMissions();
+                if (@event.timestamp >= updateDat)
+                {
+                    wingUpdateEvent = HandleCargoDepotLocked( @event, currentSystem, currentStation, now );
+                    updateDat = @event.timestamp;
+                    update = true;
+                }
             }
+            if ( wingUpdateEvent != null ) { enqueueEvent( wingUpdateEvent ); }
+            if ( update ) { writeMissions(); }
         }
 
         public void _handleCargoDepotEvent ( CargoDepotEvent @event )
         {
+            var currentSystem = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
+            var currentStation = EDDI.Instance.GameState.CurrentStation?.name;
+            var now = utcNow();
+            CargoWingUpdateEvent wingUpdateEvent;
+            lock ( stateLock )
+            {
+                wingUpdateEvent = HandleCargoDepotLocked( @event, currentSystem, currentStation, now );
+            }
+            if ( wingUpdateEvent != null ) { enqueueEvent( wingUpdateEvent ); }
+        }
+
+        private CargoWingUpdateEvent HandleCargoDepotLocked ( CargoDepotEvent @event, string currentSystem,
+            string currentStation, DateTime now )
+        {
+            CargoWingUpdateEvent wingUpdateEvent = null;
             // Retrieve or create the relevant mission
             var mission = missions.FirstOrDefault( m => m.missionid == @event.missionid );
             if ( mission is null )
@@ -908,16 +1021,16 @@ namespace EddiMissionMonitor
             // Update mission details and generate wing update events where appropriate
             if ( @event.updatetype == "Collect" )
             {
-                mission.sourcesystem = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
-                mission.sourcebody = EDDI.Instance.GameState.CurrentStation?.name;
-                mission.originsystem = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
-                mission.originstation = EDDI.Instance.GameState.CurrentStation?.name;
+                mission.sourcesystem = currentSystem;
+                mission.sourcebody = currentStation;
+                mission.originsystem = currentSystem;
+                mission.originstation = currentStation;
             }
 
             if ( @event.updatetype == "Deliver" )
             {
-                mission.originsystem = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
-                mission.originstation = EDDI.Instance.GameState.CurrentStation?.name;
+                mission.originsystem = currentSystem;
+                mission.originstation = currentStation;
             }
             else if ( @event.updatetype == "WingUpdate" )
             {
@@ -936,9 +1049,9 @@ namespace EddiMissionMonitor
                 {
                     mission.wingCollected += wingCollected;
                     mission.wingCollected -= wingDelivered;
-                    EDDI.Instance.enqueueEvent( new CargoWingUpdateEvent( DateTime.UtcNow, mission.missionid,
+                    wingUpdateEvent = new CargoWingUpdateEvent( now, mission.missionid,
                         updatetype, mission.CommodityDefinition, wingAmount, @event.collected, @event.delivered,
-                        @event.totaltodeliver ) );
+                        @event.totaltodeliver );
                 }
             }
 
@@ -950,17 +1063,21 @@ namespace EddiMissionMonitor
             {
                 mission.statusDef = MissionStatus.Claim;
             }
+            return wingUpdateEvent;
         }
 
         public void handleMissionAbandonedEvent ( MissionAbandonedEvent @event )
         {
-            if ( @event.timestamp >= updateDat )
+            lock ( stateLock )
             {
-                updateDat = @event.timestamp;
-                var mission = missions.FirstOrDefault( m => m.missionid == @event.missionid );
-                if ( mission != null )
+                if ( @event.timestamp >= updateDat )
                 {
-                    mission.statusDef = MissionStatus.Failed;
+                    updateDat = @event.timestamp;
+                    var mission = missions.FirstOrDefault( m => m.missionid == @event.missionid );
+                    if ( mission != null )
+                    {
+                        mission.statusDef = MissionStatus.Failed;
+                    }
                 }
             }
         }
@@ -975,11 +1092,14 @@ namespace EddiMissionMonitor
 
         public bool _postHandleMissionAbandonedEvent ( MissionAbandonedEvent @event )
         {
-            var mission = missions.FirstOrDefault( m => m.missionid == @event.missionid );
-            if ( mission != null )
+            lock ( stateLock )
             {
-                RemoveMissionWithMissionId( @event.missionid );
-                return true;
+                var mission = missions.FirstOrDefault( m => m.missionid == @event.missionid );
+                if ( mission != null )
+                {
+                    RemoveMissionWithMissionId( @event.missionid );
+                    return true;
+                }
             }
 
             return false;
@@ -987,19 +1107,30 @@ namespace EddiMissionMonitor
 
         private bool handleMissionAcceptedEvent(MissionAcceptedEvent @event)
         {
-            if (@event.timestamp >= updateDat)
+            var update = false;
+            var handled = false;
+            lock ( stateLock )
             {
-                updateDat = @event.timestamp;
-                if (_handleMissionAcceptedEvent(@event))
+                if (@event.timestamp >= updateDat)
                 {
-                    writeMissions();
+                    updateDat = @event.timestamp;
+                    update = HandleMissionAcceptedLocked(@event);
+                    handled = true;
                 }
-                return true;
             }
-            return false;
+            if ( update ) { writeMissions(); }
+            return handled;
         }
 
         public bool _handleMissionAcceptedEvent(MissionAcceptedEvent @event)
+        {
+            lock ( stateLock )
+            {
+                return HandleMissionAcceptedLocked( @event );
+            }
+        }
+
+        private bool HandleMissionAcceptedLocked ( MissionAcceptedEvent @event )
         {
             var update = false;
 
@@ -1014,18 +1145,26 @@ namespace EddiMissionMonitor
             return update;
         }
 
-        private bool IsCommunityGoalMission ( ulong missionId ) =>
-            missions.Any( mission => mission.missionid == missionId && mission.communal );
+        private bool IsCommunityGoalMission ( ulong missionId )
+        {
+            lock ( stateLock )
+            {
+                return missions.Any( mission => mission.missionid == missionId && mission.communal );
+            }
+        }
 
         public void handleMissionCompletedEvent ( MissionCompletedEvent @event )
         {
-            if ( @event.timestamp >= updateDat )
+            lock ( stateLock )
             {
-                updateDat = @event.timestamp;
-                var mission = missions.FirstOrDefault( m => m.missionid == @event.missionid );
-                if ( mission != null )
+                if ( @event.timestamp >= updateDat )
                 {
-                    mission.statusDef = MissionStatus.Complete;
+                    updateDat = @event.timestamp;
+                    var mission = missions.FirstOrDefault( m => m.missionid == @event.missionid );
+                    if ( mission != null )
+                    {
+                        mission.statusDef = MissionStatus.Complete;
+                    }
                 }
             }
         }
@@ -1044,15 +1183,14 @@ namespace EddiMissionMonitor
 
             try
             {
-                Mission mission;
-                lock ( missionsLock )
+                lock ( stateLock )
                 {
-                    mission = missions.FirstOrDefault( m => m.missionid == @event.missionid );
-                }
-                if ( mission != null )
-                {
-                    RemoveMissionWithMissionId( @event.missionid );
-                    update = true;
+                    var mission = missions.FirstOrDefault( m => m.missionid == @event.missionid );
+                    if ( mission != null )
+                    {
+                        RemoveMissionWithMissionId( @event.missionid );
+                        update = true;
+                    }
                 }
             }
             catch ( Exception e )
@@ -1066,13 +1204,16 @@ namespace EddiMissionMonitor
 
         public void handleMissionFailedEvent ( MissionFailedEvent @event )
         {
-            if ( @event.timestamp >= updateDat )
+            lock ( stateLock )
             {
-                updateDat = @event.timestamp;
-                var mission = missions.FirstOrDefault( m => m.missionid == @event.missionid );
-                if ( mission != null )
+                if ( @event.timestamp >= updateDat )
                 {
-                    mission.statusDef = MissionStatus.Failed;
+                    updateDat = @event.timestamp;
+                    var mission = missions.FirstOrDefault( m => m.missionid == @event.missionid );
+                    if ( mission != null )
+                    {
+                        mission.statusDef = MissionStatus.Failed;
+                    }
                 }
             }
         }
@@ -1087,23 +1228,36 @@ namespace EddiMissionMonitor
 
         public bool _postHandleMissionFailedEvent ( MissionFailedEvent @event )
         {
-            var mission = missions.FirstOrDefault( m => m.missionid == @event.missionid );
-            return mission?.statusDef == MissionStatus.Failed;
+            lock ( stateLock )
+            {
+                var mission = missions.FirstOrDefault( m => m.missionid == @event.missionid );
+                return mission?.statusDef == MissionStatus.Failed;
+            }
         }
 
         private void handleMissionRedirectedEvent(MissionRedirectedEvent @event)
         {
-            if (@event.timestamp >= updateDat)
+            var update = false;
+            lock ( stateLock )
             {
-                updateDat = @event.timestamp;
-                if (_handleMissionRedirectedEvent(@event))
+                if (@event.timestamp >= updateDat)
                 {
-                    writeMissions();
+                    updateDat = @event.timestamp;
+                    update = HandleMissionRedirectedLocked(@event);
                 }
             }
+            if ( update ) { writeMissions(); }
         }
 
         public bool _handleMissionRedirectedEvent ( MissionRedirectedEvent @event )
+        {
+            lock ( stateLock )
+            {
+                return HandleMissionRedirectedLocked( @event );
+            }
+        }
+
+        private bool HandleMissionRedirectedLocked ( MissionRedirectedEvent @event )
         {
             var mission = missions.FirstOrDefault( m => m.missionid == @event.missionid );
             if ( mission != null )
@@ -1133,55 +1287,57 @@ namespace EddiMissionMonitor
 
         public IReadOnlyList<RuntimeVariableValue> GetVariableValues ()
         {
-            lock (missionsLock)
+            lock (stateLock)
             {
+                var missionSnapshots = CloneMissions( missions );
                 return
                 [
                     GoalsCountVariable.WithValue( missions.Count( m => m.communal ) ),
-                    MissionsVariable.WithValue( missions.ToList() ),
+                    MissionsVariable.WithValue( missionSnapshots ),
                     MissionsCountVariable.WithValue( missions.Count( IsCountedAsActive ) ),
-                    MissionWarningVariable.WithValue( missionWarning )
+                    MissionWarningVariable.WithValue( _missionWarning )
                 ];
             }
         }
 
         public void writeMissions()
         {
-            lock (missionsLock)
+            var missionsConfig = ConfigService.Instance.missionMonitorConfiguration;
+            List<Mission> missionSnapshots;
+            int goalsCount;
+            int missionsCount;
+            int? warning;
+            DateTime updatedAt;
+            lock (stateLock)
             {
-                // Write bookmarks configuration with current list
-                var missionsConfig = ConfigService.Instance.missionMonitorConfiguration;
-                missionsConfig.missions = missions.ToList();
-                missionsConfig.goalsCount = missions.Count(m => m.communal);
-                missionsConfig.missionsCount = missions.Count( IsCountedAsActive );
-                missionsConfig.missionWarning = missionWarning;
-                missionsConfig.updatedat = updateDat;
-                ConfigService.Instance.missionMonitorConfiguration = missionsConfig;
+                missionSnapshots = CloneMissions( missions );
+                goalsCount = missions.Count( m => m.communal );
+                missionsCount = missions.Count( IsCountedAsActive );
+                warning = _missionWarning;
+                updatedAt = updateDat;
             }
+
+            missionsConfig.missions = missionSnapshots;
+            missionsConfig.goalsCount = goalsCount;
+            missionsConfig.missionsCount = missionsCount;
+            missionsConfig.missionWarning = warning;
+            missionsConfig.updatedat = updatedAt;
+            ConfigService.Instance.missionMonitorConfiguration = missionsConfig;
+
             // Make sure the UI is up to date
             RaiseOnUIThread(MissionUpdatedEvent, missions);
         }
 
         private void readMissions(MissionMonitorConfiguration configuration = null)
         {
-            lock (missionsLock)
+            var missionsConfig = configuration ?? ConfigService.Instance.missionMonitorConfiguration;
+            var newMissions = CloneMissions( missionsConfig.missions )
+                .OrderBy( m => m.missionid ).ToList();
+
+            lock (stateLock)
             {
-                // Obtain current missions log from configuration
-                var missionsConfig = configuration ?? ConfigService.Instance.missionMonitorConfiguration;
-                missionWarning = missionsConfig.missionWarning;
+                _missionWarning = missionsConfig.missionWarning;
                 updateDat = missionsConfig.updatedat;
-
-                // Build a new missions log
-                var newMissions = new List<Mission>();
-
-                // Start with the missions we have in the log
-                foreach (var mission in missionsConfig.missions)
-                {
-                    newMissions.Add(mission);
-                }
-
-                // Now order the list by mission id
-                newMissions = newMissions.OrderBy(m => m.missionid).ToList();
 
                 // Update the missions log 
                 missions.Clear();
@@ -1197,14 +1353,17 @@ namespace EddiMissionMonitor
 
         private void AddMission(Mission mission)
         {
-            if (mission == null || missions.Any(m => m.missionid == mission.missionid))
+            if ( mission == null )
             {
                 return;
             }
 
-            lock (missionsLock)
+            lock (stateLock)
             {
-                missions.Add(mission);
+                if ( missions.All( m => m.missionid != mission.missionid ) )
+                {
+                    missions.Add(mission);
+                }
             }
         }
 
@@ -1215,7 +1374,7 @@ namespace EddiMissionMonitor
 
         private void RemoveMissionWithMissionId(ulong missionid)
         {
-            lock (missionsLock)
+            lock (stateLock)
             {
                 for (var i = 0; i < missions.Count; i++)
                 {
@@ -1226,6 +1385,27 @@ namespace EddiMissionMonitor
                     }
                 }
             }
+        }
+
+        private static List<Mission> CloneMissions ( IEnumerable<Mission> source )
+        {
+            var sourceList = source?.ToList() ?? [ ];
+            var json = JsonConvert.SerializeObject( sourceList );
+            var snapshots = JsonConvert.DeserializeObject<List<Mission>>( json ) ?? [ ];
+
+            // These monitor-owned values are intentionally excluded from persisted JSON but must remain
+            // available to detached runtime snapshots and to in-memory configuration snapshots.
+            for ( var i = 0; i < Math.Min( sourceList.Count, snapshots.Count ); i++ )
+            {
+                snapshots[ i ].communal = sourceList[ i ].communal;
+                snapshots[ i ].communalPercentileBand = sourceList[ i ].communalPercentileBand;
+                snapshots[ i ].communalTier = sourceList[ i ].communalTier;
+                snapshots[ i ].communalContribution = sourceList[ i ].communalContribution;
+                snapshots[ i ].CommodityDefinition = sourceList[ i ].CommodityDefinition;
+                snapshots[ i ].MicroResourceDefinition = sourceList[ i ].MicroResourceDefinition;
+            }
+
+            return snapshots;
         }
 
         private static bool UpdateRedirectStatus(Mission mission)

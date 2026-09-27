@@ -354,7 +354,7 @@ namespace Tests
             monitor.ArmMissionTimersFromSnapshot( snapshot );
 
             monitor.ProcessMissionTimers();
-            Assert.IsTrue( mission.expiring );
+            Assert.AreEqual( 1, emittedEvents.OfType<MissionWarningEvent>().Count() );
 
             now = now.AddSeconds( 5 );
             monitor.ProcessMissionTimers();
@@ -362,7 +362,6 @@ namespace Tests
 
             Assert.AreEqual( 1, emittedEvents.OfType<MissionExpiredEvent>().Count() );
             Assert.AreEqual( MissionStatus.Active, monitor.missions.Single().statusDef );
-            Assert.IsFalse( mission.expiring );
         }
 
         [TestMethod]
@@ -435,11 +434,10 @@ namespace Tests
             monitor._handleMissionsEvent( snapshot );
             monitor.ArmMissionTimersFromSnapshot( snapshot );
             monitor.ProcessMissionTimers();
-            Assert.IsTrue( processExitMission.expiring );
+            Assert.AreEqual( 1, emittedEvents.OfType<MissionWarningEvent>().Count() );
 
             eliteRunning = false;
             monitor.ProcessMissionTimers();
-            Assert.IsFalse( processExitMission.expiring );
             eliteRunning = true;
             now = now.AddSeconds( 30 );
             monitor.ProcessMissionTimers();
@@ -451,9 +449,8 @@ namespace Tests
             monitor._handleMissionsEvent( snapshot );
             monitor.ArmMissionTimersFromSnapshot( snapshot );
             monitor.ProcessMissionTimers();
-            Assert.IsTrue( shutdownMission.expiring );
+            Assert.AreEqual( 2, emittedEvents.OfType<MissionWarningEvent>().Count() );
             await monitor.PreHandleAsync( new ShutdownEvent( now ) );
-            Assert.IsFalse( shutdownMission.expiring );
             now = now.AddSeconds( 30 );
             monitor.ProcessMissionTimers();
 
@@ -513,8 +510,6 @@ namespace Tests
 
             Assert.AreEqual( 0, emittedEvents.OfType<MissionWarningEvent>().Count() );
             Assert.AreEqual( 0, emittedEvents.OfType<MissionExpiredEvent>().Count() );
-            Assert.IsFalse( failedMission.expiring );
-            Assert.IsFalse( completedMission.expiring );
         }
 
         [TestMethod]
@@ -696,6 +691,89 @@ namespace Tests
             var mission = monitor.missions.Single();
             Assert.AreEqual( MissionStatus.Active, mission.statusDef );
             Assert.AreEqual( replacementDeadline, mission.expiry );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task PositiveExpiryReplacementCannotRaceDueZeroExpiryReconciliation()
+        {
+            for ( var i = 0; i < 20; i++ )
+            {
+                var now = new DateTime( 2026, 9, 20, 12, 0, 0, DateTimeKind.Utc );
+                var monitor = new MissionMonitor( () => now, () => true, _ => { } );
+                monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 0 } );
+                await monitor.PreHandleAsync( new FileHeaderEvent( now, $"Journal.{i}.log", "test", "test" ) );
+                await monitor.PreHandleAsync( new MissionsEvent( now,
+                    [ new Mission( 1000UL + (ulong)i, "Mission_Courier", null, MissionStatus.Active ) ],
+                    [ 1000UL + (ulong)i ] ) );
+
+                now = now.AddSeconds( 10 );
+                var replacementDeadline = now.AddMinutes( 20 );
+                var replacement = new MissionsEvent( now,
+                    [ new Mission( 1000UL + (ulong)i, "Mission_Courier", replacementDeadline,
+                        MissionStatus.Active ) ] );
+
+                await Task.WhenAll(
+                    Task.Run( monitor.ProcessMissionTimers ),
+                    Task.Run( () => monitor.PreHandleAsync( replacement ) ) );
+
+                var mission = monitor.missions.Single();
+                Assert.AreEqual( MissionStatus.Active, mission.statusDef );
+                Assert.AreEqual( replacementDeadline, mission.expiry );
+            }
+        }
+
+        [TestMethod]
+        public void RuntimeMissionValuesAreDetachedSnapshots()
+        {
+            var waypoint = new NavWaypoint( "Test system", 123, 1, 2, 3 ) { visited = false };
+            var mission = new Mission( 2000, "Mission_Courier", DateTime.UtcNow.AddHours( 1 ),
+                MissionStatus.Active )
+            {
+                communal = true,
+                communalContribution = 42,
+                destinationsystems = [ waypoint ]
+            };
+            var monitor = new MissionMonitor( () => DateTime.UtcNow, () => false, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missions = [ mission ] } );
+
+            Assert.IsTrue( monitor.GetVariableValues().TryGetValue<List<Mission>>( "missions", out var snapshots ) );
+            var snapshot = snapshots.Single();
+            monitor.missions.Single().name = "Mission_Changed";
+            monitor.missions.Single().destinationsystems.Single().visited = true;
+            monitor.missions.Single().communalContribution = 99;
+
+            Assert.AreEqual( "Mission_Courier", snapshot.name );
+            Assert.IsFalse( snapshot.destinationsystems.Single().visited );
+            Assert.IsTrue( snapshot.communal );
+            Assert.AreEqual( 42, snapshot.communalContribution );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void PersistedMissionValuesAreDetachedSnapshots()
+        {
+            var originalConfiguration = ConfigService.Instance.missionMonitorConfiguration;
+            try
+            {
+                var mission = new Mission( 2001, "Mission_Courier", DateTime.UtcNow.AddHours( 1 ),
+                    MissionStatus.Active )
+                {
+                    destinationsystems = [ new NavWaypoint( "Test system", 456, 4, 5, 6 ) ]
+                };
+                var monitor = new MissionMonitor( () => DateTime.UtcNow, () => false, _ => { } );
+                monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missions = [ mission ] } );
+
+                monitor.writeMissions();
+                var persistedMission = ConfigService.Instance.missionMonitorConfiguration.missions.Single();
+                monitor.missions.Single().name = "Mission_Changed";
+                monitor.missions.Single().destinationsystems.Single().visited = true;
+
+                Assert.AreEqual( "Mission_Courier", persistedMission.name );
+                Assert.IsFalse( persistedMission.destinationsystems.Single().visited );
+            }
+            finally
+            {
+                ConfigService.Instance.missionMonitorConfiguration = originalConfiguration;
+            }
         }
 
         [TestMethod, DoNotParallelize]

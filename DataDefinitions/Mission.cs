@@ -58,9 +58,6 @@ namespace EddiDataDefinitions
         [Utilities.PublicAPI( "amount of seconds remaining before mission expiration" ), JsonIgnore]
         public long? expiryseconds => expiry != null ? (long?)Utilities.Dates.fromDateTimeToSeconds( (DateTime)expiry ) : null;
 
-        [JsonIgnore]
-        public bool expiring { get; set; }
-
         // The mission time remaining
         [JsonIgnore]
         public TimeSpan? timeRemaining => expiry != null ? TimeSpanNearestSecond( expiry - DateTime.UtcNow ) : null;
@@ -498,7 +495,6 @@ namespace EddiDataDefinitions
             this.statusDef = Status;
             this.shared = Shared;
             this.notes = notes;
-            this.expiring = false;
             destinationsystems = [ ];
         }
 
