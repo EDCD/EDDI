@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
@@ -25,6 +26,7 @@ namespace EddiDataDefinitions
                     .Replace( "$", "" )
                     .Replace( ";", "" );
                 OnPropertyChanged();
+                NotifyProgressAndClaimabilityChanged();
             }
         }
         [JsonIgnore]
@@ -96,14 +98,10 @@ namespace EddiDataDefinitions
             get => _statusDef;
             set
             {
+                if ( value == _statusDef ) { return; }
                 _statusDef = value;
-                if ( value != null && value != MissionStatus.Active && !onfoot )
-                {
-                    // Missions are time constrained when active, and on-foot missions
-                    // continue to be time constrained even after they are claimable.
-                    expiry = null;
-                }
                 OnPropertyChanged( nameof( localizedStatus ) );
+                NotifyProgressAndClaimabilityChanged();
             }
         }
         [JsonIgnore]
@@ -111,6 +109,117 @@ namespace EddiDataDefinitions
 
         [JsonIgnore]
         public string localizedStatus => statusDef?.localizedName ?? "Unknown";
+
+        [Utilities.PublicAPI( "percentage of observed mission progress, from 0 to 100" ), JsonIgnore]
+        public decimal progress
+        {
+            get
+            {
+                var currentStatus = statusDef;
+                var hasZeroExpiryEvidence = zeroExpiryClaimability;
+                var hasRedirectEvidence = redirectClaimability;
+                var hasLegacyEvidence = legacyClaimability;
+
+                if ( currentStatus == MissionStatus.Complete || hasZeroExpiryEvidence || hasRedirectEvidence )
+                {
+                    return 100M;
+                }
+
+                if ( TryGetReliableCargoDepotProgress( out var required, out var deliveredQuantity ) )
+                {
+                    return 100M * deliveredQuantity / required;
+                }
+
+                return hasLegacyEvidence ? 100M : 0M;
+            }
+        }
+
+        [Utilities.PublicAPI( "true if observed evidence indicates that the mission can be claimed" ), JsonIgnore]
+        public bool claimable
+        {
+            get
+            {
+                var currentStatus = statusDef;
+                var isCommunal = communal;
+                var contribution = communalContribution;
+                var hasZeroExpiryEvidence = zeroExpiryClaimability;
+                var hasRedirectEvidence = redirectClaimability;
+                var hasLegacyEvidence = legacyClaimability;
+
+                if ( currentStatus == MissionStatus.Failed ) { return false; }
+                if ( isCommunal )
+                {
+                    return currentStatus == MissionStatus.Complete &&
+                           ( contribution > 0 || hasLegacyEvidence );
+                }
+                if ( currentStatus != MissionStatus.Active ) { return false; }
+                if ( hasZeroExpiryEvidence || hasRedirectEvidence ) { return true; }
+                if ( TryGetReliableCargoDepotProgress( out var required, out var deliveredQuantity ) )
+                {
+                    return tagsList.Contains( MissionType.Delivery )
+                        ? deliveredQuantity >= Math.Ceiling( required / 2M )
+                        : deliveredQuantity == required;
+                }
+                return hasLegacyEvidence;
+            }
+        }
+
+        [JsonIgnore]
+        public string localizedProgress
+        {
+            get
+            {
+                var currentProgress = progress;
+                return currentProgress > 0M && currentProgress < 100M
+                    ? $"{currentProgress.ToString( "0.#", CultureInfo.CurrentCulture )}%"
+                    : string.Empty;
+            }
+        }
+
+        [JsonProperty]
+        private bool zeroExpiryClaimability;
+
+        [JsonProperty]
+        private bool redirectClaimability;
+
+        [JsonProperty]
+        private bool legacyClaimability;
+
+        public bool SetZeroExpiryClaimability ( bool value ) =>
+            SetClaimabilityEvidence( ref zeroExpiryClaimability, value );
+
+        public bool SetRedirectClaimability ( bool value ) =>
+            SetClaimabilityEvidence( ref redirectClaimability, value );
+
+        public bool SetLegacyClaimability ( bool value ) =>
+            SetClaimabilityEvidence( ref legacyClaimability, value );
+
+        public bool HasReliableCargoDepotProgress () =>
+            TryGetReliableCargoDepotProgress( out _, out _ );
+
+        private bool TryGetReliableCargoDepotProgress ( out int required, out int deliveredQuantity )
+        {
+            var requiredQuantity = amount;
+            deliveredQuantity = delivered;
+            required = requiredQuantity.GetValueOrDefault();
+            return cargodepot && requiredQuantity.HasValue && required > 0 && deliveredQuantity >= 0 &&
+                   deliveredQuantity <= required;
+        }
+
+        private bool SetClaimabilityEvidence ( ref bool evidence, bool value )
+        {
+            if ( evidence == value ) { return false; }
+            evidence = value;
+            NotifyProgressAndClaimabilityChanged();
+            return true;
+        }
+
+        private void NotifyProgressAndClaimabilityChanged ()
+        {
+            OnPropertyChanged( nameof( progress ) );
+            OnPropertyChanged( nameof( localizedProgress ) );
+            OnPropertyChanged( nameof( claimable ) );
+        }
 
         [Utilities.PublicAPI( "localized status (active, complete, failed) of the mission" ), JsonIgnore, Obsolete( "Please use localizedName or invariantName" )]
         public string status => localizedStatus;
@@ -160,8 +269,18 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public bool onfoot => tagsList.Contains( MissionType.OnFoot );
 
-        [Utilities.PublicAPI( "true if the mission is a communnity goal" ), JsonIgnore]
-        public bool communal { get; set; }
+        [Utilities.PublicAPI( "true if the mission is a community goal" )]
+        public bool communal
+        {
+            get => _communal;
+            set
+            {
+                if ( value == _communal ) { return; }
+                _communal = value;
+                NotifyProgressAndClaimabilityChanged();
+            }
+        }
+        [JsonIgnore] private bool _communal;
 
         [Utilities.PublicAPI( "true if the mission is legal" ), JsonIgnore]
         public bool legal => !tagsList.Any( t =>
@@ -336,15 +455,25 @@ namespace EddiDataDefinitions
         #region Community Goal Info
 
         // Community goal details, if applicable
-        [Utilities.PublicAPI( "(for community goals) the percentile band for your current contributions" ), JsonIgnore]
+        [Utilities.PublicAPI( "(for community goals) the percentile band for your current contributions" )]
 
         public int communalPercentileBand { get; set; }
 
-        [Utilities.PublicAPI( "(for community goals) the current award tier" ), JsonIgnore]
+        [Utilities.PublicAPI( "(for community goals) the current award tier" )]
         public int communalTier { get; set; }
 
-        [Utilities.PublicAPI( "(for community goals) the amount contributed" ), JsonIgnore]
-        public long communalContribution { get; set; }
+        [Utilities.PublicAPI( "(for community goals) the amount contributed" )]
+        public long communalContribution
+        {
+            get => _communalContribution;
+            set
+            {
+                if ( value == _communalContribution ) { return; }
+                _communalContribution = value;
+                NotifyProgressAndClaimabilityChanged();
+            }
+        }
+        [JsonIgnore] private long _communalContribution;
 
         #endregion
 
@@ -460,7 +589,17 @@ namespace EddiDataDefinitions
         public MicroResource MicroResourceDefinition { get; set; }
 
         [Utilities.PublicAPI( "The amount of the commodity or micro-resource required to complete the mission." )] 
-        public int? amount { get; set; }
+        public int? amount
+        {
+            get => _amount;
+            set
+            {
+                if ( value == _amount ) { return; }
+                _amount = value;
+                NotifyProgressAndClaimabilityChanged();
+            }
+        }
+        [JsonIgnore] private int? _amount;
 
         [Utilities.PublicAPI( "The system where the mission cargo has been found, as applicable" )]
         public string sourcesystem { get; set; }
@@ -472,7 +611,17 @@ namespace EddiDataDefinitions
         public int collected { get; set; }
 
         [Utilities.PublicAPI( "The quantity of mission cargo which has been delivered to a cargo depot" )]
-        public int delivered { get; set; }
+        public int delivered
+        {
+            get => _delivered;
+            set
+            {
+                if ( value == _delivered ) { return; }
+                _delivered = value;
+                NotifyProgressAndClaimabilityChanged();
+            }
+        }
+        [JsonIgnore] private int _delivered;
 
         public int wingCollected { get; set; } // The quantity of mission cargo which has been collected and not delivered by wing members
 

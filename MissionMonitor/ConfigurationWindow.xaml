@@ -11,6 +11,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="800">
     <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <DataTemplate x:Key="defaultMissionTemplate" DataType="{x:Type defs:Mission}">
             <Grid Background="{DynamicResource ControlBackgroundBrush}" Width="{Binding ElementName=UserControl, Path=ActualWidth}">
                 <Grid.ColumnDefinitions>
@@ -24,15 +25,15 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static resx:MissionMonitor.header_tags}" Margin="15, 0" />
-                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding localizedTagsString}" Margin="5, 0" />
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static resx:MissionMonitor.header_faction}" Margin="15, 0" />
-                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding faction}" Margin="5, 0" />
-                <TextBlock Grid.Row="0" Grid.Column="2" Text="{x:Static resx:MissionMonitor.header_originsystem}" Margin="15, 0" />
-                <TextBlock Grid.Row="0" Grid.Column="3" Text="{Binding originsystem}" Margin="5, 0" />
-                <TextBlock Grid.Row="1" Grid.Column="2" Text="{x:Static resx:MissionMonitor.header_originstation}" Margin="15, 0" />
-                <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding originstation}" Margin="5, 0" />
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static resx:MissionMonitor.header_notes}" Margin="15, 0" />
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static resx:MissionMonitor.header_tags}" Margin="15, 3" />
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding localizedTagsString}" Margin="5, 3" />
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static resx:MissionMonitor.header_faction}" Margin="15, 3" />
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding faction}" Margin="5, 3" />
+                <TextBlock Grid.Row="0" Grid.Column="2" Text="{x:Static resx:MissionMonitor.header_originsystem}" Margin="15, 3" />
+                <TextBlock Grid.Row="0" Grid.Column="3" Text="{Binding originsystem}" Margin="5, 3" />
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="{x:Static resx:MissionMonitor.header_originstation}" Margin="15, 3" />
+                <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding originstation}" Margin="5, 3" />
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static resx:MissionMonitor.header_notes}" Margin="15, 3" />
                 <TextBox Grid.Row ="2" Grid.Column ="1" Grid.ColumnSpan="3" 
                          Text="{Binding notes, Mode=TwoWay, NotifyOnTargetUpdated=True, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" 
                          TextChanged="MissionNotes_OnTextChanged" TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" />
@@ -50,18 +51,20 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static resx:MissionMonitor.header_cg_tier}" Margin="15, 0" />
-                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding communalTier}" Margin="5, 0" />
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static resx:MissionMonitor.header_cg_percentileband}" Margin="15, 0" />
-                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding communalPercentileBand, StringFormat={}{0}%}" Margin="5, 0" />
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static resx:MissionMonitor.header_cg_reward}" Margin="15, 0" />
-                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding reward, StringFormat={}{0:n0}}" Margin="5, 0" />
-                <TextBlock Grid.Row="1" Grid.Column="2" Text="{x:Static resx:MissionMonitor.header_originsystem}" Margin="15, 0" />
-                <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding originsystem}" Margin="5, 0" />
-                <TextBlock Grid.Row="2" Grid.Column="2" Text="{x:Static resx:MissionMonitor.header_originstation}" Margin="15, 0" />
-                <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding originstation}" Margin="5, 0" />
-                <TextBox Grid.Row ="2" Grid.Column ="1" Grid.ColumnSpan="3" 
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static resx:MissionMonitor.header_cg_tier}" Margin="15, 3" />
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding communalTier}" Margin="5, 3" />
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static resx:MissionMonitor.header_cg_percentileband}" Margin="15, 3" />
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding communalPercentileBand, StringFormat={}{0}%}" Margin="5, 3" />
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static resx:MissionMonitor.header_cg_reward}" Margin="15, 3" />
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding reward, StringFormat={}{0:n0}}" Margin="5, 3" />
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="{x:Static resx:MissionMonitor.header_originsystem}" Margin="15, 3" />
+                <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding originsystem}" Margin="5, 3" />
+                <TextBlock Grid.Row="2" Grid.Column="2" Text="{x:Static resx:MissionMonitor.header_originstation}" Margin="15, 3" />
+                <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding originstation}" Margin="5, 3" />
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static resx:MissionMonitor.header_notes}" Margin="15, 3" />
+                <TextBox Grid.Row ="3" Grid.Column ="1" Grid.ColumnSpan="3" 
                          Text="{Binding notes, Mode=TwoWay, NotifyOnTargetUpdated=True, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" 
                          TextChanged="MissionNotes_OnTextChanged" TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" />
             </Grid>
@@ -75,7 +78,7 @@
                 <TextBox x:Name="missionWarningInt" Margin="5, 0, 0, 0" PreviewTextInput="EnsureValidInteger" TextChanged="warningChanged" TextAlignment="Center" VerticalContentAlignment="Center" Height="25" Width="40"/>
             </StackPanel>
         </StackPanel>
-        <DataGrid AutoGenerateColumns="False" x:Name="missionsData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="missionsUpdated" HeadersVisibility="Column" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <DataGrid AutoGenerateColumns="False" x:Name="missionsData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="missionsUpdated" HeadersVisibility="Column" ScrollViewer.HorizontalScrollBarVisibility="Auto">
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
@@ -124,7 +127,26 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_status}" Width="Auto" IsReadOnly="True" Binding="{Binding Path=localizedStatus}">
+                <DataGridTemplateColumn Header="{x:Static resx:MissionMonitor.header_status}" Width="Auto" IsReadOnly="True" SortMemberPath="statusEDName">
+                    <DataGridTemplateColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTemplateColumn.HeaderStyle>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5, 0">
+                                <TextBlock Text="{Binding localizedStatus}" />
+                                <TextBlock Text=" ✓"
+                                           Visibility="{Binding claimable, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                           ToolTip="{x:Static resx:MissionMonitor.claimable_tooltip}"
+                                           AutomationProperties.Name="{x:Static resx:MissionMonitor.claimable_tooltip}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_progress}" Width="Auto" IsReadOnly="True"
+                                               Binding="{Binding Path=localizedProgress}" SortMemberPath="progress">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />

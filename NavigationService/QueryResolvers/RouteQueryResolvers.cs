@@ -109,7 +109,7 @@ namespace EddiNavigationService.QueryResolvers
             {
                 var missionsList = runtimeContext.MissionConfiguration?.missions?.ToList() ?? [ ];
                 if ( missionsList
-                    .Where ( m => m != null && m.statusDef == MissionStatus.Active )
+                    .Where ( MissionRoutingPredicates.IsActive )
                     .Any ( m => m.destinationsystem == currentSystem.systemname ) )
                 {
                     // We still have active missions at the current location

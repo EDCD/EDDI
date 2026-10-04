@@ -129,6 +129,12 @@
   <data name="header_status" xml:space="preserve">
     <value>Status</value>
   </data>
+  <data name="header_progress" xml:space="preserve">
+    <value>Progress</value>
+  </data>
+  <data name="claimable_tooltip" xml:space="preserve">
+    <value>Mission is claimable.</value>
+  </data>
   <data name="header_tags" xml:space="preserve">
     <value>Tags:</value>
   </data>

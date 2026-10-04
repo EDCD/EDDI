@@ -201,9 +201,7 @@ namespace EddiMissionMonitor
                         continue;
                     }
 
-                    var knownDeadline = mission.expiry;
-                    mission.statusDef = MissionStatus.Claim;
-                    mission.expiry = knownDeadline;
+                    mission.SetZeroExpiryClaimability( true );
                     missionTimerStates.Remove( missionId );
                     missionStateUpdated = true;
                 }
@@ -696,9 +694,9 @@ namespace EddiMissionMonitor
                             missionEntry.expiry = mission.expiry;
                             update = true;
                         }
-                        if ( !expiryIsZero && UpdateRedirectStatus( missionEntry ) )
+                        if ( !expiryIsZero && mission.expiry is not null )
                         {
-                            update = true;
+                            update |= missionEntry.SetZeroExpiryClaimability( false );
                         }
                     }
                     else if ( missionEntry.statusDef != mission.statusDef )
@@ -916,7 +914,7 @@ namespace EddiMissionMonitor
                 mission.communalPercentileBand = goal.percentileband;
                 mission.communalTier = goal.tier;
                 mission.communalContribution = goal.contribution;
-                mission.statusDef = goal.iscomplete ? MissionStatus.Claim : MissionStatus.Active;
+                mission.statusDef = goal.iscomplete ? MissionStatus.Complete : MissionStatus.Active;
                 mission.expiry = goal.expiryDateTime;
             }
             return generatedEvents;
@@ -1014,11 +1012,6 @@ namespace EddiMissionMonitor
             mission.collected = @event.collected;
             mission.delivered = @event.delivered;
 
-            // If we've delivered the full quantity then set the mission status to 'Claim'
-            if ( ( @event.totaltodeliver - @event.delivered ) == 0 )
-            {
-                mission.statusDef = MissionStatus.Claim;
-            }
             return wingUpdateEvent;
         }
 
@@ -1218,9 +1211,22 @@ namespace EddiMissionMonitor
             var mission = missions.FirstOrDefault( m => m.missionid == @event.missionid );
             if ( mission != null )
             {
+                var updated = !string.Equals( mission.destinationsystem, @event.newdestinationsystem,
+                                  StringComparison.Ordinal ) ||
+                              !string.Equals( mission.destinationstation, @event.newdestinationstation,
+                                  StringComparison.Ordinal );
                 mission.destinationsystem = @event.newdestinationsystem;
                 mission.destinationstation = @event.newdestinationstation;
-                return UpdateRedirectStatus( mission );
+                // Delivery readiness comes from delivery counters. Other cargo-depot-tagged missions
+                // (including salvage) can report objective completion by redirecting to their origin.
+                var isVerifiedOriginReturn = !mission.tagsList.Contains( MissionType.Delivery ) && mission.originreturn &&
+                                             !string.IsNullOrWhiteSpace( mission.originsystem ) &&
+                                             !string.IsNullOrWhiteSpace( mission.originstation ) &&
+                                             string.Equals( mission.originsystem, @event.newdestinationsystem,
+                                                 StringComparison.OrdinalIgnoreCase ) &&
+                                             string.Equals( mission.originstation, @event.newdestinationstation,
+                                                 StringComparison.OrdinalIgnoreCase );
+                return mission.SetRedirectClaimability( isVerifiedOriginReturn ) || updated;
             }
 
             return false;
@@ -1289,6 +1295,29 @@ namespace EddiMissionMonitor
             var missionsConfig = configuration ?? ConfigService.Instance.missionMonitorConfiguration;
             var newMissions = CloneMissions( missionsConfig.missions )
                 .OrderBy( m => m.missionid ).ToList();
+            var migrated = newMissions.Any( mission => mission.statusEDName == "Claim" );
+            if ( migrated )
+            {
+                foreach ( var mission in newMissions.Where( mission => mission.statusEDName == "Claim" ) )
+                {
+                    // `communal` was not serialized before this migration. The parsed CommunityGoal tag is the
+                    // only durable discriminator available in an actual legacy configuration.
+                    if ( mission.communal || mission.tagsList.Contains( MissionType.CommunityGoal ) )
+                    {
+                        mission.communal = true;
+                        mission.statusDef = MissionStatus.Complete;
+                        mission.SetLegacyClaimability( true );
+                    }
+                    else
+                    {
+                        mission.statusDef = MissionStatus.Active;
+                        if ( !mission.HasReliableCargoDepotProgress() )
+                        {
+                            mission.SetLegacyClaimability( true );
+                        }
+                    }
+                }
+            }
 
             lock (stateLock)
             {
@@ -1302,10 +1331,19 @@ namespace EddiMissionMonitor
                     AddMission(mission);
                 }
             }
+
+            if ( migrated )
+            {
+                missionsConfig.missions = CloneMissions( newMissions );
+                if ( configuration is null )
+                {
+                    ConfigService.Instance.missionMonitorConfiguration = missionsConfig;
+                }
+            }
         }
 
         private static bool IsCountedAsActive ( Mission mission ) =>
-            !mission.communal && ( mission.statusDef == MissionStatus.Active || mission.statusDef == MissionStatus.Claim );
+            !mission.communal && mission.statusDef == MissionStatus.Active;
 
         private void AddMission(Mission mission)
         {
@@ -1362,29 +1400,6 @@ namespace EddiMissionMonitor
             }
 
             return snapshots;
-        }
-
-        private static bool UpdateRedirectStatus(Mission mission)
-        {
-            if ( mission.originreturn && mission.originsystem == mission.destinationsystem
-                && mission.originstation == mission.destinationstation)
-            {
-                // Mission is claimed at a cargo depot - do not redirect until all cargo has been delivered.
-                if ( mission.cargodepot &&
-                     mission.delivered < mission.amount )
-                { return false; }
-
-                // Redirect based on origin and destination info.
-                if ( mission.tagsList.Any( t => t.ClaimAtOrigin ) )
-                {
-                    if ( mission.statusDef != MissionStatus.Claim )
-                    {
-                        mission.statusDef = MissionStatus.Claim;
-                        return true;
-                    }
-                }
-            }
-            return false;
         }
 
         static void RaiseOnUIThread(EventHandler handler, object sender)

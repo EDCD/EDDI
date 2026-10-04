@@ -13,12 +13,15 @@
             Active = new MissionStatus("Active");
             Complete = new MissionStatus("Complete"); // Missions where a `MissionCompleted` event has been written and which are pending removal from the missions log. 
             Failed = new MissionStatus("Failed"); // Missions where a `MissionFailed` or `MissionAbandoned` event has been written and which are pending removal from the missions log.
-            Claim = new MissionStatus("Claim"); // The requirements have been satisfied and any timer has been set to zero. Rewards have yet to be claimed.
+#pragma warning disable CS0618 // Assign the obsolete token retained for legacy deserialization.
+            Claim = new MissionStatus("Claim");
+#pragma warning restore CS0618
         }
 
         public static readonly MissionStatus Active;
         public static readonly MissionStatus Complete;
         public static readonly MissionStatus Failed;
+        [System.Obsolete( "Claim is a legacy deserialization token. Use Mission.claimable with the Frontier lifecycle status (e.g. Active, Complete, or Failed)." )]
         public static readonly MissionStatus Claim;
         
         // dummy used to ensure that the static constructor has run
