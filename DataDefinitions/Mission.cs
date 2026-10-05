@@ -111,27 +111,44 @@ namespace EddiDataDefinitions
         public string localizedStatus => statusDef?.localizedName ?? "Unknown";
 
         [Utilities.PublicAPI( "percentage of observed mission progress, from 0 to 100" ), JsonIgnore]
-        public decimal progress
+        public decimal progress => CalculateProgress() ?? 0M;
+
+        [Utilities.PublicAPI( "true if mission progress can be objectively measured, including a binary objective" ), JsonIgnore]
+        public bool progressKnown => CalculateProgress().HasValue;
+
+        private decimal? CalculateProgress ()
         {
-            get
+            var currentStatus = statusDef;
+            var hasZeroExpiryEvidence = zeroExpiryClaimability;
+            var hasRedirectEvidence = redirectClaimability;
+            var hasLegacyEvidence = legacyClaimability;
+
+            if ( currentStatus == MissionStatus.Complete || hasZeroExpiryEvidence ) { return 100M; }
+            if ( communal ) { return null; }
+
+            var cargo = cargoEvidence;
+            if ( UsesOnboardCargoProgress && CargoFullyDelivered( cargo ) ) { return 100M; }
+            if ( UsesOnboardCargoProgress && TryGetOnboardProgress( cargo, out var onboard, out var requiredCargo ) )
             {
-                var currentStatus = statusDef;
-                var hasZeroExpiryEvidence = zeroExpiryClaimability;
-                var hasRedirectEvidence = redirectClaimability;
-                var hasLegacyEvidence = legacyClaimability;
-
-                if ( currentStatus == MissionStatus.Complete || hasZeroExpiryEvidence || hasRedirectEvidence )
-                {
-                    return 100M;
-                }
-
-                if ( TryGetReliableCargoDepotProgress( out var required, out var deliveredQuantity ) )
-                {
-                    return 100M * deliveredQuantity / required;
-                }
-
-                return hasLegacyEvidence ? 100M : 0M;
+                return 100M * onboard / requiredCargo;
             }
+            if ( hasRedirectEvidence ) { return 100M; }
+            if ( TryGetReliableCargoDepotProgress( out var required, out var deliveredQuantity ) )
+            {
+                return 100M * deliveredQuantity / required;
+            }
+
+            if ( hasLegacyEvidence ) { return 100M; }
+            if ( tagsList.Contains( MissionType.SightSeeing ) )
+            {
+                return TryGetSightseeingProgress( GetWaypointEvidence(), out var waypointProgress ) ? waypointProgress : null;
+            }
+
+            // Zero describes a pending binary objective, not a fabricated partial measurement.
+            return tagsList.Any( tag => tag == MissionType.Courier || tag == MissionType.Scan ||
+                tag == MissionType.Assassinate || tag == MissionType.Hack || tag == MissionType.Disable ||
+                tag == MissionType.Altruism || tag == MissionType.Passenger || tag == MissionType.Reboot ||
+                tag == MissionType.RebootRestore || tag == MissionType.Sabotage || tag == MissionType.Heist ) ? 0M : null;
         }
 
         [Utilities.PublicAPI( "true if observed evidence indicates that the mission can be claimed" ), JsonIgnore]
@@ -153,7 +170,14 @@ namespace EddiDataDefinitions
                            ( contribution > 0 || hasLegacyEvidence );
                 }
                 if ( currentStatus != MissionStatus.Active ) { return false; }
-                if ( hasZeroExpiryEvidence || hasRedirectEvidence ) { return true; }
+                if ( hasZeroExpiryEvidence ) { return true; }
+                var cargo = cargoEvidence;
+                if ( UsesOnboardCargoProgress && CargoFullyDelivered( cargo ) ) { return true; }
+                if ( UsesOnboardCargoProgress && TryGetOnboardProgress( cargo, out var onboard, out var requiredCargo ) )
+                {
+                    return ( hasRedirectEvidence || depotCollectionCompleted ) && onboard == requiredCargo;
+                }
+                if ( hasRedirectEvidence ) { return true; }
                 if ( TryGetReliableCargoDepotProgress( out var required, out var deliveredQuantity ) )
                 {
                     return tagsList.Contains( MissionType.Delivery )
@@ -169,9 +193,9 @@ namespace EddiDataDefinitions
         {
             get
             {
-                var currentProgress = progress;
-                return currentProgress > 0M && currentProgress < 100M
-                    ? $"{currentProgress.ToString( "0.#", CultureInfo.CurrentCulture )}%"
+                var currentProgress = CalculateProgress();
+                return currentProgress.HasValue
+                    ? $"{currentProgress.Value.ToString( "0.#", CultureInfo.CurrentCulture )}%"
                     : string.Empty;
             }
         }
@@ -184,6 +208,160 @@ namespace EddiDataDefinitions
 
         [JsonProperty]
         private bool legacyClaimability;
+
+        [JsonProperty] private MissionCargoEvidence cargoEvidence;
+        [JsonProperty] private DateTime? cargoChangedAt;
+        [JsonProperty] private DateTime? cargoRedirectObservedAt;
+        [JsonProperty] private bool depotCollectionCompleted;
+        [JsonProperty] private MissionWaypointEvidence waypointEvidence;
+        [JsonProperty] private bool communalProgressObserved;
+
+        [JsonIgnore]
+        public bool communityGoalProgressKnown => communal && ( communalProgressObserved || communalContribution > 0 ) &&
+            communalContribution >= 0 && communalPercentileBand is >= 0 and <= 100;
+
+        public void ObserveCommunityGoalProgress ( long contribution, int percentileBand )
+        {
+            if ( contribution < 0 || percentileBand is < 0 or > 100 ) { return; }
+            _communalContribution = contribution;
+            _communalPercentileBand = percentileBand;
+            communalProgressObserved = true;
+            OnPropertyChanged( nameof( communalContribution ) );
+            OnPropertyChanged( nameof( communalPercentileBand ) );
+            NotifyProgressAndClaimabilityChanged();
+        }
+
+        public void InitializeSightseeingWaypoints ( IEnumerable<string> systems )
+        {
+            if ( !tagsList.Contains( MissionType.SightSeeing ) || waypointEvidence != null ) { return; }
+            waypointEvidence = new MissionWaypointEvidence { systems = systems?.Select( s => s?.Trim() ).ToArray() ?? [ ] };
+            NotifyProgressAndClaimabilityChanged();
+        }
+
+        private MissionWaypointEvidence GetWaypointEvidence () => waypointEvidence ?? new MissionWaypointEvidence
+        {
+            systems = destinationsystems?.Select( s => s?.systemName ).ToArray() ?? [ ],
+            scannedSystems = destinationsystems?.Where( s => s?.visited == true ).Select( s => s.systemName ).ToArray() ?? [ ]
+        };
+
+        private static bool TryGetSightseeingProgress ( MissionWaypointEvidence evidence, out decimal value )
+        {
+            value = 0M;
+            var systems = evidence.systems;
+            var scanned = evidence.scannedSystems;
+            // The journal supplies systems, not beacon identities. Repeated systems cannot be distinguished reliably.
+            if ( systems is null || systems.Length == 0 || systems.Any( string.IsNullOrWhiteSpace ) ||
+                 systems.Distinct( StringComparer.OrdinalIgnoreCase ).Count() != systems.Length || scanned is null ||
+                 scanned.Distinct( StringComparer.OrdinalIgnoreCase ).Count() != scanned.Length ||
+                 scanned.Any( s => !systems.Contains( s, StringComparer.OrdinalIgnoreCase ) ) ) { return false; }
+            value = 100M * scanned.Length / systems.Length;
+            return true;
+        }
+
+        public bool ObserveSightseeingStop ( DateTime timestamp, string systemName, ulong? systemAddress )
+        {
+            if ( communal || statusDef != MissionStatus.Active || !tagsList.Contains( MissionType.SightSeeing ) ) { return false; }
+            var evidence = GetWaypointEvidence();
+            if ( !TryGetSightseeingProgress( evidence, out _ ) ||
+                 ( evidence.observedAt is DateTime previous && timestamp < previous ) ) { return false; }
+            var expected = evidence.systems.FirstOrDefault( s => !evidence.scannedSystems.Contains( s, StringComparer.OrdinalIgnoreCase ) );
+            if ( expected is null || !string.Equals( expected, systemName, StringComparison.OrdinalIgnoreCase ) ) { return false; }
+            var resolved = destinationsystems?.FirstOrDefault( s => s != null &&
+                string.Equals( s.systemName, expected, StringComparison.OrdinalIgnoreCase ) );
+            if ( resolved?.systemAddress is > 0 && systemAddress != resolved.systemAddress ) { return false; }
+            waypointEvidence = evidence with { scannedSystems = [ .. evidence.scannedSystems, expected ], observedAt = timestamp };
+            if ( resolved != null ) { resolved.visited = true; }
+            NotifyProgressAndClaimabilityChanged();
+            return true;
+        }
+
+        [JsonIgnore]
+        public string nextSightseeingSystem
+        {
+            get
+            {
+                var evidence = GetWaypointEvidence();
+                if ( !TryGetSightseeingProgress( evidence, out _ ) ) { return null; }
+                return evidence.systems?.FirstOrDefault( s =>
+                    !evidence.scannedSystems.Contains( s, StringComparer.OrdinalIgnoreCase ) );
+            }
+        }
+
+        [JsonIgnore]
+        public bool UsesOnboardCargoProgress => !tagsList.Contains( MissionType.Delivery ) && tagsList.Any( tag =>
+            tag == MissionType.Salvage || tag == MissionType.Rescue || tag == MissionType.Smuggle );
+
+        public void ObserveCargoRequirement ( DateTime timestamp )
+        {
+            if ( amount is not > 0 ) { return; }
+            cargoEvidence = new MissionCargoEvidence { required = amount, requiredAt = timestamp, collected = 0,
+                collectedAt = timestamp };
+            cargoChangedAt = timestamp;
+        }
+
+        public bool ObserveCargoChange ( DateTime timestamp, bool collectedOne = false )
+        {
+            if ( cargoChangedAt is DateTime previous && timestamp < previous ) { return false; }
+            cargoChangedAt = timestamp;
+            if ( collectedOne && cargoEvidence is { collected: int knownCollected } cargo &&
+                 ( cargo.collectedAt is null || timestamp >= cargo.collectedAt ) &&
+                 ( cargo.onboardAt is null || timestamp > cargo.onboardAt ) )
+            {
+                cargoEvidence = cargo with { collected = knownCollected < cargo.required ? knownCollected + 1 : null,
+                    collectedAt = timestamp };
+            }
+            return true;
+        }
+
+        public bool CanObserveCargoDepot ( DateTime timestamp, int required, int collectedQuantity, int deliveredQuantity,
+            DateTime? fallbackTimestamp = null ) =>
+            required > 0 && collectedQuantity >= 0 && collectedQuantity <= required && deliveredQuantity >= 0 &&
+            deliveredQuantity <= required && ( !tagsList.Contains( MissionType.Delivery ) || deliveredQuantity <= collectedQuantity ) &&
+            ( ( cargoEvidence?.deliveredAt ?? fallbackTimestamp ) is not DateTime previous || timestamp >= previous );
+
+        public bool ObserveCargoDepot ( DateTime timestamp, int required, int collectedQuantity, int deliveredQuantity )
+        {
+            if ( !CanObserveCargoDepot( timestamp, required, collectedQuantity, deliveredQuantity ) )
+            {
+                return false;
+            }
+            var cargo = cargoEvidence ?? new MissionCargoEvidence();
+            cargoEvidence = cargo with { required = required, requiredAt = timestamp, collected = collectedQuantity,
+                collectedAt = timestamp, delivered = deliveredQuantity, deliveredAt = timestamp };
+            amount = required;
+            collected = collectedQuantity;
+            delivered = deliveredQuantity;
+            depotCollectionCompleted = collectedQuantity == required;
+            ObserveCargoChange( timestamp );
+            NotifyProgressAndClaimabilityChanged();
+            return true;
+        }
+
+        public bool ObserveOnboardCargo ( DateTime timestamp, int quantity )
+        {
+            var required = amount;
+            var cargo = cargoEvidence ?? new MissionCargoEvidence();
+            if ( required is not > 0 || quantity < 0 || quantity > required ||
+                 ( cargoChangedAt is DateTime changedAt && timestamp < changedAt ) ||
+                 ( cargo.requiredAt is DateTime requiredAt && timestamp < requiredAt ) ||
+                 ( cargo.onboardAt is DateTime previous && timestamp < previous ) ||
+                 ( cargo.onboardAt == timestamp && cargo.onboard == quantity && cargo.onboardRequired == required ) )
+            {
+                return false;
+            }
+            cargoEvidence = cargo with { required = required, requiredAt = cargo.requiredAt ?? timestamp,
+                onboard = quantity, onboardRequired = required, onboardAt = timestamp };
+            NotifyProgressAndClaimabilityChanged();
+            return true;
+        }
+
+        public bool ObserveCargoRedirect ( DateTime timestamp, bool qualifies )
+        {
+            if ( cargoRedirectObservedAt is DateTime previous && timestamp < previous ) { return false; }
+            cargoRedirectObservedAt = timestamp;
+            ObserveCargoChange( timestamp );
+            return SetRedirectClaimability( qualifies );
+        }
 
         public bool SetZeroExpiryClaimability ( bool value ) =>
             SetClaimabilityEvidence( ref zeroExpiryClaimability, value );
@@ -199,11 +377,22 @@ namespace EddiDataDefinitions
 
         private bool TryGetReliableCargoDepotProgress ( out int required, out int deliveredQuantity )
         {
-            var requiredQuantity = amount;
-            deliveredQuantity = delivered;
+            var cargo = cargoEvidence;
+            var requiredQuantity = cargo?.deliveredAt is null ? amount : cargo.required;
+            deliveredQuantity = cargo?.deliveredAt is null ? delivered : cargo.delivered.GetValueOrDefault();
             required = requiredQuantity.GetValueOrDefault();
             return cargodepot && requiredQuantity.HasValue && required > 0 && deliveredQuantity >= 0 &&
                    deliveredQuantity <= required;
+        }
+
+        private static bool CargoFullyDelivered ( MissionCargoEvidence cargo ) =>
+            cargo?.required > 0 && cargo.deliveredAt != null && cargo.delivered == cargo.required;
+
+        private static bool TryGetOnboardProgress ( MissionCargoEvidence cargo, out int onboard, out int required )
+        {
+            onboard = cargo?.onboard ?? -1;
+            required = cargo?.onboardRequired ?? 0;
+            return cargo?.onboardAt != null && required > 0 && onboard >= 0 && onboard <= required;
         }
 
         private bool SetClaimabilityEvidence ( ref bool evidence, bool value )
@@ -217,7 +406,9 @@ namespace EddiDataDefinitions
         private void NotifyProgressAndClaimabilityChanged ()
         {
             OnPropertyChanged( nameof( progress ) );
+            OnPropertyChanged( nameof( progressKnown ) );
             OnPropertyChanged( nameof( localizedProgress ) );
+            OnPropertyChanged( nameof( communityGoalProgressKnown ) );
             OnPropertyChanged( nameof( claimable ) );
         }
 
@@ -394,7 +585,12 @@ namespace EddiDataDefinitions
 
         // Destination systems for chained missions
         [Utilities.PublicAPI( "list of destination systems for missions with multiple destinations" )]
-        public List<NavWaypoint> destinationsystems { get; set; }
+        public List<NavWaypoint> destinationsystems
+        {
+            get => _destinationsystems;
+            set { _destinationsystems = value; NotifyProgressAndClaimabilityChanged(); }
+        }
+        [JsonIgnore] private List<NavWaypoint> _destinationsystems;
 
         private static string FallbackGetDestinationStation ( string localisedName )
         {
@@ -457,7 +653,18 @@ namespace EddiDataDefinitions
         // Community goal details, if applicable
         [Utilities.PublicAPI( "(for community goals) the percentile band for your current contributions" )]
 
-        public int communalPercentileBand { get; set; }
+        public int communalPercentileBand
+        {
+            get => _communalPercentileBand;
+            set
+            {
+                if ( value == _communalPercentileBand ) { return; }
+                _communalPercentileBand = value;
+                OnPropertyChanged();
+                NotifyProgressAndClaimabilityChanged();
+            }
+        }
+        [JsonIgnore] private int _communalPercentileBand;
 
         [Utilities.PublicAPI( "(for community goals) the current award tier" )]
         public int communalTier { get; set; }
@@ -470,6 +677,7 @@ namespace EddiDataDefinitions
             {
                 if ( value == _communalContribution ) { return; }
                 _communalContribution = value;
+                OnPropertyChanged();
                 NotifyProgressAndClaimabilityChanged();
             }
         }

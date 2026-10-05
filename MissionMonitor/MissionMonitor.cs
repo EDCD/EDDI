@@ -258,6 +258,23 @@ namespace EddiMissionMonitor
                     ResetLiveSessionLocked();
                 }
             }
+            else if ( @event is CargoEvent cargoEvent )
+            {
+                handleCargoEvent( cargoEvent );
+            }
+            else if ( @event is CommodityEjectedEvent ejectedEvent )
+            {
+                ObserveCargoChange( ejectedEvent.timestamp, ejectedEvent.missionid is >= 0
+                    ? (ulong?)ejectedEvent.missionid : null, ejectedEvent.commodityDefinition );
+            }
+            else if ( @event is CargoTransferEvent || @event is DiedEvent )
+            {
+                ObserveCargoChange( @event.timestamp );
+            }
+            else if ( @event is CommoditySoldEvent soldEvent )
+            {
+                ObserveCargoChange( soldEvent.timestamp, commodity: soldEvent.commodityDefinition );
+            }
             else if ( @event is CommodityCollectedEvent commodityCollectedEvent )
             {
                 handleCommodityCollectedEvent( commodityCollectedEvent );
@@ -473,15 +490,72 @@ namespace EddiMissionMonitor
         {
             var currentSystem = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
             var currentBody = EDDI.Instance.GameState.CurrentStellarBody?.bodyname;
+            var gameIsRunning = isEliteRunning();
             var update = false;
             lock ( stateLock )
             {
-                if ( @event.timestamp > updateDat )
+                if ( @event.timestamp >= updateDat )
                 {
-                    updateDat = @event.timestamp;
                     update = HandleCommodityCollectedLocked( @event, currentSystem, currentBody );
                 }
+                if ( gameIsRunning && liveSessionReady && @event.missionid is ulong id )
+                {
+                    var mission = missions.FirstOrDefault( m => m.missionid == id && !m.communal && m.statusDef == MissionStatus.Active );
+                    if ( mission != null ) { update |= mission.ObserveCargoChange( @event.timestamp, collectedOne: true ); }
+                }
             }
+            if ( update ) { writeMissions(); }
+        }
+
+        private void ObserveCargoChange ( DateTime timestamp, ulong? missionId = null, CommodityDefinition commodity = null )
+        {
+            var gameIsRunning = isEliteRunning();
+            var update = false;
+            lock ( stateLock )
+            {
+                if ( !gameIsRunning || !liveSessionReady ) { return; }
+                foreach ( var mission in missions.Where( m => !m.communal && m.statusDef == MissionStatus.Active &&
+                             ( missionId is null || m.missionid == missionId ) &&
+                             ( commodity is null || m.CommodityDefinition == commodity ) ) )
+                {
+                    update |= mission.ObserveCargoChange( timestamp );
+                }
+            }
+            if ( update ) { writeMissions(); }
+        }
+
+        private void handleCargoEvent ( CargoEvent @event )
+        {
+            var gameIsRunning = isEliteRunning();
+            var vehicle = EDDI.Instance.GameState.Vehicle;
+            var inventory = @event.inventory?.Select( item => item is null ? null : new CargoInfoItem( item ) ).ToList();
+            // An empty, complete manifest is evidence of absence; an unavailable or contradictory manifest is not.
+            if ( @event.vessel != Constants.VEHICLE_SHIP || vehicle == Constants.VEHICLE_SRV ||
+                 @event.inventoryTimestamp < @event.timestamp || inventory is null || @event.cargocarried < 0 ||
+                 inventory.Any( item => item is null || string.IsNullOrWhiteSpace( item.name ) || item.count < 0 ||
+                                        item.stolen < 0 || item.stolen > item.count ) ||
+                 inventory.Sum( item => (long)item.count ) != @event.cargocarried )
+            {
+                return;
+            }
+            var update = false;
+            lock ( stateLock )
+            {
+                if ( !gameIsRunning || !liveSessionReady ) { return; }
+                foreach ( var mission in missions.Where( m => !m.communal && m.statusDef == MissionStatus.Active &&
+                             m.CommodityDefinition != null ) )
+                {
+                    var missionCargo = inventory.Where( item => item.missionid == mission.missionid ).ToList();
+                    if ( missionCargo.Any( item => !string.Equals( item.name, mission.CommodityDefinition.edname,
+                             StringComparison.OrdinalIgnoreCase ) ) ) { continue; }
+                    var quantity = missionCargo.Sum( item => (long)item.count );
+                    if ( quantity <= int.MaxValue )
+                    {
+                        update |= mission.ObserveOnboardCargo( @event.inventoryTimestamp, (int)quantity );
+                    }
+                }
+            }
+            // Cargo evidence has its own observation timestamps. It must never advance the journal watermark.
             if ( update ) { writeMissions(); }
         }
 
@@ -506,7 +580,6 @@ namespace EddiMissionMonitor
             {
                 if ( @event.timestamp > updateDat )
                 {
-                    updateDat = @event.timestamp;
                     update = HandleCommodityPurchasedLocked( @event, currentSystem, currentStation );
                 }
             }
@@ -534,7 +607,6 @@ namespace EddiMissionMonitor
             {
                 if ( @event.timestamp > updateDat )
                 {
-                    updateDat = @event.timestamp;
                     update = HandleCommodityRefinedLocked( @event, currentSystem, currentStation );
                 }
             }
@@ -558,18 +630,18 @@ namespace EddiMissionMonitor
             var currentSystemAddress = EDDI.Instance.GameState.CurrentStarSystem?.systemAddress;
             var currentSystemName = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
             var now = utcNow();
+            var gameIsRunning = isEliteRunning();
             var update = false;
-            MissionRedirectedEvent redirectedEvent = null;
+            List<MissionRedirectedEvent> redirectedEvents = [ ];
             lock ( stateLock )
             {
-                if (@event.timestamp >= updateDat)
+                if ( gameIsRunning && liveSessionReady && @event.timestamp >= updateDat )
                 {
-                    updateDat = @event.timestamp;
                     update = HandleDataScannedLocked( @event, currentSystemAddress, currentSystemName, now,
-                        out redirectedEvent );
+                        out redirectedEvents );
                 }
             }
-            if ( redirectedEvent != null ) { enqueueEvent( redirectedEvent ); }
+            foreach ( var redirectedEvent in redirectedEvents ) { enqueueEvent( redirectedEvent ); }
             if ( update ) { writeMissions(); }
         }
 
@@ -578,48 +650,43 @@ namespace EddiMissionMonitor
             var currentSystemAddress = EDDI.Instance.GameState.CurrentStarSystem?.systemAddress;
             var currentSystemName = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
             var now = utcNow();
-            MissionRedirectedEvent redirectedEvent;
+            List<MissionRedirectedEvent> redirectedEvents;
             bool update;
             lock ( stateLock )
             {
                 update = HandleDataScannedLocked( @event, currentSystemAddress, currentSystemName, now,
-                    out redirectedEvent );
+                    out redirectedEvents );
             }
-            if ( redirectedEvent != null ) { enqueueEvent( redirectedEvent ); }
+            foreach ( var redirectedEvent in redirectedEvents ) { enqueueEvent( redirectedEvent ); }
             return update;
         }
 
         private bool HandleDataScannedLocked ( DataScannedEvent @event, ulong? currentSystemAddress,
-            string currentSystemName, DateTime now, out MissionRedirectedEvent redirectedEvent )
+            string currentSystemName, DateTime now, out List<MissionRedirectedEvent> redirectedEvents )
         {
-            redirectedEvent = null;
+            redirectedEvents = [ ];
+            var update = false;
             if ( DataScan.FromName( @event.datalinktype ).edname == "TouristBeacon")
             {
                 foreach (var mission in missions.ToList())
                 {
                     // A `MissionRedirected` journal event isn't written for each waypoint in multi-destination passenger missions, so we handle those here.
-                    if ( mission.tagsList.Contains(MissionType.SightSeeing) )
+                    if ( mission.ObserveSightseeingStop( @event.timestamp, currentSystemName, currentSystemAddress ) )
                     {
-                        var system = mission.destinationsystems.FirstOrDefault(s => s.systemAddress == currentSystemAddress);
-                        if ( system != null )
+                        update = true;
+                        var waypointSystemName = mission.nextSightseeingSystem;
+                        if ( !string.IsNullOrEmpty( waypointSystemName ) )
                         {
-                            system.visited = true;
-                            var waypointSystemName = mission.destinationsystems?
-                                .FirstOrDefault(s => !s.visited)?.systemName;
-                            if ( !string.IsNullOrEmpty( waypointSystemName ) )
-                            {
-                                // Set destination system to next in chain & trigger a 'Mission redirected' event
-                                redirectedEvent = new MissionRedirectedEvent( now,
-                                    mission.missionid, mission.name, null, null, waypointSystemName,
-                                    currentSystemName );
-                            }
-
-                            return true;
+                            var oldDestination = mission.destinationsystem;
+                            mission.destinationsystem = waypointSystemName;
+                            redirectedEvents.Add( new MissionRedirectedEvent( now, mission.missionid, mission.name,
+                                null, null, waypointSystemName, oldDestination ) { isWaypointAnnouncement = true,
+                                fromLoad = @event.fromLoad } );
                         }
                     }
                 }
             }
-            return false;
+            return update;
         }
 
         private void handleMissionsEvent(MissionsEvent @event)
@@ -669,12 +736,13 @@ namespace EddiMissionMonitor
                         missionEntry.name = mission.name;
                         update = true;
                     }
-                    var localisedName = string.IsNullOrEmpty(mission.localisedname)
-                        ? mission.name
-                        : mission.localisedname;
-                    if ( missionEntry.localisedname != localisedName )
+
+                    // The missions event does not currently provided localized / friendly mission names
+                    // but if that changes then we'll incorporate the localized / friendly names here.
+                    if ( !string.IsNullOrEmpty( mission.localisedname ) &&
+                        missionEntry.localisedname != mission.localisedname )
                     {
-                        missionEntry.localisedname = localisedName;
+                        missionEntry.localisedname = mission.localisedname;
                         update = true;
                     }
 
@@ -911,9 +979,8 @@ namespace EddiMissionMonitor
                 mission.destinationstation = goal.station;
                 mission.reward = goal.contribution > 0 ? goal.tierreward : 0;
                 mission.communal = true;
-                mission.communalPercentileBand = goal.percentileband;
+                mission.ObserveCommunityGoalProgress( goal.contribution, goal.percentileband );
                 mission.communalTier = goal.tier;
-                mission.communalContribution = goal.contribution;
                 mission.statusDef = goal.iscomplete ? MissionStatus.Complete : MissionStatus.Active;
                 mission.expiry = goal.expiryDateTime;
             }
@@ -929,11 +996,11 @@ namespace EddiMissionMonitor
             CargoWingUpdateEvent wingUpdateEvent = null;
             lock ( stateLock )
             {
-                if (@event.timestamp >= updateDat)
+                if ( @event.timestamp >= updateDat || missions.Any( m => m.missionid == @event.missionid &&
+                         m.statusDef == MissionStatus.Active && m.CanObserveCargoDepot( @event.timestamp,
+                             @event.totaltodeliver, @event.collected, @event.delivered, updateDat ) ) )
                 {
-                    wingUpdateEvent = HandleCargoDepotLocked( @event, currentSystem, currentStation, now );
-                    updateDat = @event.timestamp;
-                    update = true;
+                    wingUpdateEvent = HandleCargoDepotLocked( @event, currentSystem, currentStation, now, out update );
                 }
             }
             if ( wingUpdateEvent != null ) { enqueueEvent( wingUpdateEvent ); }
@@ -948,17 +1015,27 @@ namespace EddiMissionMonitor
             CargoWingUpdateEvent wingUpdateEvent;
             lock ( stateLock )
             {
-                wingUpdateEvent = HandleCargoDepotLocked( @event, currentSystem, currentStation, now );
+                wingUpdateEvent = HandleCargoDepotLocked( @event, currentSystem, currentStation, now, out _ );
             }
             if ( wingUpdateEvent != null ) { enqueueEvent( wingUpdateEvent ); }
         }
 
         private CargoWingUpdateEvent HandleCargoDepotLocked ( CargoDepotEvent @event, string currentSystem,
-            string currentStation, DateTime now )
+            string currentStation, DateTime now, out bool update )
         {
+            update = false;
             CargoWingUpdateEvent wingUpdateEvent = null;
             // Retrieve or create the relevant mission
             var mission = missions.FirstOrDefault( m => m.missionid == @event.missionid );
+            if ( @event.totaltodeliver <= 0 || @event.collected < 0 || @event.collected > @event.totaltodeliver ||
+                 @event.delivered < 0 || @event.delivered > @event.totaltodeliver || @event.amount < 0 ||
+                 @event.amount > @event.totaltodeliver ||
+                 ( mission != null && ( mission.statusDef != MissionStatus.Active ||
+                     !mission.CanObserveCargoDepot( @event.timestamp, @event.totaltodeliver, @event.collected, @event.delivered ) ) ) ||
+                 ( mission is null && @event.startmarketid != 0 && @event.delivered > @event.collected ) )
+            {
+                return null;
+            }
             if ( mission is null )
             {
                 var type = @event.startmarketid == 0 ? "MISSION_Collect" : "MISSION_Delivery";
@@ -1009,8 +1086,7 @@ namespace EddiMissionMonitor
                 }
             }
 
-            mission.collected = @event.collected;
-            mission.delivered = @event.delivered;
+            update = mission.ObserveCargoDepot( @event.timestamp, @event.totaltodeliver, @event.collected, @event.delivered );
 
             return wingUpdateEvent;
         }
@@ -1088,6 +1164,7 @@ namespace EddiMissionMonitor
             var valid = !string.IsNullOrEmpty(@event.name) && !@event.name.Contains("StartZone");
             if (!exists && valid)
             {
+                @event.Mission.ObserveCargoRequirement( @event.timestamp );
                 AddMission(@event.Mission);
                 update = true;
             }
@@ -1186,6 +1263,8 @@ namespace EddiMissionMonitor
 
         private void handleMissionRedirectedEvent(MissionRedirectedEvent @event)
         {
+            if ( @event.isWaypointAnnouncement ) { return; }
+            var gameIsRunning = isEliteRunning();
             var update = false;
             lock ( stateLock )
             {
@@ -1193,6 +1272,18 @@ namespace EddiMissionMonitor
                 {
                     updateDat = @event.timestamp;
                     update = HandleMissionRedirectedLocked(@event);
+                }
+                else if ( @event.fromLoad && gameIsRunning && liveSessionReady )
+                {
+                    // Recover evidence rejected by old builds without replaying historical destination changes.
+                    var mission = missions.FirstOrDefault( m => m.missionid == @event.missionid && !m.communal &&
+                        m.statusDef == MissionStatus.Active && m.UsesOnboardCargoProgress );
+                    if ( mission != null &&
+                         string.Equals( mission.destinationsystem, @event.newdestinationsystem, StringComparison.OrdinalIgnoreCase ) &&
+                         string.Equals( mission.destinationstation, @event.newdestinationstation, StringComparison.OrdinalIgnoreCase ) )
+                    {
+                        update = mission.ObserveCargoRedirect( @event.timestamp, IsVerifiedOriginReturn( mission, @event ) );
+                    }
                 }
             }
             if ( update ) { writeMissions(); }
@@ -1208,6 +1299,7 @@ namespace EddiMissionMonitor
 
         private bool HandleMissionRedirectedLocked ( MissionRedirectedEvent @event )
         {
+            if ( @event.isWaypointAnnouncement ) { return false; }
             var mission = missions.FirstOrDefault( m => m.missionid == @event.missionid );
             if ( mission != null )
             {
@@ -1217,20 +1309,17 @@ namespace EddiMissionMonitor
                                   StringComparison.Ordinal );
                 mission.destinationsystem = @event.newdestinationsystem;
                 mission.destinationstation = @event.newdestinationstation;
-                // Delivery readiness comes from delivery counters. Other cargo-depot-tagged missions
-                // (including salvage) can report objective completion by redirecting to their origin.
-                var isVerifiedOriginReturn = !mission.tagsList.Contains( MissionType.Delivery ) && mission.originreturn &&
-                                             !string.IsNullOrWhiteSpace( mission.originsystem ) &&
-                                             !string.IsNullOrWhiteSpace( mission.originstation ) &&
-                                             string.Equals( mission.originsystem, @event.newdestinationsystem,
-                                                 StringComparison.OrdinalIgnoreCase ) &&
-                                             string.Equals( mission.originstation, @event.newdestinationstation,
-                                                 StringComparison.OrdinalIgnoreCase );
-                return mission.SetRedirectClaimability( isVerifiedOriginReturn ) || updated;
+                return mission.ObserveCargoRedirect( @event.timestamp, IsVerifiedOriginReturn( mission, @event ) ) || updated;
             }
 
             return false;
         }
+
+        private static bool IsVerifiedOriginReturn ( Mission mission, MissionRedirectedEvent @event ) =>
+            !mission.tagsList.Contains( MissionType.Delivery ) && mission.originreturn &&
+            !string.IsNullOrWhiteSpace( mission.originsystem ) && !string.IsNullOrWhiteSpace( mission.originstation ) &&
+            string.Equals( mission.originsystem, @event.newdestinationsystem, StringComparison.OrdinalIgnoreCase ) &&
+            string.Equals( mission.originstation, @event.newdestinationstation, StringComparison.OrdinalIgnoreCase );
 
         [Utilities.PublicAPI( "The number of community goals you are engaged in." )]
         public static RuntimeVariableDefinition GoalsCountVariable => new( "goalsCount", typeof(int) );

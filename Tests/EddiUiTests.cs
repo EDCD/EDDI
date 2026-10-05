@@ -703,8 +703,8 @@ namespace Tests
                 missionMonitorXaml );
             Assert.Contains( "AutomationProperties.Name=\"{x:Static resx:MissionMonitor.claimable_tooltip}\"",
                 missionMonitorXaml );
-            Assert.Contains( "Binding=\"{Binding Path=localizedProgress}\" SortMemberPath=\"progress\"",
-                missionMonitorXaml );
+            Assert.Contains( "<Binding Path=\"localizedProgress\" />", missionMonitorXaml );
+            Assert.Contains( "SortMemberPath=\"progress\"", missionMonitorXaml );
             Assert.Contains( "ScrollViewer.HorizontalScrollBarVisibility=\"Auto\"", missionMonitorXaml );
         }
 

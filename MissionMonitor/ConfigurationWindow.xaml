@@ -12,6 +12,7 @@
              d:DesignHeight="300" d:DesignWidth="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <local:MissionProgressConverter x:Key="MissionProgressConverter" />
         <DataTemplate x:Key="defaultMissionTemplate" DataType="{x:Type defs:Mission}">
             <Grid Background="{DynamicResource ControlBackgroundBrush}" Width="{Binding ElementName=UserControl, Path=ActualWidth}">
                 <Grid.ColumnDefinitions>
@@ -59,6 +60,8 @@
                 <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding communalPercentileBand, StringFormat={}{0}%}" Margin="5, 3" />
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static resx:MissionMonitor.header_cg_reward}" Margin="15, 3" />
                 <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding reward, StringFormat={}{0:n0}}" Margin="5, 3" />
+                <TextBlock Grid.Row="0" Grid.Column="2" Text="{x:Static resx:MissionMonitor.header_cg_contribution}" Margin="15, 3" />
+                <TextBlock Grid.Row="0" Grid.Column="3" Text="{Binding communalContribution, StringFormat={}{0:n0}}" Margin="5, 3" />
                 <TextBlock Grid.Row="1" Grid.Column="2" Text="{x:Static resx:MissionMonitor.header_originsystem}" Margin="15, 3" />
                 <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding originsystem}" Margin="5, 3" />
                 <TextBlock Grid.Row="2" Grid.Column="2" Text="{x:Static resx:MissionMonitor.header_originstation}" Margin="15, 3" />
@@ -127,7 +130,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <DataGridTemplateColumn Header="{x:Static resx:MissionMonitor.header_status}" Width="Auto" IsReadOnly="True" SortMemberPath="statusEDName">
+                <DataGridTemplateColumn Header="{x:Static resx:MissionMonitor.header_status}" Width="Auto" MinWidth="80" IsReadOnly="True" SortMemberPath="statusEDName">
                     <DataGridTemplateColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -145,8 +148,17 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_progress}" Width="Auto" IsReadOnly="True"
-                                               Binding="{Binding Path=localizedProgress}" SortMemberPath="progress">
+                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_progress}" Width="Auto" MinWidth="56" IsReadOnly="True"
+                                               SortMemberPath="progress">
+                    <DataGridTextColumn.Binding>
+                        <MultiBinding Converter="{StaticResource MissionProgressConverter}" Mode="OneWay">
+                            <Binding Path="localizedProgress" />
+                            <Binding Path="communal" />
+                            <Binding Path="communityGoalProgressKnown" />
+                            <Binding Path="communalContribution" />
+                            <Binding Path="communalPercentileBand" />
+                        </MultiBinding>
+                    </DataGridTextColumn.Binding>
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -156,6 +168,8 @@
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Center" />
                             <Setter Property="Padding" Value="5, 0" />
+                            <Setter Property="TextWrapping" Value="Wrap" />
+                            <Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>

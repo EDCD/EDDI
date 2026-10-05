@@ -1093,7 +1093,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public void ProgressFormattingIsCultureAwareAndHiddenAtEndpoints()
+        public void ProgressFormattingIsCultureAwareAndIncludesEndpoints()
         {
             var originalCulture = CultureInfo.CurrentCulture;
             try
@@ -1104,14 +1104,14 @@ namespace Tests
                     amount = 8
                 };
 
-                Assert.AreEqual( string.Empty, mission.localizedProgress );
+                Assert.AreEqual( "0%", mission.localizedProgress );
 
                 mission.delivered = 1;
                 Assert.AreEqual( 12.5M, mission.progress );
                 Assert.AreEqual( "12,5%", mission.localizedProgress );
 
                 mission.delivered = 8;
-                Assert.AreEqual( string.Empty, mission.localizedProgress );
+                Assert.AreEqual( "100%", mission.localizedProgress );
             }
             finally
             {

@@ -132,6 +132,13 @@
   <data name="header_progress" xml:space="preserve">
     <value>Progress</value>
   </data>
+  <data name="progress_cg_format" xml:space="preserve">
+    <value>{0:N0} contributed · {1}% band</value>
+    <comment>Community goal contribution and the reported percentile band. This is not completion percentage.</comment>
+  </data>
+  <data name="header_cg_contribution" xml:space="preserve">
+    <value>Contribution:</value>
+  </data>
   <data name="claimable_tooltip" xml:space="preserve">
     <value>Mission is claimable.</value>
   </data>

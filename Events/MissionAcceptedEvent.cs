@@ -240,6 +240,8 @@ namespace EddiEvents
                                 }
                             }
 
+                            mission.InitializeSightseeingWaypoints( journalDestinationSystems.Length > 0
+                                ? journalDestinationSystems : string.IsNullOrWhiteSpace( destinationsystem ) ? [ ] : [ destinationsystem ] );
                             events.Add( new MissionAcceptedEvent( timestamp, mission )
                             {
                                 JournalDestinationSystems = journalDestinationSystems,
@@ -266,7 +268,13 @@ namespace EddiEvents
 
         public void ResolveDestinations ( IEnumerable<NavWaypoint> destinations )
         {
-            foreach ( var destination in destinations ?? [ ] )
+            var resolved = destinations?.Where( d => d != null ).ToList() ?? [ ];
+            // Lookup results may be cache-first, incomplete, or unordered. Keep the journal's order and denominator.
+            var ordered = JournalDestinationSystems.Length > 0
+                ? JournalDestinationSystems.Select( name => resolved.FirstOrDefault( d =>
+                    string.Equals( d.systemName, name.Trim(), StringComparison.OrdinalIgnoreCase ) ) ).Where( d => d != null )
+                : resolved;
+            foreach ( var destination in ordered )
             {
                 if ( string.IsNullOrEmpty( destination.systemName ) ) { continue; }
 
@@ -274,7 +282,7 @@ namespace EddiEvents
                 Mission.destinationsystems.Add( destination );
             }
 
-            Mission.destinationsystem = Mission.destinationsystems.FirstOrDefault()?.systemName;
+            Mission.destinationsystem = Mission.nextSightseeingSystem ?? Mission.destinationsystems.FirstOrDefault()?.systemName;
         }
     }
 }

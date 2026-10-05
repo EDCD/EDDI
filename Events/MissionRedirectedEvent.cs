@@ -37,6 +37,10 @@ namespace EddiEvents
         [PublicAPI("The old destination system for the mission")]
         public string olddestinationsystem { get; private set; } = olddestinationsystem;
 
+        // A local next-waypoint announcement is not Frontier's objective-completion evidence.
+        [Newtonsoft.Json.JsonIgnore]
+        public bool isWaypointAnnouncement { get; init; }
+
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {
             var missionid = JsonParsing.getULong(data, "MissionID");
