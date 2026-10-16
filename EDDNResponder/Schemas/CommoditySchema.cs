@@ -128,9 +128,8 @@ namespace EddiEddnResponder.Schemas
                 var commodities = JArray.FromObject(marketJson["commodities"]?.ToObject<JArray>()?
                     .Where(c => ApplyFrontierApiMarketFilter(c))
                     .Select(c => FormatCommodity(c.ToObject<JObject>(), false)) ?? new List<JObject>());
-                var prohibitedCommodities = marketJson["prohibited"]?.Children().Values();
-                var economies = marketJson["economies"].Children().Values()
-                    .Select(e => JObject.FromObject(e)).ToList();
+                var prohibitedCommodities = marketJson["prohibited"]?.Children().Values().ToList();
+                var economies = marketJson["economies"].Children().Values().Select(e => JObject.FromObject(e)).ToList();
 
                 // Continue if our commodities list is not empty
                 if (commodities.Any())
@@ -141,8 +140,16 @@ namespace EddiEddnResponder.Schemas
                     data.Add("stationName", stationName);
                     data.Add("marketId", marketID);
                     data.Add("commodities", commodities);
-                    data.Add("economies", economies);
-                    data.Add("prohibited", prohibitedCommodities);
+
+                    // Economies/prohibited must be left out, not sent empty
+                    if ( economies.Count > 0 )
+                    {
+                        data.Add( "economies", economies );
+                    }
+                    if ( prohibitedCommodities?.Count > 0 )
+                    {
+                        data.Add( "prohibited", prohibitedCommodities );
+                    }
 
                     // Add fleet carrier data if applicable
                     if ( fleetCarrierJson != null )
