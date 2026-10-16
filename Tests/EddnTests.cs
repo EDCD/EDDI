@@ -1103,7 +1103,7 @@ namespace Tests
             }
             else
             {
-                Assert.HasCount( 767, modules );
+                Assert.HasCount( 766, modules );
                 Assert.AreEqual( "hpt_cannon_gimbal_huge", module?[ "Name" ].ToString() );
                 Assert.IsTrue( module.ContainsKey( "BuyMercCoinsPrice" ) );
             }
