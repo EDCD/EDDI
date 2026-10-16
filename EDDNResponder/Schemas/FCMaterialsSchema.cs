@@ -30,11 +30,12 @@ namespace EddiEddnResponder.Schemas
                 }
 
                 // Strip localized names
-                data = PersonalDataStripper.Strip(data, edType);
+                var handledData = PersonalDataStripper.Strip(data, edType);
 
                 // Apply data augments
-                data = eddnState.GameVersion.AugmentVersion(data);
+                handledData = eddnState.GameVersion.AugmentVersion( handledData );
 
+                eddnSender.SendToEDDN( "https://eddn.edcd.io/schemas/fcmaterials_journal/1", handledData, eddnState );
                 return true;
             }
             catch (Exception e)
