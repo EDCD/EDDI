@@ -142,11 +142,11 @@ namespace EddiEddnResponder.Schemas
             // Filter items that aren't weapons/utilities (Hpt_*), standard/internal modules (Int_*) or armour (*_Armour_*)
             // and the "Int_PlanetApproachSuite" module (for historical reasons)
             return (
-                       edName.StartsWith("Int_", StringComparison.InvariantCultureIgnoreCase) ||
-                       edName.StartsWith("Hpt_", StringComparison.InvariantCultureIgnoreCase) ||
-                       edName.Contains("_Armour_") || edName.Contains("_armour_")
-                   ) &&
-                   edName != "Int_PlanetApproachSuite";
+                       edName.StartsWith( "Int_", StringComparison.InvariantCultureIgnoreCase ) ||
+                       edName.StartsWith( "Hpt_", StringComparison.InvariantCultureIgnoreCase ) ||
+                       edName.Contains( "_Armour_", StringComparison.InvariantCultureIgnoreCase )
+                   ) && 
+                   !edName.Equals( "Int_PlanetApproachSuite", StringComparison.InvariantCultureIgnoreCase );
         }
 
         private static bool ApplyModuleSkuFilter ( string sku )
