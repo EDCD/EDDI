@@ -11,7 +11,7 @@ namespace EddiDataDefinitions
             new( "Adder", Manufacturer.ZorgonPeterson, "Adder", nameof(Properties.Ship.yourAdder), null, LandingPadSize.Small, null, 0.36M ),
             new( "Anaconda", Manufacturer.FaulconDeLacy, "Anaconda", nameof(Properties.Ship.yourAnaconda), null, LandingPadSize.Large, new Dictionary<string, int> () { { "Military01", 5 } }, 1.07M ),
             new( "Asp", Manufacturer.LakonSpaceways, "Asp Explorer", nameof(Properties.Ship.yourAspEx), null, LandingPadSize.Medium, null, 0.63M ),
-            new( "Asp_Scout", Manufacturer.LakonSpaceways, "Asp Scout", nameof(Properties.Ship.yourAspS), null, LandingPadSize.Medium, null, 0.47M ),
+            new( "Asp_Scout", Manufacturer.LakonSpaceways, "Asp Scout", nameof(Properties.Ship.yourAspS), null, LandingPadSize.Medium, new Dictionary<string, int> () { { "Slot01_Size4", 5 } }, 0.47M ),
             new( "BelugaLiner", Manufacturer.SaudKruger, "Beluga", nameof(Properties.Ship.yourBeluga), [ new Translation( "beluga", "bɪˈluːɡə" ) ], LandingPadSize.Large, null, 0.81M ),
             new( "CobraMkIII", Manufacturer.FaulconDeLacy, "Cobra Mk. III", nameof(Properties.Ship.yourCobraMkIII), [ new Translation( "cobra", "ˈkəʊbrə" ), new Translation( "Mark", "mɑːk" ), new Translation( "3", "θriː" ) ], LandingPadSize.Small, null, 0.49M ),
             new( "CobraMkIV", Manufacturer.FaulconDeLacy, "Cobra Mk. IV", nameof(Properties.Ship.yourCobraMkIV), [ new Translation( "cobra", "ˈkəʊbrə" ), new Translation( "Mark", "mɑːk" ), new Translation( "4", "fɔː" ) ], LandingPadSize.Small, null, 0.51M ),
@@ -33,7 +33,7 @@ namespace EddiDataDefinitions
             new( "Python", Manufacturer.FaulconDeLacy, "Python", nameof(Properties.Ship.yourPython), null, LandingPadSize.Medium, null, 0.83M ),
             new( "Sidewinder", Manufacturer.FaulconDeLacy, "Sidewinder", nameof(Properties.Ship.yourSidewinder), null, LandingPadSize.Small, null, 0.3M ),
             new( "Type6", Manufacturer.LakonSpaceways, "Type-6 Transporter", nameof(Properties.Ship.yourType6), null, LandingPadSize.Medium, null, 0.39M ),
-            new( "Type7", Manufacturer.LakonSpaceways, "Type-7 Transporter", nameof(Properties.Ship.yourType7), null, LandingPadSize.Large, null, 0.52M ),
+            new( "Type7", Manufacturer.LakonSpaceways, "Type-7 Transporter", nameof(Properties.Ship.yourType7), null, LandingPadSize.Large, new Dictionary<string, int> () { { "Slot03_Size5", 6 }, { "Slot05_Size4", 5 }, { "Slot06_Size4", 5 }, { "Slot07_Size2", 3 }, { "Slot08_Size2", 3 } }, 0.52M ),
             new( "Type9", Manufacturer.LakonSpaceways, "Type-9 Heavy", nameof(Properties.Ship.yourType9), null, LandingPadSize.Large, null, 0.77M ),
             new( "Viper", Manufacturer.FaulconDeLacy, "Viper Mk. III", nameof(Properties.Ship.yourViperMkIII), [ new Translation( "Viper", "ˈvaɪpə" ), new Translation( "Mark", "mɑːk" ), new Translation( "3", "θriː" ) ], LandingPadSize.Small, new Dictionary<string, int> () { { "Military01", 3 } }, 0.41M ),
             new( "Viper_MkIV", Manufacturer.FaulconDeLacy, "Viper Mk. IV", nameof(Properties.Ship.yourViperMkIV), [ new Translation( "Viper", "ˈvaɪpə" ), new Translation( "Mark", "mɑːk" ), new Translation( "4", "fɔː" ) ], LandingPadSize.Small, new Dictionary<string, int> () { { "Military01", 3 } }, 0.46M ),
@@ -54,7 +54,8 @@ namespace EddiDataDefinitions
             new( "LakonMiner", Manufacturer.LakonSpaceways, "Type-11 Prospector", nameof(Properties.Ship.yourType11), null, LandingPadSize.Medium, new Dictionary<string, int> () { { "LimpetController01", 5 } }, 0.60M ),
             new( "explorer_nx", Manufacturer.ZorgonPeterson, "Caspian Explorer", nameof(Properties.Ship.yourCaspianExplorer), null, LandingPadSize.Large, null, 1.14M ),
             new( "smallcombat01_nx", Manufacturer.CoreDynamics, "Kestrel Mk. II", nameof(Properties.Ship.yourKestrelMkII), [ new Translation( "Kestrel", "ˈkɛstɹəl" ), new Translation( "Mark", "mɑːk" ), new Translation( "2", "ˈtuː" ) ], LandingPadSize.Small, new Dictionary<string, int> () { { "Military01", 4 } }, 0.61M ), 
-            new( "mediumtransport01", Manufacturer.ZorgonPeterson, "Lynx Highliner", nameof(Properties.Ship.yourLynxHighliner), null, LandingPadSize.Medium, new Dictionary<string, int> () { { "Passenger01", 6 }, { "Passenger02", 6 }, { "Passenger03", 5 } }, 0.75M )
+            new( "mediumtransport01", Manufacturer.ZorgonPeterson, "Lynx Highliner", nameof(Properties.Ship.yourLynxHighliner), null, LandingPadSize.Medium, new Dictionary<string, int> () { { "Passenger01", 6 }, { "Passenger02", 6 }, { "Passenger03", 5 } }, 0.75M ),
+            new( "AnacondaMkII", Manufacturer.FaulconDeLacy, "Anaconda Mk. II", nameof(Properties.Ship.yourAnacondaMkII), null, LandingPadSize.Large, new Dictionary<string, int> () { { "Cargo01", 6 }, { "Military01", 5 }, { "Military02", 5 } }, 1.08M ),
         ];
 
         public static readonly SortedSet<string> ShipModels = new(AllOfThem.Select(ship => ship.model));

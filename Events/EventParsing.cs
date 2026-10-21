@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Utilities;
 
 namespace EddiEvents
@@ -525,15 +526,10 @@ namespace EddiEvents
         {
             var compartment = new Compartment() { name = slot };
 
-            // Standard compartment slots are in the form of "SlotNN_SizeN"
-            var matches = GeneratedRegex.ShipSlotSizeRegex().Match(compartment.name);
-            if ( matches.Success )
-            {
-                compartment.size = int.Parse( matches.Groups[ 2 ].Value );
-            }
-
-            // Specialty slots are in the form of "CargoNN", "MilitaryNN", "PassengerNN", or "LimpetControllerNN"
-            else if ( GeneratedRegex.ShipSpecialtySlotRegex().IsMatch( compartment.name ) )
+            // Specialty slots are in the form of "CargoNN", "MilitaryNN", "PassengerNN", "LimpetControllerNN", or "SlotNN_SizeN"
+            // "SlotNN_SizeN" added to ships in game version 4.4.2.0 deviate from the prior rule / expected naming convention and
+            // have slot sizes that are no longer directly derivable from the slot name, consequently they need to be treated as specialty slots. 
+            if ( GeneratedRegex.ShipSpecialtySlotRegex().IsMatch( compartment.name ) )
             {
                 var specialtySlotSizes = ShipDefinitions.FromEDModel(shipEDName, false)?.specialtySlotSizes;
                 if ( specialtySlotSizes != null && specialtySlotSizes.TryGetValue( slot, out var slotSize ) )
@@ -544,6 +540,12 @@ namespace EddiEvents
                 {
                     Logging.Error( $"Unexpected specialty slot '{slot}' observed in ship edName '{shipEDName}'." );
                 }
+            }
+
+            // Standard compartment slots with sizes that can be derived from the name are always in the form of "SlotNN_SizeN"
+            else if ( GeneratedRegex.ShipSlotSizeRegex().Match( compartment.name ) is Match matches && matches.Success )
+            {
+                compartment.size = int.Parse( matches.Groups[ 2 ].Value );
             }
 
             // Additional slots are reserved for core modules and various cosmetics.
