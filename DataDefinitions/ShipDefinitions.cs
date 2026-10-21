@@ -28,7 +28,7 @@ namespace EddiDataDefinitions
             new( "Cutter", Manufacturer.Gutamaya, "Imperial Cutter", nameof(Properties.Ship.yourImpCutter), null, LandingPadSize.Large, new Dictionary<string, int> () { { "Military01", 5 }, { "Military02", 5 } }, 1.16M ),
             new( "Empire_Eagle", Manufacturer.Gutamaya, "Imperial Eagle", nameof(Properties.Ship.yourImpEagle), null, LandingPadSize.Small, new Dictionary<string, int> () { { "Military01", 2 } }, 0.37M ),
             new( "Hauler", Manufacturer.ZorgonPeterson, "Hauler", nameof(Properties.Ship.yourHauler), null, LandingPadSize.Small, null, 0.25M ),
-            new( "Independant_Trader", Manufacturer.LakonSpaceways, "Keelback", nameof(Properties.Ship.yourKeelback), null, LandingPadSize.Medium, null, 0.39M ),
+            new( "Independant_Trader", Manufacturer.LakonSpaceways, "Keelback", nameof(Properties.Ship.yourKeelback), null, LandingPadSize.Medium, new Dictionary<string, int> () { { "Slot03_Size3", 4 } }, 0.39M ),
             new( "Orca", Manufacturer.SaudKruger, "Orca", nameof(Properties.Ship.yourOrca), null, LandingPadSize.Large, null, 0.79M ),
             new( "Python", Manufacturer.FaulconDeLacy, "Python", nameof(Properties.Ship.yourPython), null, LandingPadSize.Medium, null, 0.83M ),
             new( "Sidewinder", Manufacturer.FaulconDeLacy, "Sidewinder", nameof(Properties.Ship.yourSidewinder), null, LandingPadSize.Small, null, 0.3M ),
