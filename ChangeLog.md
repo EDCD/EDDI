@@ -4,6 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ## 5.0.6
   * Core
+    * Defer body mapping notifications briefly so matching SAA surface signals can be processed first, with a fallback when no signals arrive.
     * Add support for the new "Rhino" mining SRV.
     * Fixed EDDI failing to verbally announce new EDDI releases when EDDI starts up.
     * Various bug fixes from telemetry.
