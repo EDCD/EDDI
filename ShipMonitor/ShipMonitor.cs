@@ -607,8 +607,7 @@ namespace EddiShipMonitor
 
                 // Internal + restricted modules
                 ship.compartments = @event.compartments
-                    .Where( c =>
-                        c.name.StartsWith( "Slot" ) || GeneratedRegex.ShipSpecialtySlotRegex().IsMatch( c.name ) )
+                    .Where( c => IsInternalCompartment(ship, c.name) )
                     .ToList();
 
                 // Hardpoints
@@ -1093,7 +1092,7 @@ namespace EddiShipMonitor
                                         break;
                                 }
 
-                                if ( slot.Contains( "Slot" ) || GeneratedRegex.ShipSpecialtySlotRegex().IsMatch( slot ) )
+                                if ( IsInternalCompartment(ship, slot) )
                                 {
                                     var compartment = ship.compartments.FirstOrDefault( c => c.name == slot );
                                     if ( compartment != null )
@@ -1657,7 +1656,7 @@ namespace EddiShipMonitor
                             hardpoint.module = module;
                             sortHardpoints( ship );
                         }
-                        else if ( slot.Contains( "Slot" ) || GeneratedRegex.ShipSpecialtySlotRegex().IsMatch(slot) )
+                        else if ( IsInternalCompartment( ship, slot ) )
                         {
                             // This is a compartment
                             var compartment = ship.compartments.FirstOrDefault( c => c.name == slot );
@@ -1728,7 +1727,7 @@ namespace EddiShipMonitor
                         {
                             return ship.hardpoints.FirstOrDefault( h => h.name.Equals( slot, StringComparison.OrdinalIgnoreCase ) )?.module;
                         }
-                        if ( slot.Contains( "Slot" ) || ship.specialtySlotSizes.ContainsKey( slot ) )
+                        if ( IsInternalCompartment( ship, slot ) )
                         {
                             // This is a compartment
                             return ship.compartments.FirstOrDefault( c => c.name == slot )?.module;
@@ -1770,19 +1769,26 @@ namespace EddiShipMonitor
         {
             if ( !string.IsNullOrEmpty( slot ) )
             {
-                // Standard compartment slots are in the form of "SlotNN_SizeN"
-                var match = GeneratedRegex.ShipSlotSizeRegex().Match(slot);
-                if ( match.Success )
-                {
-                    return int.Parse( match.Groups[ 2 ].Value );
-                }
-                else if ( specialtySlotSizes.TryGetValue( slot, out var size ) )
+                // Lookup specialty / nonstandard compart sizes first. 
+                if ( specialtySlotSizes.TryGetValue( slot, out var size ) )
                 {
                     return size;
+                }
+
+                // Standard compartment slots are in the form of "SlotNN_SizeN"
+                if ( GeneratedRegex.ShipSlotSizeRegex().Match( slot ) is System.Text.RegularExpressions.Match match && match.Success )
+                {
+                    return int.Parse( match.Groups[ 2 ].Value );
                 }
             }
             // Compartment size could not be determined
             throw new ArgumentException( $"Ship compartment slot size could not be determined for slot {slot}." );
+        }
+
+        static bool IsInternalCompartment ( Ship ship, string slot )
+        {
+            return ship.specialtySlotSizes.ContainsKey( slot )
+                || GeneratedRegex.ShipSlotSizeRegex().IsMatch( slot );
         }
 
         private static void sortHardpoints(Ship ship)
@@ -1909,7 +1915,7 @@ namespace EddiShipMonitor
 
                                 ship.hardpoints = hardpoints;
                             }
-                            else if ( slot.Contains( "Slot" ) || GeneratedRegex.ShipSpecialtySlotRegex().IsMatch( slot ) )
+                            else if ( IsInternalCompartment( ship, slot ) )
                             {
                                 // Build new list of ship compartments, excepting sold/stored compartment
                                 var compartments = new List<Compartment>();

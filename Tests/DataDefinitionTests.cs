@@ -16,6 +16,35 @@ namespace Tests
     public class DataDefinitionTests : TestBase
     {
         [TestMethod]
+        [DataRow( "Anaconda", "Slot01_Size7", 7 )]
+        [DataRow( "Asp_Scout", "Slot02_Size3", 3 )]
+        [DataRow( "UnknownShip", "Slot01_Size4", 4 )]
+        [DataRow( "AnacondaMkII", "Cargo01", 6 )]
+        [DataRow( "AnacondaMkII", "Military01", 5 )]
+        [DataRow( "AnacondaMkII", "Military02", 5 )]
+        [DataRow( "mediumtransport01", "Passenger01", 6 )]
+        [DataRow( "LakonMiner", "LimpetController01", 5 )]
+        [DataRow( "LakonMiner", "FighterBay01", 5 )]
+        [DataRow( "Asp_Scout", "Slot01_Size4", 5 )]
+        [DataRow( "Type7", "Slot03_Size5", 6 )]
+        [DataRow( "Type7", "Slot05_Size4", 5 )]
+        [DataRow( "Type7", "Slot06_Size4", 5 )]
+        [DataRow( "Type7", "Slot07_Size2", 3 )]
+        [DataRow( "Type7", "Slot08_Size2", 3 )]
+        [DataRow( "Independant_Trader", "Slot03_Size3", 4 )]
+        [DataRow( "Anaconda", "Military02", 0 )]
+        [DataRow( "UnknownShip", "Military01", 0 )]
+        [DataRow( "Anaconda", "PowerPlant", 0 )]
+        [DataRow( "Anaconda", "PaintJob", 0 )]
+        public void ShipCompartment_ResolvesStandardSpecialtyAndAnomalousSlots ( string ship, string slot, int expectedSize )
+        {
+            var compartment = EventParsing.ShipCompartment( ship, slot );
+
+            Assert.AreEqual( slot, compartment.name );
+            Assert.AreEqual( expectedSize, compartment.size );
+        }
+
+        [TestMethod]
         public void TestDataDefinitionReactiveArmour()
         {
             var commodity = CommodityDefinition.FromEDName("$ReactiveArmour_Name;");
@@ -1015,8 +1044,6 @@ namespace Tests
             Assert.IsNotNull(type11);
             Assert.IsTrue(type11.specialtySlotSizes.TryGetValue("LimpetController01", out var t11Size));
             Assert.AreEqual(5, t11Size);
-
-            Assert.IsTrue(Utilities.GeneratedRegex.ShipSpecialtySlotRegex().IsMatch("LimpetController01"));
 
             var compartment11 = EventParsing.ShipCompartment("LakonMiner", "LimpetController01");
             Assert.IsNotNull(compartment11);

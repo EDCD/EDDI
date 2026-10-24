@@ -88,9 +88,6 @@ namespace Utilities
         [GeneratedRegex( @"Slot([0-9]{1,2})_Size([0-9]+)", RegexOptions.Compiled )]
         public static partial Regex ShipSlotSizeRegex ();
 
-        [GeneratedRegex( @"(Cargo|Military|Passenger|LimpetController)([0-9]{2})", RegexOptions.Compiled )]
-        public static partial Regex ShipSpecialtySlotRegex ();
-
         [GeneratedRegex( @"(<.+?src="")(.:)(.*?\/>)", RegexOptions.Compiled )]
         public static partial Regex SrcFixRegex ();
 

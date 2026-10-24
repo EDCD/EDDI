@@ -526,26 +526,22 @@ namespace EddiEvents
         {
             var compartment = new Compartment() { name = slot };
 
-            // Specialty slots are in the form of "CargoNN", "MilitaryNN", "PassengerNN", "LimpetControllerNN", or "SlotNN_SizeN"
-            // "SlotNN_SizeN" added to ships in game version 4.4.2.0 deviate from the prior rule / expected naming convention and
-            // have slot sizes that are no longer directly derivable from the slot name, consequently they need to be treated as specialty slots. 
-            if ( GeneratedRegex.ShipSpecialtySlotRegex().IsMatch( compartment.name ) )
+            // Ship-specific definitions take precedence, including standard-looking slots whose names
+            // no longer reflect their sizes following the game version 4.4.2.0 changes.
+            var specialtySlotSizes = ShipDefinitions.FromEDModel( shipEDName, false )?.specialtySlotSizes;
+            if ( specialtySlotSizes != null && specialtySlotSizes.TryGetValue( slot, out var slotSize ) )
             {
-                var specialtySlotSizes = ShipDefinitions.FromEDModel(shipEDName, false)?.specialtySlotSizes;
-                if ( specialtySlotSizes != null && specialtySlotSizes.TryGetValue( slot, out var slotSize ) )
-                {
-                    compartment.size = slotSize;
-                }
-                else
-                {
-                    Logging.Error( $"Unexpected specialty slot '{slot}' observed in ship edName '{shipEDName}'." );
-                }
+                compartment.size = slotSize;
             }
-
-            // Standard compartment slots with sizes that can be derived from the name are always in the form of "SlotNN_SizeN"
-            else if ( GeneratedRegex.ShipSlotSizeRegex().Match( compartment.name ) is Match matches && matches.Success )
+            else if ( GeneratedRegex.ShipSlotSizeRegex().Match( compartment.name ) is Match match && match.Success )
             {
-                compartment.size = int.Parse( matches.Groups[ 2 ].Value );
+                // Standard compartment slots with sizes that can be derived from the name are always in the form of "SlotNN_SizeN"
+                compartment.size = int.Parse( match.Groups[ 2 ].Value );
+            }
+            else if ( slot is not "CargoHatch" and not "ShipCockpit" )
+            {
+                Logging.Error(
+                    $"Unrecognized ship compartment slot '{slot}' observed in ship edName '{shipEDName}'." );
             }
 
             // Additional slots are reserved for core modules and various cosmetics.
