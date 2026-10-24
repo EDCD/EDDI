@@ -357,6 +357,71 @@ namespace Tests
             }
         }
 
+        [TestMethod, DoNotParallelize]
+        [DataRow( "JournalAlpha.log", "4.4.2.0", "r123/r0", true )]
+        [DataRow( "JournalBeta.log", "4.4.2.0", "r123/r0", true )]
+        [DataRow( "Journal.log", "4.4.2.0 Alpha", "r123/r0", true )]
+        [DataRow( "Journal.log", "4.4.2.0 Beta", "r123/r0", true )]
+        [DataRow( "Journal.log", "2.2", "r121645/r0", true )]
+        [DataRow( "Journal.log", "2.2", "r129516/r0", true )]
+        [DataRow( "Journal.log", "2.2", "r131487/r0", false )]
+        [DataRow( "Journal.log", "2.2.0.0", "r121645/r0", false )]
+        [DataRow( "Journal.log", "12.2", "r121645/r0", false )]
+        [DataRow( "Journal.log", "2.2", "r121645/r01", false )]
+        [DataRow( "Journal.log", "2.2", "prefix-r129516/r0", false )]
+        [DataRow( "Journal.log", "4.4.2.0", "r123/r0", false )]
+        public async Task EddiEventProcessor_FileHeader_MatchesBetaMarkersAndExactHistoricalPairs (
+            string filename, string version, string build, bool expectedBeta )
+        {
+            var originalCapiGameIsBeta = EddiCompanionAppService.CompanionAppService.Instance.gameIsBeta;
+            var context = new TestEddiEventProcessorContext();
+            using var processor = new EddiEventProcessor( context );
+            // A release header must also clear beta state left by an earlier header.
+            context.GameStateOwner.gameIsBeta = !expectedBeta;
+            EddiCompanionAppService.CompanionAppService.Instance.gameIsBeta = !expectedBeta;
+
+            try
+            {
+                var passEvent = await processor.ProcessEventAsync(
+                    new FileHeaderEvent( DateTime.UtcNow, filename, version, build ) ).ConfigureAwait( false );
+
+                Assert.IsTrue( passEvent );
+                Assert.AreEqual( expectedBeta, context.GameStateOwner.gameIsBeta );
+                Assert.AreEqual( expectedBeta, EddiCompanionAppService.CompanionAppService.Instance.gameIsBeta );
+            }
+            finally
+            {
+                EddiCompanionAppService.CompanionAppService.Instance.gameIsBeta = originalCapiGameIsBeta;
+            }
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task EddiEventProcessor_FileHeader_ReusedVersionAndBuildDoNotIdentifyBeta ()
+        {
+            var originalCapiGameIsBeta = EddiCompanionAppService.CompanionAppService.Instance.gameIsBeta;
+            var context = new TestEddiEventProcessorContext();
+            using var processor = new EddiEventProcessor( context );
+
+            try
+            {
+                // Representative shared IDs: the explicit marker is the only distinguishing evidence.
+                const string version = "4.4.2.0";
+                const string build = "r123/r0";
+                await processor.ProcessEventAsync( new FileHeaderEvent( DateTime.UtcNow,
+                    "JournalBeta.log", version, build ) ).ConfigureAwait( false );
+                Assert.IsTrue( context.GameStateOwner.gameIsBeta );
+
+                await processor.ProcessEventAsync( new FileHeaderEvent( DateTime.UtcNow,
+                    "Journal.log", version, build ) ).ConfigureAwait( false );
+                Assert.IsFalse( context.GameStateOwner.gameIsBeta );
+                Assert.IsFalse( EddiCompanionAppService.CompanionAppService.Instance.gameIsBeta );
+            }
+            finally
+            {
+                EddiCompanionAppService.CompanionAppService.Instance.gameIsBeta = originalCapiGameIsBeta;
+            }
+        }
+
         [TestMethod]
         public async Task EddiEventProcessor_Died_ClearsDeployedVessels ()
         {
