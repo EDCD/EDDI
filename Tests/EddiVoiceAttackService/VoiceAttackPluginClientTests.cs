@@ -40,44 +40,29 @@ namespace Tests.EddiVoiceAttackService
         [TestCleanup]
         public async Task Cleanup()
         {
-            if (_pluginClient != null)
+            try
+            {
+                if ( _pluginClient is { IsConnected: true } )
+                {
+                    await _pluginClient.DisconnectAsync( CancellationToken.None );
+                }
+            }
+            finally
             {
                 try
                 {
-                    if (_pluginClient.IsConnected)
+                    _pluginClient?.Dispose();
+                }
+                finally
+                {
+                    try { _server?.Dispose(); }
+                    finally
                     {
-                        await _pluginClient.DisconnectAsync( TestContext.CancellationToken );
+                        if ( File.Exists( _configFilePath ) )
+                        {
+                            File.Delete( _configFilePath );
+                        }
                     }
-                    _pluginClient.Dispose();
-                }
-                catch
-                {
-                    // Ignore cleanup errors
-                }
-            }
-
-            if (_server != null)
-            {
-                try
-                {
-                    await _server.StopAsync( TestContext.CancellationToken );
-                }
-                catch
-                {
-                    // Ignore cleanup errors
-                }
-            }
-
-            // Clean up config file
-            if (File.Exists(_configFilePath))
-            {
-                try
-                {
-                    File.Delete(_configFilePath);
-                }
-                catch
-                {
-                    // Ignore cleanup errors
                 }
             }
         }
@@ -165,27 +150,23 @@ namespace Tests.EddiVoiceAttackService
 
         [TestMethod]
         [Timeout( 15000, CooperativeCancellation = true )]
-        public async Task Initialize_WithInvalidPort_ThrowsException()
+        public async Task Initialize_WithInvalidPort_ThrowsWrappedArgumentException()
         {
-            // Arrange
-            var configPath = Path.Combine(Path.GetTempPath(), "invalid_port_config.json");
+            var configPath = Path.Combine(Path.GetTempPath(), $"invalid_port_config_{Guid.NewGuid():N}.json");
             var config = new { port = 99999 }; // Invalid port
             File.WriteAllText(configPath, JsonSerializer.Serialize(config));
-            var pluginClient = new VoiceAttackPluginClient(configPath);
+            using var pluginClient = new VoiceAttackPluginClient(configPath);
 
             // Act & Assert
             try
             {
-                await pluginClient.InitializeAsync( TestContext.CancellationToken );
-                Assert.Fail("Should have thrown exception");
-            }
-            catch (Exception)
-            {
-                // Expected - connection should fail
+                var exception = await Assert.ThrowsExactlyAsync<InvalidOperationException>( () =>
+                    pluginClient.InitializeAsync( TestContext.CancellationToken ) );
+                Assert.IsInstanceOfType<ArgumentException>( exception.InnerException );
+                Assert.IsFalse( pluginClient.IsConnected );
             }
             finally
             {
-                pluginClient.Dispose();
                 if (File.Exists(configPath))
                 {
                     File.Delete(configPath);
@@ -199,18 +180,13 @@ namespace Tests.EddiVoiceAttackService
         {
             // Arrange
             Assert.IsNotNull(_pluginClient);
-            var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(50));
+            using var cts = new CancellationTokenSource();
+            cts.Cancel();
 
-            // Act & Assert
-            try
-            {
-                await _pluginClient.InitializeAsync(cts.Token);
-                // May or may not cancel depending on timing
-            }
-            catch (OperationCanceledException)
-            {
-                // Also acceptable
-            }
+            await Assert.ThrowsAsync<OperationCanceledException>( () =>
+                _pluginClient.InitializeAsync( cts.Token ) );
+
+            Assert.IsFalse( _pluginClient.IsConnected );
         }
 
         #endregion
@@ -241,6 +217,7 @@ namespace Tests.EddiVoiceAttackService
         [Timeout( 15000, CooperativeCancellation = true )]
         public async Task SendCommandAsync_WhenInitialized_SendsCommandThroughIpc()
         {
+            using var commandTimeout = new CancellationTokenSource( TimeSpan.FromSeconds( 5 ) );
             // Arrange
             Assert.IsNotNull(_pluginClient);
             Assert.IsNotNull(_server);
@@ -249,7 +226,7 @@ namespace Tests.EddiVoiceAttackService
 
             // Act
             var task = _pluginClient.SendCommandAsync("enable_monitor", new { monitor = "journal" }, 
-                new CancellationTokenSource(TimeSpan.FromSeconds(5)).Token);
+                commandTimeout.Token);
 
             // Give server time to receive
             await Task.Delay(100, TestContext.CancellationToken );
@@ -266,7 +243,7 @@ namespace Tests.EddiVoiceAttackService
             // Arrange
             Assert.IsNotNull(_pluginClient);
             await _pluginClient.InitializeAsync( TestContext.CancellationToken );
-            var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(50));
+            using var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(50));
 
             // Act & Assert
             try
@@ -304,13 +281,14 @@ namespace Tests.EddiVoiceAttackService
         [Timeout(15000, CooperativeCancellation = true)]
         public async Task SendCommandAsync_WithNullParameters_UsesEmptyObject()
         {
+            using var commandTimeout = new CancellationTokenSource( TimeSpan.FromSeconds( 5 ) );
             // Arrange
             Assert.IsNotNull(_pluginClient);
             await _pluginClient.InitializeAsync( TestContext.CancellationToken );
 
             // Act
             var task = _pluginClient.SendCommandAsync("test.command", null, 
-                new CancellationTokenSource(TimeSpan.FromSeconds(5)).Token);
+                commandTimeout.Token);
 
             // Give server time to receive
             await Task.Delay(100, TestContext.CancellationToken );

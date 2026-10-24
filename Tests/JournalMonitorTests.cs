@@ -1,4 +1,4 @@
-﻿using EddiCore;
+using EddiCore;
 using EddiCore.EventHandling;
 using EddiDataDefinitions;
 using EddiEvents;
@@ -828,7 +828,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public void TestJournalJumpedEvent2()
+        public void FsdJumpInUnpopulatedSystemWithoutFactionDataUsesNoneState()
         {
             // Test for unpopulated system
             var line = @"{
@@ -851,37 +851,6 @@ namespace Tests
                 ""FuelUsed"": 4.271171,
                 ""FuelLevel"": 27.728828
             }";
-            var events = JournalMonitor.ParseJournalEntry(line);
-            Assert.HasCount( 1, events );
-            var jumpedEvent = (JumpedEvent)events[0];
-            Assert.AreEqual("None", jumpedEvent.factionstate);
-        }
-
-        [TestMethod]
-        public void TestJournalJumpedEventFactionStateNull()
-        {
-            // Test for unpopulated system
-            var line = @"{
-                ""timestamp"": ""2018-10-17T00:40:45Z"",
-                ""event"": ""FSDJump"",
-                ""StarSystem"": ""Wredguia WD-K d8-65"",
-                ""SystemAddress"": 2243793258827,
-                ""StarPos"": [-319.15625,10.37500,-332.31250],
-                ""SystemAllegiance"": """",
-                ""SystemEconomy"": ""$economy_None;"",
-                ""SystemEconomy_Localised"": ""None"",
-                ""SystemSecondEconomy"": ""$economy_None;"",
-                ""SystemSecondEconomy_Localised"": ""None"",
-                ""SystemGovernment"": ""$government_None;"",
-                ""SystemGovernment_Localised"": ""None"",
-                ""SystemSecurity"": ""$GAlAXY_MAP_INFO_state_anarchy;"",
-                ""SystemSecurity_Localised"": ""Anarchy"",
-                ""Population"": 0,
-                ""JumpDist"": 24.230,
-                ""FuelUsed"": 4.271171,
-                ""FuelLevel"": 27.728828
-            }";
-
             var events = JournalMonitor.ParseJournalEntry(line);
             Assert.HasCount( 1, events );
             var jumpedEvent = (JumpedEvent)events[0];

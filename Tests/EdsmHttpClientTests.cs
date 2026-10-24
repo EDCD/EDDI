@@ -1,69 +1,110 @@
+using EddiStarMapService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
+using System;
+using System.Net;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Utilities;
 
 namespace Tests
 {
     [TestClass, TestCategory( "UnitTests" )]
-    public class EdsmHttpClientTests : TestBase
+    public class EdsmHttpClientTests
     {
         [TestMethod]
-        public async Task GetAsync_WithValidUrl_ReturnsResponseContent ()
+        [DataRow( false, "{\"result\":\"success\"}" )]
+        [DataRow( true, "{\"result\":\"success\"}" )]
+        [DataRow( false, "" )]
+        [DataRow( true, "" )]
+        public async Task RequestReturnsResponseAndSendsExpectedHeadersAndContent( bool post, string response )
         {
-            // Arrange
-            var url = "https://www.edsm.net/api/v1/systems";
-            var expectedContent = "{\"result\":\"success\"}";
-            FakeEdsmHttpClient.Expect( url, expectedContent );
+            const string url = "https://edsm.example.test/data";
+            const string body = "{\"commanderName\":\"TestCmdr\"}";
+            using var handler = new RecordingHandler( response );
+            using var httpClient = new HttpClient( handler );
+            var client = new StarMapService.EdsmHttpClient( httpClient );
+            using var content = new StringContent( body );
 
-            // Act
-            var result = await FakeEdsmHttpClient.GetAsync(url, CancellationToken.None).ConfigureAwait(false);
+            var result = post
+                ? await client.PostAsync( url, content, CancellationToken.None )
+                : await client.GetAsync( url, CancellationToken.None );
 
-            // Assert
-            Assert.IsNotNull( result );
-            Assert.AreEqual( expectedContent, result );
+            Assert.AreEqual( response, result );
+            Assert.AreEqual( 1, handler.Attempts );
+            Assert.AreEqual( post ? HttpMethod.Post : HttpMethod.Get, handler.Method );
+            Assert.AreEqual( new Uri( url ), handler.Uri );
+            Assert.AreEqual( post ? body : null, handler.Body );
+            Assert.AreEqual( $"{Constants.EDDI_NAME}/{Constants.EDDI_VERSION}", handler.UserAgent );
+            Assert.AreEqual( "application/json", handler.Accept );
         }
 
         [TestMethod]
-        public async Task PostAsync_WithValidUrlAndContent_ReturnsResponseContent ()
+        [DataRow( false )]
+        [DataRow( true )]
+        public async Task HttpFailureReturnsNull( bool post )
         {
-            // Arrange
-            var url = "https://www.edsm.net/api/v1/profile";
-            var expectedContent = "{\"cmdName\":\"TestCmdr\"}";
-            FakeEdsmHttpClient.Expect( url, expectedContent );
+            using var handler = new RecordingHandler( "missing", HttpStatusCode.NotFound );
+            using var httpClient = new HttpClient( handler );
+            var client = new StarMapService.EdsmHttpClient( httpClient );
+            using var content = new StringContent( "{}" );
 
-            // Act
-            var result = await FakeEdsmHttpClient.PostAsync(url, null, CancellationToken.None).ConfigureAwait(false);
+            var result = post
+                ? await client.PostAsync( "https://edsm.example.test/missing", content, CancellationToken.None )
+                : await client.GetAsync( "https://edsm.example.test/missing", CancellationToken.None );
 
-            // Assert
-            Assert.IsNotNull( result );
-            Assert.AreEqual( expectedContent, result );
+            Assert.IsNull( result );
+            Assert.AreEqual( 1, handler.Attempts );
         }
 
         [TestMethod]
-        public async Task GetAsync_WithUnregisteredUrl_ThrowsKeyNotFoundException ()
+        [DataRow( false )]
+        [DataRow( true )]
+        public async Task CancellationDuringRequestReturnsNull( bool post )
         {
-            // Arrange
-            var url = "https://www.edsm.net/api/v1/unknown";
+            using var cts = new CancellationTokenSource();
+            using var handler = new RecordingHandler( "", onSend: cts.Cancel );
+            using var httpClient = new HttpClient( handler );
+            var client = new StarMapService.EdsmHttpClient( httpClient );
+            using var content = new StringContent( "{}" );
 
-            // Act & Assert
-            await Assert.ThrowsExactlyAsync<KeyNotFoundException>( () =>
-                FakeEdsmHttpClient.GetAsync( url, CancellationToken.None ) ).ConfigureAwait( false );
+            var result = post
+                ? await client.PostAsync( "https://edsm.example.test/cancel", content, cts.Token )
+                : await client.GetAsync( "https://edsm.example.test/cancel", cts.Token );
+
+            Assert.IsNull( result );
+            Assert.IsTrue( cts.IsCancellationRequested );
+            Assert.AreEqual( 1, handler.Attempts );
         }
 
-        [TestMethod]
-        public async Task GetAsync_WithEmptyResponse_ReturnsEmptyString ()
+        private sealed class RecordingHandler(
+            string response,
+            HttpStatusCode status = HttpStatusCode.OK,
+            Action onSend = null ) : HttpMessageHandler
         {
-            // Arrange
-            var url = "https://www.edsm.net/api/v1/systems";
-            FakeEdsmHttpClient.Expect( url, "" );
+            internal int Attempts { get; private set; }
+            internal HttpMethod Method { get; private set; }
+            internal Uri Uri { get; private set; }
+            internal string Body { get; private set; }
+            internal string UserAgent { get; private set; }
+            internal string Accept { get; private set; }
 
-            // Act
-            var result = await FakeEdsmHttpClient.GetAsync(url, CancellationToken.None).ConfigureAwait(false);
-
-            // Assert
-            Assert.IsNotNull( result );
-            Assert.AreEqual( "", result );
+            protected override async Task<HttpResponseMessage> SendAsync(
+                HttpRequestMessage request, CancellationToken cancellationToken )
+            {
+                Attempts++;
+                Method = request.Method;
+                Uri = request.RequestUri;
+                Body = request.Content is null ? null : await request.Content.ReadAsStringAsync( cancellationToken );
+                UserAgent = request.Headers.UserAgent.ToString();
+                Accept = request.Headers.Accept.ToString();
+                onSend?.Invoke();
+                if ( cancellationToken.IsCancellationRequested )
+                {
+                    throw new TaskCanceledException( "Test request cancelled", null, cancellationToken );
+                }
+                return new HttpResponseMessage( status ) { Content = new StringContent( response ) };
+            }
         }
     }
 }

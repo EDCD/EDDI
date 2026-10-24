@@ -100,8 +100,7 @@
         </EmbeddedResource>
     </ItemGroup>
     <ItemGroup>
-        <None Include="..\BuildSecrets\BuildSecrets.csproj;..\BuildSecrets\BuildInjectedSecrets.cs;..\BuildSecrets\EddnSigning.targets"
-              Link="BuildSecretsFixture\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+        <None Include="..\BuildSecrets\BuildSecrets.csproj;..\BuildSecrets\BuildInjectedSecrets.cs;..\BuildSecrets\EddnSigning.targets" Link="BuildSecretsFixture\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
     <Choose>
         <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
