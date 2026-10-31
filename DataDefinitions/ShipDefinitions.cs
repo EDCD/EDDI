@@ -55,7 +55,7 @@ namespace EddiDataDefinitions
             new( "explorer_nx", Manufacturer.ZorgonPeterson, "Caspian Explorer", nameof(Properties.Ship.yourCaspianExplorer), null, LandingPadSize.Large, null, 1.14M ),
             new( "smallcombat01_nx", Manufacturer.CoreDynamics, "Kestrel Mk. II", nameof(Properties.Ship.yourKestrelMkII), [ new Translation( "Kestrel", "ˈkɛstɹəl" ), new Translation( "Mark", "mɑːk" ), new Translation( "2", "ˈtuː" ) ], LandingPadSize.Small, new Dictionary<string, int> () { { "Military01", 4 } }, 0.61M ), 
             new( "mediumtransport01", Manufacturer.ZorgonPeterson, "Lynx Highliner", nameof(Properties.Ship.yourLynxHighliner), null, LandingPadSize.Medium, new Dictionary<string, int> () { { "Passenger01", 6 }, { "Passenger02", 6 }, { "Passenger03", 5 } }, 0.75M ),
-            new( "AnacondaMkII", Manufacturer.FaulconDeLacy, "Anaconda Mk. II", nameof(Properties.Ship.yourAnacondaMkII), null, LandingPadSize.Large, new Dictionary<string, int> () { { "Cargo01", 6 }, { "Military01", 5 }, { "Military02", 5 } }, 1.08M ),
+            new( "AnacondaMkII", Manufacturer.FaulconDeLacy, "Anaconda Mk. II", nameof(Properties.Ship.yourAnacondaMkII), [ new Translation( "Anaconda", "ˌænəˈkɒndə" ), new Translation( "Mark", "mɑːk" ), new Translation( "2", "ˈtuː" ) ], LandingPadSize.Large, new Dictionary<string, int> () { { "Cargo01", 6 }, { "Military01", 5 }, { "Military02", 5 } }, 1.08M ),
         ];
 
         public static readonly SortedSet<string> ShipModels = new(AllOfThem.Select(ship => ship.model));
