@@ -184,6 +184,7 @@ var
   VoiceAttackPluginDirText: TNewStaticText;
   VoiceAttackAppsBrowseButton: TNewButton;
   SelectedVoiceAttackAppsDir: string;
+  CleanupFailureDetails: string;
 
 function NormalizePath(const S: string): string;
 begin
@@ -999,10 +1000,19 @@ begin
     RegisterCloseResource(Dir);
 end;
 
+procedure RecordCleanupFailure(const Details: string);
+begin
+  Log(Details);
+  { Show the first failure to keep the dialog readable; log every failure. }
+  if CleanupFailureDetails = '' then
+    CleanupFailureDetails := Details;
+end;
+
 function RemoveStaleUninstallEntryIfMatches(RootKey: Integer; const RemovedDir: string): Boolean;
 var
   ExistingInstallLocation: string;
   UninstallSubkey: string;
+  RootName: string;
 begin
   Result := True;
   UninstallSubkey := 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{830C0324-30D8-423C-B5B4-D7EE8D007A79}_is1';
@@ -1013,7 +1023,18 @@ begin
     Log(Format('Removing stale EDDI uninstall entry for removed install at "%s".', [RemovedDir]));
     Result := RegDeleteKeyIncludingSubkeys(RootKey, UninstallSubkey);
     if not Result then
-      Log(Format('Failed to remove stale EDDI uninstall entry for removed install at "%s".', [RemovedDir]));
+    begin
+      if RootKey = HKLM then
+        RootName := 'HKEY_LOCAL_MACHINE'
+      else
+        RootName := 'HKEY_CURRENT_USER';
+      RecordCleanupFailure(
+        'Could not remove the old EDDI uninstall registry entry:' + #13#10 +
+        RootName + '\' + UninstallSubkey + #13#10#13#10 +
+        'Previous installation folder: ' + RemovedDir + #13#10#13#10 +
+        'Check that your account has permission to modify this registry entry, then run Setup again. ' +
+        'Administrator assistance may be required.');
+    end;
   end;
 end;
 
@@ -1050,7 +1071,13 @@ begin
     Log(Format('Removing old EDDI install at "%s".', [CleanDir]));
     Result := DelTree(CleanDir, True, True, True);
     if Result then
-      Result := RemoveStaleUninstallEntriesIfMatches(CleanDir);
+      Result := RemoveStaleUninstallEntriesIfMatches(CleanDir)
+    else
+      RecordCleanupFailure(
+        'Could not remove the old EDDI application folder:' + #13#10 +
+        CleanDir + #13#10#13#10 +
+        'Close EDDI and VoiceAttack, including any background processes shown in Task Manager, then run Setup again. ' +
+        'If this still fails, check that your account has permission to modify this folder.');
   end;
 end;
 
@@ -1092,6 +1119,12 @@ begin
 
   Log(Format('Removing old EDDI VoiceAttack plugin folder at "%s".', [CleanDir]));
   Result := DelTree(CleanDir, True, True, True);
+  if not Result then
+    RecordCleanupFailure(
+      'Could not remove the old EDDI VoiceAttack plugin folder:' + #13#10 +
+      CleanDir + #13#10#13#10 +
+      'Close VoiceAttack and EDDI, including any background processes shown in Task Manager, then run Setup again. ' +
+      'If this still fails, check that your account has permission to modify this folder.');
 end;
 
 function RemoveKnownVoiceAttackPluginDirs: Boolean;
@@ -1251,14 +1284,15 @@ var
 begin
   if CurStep = ssInstall then
   begin
+    CleanupFailureDetails := '';
     RemovedOldEddiInstalls := RemoveOldEddiInstalls;
     RemovedVoiceAttackPlugins := RemoveKnownVoiceAttackPluginDirs;
 
     if not (RemovedOldEddiInstalls and RemovedVoiceAttackPlugins) then
     begin
       MsgBox(
-        'Setup could not remove an old EDDI install or VoiceAttack plugin.' + #13#10#13#10 +
-        'Close EDDI and VoiceAttack, then run Setup again. If VoiceAttack is installed in Program Files, run Setup as administrator.',
+        'Setup cannot continue because cleanup of a previous EDDI installation failed.' + #13#10#13#10 +
+        CleanupFailureDetails,
         mbCriticalError, MB_OK);
       Abort;
     end;
