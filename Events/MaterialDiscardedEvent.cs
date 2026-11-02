@@ -27,8 +27,6 @@ namespace EddiEvents
 
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {
-            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
-
             var material = Material.FromEDName(JsonParsing.getString(data, "Name"));
             var amount = JsonParsing.getInt( data, "Count" );
             events.Add( new MaterialDiscardedEvent( timestamp, material, amount ) { raw = line, fromLoad = false } );
