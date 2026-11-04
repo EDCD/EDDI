@@ -241,6 +241,7 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage( "Usage", "MSTEST0049:Flow TestContext.CancellationToken to async operations", Justification = "Using TestContext.CancellationToken would defeat the purpose of the test" )]
         public async Task SendCommandAsync_CanBeCancelled_BeforeResponse()
         {
             Assert.IsNotNull(_client);

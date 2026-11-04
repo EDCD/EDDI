@@ -43,6 +43,7 @@ namespace Tests.EddiVoiceAttackService
 
         [TestMethod]
         [Timeout( 5000, CooperativeCancellation = true )]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage( "Usage", "MSTEST0049:Flow TestContext.CancellationToken to async operations", Justification = "Using TestContext.CancellationToken would defeat the purpose of the test" )]
         public async Task StartAsync_DefaultToken_Works()
         {
             using var server = new IPCServer();

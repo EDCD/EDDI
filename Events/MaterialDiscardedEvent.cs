@@ -25,7 +25,7 @@ namespace EddiEvents
 
         public string edname { get; private set; } = material?.edname;
 
-        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events )
         {
             var material = Material.FromEDName(JsonParsing.getString(data, "Name"));
             var amount = JsonParsing.getInt( data, "Count" );
