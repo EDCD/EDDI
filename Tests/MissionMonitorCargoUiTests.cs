@@ -61,12 +61,34 @@ namespace Tests
                     localisedname = "Two-stop sightseeing", destinationsystem = "First",
                     destinationsystems = [ new NavWaypoint( "First", 1, 0, 0, 0 ), new NavWaypoint( "Second", 2, 1, 0, 0 ) ]
                 };
+                var combat = new Mission( 5, "Mission_MassacreWing", now.AddDays( 1 ), MissionStatus.Active )
+                {
+                    localisedname = "Pirate massacre estimate", faction = "Issuer", targetfaction = "Pirates",
+                    targetTypeEDName = "Pirate", destinationsystem = "Hunting ground"
+                };
+                combat.ObserveCombatAcceptance( now, 1, 30, "Hunting ground" );
                 var grid = (DataGrid)view.FindName( "missionsData" );
                 grid.RowDetailsVisibilityMode = DataGridRowDetailsVisibilityMode.Collapsed;
-                grid.ItemsSource = new[] { salvage, delivery, goal, tour };
+                grid.ItemsSource = new[] { salvage, delivery, goal, tour, combat };
                 Layout( view, 1100 );
                 var statusColumn = grid.Columns.Single( column => column.SortMemberPath == "statusEDName" );
                 var progressColumn = grid.Columns.Single( column => column.SortMemberPath == "progress" );
+                var remainingColumn = grid.Columns.OfType<DataGridTextColumn>().Single( column =>
+                    column.Binding is System.Windows.Data.Binding binding && binding.Path.Path == "timeRemaining" );
+                Assert.AreEqual( string.Empty, ((TextBlock)remainingColumn.GetCellContent( salvage )).Text );
+                Assert.IsFalse( string.IsNullOrEmpty( ((TextBlock)remainingColumn.GetCellContent( delivery )).Text ),
+                    "A partially claimable delivery retains its countdown." );
+                Assert.AreEqual( now.AddDays( 4 ), salvage.expiry, "Hiding the countdown must preserve the original deadline." );
+                Assert.AreEqual( "Estimated 0/30 kills", ((TextBlock)progressColumn.GetCellContent( combat )).Text );
+                combat.ObserveMatchingCombatBounty( now.AddSeconds( 1 ) );
+                Layout( view, 1100 );
+                Assert.AreEqual( "Estimated 1/30 kills", ((TextBlock)progressColumn.GetCellContent( combat )).Text );
+                Assert.Contains( "mission-target", ( (TextBlock)progressColumn.GetCellContent( combat )).ToolTip.ToString());
+                Assert.IsFalse( combat.progressKnown );
+                Assert.IsFalse( combat.claimable );
+                combat.MarkCombatHistoryIncomplete();
+                Layout( view, 1100 );
+                Assert.AreEqual( "Estimated 1/30 kills", ((TextBlock)progressColumn.GetCellContent( combat )).Text );
                 var badge = Descendants<TextBlock>( statusColumn.GetCellContent( salvage ) ).Single( block => block.Text.Contains( '✓' ) );
                 Assert.AreEqual( Visibility.Visible, badge.Visibility );
                 Assert.IsFalse( string.IsNullOrWhiteSpace( AutomationProperties.GetName( badge ) ) );
@@ -78,7 +100,7 @@ namespace Tests
                 Layout( view, 1100 );
                 Assert.AreEqual( "50%", ((TextBlock)progressColumn.GetCellContent( tour )).Text );
                 Assert.IsFalse( tour.claimable );
-                Assert.IsTrue( Descendants<TextBlock>( statusColumn.GetCellContent( goal ) ).Any( block => block.Text == goal.localizedStatus ) );
+                Assert.Contains( block => block.Text == goal.localizedStatus, Descendants<TextBlock>( statusColumn.GetCellContent( goal ) ));
                 var converter = new MissionProgressConverter();
                 Assert.AreEqual( converter.Convert( [ goal.localizedProgress, true, true, 1234L, 25 ],
                     typeof( string ), null, System.Globalization.CultureInfo.CurrentCulture ),

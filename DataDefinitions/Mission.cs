@@ -57,17 +57,27 @@ namespace EddiDataDefinitions
         [Utilities.PublicAPI("the date and time when the mission expires, as a DateTime object")]
         public DateTime? expiry { get; set; }
 
-        [Utilities.PublicAPI( "amount of seconds remaining before mission expiration" ), JsonIgnore]
+        [Utilities.PublicAPI( "when the mission expires, as a unix timestamp" ), JsonIgnore]
         public long? expiryseconds => expiry != null ? (long?)Utilities.Dates.fromDateTimeToSeconds( (DateTime)expiry ) : null;
 
         // The mission time remaining
         [JsonIgnore]
-        public TimeSpan? timeRemaining => expiry != null ? TimeSpanNearestSecond( expiry - DateTime.UtcNow ) : null;
+        public TimeSpan? timeRemaining => expirationTimerApplicable 
+            ? expiry > DateTime.UtcNow 
+                ? TimeSpanNearestSecond( expiry - DateTime.UtcNow ) 
+                : TimeSpan.Zero
+            : null;
 
-        private static TimeSpan? TimeSpanNearestSecond ( TimeSpan? utcNow )
+        // A verified final origin-return redirect stops an in-ship objective's timer, not an on-foot timer.
+        // Claimability (including partial delivery) and estimated/collected progress alone are insufficient.
+        // Preserve the contractual deadline and the dedicated community-goal presentation.
+        [JsonIgnore]
+        public bool expirationTimerApplicable => expiry != null && ( communal || onfoot || !redirectClaimability );
+
+        private static TimeSpan? TimeSpanNearestSecond ( TimeSpan? timeSpan )
         {
-            if ( utcNow is null ) { return null; }
-            return new TimeSpan( utcNow.Value.Days, utcNow.Value.Hours, utcNow.Value.Minutes, utcNow.Value.Seconds );
+            if ( timeSpan is null ) { return null; }
+            return new TimeSpan( timeSpan.Value.Days, timeSpan.Value.Hours, timeSpan.Value.Minutes, timeSpan.Value.Seconds );
         }
 
         // While we track the time remaining constantly, we loop through each mission
@@ -180,7 +190,7 @@ namespace EddiDataDefinitions
                 if ( hasRedirectEvidence ) { return true; }
                 if ( TryGetReliableCargoDepotProgress( out var required, out var deliveredQuantity ) )
                 {
-                    return tagsList.Contains( MissionType.Delivery )
+                    return tagsList.Contains( MissionType.Delivery ) || tagsList.Contains( MissionType.Mining )
                         ? deliveredQuantity >= Math.Ceiling( required / 2M )
                         : deliveredQuantity == required;
                 }
@@ -215,6 +225,70 @@ namespace EddiDataDefinitions
         [JsonProperty] private bool depotCollectionCompleted;
         [JsonProperty] private MissionWaypointEvidence waypointEvidence;
         [JsonProperty] private bool communalProgressObserved;
+        [JsonProperty] private MissionCombatEvidence combatEvidence;
+
+        [JsonIgnore]
+        public bool UsesPirateMassacreEstimate => !communal && tagsList.Contains( MissionType.Massacre ) &&
+            !tagsList.Contains( MissionType.Conflict ) && !tagsList.Contains( MissionType.OnFoot ) &&
+            !tagsList.Contains( MissionType.Thargoid ) &&
+            string.Equals( targetTypeEDName, TargetType.Pirate.edname, StringComparison.OrdinalIgnoreCase ) &&
+            !string.IsNullOrWhiteSpace( faction ) && !string.IsNullOrWhiteSpace( targetfaction );
+
+        [Utilities.PublicAPI( "matching ship bounties observed for this pirate massacre mission; an estimate, not credited mission kills" ), JsonIgnore]
+        public long? estimatedKills => UsesPirateMassacreEstimate &&
+            combatEvidence is { required: > 0, matchingBounties: >= 0, acceptanceOrder: > 0 }
+            ? combatEvidence.matchingBounties : null;
+
+        [Utilities.PublicAPI( "estimated pirate massacre percentage, or null when unavailable; does not establish completion or claimability" ), JsonIgnore]
+        public decimal? estimatedProgress => !combatEstimatePartialHistory && estimatedKills is long count
+            ? Math.Min( 100M, 100M * count / combatEvidence.required ) : null;
+
+        [JsonIgnore]
+        internal bool combatEstimatePartialHistory => combatEvidence?.partialHistory == true;
+
+        [JsonIgnore] public int? combatRequiredKills => combatEvidence?.required;
+        [JsonIgnore] public DateTime? combatAcceptedAt => combatEvidence is { acceptanceOrder: > 0 } ? combatEvidence.acceptedAt : null;
+        [JsonIgnore] public long? combatAcceptanceOrder => combatEvidence?.acceptanceOrder;
+        [JsonIgnore] public DateTime? combatObservedAt => combatEvidence?.observedAt;
+        [JsonIgnore] public long? combatBountyOrdinal => combatEvidence?.bountyOrdinal;
+        [JsonIgnore] public string combatTargetSystem => combatEvidence?.targetSystem;
+
+        public bool ObserveCombatAcceptance ( DateTime timestamp, long acceptanceOrder, int? requiredKills, string targetSystem,
+            bool partialHistory = false )
+        {
+            if ( !UsesPirateMassacreEstimate || requiredKills is not > 0 || acceptanceOrder <= 0 || combatEvidence != null ||
+                 string.IsNullOrWhiteSpace( targetSystem ) ) { return false; }
+            combatEvidence = new MissionCombatEvidence { acceptedAt = timestamp, acceptanceOrder = acceptanceOrder,
+                required = requiredKills.Value, targetSystem = targetSystem, partialHistory = partialHistory };
+            NotifyProgressAndClaimabilityChanged();
+            return true;
+        }
+
+        public void MarkCombatHistoryIncomplete ()
+        {
+            if ( combatEvidence is null || combatEvidence.partialHistory ) { return; }
+            combatEvidence = combatEvidence with { partialHistory = true };
+            NotifyProgressAndClaimabilityChanged();
+        }
+
+        public bool ObserveMatchingCombatBounty ( DateTime timestamp, long? bountyOrdinal = null )
+        {
+            var evidence = combatEvidence;
+            if ( !UsesPirateMassacreEstimate || statusDef != MissionStatus.Active || claimable || evidence is null ||
+                 evidence.required <= 0 || evidence.acceptanceOrder <= 0 || string.IsNullOrWhiteSpace( evidence.targetSystem ) ||
+                 evidence.matchingBounties < 0 || evidence.matchingBounties == long.MaxValue ||
+                 timestamp < evidence.acceptedAt || timestamp < evidence.observedAt ) { return false; }
+            // Never clamp the count into an assertion of completion or advance the issuer's queue at the estimated quota.
+            combatEvidence = evidence with
+            {
+                matchingBounties = evidence.matchingBounties + 1,
+                observedAt = timestamp,
+                // A legacy timestamp has an unknown prefix until a later timestamp starts a new one.
+                bountyOrdinal = timestamp == evidence.observedAt && evidence.bountyOrdinal is null ? null : bountyOrdinal
+            };
+            NotifyProgressAndClaimabilityChanged();
+            return true;
+        }
 
         [JsonIgnore]
         public bool communityGoalProgressKnown => communal && ( communalProgressObserved || communalContribution > 0 ) &&
@@ -410,6 +484,12 @@ namespace EddiDataDefinitions
             OnPropertyChanged( nameof( localizedProgress ) );
             OnPropertyChanged( nameof( communityGoalProgressKnown ) );
             OnPropertyChanged( nameof( claimable ) );
+            OnPropertyChanged( nameof( expirationTimerApplicable ) );
+            OnPropertyChanged( nameof( timeRemaining ) );
+            OnPropertyChanged( nameof( estimatedKills ) );
+            OnPropertyChanged( nameof( estimatedProgress ) );
+            OnPropertyChanged( nameof( combatRequiredKills ) );
+            OnPropertyChanged( nameof( combatEstimatePartialHistory ) );
         }
 
         [Utilities.PublicAPI( "localized status (active, complete, failed) of the mission" ), JsonIgnore, Obsolete( "Please use localizedName or invariantName" )]

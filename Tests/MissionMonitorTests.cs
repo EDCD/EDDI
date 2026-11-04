@@ -23,6 +23,7 @@ namespace Tests
     public class MissionMonitorTests : TestBase
     {
         private readonly MissionMonitor missionMonitor = new();
+        public TestContext TestContext { get; set; }
 
         [TestInitialize]
         public void StartTestMissionMonitor()
@@ -729,8 +730,8 @@ namespace Tests
                         MissionStatus.Active ) ] );
 
                 await Task.WhenAll(
-                    Task.Run( monitor.ProcessMissionTimers ),
-                    Task.Run( () => monitor.PreHandleAsync( replacement ) ) );
+                    Task.Run( monitor.ProcessMissionTimers, TestContext.CancellationToken ),
+                    Task.Run( () => monitor.PreHandleAsync( replacement ), TestContext.CancellationToken ) );
 
                 var mission = monitor.missions.Single();
                 Assert.AreEqual( MissionStatus.Active, mission.statusDef );
@@ -1043,24 +1044,30 @@ namespace Tests
         }
 
         [TestMethod]
-        public void DeliveryProgressUsesCeilingHalfClaimabilityThreshold()
+        [DataRow( "Mission_Delivery", 5, 3 )]
+        [DataRow( "Mission_Delivery_Wing", 5, 3 )]
+        [DataRow( "Mission_Mining", 5, 3 )]
+        [DataRow( "Mission_Mining_Wing", 5, 3 )]
+        [DataRow( "Mission_Mining", 36, 18 )]
+        [DataRow( "Mission_Mining_Wing", 36, 18 )]
+        public void DeliveryAndMiningProgressUseCeilingHalfClaimabilityThreshold( string missionName, int total, int threshold )
         {
-            var mission = new Mission( 43, "Mission_Delivery", DateTime.UtcNow.AddHours( 1 ), MissionStatus.Active )
+            var mission = new Mission( 43, missionName, DateTime.UtcNow.AddHours( 1 ), MissionStatus.Active )
             {
-                amount = 5,
-                delivered = 2
+                amount = total,
+                delivered = threshold - 1
             };
 
-            Assert.AreEqual( 40M, mission.progress );
+            Assert.AreEqual( 100M * ( threshold - 1 ) / total, mission.progress );
             Assert.IsFalse( mission.claimable );
 
-            mission.delivered = 3;
+            mission.delivered = threshold;
 
-            Assert.AreEqual( 60M, mission.progress );
+            Assert.AreEqual( 100M * threshold / total, mission.progress );
             Assert.IsTrue( mission.claimable );
             Assert.AreEqual( MissionStatus.Active, mission.statusDef );
 
-            mission.delivered = 5;
+            mission.delivered = total;
 
             Assert.AreEqual( 100M, mission.progress );
             Assert.IsTrue( mission.claimable );
@@ -1068,12 +1075,12 @@ namespace Tests
         }
 
         [TestMethod]
-        public void NonDeliveryCargoDepotMissionsRequireFullProgressToBeClaimable()
+        public void OtherCargoDepotMissionsRequireFullProgressToBeClaimable()
         {
             foreach ( var missionName in new[]
                      {
                          "Mission_Salvage_Expansion", "Mission_Rescue_Planet", "Mission_Smuggle_Famine",
-                         "Mission_Collect_Boom", "Mission_Mining_Wing"
+                         "Mission_Collect_Boom"
                      } )
             {
                 var mission = new Mission( 430, missionName, DateTime.UtcNow.AddHours( 1 ), MissionStatus.Active )
@@ -1120,9 +1127,11 @@ namespace Tests
         }
 
         [TestMethod]
-        public void ProgressAndClaimabilityRaiseDependentPropertyChanges()
+        [DataRow( "Mission_Delivery" )]
+        [DataRow( "Mission_Mining" )]
+        public void ProgressAndClaimabilityRaiseDependentPropertyChanges( string missionName )
         {
-            var mission = new Mission( 45, "Mission_Delivery", DateTime.UtcNow.AddHours( 1 ), MissionStatus.Active )
+            var mission = new Mission( 45, missionName, DateTime.UtcNow.AddHours( 1 ), MissionStatus.Active )
             {
                 amount = 4
             };
@@ -1291,7 +1300,7 @@ namespace Tests
             Assert.AreEqual( 100M, legacyGoal.progress );
             Assert.IsTrue( legacyGoal.claimable );
             var migratedJson = JsonConvert.SerializeObject( configuration );
-            Assert.IsFalse( migratedJson.Contains( "\"Claim\"" ) );
+            Assert.DoesNotContain( "\"Claim\"", migratedJson );
 
             var reloadedConfiguration = ConfigService.FromJson<MissionMonitorConfiguration>( migratedJson );
             monitor.initializeMissionMonitor( reloadedConfiguration );

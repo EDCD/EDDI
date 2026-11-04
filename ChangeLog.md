@@ -8,6 +8,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Add support for the Rhino mining SRV.
     * Fixed EDDI failing to verbally announce new EDDI releases when EDDI starts up.
     * Various bug fixes from telemetry.
+    * `Mission` object definition revised.
+      * Removed the `Claim` status for missions.
+      * Added a separate `claimable` boolean that is set to true when EDDI has gathered evidence demonstrating that the mission is claimable.
+      * Added `progress` and `progressKnown` fields to indicate the current progress of the mission and whether progress evidence is gatherable via EDDI's mission progress tracking.
   * Events
     * `Game mode changed` added, triggered when joining or leaving an Operation or CQC combat.
     * `Vessel launched` updated to add new field `loadoutDescription`.
@@ -15,7 +19,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added search box and filtering. Added checkbox to display invariant text in place of translated text when applicable. (#2411)
     * Added bulk editor for setting minimum and desired inventory levels.
   * Mission Monitor
-    * Decoupled synthetic mission expiration events from mission status changes.  
+    * Decoupled EDDI progress tracking and synthetic mission expiration from mission status. This should help ensure mission status closely matches the UI.
   * Speech Responder
     * Scripts
       * `FSD engaged` updated to use explicit `departuresystem` and `arrivalsystem` variables for clearer jump context and to pass an explicit `arrivalsystem` allegiance into the `Honorific` script invocation (#2854).

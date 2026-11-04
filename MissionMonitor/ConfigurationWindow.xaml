@@ -157,6 +157,8 @@
                             <Binding Path="communityGoalProgressKnown" />
                             <Binding Path="communalContribution" />
                             <Binding Path="communalPercentileBand" />
+                            <Binding Path="estimatedKills" />
+                            <Binding Path="combatRequiredKills" />
                         </MultiBinding>
                     </DataGridTextColumn.Binding>
                     <DataGridTextColumn.HeaderStyle>
@@ -169,7 +171,19 @@
                             <Setter Property="TextAlignment" Value="Center" />
                             <Setter Property="Padding" Value="5, 0" />
                             <Setter Property="TextWrapping" Value="Wrap" />
-                            <Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}" />
+                            <Setter Property="ToolTip">
+                                <Setter.Value>
+                                    <MultiBinding Converter="{StaticResource MissionProgressConverter}" ConverterParameter="tooltip" Mode="OneWay">
+                                        <Binding Path="localizedProgress" />
+                                        <Binding Path="communal" />
+                                        <Binding Path="communityGoalProgressKnown" />
+                                        <Binding Path="communalContribution" />
+                                        <Binding Path="communalPercentileBand" />
+                                        <Binding Path="estimatedKills" />
+                                        <Binding Path="combatRequiredKills" />
+                                    </MultiBinding>
+                                </Setter.Value>
+                            </Setter>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>

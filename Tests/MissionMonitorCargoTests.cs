@@ -77,7 +77,7 @@ namespace Tests
             Assert.AreEqual( MissionStatus.Complete, mission.statusDef );
             Assert.IsFalse( mission.claimable );
             await monitor.PostHandleAsync( completion );
-            Assert.AreEqual( 0, monitor.missions.Count );
+            Assert.IsEmpty( monitor.missions);
         }
 
         [TestMethod]
@@ -148,6 +148,51 @@ namespace Tests
             Assert.AreEqual( percent, (int)mission.progress );
             Assert.AreEqual( claimable, mission.claimable );
             Assert.AreEqual( MissionStatus.Active, mission.statusDef );
+        }
+
+        [TestMethod]
+        public async Task MiningArchiveDepotUpdatesBecomeClaimableAfterHalfDelivery ()
+        {
+            var now = new DateTime( 2026, 10, 12, 8, 23, 23, DateTimeKind.Utc );
+            var deadline = new DateTime( 2026, 10, 19, 8, 21, 33, DateTimeKind.Utc );
+            var mission = new Mission( 1068224618, "Mission_Mining", deadline, MissionStatus.Active )
+            {
+                originsystem = "Olgrea", originstation = "Warner Station", destinationsystem = "Olgrea",
+                destinationstation = "Warner Station", commodity = "Methane Clathrate", amount = 36
+            };
+            var monitor = new MissionMonitor( () => now, () => true, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missions = [ mission ], updatedat = now } );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.mining.log", "test", "test" ) );
+            mission = monitor.missions.Single();
+
+            // Minimized CargoDepot records from Journal.2026-10-11T142400.01.log.
+            var depotRecords = new[]
+            {
+                """{ "timestamp":"2026-10-12T09:17:51Z", "event":"CargoDepot", "MissionID":1068224618, "UpdateType":"Deliver", "CargoType":"MethaneClathrate", "Count":17, "StartMarketID":0, "EndMarketID":3229533440, "ItemsCollected":0, "ItemsDelivered":17, "TotalItemsToDeliver":36, "Progress":0.000000 }""",
+                """{ "timestamp":"2026-10-12T10:20:59Z", "event":"CargoDepot", "MissionID":1068224618, "UpdateType":"Deliver", "CargoType":"MethaneClathrate", "Count":6, "StartMarketID":0, "EndMarketID":3229533440, "ItemsCollected":0, "ItemsDelivered":23, "TotalItemsToDeliver":36, "Progress":0.000000 }""",
+                """{ "timestamp":"2026-10-12T10:21:38Z", "event":"CargoDepot", "MissionID":1068224618, "UpdateType":"Deliver", "CargoType":"MethaneClathrate", "Count":13, "StartMarketID":0, "EndMarketID":3229533440, "ItemsCollected":0, "ItemsDelivered":36, "TotalItemsToDeliver":36, "Progress":0.000000 }"""
+            };
+            var expectedDelivered = new[] { 17, 23, 36 };
+            for ( var index = 0; index < depotRecords.Length; index++ )
+            {
+                var depot = (CargoDepotEvent)JournalMonitor.ParseJournalEntry( depotRecords[ index ] ).Single();
+                now = depot.timestamp;
+                await monitor.PreHandleAsync( depot );
+
+                Assert.AreEqual( 100M * expectedDelivered[ index ] / 36, mission.progress );
+                Assert.AreEqual( expectedDelivered[ index ] >= 18, mission.claimable );
+                Assert.AreEqual( MissionStatus.Active, mission.statusDef );
+                Assert.AreEqual( deadline, mission.expiry );
+                Assert.IsTrue( mission.expirationTimerApplicable, "Partial claimability must not stop the timer." );
+            }
+
+            var completion = new MissionCompletedEvent( now.AddSeconds( 7 ), mission.missionid, mission.name,
+                null, null, null, null, false, 0 );
+            await monitor.PreHandleAsync( completion );
+            Assert.AreEqual( MissionStatus.Complete, mission.statusDef );
+            Assert.IsFalse( mission.claimable );
+            await monitor.PostHandleAsync( completion );
+            Assert.IsEmpty( monitor.missions);
         }
 
         [TestMethod]
@@ -305,7 +350,7 @@ namespace Tests
             await monitor.PreHandleAsync( Manifest( Start.AddSeconds( 1 ), mission.missionid, 1 ) );
             await monitor.PreHandleAsync( new MissionsEvent( Start.AddSeconds( 2 ), [ ] ) );
             await monitor.PreHandleAsync( Manifest( Start.AddSeconds( 3 ), mission.missionid, 2 ) );
-            Assert.AreEqual( 0, monitor.missions.Count );
+            Assert.IsEmpty( monitor.missions);
 
             monitor = await LiveMonitor( CargoMission() );
             mission = monitor.missions.Single();
@@ -317,7 +362,7 @@ namespace Tests
             Assert.IsFalse( mission.claimable );
             await monitor.PostHandleAsync( abandonment );
             await monitor.PreHandleAsync( Manifest( Start.AddSeconds( 3 ), mission.missionid, 2 ) );
-            Assert.AreEqual( 0, monitor.missions.Count );
+            Assert.IsEmpty( monitor.missions);
         }
 
         [TestMethod]

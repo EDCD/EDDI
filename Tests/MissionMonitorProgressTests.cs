@@ -98,12 +98,12 @@ namespace Tests
             At( "First", 1 );
             await monitor.PreHandleAsync( Beacon( 1 ) );
             Assert.IsTrue( monitor.missions.All( m => m.progress == 100M / 3M && m.destinationsystem == "Second" ) );
-            Assert.AreEqual( 2, events.Count );
+            Assert.HasCount( 2, events);
             Assert.AreEqual( Start, ConfigService.Instance.missionMonitorConfiguration.updatedat );
             foreach ( var announcement in events.ToArray() ) { await monitor.PreHandleAsync( announcement ); }
             Assert.AreEqual( Start, ConfigService.Instance.missionMonitorConfiguration.updatedat );
             await monitor.PreHandleAsync( Beacon( 2 ) );
-            Assert.AreEqual( 2, events.Count, "Repeated scans in the same system do not count twice." );
+            Assert.HasCount( 2, events, "Repeated scans in the same system do not count twice." );
             At( "Third", 3 );
             await monitor.PreHandleAsync( Beacon( 3 ) );
             Assert.IsTrue( monitor.missions.All( m => m.progress == 100M / 3M ), "An out-of-order stop is not credited." );
@@ -167,7 +167,8 @@ namespace Tests
             accepted.Mission.destinationsystems.Clear();
             accepted.Mission.InitializeSightseeingWaypoints( accepted.JournalDestinationSystems );
             accepted.ResolveDestinations( [ new NavWaypoint( "Third", 3, 2, 0, 0 ), new NavWaypoint( "First", 1, 0, 0, 0 ) ] );
-            CollectionAssert.AreEqual( new[] { "First", "Third" }, accepted.Mission.destinationsystems.Select( s => s.systemName ).ToArray() );
+            var expected = new[] { "First", "Third" };
+            CollectionAssert.AreEqual( expected, accepted.Mission.destinationsystems.Select( s => s.systemName ).ToArray() );
             Assert.IsTrue( accepted.Mission.ObserveSightseeingStop( Start, "First", 1 ) );
             Assert.AreEqual( 100M / 3M, accepted.Mission.progress );
             Assert.IsTrue( accepted.Mission.ObserveSightseeingStop( Start.AddSeconds( 1 ), "Second", 2 ) );

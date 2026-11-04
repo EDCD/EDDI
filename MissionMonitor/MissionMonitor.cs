@@ -51,6 +51,13 @@ namespace EddiMissionMonitor
         private readonly Dictionary<ulong, MissionTimerState> missionTimerStates = [ ];
         private readonly Dictionary<ulong, MissionSnapshotReconciliationState> missionSnapshotReconciliations = [ ];
         private bool liveSessionReady;
+        private long combatAcceptanceOrder;
+        private string combatGameMode = "MainGame";
+        private DateTime combatGameModeObservedAt;
+        // Freeze the persisted boundary for each replay pass. Distinct bounties may share a one-second timestamp.
+        private readonly Dictionary<ulong, (DateTime timestamp, long? ordinal)> combatReplayCutoffs = [ ];
+        private DateTime? combatBountyTimestamp;
+        private long? combatBountyOrdinal;
 
         private readonly object stateLock = new();
         [UsedImplicitly] public event EventHandler MissionUpdatedEvent;
@@ -156,6 +163,13 @@ namespace EddiMissionMonitor
                     {
                         missionTimerStates.Remove( mission.missionid );
                         missionSnapshotReconciliations.Remove( mission.missionid );
+                        mission.UpdateTimeRemaining();
+                        continue;
+                    }
+
+                    if ( !mission.expirationTimerApplicable )
+                    {
+                        missionTimerStates.Remove( mission.missionid );
                         mission.UpdateTimeRemaining();
                         continue;
                     }
@@ -267,7 +281,7 @@ namespace EddiMissionMonitor
                 ObserveCargoChange( ejectedEvent.timestamp, ejectedEvent.missionid is >= 0
                     ? (ulong?)ejectedEvent.missionid : null, ejectedEvent.commodityDefinition );
             }
-            else if ( @event is CargoTransferEvent || @event is DiedEvent )
+            else if ( @event is CargoTransferEvent or DiedEvent )
             {
                 ObserveCargoChange( @event.timestamp );
             }
@@ -298,6 +312,21 @@ namespace EddiMissionMonitor
             else if ( @event is DataScannedEvent dataScannedEvent )
             {
                 handleDataScannedEvent( dataScannedEvent );
+            }
+            else if ( @event is GameModeChangedEvent gameModeChangedEvent )
+            {
+                lock ( stateLock )
+                {
+                    if ( @event.timestamp >= combatGameModeObservedAt )
+                    {
+                        combatGameMode = gameModeChangedEvent.gameMode;
+                        combatGameModeObservedAt = @event.timestamp;
+                    }
+                }
+            }
+            else if ( @event is BountyAwardedEvent bountyAwardedEvent )
+            {
+                handleCombatBountyEvent( bountyAwardedEvent );
             }
             else if ( @event is MissionAcceptedEvent missionAcceptedEvent )
             {
@@ -353,6 +382,15 @@ namespace EddiMissionMonitor
             {
                 missionTimerStates.Clear();
                 liveSessionReady = gameIsRunning;
+                combatBountyTimestamp = null;
+                combatBountyOrdinal = 0;
+                // Journal Monitor can reload without recreating this monitor. Refresh the frozen replay boundary
+                // before consuming another journal, without dropping legitimate same-second observations within it.
+                foreach ( var mission in missions )
+                {
+                    combatReplayCutoffs[ mission.missionid ] =
+                        ( mission.combatObservedAt ?? updateDat, mission.combatBountyOrdinal );
+                }
             }
         }
 
@@ -361,6 +399,9 @@ namespace EddiMissionMonitor
             missionTimerStates.Clear();
             missionSnapshotReconciliations.Clear();
             liveSessionReady = false;
+            combatGameMode = "MainGame";
+            combatGameModeObservedAt = default;
+            foreach ( var mission in missions ) { mission.MarkCombatHistoryIncomplete(); }
         }
 
         private bool IsLiveSessionReady ()
@@ -438,8 +479,10 @@ namespace EddiMissionMonitor
 
         private void ArmMissionTimerLocked ( Mission mission, DateTime now )
         {
+            // Snapshot entries do not contain our observed redirect evidence. Check the tracked mission.
+            mission = missions.FirstOrDefault( m => m.missionid == mission.missionid ) ?? mission;
             missionSnapshotReconciliations.Remove( mission.missionid );
-            if ( mission.communal || mission.statusDef != MissionStatus.Active ||
+            if ( mission.communal || mission.statusDef != MissionStatus.Active || !mission.expirationTimerApplicable ||
                  mission.expiry is not DateTime deadline || deadline <= now )
             {
                 missionTimerStates.Remove( mission.missionid );
@@ -1142,6 +1185,12 @@ namespace EddiMissionMonitor
                     update = HandleMissionAcceptedLocked(@event);
                     handled = true;
                 }
+                else if ( @event.fromLoad )
+                {
+                    // Recover acceptance provenance for a persisted mission without replaying lifecycle/destination changes.
+                    var mission = missions.FirstOrDefault( m => m.missionid == @event.missionid );
+                    if ( mission != null ) { update = ObserveCombatAcceptanceLocked( mission, @event ); }
+                }
             }
             if ( update ) { writeMissions(); }
             return handled;
@@ -1165,11 +1214,87 @@ namespace EddiMissionMonitor
             if (!exists && valid)
             {
                 @event.Mission.ObserveCargoRequirement( @event.timestamp );
+                ObserveCombatAcceptanceLocked( @event.Mission, @event );
                 AddMission(@event.Mission);
                 update = true;
             }
+            else if ( exists && @event.fromLoad )
+            {
+                update = ObserveCombatAcceptanceLocked( missions.First( m => m.missionid == @event.missionid ), @event );
+            }
             return update;
         }
+
+        private bool ObserveCombatAcceptanceLocked ( Mission mission, MissionAcceptedEvent @event )
+        {
+            if ( mission.combatAcceptedAt != null || !@event.Mission.UsesPirateMassacreEstimate ||
+                 !@event.HasKillCount || @event.amount is not > 0 || string.IsNullOrWhiteSpace( @event.Mission.destinationsystem ) ||
+                 mission.communal || !mission.tagsList.Contains( MissionType.Massacre ) ) { return false; }
+            // Only actual journal metadata establishes target eligibility; localized-name fallback is insufficient.
+            mission.faction = @event.faction;
+            mission.targetfaction = @event.Mission.targetfaction;
+            mission.targetTypeEDName = @event.Mission.targetTypeEDName;
+            return mission.ObserveCombatAcceptance( @event.timestamp, ++combatAcceptanceOrder, @event.amount,
+                @event.Mission.destinationsystem, @event.fromLoad );
+        }
+
+        private void handleCombatBountyEvent ( BountyAwardedEvent @event )
+        {
+            var gameIsRunning = isEliteRunning();
+            var systemName = EDDI.Instance.GameState.CurrentStarSystem?.systemname;
+            var update = false;
+            lock ( stateLock )
+            {
+                // Position every bounty before filtering or queue attribution, which may differ after reload.
+                if ( combatBountyTimestamp != @event.timestamp )
+                {
+                    combatBountyTimestamp = @event.timestamp;
+                    // Without replay, trailing uncredited bounties make a persisted mission position insufficient.
+                    combatBountyOrdinal = !@event.fromLoad && missions.Any( m => m.combatObservedAt == @event.timestamp )
+                        ? null : 0;
+                }
+                if ( combatBountyOrdinal == long.MaxValue ) { return; }
+                var ordinal = ++combatBountyOrdinal;
+                if ( !gameIsRunning || !liveSessionReady || combatGameMode != "MainGame" || @event.timestamp < updateDat ||
+                     !@event.isShipTarget || @event.reward <= 0 || string.IsNullOrWhiteSpace( systemName ) ||
+                     string.IsNullOrWhiteSpace( @event.faction ) || @event.faction.StartsWith( '$' ) ||
+                     string.Equals( @event.faction, "None", StringComparison.OrdinalIgnoreCase ) ||
+                     string.Equals( @event.faction, "Pirate", StringComparison.OrdinalIgnoreCase ) ) { return; }
+                // A snapshot-only mission has no issuer/target provenance. It could precede any known queue.
+                if ( missions.Any( m => IsPendingPirateMassacre( m ) &&
+                    ( string.IsNullOrWhiteSpace( m.faction ) || string.IsNullOrWhiteSpace( m.targetfaction ) ) ) ) { return; }
+                var queues = missions.Where( m => IsPendingPirateMassacre( m ) &&
+                    string.Equals( m.targetfaction, @event.faction, StringComparison.OrdinalIgnoreCase ) &&
+                    ( string.IsNullOrWhiteSpace( m.combatTargetSystem ?? m.destinationsystem ) ||
+                      string.Equals( m.combatTargetSystem ?? m.destinationsystem, systemName, StringComparison.OrdinalIgnoreCase ) ) &&
+                    !string.IsNullOrWhiteSpace( m.faction ) ).GroupBy( m => m.faction, StringComparer.OrdinalIgnoreCase );
+                foreach ( var queue in queues )
+                {
+                    // An unknown acceptance order may precede every known mission. Do not silently skip it.
+                    if ( queue.Any( m => m.combatAcceptedAt is null || m.combatAcceptanceOrder is null ) ) { continue; }
+                    var mission = queue.OrderBy( m => m.combatAcceptedAt ).ThenBy( m => m.combatAcceptanceOrder ).First();
+                    if ( @event.fromLoad && combatReplayCutoffs.TryGetValue( mission.missionid, out var cutoff ) )
+                    {
+                        if ( @event.timestamp < cutoff.timestamp ) { continue; }
+                        if ( @event.timestamp == cutoff.timestamp )
+                        {
+                            // Legacy evidence has no position, so retain its conservative timestamp cutoff.
+                            if ( cutoff.ordinal is null || ordinal <= cutoff.ordinal ) { continue; }
+                        }
+                    }
+                    update |= mission.ObserveMatchingCombatBounty( @event.timestamp, ordinal );
+                }
+            }
+            // Bounty observations do not advance the authoritative mission journal watermark.
+            if ( update ) { writeMissions(); }
+        }
+
+        private static bool IsPendingPirateMassacre ( Mission mission ) => !mission.communal &&
+            mission.statusDef == MissionStatus.Active && !mission.claimable && mission.tagsList.Contains( MissionType.Massacre ) &&
+            !mission.tagsList.Contains( MissionType.Conflict ) && !mission.tagsList.Contains( MissionType.OnFoot ) &&
+            !mission.tagsList.Contains( MissionType.Thargoid ) &&
+            ( string.IsNullOrWhiteSpace( mission.targetTypeEDName ) ||
+              string.Equals( mission.targetTypeEDName, TargetType.Pirate.edname, StringComparison.OrdinalIgnoreCase ) );
 
         private bool IsCommunityGoalMission ( ulong missionId )
         {
@@ -1265,13 +1390,14 @@ namespace EddiMissionMonitor
         {
             if ( @event.isWaypointAnnouncement ) { return; }
             var gameIsRunning = isEliteRunning();
+            var now = utcNow();
             var update = false;
             lock ( stateLock )
             {
                 if (@event.timestamp >= updateDat)
                 {
                     updateDat = @event.timestamp;
-                    update = HandleMissionRedirectedLocked(@event);
+                    update = HandleMissionRedirectedLocked(@event, gameIsRunning, now);
                 }
                 else if ( @event.fromLoad && gameIsRunning && liveSessionReady )
                 {
@@ -1291,13 +1417,15 @@ namespace EddiMissionMonitor
 
         public bool _handleMissionRedirectedEvent ( MissionRedirectedEvent @event )
         {
+            var gameIsRunning = isEliteRunning();
+            var now = utcNow();
             lock ( stateLock )
             {
-                return HandleMissionRedirectedLocked( @event );
+                return HandleMissionRedirectedLocked( @event, gameIsRunning, now );
             }
         }
 
-        private bool HandleMissionRedirectedLocked ( MissionRedirectedEvent @event )
+        private bool HandleMissionRedirectedLocked ( MissionRedirectedEvent @event, bool gameIsRunning, DateTime now )
         {
             if ( @event.isWaypointAnnouncement ) { return false; }
             var mission = missions.FirstOrDefault( m => m.missionid == @event.missionid );
@@ -1309,7 +1437,11 @@ namespace EddiMissionMonitor
                                   StringComparison.Ordinal );
                 mission.destinationsystem = @event.newdestinationsystem;
                 mission.destinationstation = @event.newdestinationstation;
-                return mission.ObserveCargoRedirect( @event.timestamp, IsVerifiedOriginReturn( mission, @event ) ) || updated;
+                var timerWasApplicable = mission.expirationTimerApplicable;
+                updated |= mission.ObserveCargoRedirect( @event.timestamp, IsVerifiedOriginReturn( mission, @event ) );
+                if ( !mission.expirationTimerApplicable ) { missionTimerStates.Remove( mission.missionid ); }
+                else if ( !timerWasApplicable && liveSessionReady && gameIsRunning ) { ArmMissionTimerLocked( mission, now ); }
+                return updated;
             }
 
             return false;
@@ -1412,6 +1544,17 @@ namespace EddiMissionMonitor
             {
                 _missionWarning = missionsConfig.missionWarning;
                 updateDat = missionsConfig.updatedat;
+                combatAcceptanceOrder = newMissions.Select( m => m.combatAcceptanceOrder ?? 0 ).DefaultIfEmpty().Max();
+                combatReplayCutoffs.Clear();
+                combatBountyTimestamp = null;
+                combatBountyOrdinal = 0;
+                foreach ( var mission in newMissions )
+                {
+                    combatReplayCutoffs[ mission.missionid ] =
+                        ( mission.combatObservedAt ?? missionsConfig.updatedat, mission.combatBountyOrdinal );
+                    // Journal loading may not cover the entire gap between monitor sessions, including wing kills.
+                    mission.MarkCombatHistoryIncomplete();
+                }
 
                 // Update the missions log 
                 missions.Clear();

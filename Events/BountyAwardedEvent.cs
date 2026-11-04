@@ -31,12 +31,20 @@ namespace EddiEvents
         [PublicAPI("True if the rewards have been shared with wing-mates")]
         public bool shared { get; private set; }
 
-        public BountyAwardedEvent(DateTime timestamp, string target, string target_localised, string victimName, string victimFaction, long reward, List<Reward> rewards, bool shared) : base(timestamp, NAME)
+        // Not intended to be user facing
+
+        // Keep the nonlocalized classification for mission attribution. Suits, unknown assets, and vehicles
+        // must not become ship kills just because their localized target text happens to match.
+        [Newtonsoft.Json.JsonIgnore]
+        public bool isShipTarget { get; private set; }
+
+        public BountyAwardedEvent (DateTime timestamp, string target, string target_localised, string victimName, string victimFaction, long reward, List<Reward> rewards, bool shared) : base(timestamp, NAME)
         {
             if ( target != null )
             {
                 // Might be a ship
                 var targetShip = ShipDefinitions.FromEDModel(target, false);
+                isShipTarget = targetShip != null;
 
                 // Might be a SRV or Fighter
                 var targetVehicle = VesselDefinition.isVessel(target) ? VesselDefinition.FromEDName(target) : null;

@@ -136,6 +136,13 @@
     <value>{0:N0} contributed · {1}% band</value>
     <comment>Community goal contribution and the reported percentile band. This is not completion percentage.</comment>
   </data>
+  <data name="progress_combat_estimate_format" xml:space="preserve">
+    <value>Estimated {0:N0}/{1:N0} kills</value>
+    <comment>Matching ship bounties, not confirmed mission-target kills. Includes only observations available to EDDI; earlier or shared kills may be missing.</comment>
+  </data>
+  <data name="progress_combat_estimate_tooltip" xml:space="preserve">
+    <value>Matching ship bounties only. Journals do not identify mission-target kills, and earlier or shared kills may be missing.</value>
+  </data>
   <data name="header_cg_contribution" xml:space="preserve">
     <value>Contribution:</value>
   </data>

@@ -86,6 +86,12 @@ namespace EddiEvents
         [PublicAPI("The mission object")]
         public Mission Mission { get; } = mission;
 
+        // Not intended to be user facing
+
+        // Parser provenance only: amount already carries the required kill count for combat missions.
+        [Newtonsoft.Json.JsonIgnore]
+        internal bool HasKillCount { get; init; }
+
         public static bool Handle ( DateTime timestamp, string edType, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {
             switch ( edType )
@@ -165,6 +171,7 @@ namespace EddiEvents
                             var targettype = JsonParsing.getString(data, "TargetType");
                             var targetfaction = EventParsing.FactionName(data, "TargetFaction");
                             data.TryGetValue( "KillCount", out val );
+                            var killCount = (int?)(long?)val;
                             if ( val != null )
                             {
                                 amount = (int?)(long?)val;
@@ -244,6 +251,7 @@ namespace EddiEvents
                                 ? journalDestinationSystems : string.IsNullOrWhiteSpace( destinationsystem ) ? [ ] : [ destinationsystem ] );
                             events.Add( new MissionAcceptedEvent( timestamp, mission )
                             {
+                                HasKillCount = killCount.HasValue && amount == killCount,
                                 JournalDestinationSystems = journalDestinationSystems,
                                 ResolveOrigin = true,
                                 raw = line,
