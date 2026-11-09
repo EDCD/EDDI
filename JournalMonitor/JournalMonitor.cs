@@ -307,10 +307,10 @@ namespace EddiJournalMonitor
                                 handled = SignalDetectedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "MaterialCollected":
-                                handled = MaterialCollectedEvent.Handle( timestamp, line, data, ref events );
+                                handled = MaterialCollectedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "MaterialDiscarded":
-                                handled = MaterialDiscardedEvent.Handle( timestamp, line, data, ref events );
+                                handled = MaterialDiscardedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "MaterialDiscovered":
                                 handled = MaterialDiscoveredEvent.Handle( timestamp, line, data, ref events, fromLogLoad );

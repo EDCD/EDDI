@@ -25,11 +25,11 @@ namespace EddiEvents
 
         public string edname { get; private set; } = material?.edname;
 
-        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events )
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {
             var material = Material.FromEDName(JsonParsing.getString(data, "Name"));
             var amount = JsonParsing.getInt( data, "Count" );
-            events.Add( new MaterialCollectedEvent( timestamp, material, amount ) { raw = line, fromLoad = false } );
+            events.Add( new MaterialCollectedEvent( timestamp, material, amount ) { raw = line, fromLoad = fromLogLoad } );
             return true;
         }
     }
