@@ -86,6 +86,12 @@ namespace EddiEvents
         [PublicAPI("The mission object")]
         public Mission Mission { get; } = mission;
 
+        // Not intended to be user facing
+
+        // Parser provenance only: amount already carries the required kill count for combat missions.
+        [Newtonsoft.Json.JsonIgnore]
+        internal bool HasKillCount { get; init; }
+
         public static bool Handle ( DateTime timestamp, string edType, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {
             switch ( edType )
@@ -165,6 +171,7 @@ namespace EddiEvents
                             var targettype = JsonParsing.getString(data, "TargetType");
                             var targetfaction = EventParsing.FactionName(data, "TargetFaction");
                             data.TryGetValue( "KillCount", out val );
+                            var killCount = (int?)(long?)val;
                             if ( val != null )
                             {
                                 amount = (int?)(long?)val;
@@ -240,8 +247,11 @@ namespace EddiEvents
                                 }
                             }
 
+                            mission.InitializeSightseeingWaypoints( journalDestinationSystems.Length > 0
+                                ? journalDestinationSystems : string.IsNullOrWhiteSpace( destinationsystem ) ? [ ] : [ destinationsystem ] );
                             events.Add( new MissionAcceptedEvent( timestamp, mission )
                             {
+                                HasKillCount = killCount.HasValue && amount == killCount,
                                 JournalDestinationSystems = journalDestinationSystems,
                                 ResolveOrigin = true,
                                 raw = line,
@@ -266,7 +276,13 @@ namespace EddiEvents
 
         public void ResolveDestinations ( IEnumerable<NavWaypoint> destinations )
         {
-            foreach ( var destination in destinations ?? [ ] )
+            var resolved = destinations?.Where( d => d != null ).ToList() ?? [ ];
+            // Lookup results may be cache-first, incomplete, or unordered. Keep the journal's order and denominator.
+            var ordered = JournalDestinationSystems.Length > 0
+                ? JournalDestinationSystems.Select( name => resolved.FirstOrDefault( d =>
+                    string.Equals( d.systemName, name.Trim(), StringComparison.OrdinalIgnoreCase ) ) ).Where( d => d != null )
+                : resolved;
+            foreach ( var destination in ordered )
             {
                 if ( string.IsNullOrEmpty( destination.systemName ) ) { continue; }
 
@@ -274,7 +290,7 @@ namespace EddiEvents
                 Mission.destinationsystems.Add( destination );
             }
 
-            Mission.destinationsystem = Mission.destinationsystems.FirstOrDefault()?.systemName;
+            Mission.destinationsystem = Mission.nextSightseeingSystem ?? Mission.destinationsystems.FirstOrDefault()?.systemName;
         }
     }
 }

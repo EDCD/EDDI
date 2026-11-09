@@ -4,6 +4,7 @@ using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
 using EddiNavigationService;
+using EddiNavigationService.QueryResolvers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -152,6 +153,39 @@ namespace Tests
             Assert.IsNotNull( result );
             Assert.AreEqual( "Alioth", result.system );
             CollectionAssert.AreEqual( new List<ulong> { 12345 }, result.missionids );
+        }
+
+        [TestMethod]
+        public void MissionRoutingPredicatesSeparatePendingCargoAndTurnInStates()
+        {
+            var cargoMission = new Mission( 12346, "Mission_Salvage_Expansion",
+                DateTime.UtcNow.AddHours( 1 ), MissionStatus.Active )
+            {
+                sourcesystem = "Alioth"
+            };
+            Assert.IsTrue( MissionRoutingPredicates.IsPending( cargoMission ) );
+            Assert.IsTrue( MissionRoutingPredicates.NeedsCargo( cargoMission ) );
+            Assert.IsFalse( MissionRoutingPredicates.NeedsTurnIn( cargoMission ) );
+
+            cargoMission.SetZeroExpiryClaimability( true );
+            Assert.IsFalse( MissionRoutingPredicates.IsPending( cargoMission ) );
+            Assert.IsFalse( MissionRoutingPredicates.NeedsCargo( cargoMission ) );
+
+            var partialDelivery = new Mission( 12348, "Mission_Delivery",
+                DateTime.UtcNow.AddHours( 1 ), MissionStatus.Active )
+            {
+                amount = 10,
+                delivered = 5,
+                sourcesystem = "Alioth"
+            };
+            Assert.IsTrue( partialDelivery.claimable );
+            Assert.IsTrue( MissionRoutingPredicates.IsPending( partialDelivery ) );
+            Assert.IsTrue( MissionRoutingPredicates.NeedsCargo( partialDelivery ) );
+
+            var returnMission = new Mission( 12347, "Mission_Assassinate",
+                DateTime.UtcNow.AddHours( 1 ), MissionStatus.Active );
+            returnMission.SetRedirectClaimability( true );
+            Assert.IsTrue( MissionRoutingPredicates.NeedsTurnIn( returnMission ) );
         }
 
         [TestMethod]

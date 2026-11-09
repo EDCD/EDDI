@@ -33,8 +33,9 @@ namespace EddiEddnResponder.Schemas
                 data = PersonalDataStripper.Strip(data, edType);
 
                 // Apply data augments
-                data = eddnState.GameVersion.AugmentVersion(data);
+                data = eddnState.GameVersion.AugmentVersion( data );
 
+                eddnSender.SendToEDDN( "https://eddn.edcd.io/schemas/fcmaterials_journal/1", data, eddnState );
                 return true;
             }
             catch (Exception e)

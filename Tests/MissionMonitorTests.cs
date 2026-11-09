@@ -7,10 +7,15 @@ using EddiEvents;
 using EddiJournalMonitor;
 using EddiMissionMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tests.Properties;
+using Utilities;
 
 namespace Tests
 {
@@ -18,6 +23,7 @@ namespace Tests
     public class MissionMonitorTests : TestBase
     {
         private readonly MissionMonitor missionMonitor = new();
+        public TestContext TestContext { get; set; }
 
         [TestInitialize]
         public void StartTestMissionMonitor()
@@ -210,7 +216,9 @@ namespace Tests
             missionMonitor._handleCargoDepotEvent((CargoDepotEvent)events[0]);
             mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 413748365);
             Assert.IsNotNull( mission );
-            Assert.AreEqual(MissionStatus.Claim, mission.statusDef);
+            Assert.AreEqual(MissionStatus.Active, mission.statusDef);
+            Assert.IsTrue( mission.claimable );
+            Assert.AreEqual( 100M, mission.progress );
             Assert.HasCount( 4, missionMonitor.missions );
             Assert.AreEqual( "Gold", mission.CommodityDefinition.invariantName );
             Assert.AreEqual( 0, mission.collected );
@@ -272,7 +280,8 @@ namespace Tests
             missionMonitor._handleCargoDepotEvent((CargoDepotEvent)events[0]);
             mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 413748324);
             Assert.IsNotNull( mission );
-            Assert.AreEqual("Claim", mission.statusEDName);
+            Assert.AreEqual("Active", mission.statusEDName);
+            Assert.IsTrue( mission.claimable );
 
             //MissionAcceptedEvent - 'Smuggle'
             line = @"{ ""timestamp"":""2018-09-21T20:51:56Z"", ""event"":""MissionAccepted"", ""Faction"":""Gcirithang Crimson Mafia"", ""Name"":""Mission_Smuggle_Famine"", ""LocalisedName"":""Smuggle 36 units of Narcotics to combat famine"", ""Commodity"":""$BasicNarcotics_Name;"", ""Commodity_Localised"":""Narcotics"", ""Count"":36, ""DestinationSystem"":""Carcinus"", ""DestinationStation"":""Wye-Delta Station"", ""Expiry"":""2018-08-30T20:55:33Z"", ""Wing"":false, ""Influence"":""Med"", ""Reputation"":""Med"", ""Reward"":180818, ""MissionID"":414732731 }";
@@ -320,7 +329,9 @@ namespace Tests
             Assert.IsNotNull( mission );
             Assert.AreEqual("Failed", mission.statusEDName); 
             missionMonitor._postHandleMissionFailedEvent((MissionFailedEvent)events[0]);
-            Assert.HasCount( 3, missionMonitor.missions );
+            Assert.HasCount( 4, missionMonitor.missions );
+            var missionVariables = missionMonitor.GetVariableValues().ToRuntimeValueDictionary();
+            Assert.AreEqual( 3, missionVariables[ "missionsCount" ].Item2 );
 
             //MissionCompletedEvent - Donation
             line = @"{ ""timestamp"":""2018-12-18T19:14:32Z"", ""event"":""MissionCompleted"", ""Faction"":""Movement for Rabakshany Democrats"", ""Name"":""Mission_AltruismCredits_name"", ""MissionID"":442085549, ""Donation"":""1000000"", ""Donated"":1000000, ""FactionEffects"":[ { ""Faction"":""Movement for Rabakshany Democrats"", ""Effects"":[ { ""Effect"":""$MISSIONUTIL_Interaction_Summary_EP_up;"", ""Effect_Localised"":""The economic status of $#MinorFaction; has improved in the $#System; system."", ""Trend"":""UpGood"" } ], ""Influence"":[ { ""SystemAddress"":8605201797850, ""Trend"":""UpGood"", ""Influence"":""+++++"" } ], ""ReputationTrend"":""UpGood"", ""Reputation"":""++"" } ] }";
@@ -334,6 +345,1001 @@ namespace Tests
         }
 
         [TestMethod]
+        public async Task MissionTimerEmitsExpirationOnceWithoutChangingStatus()
+        {
+            var now = new DateTime( 2026, 9, 20, 12, 0, 0, DateTimeKind.Utc );
+            var eliteRunning = true;
+            var emittedEvents = new List<Event>();
+            var monitor = new MissionMonitor( () => now, () => eliteRunning, emittedEvents.Add );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 1 } );
+            var mission = new Mission( 1, "Mission_Courier", now.AddSeconds( 5 ), MissionStatus.Active );
+
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            var snapshot = new MissionsEvent( now, [ mission ] );
+            monitor._handleMissionsEvent( snapshot );
+            monitor.ArmMissionTimersFromSnapshot( snapshot );
+
+            monitor.ProcessMissionTimers();
+            Assert.AreEqual( 1, emittedEvents.OfType<MissionWarningEvent>().Count() );
+
+            now = now.AddSeconds( 5 );
+            monitor.ProcessMissionTimers();
+            monitor.ProcessMissionTimers();
+
+            Assert.AreEqual( 1, emittedEvents.OfType<MissionExpiredEvent>().Count() );
+            Assert.AreEqual( MissionStatus.Active, monitor.missions.Single().statusDef );
+        }
+
+        [TestMethod]
+        public async Task MissionTimerDeadlineExtensionRearmsExpiration()
+        {
+            var now = new DateTime( 2026, 9, 20, 12, 0, 0, DateTimeKind.Utc );
+            var emittedEvents = new List<Event>();
+            var monitor = new MissionMonitor( () => now, () => true, emittedEvents.Add );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 0 } );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            var snapshot = new MissionsEvent( now,
+                [ new Mission( 2, "Mission_Courier", now.AddSeconds( 5 ), MissionStatus.Active ) ] );
+            monitor._handleMissionsEvent( snapshot );
+            monitor.ArmMissionTimersFromSnapshot( snapshot );
+
+            now = now.AddSeconds( 5 );
+            monitor.ProcessMissionTimers();
+            var extendedDeadline = now.AddSeconds( 10 );
+            snapshot = new MissionsEvent( now,
+                [ new Mission( 2, "Mission_Courier", extendedDeadline, MissionStatus.Active ) ] );
+            monitor._handleMissionsEvent( snapshot );
+            monitor.ArmMissionTimersFromSnapshot( snapshot );
+            now = extendedDeadline;
+            monitor.ProcessMissionTimers();
+
+            Assert.AreEqual( 2, emittedEvents.OfType<MissionExpiredEvent>().Count() );
+            Assert.AreEqual( MissionStatus.Active, monitor.missions.Single().statusDef );
+        }
+
+        [TestMethod]
+        public async Task MissionTimerDoesNotArmAlreadyOverdueOrOfflineMissions()
+        {
+            var now = new DateTime( 2026, 9, 20, 12, 0, 0, DateTimeKind.Utc );
+            var eliteRunning = true;
+            var emittedEvents = new List<Event>();
+            var monitor = new MissionMonitor( () => now, () => eliteRunning, emittedEvents.Add );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 0 } );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            var snapshot = new MissionsEvent( now,
+                [ new Mission( 3, "Mission_Courier", now.AddSeconds( -1 ), MissionStatus.Active ) ] );
+            monitor._handleMissionsEvent( snapshot );
+            monitor.ArmMissionTimersFromSnapshot( snapshot );
+            monitor.ProcessMissionTimers();
+
+            eliteRunning = false;
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.offline.log", "test", "test" ) );
+            snapshot = new MissionsEvent( now,
+                [ new Mission( 4, "Mission_Courier", now.AddSeconds( 5 ), MissionStatus.Active ) ] );
+            monitor._handleMissionsEvent( snapshot );
+            monitor.ArmMissionTimersFromSnapshot( snapshot );
+            eliteRunning = true;
+            now = now.AddSeconds( 5 );
+            monitor.ProcessMissionTimers();
+
+            Assert.AreEqual( 0, emittedEvents.OfType<MissionExpiredEvent>().Count() );
+        }
+
+        [TestMethod]
+        public async Task MissionTimerDisarmsOnProcessExitAndShutdown()
+        {
+            var now = new DateTime( 2026, 9, 20, 12, 0, 0, DateTimeKind.Utc );
+            var eliteRunning = true;
+            var emittedEvents = new List<Event>();
+            var monitor = new MissionMonitor( () => now, () => eliteRunning, emittedEvents.Add );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 1 } );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            var processExitMission = new Mission( 8, "Mission_Courier", now.AddSeconds( 30 ), MissionStatus.Active );
+            var snapshot = new MissionsEvent( now,
+                [ processExitMission ] );
+            monitor._handleMissionsEvent( snapshot );
+            monitor.ArmMissionTimersFromSnapshot( snapshot );
+            monitor.ProcessMissionTimers();
+            Assert.AreEqual( 1, emittedEvents.OfType<MissionWarningEvent>().Count() );
+
+            eliteRunning = false;
+            monitor.ProcessMissionTimers();
+            eliteRunning = true;
+            now = now.AddSeconds( 30 );
+            monitor.ProcessMissionTimers();
+
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.next.log", "test", "test" ) );
+            var shutdownMission = new Mission( 9, "Mission_Courier", now.AddSeconds( 30 ), MissionStatus.Active );
+            snapshot = new MissionsEvent( now,
+                [ shutdownMission ] );
+            monitor._handleMissionsEvent( snapshot );
+            monitor.ArmMissionTimersFromSnapshot( snapshot );
+            monitor.ProcessMissionTimers();
+            Assert.AreEqual( 2, emittedEvents.OfType<MissionWarningEvent>().Count() );
+            await monitor.PreHandleAsync( new ShutdownEvent( now ) );
+            now = now.AddSeconds( 30 );
+            monitor.ProcessMissionTimers();
+
+            Assert.AreEqual( 0, emittedEvents.OfType<MissionExpiredEvent>().Count() );
+        }
+
+        [TestMethod]
+        public async Task MissionWarningsRequireCurrentSessionMissionData()
+        {
+            var now = new DateTime( 2026, 9, 20, 12, 0, 0, DateTimeKind.Utc );
+            var emittedEvents = new List<Event>();
+            var liveMonitor = new MissionMonitor( () => now, () => true, emittedEvents.Add );
+            liveMonitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 1 } );
+            await liveMonitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            var mission = new Mission( 10, "Mission_Courier", now.AddSeconds( 30 ), MissionStatus.Active );
+            var snapshot = new MissionsEvent( now, [ mission ] );
+            liveMonitor._handleMissionsEvent( snapshot );
+            liveMonitor.ArmMissionTimersFromSnapshot( snapshot );
+
+            liveMonitor.ProcessMissionTimers();
+            liveMonitor.ProcessMissionTimers();
+
+            var offlineMonitor = new MissionMonitor( () => now, () => false, emittedEvents.Add );
+            offlineMonitor.initializeMissionMonitor( new MissionMonitorConfiguration
+            {
+                missionWarning = 1,
+                missions = [ new Mission( 11, "Mission_Courier", now.AddSeconds( 30 ), MissionStatus.Active ) ]
+            } );
+            offlineMonitor.ProcessMissionTimers();
+
+            Assert.AreEqual( 1, emittedEvents.OfType<MissionWarningEvent>().Count() );
+        }
+
+        [TestMethod]
+        public async Task MissionTimersIgnoreFailedAndCompletedMissions()
+        {
+            var now = new DateTime( 2026, 9, 20, 12, 0, 0, DateTimeKind.Utc );
+            var deadline = now.AddSeconds( 30 );
+            var emittedEvents = new List<Event>();
+            var monitor = new MissionMonitor( () => now, () => true, emittedEvents.Add );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 1 } );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            var failedMission = new Mission( 12, "Mission_OnFoot_Collect", deadline, MissionStatus.Active );
+            var completedMission = new Mission( 13, "Mission_OnFoot_Collect", deadline, MissionStatus.Active );
+            var snapshot = new MissionsEvent( now, [ failedMission, completedMission ] );
+            monitor._handleMissionsEvent( snapshot );
+            monitor.ArmMissionTimersFromSnapshot( snapshot );
+
+            failedMission.statusDef = MissionStatus.Failed;
+            completedMission.statusDef = MissionStatus.Complete;
+            Assert.IsNotNull( failedMission.expiry );
+            Assert.IsNotNull( completedMission.expiry );
+
+            monitor.ProcessMissionTimers();
+            now = deadline;
+            monitor.ProcessMissionTimers();
+
+            Assert.AreEqual( 0, emittedEvents.OfType<MissionWarningEvent>().Count() );
+            Assert.AreEqual( 0, emittedEvents.OfType<MissionExpiredEvent>().Count() );
+        }
+
+        [TestMethod]
+        public async Task MissionExpirationDoesNotOverrideAuthoritativeTerminalEventsOrAdvanceWatermark()
+        {
+            var now = new DateTime( 2026, 9, 20, 12, 0, 0, DateTimeKind.Utc );
+            var emittedEvents = new List<Event>();
+            var monitor = new MissionMonitor( () => now, () => true, emittedEvents.Add );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 0 } );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            var snapshot = new MissionsEvent( now,
+                [
+                    new Mission( 5, "Mission_Courier", now.AddSeconds( 5 ), MissionStatus.Active ),
+                    new Mission( 6, "Mission_Courier", now.AddSeconds( 5 ), MissionStatus.Active )
+                ] );
+            monitor._handleMissionsEvent( snapshot );
+            monitor.ArmMissionTimersFromSnapshot( snapshot );
+
+            now = now.AddSeconds( 5 );
+            monitor.ProcessMissionTimers();
+            await monitor.PreHandleAsync( new MissionExpiredEvent( now.AddSeconds( 5 ), 5, "Mission_Courier" ) );
+            await monitor.PreHandleAsync( new MissionFailedEvent( now.AddSeconds( 1 ), 5, "Mission_Courier", 0 ) );
+            await monitor.PreHandleAsync( new MissionCompletedEvent( now.AddSeconds( 2 ), 6, "Mission_Courier",
+                null, null, null, null, false, 0 ) );
+
+            Assert.AreEqual( MissionStatus.Failed, monitor.missions.Single( m => m.missionid == 5 ).statusDef );
+            Assert.AreEqual( MissionStatus.Complete, monitor.missions.Single( m => m.missionid == 6 ).statusDef );
+        }
+
+        [TestMethod]
+        public void MissionsParserPreservesZeroExpiryAsAnActiveSnapshotCondition()
+        {
+            const string line = "{ \"timestamp\":\"2026-09-20T12:00:00Z\", \"event\":\"Missions\", " +
+                                "\"Active\":[{\"MissionID\":20,\"Name\":\"Mission_Courier\",\"Expires\":0}," +
+                                "{\"MissionID\":21,\"Name\":\"Mission_Courier\"}]," +
+                                "\"Failed\":[],\"Complete\":[] }";
+
+            var missionsEvent = (MissionsEvent)JournalMonitor.ParseJournalEntry( line ).Single();
+            var mission = missionsEvent.missions.Single( m => m.missionid == 20 );
+            var missionWithoutExpiry = missionsEvent.missions.Single( m => m.missionid == 21 );
+
+            Assert.AreEqual( MissionStatus.Active, mission.statusDef );
+            Assert.IsNull( mission.expiry );
+            Assert.Contains( 20UL, missionsEvent.zeroExpiryMissionIds );
+            Assert.AreEqual( MissionStatus.Active, missionWithoutExpiry.statusDef );
+            Assert.IsNull( missionWithoutExpiry.expiry );
+            Assert.DoesNotContain( 21UL, missionsEvent.zeroExpiryMissionIds );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task ZeroExpirySnapshotBecomesClaimableAfterTenSecondsAndPreservesKnownDeadline()
+        {
+            var now = new DateTime( 2026, 9, 20, 12, 0, 0, DateTimeKind.Utc );
+            var knownDeadline = now.AddMinutes( 30 );
+            var monitor = new MissionMonitor( () => now, () => true, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 0 } );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            await monitor.PreHandleAsync( new MissionsEvent( now,
+            [
+                new Mission( 21, "Mission_Courier", knownDeadline, MissionStatus.Active ),
+                new Mission( 22, "Mission_Courier", null, MissionStatus.Active )
+            ] ) );
+
+            now = now.AddSeconds( 1 );
+            await monitor.PreHandleAsync( new MissionsEvent( now,
+            [
+                new Mission( 21, "Mission_Courier", null, MissionStatus.Active ),
+                new Mission( 22, "Mission_Courier", null, MissionStatus.Active )
+            ], [ 21, 22 ] ) );
+
+            now = now.AddSeconds( 9 );
+            monitor.ProcessMissionTimers();
+            Assert.IsTrue( monitor.missions.All( m => m.statusDef == MissionStatus.Active ) );
+
+            now = now.AddSeconds( 1 );
+            monitor.ProcessMissionTimers();
+
+            var knownDeadlineMission = monitor.missions.Single( m => m.missionid == 21 );
+            var unknownDeadlineMission = monitor.missions.Single( m => m.missionid == 22 );
+            Assert.AreEqual( MissionStatus.Active, knownDeadlineMission.statusDef );
+            Assert.IsTrue( knownDeadlineMission.claimable );
+            Assert.AreEqual( 100M, knownDeadlineMission.progress );
+            Assert.AreEqual( knownDeadline, knownDeadlineMission.expiry );
+            Assert.AreEqual( MissionStatus.Active, unknownDeadlineMission.statusDef );
+            Assert.IsTrue( unknownDeadlineMission.claimable );
+            Assert.AreEqual( 100M, unknownDeadlineMission.progress );
+            Assert.IsNull( unknownDeadlineMission.expiry );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task FailureDuringZeroExpiryReconciliationPreventsInferredClaimability()
+        {
+            var now = new DateTime( 2026, 9, 20, 12, 0, 0, DateTimeKind.Utc );
+            var monitor = new MissionMonitor( () => now, () => true, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 0 } );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            await monitor.PreHandleAsync( new MissionsEvent( now,
+                [ new Mission( 23, "Mission_Courier", null, MissionStatus.Active ) ], [ 23 ] ) );
+
+            now = now.AddSeconds( 5 );
+            await monitor.PreHandleAsync( new MissionFailedEvent( now, 23, "Mission_Courier", 0 ) );
+            now = now.AddSeconds( 5 );
+            monitor.ProcessMissionTimers();
+
+            Assert.AreEqual( MissionStatus.Failed, monitor.missions.Single().statusDef );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task AuthoritativeTerminalEventsOverrideInferredClaimability()
+        {
+            var now = new DateTime( 2026, 9, 20, 12, 0, 0, DateTimeKind.Utc );
+            var monitor = new MissionMonitor( () => now, () => true, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 0 } );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            await monitor.PreHandleAsync( new MissionsEvent( now,
+            [
+                new Mission( 24, "Mission_Courier", null, MissionStatus.Active ),
+                new Mission( 25, "Mission_Courier", null, MissionStatus.Active )
+            ], [ 24, 25 ] ) );
+
+            now = now.AddSeconds( 10 );
+            monitor.ProcessMissionTimers();
+            Assert.IsTrue( monitor.missions.All( m => m.statusDef == MissionStatus.Active && m.claimable ) );
+
+            now = now.AddSeconds( 1 );
+            await monitor.PreHandleAsync( new MissionFailedEvent( now, 24, "Mission_Courier", 0 ) );
+            await monitor.PreHandleAsync( new MissionCompletedEvent( now, 25, "Mission_Courier",
+                null, null, null, null, false, 0 ) );
+
+            var failedMission = monitor.missions.Single( m => m.missionid == 24 );
+            var completedMission = monitor.missions.Single( m => m.missionid == 25 );
+            Assert.AreEqual( MissionStatus.Failed, failedMission.statusDef );
+            Assert.IsFalse( failedMission.claimable );
+            Assert.AreEqual( 100M, failedMission.progress );
+            Assert.AreEqual( MissionStatus.Complete, completedMission.statusDef );
+            Assert.IsFalse( completedMission.claimable );
+            Assert.AreEqual( 100M, completedMission.progress );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task DeadlineExpirationAndZeroExpirySnapshotUseSeparateTimelines()
+        {
+            var now = new DateTime( 2026, 9, 20, 12, 0, 0, DateTimeKind.Utc );
+            var deadline = now.AddSeconds( 5 );
+            var emittedEvents = new List<Event>();
+            var monitor = new MissionMonitor( () => now, () => true, emittedEvents.Add );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 0 } );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            await monitor.PreHandleAsync( new MissionsEvent( now,
+                [ new Mission( 26, "Mission_Courier", deadline, MissionStatus.Active ) ] ) );
+
+            now = deadline;
+            monitor.ProcessMissionTimers();
+            Assert.AreEqual( MissionStatus.Active, monitor.missions.Single().statusDef );
+            Assert.AreEqual( 1, emittedEvents.OfType<MissionExpiredEvent>().Count() );
+
+            now = now.AddMinutes( 5 );
+            await monitor.PreHandleAsync( new MissionsEvent( deadline,
+                [ new Mission( 26, "Mission_Courier", null, MissionStatus.Active ) ], [ 26 ] ) );
+            now = now.AddSeconds( 9 );
+            monitor.ProcessMissionTimers();
+            Assert.AreEqual( MissionStatus.Active, monitor.missions.Single().statusDef );
+
+            now = now.AddSeconds( 1 );
+            monitor.ProcessMissionTimers();
+            Assert.AreEqual( MissionStatus.Active, monitor.missions.Single().statusDef );
+            Assert.IsTrue( monitor.missions.Single().claimable );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task PositiveExpiryReplacementCancelsZeroExpiryReconciliation()
+        {
+            var now = new DateTime( 2026, 9, 20, 12, 0, 0, DateTimeKind.Utc );
+            var monitor = new MissionMonitor( () => now, () => true, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 0 } );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            await monitor.PreHandleAsync( new MissionsEvent( now,
+            [
+                new Mission( 27, "Mission_Courier", null, MissionStatus.Active ),
+                new Mission( 33, "Mission_Courier", null, MissionStatus.Active )
+            ], [ 27, 33 ] ) );
+
+            now = now.AddSeconds( 5 );
+            var replacementDeadline = now.AddMinutes( 20 );
+            await monitor.PreHandleAsync( new MissionsEvent( now,
+                [ new Mission( 27, "Mission_Courier", replacementDeadline, MissionStatus.Active ) ] ) );
+            now = now.AddSeconds( 5 );
+            monitor.ProcessMissionTimers();
+
+            var mission = monitor.missions.Single();
+            Assert.AreEqual( MissionStatus.Active, mission.statusDef );
+            Assert.AreEqual( replacementDeadline, mission.expiry );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task PositiveExpiryReplacementCannotRaceDueZeroExpiryReconciliation()
+        {
+            for ( var i = 0; i < 20; i++ )
+            {
+                var now = new DateTime( 2026, 9, 20, 12, 0, 0, DateTimeKind.Utc );
+                var monitor = new MissionMonitor( () => now, () => true, _ => { } );
+                monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 0 } );
+                await monitor.PreHandleAsync( new FileHeaderEvent( now, $"Journal.{i}.log", "test", "test" ) );
+                await monitor.PreHandleAsync( new MissionsEvent( now,
+                    [ new Mission( 1000UL + (ulong)i, "Mission_Courier", null, MissionStatus.Active ) ],
+                    [ 1000UL + (ulong)i ] ) );
+
+                now = now.AddSeconds( 10 );
+                var replacementDeadline = now.AddMinutes( 20 );
+                var replacement = new MissionsEvent( now,
+                    [ new Mission( 1000UL + (ulong)i, "Mission_Courier", replacementDeadline,
+                        MissionStatus.Active ) ] );
+
+                await Task.WhenAll(
+                    Task.Run( monitor.ProcessMissionTimers, TestContext.CancellationToken ),
+                    Task.Run( () => monitor.PreHandleAsync( replacement ), TestContext.CancellationToken ) );
+
+                var mission = monitor.missions.Single();
+                Assert.AreEqual( MissionStatus.Active, mission.statusDef );
+                Assert.AreEqual( replacementDeadline, mission.expiry );
+            }
+        }
+
+        [TestMethod]
+        public void RuntimeMissionValuesAreDetachedSnapshots()
+        {
+            var waypoint = new NavWaypoint( "Test system", 123, 1, 2, 3 ) { visited = false };
+            var mission = new Mission( 2000, "Mission_Courier", DateTime.UtcNow.AddHours( 1 ),
+                MissionStatus.Active )
+            {
+                communal = true,
+                communalContribution = 42,
+                destinationsystems = [ waypoint ]
+            };
+            var monitor = new MissionMonitor( () => DateTime.UtcNow, () => false, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missions = [ mission ] } );
+
+            Assert.IsTrue( monitor.GetVariableValues().TryGetValue<List<Mission>>( "missions", out var snapshots ) );
+            var snapshot = snapshots.Single();
+            monitor.missions.Single().name = "Mission_Changed";
+            monitor.missions.Single().destinationsystems.Single().visited = true;
+            monitor.missions.Single().communalContribution = 99;
+
+            Assert.AreEqual( "Mission_Courier", snapshot.name );
+            Assert.IsFalse( snapshot.destinationsystems.Single().visited );
+            Assert.IsTrue( snapshot.communal );
+            Assert.AreEqual( 42, snapshot.communalContribution );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void PersistedMissionValuesAreDetachedSnapshots()
+        {
+            var originalConfiguration = ConfigService.Instance.missionMonitorConfiguration;
+            try
+            {
+                var mission = new Mission( 2001, "Mission_Courier", DateTime.UtcNow.AddHours( 1 ),
+                    MissionStatus.Active )
+                {
+                    destinationsystems = [ new NavWaypoint( "Test system", 456, 4, 5, 6 ) ]
+                };
+                var monitor = new MissionMonitor( () => DateTime.UtcNow, () => false, _ => { } );
+                monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missions = [ mission ] } );
+
+                monitor.writeMissions();
+                var persistedMission = ConfigService.Instance.missionMonitorConfiguration.missions.Single();
+                monitor.missions.Single().name = "Mission_Changed";
+                monitor.missions.Single().destinationsystems.Single().visited = true;
+
+                Assert.AreEqual( "Mission_Courier", persistedMission.name );
+                Assert.IsFalse( persistedMission.destinationsystems.Single().visited );
+            }
+            finally
+            {
+                ConfigService.Instance.missionMonitorConfiguration = originalConfiguration;
+            }
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task ProcessExitAndShutdownCancelZeroExpiryReconciliation()
+        {
+            var now = new DateTime( 2026, 9, 20, 12, 0, 0, DateTimeKind.Utc );
+            var eliteRunning = true;
+            var monitor = new MissionMonitor( () => now, () => eliteRunning, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 0 } );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            await monitor.PreHandleAsync( new MissionsEvent( now,
+                [ new Mission( 34, "Mission_Courier", null, MissionStatus.Active ) ], [ 34 ] ) );
+
+            now = now.AddSeconds( 5 );
+            eliteRunning = false;
+            monitor.ProcessMissionTimers();
+            eliteRunning = true;
+            now = now.AddSeconds( 5 );
+            monitor.ProcessMissionTimers();
+            Assert.AreEqual( MissionStatus.Active, monitor.missions.Single().statusDef );
+
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.next.log", "test", "test" ) );
+            await monitor.PreHandleAsync( new MissionsEvent( now,
+                [ new Mission( 34, "Mission_Courier", null, MissionStatus.Active ) ], [ 34 ] ) );
+            await monitor.PreHandleAsync( new ShutdownEvent( now ) );
+            now = now.AddSeconds( 10 );
+            monitor.ProcessMissionTimers();
+
+            Assert.AreEqual( MissionStatus.Active, monitor.missions.Single().statusDef );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task OfflineZeroExpirySnapshotDoesNotStartReconciliation()
+        {
+            var now = new DateTime( 2026, 9, 20, 12, 0, 0, DateTimeKind.Utc );
+            var eliteRunning = false;
+            var monitor = new MissionMonitor( () => now, () => eliteRunning, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 0 } );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.replay.log", "test", "test" ) );
+            await monitor.PreHandleAsync( new MissionsEvent( now,
+                [ new Mission( 28, "Mission_Courier", null, MissionStatus.Active ) ], [ 28 ] ) { fromLoad = true } );
+
+            eliteRunning = true;
+            now = now.AddSeconds( 20 );
+            monitor.ProcessMissionTimers();
+
+            Assert.AreEqual( MissionStatus.Active, monitor.missions.Single().statusDef );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task StandardMissionSnapshotIsAuthoritativeWithoutInventingFailure()
+        {
+            var now = new DateTime( 2026, 9, 20, 12, 0, 0, DateTimeKind.Utc );
+            var monitor = new MissionMonitor( () => now, () => true, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration
+            {
+                missionWarning = 0,
+                missions =
+                [
+                    new Mission( 29, "Mission_Courier", now.AddMinutes( 5 ), MissionStatus.Failed ),
+                    new Mission( 30, "Mission_Courier", now.AddMinutes( 5 ), MissionStatus.Active ),
+                    new Mission( 31, "Mission_Courier", now.AddMinutes( 5 ), MissionStatus.Active )
+                ]
+            } );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            var repairedDeadline = now.AddMinutes( 30 );
+            await monitor.PreHandleAsync( new MissionsEvent( now,
+            [
+                new Mission( 29, "Mission_Courier", repairedDeadline, MissionStatus.Active ),
+                new Mission( 31, "Mission_Courier", null, MissionStatus.Failed ),
+                new Mission( 32, "Mission_Courier", null, MissionStatus.Complete )
+            ] ) );
+
+            Assert.HasCount( 3, monitor.missions );
+            var repairedMission = monitor.missions.Single( m => m.missionid == 29 );
+            Assert.AreEqual( 29UL, repairedMission.missionid );
+            Assert.AreEqual( MissionStatus.Active, repairedMission.statusDef );
+            Assert.AreEqual( repairedDeadline, repairedMission.expiry );
+            Assert.AreEqual( MissionStatus.Failed,
+                monitor.missions.Single( m => m.missionid == 31 ).statusDef );
+            var completeSnapshotMission = monitor.missions.Single( m => m.missionid == 32 );
+            Assert.AreEqual( MissionStatus.Complete, completeSnapshotMission.statusDef );
+            Assert.AreEqual( 100M, completeSnapshotMission.progress );
+            Assert.IsFalse( completeSnapshotMission.claimable );
+            var variables = monitor.GetVariableValues().ToRuntimeValueDictionary();
+            Assert.AreEqual( 1, variables[ "missionsCount" ].Item2 );
+
+            now = now.AddSeconds( 1 );
+            await monitor.PreHandleAsync( new MissionsEvent( now,
+                [ new Mission( 29, "Mission_Courier", repairedDeadline, MissionStatus.Active ) ] ) );
+
+            Assert.ContainsSingle( monitor.missions );
+            Assert.AreEqual( 29UL, monitor.missions.Single().missionid );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task FailedMissionRemainsTrackedUntilAbandonment()
+        {
+            var now = new DateTime( 2026, 9, 21, 12, 0, 0, DateTimeKind.Utc );
+            var monitor = new MissionMonitor( () => now, () => true, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration
+            {
+                missions = [ new Mission( 35, "Mission_Courier", now.AddMinutes( 5 ), MissionStatus.Active ) ]
+            } );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            var failedEvent = new MissionFailedEvent( now, 35, "Mission_Courier", 0 );
+
+            await monitor.PreHandleAsync( failedEvent );
+            await monitor.PostHandleAsync( failedEvent );
+
+            Assert.AreEqual( MissionStatus.Failed, monitor.missions.Single().statusDef );
+            var variables = monitor.GetVariableValues().ToRuntimeValueDictionary();
+            Assert.AreEqual( 0, variables[ "missionsCount" ].Item2 );
+
+            now = now.AddSeconds( 1 );
+            var abandonedEvent = new MissionAbandonedEvent( now, 35, "Mission_Courier", 0 );
+            await monitor.PreHandleAsync( abandonedEvent );
+            await monitor.PostHandleAsync( abandonedEvent );
+
+            Assert.IsEmpty( monitor.missions );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task Issue2856SalvageCargoAcrossFsdRemainsActiveAndCanComplete()
+        {
+            var now = new DateTime( 2026, 9, 27, 12, 0, 0, DateTimeKind.Utc );
+            var fullCargoMission = new Mission( 1056406125, "Mission_Salvage_Expansion", now.AddHours( 1 ),
+                MissionStatus.Active ) { amount = 4 };
+            var partialCargoMission = new Mission( 967262440, "Mission_Salvage_Expansion", now.AddHours( 1 ),
+                MissionStatus.Active ) { amount = 3 };
+            var monitor = new MissionMonitor( () => now, () => true, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration
+            {
+                missions = [ fullCargoMission, partialCargoMission ]
+            } );
+            var originalCargoConfiguration = ConfigService.Instance.cargoMonitorConfiguration;
+            ConfigService.Instance.cargoMonitorConfiguration = new CargoMonitorConfiguration
+            {
+                cargo =
+                [
+                    new Cargo( "DamagedEscapePod" )
+                    {
+                        missionCargo = new Dictionary<ulong, int>
+                        {
+                            [ fullCargoMission.missionid ] = 4,
+                            [ partialCargoMission.missionid ] = 2
+                        }
+                    }
+                ]
+            };
+
+            try
+            {
+                await monitor.PreHandleAsync( new FSDEngagedEvent( now, "Hyperspace", "Col 285 Sector YF-M c8-8",
+                    null, "G", false ) );
+
+                Assert.IsTrue( monitor.missions.All( mission => mission.statusDef == MissionStatus.Active ) );
+
+                await monitor.PreHandleAsync( new MissionCompletedEvent( now.AddMinutes( 5 ),
+                    fullCargoMission.missionid, fullCargoMission.name, null, null, null, null, false, 0 ) );
+                await monitor.PreHandleAsync( new MissionCompletedEvent( now.AddMinutes( 6 ),
+                    partialCargoMission.missionid, partialCargoMission.name, null, null, null, null, false, 0 ) );
+
+                Assert.IsTrue( monitor.missions.All( mission => mission.statusDef == MissionStatus.Complete ) );
+            }
+            finally
+            {
+                ConfigService.Instance.cargoMonitorConfiguration = originalCargoConfiguration;
+            }
+        }
+
+        [TestMethod, DoNotParallelize]
+        [DataRow( "Mission_Salvage_Expansion" )]
+        [DataRow( "Mission_Rescue_Planet" )]
+        [DataRow( "Mission_Smuggle_Famine" )]
+        public async Task CargoLossAcrossFsdDoesNotInferMissionFailure( string missionName )
+        {
+            var now = new DateTime( 2026, 9, 27, 12, 0, 0, DateTimeKind.Utc );
+            var mission = new Mission( 963626959, missionName, now.AddHours( 1 ), MissionStatus.Active )
+            {
+                amount = 2
+            };
+            var monitor = new MissionMonitor( () => now, () => true, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missions = [ mission ] } );
+            var originalCargoConfiguration = ConfigService.Instance.cargoMonitorConfiguration;
+            ConfigService.Instance.cargoMonitorConfiguration = CreateMissionCargoConfiguration( mission.missionid, 1 );
+
+            try
+            {
+                await monitor.PreHandleAsync( new FSDEngagedEvent( now, "Supercruise", null, null, null, false ) );
+
+                Assert.AreEqual( MissionStatus.Active, monitor.missions.Single().statusDef );
+            }
+            finally
+            {
+                ConfigService.Instance.cargoMonitorConfiguration = originalCargoConfiguration;
+            }
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task DeliveryCargoLossAcrossFsdDoesNotInferMissionFailure()
+        {
+            var now = new DateTime( 2026, 9, 27, 12, 0, 0, DateTimeKind.Utc );
+            var mission = new Mission( 970176050, "Mission_Delivery", now.AddHours( 1 ), MissionStatus.Active )
+            {
+                amount = 10,
+                collected = 10,
+                delivered = 0
+            };
+            var monitor = new MissionMonitor( () => now, () => true, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missions = [ mission ] } );
+            var originalCargoConfiguration = ConfigService.Instance.cargoMonitorConfiguration;
+            ConfigService.Instance.cargoMonitorConfiguration = CreateMissionCargoConfiguration( mission.missionid, 4 );
+
+            try
+            {
+                await monitor.PreHandleAsync( new FSDEngagedEvent( now, "Hyperspace", "Aulin", null, "K", false ) );
+
+                Assert.AreEqual( MissionStatus.Active, monitor.missions.Single().statusDef );
+            }
+            finally
+            {
+                ConfigService.Instance.cargoMonitorConfiguration = originalCargoConfiguration;
+            }
+        }
+
+        [TestMethod]
+        public async Task FsdEngagementDoesNotSuppressOlderAuthoritativeMissionEvents()
+        {
+            var now = new DateTime( 2026, 9, 27, 12, 0, 0, DateTimeKind.Utc );
+            var monitor = new MissionMonitor( () => now, () => true, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration
+            {
+                missions =
+                [
+                    new Mission( 41, "Mission_Courier", now.AddHours( 1 ), MissionStatus.Active ),
+                    new Mission( 42, "Mission_Courier", now.AddHours( 1 ), MissionStatus.Active )
+                ]
+            } );
+
+            await monitor.PreHandleAsync( new FSDEngagedEvent( now.AddSeconds( 10 ), "Hyperspace", "Aulin", null,
+                "K", false ) );
+            await monitor.PreHandleAsync( new MissionCompletedEvent( now.AddSeconds( 5 ), 41, "Mission_Courier",
+                null, null, null, null, false, 0 ) );
+            await monitor.PreHandleAsync( new MissionFailedEvent( now.AddSeconds( 6 ), 42, "Mission_Courier", 0 ) );
+
+            Assert.AreEqual( MissionStatus.Complete,
+                monitor.missions.Single( mission => mission.missionid == 41 ).statusDef );
+            Assert.AreEqual( MissionStatus.Failed,
+                monitor.missions.Single( mission => mission.missionid == 42 ).statusDef );
+        }
+
+        [TestMethod]
+        [DataRow( "Mission_Delivery", 5, 3 )]
+        [DataRow( "Mission_Delivery_Wing", 5, 3 )]
+        [DataRow( "Mission_Mining", 5, 3 )]
+        [DataRow( "Mission_Mining_Wing", 5, 3 )]
+        [DataRow( "Mission_Mining", 36, 18 )]
+        [DataRow( "Mission_Mining_Wing", 36, 18 )]
+        public void DeliveryAndMiningProgressUseCeilingHalfClaimabilityThreshold( string missionName, int total, int threshold )
+        {
+            var mission = new Mission( 43, missionName, DateTime.UtcNow.AddHours( 1 ), MissionStatus.Active )
+            {
+                amount = total,
+                delivered = threshold - 1
+            };
+
+            Assert.AreEqual( 100M * ( threshold - 1 ) / total, mission.progress );
+            Assert.IsFalse( mission.claimable );
+
+            mission.delivered = threshold;
+
+            Assert.AreEqual( 100M * threshold / total, mission.progress );
+            Assert.IsTrue( mission.claimable );
+            Assert.AreEqual( MissionStatus.Active, mission.statusDef );
+
+            mission.delivered = total;
+
+            Assert.AreEqual( 100M, mission.progress );
+            Assert.IsTrue( mission.claimable );
+            Assert.AreEqual( MissionStatus.Active, mission.statusDef );
+        }
+
+        [TestMethod]
+        public void OtherCargoDepotMissionsRequireFullProgressToBeClaimable()
+        {
+            foreach ( var missionName in new[]
+                     {
+                         "Mission_Salvage_Expansion", "Mission_Rescue_Planet", "Mission_Smuggle_Famine",
+                         "Mission_Collect_Boom"
+                     } )
+            {
+                var mission = new Mission( 430, missionName, DateTime.UtcNow.AddHours( 1 ), MissionStatus.Active )
+                {
+                    amount = 10,
+                    delivered = 5
+                };
+
+                Assert.AreEqual( 50M, mission.progress, missionName );
+                Assert.IsFalse( mission.claimable, missionName );
+
+                mission.delivered = 10;
+
+                Assert.AreEqual( 100M, mission.progress, missionName );
+                Assert.IsTrue( mission.claimable, missionName );
+            }
+        }
+
+        [TestMethod]
+        public void ProgressFormattingIsCultureAwareAndIncludesEndpoints()
+        {
+            var originalCulture = CultureInfo.CurrentCulture;
+            try
+            {
+                CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo( "fr-FR" );
+                var mission = new Mission( 44, "Mission_Delivery", DateTime.UtcNow.AddHours( 1 ), MissionStatus.Active )
+                {
+                    amount = 8
+                };
+
+                Assert.AreEqual( "0%", mission.localizedProgress );
+
+                mission.delivered = 1;
+                Assert.AreEqual( 12.5M, mission.progress );
+                Assert.AreEqual( "12,5%", mission.localizedProgress );
+
+                mission.delivered = 8;
+                Assert.AreEqual( "100%", mission.localizedProgress );
+            }
+            finally
+            {
+                CultureInfo.CurrentCulture = originalCulture;
+            }
+        }
+
+        [TestMethod]
+        [DataRow( "Mission_Delivery" )]
+        [DataRow( "Mission_Mining" )]
+        public void ProgressAndClaimabilityRaiseDependentPropertyChanges( string missionName )
+        {
+            var mission = new Mission( 45, missionName, DateTime.UtcNow.AddHours( 1 ), MissionStatus.Active )
+            {
+                amount = 4
+            };
+            var changedProperties = new HashSet<string>();
+            mission.PropertyChanged += ( _, args ) => changedProperties.Add( args.PropertyName );
+
+            mission.delivered = 2;
+
+            Assert.Contains( nameof( Mission.progress ), changedProperties );
+            Assert.Contains( nameof( Mission.localizedProgress ), changedProperties );
+            Assert.Contains( nameof( Mission.claimable ), changedProperties );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task PositiveExpiryRetractsOnlyZeroExpiryClaimabilityEvidence()
+        {
+            var now = new DateTime( 2026, 9, 27, 12, 0, 0, DateTimeKind.Utc );
+            var mission = new Mission( 46, "Mission_Assassinate", now.AddHours( 1 ), MissionStatus.Active )
+            {
+                originsystem = "Aulin",
+                originstation = "Nixon Enterprise"
+            };
+            var monitor = new MissionMonitor( () => now, () => true, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missions = [ mission ] } );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            Assert.IsTrue( monitor._handleMissionRedirectedEvent( new MissionRedirectedEvent( now, mission.missionid,
+                mission.name, "nixon enterprise", null, "aulin", null ) ) );
+
+            now = now.AddSeconds( 1 );
+            await monitor.PreHandleAsync( new MissionsEvent( now,
+                [ new Mission( mission.missionid, mission.name, null, MissionStatus.Active ) ], [ mission.missionid ] ) );
+            now = now.AddSeconds( 10 );
+            monitor.ProcessMissionTimers();
+            Assert.IsTrue( monitor.missions.Single().claimable );
+
+            var replacementDeadline = now.AddHours( 2 );
+            now = now.AddSeconds( 1 );
+            await monitor.PreHandleAsync( new MissionsEvent( now,
+                [ new Mission( mission.missionid, mission.name, replacementDeadline, MissionStatus.Active ) ] ) );
+
+            Assert.AreEqual( MissionStatus.Active, monitor.missions.Single().statusDef );
+            Assert.IsTrue( monitor.missions.Single().claimable );
+            Assert.AreEqual( 100M, monitor.missions.Single().progress );
+
+            Assert.IsTrue( monitor._handleMissionRedirectedEvent( new MissionRedirectedEvent( now.AddSeconds( 1 ),
+                mission.missionid, mission.name, "Cuffey Orbital", "Nixon Enterprise", "Vequess", "Aulin" ) ) );
+
+            Assert.IsFalse( monitor.missions.Single().claimable );
+            Assert.AreEqual( 0M, monitor.missions.Single().progress );
+        }
+
+        [TestMethod]
+        public void RedirectClaimabilityRequiresCompleteVerifiedOriginDestination()
+        {
+            var now = new DateTime( 2026, 9, 27, 12, 0, 0, DateTimeKind.Utc );
+            var mission = new Mission( 47, "Mission_Assassinate", now.AddHours( 1 ), MissionStatus.Active )
+            {
+                originsystem = "Aulin",
+                originstation = "Nixon Enterprise"
+            };
+            var deliveryMission = new Mission( 48, "Mission_Delivery_Collect", now.AddHours( 1 ),
+                MissionStatus.Active )
+            {
+                originsystem = "Aulin",
+                originstation = "Nixon Enterprise"
+            };
+            var monitor = new MissionMonitor( () => now, () => true, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration
+            {
+                missions = [ mission, deliveryMission ]
+            } );
+            var trackedMission = monitor.missions.Single( item => item.missionid == mission.missionid );
+            var trackedDeliveryMission = monitor.missions.Single( item => item.missionid == deliveryMission.missionid );
+
+            monitor._handleMissionRedirectedEvent( new MissionRedirectedEvent( now, mission.missionid,
+                mission.name, null, null, "Aulin", null ) );
+            Assert.IsFalse( trackedMission.claimable );
+
+            monitor._handleMissionRedirectedEvent( new MissionRedirectedEvent( now, mission.missionid,
+                mission.name, "NIXON ENTERPRISE", null, "AULIN", null ) );
+            Assert.IsTrue( trackedMission.claimable );
+
+            // Even when a delivery mission has an origin-return tag, a redirect cannot replace delivery counters.
+            Assert.IsTrue( trackedDeliveryMission.originreturn );
+            monitor._handleMissionRedirectedEvent( new MissionRedirectedEvent( now, deliveryMission.missionid,
+                deliveryMission.name, "Nixon Enterprise", null, "Aulin", null ) );
+            Assert.IsFalse( trackedDeliveryMission.claimable );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task SalvageOriginReturnRedirectBecomesClaimableAndPersistsEvidence()
+        {
+            var now = new DateTime( 2026, 10, 4, 11, 53, 57, DateTimeKind.Utc );
+            var mission = new Mission( 1067632524, "MISSION_Salvage_CivilUnrest",
+                new DateTime( 2026, 10, 8, 7, 2, 48, DateTimeKind.Utc ), MissionStatus.Active )
+            {
+                originsystem = "Laksak",
+                originstation = "Sekelj Port",
+                destinationsystem = "HIP 89272",
+                destinationstation = "Sanger Survey",
+                amount = 1,
+                collected = 0,
+                delivered = 0
+            };
+            var monitor = new MissionMonitor( () => now, () => true, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missions = [ mission ] } );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now.AddMinutes( -1 ), "Journal.test.log", "test", "test" ) );
+            var trackedMission = monitor.missions.Single();
+            var changedProperties = new HashSet<string>();
+            trackedMission.PropertyChanged += ( _, args ) => changedProperties.Add( args.PropertyName );
+            Assert.IsTrue( trackedMission.cargodepot );
+            Assert.IsFalse( trackedMission.claimable );
+
+            // Real redirect from Journal.2026-10-03T234646.01.log, immediately after collecting its black box.
+            const string redirectJson = """
+                { "timestamp":"2026-10-04T11:53:57Z", "event":"MissionRedirected", "MissionID":1067632524, "Name":"MISSION_Salvage_CivilUnrest", "LocalisedName":"Counter-insurgency Black Box Salvage Mission", "NewDestinationStation":"Sekelj Port", "NewDestinationSystem":"Laksak", "OldDestinationStation":"", "OldDestinationSystem":"HIP 89272" }
+                """;
+            await monitor.PreHandleAsync( JournalMonitor.ParseJournalEntry( redirectJson ).Single() );
+
+            Assert.AreEqual( MissionStatus.Active, trackedMission.statusDef );
+            Assert.AreEqual( 100M, trackedMission.progress );
+            Assert.IsTrue( trackedMission.claimable );
+            Assert.Contains( nameof( Mission.claimable ), changedProperties );
+            Assert.Contains( nameof( Mission.progress ), changedProperties );
+            Assert.Contains( nameof( Mission.localizedProgress ), changedProperties );
+
+            var persistedMission = JsonConvert.DeserializeObject<Mission>( JsonConvert.SerializeObject( trackedMission ) );
+            Assert.IsTrue( persistedMission.claimable );
+            Assert.AreEqual( 100M, persistedMission.progress );
+
+            now = now.AddSeconds( 1 );
+            await monitor.PreHandleAsync( new MissionRedirectedEvent( now, mission.missionid, mission.name,
+                "Sanger Survey", "Sekelj Port", "HIP 89272", "Laksak" ) );
+            Assert.IsFalse( trackedMission.claimable );
+            Assert.AreEqual( 0M, trackedMission.progress );
+        }
+
+        [TestMethod]
+        public void LegacyClaimMigrationRunsOnceAndNeverPublishesClaimStatus()
+        {
+            const string legacyJson = """
+                {
+                  "missions": [
+                    { "missionid": 49, "name": "Mission_Courier", "statusEDName": "Claim" },
+                    { "missionid": 50, "name": "Mission_Delivery", "statusEDName": "Claim", "amount": 5, "delivered": 2 },
+                    { "missionid": 51, "name": "MISSION_CommunityGoal", "statusEDName": "Claim" }
+                  ]
+                }
+                """;
+            var configuration = ConfigService.FromJson<MissionMonitorConfiguration>( legacyJson );
+            var monitor = new MissionMonitor( () => DateTime.UtcNow, () => false, _ => { } );
+
+            monitor.initializeMissionMonitor( configuration );
+
+            var legacyStandard = monitor.missions.Single( mission => mission.missionid == 49 );
+            Assert.AreEqual( MissionStatus.Active, legacyStandard.statusDef );
+            Assert.AreEqual( 100M, legacyStandard.progress );
+            Assert.IsTrue( legacyStandard.claimable );
+            var counterBased = monitor.missions.Single( mission => mission.missionid == 50 );
+            Assert.AreEqual( MissionStatus.Active, counterBased.statusDef );
+            Assert.AreEqual( 40M, counterBased.progress );
+            Assert.IsFalse( counterBased.claimable );
+            var legacyGoal = monitor.missions.Single( mission => mission.missionid == 51 );
+            Assert.AreEqual( MissionStatus.Complete, legacyGoal.statusDef );
+            Assert.IsTrue( legacyGoal.communal );
+            Assert.AreEqual( 100M, legacyGoal.progress );
+            Assert.IsTrue( legacyGoal.claimable );
+            var migratedJson = JsonConvert.SerializeObject( configuration );
+            Assert.DoesNotContain( "\"Claim\"", migratedJson );
+
+            var reloadedConfiguration = ConfigService.FromJson<MissionMonitorConfiguration>( migratedJson );
+            monitor.initializeMissionMonitor( reloadedConfiguration );
+
+            Assert.IsTrue( monitor.missions.All( mission => mission.statusEDName != "Claim" ) );
+            Assert.IsTrue( monitor.missions.Single( mission => mission.missionid == 49 ).claimable );
+            var reloadedGoal = monitor.missions.Single( mission => mission.missionid == 51 );
+            Assert.IsTrue( reloadedGoal.communal );
+            Assert.AreEqual( MissionStatus.Complete, reloadedGoal.statusDef );
+            Assert.IsTrue( reloadedGoal.claimable );
+        }
+
+        [TestMethod]
+        public async Task MissionTimerIgnoresCommunityGoals()
+        {
+            var now = new DateTime( 2026, 9, 20, 12, 0, 0, DateTimeKind.Utc );
+            var emittedEvents = new List<Event>();
+            var monitor = new MissionMonitor( () => now, () => true, emittedEvents.Add );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration { missionWarning = 0 } );
+            var communityGoal = new Mission( 7, "MISSION_CommunityGoal", now.AddSeconds( 5 ), MissionStatus.Active )
+            {
+                communal = true
+            };
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration
+            {
+                missionWarning = 0,
+                missions = [ communityGoal ]
+            } );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            monitor.ArmMissionTimer( communityGoal );
+
+            now = now.AddSeconds( 5 );
+            monitor.ProcessMissionTimers();
+
+            Assert.AreEqual( 0, emittedEvents.OfType<MissionExpiredEvent>().Count() );
+            Assert.AreEqual( MissionStatus.Active, monitor.missions.Single().statusDef );
+        }
+
+        [TestMethod]
         public void TestCommunityGoalRewardEvent()
         {
             var line = @"{ ""timestamp"":""2019-01-27T06:14:02Z"", ""event"":""CommunityGoalReward"", ""CGID"":568, ""Name"":""Distant Worlds Mining Initiative"", ""System"":""Omega Sector VE-Q b5-15"", ""Reward"":23000000 }";
@@ -341,6 +1347,147 @@ namespace Tests
             Assert.HasCount( 1, events );
             var mcEvent = (MissionCompletedEvent)events[0];
             Assert.IsInstanceOfType(mcEvent, typeof(MissionCompletedEvent));
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task LiveAndReplayedCurrentCommunityGoalSnapshotsApplyTheSameState()
+        {
+            var now = new DateTime( 2026, 9, 21, 12, 0, 0, DateTimeKind.Utc );
+            var liveEvents = new List<Event>();
+            var replayEvents = new List<Event>();
+            var liveMonitor = new MissionMonitor( () => now, () => true, liveEvents.Add );
+            var replayMonitor = new MissionMonitor( () => now, () => true, replayEvents.Add );
+            liveMonitor.initializeMissionMonitor( new MissionMonitorConfiguration() );
+            replayMonitor.initializeMissionMonitor( new MissionMonitorConfiguration
+                { updatedat = now.AddMinutes( 5 ) } );
+            await liveMonitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.live.log", "test", "test" ) );
+            await replayMonitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.replay.log", "test", "test" ) );
+            var goal = CreateCommunityGoal( 700, now.AddHours( 1 ), false, 250, 3, 25, 500000 );
+            var joinedGoal = new Mission( 700, "MISSION_CommunityGoal", null, MissionStatus.Active )
+                { communal = true };
+
+            await liveMonitor.PreHandleAsync( new MissionAcceptedEvent( now, joinedGoal ) );
+            Assert.ContainsSingle( liveMonitor.missions );
+            Assert.IsTrue( liveMonitor.missions.Single().communal );
+
+            // A join is provisional incremental state, so an event older than the persisted watermark is ignored.
+            await replayMonitor.PreHandleAsync( new MissionAcceptedEvent( now, joinedGoal ) { fromLoad = true } );
+            Assert.IsEmpty( replayMonitor.missions );
+
+            await liveMonitor.PreHandleAsync( new CommunityGoalsEvent( now, [ goal ] ) );
+            await replayMonitor.PreHandleAsync( new CommunityGoalsEvent( now, [ goal ] ) { fromLoad = true } );
+
+            var liveMission = liveMonitor.missions.Single();
+            var replayMission = replayMonitor.missions.Single();
+            Assert.AreEqual( liveMission.statusDef, replayMission.statusDef );
+            Assert.AreEqual( liveMission.expiry, replayMission.expiry );
+            Assert.AreEqual( liveMission.localisedname, replayMission.localisedname );
+            Assert.AreEqual( liveMission.communalContribution, replayMission.communalContribution );
+            Assert.AreEqual( liveMission.communalTier, replayMission.communalTier );
+            Assert.AreEqual( liveMission.communalPercentileBand, replayMission.communalPercentileBand );
+            Assert.IsTrue( liveEvents.OfType<CommunityGoalEvent>().Any() );
+            Assert.IsFalse( replayEvents.OfType<CommunityGoalEvent>().Any() );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task CommunityGoalSnapshotOwnsCompletionAndMembership()
+        {
+            var now = new DateTime( 2026, 9, 21, 12, 0, 0, DateTimeKind.Utc );
+            var monitor = new MissionMonitor( () => now, () => true, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration() );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            await monitor.PreHandleAsync( new CommunityGoalsEvent( now,
+            [
+                CreateCommunityGoal( 701, now.AddHours( 1 ), false, 100 ),
+                CreateCommunityGoal( 702, now.AddHours( 1 ), false, 0 ),
+                CreateCommunityGoal( 703, now.AddHours( 1 ), false, 50 )
+            ] ) { fromLoad = true } );
+
+            now = now.AddMinutes( 1 );
+            await monitor.PreHandleAsync( new CommunityGoalsEvent( now,
+            [
+                CreateCommunityGoal( 701, now.AddHours( -1 ), true, 125, 4, 10, 1000000 ),
+                CreateCommunityGoal( 702, now.AddHours( -1 ), true, 0 )
+            ] ) { fromLoad = true } );
+
+            Assert.ContainsSingle( monitor.missions );
+            var claimableGoal = monitor.missions.Single();
+            Assert.AreEqual( 701UL, claimableGoal.missionid );
+            Assert.AreEqual( MissionStatus.Complete, claimableGoal.statusDef );
+            Assert.IsTrue( claimableGoal.claimable );
+            Assert.AreEqual( 100M, claimableGoal.progress );
+            Assert.AreEqual( 125, claimableGoal.communalContribution );
+            Assert.AreEqual( 1000000, claimableGoal.reward );
+            Assert.AreEqual( now.AddHours( -1 ), claimableGoal.expiry );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task CommunityGoalRewardAndDiscardRemoveTrackedGoals()
+        {
+            var now = new DateTime( 2026, 9, 21, 12, 0, 0, DateTimeKind.Utc );
+            var monitor = new MissionMonitor( () => now, () => true, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration() );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.test.log", "test", "test" ) );
+            await monitor.PreHandleAsync( new CommunityGoalsEvent( now,
+            [
+                CreateCommunityGoal( 704, now.AddHours( 1 ), true, 100 ),
+                CreateCommunityGoal( 705, now.AddHours( 1 ), false, 0 )
+            ] ) { fromLoad = true } );
+
+            now = now.AddSeconds( 1 );
+            var rewardEvent = new MissionCompletedEvent( now, 704, "MISSION_CommunityGoal", "Goal 704",
+                null, null, null, true, 100000 ) { fromLoad = true };
+            await monitor.PreHandleAsync( rewardEvent );
+            await monitor.PostHandleAsync( rewardEvent );
+
+            now = now.AddSeconds( 1 );
+            // Community goal identity comes from the tracked mission rather than the event name.
+            var discardEvent = new MissionAbandonedEvent( now, 705, "UnexpectedMissionName", 0 ) { fromLoad = true };
+            await monitor.PreHandleAsync( discardEvent );
+            await monitor.PostHandleAsync( discardEvent );
+
+            Assert.IsEmpty( monitor.missions );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public async Task OfflineReplayPreservesPersistedCommunityGoals()
+        {
+            var now = new DateTime( 2026, 9, 21, 12, 0, 0, DateTimeKind.Utc );
+            var persistedGoals = new[]
+            {
+                new Mission( 706, "MISSION_CommunityGoal", now.AddHours( -1 ), MissionStatus.Active )
+                    { communal = true, localisedname = "Goal 706" },
+                new Mission( 707, "MISSION_CommunityGoal", now.AddHours( -1 ), MissionStatus.Complete )
+                    { communal = true, communalContribution = 1, localisedname = "Goal 707" },
+                new Mission( 708, "MISSION_CommunityGoal", now.AddHours( -1 ), MissionStatus.Active )
+                    { communal = true, localisedname = "Goal 708" }
+            };
+            var monitor = new MissionMonitor( () => now, () => false, _ => { } );
+            monitor.initializeMissionMonitor( new MissionMonitorConfiguration
+            {
+                missions = [ .. persistedGoals ]
+            } );
+            await monitor.PreHandleAsync( new FileHeaderEvent( now, "Journal.offline.log", "test", "test" ) );
+
+            var joinedGoal = new Mission( 709, "MISSION_CommunityGoal", null, MissionStatus.Active )
+                { communal = true };
+            await monitor.PreHandleAsync( new MissionAcceptedEvent( now, joinedGoal ) { fromLoad = true } );
+            await monitor.PreHandleAsync( new CommunityGoalsEvent( now, [ ] ) { fromLoad = true } );
+            var rewardEvent = new MissionCompletedEvent( now.AddSeconds( 1 ), 707, "MISSION_CommunityGoal",
+                "Goal 707", null, null, null, true, 100000 ) { fromLoad = true };
+            await monitor.PreHandleAsync( rewardEvent );
+            await monitor.PostHandleAsync( rewardEvent );
+            var discardEvent = new MissionAbandonedEvent( now.AddSeconds( 2 ), 708, "MISSION_CommunityGoal", 0 )
+                { fromLoad = true };
+            await monitor.PreHandleAsync( discardEvent );
+            await monitor.PostHandleAsync( discardEvent );
+
+            Assert.HasCount( 3, monitor.missions );
+            Assert.IsTrue( monitor.missions.All( mission => mission.communal ) );
+            Assert.AreEqual( MissionStatus.Active,
+                monitor.missions.Single( mission => mission.missionid == 706 ).statusDef );
+            Assert.AreEqual( MissionStatus.Complete,
+                monitor.missions.Single( mission => mission.missionid == 707 ).statusDef );
         }
 
         [TestMethod]
@@ -373,17 +1520,21 @@ namespace Tests
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.HasCount( 1, events );
             missionMonitor._handleCommunityGoalsEvent((CommunityGoalsEvent)events[0]);
-            Assert.AreEqual("Fox Enterprise", missionMonitor.missions[0].originstation);
-            Assert.AreEqual("Active", missionMonitor.missions[0].statusEDName);
-            Assert.AreEqual(600000, missionMonitor.missions[0].reward);
+            Assert.HasCount( 2, missionMonitor.missions );
+            var deliveryGoal = missionMonitor.missions.Single( mission => mission.missionid == 619 );
+            Assert.AreEqual("Fox Enterprise", deliveryGoal.originstation);
+            Assert.AreEqual("Active", deliveryGoal.statusEDName);
+            Assert.AreEqual(600000, deliveryGoal.reward);
 
             // CommunityGoal (completed)
             line = @"{ ""timestamp"":""2020-10-30T01:22:34Z"", ""event"":""CommunityGoal"", ""CurrentGoals"":[ { ""CGID"":619, ""Title"":""Federal Initiative to Deliver Supplies for Marlinist Refugees"", ""SystemName"":""LFT 625"", ""MarketName"":""Fox Enterprise"", ""Expiry"":""2020-10-29T06:00:27Z"", ""IsComplete"":true, ""CurrentTotal"":33417668, ""PlayerContribution"":6304, ""NumContributors"":0, ""TopTier"":{ ""Name"":""Tier 6"", ""Bonus"":""All systems supported"" }, ""TopRankSize"":10, ""PlayerInTopRank"":true, ""TierReached"":""Tier 3"", ""PlayerPercentileBand"":0, ""Bonus"":10000000 }, { ""CGID"":620, ""Title"":""Federal Initiative to Protect Supplies for Marlinist Refugees"", ""SystemName"":""LFT 625"", ""MarketName"":""Fox Enterprise"", ""Expiry"":""2020-10-29T06:00:17Z"", ""IsComplete"":true, ""CurrentTotal"":18046921733, ""PlayerContribution"":4899320, ""NumContributors"":0, ""TopTier"":{ ""Name"":""Tier 6"", ""Bonus"":"""" }, ""TopRankSize"":10, ""PlayerInTopRank"":true, ""TierReached"":""Tier 3"", ""PlayerPercentileBand"":0, ""Bonus"":10000000 } ] }";
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.HasCount( 1, events );
             missionMonitor._handleCommunityGoalsEvent((CommunityGoalsEvent)events[0]);
-            Assert.AreEqual("Claim", missionMonitor.missions[0].statusEDName);
-            Assert.AreEqual(10000000, missionMonitor.missions[0].reward);
+            deliveryGoal = missionMonitor.missions.Single( mission => mission.missionid == 619 );
+            Assert.AreEqual("Complete", deliveryGoal.statusEDName);
+            Assert.IsTrue( deliveryGoal.claimable );
+            Assert.AreEqual(10000000, deliveryGoal.reward);
 
             // CommunityGoalReward
             line = @"{ ""timestamp"":""2020-10-30T01:24:27Z"", ""event"":""CommunityGoalReward"", ""CGID"":619, ""Name"":""Federal Initiative to Deliver Supplies for Marlinist Refugees"", ""System"":""LFT 625"", ""Reward"":10000000 }";
@@ -397,11 +1548,38 @@ namespace Tests
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.HasCount( 1, events );
             missionMonitor._handleMissionsEvent((MissionsEvent)events[0]);
-            Assert.HasCount( 0, missionMonitor.missions ); // Community goals temporarily removed by the `Missions` event (where community goals are absent) until they are confirmed active again
+            Assert.HasCount( 1, missionMonitor.missions ); // Standard mission snapshots do not own community goal membership.
 
             // Restore original data
             ConfigService.Instance.missionMonitorConfiguration = missionData;
         }
+
+        private static CommunityGoal CreateCommunityGoal ( ulong id, DateTime expiry, bool isComplete,
+            long contribution, int tier = 1, int percentile = 50, long reward = 100000 ) => new()
+        {
+            cgid = id,
+            name = $"Goal {id}",
+            system = "LFT 625",
+            station = "Fox Enterprise",
+            expiryDateTime = expiry,
+            iscomplete = isComplete,
+            contribution = contribution,
+            Tier = $"Tier {tier}",
+            percentileband = percentile,
+            tierreward = reward
+        };
+
+        private static CargoMonitorConfiguration CreateMissionCargoConfiguration ( ulong missionId, int amount ) =>
+            new()
+            {
+                cargo =
+                [
+                    new Cargo( "DamagedEscapePod" )
+                    {
+                        missionCargo = new Dictionary<ulong, int> { [ missionId ] = amount }
+                    }
+                ]
+            };
 
         [TestMethod]
         public void TestMissionAcceptedToSettlement()

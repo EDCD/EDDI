@@ -318,4 +318,8 @@ If transporting via taxi or dropship</comment>
     <value>your</value>
     <comment>e.g. *your* Lynx Highliner</comment>
   </data>
+  <data name="yourAnacondaMkII" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Anaconda Mk. II</comment>
+  </data>
 </root>

@@ -12,7 +12,8 @@ namespace EddiEvents
         bool update,
         string vessel,
         List<CargoInfoItem> inventory,
-        int cargocarried )
+        int cargocarried,
+        DateTime? inventoryTimestamp = null )
         : Event( timestamp, NAME )
     {
         public const string NAME = "Cargo";
@@ -28,6 +29,9 @@ namespace EddiEvents
         public List<CargoInfoItem> inventory { get; private set; } = inventory;
 
         public int cargocarried { get; private set; } = cargocarried;
+
+        // The sidecar can be newer than the journal notification. Preserve its actual observation time.
+        public DateTime inventoryTimestamp { get; private set; } = inventoryTimestamp ?? timestamp;
 
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {
@@ -53,7 +57,7 @@ namespace EddiEvents
             }
             else if ( CargoInfo.TryFromFile( timestamp, vessel, cargocarried, out var info, out line ) && info != null )
             {
-                events.Add( new CargoEvent( timestamp, true, vessel, info.Inventory, cargocarried ) { raw = line, fromLoad = fromLogLoad } );
+                events.Add( new CargoEvent( timestamp, true, vessel, info.Inventory, cargocarried, info.timestamp ) { raw = line, fromLoad = fromLogLoad } );
                 return true;
             }
 

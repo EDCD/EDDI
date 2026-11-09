@@ -1203,6 +1203,13 @@ namespace EddiDataDefinitions
         public static readonly Module Int_MkII_LargeBuggyBay_Size2_Class3 = new( "Int_MkIILargeBuggyBay_Size2_Class3", "LargePlanetaryVehicleHangar_MkII", 2, "F", 32400); // Mk II Large Planetary Vehicle Hangar
         public static readonly Module Int_MkII_LargeBuggyBay_Size4_Class3 = new( "Int_MkIILargeBuggyBay_Size4_Class3", "LargePlanetaryVehicleHangar_MkII", 4, "F", 129600); // Mk II Large Planetary Vehicle Hangar
         public static readonly Module Int_MkII_LargeBuggyBay_Size6_Class3 = new( "Int_MkIILargeBuggyBay_Size6_Class3", "LargePlanetaryVehicleHangar_MkII", 6, "F", 1036800); // Mk II Large Planetary Vehicle Hangar
+        public static readonly Module anacondamkii_armour_grade1_default = new( "anacondamkii_armour_grade1_default", "LightweightAlloy", 1, "C", 0 );
+        public static readonly Module anacondamkii_armour_grade1 = new( "anacondamkii_armour_grade1", "LightweightAlloy_Ablative_MkII", 1, "C", 19247943 );
+        public static readonly Module anacondamkii_armour_grade2 = new( "anacondamkii_armour_grade2", "ReinforcedAlloy_Ablative_MkII", 1, "B", 153983541 );
+        public static readonly Module anacondamkii_armour_grade3 = new( "anacondamkii_armour_grade3", "MilitaryGradeComposite_Ablative_MkII", 1, "A", 346462967 );
+        public static readonly Module anacondamkii_armour_mirrored = new( "anacondamkii_armour_mirrored", "MirroredSurfaceComposite_Ablative_MkII", 1, "A", 818807473 );
+        public static readonly Module anacondamkii_armour_reactive = new( "anacondamkii_armour_reactive", "ReactiveSurfaceComposite_Ablative_MkII", 1, "A", 907348010 );
+        public static readonly Module int_largecargorack_size6_class1 = new( "int_largecargorack_size6_class1", "CargoRack", 6, "D", 587396 );
 
         // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
         public static readonly Module Hpt_PulseLaser_Fixed_SmallFree = new( "Hpt_PulseLaser_Fixed_SmallFree", "PulseLaser", 1, "F", 0, ModuleMount.Fixed);

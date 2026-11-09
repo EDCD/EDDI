@@ -34,7 +34,7 @@ namespace Tests
             AssertTextOccursAfter(
                 script,
                 "Result := DelTree(CleanDir, True, True, True);",
-                "Result := RemoveStaleUninstallEntriesIfMatches(CleanDir);" );
+                "Result := RemoveStaleUninstallEntriesIfMatches(CleanDir)" );
         }
 
         [TestMethod]

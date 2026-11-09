@@ -132,7 +132,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public void TestLegacyCommodity()
+        public void LegacyCommodityWithNullNumericFieldsIsRejected()
         {
             /// Test legacy data that may be stored in user's local sql databases. 
             /// Legacy data includes all data stored in user's sql databases prior to version 3.0.1-b2
@@ -153,17 +153,8 @@ namespace Tests
                 ""EDName"": null
             }";
 
-            // Assert that parsing this now throws. 
-            // `Assert.ThrowsException<>(...)` doesn't seem to be available?
-            try
-            {
-                var commodity = JsonConvert.DeserializeObject<CommodityMarketQuote>(legacyCommodity);
-                Assert.Fail("Expected invalid commodity JSON to throw");
-            }
-            catch
-            {
-                // passed
-            }
+            Assert.ThrowsExactly<JsonSerializationException>( () =>
+                JsonConvert.DeserializeObject<CommodityMarketQuote>( legacyCommodity ) );
         }
 
         [TestMethod]

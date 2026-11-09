@@ -44,7 +44,7 @@ namespace EddiEddnResponder.Schemas
                 data = eddnState.Location.AugmentBodyLatLong( data, 60, true );
                 data = eddnState.GameVersion.AugmentVersion( data );
 
-                eddnSender.SendToEDDN( "https://eddn.edcd.io/schemas/scanorganic/1", data, eddnState, null );
+                eddnSender.SendToEDDN( "https://eddn.edcd.io/schemas/scanorganic/1", data, eddnState );
                 return true;
             }
             catch ( Exception e )

@@ -1213,18 +1213,15 @@ namespace EddiCore.EventHandling
 
         private bool eventFileHeader(FileHeaderEvent @event)
         {
-            // Test whether we're in beta by checking the filename, version described by the header,
+            // Test whether we're in beta by checking the filename and by checking the game version and build described by the header,
             // and certain version / build combinations. Test the most common situations first.
-            gameIsBeta = @event.filename.Contains("Alpha") ||
-                         @event.filename.Contains("Beta") ||
-                         @event.version.Contains("Beta") ||
-                         @event.version.Contains("Alpha") ||
-                         (
-                             @event.version.Contains("2.2") &&
-                             (
-                                 @event.build.Contains("r121645/r0") ||
-                                 @event.build.Contains("r129516/r0")
-                             )
+            var alphaBeta = new [] { "Alpha", "Beta" };
+            var versions = new [] { "2.2" };
+            var builds = new[] { "r121645/r0", "r129516/r0" };
+            gameIsBeta = alphaBeta.Any( ab =>
+                            @event.filename.Contains( ab ) || @event.version.Contains( ab )
+                         ) || (
+                            versions.Contains( @event.version ) && builds.Contains( @event.build )
                          );
             CompanionAppService.Instance.gameIsBeta = gameIsBeta;
             if (gameIsBeta)

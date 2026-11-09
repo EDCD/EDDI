@@ -28,7 +28,7 @@ namespace EddiEvents
             @"{ ""timestamp"":""2026-08-30T01:56:01Z"", ""event"":""SAASignalsFound"", ""BodyName"":""Shinrarta Dezhra AB 3 c"", ""SystemAddress"":3932277478106, ""BodyID"":61, ""Signals"":[ { ""Type"":""$SAA_SignalType_Geological;"", ""Type_Localised"":""Geological"", ""Count"":2 }, { ""Type"":""$PlanetaryMiningLocation_Name;"", ""Type_Localised"":""Planetary Mining Location"", ""Count"":18 }, { ""Type"":""$SAA_SignalType_Human;"", ""Type_Localised"":""Human"", ""Count"":1 } ], ""Genuses"":[  ] }"
         ];
 
-        [PublicAPI("The signal detection type (either 'FSS' or 'SAA'")]
+        [PublicAPI("The signal detection type (either 'FSS' or 'SAA')")]
         public string detectionType { get; private set; } = detectionType;
 
         [PublicAPI("The body where surface signals were detected")]

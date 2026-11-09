@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Tests.EddiVoiceAttackService
@@ -18,29 +19,43 @@ namespace Tests.EddiVoiceAttackService
     public class MessageRouterTests
     {
         private TcpClient? _testClient;
+        private TcpClient? _acceptedClient;
         private ConnectionContext? _testContext;
 
         [TestInitialize]
-        public void Setup()
+        public async Task Setup()
         {
-            // Create a dummy TCP client for testing
             var listener = new TcpListener(IPAddress.Loopback, 0);
-            listener.Start();
-            var port = ((IPEndPoint)listener.LocalEndpoint).Port;
-
-            _ = listener.AcceptTcpClientAsync();
-            _testClient = new TcpClient();
-            _testClient.Connect(IPAddress.Loopback, port);
-        
-            listener.Stop();
-            _testContext = new ConnectionContext(_testClient);
+            using var timeout = new CancellationTokenSource( TimeSpan.FromSeconds( 5 ) );
+            try
+            {
+                listener.Start();
+                var port = ((IPEndPoint)listener.LocalEndpoint).Port;
+                _testClient = new TcpClient();
+                await _testClient.ConnectAsync( IPAddress.Loopback, port, timeout.Token );
+                _acceptedClient = await listener.AcceptTcpClientAsync( timeout.Token );
+                _testContext = new ConnectionContext(_testClient);
+            }
+            catch
+            {
+                Cleanup();
+                throw;
+            }
+            finally
+            {
+                listener.Stop();
+            }
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _testContext?.Dispose();
-            _testClient?.Dispose();
+            try { _testContext?.Dispose(); }
+            finally
+            {
+                try { _testClient?.Dispose(); }
+                finally { _acceptedClient?.Dispose(); }
+            }
         }
 
         [TestMethod]

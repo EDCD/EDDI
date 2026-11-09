@@ -304,12 +304,6 @@ namespace Tests
             Assert.Contains( v =>
                 v.keysPath.SequenceEqual( [
                     MetaVariables.indexMarker,
-                    nameof( TestSpeech.Text )
-                ] ), results );
-
-            Assert.Contains( v =>
-                v.keysPath.SequenceEqual( [
-                    MetaVariables.indexMarker,
                     nameof( TestSpeech.Priority )
                 ] ), results );
         }

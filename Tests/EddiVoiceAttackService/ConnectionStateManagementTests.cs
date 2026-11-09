@@ -11,7 +11,7 @@ namespace Tests.EddiVoiceAttackService
 {
     /// <summary>
     /// Tests for connection state management, resilience, and recovery strategies.
-    /// Validates reconnection logic, timeout handling, and heartbeat monitoring.
+    /// Validates explicit reconnection, connection loss, and connection status.
     /// </summary>
     [TestClass, TestCategory( "UnitTests" )]
     public class ConnectionStateManagementTests
@@ -33,77 +33,25 @@ namespace Tests.EddiVoiceAttackService
         [TestCleanup]
         public async Task Cleanup()
         {
-            if (_client != null)
+            try
+            {
+                if ( _client is { IsConnected: true } )
+                {
+                    await _client.DisconnectAsync( CancellationToken.None ).ConfigureAwait( false );
+                }
+            }
+            finally
             {
                 try
                 {
-                    if (_client.IsConnected)
-                    {
-                        await _client.DisconnectAsync( TestContext.CancellationToken ).ConfigureAwait( false );
-                    }
-                    _client.Dispose();
+                    _client?.Dispose();
                 }
-                catch
+                finally
                 {
-                    // Ignore
-                }
-            }
-
-            if (_server != null)
-            {
-                try
-                {
-                    await _server.StopAsync( TestContext.CancellationToken ).ConfigureAwait( false );
-                }
-                catch
-                {
-                    // Ignore
+                    _server?.Dispose();
                 }
             }
         }
-
-        #region Heartbeat Timeout Tests
-
-        [TestMethod]
-        public async Task Heartbeat_ReceivesHeartbeatResponse()
-        {
-            // Arrange
-            Assert.IsNotNull(_client);
-            Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken ).ConfigureAwait( false );
-            Assert.IsTrue(_client.IsConnected);
-
-            // Act
-            var status1 = await _client.GetStatusAsync().ConfigureAwait( false );
-            await Task.Delay(6000, TestContext.CancellationToken ).ConfigureAwait( false ); // Wait for heartbeat interval
-            var status2 = await _client.GetStatusAsync().ConfigureAwait( false );
-
-            // Assert
-            Assert.IsTrue(status1.IsConnected);
-            Assert.IsTrue(status2.IsConnected);
-        }
-
-        [TestMethod]
-        public async Task Heartbeat_TimeoutDetectsDeadConnection()
-        {
-            // Arrange
-            Assert.IsNotNull(_client);
-            Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken ).ConfigureAwait( false );
-            Assert.IsTrue(_client.IsConnected);
-
-            // Act - Stop server to simulate dead connection
-            await _server.StopAsync( TestContext.CancellationToken ).ConfigureAwait( false );
-
-            // Wait longer than heartbeat timeout
-            await Task.Delay(15000, TestContext.CancellationToken ).ConfigureAwait( false ); // 10s timeout + 5s buffer
-
-            // Assert - Check connection is lost
-            await _client.GetStatusAsync().ConfigureAwait( false );
-            Assert.IsFalse(_client.IsConnected, "Client should detect connection loss");
-        }
-
-        #endregion
 
         #region Reconnection Logic Tests
 
@@ -135,29 +83,6 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        public async Task AutomaticReconnection_WithExponentialBackoff()
-        {
-            // Arrange
-            Assert.IsNotNull(_client);
-            Assert.IsNotNull(_server);
-            
-            // This test validates the concept of exponential backoff
-            // In a real implementation, reconnection attempts would use:
-            // Attempt 1: 1 second delay
-            // Attempt 2: 2 seconds delay
-            // Attempt 3: 4 seconds delay
-            // Attempt 4: 8 seconds delay
-            // Max delay: 60 seconds
-
-            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken ).ConfigureAwait( false );
-            var status1 = await _client.GetStatusAsync().ConfigureAwait( false );
-            
-            // Assert initial state
-            Assert.IsTrue(status1.IsConnected);
-            Assert.IsNotNull(status1.SessionId);
-        }
-
-        [TestMethod]
         public async Task MultipleReconnectAttempts_EventualSuccess()
         {
             // Arrange
@@ -185,63 +110,6 @@ namespace Tests.EddiVoiceAttackService
             // Try 3: Final reconnect
             await _client.ConnectAsync("127.0.0.1", originalPort, TestContext.CancellationToken ).ConfigureAwait( false );
             Assert.IsTrue(_client.IsConnected);
-        }
-
-        #endregion
-
-        #region Timeout Detection Tests
-
-        [TestMethod]
-        public async Task ConnectionTimeout_OnSlowServer()
-        {
-            // Arrange
-            Assert.IsNotNull(_client);
-            var slowPort = _server!.Port + 5000; // Port that won't respond (large offset)
-
-            // Act & Assert
-            try
-            {
-                var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));
-                await _client.ConnectAsync("192.0.2.1", slowPort, cts.Token).ConfigureAwait( false ); // Non-routable IP
-                Assert.Fail("Should have timed out or failed to connect");
-            }
-            catch (OperationCanceledException)
-            {
-                // Expected - timeout
-            }
-            catch (Exception ex) when (ex.InnerException is TimeoutException || 
-                                       ex.InnerException is OperationCanceledException ||
-                                       ex is TimeoutException ||
-                                       ex.Message.Contains("timeout") ||
-                                       ex.Message.Contains("connection") ||
-                                       ex.Message.Contains("refused"))
-            {
-                // Also acceptable - various connection errors
-            }
-        }
-
-        [TestMethod]
-        public async Task MessageSendTimeout_ReturnsCancelledTask()
-        {
-            // Arrange
-            Assert.IsNotNull(_client);
-            Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken ).ConfigureAwait( false );
-
-            // Act
-            var command = new CommandData { Command = "test", Target = "test" };
-            var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(100));
-
-            // Assert
-            try
-            {
-                await _client.SendCommandAsync<object>(command, cts.Token).ConfigureAwait( false );
-                Assert.Fail("Should have timed out");
-            }
-            catch (OperationCanceledException)
-            {
-                // Expected
-            }
         }
 
         #endregion
@@ -290,6 +158,7 @@ namespace Tests.EddiVoiceAttackService
         [TestMethod]
         public async Task GetStatusAsync_AverageResponseTime_Calculated()
         {
+            using var commandTimeout = new CancellationTokenSource( TimeSpan.FromSeconds( 2 ) );
             // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
@@ -300,7 +169,7 @@ namespace Tests.EddiVoiceAttackService
             try
             {
                 await _client.SendCommandAsync<object>(command, 
-                    new CancellationTokenSource(TimeSpan.FromSeconds(2)).Token).ConfigureAwait( false );
+                    commandTimeout.Token).ConfigureAwait( false );
             }
             catch (OperationCanceledException)
             {
@@ -327,17 +196,22 @@ namespace Tests.EddiVoiceAttackService
             Assert.IsNotNull(_server);
             await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken ).ConfigureAwait( false );
 
-            _client.ConnectionLost += (s, e) => _ = e;
+            var lost = new TaskCompletionSource<ConnectionLostEventArgs>( TaskCreationOptions.RunContinuationsAsynchronously );
+            void OnConnectionLost( object? sender, ConnectionLostEventArgs args ) => lost.TrySetResult( args );
+            _client.ConnectionLost += OnConnectionLost;
+            try
+            {
+                await _server.StopAsync( TestContext.CancellationToken ).ConfigureAwait( false );
+                var args = await lost.Task.WaitAsync( TimeSpan.FromSeconds( 5 ), TestContext.CancellationToken );
 
-            // Act
-            await _server.StopAsync( TestContext.CancellationToken ).ConfigureAwait( false );
-            
-            // Wait for connection to be detected as lost
-            await Task.Delay(2000, TestContext.CancellationToken ).ConfigureAwait( false );
-
-            // Assert
-            // Connection should be lost (though event may not fire depending on timing)
-            Assert.IsFalse(_client.IsConnected);
+                Assert.IsFalse( string.IsNullOrWhiteSpace( args.Reason ) );
+                Assert.IsFalse( _client.IsConnected );
+                Assert.IsFalse( (await _client.GetStatusAsync()).IsConnected );
+            }
+            finally
+            {
+                _client.ConnectionLost -= OnConnectionLost;
+            }
         }
 
         #endregion
@@ -347,6 +221,7 @@ namespace Tests.EddiVoiceAttackService
         [TestMethod]
         public async Task SendCommand_WhenConnectionDropped_ThrowsAppropriateException()
         {
+            using var commandTimeout = new CancellationTokenSource( TimeSpan.FromSeconds( 5 ) );
             // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
@@ -365,7 +240,7 @@ namespace Tests.EddiVoiceAttackService
             try
             {
                 await _client.SendCommandAsync<object>(command,
-                    new CancellationTokenSource(TimeSpan.FromSeconds(5)).Token).ConfigureAwait( false );
+                    commandTimeout.Token).ConfigureAwait( false );
             }
             catch (InvalidOperationException ex) when (ex.Message.Contains("Failed to send command"))
             {

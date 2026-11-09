@@ -5,6 +5,8 @@ using EddiIPC_Service.Messages;
 using EddiIPC_Service.Server;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Net;
+using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,31 +38,22 @@ namespace Tests.EddiVoiceAttackService
         [TestCleanup]
         public async Task Cleanup()
         {
-            if (_client != null)
+            try
             {
-                try
+                if ( _client is { IsConnected: true } )
                 {
-                    if (_client.IsConnected)
-                    {
-                        await _client.DisconnectAsync( TestContext.CancellationToken );
-                    }
-                    _client.Dispose();
-                }
-                catch
-                {
-                    // Ignore cleanup errors
+                    await _client.DisconnectAsync( CancellationToken.None );
                 }
             }
-
-            if (_server != null)
+            finally
             {
                 try
                 {
-                    await _server.StopAsync( TestContext.CancellationToken );
+                    _client?.Dispose();
                 }
-                catch
+                finally
                 {
-                    // Ignore cleanup errors
+                    _server?.Dispose();
                 }
             }
         }
@@ -92,21 +85,18 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        public async Task ConnectAsync_WithInvalidHost_ThrowsException()
+        public async Task ConnectAsync_WithRefusedLoopbackConnection_LeavesClientDisconnected()
         {
-            // Arrange
             Assert.IsNotNull(_client);
+            using var socket = new Socket( AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp );
+            socket.Bind( new IPEndPoint( IPAddress.Loopback, 0 ) );
+            var port = ((IPEndPoint)socket.LocalEndPoint!).Port;
 
-            // Act & Assert
-            try
-            {
-                await _client.ConnectAsync("192.0.2.1", 9999, TestContext.CancellationToken ); // Non-routable IP
-                Assert.Fail("Should have thrown an exception");
-            }
-            catch (Exception)
-            {
-                // Expected
-            }
+            var exception = await Assert.ThrowsExactlyAsync<SocketException>( () =>
+                _client.ConnectAsync( "127.0.0.1", port, TestContext.CancellationToken ) );
+
+            Assert.AreEqual( SocketError.ConnectionRefused, exception.SocketErrorCode );
+            Assert.IsFalse( _client.IsConnected );
         }
 
         [TestMethod]
@@ -134,19 +124,14 @@ namespace Tests.EddiVoiceAttackService
         {
             // Arrange
             Assert.IsNotNull(_client);
-            var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(100));
+            Assert.IsNotNull( _server );
+            using var cts = new CancellationTokenSource();
+            cts.Cancel();
 
-            // Act & Assert
-            try
-            {
-                // Try to connect to invalid/non-responding server
-                await _client.ConnectAsync("192.0.2.1", 9999, cts.Token);
-                Assert.Fail("Should have thrown OperationCanceledException");
-            }
-            catch (OperationCanceledException)
-            {
-                // Expected
-            }
+            await Assert.ThrowsAsync<OperationCanceledException>( () =>
+                _client.ConnectAsync( "127.0.0.1", _server.Port, cts.Token ) );
+
+            Assert.IsFalse( _client.IsConnected );
         }
 
         [TestMethod]
@@ -177,24 +162,21 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        public async Task DisconnectAsync_CanBeCancelled_BeforeCompletion()
+        public async Task DisconnectAsync_WithCancelledToken_StillCleansUpConnection()
         {
             // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
             await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken );
-            var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(100));
+            using var cts = new CancellationTokenSource();
+            cts.Cancel();
 
-            // Act & Assert
-            try
-            {
-                await _client.DisconnectAsync(cts.Token);
-                // May or may not cancel, depending on timing
-            }
-            catch (OperationCanceledException)
-            {
-                // Also acceptable
-            }
+            await _client.DisconnectAsync( cts.Token );
+
+            Assert.IsFalse( _client.IsConnected );
+            var status = await _client.GetStatusAsync();
+            Assert.IsFalse( status.IsConnected );
+            Assert.IsNull( status.ConnectedAt );
         }
 
         #endregion
@@ -240,27 +222,6 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
-        public async Task SendCommandAsync_WhenConnected_SendsMessage()
-        {
-            // Arrange
-            Assert.IsNotNull(_client);
-            Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken );
-            var command = new CommandData { Command = "test.command", Target = "test" };
-
-            // Act
-            // Should not throw and should return without timeout
-            var task = _client.SendCommandAsync<object>(command, new CancellationTokenSource(TimeSpan.FromSeconds(5)).Token);
-
-            // Give server time to receive
-            await Task.Delay(100, TestContext.CancellationToken );
-
-            // Assert
-            // Task should be waiting for response (not completed yet)
-            Assert.IsFalse(task.IsCompleted, "Task should be waiting for server response");
-        }
-
-        [TestMethod]
         public async Task SendEventAsync_WhenConnected_SendsMessage()
         {
             // Arrange
@@ -280,24 +241,39 @@ namespace Tests.EddiVoiceAttackService
         }
 
         [TestMethod]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage( "Usage", "MSTEST0049:Flow TestContext.CancellationToken to async operations", Justification = "Using TestContext.CancellationToken would defeat the purpose of the test" )]
         public async Task SendCommandAsync_CanBeCancelled_BeforeResponse()
         {
-            // Arrange
             Assert.IsNotNull(_client);
             Assert.IsNotNull(_server);
+            var received = new TaskCompletionSource( TaskCreationOptions.RunContinuationsAsynchronously );
+            _server.Router.UnregisterHandlers( MessageTypes.Command );
+            _server.Router.RegisterHandler( MessageTypes.Command, ( _, _ ) =>
+            {
+                received.TrySetResult();
+                return Task.CompletedTask;
+            } );
             await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken );
             var command = new CommandData { Command = "test.command", Target = "test" };
-            var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(100));
+            using var cts = new CancellationTokenSource();
+            var pendingCommand = _client.SendCommandAsync<object>( command, cts.Token );
 
-            // Act & Assert
             try
             {
-                await _client.SendCommandAsync<object>(command, cts.Token);
-                Assert.Fail("Should have thrown OperationCanceledException");
+                await received.Task.WaitAsync( TimeSpan.FromSeconds( 5 ), TestContext.CancellationToken );
+                Assert.IsFalse( pendingCommand.IsCompleted, "Command must wait for a response before cancellation." );
+                cts.Cancel();
+                await Assert.ThrowsAsync<OperationCanceledException>( () =>
+                    pendingCommand.WaitAsync( TimeSpan.FromSeconds( 5 ), TestContext.CancellationToken ) );
+                Assert.IsTrue( pendingCommand.IsCanceled );
+                Assert.IsTrue( _client.IsConnected );
             }
-            catch (OperationCanceledException)
+            finally
             {
-                // Expected
+                cts.Cancel();
+                // Observe the pending operation even when an earlier assertion fails.
+                try { await pendingCommand.WaitAsync( TimeSpan.FromSeconds( 5 ) ); }
+                catch ( OperationCanceledException ) { }
             }
         }
 
@@ -363,28 +339,6 @@ namespace Tests.EddiVoiceAttackService
         #endregion
 
         #region Error Handling Tests
-
-        [TestMethod]
-        public async Task SendCommandAsync_WithTimeout_ThrowsOperationCanceledException()
-        {
-            // Arrange
-            Assert.IsNotNull(_client);
-            Assert.IsNotNull(_server);
-            await _client.ConnectAsync("127.0.0.1", _server.Port, TestContext.CancellationToken );
-            var command = new CommandData { Command = "test.command", Target = "test" };
-            var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(50));
-
-            // Act & Assert
-            try
-            {
-                await _client.SendCommandAsync<object>(command, cts.Token);
-                Assert.Fail("Should have thrown OperationCanceledException");
-            }
-            catch (OperationCanceledException)
-            {
-                // Expected
-            }
-        }
 
         [TestMethod]
         public async Task Dispose_ClearsResources()

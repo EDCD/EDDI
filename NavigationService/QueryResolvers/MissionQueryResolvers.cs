@@ -9,6 +9,21 @@ using Utilities;
 
 namespace EddiNavigationService.QueryResolvers
 {
+    internal static class MissionRoutingPredicates
+    {
+        internal static bool IsActive ( Mission mission ) =>
+            mission?.statusDef == MissionStatus.Active;
+
+        internal static bool IsPending ( Mission mission ) =>
+            IsActive( mission ) && mission.progress < 100M;
+
+        internal static bool NeedsCargo ( Mission mission ) =>
+            IsPending( mission ) && !string.IsNullOrEmpty( mission.sourcesystem );
+
+        internal static bool NeedsTurnIn ( Mission mission ) =>
+            IsActive( mission ) && mission.claimable && mission.originreturn;
+    }
+
     [UsedImplicitly]
     internal class CargoSourceMissionResolver : IQueryResolver
     {
@@ -35,7 +50,7 @@ namespace EddiNavigationService.QueryResolvers
             var currentSystemWaypoint = new NavWaypoint( currentSystem ) { visited = true };
             navRouteList.Waypoints.Add( currentSystemWaypoint );
 
-            foreach ( var mission in missions.Where( m => m.statusDef == MissionStatus.Active && m.sourcesystem != null ) )
+            foreach ( var mission in missions.Where( MissionRoutingPredicates.NeedsCargo ) )
             {
                 if ( fromSystemName == currentSystemWaypoint.systemName && mission.originsystem != currentSystemWaypoint.systemName )
                 {
@@ -81,7 +96,7 @@ namespace EddiNavigationService.QueryResolvers
             var navRouteList = new NavWaypointCollection(Convert.ToDecimal(startSystem.x), Convert.ToDecimal(startSystem.y), Convert.ToDecimal(startSystem.z));
 
             var expiringMission = missions
-                .Where( m => m.statusEDName == "Active"
+                .Where( m => MissionRoutingPredicates.IsActive( m )
                     && m.expiry >= DateTime.UtcNow
                     && !string.IsNullOrEmpty( m.destinationsystem ) ).OrderBy( m => m.expiryseconds ?? 0 )
                 .FirstOrDefault();
@@ -122,7 +137,7 @@ namespace EddiNavigationService.QueryResolvers
             navRouteList.Waypoints.Add( startSystemWaypoint );
 
             var farthestList = new SortedList<decimal, NavWaypoint>();
-            foreach ( var mission in missions.Where( m => m.statusDef == MissionStatus.Active ).ToList() )
+            foreach ( var mission in missions.Where( MissionRoutingPredicates.IsActive ).ToList() )
             {
                 if ( mission.destinationsystems is { } list && list.Count > 0 )
                 {
@@ -185,7 +200,7 @@ namespace EddiNavigationService.QueryResolvers
             // Determine the number of missions per individual system
             var systemsByMissionCount = new Dictionary<string, int>();
 
-            foreach ( var mission in missions.Where ( m => m.statusDef == MissionStatus.Active ) )
+            foreach ( var mission in missions.Where ( MissionRoutingPredicates.IsActive ) )
             {
                 if ( mission.destinationsystems is { } list && list.Count > 0 )
                 {
@@ -256,7 +271,7 @@ namespace EddiNavigationService.QueryResolvers
             navRouteList.Waypoints.Add( startSystemWaypoint );
 
             var nearestList = new SortedList<decimal, NavWaypoint>();
-            foreach ( var mission in missions.Where ( m => m.statusDef == MissionStatus.Active ) )
+            foreach ( var mission in missions.Where ( MissionRoutingPredicates.IsActive ) )
             {
                 if ( mission.destinationsystems is { } list && list.Count > 0 )
                 {
@@ -321,7 +336,7 @@ namespace EddiNavigationService.QueryResolvers
             };      
 
             // Add origin systems for 'return to origin' missions to the 'systems' list
-            foreach ( var mission in missions.Where ( m => m.statusDef != MissionStatus.Failed ) )
+            foreach ( var mission in missions.Where ( MissionRoutingPredicates.NeedsTurnIn ) )
             {
                 if ( mission.originreturn && !string.IsNullOrEmpty( mission.originsystem ) && !systems.Contains ( mission.originsystem ) )
                 {
@@ -330,7 +345,7 @@ namespace EddiNavigationService.QueryResolvers
             }
 
             // Add destination systems for applicable mission types to the 'systems' list
-            foreach ( var mission in missions.Where ( m => m.statusDef == MissionStatus.Active ) )
+            foreach ( var mission in missions.Where ( MissionRoutingPredicates.IsActive ) )
             {
                 if ( mission.tagsList.Any ( t => t.IncludeInMissionRouting ) )
                 {
@@ -497,7 +512,7 @@ namespace EddiNavigationService.QueryResolvers
 
         private static bool DestinationOriginReturn ( string destination, List<Mission> missions )
         {
-            foreach ( var mission in missions.Where ( m => m.originreturn ).ToList () )
+            foreach ( var mission in missions.Where ( MissionRoutingPredicates.NeedsTurnIn ).ToList () )
             {
                 if ( mission.destinationsystems == null )
                 {

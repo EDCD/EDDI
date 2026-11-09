@@ -125,7 +125,7 @@ namespace EddiDataDefinitions
 
         public static readonly CommodityDefinition EvacuationShelter = new( 128672314, "EvacuationShelter", ConsumerItems, 343, false );
 
-        public static readonly CommodityDefinition PersonalGifts = new(128672431, "PersonalGifts", ConsumerItems, 16535, false);
+        public static readonly CommodityDefinition PersonalGifts = new(128672431, "PersonalGifts", ConsumerItems, 16535, true);
 
         public static readonly CommodityDefinition CrystallineSpheres = new( 128672432, "CrystallineSpheres", ConsumerItems, 12216, true );
 
@@ -543,7 +543,7 @@ namespace EddiDataDefinitions
 
         public static readonly CommodityDefinition ApaVietii = new(128958679, "ApaVietii", Narcotics, 10362, true);
 
-        public static readonly CommodityDefinition OnionHeadC = new(128983059, "OnionHeadC", Narcotics, 5387, false);
+        public static readonly CommodityDefinition OnionHeadC = new(128983059, "OnionHeadC", Narcotics, 5387, true);
 
         #endregion
 
@@ -747,7 +747,7 @@ namespace EddiDataDefinitions
 
         public static readonly CommodityDefinition PreciousGems = new(128672160, "PreciousGems", Salvage, 109641, false);
 
-        public static readonly CommodityDefinition EarthRelics = new(128672161, "EarthRelics", Salvage, 0, false);
+        public static readonly CommodityDefinition EarthRelics = new(128672161, "EarthRelics", Salvage, 0, true);
 
         public static readonly CommodityDefinition GeneBank = new(128672162, "GeneBank", Salvage, 0, false);
 
@@ -765,7 +765,7 @@ namespace EddiDataDefinitions
         public static readonly CommodityDefinition DataCore = new(128682049, "DataCore", Salvage, 2872, false);
 
         public static readonly CommodityDefinition GalacticTravelGuide =
-            new( 128682050, "GalacticTravelGuide", Salvage, 332, false );
+            new( 128682050, "GalacticTravelGuide", Salvage, 332, true );
 
         public static readonly CommodityDefinition MysteriousIdol = new(128682051, "MysteriousIdol", Salvage, 15196, false);
 
@@ -978,7 +978,7 @@ namespace EddiDataDefinitions
 
         public static readonly CommodityDefinition MicroControllers = new(128673873, "MicroControllers", Technology, 3274, false);
 
-        public static readonly CommodityDefinition IonDistributor = new(128673874, "IonDistributor", Technology, 1133, false);
+        public static readonly CommodityDefinition IonDistributor = new(128673874, "IonDistributor", Machinery, 1133, false);
 
         public static readonly CommodityDefinition DiagnosticSensor = new(128673875, "DiagnosticSensor", Technology, 4337, false);
 

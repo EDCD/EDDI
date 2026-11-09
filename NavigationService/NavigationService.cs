@@ -275,8 +275,11 @@ namespace EddiNavigationService
             if (system != null)
             {
                 // Get mission IDs associated with the system
-                foreach (var mission in missions.Where(m => m.destinationsystem == system
-                                                            || (m.originreturn && m.originsystem == system)).ToList())
+                foreach ( var mission in missions.Where( m =>
+                             QueryResolvers.MissionRoutingPredicates.IsActive( m ) &&
+                             ( m.destinationsystem == system ||
+                               ( QueryResolvers.MissionRoutingPredicates.NeedsTurnIn( m ) &&
+                                 m.originsystem == system ) ) ).ToList() )
                 {
                     missionids.Add(mission.missionid);
                 }

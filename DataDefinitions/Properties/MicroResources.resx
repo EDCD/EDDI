@@ -999,4 +999,8 @@
     <value>Installation Intelligence Report</value>
     <comment>MicroResource OperationsCounterAttackData</comment>
   </data>
+  <data name="VaultCodes" xml:space="preserve">
+    <value>Vault Code</value>
+    <comment>Operations: Vault Code</comment>
+  </data>
 </root>

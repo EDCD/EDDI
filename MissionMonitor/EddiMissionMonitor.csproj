@@ -35,6 +35,9 @@
         <PackageReference Include="Newtonsoft.Json" />
     </ItemGroup>
     <ItemGroup>
+        <InternalsVisibleTo Include="Tests" />
+    </ItemGroup>
+    <ItemGroup>
         <Compile Update="Properties\MissionMonitor.Designer.cs">
             <DesignTime>True</DesignTime>
             <AutoGen>True</AutoGen>

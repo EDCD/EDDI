@@ -21,4 +21,8 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.CSharp" />
     </ItemGroup>
+    <ItemGroup>
+        <InternalsVisibleTo Include="EddiMissionMonitor" />
+        <InternalsVisibleTo Include="Tests" />
+    </ItemGroup>
 </Project>

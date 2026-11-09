@@ -692,6 +692,23 @@ namespace Tests
         }
 
         [TestMethod]
+        public void MissionMonitor_SeparatesStatusProgressAndClaimablePresentation()
+        {
+            var missionMonitorXaml = File.ReadAllText( FindRepoFile( "MissionMonitor", "ConfigurationWindow.xaml" ) );
+
+            Assert.Contains( "SortMemberPath=\"statusEDName\"", missionMonitorXaml );
+            Assert.Contains( "Text=\"{Binding localizedStatus}\"", missionMonitorXaml );
+            Assert.Contains( "Text=\" ✓\"", missionMonitorXaml );
+            Assert.Contains( "Visibility=\"{Binding claimable, Converter={StaticResource BooleanToVisibilityConverter}}\"",
+                missionMonitorXaml );
+            Assert.Contains( "AutomationProperties.Name=\"{x:Static resx:MissionMonitor.claimable_tooltip}\"",
+                missionMonitorXaml );
+            Assert.Contains( "<Binding Path=\"localizedProgress\" />", missionMonitorXaml );
+            Assert.Contains( "SortMemberPath=\"progress\"", missionMonitorXaml );
+            Assert.Contains( "ScrollViewer.HorizontalScrollBarVisibility=\"Auto\"", missionMonitorXaml );
+        }
+
+        [TestMethod]
         public void GetFriendlyVoiceName_WebProviderVoice_UsesProviderSuppliedFriendlyName()
         {
             var voice = new VoiceDetails(
