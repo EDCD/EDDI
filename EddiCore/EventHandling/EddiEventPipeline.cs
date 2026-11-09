@@ -25,6 +25,21 @@ namespace EddiCore.EventHandling
         private readonly Queue<FriendsEvent> pendingFriends = new();
         private readonly Queue<CargoTransferEvent> pendingCargoTransfers = new();
         private readonly ConcurrentDictionary<CrewPaidWageEvent, bool> crewWageReadiness = new();
+        private readonly ConcurrentDictionary<BodyMappedEvent, PendingBodyMapping> pendingBodyMappings = new();
+        private SurfaceSignalsEvent lastAcceptedSaaSignals;
+
+        // Timer callbacks only change readiness. Dispatch remains on the event consumer.
+        private sealed class PendingBodyMapping
+        {
+            internal const int Waiting = 0;
+            internal const int TimedOut = 1;
+            internal const int Released = 2;
+            private int state;
+            internal int State => Volatile.Read( ref state );
+            internal bool MarkTimedOut () =>
+                Interlocked.CompareExchange( ref state, TimedOut, Waiting ) == Waiting;
+            internal bool Release () => Interlocked.Exchange( ref state, Released ) != Released;
+        }
         private bool commanderReady;
         private int shipShutdownPending;
         private int stopped;
@@ -175,8 +190,43 @@ namespace EddiCore.EventHandling
             {
                 Logging.Debug( $"Handling event: {@event.type}", @event );
 
+                if ( @event is BodyMappedEvent scheduledMapping &&
+                     pendingBodyMappings.TryGetValue( scheduledMapping, out var pendingMapping ) )
+                {
+                    if ( pendingMapping.State == PendingBodyMapping.Waiting ) { return; }
+                    pendingBodyMappings.TryRemove( scheduledMapping, out _ );
+                    if ( pendingMapping.Release() )
+                    {
+                        await DispatchBodyMappingAsync( scheduledMapping ).ConfigureAwait( false );
+                    }
+                    return;
+                }
+
+                // Finish old-system reports before a location change updates their context.
+                if ( @event is JumpedEvent or LocationEvent or CommanderLoadingEvent or FileHeaderEvent )
+                {
+                    await ReleaseBodyMappingsAsync( _ => true ).ConfigureAwait( false );
+                    lastAcceptedSaaSignals = null;
+                }
+
                 // We have some additional processing to do for a number of events
                 var passEvent = await _processEventAsync( @event ).ConfigureAwait( false );
+
+                if ( passEvent && @event is BodyMappedEvent { fromLoad: false, bodyId: not null } mapping &&
+                     !( lastAcceptedSaaSignals != null && MatchesMapping( mapping, lastAcceptedSaaSignals ) ) )
+                {
+                    // Core processing has updated the mapped body. Wait for SAA signals before
+                    // notifying monitors/responders, even when the journal spans multiple reads.
+                    var pending = new PendingBodyMapping();
+                    pendingBodyMappings[ mapping ] = pending;
+                    _eventScheduler.Schedule( TimeSpan.FromSeconds( 1 ), () =>
+                    {
+                        if ( pending.MarkTimedOut() ) { return mapping; }
+                        pendingBodyMappings.TryRemove( mapping, out _ );
+                        return null;
+                    } );
+                    return;
+                }
 
                 // Additional processing is over, send to the event monitors and responders if required
                 if ( passEvent )
@@ -185,6 +235,12 @@ namespace EddiCore.EventHandling
                 }
 
                 LastEventOfType[ @event.type ] = @event;
+                if ( passEvent && @event is SurfaceSignalsEvent { fromLoad: false } signals )
+                {
+                    if ( signals.detectionType == "SAA" ) { lastAcceptedSaaSignals = signals; }
+                    await ReleaseBodyMappingsAsync( mapping => MatchesMapping( mapping, signals ) )
+                        .ConfigureAwait( false );
+                }
                 if ( @event is CommanderLoadingEvent )
                 {
                     commanderReady = true;
@@ -212,6 +268,28 @@ namespace EddiCore.EventHandling
                     await HandleEventAsync( pendingCargoTransfers.Dequeue(), true ).ConfigureAwait( false );
                 }
             }
+        }
+
+        private static bool MatchesMapping ( BodyMappedEvent mapping, SurfaceSignalsEvent signals ) =>
+            !signals.fromLoad && signals.detectionType == "SAA" &&
+            signals.systemAddress == mapping.systemAddress && signals.bodyId == mapping.bodyId &&
+            signals.timestamp >= mapping.timestamp;
+
+        private async Task ReleaseBodyMappingsAsync ( Func<BodyMappedEvent, bool> matches )
+        {
+            foreach ( var entry in pendingBodyMappings.OrderBy( entry => entry.Key.timestamp ) )
+            {
+                if ( matches( entry.Key ) && entry.Value.Release() )
+                {
+                    await DispatchBodyMappingAsync( entry.Key ).ConfigureAwait( false );
+                }
+            }
+        }
+
+        private async Task DispatchBodyMappingAsync ( BodyMappedEvent mapping )
+        {
+            await OnEventAsync( mapping ).ConfigureAwait( false );
+            LastEventOfType[ mapping.type ] = mapping;
         }
 
         private async Task OnEventAsync ( Event @event )
@@ -324,3 +402,4 @@ namespace EddiCore.EventHandling
         }
     }
 }
+
