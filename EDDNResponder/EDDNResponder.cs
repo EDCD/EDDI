@@ -50,6 +50,12 @@ namespace EddiEddnResponder
             lock ( stateLock )
             {
                 if ( eddnState.InSpecialGameInstance ) { return; }
+                if ( EDDI.Instance.GameState.inTelepresence ||
+                     !eddnState.Location.CheckStationData( e.profileJson, e.marketJson, e.shipyardJson ) )
+                {
+                    Logging.Debug( "Ignoring Frontier API station data that does not match the current docking context." );
+                    return;
+                }
 
                 Logging.Debug("Handling Frontier API data", new Dictionary<string, object>()
                 {

@@ -956,7 +956,7 @@ namespace Tests
             Assert.AreEqual( "https://eddn.edcd.io/schemas/commodity/3", submission.schema );
             Assert.AreEqual( "CAPI-Live-market", submission.gameVersionOverride );
             var message = JObject.FromObject( submission.data );
-            Assert.IsTrue( message[ "commodities" ]?.HasValues == true );
+            Assert.IsTrue( message[ "commodities" ]?.HasValues);
             Assert.AreEqual( hasEconomies, message.ContainsKey( "economies" ) );
             if ( hasEconomies )
             {

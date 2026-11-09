@@ -1,5 +1,6 @@
 ﻿using EddiCore;
 using EddiDataDefinitions;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using Utilities;
@@ -20,6 +21,11 @@ namespace EddiEddnResponder.Toolkit
         // Station (Market)
         public string stationName { get; private set; }
         public long? marketId { get; private set; }
+        private enum StationPosture { Unknown, DockedShip, OnFoot, OtherVessel }
+        private StationPosture stationPosture;
+        internal bool ShipDocked => stationPosture == StationPosture.DockedShip;
+        internal bool AboardCarrier { get; private set; }
+        internal bool OnFootAtCarrier => AboardCarrier && stationPosture == StationPosture.OnFoot;
 
         // Journal Body Info
         public string journalBodyName { get; private set; }
@@ -77,7 +83,11 @@ namespace EddiEddnResponder.Toolkit
             // We always start location data fresh when handling events containing complete star system location data
             if (IsFullStarSystemLocationEvent(edType))
             {
-                ClearLocation();
+                // On-foot CarrierJump events omit station identity. Retain only a carrier
+                // already identified by journal evidence, with no intervening departure.
+                var retainCarrier = edType == "CarrierJump" && AboardCarrier && !StationIdentityConflicts( data );
+                ClearStarSystemLocation();
+                if ( !retainCarrier ) { ClearStationLocation(); }
             }
 
             GetStarSystemLocation(edType, data);
@@ -129,7 +139,7 @@ namespace EddiEddnResponder.Toolkit
                 // Partial events can confirm the current location but cannot combine a new system identity with old coordinates.
                 if ( nameConflicts || addressConflicts || ( hasCoordinates && ( nameWouldChange || addressWouldChange ) ) )
                 {
-                    ClearStarSystemLocation();
+                    ClearLocation();
                 }
 
                 if ( !string.IsNullOrEmpty( incomingSystemName ) )
@@ -167,17 +177,75 @@ namespace EddiEddnResponder.Toolkit
                 switch (edType)
                 {
                     case "Docked":
+                    {
+                        SetStationLocation( data, StationPosture.DockedShip, IsCarrier( data ) );
+                        break;
+                    }
+                    case "CarrierJump":
+                    {
+                        if ( JsonParsing.getOptionalBool( data, "OnFoot" ) == true )
+                        {
+                            if ( HasStationIdentity( data ) ) { SetStationLocation( data, StationPosture.OnFoot, true ); }
+                            else if ( AboardCarrier ) { stationPosture = StationPosture.OnFoot; }
+                            else { ClearStationLocation(); }
+                        }
+                        else if ( JsonParsing.getOptionalBool( data, "Docked" ) == true )
+                        {
+                            // A taxi or another commander's vessel can be docked without
+                            // establishing that the commander is back in their own ship.
+                            var posture = stationPosture == StationPosture.OtherVessel
+                                ? StationPosture.OtherVessel : StationPosture.DockedShip;
+                            if ( HasStationIdentity( data ) ) { SetStationLocation( data, posture, true ); }
+                            else if ( AboardCarrier ) { stationPosture = posture; }
+                            else { ClearStationLocation(); }
+                        }
+                        else if ( AboardCarrier ) { stationPosture = StationPosture.OtherVessel; }
+                        else { ClearStationLocation(); }
+                        break;
+                    }
                     case "Location":
                     {
-                        marketId = JsonParsing.getOptionalLong(data, "MarketID");
-                        stationName = JsonParsing.getString(data, "StationName")?.TrimEnd( '+', ' ' ); // Remove any +++ at the end of the station name
-                            break;
+                        var docked = JsonParsing.getOptionalBool( data, "Docked" ) == true;
+                        if ( docked || ( JsonParsing.getOptionalBool( data, "OnFoot" ) == true && IsCarrier( data ) ) )
+                        {
+                            SetStationLocation( data, docked ? StationPosture.DockedShip : StationPosture.OnFoot, IsCarrier( data ) );
+                        }
+                        else { ClearStationLocation(); }
+                        break;
+                    }
+                    case "Disembark":
+                    case "Embark":
+                    {
+                        var ownShip = JsonParsing.getOptionalBool( data, "SRV" ) != true &&
+                                      JsonParsing.getOptionalBool( data, "Taxi" ) != true &&
+                                      JsonParsing.getOptionalBool( data, "Multicrew" ) != true;
+                        var posture = edType == "Disembark" ? StationPosture.OnFoot
+                            : ownShip ? StationPosture.DockedShip : StationPosture.OtherVessel;
+
+                        if ( JsonParsing.getOptionalBool( data, "OnStation" ) == true && HasStationIdentity( data ) )
+                        {
+                            var carrier = IsCarrier( data ) ||
+                                          ( !data.ContainsKey( "StationType" ) && AboardCarrier && !StationIdentityConflicts( data ) );
+                            SetStationLocation( data, posture, carrier );
+                        }
+                        else if ( AboardCarrier && !StationIdentityConflicts( data ) )
+                        {
+                            // Disembark can report OnStation:false / OnPlanet:true while aboard
+                            // a carrier, without names or IDs. Those flags alone do not prove departure.
+                            // Boarding any vessel changes posture, not carrier presence.
+                            stationPosture = posture;
+                        }
+                        else { ClearStationLocation(); }
+                        break;
                     }
                     case "FSDJump":
-                    case "Undock":
+                    case "StartJump":
+                    case "SupercruiseEntry":
+                    case "Undocked":
+                    case "LoadGame":
+                    case "Shutdown":
                     {
-                        marketId = null;
-                        stationName = null;
+                        ClearStationLocation();
                         break;
                     }
                 }
@@ -187,6 +255,27 @@ namespace EddiEddnResponder.Toolkit
             {
                 Logging.Error("Failed to parse market location data for EDDN", ex);
             }
+        }
+
+        private static bool IsCarrier ( IDictionary<string, object> data ) =>
+            string.Equals( JsonParsing.getString( data, "StationType" ), "FleetCarrier", StringComparison.OrdinalIgnoreCase ) ||
+            string.Equals( JsonParsing.getString( data, "StationType" ), "SquadronCarrier", StringComparison.OrdinalIgnoreCase );
+
+        private static bool HasStationIdentity ( IDictionary<string, object> data ) =>
+            JsonParsing.getOptionalLong( data, "MarketID" ) is > 0 &&
+            !string.IsNullOrWhiteSpace( JsonParsing.getString( data, "StationName" )?.TrimEnd( '+', ' ' ) );
+
+        private bool StationIdentityConflicts ( IDictionary<string, object> data ) =>
+            ( data.ContainsKey( "MarketID" ) && JsonParsing.getOptionalLong( data, "MarketID" ) != marketId ) ||
+            ( data.ContainsKey( "StationName" ) &&
+              !string.Equals( stationName, JsonParsing.getString( data, "StationName" )?.TrimEnd( '+', ' ' ), StringComparison.OrdinalIgnoreCase ) );
+
+        private void SetStationLocation ( IDictionary<string, object> data, StationPosture posture, bool carrier )
+        {
+            marketId = JsonParsing.getOptionalLong( data, "MarketID" );
+            stationName = JsonParsing.getString( data, "StationName" )?.TrimEnd( '+', ' ' );
+            stationPosture = posture;
+            AboardCarrier = carrier && HasStationIdentity( data );
         }
 
         private void GetBodyLocation(string edType, IDictionary<string, object> data)
@@ -235,8 +324,46 @@ namespace EddiEddnResponder.Toolkit
         private void ClearLocation()
         {
             ClearStarSystemLocation();
+            ClearStationLocation();
+        }
+
+        private void ClearStationLocation ()
+        {
             stationName = null;
             marketId = null;
+            stationPosture = StationPosture.Unknown;
+            AboardCarrier = false;
+        }
+
+        internal bool CheckStationData ( JObject profileJson, JObject marketJson, JObject shipyardJson )
+        {
+            // CAPI's lastStarport can remain populated after departure; journal evidence
+            // must establish either ship docking or on-foot presence aboard this carrier.
+            if ( string.IsNullOrWhiteSpace( systemName ) || string.IsNullOrWhiteSpace( stationName ) ||
+                 marketId is not > 0 ) { return false; }
+
+            var commander = profileJson?["commander"] as JObject;
+            var system = profileJson?["lastSystem"] as JObject;
+            var station = profileJson?["lastStarport"] as JObject;
+            var profileDocked = commander?["docked"]?.Type == JTokenType.Boolean && commander["docked"].Value<bool>();
+            var profileOnFoot = commander?["onfoot"]?.Type == JTokenType.Boolean && commander["onfoot"].Value<bool>();
+            if ( !( ( ShipDocked && profileDocked ) || ( OnFootAtCarrier && profileOnFoot ) ) ||
+                 !string.Equals( systemName, system?["name"]?.ToString(), StringComparison.Ordinal ) ||
+                 !MatchesStation( station ) ) { return false; }
+
+            // A combined callback must describe one station throughout. Missing endpoints are
+            // allowed, but every supplied station endpoint must agree before any schema runs.
+            return ( marketJson != null || shipyardJson != null ) &&
+                   ( marketJson == null || MatchesStation( marketJson ) ) &&
+                   ( shipyardJson == null || MatchesStation( shipyardJson ) );
+        }
+
+        private bool MatchesStation ( JObject station )
+        {
+            return station != null &&
+                   long.TryParse( station["id"]?.ToString(), out var id ) &&
+                   id == marketId &&
+                   string.Equals( stationName, station["name"]?.ToString()?.TrimEnd( '+', ' ' ), StringComparison.OrdinalIgnoreCase );
         }
 
         private void ClearStarSystemLocation ()

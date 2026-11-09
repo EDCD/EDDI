@@ -59,10 +59,17 @@ namespace Tests
                 ["SignalName"] = name
             }.ToString() );
 
-        private static void Capi ( EDDNResponder responder ) =>
+        private static void Capi ( EDDNResponder responder )
+        {
+            var market = DeserializeJsonResource<JObject>( Resources.capi_market_Libby_Horizons );
+            market["id"] = 127000000;
+            market["name"] = "Test station";
             responder.FrontierApiOnStationUpdatedEvent( null, new CompanionApiEndpointEventArgs(
-                JObject.Parse( """{"lastSystem":{"name":"Oresqu"}}""" ),
-                DeserializeJsonResource<JObject>( Resources.capi_market_Libby_Horizons ), null, null ) );
+                JObject.Parse( """
+                    {"commander":{"docked":true},"lastSystem":{"name":"Sol"},
+                     "lastStarport":{"id":127000000,"name":"Test station"}}
+                    """ ), market, null, null ) );
+        }
 
         [TestMethod]
         [DataRow( "Operation" )]
@@ -83,12 +90,13 @@ namespace Tests
             await Journal( responder, location );
             Capi( responder );
 
-            CollectionAssert.AreEqual( new[]
+            var expected = new[]
             {
                 "https://eddn.edcd.io/schemas/navroute/1",
                 "https://eddn.edcd.io/schemas/journal/1",
                 "https://eddn.edcd.io/schemas/commodity/3"
-            }, responder.eddnSender.sentMessages.Select( m => m.schema ).ToArray() );
+            };
+            CollectionAssert.AreEqual( expected, responder.eddnSender.sentMessages.Select( m => m.schema ).ToArray() );
         }
 
         [TestMethod]
@@ -236,10 +244,10 @@ namespace Tests
             Assert.HasCount( 1, responder.eddnSender.sentMessages );
 
             await Journal( responder, location );
-            var submission = responder.eddnSender.sentMessages.Single( m => m.schema.EndsWith( "/fsssignaldiscovered/1" ) );
-            var signals = (List<IDictionary<string, object>>)submission.data[ "signals" ];
+            var (schema, data, eddnState, gameVersionOverride) = responder.eddnSender.sentMessages.Single( m => m.schema.EndsWith( "/fsssignaldiscovered/1" ) );
+            var signals = (List<IDictionary<string, object>>)data[ "signals" ];
             Assert.AreEqual( "After instance", signals.Single()[ "SignalName" ] );
-            Assert.AreEqual( "Sol", submission.data[ "StarSystem" ] );
+            Assert.AreEqual( "Sol", data[ "StarSystem" ] );
         }
 
         [TestMethod]

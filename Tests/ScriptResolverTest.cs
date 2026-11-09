@@ -376,12 +376,18 @@ namespace Tests
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public void PreferredApproximateAliasMatchesLegacyFunction ()
         {
-            Assert.AreEqual(
-                ResolveScript( "{Humanise(1110001)}", DefaultApproximateScripts( "test", "{Humanise(1110001)}" ) ),
-                ResolveScript( "{Approximate(1110001)}", DefaultApproximateScripts( "test", "{Approximate(1110001)}" ) ) );
+            var humanise = ResolveScript(
+                "{Humanise(1110001)}",
+                DefaultApproximateScripts("test", "{Humanise(1110001)}"));
+
+            var approximate = ResolveScript(
+                "{Approximate(1110001)}",
+                DefaultApproximateScripts("test", "{Approximate(1110001)}"));
+
+            Assert.AreEqual( humanise, approximate );
         }
 
         [TestMethod]
