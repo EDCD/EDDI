@@ -1,17 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EddiSpeechService.SpeechConversions
 {
     public static partial class SpeechConversions
     {
         // Fixes to avoid issues with pronunciation of station model names
-        private static readonly Dictionary<string, string> STATION_MODEL_FIXES = new()
+        private static readonly Dictionary<string, string> STATION_MODEL_FIXES = new( StringComparer.OrdinalIgnoreCase )
         {
+            { "Dodec Starport", "Doe-dec Starport" },
             { "Orbis Starport", "Or-bis Starport" }, // Stop "Or-bis" from sometimes being pronounced as "Or-bise"
             { "Megaship", "Mega-ship" } // Stop "Mega-Ship" from sometimes being pronounced as "Meg-AH-ship"
         };
 
-        private static readonly Dictionary<string, string[]> STATION_PRONUNCIATIONS = new()
+        private static readonly Dictionary<string, string[]> STATION_PRONUNCIATIONS = new( StringComparer.OrdinalIgnoreCase )
         {
             { "Aachen Town", [ Properties.Phonetics.Aachen, Properties.Phonetics.Town ] },
             { "Slough Orbital", [ Properties.Phonetics.Slough, Properties.Phonetics.Orbital ] },
