@@ -2,6 +2,7 @@
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEddnResponder.Properties;
+using EddiEddnResponder.Schemas;
 using EddiEddnResponder.Sender;
 using EddiEvents;
 using System.Collections.Generic;
@@ -27,6 +28,7 @@ namespace EddiEddnResponder
         public readonly List<ISchema> schemas = [ ];
         public readonly List<ICapiSchema> capiSchemas = [ ];
         internal readonly EDDNSender eddnSender = new();
+        private readonly object stateLock = new();
 
         public string ResponderName()
         {
@@ -43,32 +45,41 @@ namespace EddiEddnResponder
             return EddnResources.desc;
         }
 
-        private void FrontierApiOnStationUpdatedEvent(object sender, CompanionApiEndpointEventArgs e)
+        internal void FrontierApiOnStationUpdatedEvent(object sender, CompanionApiEndpointEventArgs e)
         {
-            Logging.Debug("Handling Frontier API data", new Dictionary<string, object>()
+            lock ( stateLock )
+            {
+                if ( eddnState.InSpecialGameInstance ) { return; }
+
+                Logging.Debug("Handling Frontier API data", new Dictionary<string, object>()
                 {
                     { "Frontier API Data", e },
                     { "EDDN State", eddnState }
                 });
-            foreach (var schema in capiSchemas)
-            {
-                // The same Frontier API data may be handled by multiple schemas so we always iterate through each.
-                schema.Handle( e.profileJson, e.marketJson, e.shipyardJson, e.fleetCarrierJson, eddnState, eddnSender );
+                foreach (var schema in capiSchemas)
+                {
+                    // The same Frontier API data may be handled by multiple schemas so we always iterate through each.
+                    schema.Handle( e.profileJson, e.marketJson, e.shipyardJson, e.fleetCarrierJson, eddnState, eddnSender );
+                }
             }
         }
 
         public Task HandleStatusAsync ( Status status )
         {
-            eddnState.Location.GetLocationInfo( status );
+            lock ( stateLock )
+            {
+                if ( !eddnState.InSpecialGameInstance )
+                {
+                    eddnState.Location.GetLocationInfo( status );
+                }
+            }
             return Task.CompletedTask;
         }
 
         public Task HandleAsync ( Event @event )
         {
-            if (EDDI.Instance.GameState.inTelepresence || 
-                string.IsNullOrEmpty(@event.raw))
+            if ( string.IsNullOrEmpty( @event.raw ) )
             {
-                // We don't do anything whilst in Telepresence
                 // A null value may indicate a synthetic event used to pass data within EDDI
                 // (which should always be ignored)
                 return Task.CompletedTask;
@@ -77,31 +88,53 @@ namespace EddiEddnResponder
             Logging.Debug("Received event " + @event.raw);
 
             var data = Deserializtion.DeserializeData(@event.raw);
+            if ( data == null ) { return Task.CompletedTask; }
             var edType = JsonParsing.getString(data, "event");
 
-            if (string.IsNullOrEmpty(edType) || data == null) { return Task.CompletedTask; }
+            if (string.IsNullOrEmpty(edType)) { return Task.CompletedTask; }
 
-            // Collect and hold necessary state data
-            eddnState.GetStateInfo( edType, data );
-
-            if (@event.fromLoad)
+            lock ( stateLock )
             {
-                // Don't do anything further with data acquired during log loading,
-                // just move on now that we've updated our internal state.
-                return Task.CompletedTask;
-            }
+                // Track mode changes even during historical loading or CQC telepresence.
+                if ( eddnState.UpdateGameMode( edType, data ) )
+                {
+                    foreach ( var schema in schemas.OfType<FSSSignalDiscoveredSchema>() )
+                    {
+                        schema.Reset();
+                    }
+                }
+                if ( eddnState.InSpecialGameInstance )
+                {
+                    // Preserve header metadata without retaining instance location data.
+                    eddnState.GameVersion.GetVersionInfo( edType, data );
+                    return Task.CompletedTask;
+                }
+                if ( EDDI.Instance.GameState.inTelepresence )
+                {
+                    return Task.CompletedTask;
+                }
 
-            // Handle events
-            Logging.Debug($"Handling {edType} journal event", new Dictionary<string, object>()
+                // Collect and hold necessary state data only from eligible journal context.
+                eddnState.GetStateInfo( edType, data );
+
+                if (@event.fromLoad)
+                {
+                    // Reconstruct state without submitting historical events.
+                    return Task.CompletedTask;
+                }
+
+                // Handle events
+                Logging.Debug($"Handling {edType} journal event", new Dictionary<string, object>()
                 {
                     { "Event", data },
                     { "EDDN State", eddnState }
                 });
-            foreach ( var schema in schemas )
-            {
-                if ( schema.Handle( edType, ref data, eddnState, eddnSender ) )
+                foreach ( var schema in schemas )
                 {
-                    break;
+                    if ( schema.Handle( edType, ref data, eddnState, eddnSender ) )
+                    {
+                        break;
+                    }
                 }
             }
 

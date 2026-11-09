@@ -219,6 +219,19 @@ namespace EddiEddnResponder.Toolkit
             }
         }
 
+        internal void Reset ()
+        {
+            ClearLocation();
+            journalBodyName = null;
+            journalBodyId = null;
+            statusBodyName = null;
+            statusOnFootOnPlanet = false;
+            statusLatitude = null;
+            statusLongitude = null;
+            statusTimeStamp = null;
+            invalidState = false;
+        }
+
         private void ClearLocation()
         {
             ClearStarSystemLocation();

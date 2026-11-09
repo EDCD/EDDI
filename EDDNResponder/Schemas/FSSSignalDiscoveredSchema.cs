@@ -21,6 +21,19 @@ namespace EddiEddnResponder.Schemas
         private static readonly object signalsLock = new();
         private static readonly object stateLock = new();
 
+        internal void Reset ()
+        {
+            // Match the lock order used when sending queued signals.
+            lock ( signalsLock )
+            {
+                signals.Clear();
+                lock ( stateLock )
+                {
+                    eddnStates.Clear();
+                }
+            }
+        }
+
         public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState, EDDNSender eddnSender )
         {
             if (eddnState?.Location is null || eddnState.GameVersion is null) { return false; }
