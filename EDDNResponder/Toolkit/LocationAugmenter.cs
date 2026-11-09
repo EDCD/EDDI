@@ -30,6 +30,9 @@ namespace EddiEddnResponder.Toolkit
         // Journal Body Info
         public string journalBodyName { get; private set; }
         public int? journalBodyId { get; private set; }
+        private ulong journalBodySystemAddress;
+        private DateTime? journalBodyTimeStamp;
+        private DateTime? bodyContextTimeStamp;
 
         // Status Info
         public string statusBodyName { get; private set; }
@@ -37,6 +40,7 @@ namespace EddiEddnResponder.Toolkit
         public decimal? statusLatitude { get; private set; }
         public decimal? statusLongitude { get; private set; }
         public DateTime? statusTimeStamp { get; private set; }
+        private ulong statusSystemAddress;
 
         private bool invalidState { get; set; } // Are we in an invalid state?
 
@@ -71,11 +75,14 @@ namespace EddiEddnResponder.Toolkit
         internal void GetLocationInfo(Status status)
         {
             if ( status is null ) { return; }
+            if ( statusTimeStamp != null && status.timestamp < statusTimeStamp ) { return; }
             statusBodyName = !string.IsNullOrEmpty(status.bodyname) ? status.bodyname : null;
             statusOnFootOnPlanet = status.on_foot_on_planet;
             statusLatitude = status.latitude;
             statusLongitude = status.longitude;
             statusTimeStamp = status.timestamp;
+            statusSystemAddress = StarSystemLocationIsSet() && bodyContextTimeStamp != null &&
+                                  status.timestamp >= bodyContextTimeStamp ? systemAddress : 0;
         }
 
         internal void GetLocationInfo(string edType, IDictionary<string, object> data)
@@ -91,6 +98,10 @@ namespace EddiEddnResponder.Toolkit
             }
 
             GetStarSystemLocation(edType, data);
+            if ( IsFullStarSystemLocationEvent( edType ) && StarSystemLocationIsSet() )
+            {
+                bodyContextTimeStamp = EventTimeStamp( data );
+            }
             GetStationLocation(edType, data);
             GetBodyLocation(edType, data);
         }
@@ -291,13 +302,26 @@ namespace EddiEddnResponder.Toolkit
                     {
                         journalBodyId = JsonParsing.getOptionalInt(data, "BodyID");
                         journalBodyName = JsonParsing.getString(data, "Body");
+                        journalBodySystemAddress = systemAddress;
+                        journalBodyTimeStamp = EventTimeStamp( data );
+                        if ( edType == "Location" && JsonParsing.getString( data, "BodyType" ) == "Station" )
+                        {
+                            journalBodyName = null;
+                            journalBodyId = null;
+                        }
                         break;
                     }
                     case "LeaveBody":
-                    case "FSDJump":
                     {
-                        journalBodyId = null;
-                        journalBodyName = null;
+                        var hadBodyContext = bodyContextTimeStamp != null;
+                        ClearBodyLocation();
+                        if ( hadBodyContext ) { bodyContextTimeStamp = EventTimeStamp( data ); }
+                        break;
+                    }
+                    case "LoadGame":
+                    case "Shutdown":
+                    {
+                        ClearBodyLocation();
                         break;
                     }
                 }
@@ -311,14 +335,22 @@ namespace EddiEddnResponder.Toolkit
         internal void Reset ()
         {
             ClearLocation();
+            invalidState = false;
+        }
+
+        private void ClearBodyLocation ()
+        {
             journalBodyName = null;
             journalBodyId = null;
+            journalBodySystemAddress = 0;
+            journalBodyTimeStamp = null;
+            bodyContextTimeStamp = null;
             statusBodyName = null;
             statusOnFootOnPlanet = false;
             statusLatitude = null;
             statusLongitude = null;
             statusTimeStamp = null;
-            invalidState = false;
+            statusSystemAddress = 0;
         }
 
         private void ClearLocation()
@@ -368,6 +400,7 @@ namespace EddiEddnResponder.Toolkit
 
         private void ClearStarSystemLocation ()
         {
+            ClearBodyLocation();
             systemName = null;
             systemAddress = 0;
             systemX = null;
@@ -420,14 +453,15 @@ namespace EddiEddnResponder.Toolkit
         internal IDictionary<string, object> AugmentBodyNameID(IDictionary<string, object> data)
         {
             // Ref. https://github.com/EDCD/EDDN/blob/master/schemas/codexentry-README.md#bodyid-and-bodyname
-            if ( !data.ContainsKey( "BodyName" ) && !string.IsNullOrEmpty( statusBodyName ) )
+            if ( !HasCurrentBodyStatus( data, 60 ) || !EventBodyMatchesStatus( data ) ) { return data; }
+
+            if ( !data.ContainsKey( "BodyName" ) )
             {
                 data.Add( "BodyName", statusBodyName );
-
-                if ( !data.ContainsKey( "BodyID" ) && statusBodyName.Equals( journalBodyName, StringComparison.InvariantCultureIgnoreCase ) )
-                {
-                    data.Add( "BodyID", journalBodyId );
-                }
+            }
+            if ( !data.ContainsKey( "BodyID" ) && journalBodyId != null && JournalBodyMatchesStatus( data ) )
+            {
+                data.Add( "BodyID", journalBodyId.Value );
             }
 
             return data;
@@ -436,12 +470,11 @@ namespace EddiEddnResponder.Toolkit
         internal IDictionary<string, object> AugmentBodyLatLong(IDictionary<string, object> data, int timestampThresholdSeconds = 60, bool onlyIfOnFoot = false)
         {
             // Ref. https://github.com/EDCD/EDDN/blob/master/schemas/scanorganic-README.md
-            var timestamp = JsonParsing.getDateTime( "timestamp", data );
             if ( !data.ContainsKey( "Latitude" ) && statusLatitude != null &&
                  !data.ContainsKey( "Longitude" ) && statusLongitude != null &&
                  ( !onlyIfOnFoot || statusOnFootOnPlanet ) && 
-                 statusTimeStamp != null && Math.Abs(((DateTime)statusTimeStamp - timestamp).TotalSeconds) <= timestampThresholdSeconds &&
-                 journalBodyName.Equals(statusBodyName, StringComparison.InvariantCultureIgnoreCase))
+                 HasCurrentBodyStatus( data, timestampThresholdSeconds ) &&
+                 JournalBodyMatchesStatus( data ) && EventBodyMatchesStatus( data ) )
             {
                 data.Add( "Latitude", statusLatitude );
                 data.Add( "Longitude", statusLongitude );
@@ -449,8 +482,54 @@ namespace EddiEddnResponder.Toolkit
             return data;
         }
 
+        private static DateTime? EventTimeStamp ( IDictionary<string, object> data )
+        {
+            if ( !data.ContainsKey( "timestamp" ) ) { return null; }
+            try { return JsonParsing.getDateTime( "timestamp", data ); }
+            catch ( ArgumentException ) { return null; }
+            catch ( FormatException ) { return null; }
+        }
+
+        private bool MatchesBodySystem ( IDictionary<string, object> data )
+        {
+            if ( data.ContainsKey( "SystemAddress" ) && JsonParsing.getULong( data, "SystemAddress" ) != systemAddress ) { return false; }
+            foreach ( var key in new[] { "StarSystem", "System" } )
+            {
+                var name = JsonParsing.getString( data, key );
+                if ( !string.IsNullOrEmpty( name ) && !string.Equals( name, systemName, StringComparison.Ordinal ) ) { return false; }
+            }
+            return true;
+        }
+
+        private bool HasCurrentBodyStatus ( IDictionary<string, object> data, int timestampThresholdSeconds )
+        {
+            if ( bodyContextTimeStamp is not DateTime contextTimestamp || statusTimeStamp is not DateTime statusTimestamp ||
+                 EventTimeStamp( data ) is not DateTime timestamp ) { return false; }
+            return StarSystemLocationIsSet() && timestamp >= contextTimestamp &&
+                   statusSystemAddress == systemAddress && statusTimestamp >= contextTimestamp &&
+                   !string.IsNullOrWhiteSpace( statusBodyName ) &&
+                   !string.Equals( statusBodyName, stationName, StringComparison.OrdinalIgnoreCase ) &&
+                   Math.Abs( ( statusTimestamp - timestamp ).TotalSeconds ) <= timestampThresholdSeconds &&
+                   MatchesBodySystem( data );
+        }
+
+        private bool JournalBodyMatchesStatus ( IDictionary<string, object> data ) =>
+            journalBodySystemAddress == systemAddress && journalBodyTimeStamp != null && journalBodyTimeStamp <= EventTimeStamp( data ) &&
+            !string.IsNullOrWhiteSpace( journalBodyName ) && string.Equals( journalBodyName, statusBodyName, StringComparison.OrdinalIgnoreCase );
+
+        private bool EventBodyMatchesStatus ( IDictionary<string, object> data )
+        {
+            if ( data.ContainsKey( "BodyName" ) && !string.Equals( JsonParsing.getString( data, "BodyName" ), statusBodyName, StringComparison.OrdinalIgnoreCase ) ) { return false; }
+            return !data.ContainsKey( "BodyID" ) ||
+                   ( journalBodyId != null && JournalBodyMatchesStatus( data ) && JsonParsing.getOptionalInt( data, "BodyID" ) == journalBodyId );
+        }
+
         internal bool CheckLocationData ( string edType, IDictionary<string, object> data )
         {
+            // ScanOrganic does not update cached location, and CodexEntry uses System rather
+            // than StarSystem. Neither may borrow mandatory coordinates from another system.
+            if ( ( edType is "ScanOrganic" or "CodexEntry" ) && !MatchesBodySystem( data ) ) { return false; }
+
             // Confirm the location data in memory is as accurate as possible when handling an event with partial location data
             if ( IsFullStarSystemLocationEvent( edType ) && StarSystemLocationIsSet() ) { return true; }
 

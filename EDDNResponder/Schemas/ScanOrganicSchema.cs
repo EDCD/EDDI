@@ -21,7 +21,7 @@ namespace EddiEddnResponder.Schemas
                 if ( !eddnState.Location.CheckLocationData( edType, data ) ) { return false; }
 
                 // Remove personal data
-                data = PersonalDataStripper.Strip( data );
+                data = PersonalDataStripper.Strip( data, edType );
                 data.Remove( "WasLogged" );
 
                 // Omit the `Analyse` scan type
