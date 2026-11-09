@@ -799,6 +799,13 @@ namespace Tests
             // Apply our "Handle" method to transform the data
             Assert.IsTrue( commoditySchema.Handle( "Market", ref marketData, eddnState, responder.eddnSender ) );
 
+            var submission = responder.eddnSender.sentMessages.Single();
+            Assert.AreEqual( "https://eddn.edcd.io/schemas/commodity/3", submission.schema );
+
+            // Data may not contain "economies" or "prohibited" keys, as they are not part of the schema.
+            Assert.IsFalse( submission.data.ContainsKey( "economies" ) );
+            Assert.IsFalse( submission.data.ContainsKey( "prohibited" ) );
+
             // Validate the final data
             Assert.AreEqual( "2020-08-07T17:17:10Z", Dates.FromDateTimeToString( marketData[ "timestamp" ] as DateTime? ) );
             Assert.AreEqual( 3702012928, marketData[ "marketId" ] as long? );
@@ -918,6 +925,51 @@ namespace Tests
         }
 
         [TestMethod]
+        [DataRow( false, "absent" )]
+        [DataRow( false, "empty" )]
+        [DataRow( false, "populated" )]
+        [DataRow( true, "absent" )]
+        [DataRow( true, "empty" )]
+        [DataRow( true, "populated" )]
+        public void CommodityCapiOmitsEmptyOptionalLists ( bool hasEconomies, string prohibitedState )
+        {
+            var schema = new CommoditySchema();
+            var sender = new EDDNSender { unitTesting = true };
+            var market = DeserializeJsonResource<JObject>( Resources.capi_market_Libby_Horizons );
+            var economies = hasEconomies
+                ? JObject.Parse( @"{""0"":{""name"":""Industrial"",""proportion"":1.0}}" )
+                : new JObject();
+            market[ "economies" ] = economies;
+            market.Remove( "prohibited" );
+            if ( prohibitedState != "absent" )
+            {
+                market[ "prohibited" ] = prohibitedState == "populated"
+                    ? JObject.Parse( @"{""0"":""narcotics""}" )
+                    : new JObject();
+            }
+            var profile = JObject.Parse( @"{""lastSystem"":{""name"":""Oresqu""}}" );
+
+            var result = schema.Handle( profile, market, null, null, new EDDNState(), sender );
+
+            Assert.IsNotNull( result );
+            var submission = sender.sentMessages.Single();
+            Assert.AreEqual( "https://eddn.edcd.io/schemas/commodity/3", submission.schema );
+            Assert.AreEqual( "CAPI-Live-market", submission.gameVersionOverride );
+            var message = JObject.FromObject( submission.data );
+            Assert.IsTrue( message[ "commodities" ]?.HasValues == true );
+            Assert.AreEqual( hasEconomies, message.ContainsKey( "economies" ) );
+            if ( hasEconomies )
+            {
+                Assert.IsTrue( JToken.DeepEquals( new JArray( economies[ "0" ].DeepClone() ), message[ "economies" ] ) );
+            }
+            Assert.AreEqual( prohibitedState == "populated", message.ContainsKey( "prohibited" ) );
+            if ( prohibitedState == "populated" )
+            {
+                Assert.IsTrue( JToken.DeepEquals( new JArray( "narcotics" ), message[ "prohibited" ] ) );
+            }
+        }
+
+        [TestMethod]
         public void fcmaterialsSchemaJournalTest()
         {
             // Set up our schema
@@ -952,6 +1004,11 @@ namespace Tests
 
             // Apply our "Handle" method to transform the data
             Assert.IsTrue(fcmaterialsSchema.Handle("FCMaterials", ref fcmaterialsData, eddnState, responder.eddnSender ));
+
+            var submission = responder.eddnSender.sentMessages.Single();
+            Assert.AreEqual( "https://eddn.edcd.io/schemas/fcmaterials_journal/1", submission.schema );
+            Assert.IsNull( submission.gameVersionOverride );
+            Assert.AreSame( fcmaterialsData, submission.data );
 
             // Validate the final data
             Assert.AreEqual("2022-11-08T03:15:30Z", Dates.FromDateTimeToString(fcmaterialsData["timestamp"] as DateTime?));
@@ -1021,6 +1078,11 @@ namespace Tests
             var handledData = fcmaterialsSchema?.Handle(null, fcMarketJson, null, null, eddnState, responder.eddnSender);
             Assert.IsNotNull(handledData);
 
+            var submission = responder.eddnSender.sentMessages.Single();
+            Assert.AreEqual( "https://eddn.edcd.io/schemas/fcmaterials_capi/1", submission.schema );
+            Assert.AreEqual( "CAPI-Live-market", submission.gameVersionOverride );
+            Assert.AreSame( handledData, submission.data );
+
             // Validate the final data
             Assert.AreEqual("2022-11-08T03:15:30Z", Dates.FromDateTimeToString((DateTime)handledData["timestamp"]));
             Assert.AreEqual(3709999999, handledData["MarketID"] as long?);
@@ -1051,6 +1113,69 @@ namespace Tests
             {
                 Assert.Fail();
             }
+        }
+
+        [TestMethod]
+        [DataRow( true, "Int_PlanetApproachSuite" )]
+        [DataRow( true, "int_planetapproachsuite" )]
+        [DataRow( true, "INT_PlanetAPPROACHSuite" )]
+        [DataRow( false, "Int_PlanetApproachSuite" )]
+        [DataRow( false, "int_planetapproachsuite" )]
+        [DataRow( false, "INT_PlanetAPPROACHSuite" )]
+        public void OutfittingFiltersModuleNamesWithoutCaseSensitivity ( bool fromJournal, string excludedModule )
+        {
+            var schema = new OutfittingSchema();
+            var sender = new EDDNSender { unitTesting = true };
+            var state = new EDDNState();
+            var expectedNames = new[]
+            {
+                "int_cargorack_size1_class1",
+                "HPT_PulseLaser_Fixed_Small",
+                "SideWinder_aRmOuR_Grade1"
+            };
+            var names = expectedNames.Concat( new[] { excludedModule, "Decal_Test" } ).ToArray();
+
+            if ( fromJournal )
+            {
+                IDictionary<string, object> data = new Dictionary<string, object>
+                {
+                    [ "timestamp" ] = new DateTime( 2026, 10, 14, 9, 30, 4, DateTimeKind.Utc ),
+                    [ "MarketID" ] = 3227934976L,
+                    [ "StarSystem" ] = "Gertrud",
+                    [ "StationName" ] = "Walker Ring",
+                    [ "Items" ] = names.Select( ( name, index ) => (object)new Dictionary<string, object>
+                    {
+                        [ "id" ] = 128000000L + index,
+                        [ "Name" ] = name,
+                        [ "BuyPrice" ] = 1000L
+                    } ).ToList()
+                };
+                Assert.IsTrue( schema.Handle( "Outfitting", ref data, state, sender ) );
+            }
+            else
+            {
+                var shipyard = new JObject
+                {
+                    [ "timestamp" ] = "2026-10-14T09:30:04Z",
+                    [ "id" ] = 3227934976L,
+                    [ "name" ] = "Walker Ring",
+                    [ "modules" ] = new JObject( names.Select( ( name, index ) =>
+                        new JProperty( ( 128000000L + index ).ToString(), new JObject
+                        {
+                            [ "id" ] = 128000000L + index,
+                            [ "name" ] = name,
+                            [ "cost" ] = 1000L
+                        } ) ) )
+                };
+                var profile = JObject.Parse( @"{""lastSystem"":{""name"":""Gertrud""}}" );
+                Assert.IsNotNull( schema.Handle( profile, null, shipyard, null, state, sender ) );
+            }
+
+            var submission = sender.sentMessages.Single();
+            Assert.AreEqual( "https://eddn.edcd.io/schemas/outfitting/3", submission.schema );
+            Assert.AreEqual( fromJournal ? null : "CAPI-Live-shipyard", submission.gameVersionOverride );
+            var message = JObject.FromObject( submission.data );
+            CollectionAssert.AreEqual( expectedNames, message[ "modules" ].Select( m => (string)m[ "Name" ] ).ToArray() );
         }
 
         [TestMethod]
