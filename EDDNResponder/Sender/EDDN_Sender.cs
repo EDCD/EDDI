@@ -28,7 +28,7 @@ namespace EddiEddnResponder.Sender
         internal readonly List<(string schema, IDictionary<string, object> data, EDDNState eddnState, string gameVersionOverride)> sentMessages =
             [ ];
         private const string baseUrl = "https://eddn.edcd.io:4430/";
-        private const int shortRetryDelaySeconds = 30;
+        private const int shortRetryDelaySeconds = 60;
         private const int longRetryDelaySeconds = 120;
         private readonly HttpClient httpClient;
 
@@ -150,56 +150,44 @@ namespace EddiEddnResponder.Sender
             HttpResponseMessage response = null;
             try
             {
-                try
+                var compressed = false;
+                // Network errors and HTTP responses share one retry budget.
+                for ( var attempt = 0; attempt < 2; attempt++ )
                 {
-                    response = await SendRequestAsync( payload, signature ).ConfigureAwait(false);
-                }
-                catch ( HttpRequestException hre )
-                    when ( hre.HttpRequestError is HttpRequestError.ConnectionError or HttpRequestError.SecureConnectionError or HttpRequestError.ResponseEnded )
-                {
-                    Logging.Debug(
-                        $"EDDN {body.schemaRef} transient network error ({hre.HttpRequestError}): {hre.Message}. " +
-                        $"Retrying in {shortRetryDelaySeconds}s."
-                    );
-                    await delay( TimeSpan.FromSeconds( shortRetryDelaySeconds ) ).ConfigureAwait( false );
                     try
                     {
-                        response = await SendRequestAsync( payload, signature ).ConfigureAwait( false );
+                        response = await SendRequestAsync( payload, signature, compressed ).ConfigureAwait(false);
                     }
-                    catch ( HttpRequestException retryException )
-                        when ( retryException.HttpRequestError is HttpRequestError.ConnectionError or HttpRequestError.SecureConnectionError or HttpRequestError.ResponseEnded )
+                    catch ( HttpRequestException hre )
+                        when ( hre.HttpRequestError is HttpRequestError.ConnectionError or HttpRequestError.SecureConnectionError or HttpRequestError.ResponseEnded )
                     {
-                        Logging.Warn(
-                            $"EDDN {body.schemaRef} failed after retry ({retryException.HttpRequestError}): {retryException.Message}. " +
-                            "Dropping message."
-                        );
-                        return;
+                        if ( attempt == 1 )
+                        {
+                            Logging.Warn( $"EDDN {body.schemaRef} failed after retry ({hre.HttpRequestError}): {hre.Message}. Dropping message." );
+                            return;
+                        }
+                        Logging.Debug( $"EDDN {body.schemaRef} transient network error ({hre.HttpRequestError}): {hre.Message}. Retrying in {shortRetryDelaySeconds}s." );
+                        await delay( TimeSpan.FromSeconds( shortRetryDelaySeconds ) ).ConfigureAwait(false);
+                        continue;
                     }
-                }
 
-                if ( response.StatusCode is HttpStatusCode.RequestTimeout or HttpStatusCode.GatewayTimeout ) // Code 408 or 504
-                {
-                    Logging.Debug( $"Request timed out, retrying in {shortRetryDelaySeconds}s" );
-                    response.Dispose();
-                    await delay( TimeSpan.FromSeconds( shortRetryDelaySeconds ) ).ConfigureAwait(false);
-                    response = await SendRequestAsync( payload, signature ).ConfigureAwait(false);
-                }
-                else if ( response.StatusCode == HttpStatusCode.ServiceUnavailable ) // Code 503
-                {
-                    Logging.Debug( $"Service unavailable, retrying in {longRetryDelaySeconds}s" );
-                    response.Dispose();
-                    await delay( TimeSpan.FromSeconds( longRetryDelaySeconds ) ).ConfigureAwait(false);
-                    response = await SendRequestAsync( payload, signature ).ConfigureAwait(false);
-                }
-                else if ( response.StatusCode == HttpStatusCode.RequestEntityTooLarge ) // Code 413
-                {
-                    // Payload too large. Retry with G-Zipped data
-                    Logging.Warn( "Payload too large. Retrying with gzip compression." );
-                    response.Dispose();
-                    response = await SendRequestAsync( payload, signature, true ).ConfigureAwait(false);
-                }
+                    if ( attempt == 0 && ( response.StatusCode is HttpStatusCode.RequestTimeout or HttpStatusCode.GatewayTimeout
+                             or HttpStatusCode.ServiceUnavailable or HttpStatusCode.RequestEntityTooLarge ) )
+                    {
+                        var retryDelaySeconds = response.StatusCode == HttpStatusCode.ServiceUnavailable
+                            ? longRetryDelaySeconds : shortRetryDelaySeconds;
+                        compressed = response.StatusCode == HttpStatusCode.RequestEntityTooLarge;
+                        Logging.Debug( $"EDDN {body.schemaRef} HTTP {(int)response.StatusCode}. Retrying in {retryDelaySeconds}s" +
+                                       ( compressed ? " with gzip compression." : "." ) );
+                        response.Dispose();
+                        response = null;
+                        await delay( TimeSpan.FromSeconds( retryDelaySeconds ) ).ConfigureAwait(false);
+                        continue;
+                    }
 
-                await HandleResponseAsync( body, response, signature != null ).ConfigureAwait(false);
+                    await HandleResponseAsync( body, response, signature != null ).ConfigureAwait(false);
+                    return;
+                }
             }
             catch ( HttpRequestException hre ) when (hre.InnerException is WebException we)
             {
