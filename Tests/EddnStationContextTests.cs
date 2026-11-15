@@ -346,6 +346,36 @@ namespace Tests
             await Journal( responder, disembark, fromLoad );
             Assert.IsFalse( responder.eddnState.Location.ShipDocked );
             Assert.IsTrue( responder.eddnState.Location.AboardCarrier );
+
+            // CarrierLocation describes the carrier, not the commander. The observed
+            // fleet-carrier update precedes CarrierJump by 51 seconds; another carrier
+            // can also report a remote location while we remain aboard this one.
+            var carrierLocations = new[]
+            {
+                new JObject
+                {
+                    ["event"] = "CarrierLocation", ["timestamp"] = "2026-11-09T03:32:10Z",
+                    ["CarrierType"] = stationType, ["CarrierID"] = 3707594240L,
+                    ["StarSystem"] = "Diaguandri", ["SystemAddress"] = 670417429889UL, ["BodyID"] = 22
+                },
+                new JObject
+                {
+                    ["event"] = "CarrierLocation", ["timestamp"] = "2026-11-09T03:32:11Z",
+                    ["CarrierType"] = stationType == "FleetCarrier" ? "SquadronCarrier" : "FleetCarrier",
+                    ["CarrierID"] = 3708725248L, ["StarSystem"] = "Eafots VB-W b15-1",
+                    ["SystemAddress"] = 2791594531977UL, ["BodyID"] = 9
+                }
+            };
+            foreach ( var carrierLocation in carrierLocations )
+            {
+                await Journal( responder, carrierLocation, fromLoad );
+                Assert.AreEqual( "Bei Dou Sector IH-V b2-4", responder.eddnState.Location.systemName );
+                Assert.AreEqual( 9466510910889UL, responder.eddnState.Location.systemAddress );
+                Assert.AreEqual( "J9J-9KT", responder.eddnState.Location.stationName );
+                Assert.AreEqual( 3707594240L, responder.eddnState.Location.marketId );
+                Assert.IsTrue( responder.eddnState.Location.AboardCarrier );
+                Assert.IsFalse( responder.eddnState.Location.ShipDocked );
+            }
             responder.schemas.Add( new JournalSchema() );
             await Journal( responder, OnFootCarrierJump(), fromLoad );
 

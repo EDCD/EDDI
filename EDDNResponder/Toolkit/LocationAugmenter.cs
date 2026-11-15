@@ -61,6 +61,7 @@ namespace EddiEddnResponder.Toolkit
         private static readonly List<string> starSystemIgnoredEvents =
         [
             "CarrierJumpRequest", // CarrierJumpRequest events describing the system the carrier is jumping too rather than the system we are in
+            "CarrierLocation", // Reports a carrier's location, which may change before we arrive or describe a remote carrier.
             "FSDTarget", // FSDTarget events describing the system we are targeting rather than the system we are in
             "FSSSignalDiscovered", // Scan events from the destination system can register after StartJump and before we actually leave the originating system
             "Outfitting", // Relies on an exterior file and contains `StarSystem` field without `SystemAddress` field. Safer to ignore.
