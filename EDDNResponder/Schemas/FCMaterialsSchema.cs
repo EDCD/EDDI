@@ -13,22 +13,12 @@ namespace EddiEddnResponder.Schemas
     {
         public List<string> edTypes => [ "FCMaterials" ];
 
-        // Track this so that we do not send duplicate data from the journal and from CAPI.
-        private long? lastSentMarketID;
-
         public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState, EDDNSender eddnSender )
         {
             try
             {
                 if (!edTypes.Contains(edType)) { return false; }
                 if (eddnState?.GameVersion is null) { return false; }
-                var marketID = JsonParsing.getLong(data, "MarketID");
-                if (lastSentMarketID == marketID)
-                {
-                    lastSentMarketID = null;
-                    return false;
-                }
-
                 // Strip localized names
                 data = PersonalDataStripper.Strip(data, edType);
 
@@ -58,7 +48,7 @@ namespace EddiEddnResponder.Schemas
                     eddnState?.GameVersion is null)
                 { return null; }
 
-                if (marketID != null && lastSentMarketID != marketID)
+                if (marketID != null)
                 {
                     var items = marketJson["orders"]?["onfootmicroresources"]?.ToObject<JObject>();
                     var timestamp = marketJson["timestamp"]?.ToObject<DateTime?>();
@@ -82,7 +72,6 @@ namespace EddiEddnResponder.Schemas
                         data = eddnState.GameVersion.AugmentVersion(data);
 
                         eddnSender.SendToEDDN("https://eddn.edcd.io/schemas/fcmaterials_capi/1", data, eddnState, "CAPI-Live-market" );
-                        lastSentMarketID = marketID;
                         return data;
                     }
                 }

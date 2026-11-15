@@ -35,14 +35,16 @@ namespace EddiEddnResponder.Sender
         internal delegate bool PayloadSigner ( byte[] payload, out string signature );
         private readonly PayloadSigner signer;
         private readonly Func<TimeSpan, Task> delay;
+        private readonly EddnSubmissionCache submissions;
 
         public EDDNSender () : this( new HttpClient(), BuildInjectedSecrets.TrySignEddnPayload, Task.Delay ) { }
 
-        internal EDDNSender ( HttpClient client, PayloadSigner signer, Func<TimeSpan, Task> delay )
+        internal EDDNSender ( HttpClient client, PayloadSigner signer, Func<TimeSpan, Task> delay, TimeProvider clock = null )
         {
             httpClient = client;
             this.signer = signer;
             this.delay = delay;
+            submissions = new EddnSubmissionCache( clock ?? TimeProvider.System );
             httpClient.BaseAddress ??= new Uri( baseUrl );
             httpClient.DefaultRequestHeaders.UserAgent.ParseAdd( $"{Constants.EDDI_NAME}/{Constants.EDDI_VERSION}" );
             httpClient.DefaultRequestHeaders.Accept.Add( new MediaTypeWithQualityHeaderValue( "application/json" ) );
@@ -127,9 +129,30 @@ namespace EddiEddnResponder.Sender
             if (!TryValidate(body)) { return; }
 
             var json = SerializeBody(body);
-            Logging.Debug( "Sending " + json );
+            if ( !submissions.TryReserve( EddnSubmissionCache.Fingerprint( json ), out var reservation ) )
+            {
+                Logging.Debug( $"EDDN exact duplicate suppressed for {body.schemaRef}." );
+                return;
+            }
+            if ( reservation == null )
+            {
+                Logging.Debug( $"EDDN duplicate cache is full with pending submissions; sending {body.schemaRef} without tracking." );
+            }
 
-            var payload = Encoding.UTF8.GetBytes( json );
+            var accepted = false;
+            try
+            {
+                accepted = await SendPayloadAsync( body, Encoding.UTF8.GetBytes( json ) ).ConfigureAwait(false);
+            }
+            finally
+            {
+                submissions.Complete( reservation, accepted );
+            }
+        }
+
+        private async Task<bool> SendPayloadAsync ( EDDNBody body, byte[] payload )
+        {
+            Logging.Debug( "Sending " + Encoding.UTF8.GetString( payload ) );
             string signature;
             try
             {
@@ -144,7 +167,7 @@ namespace EddiEddnResponder.Sender
             {
                 // Private signer exceptions may contain secret material.
                 Logging.Error( "EDDN signing failed. Dropping message." );
-                return;
+                return false;
             }
 
             HttpResponseMessage response = null;
@@ -164,7 +187,7 @@ namespace EddiEddnResponder.Sender
                         if ( attempt == 1 )
                         {
                             Logging.Warn( $"EDDN {body.schemaRef} failed after retry ({hre.HttpRequestError}): {hre.Message}. Dropping message." );
-                            return;
+                            return false;
                         }
                         Logging.Debug( $"EDDN {body.schemaRef} transient network error ({hre.HttpRequestError}): {hre.Message}. Retrying in {shortRetryDelaySeconds}s." );
                         await delay( TimeSpan.FromSeconds( shortRetryDelaySeconds ) ).ConfigureAwait(false);
@@ -186,7 +209,7 @@ namespace EddiEddnResponder.Sender
                     }
 
                     await HandleResponseAsync( body, response, signature != null ).ConfigureAwait(false);
-                    return;
+                    return response.StatusCode is HttpStatusCode.OK or HttpStatusCode.Accepted;
                 }
             }
             catch ( HttpRequestException hre ) when (hre.InnerException is WebException we)
@@ -205,6 +228,7 @@ namespace EddiEddnResponder.Sender
             {
                 response?.Dispose();
             }
+            return false;
         }
 
         private bool TryValidate(EDDNBody body)

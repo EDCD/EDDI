@@ -13,27 +13,12 @@ namespace EddiEddnResponder.Schemas
     {
         public List<string> edTypes => [ "Shipyard" ];
 
-        // Track this so that we do not send duplicate data from the journal and from CAPI.
-        private long? lastSentMarketID;
-        private DateTime? lastSentDateTime;
-
         public bool Handle(string edType, ref IDictionary<string, object> data, EDDNState eddnState, EDDNSender eddnSender )
         {
             try
             {
                 if (!edTypes.Contains(edType)) { return false; }
                 if (eddnState?.GameVersion is null) { return false; }
-
-                var marketID = JsonParsing.getLong(data, "MarketID");
-                var timestamp = JsonParsing.getDateTime( "timestamp", data );
-
-                // Suppress repetitious messages less than 2 minutes apart.
-                if ( lastSentMarketID == marketID && timestamp < (lastSentDateTime + TimeSpan.FromMinutes(2)))
-                {
-                    return false;
-                }
-                lastSentMarketID = marketID;
-                lastSentDateTime = timestamp;
 
                 if (data.TryGetValue("PriceList", out var shipsList))
                 {
@@ -83,12 +68,6 @@ namespace EddiEddnResponder.Schemas
                 // Sanity check - we must have a valid timestamp
                 if (timestamp == null) { return null; }
 
-                // Suppress repetitious messages less than 2 minutes apart.
-                if ( lastSentMarketID == marketID && timestamp < ( lastSentDateTime + TimeSpan.FromMinutes( 2 ) ) )
-                {
-                    return null;
-                }
-
                 // Build our ships list
                 var ships = shipyardJson["ships"]?["shipyard_list"]?.Children().Values()
                     .Select(s => s["name"]?.ToString()).Distinct().ToList() ?? [ ];
@@ -113,8 +92,6 @@ namespace EddiEddnResponder.Schemas
                     data = eddnState.GameVersion.AugmentVersion(data);
 
                     eddnSender.SendToEDDN("https://eddn.edcd.io/schemas/shipyard/2", data, eddnState, "CAPI-Live-shipyard" );
-                    lastSentMarketID = marketID;
-                    lastSentDateTime = timestamp;
                     return data;
                 }
             }
