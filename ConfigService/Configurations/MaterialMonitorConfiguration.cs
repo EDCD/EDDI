@@ -47,6 +47,7 @@ namespace EddiConfigService.Configurations
             get => _materials;
             set
             {
+                value ??= [];
                 if ( Equals( value, _materials ) )
                 {
                     return;

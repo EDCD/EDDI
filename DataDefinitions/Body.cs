@@ -154,9 +154,10 @@ namespace EddiDataDefinitions
         /// <summary>The parent bodies to this body, if any</summary>
         public List<IDictionary<string, int>> parents
         {
-            get => _parents ??= [ ];
+            get => _parents;
             set
             {
+                value ??= [];
                 if (bodyType == null)
                 {
                     if (planetClass != null)

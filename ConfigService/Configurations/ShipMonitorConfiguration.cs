@@ -53,7 +53,7 @@ namespace EddiConfigService.Configurations
             {
                 lock ( _shipyardLock )
                 {
-                    _shipyard = value;
+                    _shipyard = value ?? ImmutableList<Ship>.Empty;
                 }
             }
         }
@@ -63,6 +63,7 @@ namespace EddiConfigService.Configurations
             get => _storedmodules;
             set
             {
+                value ??= [];
                 if ( Equals( value, _storedmodules ) )
                 {
                     return;

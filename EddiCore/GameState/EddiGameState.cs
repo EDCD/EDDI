@@ -179,8 +179,8 @@ namespace EddiCore.GameState
 
         public Dictionary<int, VesselDefinition> DeployedVessels
         {
-            get => _DeployedVessels ??= [];
-            internal set => SetChild( ref _DeployedVessels, value, ref _deployedVesselshangedHandler, nameof( DeployedVessels ) );
+            get => _DeployedVessels;
+            internal set => SetChild( ref _DeployedVessels, value ?? [], ref _deployedVesselshangedHandler, nameof( DeployedVessels ) );
         }
         private Dictionary<int, VesselDefinition> _DeployedVessels = [];
         private PropertyChangedEventHandler _deployedVesselshangedHandler;

@@ -18,6 +18,7 @@ namespace EddiConfigService.Configurations
             get => _cargo;
             set
             {
+                value ??= [];
                 if ( Equals( value, _cargo ) )
                 {
                     return;

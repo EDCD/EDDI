@@ -19,6 +19,7 @@ namespace EddiConfigService.Configurations
             get => _criminalrecord;
             set
             {
+                value ??= [];
                 if ( Equals( value, _criminalrecord ) )
                 {
                     return;
@@ -34,6 +35,7 @@ namespace EddiConfigService.Configurations
             get => _homeSystems;
             set
             {
+                value ??= [];
                 if ( Equals( value, _homeSystems ) )
                 {
                     return;
