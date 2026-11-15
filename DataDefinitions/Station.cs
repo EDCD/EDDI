@@ -86,10 +86,10 @@ namespace EddiDataDefinitions
         [PublicAPI( "a list of the station services available at this station, as objects" )]
         public List<StationService> stationServices
         {
-            get => _stationServices ?? [ ];
+            get => _stationServices ??= [ ];
             set { _stationServices = value; OnPropertyChanged();}
         }
-        private List<StationService> _stationServices;
+        private List<StationService> _stationServices = [];
 
         /// <summary>A localized list of the services offered by this station</summary>
         [PublicAPI( "a localized list of the station services available at this station" )]
@@ -180,7 +180,7 @@ namespace EddiDataDefinitions
             get => _model ?? StationModel.None;
             set
             {
-                if ( value == StationModel.FleetCarrier )
+                if ( value?.edname == StationModel.FleetCarrier.edname )
                 {
                     // Fleet carriers always have the same landing pad configuration
                     landingPads = new StationLandingPads( 4, 4, 8 );
@@ -194,26 +194,25 @@ namespace EddiDataDefinitions
         [PublicAPI( "the localized largest pad available at this station (None, Small, Medium, Large)" ), JsonIgnore, Obsolete("Please use LargestPad instead")]
         public string largestpad => landingPads.LargestPad().localizedName;
 
-        [PublicAPI( "the landing pads available at this station, as objects" ), JsonIgnore ]
+        [PublicAPI( "the landing pads available at this station, as objects" )]
         public StationLandingPads landingPads { get; set; } = new();
 
         /// <summary>What are the economies at the station, with proportions for each</summary>
-        [JsonIgnore, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
+        [JsonProperty( ObjectCreationHandling = ObjectCreationHandling.Replace ), JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<EconomyShare> economyShares
         {
-            get =>  _economyShares ??= new List<EconomyShare>( 2 ) ;
+            get => _economyShares;
             set
             {
-                if (value.Count != value.Select(v => v.economy).Distinct().Count())
+                value ??= [];
+                if (value.Count != value.Select(v => v.economy.edname).Distinct().Count())
                 {
                     // Per FDev comments, the BGS does have multiple minor variations of each economy type,
                     // e.g. a system can have two distinct economies rendered as follows "StationEconomies":  
                     // [ { "Name": "$economy_Refinery;", "Proportion": 0.84 }, { "Name": "$economy_Refinery;", "Proportion": 0.16 }
                     // We consolidate them here.
-                    _economyShares = value.Select(v => new KeyValuePair<Economy, decimal>(v.economy, v.proportion))
-                        .GroupBy(x => x.Key) // Group second economies of the same economy type
-                        .ToDictionary(x => x.Key, x => x.Sum(y => y.Value)) // Sum proportions of economies of the same economy type
-                        .Select(d => new EconomyShare(d.Key, d.Value)).ToList(); // Convert back to a list of EconomyShares
+                    _economyShares = value.GroupBy(v => v.economy.edname)
+                        .Select(g => new EconomyShare(g.First().economy, g.Sum(v => v.proportion))).ToList();
                 }
                 else
                 {
@@ -222,8 +221,7 @@ namespace EddiDataDefinitions
                 OnPropertyChanged();
             }
         }
-        [JsonProperty(nameof(economyShares))]
-        private List<EconomyShare> _economyShares;
+        private List<EconomyShare> _economyShares = new( 2 );
 
         /// <summary>What are the localized economies at the stations</summary>
         [JsonIgnore]
@@ -306,12 +304,12 @@ namespace EddiDataDefinitions
         public long? shipyardupdatedat;
 
         /// <summary>Is this station a fleet carrier?</summary>
-        public bool IsCarrier() { return Model == StationModel.FleetCarrier; }
+        public bool IsCarrier() { return Model.edname == StationModel.FleetCarrier.edname; }
 
         /// <summary>Is this station a mega ship?</summary>
         public bool IsMegaShip() { return 
-            Model == StationModel.Megaship || 
-            Model == StationModel.MegaShipCivilian; }
+            Model.edname == StationModel.Megaship.edname ||
+            Model.edname == StationModel.MegaShipCivilian.edname; }
         
         /// <summary>Is this station a starport?</summary>
         public bool IsStarport() { return 
@@ -319,24 +317,24 @@ namespace EddiDataDefinitions
             !IsCarrier() && 
             !IsMegaShip() && 
             !IsOutpost() &&
-            Model != StationModel.None;
+            Model.edname != StationModel.None.edname;
         }
 
         /// <summary>Is this station an outpost?</summary>
         public bool IsOutpost() { return 
             !IsPlanetary() && 
-            Model == StationModel.Outpost; }
+            Model.edname == StationModel.Outpost.edname; }
 
         /// <summary>Is this station planetary?</summary>
         public bool IsPlanetary() { return 
-            Model == StationModel.SurfaceStation || 
-            Model == StationModel.CraterOutpost || 
-            Model == StationModel.CraterPort || 
-            Model == StationModel.OnFootSettlement; }
+            Model.edname == StationModel.SurfaceStation.edname ||
+            Model.edname == StationModel.CraterOutpost.edname ||
+            Model.edname == StationModel.CraterPort.edname ||
+            Model.edname == StationModel.OnFootSettlement.edname; }
 
         /// <summary>Is this station an (undockable) settlement?</summary>
         public bool IsPlanetarySettlement() { return
-            Model == StationModel.SurfaceStation && 
+            Model.edname == StationModel.SurfaceStation.edname &&
             hasdocking != true; }
 
         #region MarketInformationUpdated

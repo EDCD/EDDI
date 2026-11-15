@@ -7,6 +7,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Add support for the Anaconda Mk. II.
     * Add support for the Rhino mining SRV.
     * Fixed EDDI failing to verbally announce new EDDI releases when EDDI starts up.
+    * Fixed station services and landing pads lost after reloading saved data (#2860). (Thanks to @Cmdr Evolution)
     * Various bug fixes from telemetry.
     * `Mission` object definition revised.
       * Removed the `Claim` status for missions.

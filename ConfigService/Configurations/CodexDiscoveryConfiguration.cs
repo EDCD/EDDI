@@ -7,12 +7,10 @@ namespace EddiConfigService.Configurations
     [JsonObject(MemberSerialization.OptOut), RelativePath(@"\codexdiscoveries.json")]
     public class CodexDiscoveryConfiguration : Config
     {
-        private HashSet<long> _discoveredEntryIds = [];
-
         [JsonProperty("discoveredEntryIds")]
         public HashSet<long> discoveredEntryIds
         {
-            get => _discoveredEntryIds ?? [];
+            get => _discoveredEntryIds ??= [];
             set
             {
                 if (value == _discoveredEntryIds)
@@ -24,5 +22,6 @@ namespace EddiConfigService.Configurations
                 OnPropertyChanged();
             }
         }
+        private HashSet<long> _discoveredEntryIds = [];
     }
 }

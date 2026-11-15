@@ -46,10 +46,10 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public Dictionary<string, int> specialtySlotSizes 
         {
-            get { return _specialtySlotSizes ?? []; }
+            get { return _specialtySlotSizes ??= []; }
             set { _specialtySlotSizes = value; } 
         }
-        private Dictionary<string, int> _specialtySlotSizes;
+        private Dictionary<string, int> _specialtySlotSizes = [];
 
         /// <summary>the total tonnage cargo capacity</summary>
         [Utilities.PublicAPI( "the total tonnage cargo capacity" ), JsonIgnore ]
@@ -458,7 +458,7 @@ namespace EddiDataDefinitions
         public List<Hardpoint> hardpoints
         {
             get => _hardpoints;
-            set { _hardpoints = value; OnPropertyChanged(); }
+            set { _hardpoints = value ?? []; OnPropertyChanged(); }
         }
         private List<Hardpoint> _hardpoints = [ ];
 
@@ -466,7 +466,7 @@ namespace EddiDataDefinitions
         public List<Compartment> compartments
         {
             get => _compartments;
-            set { _compartments = value; OnPropertyChanged(); }
+            set { _compartments = value ?? []; OnPropertyChanged(); }
         }
         private List<Compartment> _compartments = [ ];
 
@@ -474,7 +474,7 @@ namespace EddiDataDefinitions
         public List<LaunchBay> launchbays
         {
             get => _launchbays;
-            set { _launchbays = value; OnPropertyChanged(); }
+            set { _launchbays = value ?? []; OnPropertyChanged(); }
         }
         private List<LaunchBay> _launchbays = [ ];
 

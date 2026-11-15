@@ -82,16 +82,17 @@ namespace EddiDataDefinitions
         public int other => owned;
 
         // Mission items on board (with MissionID and count)
-        [JsonProperty, PublicAPI( "A dictionary where the key is a mission ID and the value is the amount of cargo associated with that mission ID")]
+        [JsonProperty( ObjectCreationHandling = ObjectCreationHandling.Replace ), PublicAPI( "A dictionary where the key is a mission ID and the value is the amount of cargo associated with that mission ID")]
         public Dictionary<ulong, int> missionCargo
         {
             get => _missionCargo;
             set
             {
+                value ??= [];
                 if ( _missionCargo != value )
                 {
                     _missionCargo = value;
-                    haulage = value.Values.Sum();
+                    haulage = _missionCargo.Values.Sum();
                 }
                 NotifyPropertyChanged( nameof( haulage ) );
             }

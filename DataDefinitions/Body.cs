@@ -50,10 +50,10 @@ namespace EddiDataDefinitions
         [PublicAPI( "The body's rings" )]
         public List<Ring> rings
         {
-            get => _rings ?? [ ];
+            get => _rings ??= [ ];
             set => _rings = value;
         }
-        private List<Ring> _rings;
+        private List<Ring> _rings = [];
         
         // Scan data
 
@@ -154,7 +154,7 @@ namespace EddiDataDefinitions
         /// <summary>The parent bodies to this body, if any</summary>
         public List<IDictionary<string, int>> parents
         {
-            get => _parents ?? [ ];
+            get => _parents ??= [ ];
             set
             {
                 if (bodyType == null)
@@ -179,7 +179,7 @@ namespace EddiDataDefinitions
                 OnPropertyChanged();
             }
         }
-        [JsonIgnore] private List<IDictionary<string, int>> _parents;
+        [JsonIgnore] private List<IDictionary<string, int>> _parents = [];
 
         [PublicAPI( "Density in Kg per cubic meter" ), JsonIgnore]
         public decimal? density => GetDensity();
