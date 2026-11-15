@@ -2,7 +2,9 @@ using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiDataDefinitions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Reflection;
@@ -10,12 +12,17 @@ using System.Reflection;
 namespace Tests
 {
     [TestClass, TestCategory( "UnitTests" )]
-    public class ConfigServiceTests : TestBase
+    public class ConfigServiceTests
     {
-        [TestInitialize]
-        public void start ()
+        private static CommanderConfiguration DeserializeCommander (
+            string json, List<Exception> errors )
         {
-            MakeSafe();
+            // Capture errors per call rather than writing to the real profile's logger.
+            var method = typeof( ConfigService ).GetMethod( nameof( ConfigService.FromJson ),
+                BindingFlags.NonPublic | BindingFlags.Static );
+            Assert.IsNotNull( method );
+            return (CommanderConfiguration)method.MakeGenericMethod( typeof( CommanderConfiguration ) )
+                .Invoke( null, [ json, new Action<Exception>( errors.Add ) ] );
         }
 
         [TestMethod]
@@ -27,17 +34,30 @@ namespace Tests
             Assert.AreEqual( "Male", cfgNull.gender );
 
             // Invalid JSON should be handled and return a default instance
-            var cfgInvalid = ConfigService.FromJson<CommanderConfiguration>("not a json");
+            var errors = new List<Exception>();
+            var cfgInvalid = DeserializeCommander( "not a json", errors );
             Assert.IsNotNull( cfgInvalid );
             Assert.AreEqual( "Male", cfgInvalid.gender );
+            Assert.HasCount( 1, errors );
+            Assert.IsInstanceOfType<JsonReaderException>( errors[ 0 ] );
+        }
+
+        [TestMethod]
+        public void FromJson_ValidConfiguration_PreservesValuesWithoutReportingError ()
+        {
+            var errors = new List<Exception>();
+
+            var configuration = DeserializeCommander(
+                "{\"gender\":\"Female\",\"commanderName\":\"Test commander\"}", errors );
+
+            Assert.AreEqual( "Female", configuration.gender );
+            Assert.AreEqual( "Test commander", configuration.commanderName );
+            Assert.IsEmpty( errors );
         }
 
         [TestMethod]
         public void ConvertLegacyConfigData_MigratesCommanderAndFleetCarrier ()
         {
-            // Ensure singleton exists (MakeSafe set unitTesting = true to avoid disk IO)
-            var svc = ConfigService.Instance;
-
             // Prepare configs to pass to the private migration method
             var commanderConfig = new CommanderConfiguration();
             var eddiConfig = new EDDIConfiguration();
@@ -74,10 +94,10 @@ namespace Tests
                     [nameof(FleetCarrierConfiguration)] = fleetCarrierConfig
                 }.ToImmutableDictionary();
 
-                // Invoke private ConvertLegacyConfigData method via reflection
-                var method = typeof(ConfigService).GetMethod("ConvertLegacyConfigData", BindingFlags.NonPublic | BindingFlags.Instance);
+                // Migration only needs the supplied in-memory configurations, not the singleton.
+                var method = typeof(ConfigService).GetMethod("ConvertLegacyConfigData", BindingFlags.NonPublic | BindingFlags.Static);
                 Assert.IsNotNull( method, "ConvertLegacyConfigData method not found via reflection" );
-                method.Invoke( svc, [ dict ] );
+                method.Invoke( null, [ dict ] );
 
                 // Verify that migration copied values into the commander configuration
                 Assert.AreEqual( "LegacyCmdr", commanderConfig.commanderName );

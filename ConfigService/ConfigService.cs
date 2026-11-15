@@ -446,6 +446,11 @@ namespace EddiConfigService
         /// <summary>Deserialize a configuration object from a JSON string (primarily for unit testing)</summary>
         public static T FromJson<T> ( string json ) where T : new()
         {
+            return FromJson<T>( json, ex => Logging.Warn( $"Failed to read {typeof( T ).Name}", ex ) );
+        }
+
+        private static T FromJson<T> ( string json, Action<Exception> reportError ) where T : new()
+        {
             T configuration = default;
             if ( json != null )
             {
@@ -455,7 +460,7 @@ namespace EddiConfigService
                 }
                 catch ( Exception ex )
                 {
-                    Logging.Warn( $"Failed to read {typeof( T ).Name}", ex );
+                    reportError( ex );
                 }
             }
             return configuration != null ? configuration : new T();
@@ -624,7 +629,7 @@ namespace EddiConfigService
         #region Legacy Configuration Migration
 
         /// <summary>Converts legacy configuration data from EDDI configuration to their proper configuration classes</summary>
-        private void ConvertLegacyConfigData ( ImmutableDictionary<string, Config> configs )
+        private static void ConvertLegacyConfigData ( ImmutableDictionary<string, Config> configs )
         {
             // Convert legacy data saved in the EDDI configuration to the Commander configuration
             if ( configs.TryGetValue( nameof( CommanderConfiguration ), out var commanderConfigVal ) &&
