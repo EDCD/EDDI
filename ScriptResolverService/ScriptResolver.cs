@@ -94,9 +94,10 @@ namespace EddiScriptResolverService
         }
 
         /// <summary> From a custom dictionary of variable values in the default context </summary>
-        public string resolveFromName(string name, Dictionary<string, Tuple<Type, Value>> vars, bool isTopLevelScript)
+        public string resolveFromName(string name, Dictionary<string, Tuple<Type, Value>> vars, bool isTopLevelScript,
+            Action<DeferredSpeechRequest> scheduleSpeech = null)
         {
-            var context = buildContext(vars, Scripts);
+            var context = buildContext(vars, Scripts, scheduleSpeech);
             return resolveFromName(name, Scripts, context, isTopLevelScript);
         }
 
@@ -396,7 +397,8 @@ namespace EddiScriptResolverService
         /// <summary>
         /// Build a context from a list of variables
         /// </summary>
-        public static IContext buildContext (Dictionary<string, Tuple<Type, Value>> vars = null, IReadOnlyDictionary<string, IScriptDefinition> scripts = null )
+        public static IContext buildContext (Dictionary<string, Tuple<Type, Value>> vars = null, IReadOnlyDictionary<string, IScriptDefinition> scripts = null,
+            Action<DeferredSpeechRequest> scheduleSpeech = null )
         {
             var context = new Dictionary<Value, Value>();
 
@@ -412,6 +414,7 @@ namespace EddiScriptResolverService
             // Loop through our custom functions and add them to the context.
             foreach ( var function in GetCustomFunctions( context, scripts ) )
             {
+                if ( function is CustomFunctions.SpeakAfter speakAfter ) { speakAfter.Schedule = scheduleSpeech; }
                 context[ function.name ] = Value.FromFunction( function.function );
             }
 

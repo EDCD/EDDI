@@ -4,7 +4,6 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ## 5.0.6
   * Core
-    * Defer body mapping notifications briefly so matching SAA surface signals can be processed first, with a fallback when no signals arrive.
     * Add support for the new "Rhino" mining SRV.
     * Fixed EDDI failing to verbally announce new EDDI releases when EDDI starts up.
     * Various bug fixes from telemetry.
@@ -15,6 +14,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added search box and filtering. Added checkbox to display invariant text in place of translated text when applicable. (#2411)
     * Added bulk editor for setting minimum and desired inventory levels.
   * Speech Responder
+    * Add optional `SpeakAfter()` deferred speech reports without changing core event order.
     * Scripts
       * `FSD engaged` updated to use explicit `departuresystem` and `arrivalsystem` variables for clearer jump context and to pass an explicit `arrivalsystem` allegiance into the `Honorific` script invocation (#2854).
       * `Honorific` updated to allow an `allegiance` optional argument to be passed during invocation (#2854).

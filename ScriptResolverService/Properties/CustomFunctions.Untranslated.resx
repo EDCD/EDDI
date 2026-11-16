@@ -819,4 +819,19 @@ Usage example:
   }
   There are {wordCount} words pending from {len(speechQueue)} queued messages.</value>
   </data>
+  <data name="SpeakAfter" xml:space="preserve">
+    <value>Schedules a script for later evaluation by the Speech Responder, without pausing event processing.
+
+SpeakAfter(scriptToSpeak, maximumDelayMs, scriptToWaitFor?, args?) returns no speech immediately. The delay must be a whole number from 0 to 30000 milliseconds. An optional top-level speech script can release the report early when its handling finishes; use an empty string for a timer-only report. The optional fourth parameter is an args map; otherwise args is empty. Pass args explicitly to forward a caller's arguments. Other local variables are not retained.
+
+For example, from Body mapped:
+
+    {SpeakAfter("Combined mapping report", 200, "Surface signals detected")}
+
+This particular wait requires live SAA signals for the same system address and body ID, with a timestamp no earlier than the mapping. FSS and unrelated signals do not release it. The original event is retained; other variables are read at evaluation time. Use the original event's body identity rather than a mutable current-body state.
+
+The deferred script receives speakafter.matched (released by the awaited script) and speakafter.timedout (released by the timer). The timeout makes the report eligible to run; a busy renderer or speech queue can delay evaluation or playback. Deferred reports cannot schedule further reports. Pending requests are canceled on location/session changes, responder stop/reload, or personality change. At most 32 requests may be pending.
+
+Default personalities are unchanged. Combining reports and suppressing duplicate or handling late surface-signal speech remains the personality author's responsibility. See docs/SpeakAfter.md for a worked example and limitations.</value>
+  </data>
 </root>
