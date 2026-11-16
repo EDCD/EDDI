@@ -1,4 +1,5 @@
-﻿using EddiConfigService;
+﻿using Cottle;
+using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
@@ -25,6 +26,8 @@ namespace EddiSpeechResponder
     /// </summary>
     public class SpeechResponder : IEddiResponder, ISpeechResponderController, INotifyPropertyChanged
     {
+        private readonly DeferredSpeechScheduler deferredSpeech;
+
         // The file to log speech
         private static readonly string LogFile = Constants.DATA_DIR + @"\speechresponder.out";
 
@@ -43,6 +46,7 @@ namespace EddiSpeechResponder
                 // Validate: ensure we have a valid personality
                 var newPersonality = value ?? Personalities?.FirstOrDefault() ?? Personality.Default();
 
+                deferredSpeech.Clear();
                 SetProperty(ref _currentPersonality, newPersonality, nameof(CurrentPersonality));
                 newPersonality.ApplyScriptPersonalityState();
 
@@ -104,8 +108,11 @@ namespace EddiSpeechResponder
             return EddiScriptResolverService.ApproximateNumber.Render( number, scripts );
         }
 
-        public SpeechResponder()
+        public SpeechResponder() : this( new DeferredSpeechScheduler() ) { }
+
+        internal SpeechResponder( DeferredSpeechScheduler scheduler )
         {
+            deferredSpeech = scheduler;
             Configuration = ConfigService.Instance.speechResponderConfiguration;
             Personalities = GetPersonalities();
             TrySetPersonality(Configuration.Personality);
@@ -257,6 +264,7 @@ namespace EddiSpeechResponder
 
         public void Stop()
         {
+            deferredSpeech.Clear();
             EDDI.Instance.State["speechresponder_quiet"] = true;
             SpeechService.Instance.ShutUp();
             SpeechService.Instance.StopAudio();
@@ -264,6 +272,7 @@ namespace EddiSpeechResponder
 
         public void Reload()
         {
+            deferredSpeech.Clear();
             Configuration = ConfigService.Instance.speechResponderConfiguration;
             Personalities = GetPersonalities();
             TrySetPersonality(Configuration.Personality);
@@ -272,6 +281,11 @@ namespace EddiSpeechResponder
 
         public async Task HandleAsync ( Event @event )
         {
+            if ( @event is FileHeaderEvent or CommanderLoadingEvent or LocationEvent or JumpedEvent or ShutdownEvent )
+            {
+                deferredSpeech.Clear();
+            }
+
             if (@event.fromLoad)
             {
                 return;
@@ -327,25 +341,12 @@ namespace EddiSpeechResponder
             {
                 ship = EDDI.Instance.GameState.CurrentShip;
             }
-            await SayAsync( ScriptResolver, ship, @event.type, @event, null, null, SayOutLoud() )
+            await SayAsync( ScriptResolver, ship, @event.type, @event, null, null, !IsQuiet() )
                 .ConfigureAwait( false );
-            
-            return;
-
-            static bool SayOutLoud ()
-            {
-                // By default we say things unless we've been told not to
-                var sayOutLoud = true;
-                if ( EDDI.Instance.State.TryGetValue( "speechresponder_quiet", out var tmp ) )
-                {
-                    if ( tmp is bool b )
-                    {
-                        sayOutLoud = !b;
-                    }
-                }
-                return sayOutLoud;
-            }
         }
+
+        private static bool IsQuiet () =>
+            EDDI.Instance.State.TryGetValue( "speechresponder_quiet", out var quiet ) && quiet is true;
 
         // Say something with the default resolver
         public async Task SayAsync(Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool sayOutLoud = true, bool invokedFromVA = false)
@@ -356,12 +357,50 @@ namespace EddiSpeechResponder
         // Say something with a custom resolver
         private async Task SayAsync(ScriptResolver resolver, Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool sayOutLoud = true, bool invokedFromVA = false)
         {
-            var dict = resolver.CompileVariables(theEvent);
+            var generation = deferredSpeech.Generation;
+            await deferredSpeech.RunAsync( async () =>
+            {
+                var existingRequests = deferredSpeech.LastSequence;
+                await RenderSpeechAsync( resolver, ship, scriptName, theEvent, priority, voice, sayOutLoud,
+                    invokedFromVA, generation ).ConfigureAwait( false );
+                if ( deferredSpeech.Generation == generation )
+                {
+                    await deferredSpeech.ScriptCompletedAsync( scriptName, theEvent, existingRequests ).ConfigureAwait( false );
+                }
+            } ).ConfigureAwait( false );
+        }
 
-            // Generate and enqueue speech
+        private async Task RenderSpeechAsync( ScriptResolver resolver, Ship ship, string scriptName, Event theEvent,
+            int? priority, string voice, bool sayOutLoud, bool invokedFromVA, long generation,
+            DeferredSpeechRequest deferred = null, bool matched = false, Func<bool> isCurrent = null )
+        {
+            if ( isCurrent != null && !isCurrent() ) { return; }
+            var dict = resolver.CompileVariables(theEvent);
+            if ( deferred != null )
+            {
+                dict[ "args" ] = new( typeof(Value), deferred.Args );
+                dict[ "speakafter" ] = new( typeof(Value), new Dictionary<Value, Value>
+                {
+                    [ "matched" ] = matched,
+                    [ "timedout" ] = !matched
+                } );
+            }
+
+            // Generate and enqueue speech. Deferred reports compile fresh variables with the ORIGINAL event.
             try
             {
-                var speech = resolver.resolveFromName(scriptName, dict, true);
+                Action<DeferredSpeechRequest> schedule = null;
+                if ( deferred is null && theEvent?.fromLoad != true )
+                {
+                    var systemAddress = EDDI.Instance.GameState.CurrentStarSystem?.systemAddress;
+                    schedule = request => deferredSpeech.Schedule( request, theEvent, generation, releasedByScript =>
+                        RenderSpeechAsync( resolver, ship, request.ScriptName, theEvent, priority, voice,
+                            sayOutLoud && !IsQuiet(), invokedFromVA, generation, request, releasedByScript,
+                            () => deferredSpeech.Generation == generation &&
+                                  EDDI.Instance.GameState.CurrentStarSystem?.systemAddress == systemAddress ) );
+                }
+                var speech = resolver.resolveFromName(scriptName, dict, true, schedule);
+                if ( isCurrent != null && !isCurrent() ) { return; }
                 if ( speech != null && Configuration != null )
                 {
                     if ( Configuration.Subtitles )
